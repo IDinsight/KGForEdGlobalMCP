@@ -17,7 +17,6 @@ venv.bak/
 
 # Misc.
 caches/
-data/
 graveyard/
 logs/
 results/

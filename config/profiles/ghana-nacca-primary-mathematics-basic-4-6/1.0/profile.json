@@ -1,0 +1,531 @@
+{
+	"codeSearchPolicy": {
+		"allowPrefixSearch": true,
+		"availability": "partial",
+		"canonicalizationNotes": [
+			"Normalize formatting whitespace around code delimiters without changing alphanumeric components.",
+			"Preserve malformed or reused source codes rather than silently correcting them.",
+			"Treat same-code records as retrieval candidates rather than guaranteed identity."
+		],
+		"caseSensitive": false,
+		"codeParentRules": [
+			{
+				"childCodeType": "indicator",
+				"method": "regex_substitution",
+				"parentCodeType": "content_standard",
+				"regex": "^\\s*(B\\s*[456]\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+)\\s*\\.\\s*\\d+\\s*\\.?\\s*$",
+				"replacement": "\\1"
+			}
+		],
+		"codeTypes": [
+			{
+				"codeType": "content_standard",
+				"patterns": [
+					"\\bB\\s*[456]\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+(?!\\s*\\.\\s*\\d)\\b"
+				],
+				"scopeStatementTypes": [],
+				"statementTypes": [
+					"Content Standard"
+				]
+			},
+			{
+				"codeType": "indicator",
+				"patterns": [
+					"\\bB\\s*[456]\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+(?!\\s*\\.\\s*\\d)\\b"
+				],
+				"scopeStatementTypes": [],
+				"statementTypes": [
+					"Indicator"
+				]
+			}
+		],
+		"codesAreUniqueIdentifiers": false,
+		"prefixDelimiters": [
+			"."
+		],
+		"punctuationNormalization": true,
+		"whitespaceNormalization": true
+	},
+	"comparisonDimensions": [
+		"wording",
+		"scope",
+		"cognitive_demand",
+		"granularity",
+		"hierarchy_placement",
+		"grade_context"
+	],
+	"educationStageMappings": [],
+	"frameworkIds": [
+		"ghana-nacca-primary-mathematics-basic-4-6"
+	],
+	"gradeLevelStatementTypes": [
+		"Grade"
+	],
+	"gradeMappings": [
+		{
+			"aliases": [
+				"Basic 4",
+				"basic 4",
+				"B4",
+				"Grade 4",
+				"Class 4"
+			],
+			"localLabel": "BASIC 4",
+			"normalizedGrades": [
+				"4"
+			]
+		},
+		{
+			"aliases": [
+				"Basic 5",
+				"basic 5",
+				"B5",
+				"Grade 5",
+				"Class 5"
+			],
+			"localLabel": "BASIC 5",
+			"normalizedGrades": [
+				"5"
+			]
+		},
+		{
+			"aliases": [
+				"Basic 6",
+				"basic 6",
+				"B6",
+				"Grade 6",
+				"Class 6"
+			],
+			"localLabel": "BASIC 6",
+			"normalizedGrades": [
+				"6"
+			]
+		}
+	],
+	"hierarchy": {
+		"allowMultiParent": false,
+		"relationshipType": "hasChild",
+		"rootStatementTypes": [
+			"Grade"
+		],
+		"statementTypeOrder": [
+			"Grade",
+			"Strand",
+			"Sub-Strand",
+			"Content Standard",
+			"Indicator"
+		]
+	},
+	"knownSourceAnomalies": [
+		{
+			"anomalyId": "reused_codes_and_editorial_duplicates",
+			"description": "The source contains reused codes, same-code/different-content records, and editorial duplicates. Code equality is not a unique identity guarantee.",
+			"requiredDisclosure": "Code matches are retrieval evidence and may include distinct source-visible statements."
+		}
+	],
+	"languagePolicy": {
+		"allowBilingualPairing": false,
+		"languages": [
+			"en"
+		],
+		"notes": [
+			"This Ghana Mathematics curriculum is English-only. Do not create bilingual pairs, translations, or cross-language duplicate candidates. Preserve visible English source text exactly. If non-English text appears incidentally, keep it only as source-visible text and do not translate it or pair it with an English candidate unless the document itself explicitly presents both versions as equivalent official curriculum text."
+		],
+		"preserveSourceTerminology": true
+	},
+	"localSubject": "Mathematics",
+	"normalizedSubjects": [
+		"Mathematics"
+	],
+	"profileId": "ghana-nacca-primary-mathematics-basic-4-6",
+	"profileSchemaVersion": "1.0",
+	"profileVersion": "1.0",
+	"progressionHeuristics": [],
+	"requiredDisclosures": [
+		"Normalized grades are retrieval facets and do not establish international grade equivalence.",
+		"A hasChild hierarchy is not a source-authored instructional progression unless the source explicitly says so.",
+		"An Academic Standard alone does not establish learner mastery.",
+		"Identifier, code, or text retrieval matches do not establish official equivalence."
+	],
+	"rights": {
+		"allowBulkResource": false,
+		"allowFullText": true,
+		"allowGeneratedDerivatives": "allowed",
+		"allowStandardResources": true,
+		"attributionStatement": "Source curriculum published by NaCCA, Ministry of Education, Republic of Ghana, September 2019.",
+		"reviewStatus": "provisional_operator_approved",
+		"sourceLicense": "Unknown"
+	},
+	"sourceRoleCapabilities": {
+		"hasOfficialActivities": false,
+		"hasOfficialAssessmentGuidance": false,
+		"hasOfficialResources": false,
+		"roleNotes": [
+			"The Academic Standards graph excludes activities, assessment guidance, and resources as node types; detailed source artifacts may retain contextual evidence."
+		]
+	},
+	"statementTypes": [
+		{
+			"aliases": [
+				"Basic",
+				"BASIC",
+				"basic",
+				"grade"
+			],
+			"allowedParents": [],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Basic 4",
+						"basic 4",
+						"B4",
+						"Grade 4",
+						"Class 4"
+					],
+					"canonicalValue": "BASIC 4"
+				},
+				{
+					"aliases": [
+						"Basic 5",
+						"basic 5",
+						"B5",
+						"Grade 5",
+						"Class 5"
+					],
+					"canonicalValue": "BASIC 5"
+				},
+				{
+					"aliases": [
+						"Basic 6",
+						"basic 6",
+						"B6",
+						"Grade 6",
+						"Class 6"
+					],
+					"canonicalValue": "BASIC 6"
+				}
+			],
+			"description": "Visible BASIC 4, BASIC 5, or BASIC 6 curriculum organizer; these are root-level Standard Grouping SFIs under the framework.",
+			"identityScope": [],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Grade"
+		},
+		{
+			"aliases": [
+				"STRAND",
+				"strand"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Grade"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"NUMBER",
+						"Strand 1: NUMBER",
+						"Strand 1: Number",
+						"Strand 1- Number",
+						"Strand 1- NUMBER",
+						"Strand 1:  NUMBER",
+						"Strand 1:  Number",
+						"Number (Counting, Representation, Cardinality and Operations)"
+					],
+					"canonicalValue": "Number"
+				},
+				{
+					"aliases": [
+						"ALGEBRA",
+						"Strand 2: Algebra",
+						"Strand 2: ALGEBRA",
+						"Strand 2. ALGEBRA",
+						"Strand 2. Algebra"
+					],
+					"canonicalValue": "Algebra"
+				},
+				{
+					"aliases": [
+						"GEOMETRY AND MEASUREMENT",
+						"Geometry & Measurement",
+						"Geometry and Measurement",
+						"Strand 3: GEOMETRY AND MEASUREMENT",
+						"Strand 3: Geometry and Measurement",
+						"Strand 3:  GEOMETRY AND MEASUREMENT"
+					],
+					"canonicalValue": "Geometry and Measurement"
+				},
+				{
+					"aliases": [
+						"DATA",
+						"Strand 4: Data",
+						"Strand 4: DATA",
+						"Strand 4:  Data"
+					],
+					"canonicalValue": "Data"
+				}
+			],
+			"description": "Visible Ghana Mathematics strand heading or organizer scoped under the active Grade.",
+			"identityScope": [
+				"Grade"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Strand"
+		},
+		{
+			"aliases": [
+				"Sub-strand",
+				"Substrand",
+				"sub-strand",
+				"substrand"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Strand"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Counting, Representation and Cardinality",
+						"Counting, Representation & Number Sense",
+						"Sub-strand 1: Counting, Representation & Cardinality",
+						"Sub-Strand 1: Counting, Representation & Cardinality"
+					],
+					"canonicalValue": "Counting, Representation & Cardinality"
+				},
+				{
+					"aliases": [
+						"Counting, Representation, Cardinality and Ordinality",
+						"Sub-Strand 1:  Counting, Representation, Cardinality & Ordinality",
+						"Sub-Strand 1: Counting, Representation, Cardinality & Ordinality"
+					],
+					"canonicalValue": "Counting, Representation, Cardinality & Ordinality"
+				},
+				{
+					"aliases": [
+						"Whole Numbers Operations",
+						"Sub-strand 2: Number Operations",
+						"Sub-Strand 2: Number Operations",
+						"Sub-Strand 2:  Number Operations"
+					],
+					"canonicalValue": "Number Operations"
+				},
+				{
+					"aliases": [
+						"Fractions, Representation and Relationship",
+						"Fractions Representation and Relationship",
+						"Number: Fractions",
+						"Sub-strand 3: Fractions",
+						"Sub-Strand 3: Fractions",
+						"Sub-Strand 3:  Number: Fractions"
+					],
+					"canonicalValue": "Fractions"
+				},
+				{
+					"aliases": [
+						"Ratio and Proportion",
+						"Ratios & Proportion",
+						"Sub-Strand 4:  Ratios and Proportion",
+						"Sub-Strand 4: Ratios and Proportion"
+					],
+					"canonicalValue": "Ratios and Proportion"
+				},
+				{
+					"aliases": [
+						"Pattern and Relationships",
+						"Sub-strand 1: Patterns and Relationships",
+						"Sub-Strand 1: Patterns and Relationships",
+						"Sub-Strand 1: Pattern and Relationships"
+					],
+					"canonicalValue": "Patterns and Relationships"
+				},
+				{
+					"aliases": [
+						"Functions and Unknowns",
+						"Unknowns, Expressions and Equations",
+						"Sub-strand 2: Unknowns, Expressions and Equations"
+					],
+					"canonicalValue": "Functions & Unknowns"
+				},
+				{
+					"aliases": [
+						"Expressions",
+						"Sub-Strand 2: Algebraic Expressions",
+						"Sub-Strand 2:  Algebraic Expressions"
+					],
+					"canonicalValue": "Algebraic Expressions"
+				},
+				{
+					"aliases": [
+						"Equations and Inequalities",
+						"Equations & Inequalities",
+						"Sub-Strand 3: Variables and Equations",
+						"Sub-Strand 3:  Variables and Equations"
+					],
+					"canonicalValue": "Variables and Equations"
+				},
+				{
+					"aliases": [
+						"2D & 3D Shapes",
+						"Sub-strand 1: 2D and 3D Shapes"
+					],
+					"canonicalValue": "2D and 3D Shapes"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 1:  Lines and Shapes",
+						"Sub-Strand 1: Lines and Shapes"
+					],
+					"canonicalValue": "Lines and Shapes"
+				},
+				{
+					"aliases": [
+						"Position/Transformation",
+						"Position and Transformation",
+						"Sub-strand 2: Position / Transformation",
+						"Sub-strand 3: Position/Transformation"
+					],
+					"canonicalValue": "Position / Transformation"
+				},
+				{
+					"aliases": [
+						"Measurement - Perimeter and Area",
+						"Measurement (Perimeter and Area)",
+						"Sub-strand 3: Measurement- (Perimeter and Area)"
+					],
+					"canonicalValue": "Measurement- (Perimeter and Area)"
+				},
+				{
+					"aliases": [
+						"Measurement - Time",
+						"Measurement Time",
+						"Sub-strand 3: Measurement -Time"
+					],
+					"canonicalValue": "Measurement -Time"
+				},
+				{
+					"aliases": [
+						"Measurements",
+						"Sub-Strand 2: Measurement",
+						"Sub-strand 3: Measurement – Perimeter, Area, Capacity/Volume and Angle",
+						"Measurement – Perimeter, Area, Capacity/Volume and Angle",
+						"Measurement - Perimeter, Area, Capacity/Volume and Angle"
+					],
+					"canonicalValue": "Measurement"
+				},
+				{
+					"aliases": [
+						"Measurement Angles",
+						"Sub-Strand 3: Measurement - Angles"
+					],
+					"canonicalValue": "Measurement - Angles"
+				},
+				{
+					"aliases": [
+						"Geometrical Reasoning",
+						"Sub-Strand 3: Geometric Reasoning",
+						"Sub-Strand 3: Geometrical Reasoning"
+					],
+					"canonicalValue": "Geometric Reasoning"
+				},
+				{
+					"aliases": [
+						"Data Collection, Organisation, Presentation, Interpretation and Analysis",
+						"Data (Collection, Organization, Interpreting, Analysis)",
+						"Data (Collection, organization, interpreting, analysis",
+						"Data Collection, Organization, Presentation, Interpretation, and Analysis",
+						"Sub-strand 1: Data Collection, Organization, Presentation, Interpretation and Analysis",
+						"Sub-Strand 1: Data Collection, Organisation, Presentation, Interpretation and Analysis"
+					],
+					"canonicalValue": "Data Collection, Organization, Presentation, Interpretation and Analysis"
+				},
+				{
+					"aliases": [
+						"Chance or Probability",
+						"Chance Probability",
+						"Sub-Strand 2: Chance (Probability)",
+						"Sub-Strand 2: Chance or Probability"
+					],
+					"canonicalValue": "Chance (Probability)"
+				}
+			],
+			"description": "Visible Ghana Mathematics sub-strand heading or organizer scoped under the active Grade and Strand.",
+			"identityScope": [
+				"Grade",
+				"Strand"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Sub-Strand"
+		},
+		{
+			"aliases": [
+				"CONTENT STANDARD",
+				"content standard",
+				"content_standard"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Sub-Strand"
+				}
+			],
+			"codeType": "content_standard",
+			"controlledValues": [],
+			"description": "Official coded Ghana content standard for Basic 4–6.",
+			"identityScope": [
+				"Grade",
+				"Strand"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Content Standard"
+		},
+		{
+			"aliases": [
+				"INDICATOR",
+				"indicator"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Content Standard"
+				}
+			],
+			"codeType": "indicator",
+			"controlledValues": [],
+			"description": "Official coded Ghana indicator for Basic 4–6.",
+			"identityScope": [
+				"Grade",
+				"Strand"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Indicator"
+		}
+	],
+	"subjectAliases": [],
+	"subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+	"subjectMappingStatus": "mapped",
+	"subjectVocabulary": {
+		"unmatchedValue": "Other",
+		"values": [
+			"English Language Arts",
+			"Mathematics",
+			"Science",
+			"Social Studies",
+			"Other"
+		],
+		"vocabularyId": "learning-commons-academic-subject",
+		"vocabularyVersion": "2026-07-21"
+	}
+}

@@ -17,10 +17,11 @@ import loguru
 from loguru import logger
 
 # Package Library
-from kgfegmcp.config import Settings
+from kgfegmcp.config import load_settings
 from kgfegmcp.utils.general import Valid, recurse_replace, redact_tokens
 
 _LOGGER_INITIALIZED = False
+Settings = load_settings()
 LOGGING_LOG_LEVEL = Settings.LOGGING_LOG_LEVEL
 
 # Register custom log levels immediately so that they can be intercepted appropriately.
