@@ -98,7 +98,7 @@ The server should help (including but not limited to):
 
 - students find grade-relevant standards and receive grounded explanations and practice;
 - teachers retrieve standards and draft teacher guides, lesson ideas, student handbooks, questions, and rubrics;
-- administrators inspect official frameworks, compare local standards to source frameworks, and review evidence-based alignment candidates;
+- administrators inspect official frameworks, compare local standards to source frameworks, review evidence-based alignment candidates, and evaluate how one curriculum changed across historical and current snapshots;
 - curriculum specialists analyze terminology, hierarchy, granularity, coverage, and progression hypotheses across frameworks;
 - developers consume structured, versioned standards data through a stable MCP interface.
 
@@ -691,6 +691,41 @@ When an official version is unavailable, use a stable extraction date or source 
 ### `graph_package_id`
 
 A globally unique identifier for a package. It can equal `snapshot_id` initially, but the schema should keep the concept explicit in case one snapshot later contains several graph types.
+
+### Multiple snapshots for one framework family
+
+One `framework_id` may have several immutable snapshots in the catalog at the same
+time.
+
+Example:
+
+```text
+framework_id:
+    ghana-nacca-primary-mathematics
+
+snapshot_id:
+    ghana-nacca-primary-mathematics@2019+abc123
+
+snapshot_id:
+    ghana-nacca-primary-mathematics@2026+def456
+```
+
+This supports historical retrieval and reproducible curriculum-revision analysis. Adding
+the 2026 snapshot must not overwrite or mutate the 2019 snapshot.
+
+Recommended catalog behavior:
+
+- list every available snapshot for the framework;
+- expose source version, publication date, adoption status, and `is_current`;
+- permit at most one default current snapshot unless ambiguity is reported explicitly;
+- allow users and tools to select any snapshot by exact `snapshot_id`;
+- record optional snapshot-family relations such as `revises`, `supersedes`,
+  `replaces`, or `derived_from` when supplied by an operator or authoritative source;
+- never infer a revision-family relationship solely from matching jurisdiction and
+  subject.
+
+A comparison between snapshots must identify both exact snapshot IDs. This keeps the
+result reproducible even if a later re-extraction or correction creates another snapshot.
 
 ### `node_id`
 
@@ -1533,7 +1568,68 @@ warnings against unsupported equivalence claims
 
 Claude then generates the comparison.
 
-### 21.9 Compatibility tool
+### 21.9 `diff_framework_snapshots`
+
+Purpose: compute deterministic differences between two immutable snapshots, normally
+belonging to the same `framework_id`.
+
+Inputs:
+
+```text
+source_snapshot_id
+target_snapshot_id
+grade filters optional
+statement type filters optional
+include_metadata_changes
+include_topology_changes
+cursor
+limit
+```
+
+Output categories should include:
+
+```text
+unchanged exact records
+added records
+removed records
+changed fields
+statement-code changes
+grade-placement changes
+parent or hierarchy changes
+framework-metadata changes
+unmatched records
+```
+
+This tool must report only mechanically established differences. It must not claim that
+two differently identified records are semantically equivalent unless an authoritative
+mapping already exists.
+
+### 21.10 `find_snapshot_alignment_candidates`
+
+Purpose: suggest likely correspondences between records in two snapshots when stable
+identifiers or codes do not provide an exact match.
+
+Candidate evidence may include:
+
+```text
+shared statement code
+normalized text similarity
+same local or normalized grade
+same statement type
+similar ancestor path
+shared topic terms
+optional semantic retrieval score
+```
+
+Every result must be labeled `retrieval_candidate`. The tool should support one-to-one,
+one-to-many, and many-to-one candidates and should return unmatched records rather than
+forcing a correspondence.
+
+Claude can use these candidates, together with deterministic diff results, to explain
+how a curriculum revision changed. Candidate results are not persisted as accepted
+alignments automatically.
+
+### 21.11 Compatibility tool
 
 Retain `find_standard_statement` behind a feature flag during migration.
 
@@ -1743,7 +1839,32 @@ Workflow:
 
 Use `compare_framework_evidence`, then compare wording, scope, cognitive demand, granularity, hierarchy placement, and grade context.
 
-### 24.6 `inferred_progression_hypothesis`
+### 24.6 `framework_revision_review`
+
+Parameters:
+
+```text
+framework_id
+source_snapshot_id
+target_snapshot_id
+subject or topic scope optional
+grade or stage scope optional
+comparison dimensions
+```
+
+Workflow:
+
+1. call `diff_framework_snapshots` for deterministic changes;
+2. call `find_snapshot_alignment_candidates` only for unresolved correspondences;
+3. retrieve hierarchy context for important changed records;
+4. distinguish exact changes from candidate semantic matches;
+5. identify additions, removals, rewrites, grade moves, hierarchy changes, and
+   granularity changes;
+6. discuss likely educational implications as generated interpretation;
+7. cite both exact snapshot IDs and the relevant standard identifiers;
+8. avoid treating candidate matches as official equivalence.
+
+### 24.7 `inferred_progression_hypothesis`
 
 Use when no Learning Progressions KG exists.
 
@@ -1756,7 +1877,7 @@ and curriculum-specific guidance. It is not a source-authored progression edge.
 
 The prompt should ask Claude to provide evidence and counter-considerations rather than only a confidence score.
 
-### 24.7 Curriculum profile use in prompts
+### 24.8 Curriculum profile use in prompts
 
 A prompt should include the selected profile ID/version and the relevant interpretation excerpt.
 
@@ -1810,6 +1931,105 @@ This is exploratory and not persisted as an official crosswalk.
 ### Layer 3: reviewed derived overlay
 
 Persistent mappings live in a separate overlay with provenance and review status.
+
+### Same-framework snapshot comparison and curriculum revision analysis
+
+The catalog must support several historical and current snapshots of one conceptual
+framework at the same time.
+
+Example:
+
+```text
+framework_id:
+    ghana-nacca-primary-mathematics
+
+source_snapshot_id:
+    ghana-nacca-primary-mathematics@2019+abc123
+
+target_snapshot_id:
+    ghana-nacca-primary-mathematics@2026+def456
+```
+
+This is a first-class use case, not a special case of file replacement. The 2019
+snapshot remains queryable after the 2026 snapshot is added.
+
+The comparison has three layers.
+
+#### 1. Deterministic snapshot diff
+
+The server can establish facts without an LLM:
+
+- records present in both snapshots under the same stable identity;
+- additions and removals;
+- exact description or code changes;
+- local or normalized grade changes;
+- statement-type changes;
+- parent and hierarchy changes;
+- relationship additions and removals;
+- framework metadata changes;
+- changes in unresolved-edge status;
+- changes in graph statistics and granularity.
+
+These results should come from `diff_framework_snapshots`.
+
+#### 2. Candidate correspondence
+
+A revised curriculum may mint new identifiers, rename codes, split one standard into
+several standards, or merge several standards into one. In those cases, the server can
+retrieve likely correspondences using `find_snapshot_alignment_candidates`.
+
+Candidate mappings must:
+
+- retain source and target snapshot IDs;
+- expose retrieval evidence and scores;
+- support one-to-one, one-to-many, and many-to-one possibilities;
+- leave uncertain items unmatched;
+- use `retrieval_candidate` status;
+- remain separate from accepted alignments.
+
+#### 3. Claude-generated revision evaluation
+
+Claude can combine the deterministic diff and candidate evidence to discuss questions
+such as:
+
+- What content was added or removed?
+- Which expectations moved to earlier or later grades?
+- Did the curriculum become more detailed or more consolidated?
+- Which domains received greater or reduced emphasis?
+- Were performance verbs or expected cognitive demand changed?
+- Which old standards have no clear counterpart?
+- What changes may matter for teachers, materials, assessment, or transition planning?
+
+These conclusions are `llm_inferred` interpretations. The evidence package, exact
+snapshot IDs, and relevant standards must remain visible.
+
+A result may be persisted later as a reviewed revision crosswalk, but ordinary runtime
+comparison must not modify either source package.
+
+#### Snapshot-family metadata
+
+When known, the catalog may record:
+
+```text
+revises
+supersedes
+replaces
+derived_from
+```
+
+These relations describe framework history. They are distinct from standard-to-standard
+semantic alignments.
+
+Do not infer that two snapshots belong to one framework family solely because their
+jurisdiction and subject match. Framework-family assignment is an operator-controlled
+or authoritative metadata decision.
+
+#### Future Learning Components advantage
+
+Once Learning Components exist, revision comparison can identify retained, added, and
+removed teachable skills even when standards are reorganized or rewritten. Until then,
+snapshot comparison relies on identifiers, codes, text, grade context, hierarchy, and
+clearly labeled candidate retrieval.
 
 ### Alignment model
 
@@ -2215,7 +2435,31 @@ For every valid package:
 - unresolved statuses survive loading and output;
 - node and relationship counts remain stable.
 
-### 34.4 MCP contract tests
+### 34.4 Snapshot comparison tests
+
+Create minimized fixture pairs representing:
+
+- unchanged records;
+- additions and removals;
+- description and statement-code changes;
+- grade moves;
+- hierarchy moves;
+- one standard split into several;
+- several standards merged into one;
+- framework metadata changes;
+- a corrected extraction that creates a new snapshot;
+- ambiguous records that should remain unmatched.
+
+Required assertions:
+
+- historical snapshots remain independently queryable;
+- the diff result references both exact snapshot IDs;
+- deterministic changes do not depend on an LLM;
+- candidate correspondence never becomes `source_asserted`;
+- one-to-many and many-to-one candidates are preserved;
+- a new snapshot invalidates or flags prior snapshot-specific derived mappings.
+
+### 34.5 MCP contract tests
 
 Use FastMCP's in-memory client to test the real protocol layer without subprocesses.
 
@@ -2231,7 +2475,7 @@ Test:
 - annotations;
 - resource links.
 
-### 34.5 STDIO tests
+### 34.6 STDIO tests
 
 Add a smaller set of subprocess tests to ensure:
 
@@ -2240,11 +2484,11 @@ Add a smaller set of subprocess tests to ensure:
 - environment variables are passed correctly;
 - process exits cleanly.
 
-### 34.6 Prompt snapshot tests
+### 34.7 Prompt snapshot tests
 
 Prompts do not need an LLM test in the core suite. Snapshot their generated messages and assert required disclosures, resource references, and profile versions.
 
-### 34.7 No-LLM deterministic CI
+### 34.8 No-LLM deterministic CI
 
 The complete core test suite must run without network access or an LLM API key.
 
@@ -2394,12 +2638,14 @@ The complete core test suite must run without network access or an LLM API key.
 
 ---
 
-## Phase 6: deterministic cross-framework comparison evidence
+## Phase 6: deterministic cross-framework and snapshot comparison evidence
 
 ### Deliverables
 
 - `compare_framework_evidence`;
-- comparison result schema;
+- `diff_framework_snapshots`;
+- `find_snapshot_alignment_candidates`;
+- cross-framework and same-framework comparison result schemas;
 - per-framework retrieval and context;
 - comparison warnings;
 - optional pluggable semantic retrieval interface;
@@ -2408,8 +2654,12 @@ The complete core test suite must run without network access or an LLM API key.
 ### Exit criteria
 
 - a topic such as fractions can be retrieved across selected frameworks;
+- two historical/current snapshots of one framework can be diffed without overwriting
+  either snapshot;
+- additions, removals, exact field changes, and topology changes are deterministic;
+- semantic correspondences without stable identity are labeled retrieval candidates;
+- one-to-many and many-to-one revision candidates are supported;
 - all source statements and paths are visible;
-- results are labeled retrieval candidates;
 - no persistent equivalence edge is created.
 
 ---
@@ -2584,6 +2834,12 @@ Accepted. Source package relationships are not mutated.
 
 Accepted. Normalization is for discovery and comparison, not replacement of source wording.
 
+### ADR-011: historical and current snapshots coexist
+
+Accepted. A new curriculum version does not overwrite an earlier snapshot. Deterministic
+snapshot diffs and candidate correspondence are separate operations, and every comparison
+references exact snapshot IDs.
+
 ---
 
 ## 39. Defaults for currently open implementation choices
@@ -2627,7 +2883,9 @@ The first production milestone is complete when:
 15. deterministic tests pass without network access;
 16. no country- or curriculum-specific semantic rule exists in generic Python;
 17. rights and attribution metadata appear in results and resource policy;
-18. the compatibility tool is either passing its fixtures or intentionally disabled with migration documentation.
+18. multiple historical/current snapshots of one framework can coexist and be compared
+    reproducibly by exact snapshot ID;
+19. the compatibility tool is either passing its fixtures or intentionally disabled with migration documentation.
 
 ---
 
@@ -2658,6 +2916,7 @@ The following references informed this architecture. Pin implementation behavior
 
 - [Knowledge Graph quickstart](https://docs.learningcommons.org/knowledge-graph/getting-started/quickstart)
 - [Knowledge Graph MCP server](https://docs.learningcommons.org/knowledge-graph/using-knowledge-graph/mcp-server)
+- [Standards crosswalks through shared Learning Components](https://docs.learningcommons.org/api-reference/standards-crosswalks/crosswalks-for-a-standard)
 - [Claude connector examples](https://docs.learningcommons.org/knowledge-graph/using-knowledge-graph/claude-connector)
 
 ### Education data and mapping standards
