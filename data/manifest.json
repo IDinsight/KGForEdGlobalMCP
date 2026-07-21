@@ -1,0 +1,68 @@
+[
+	{
+		"name": "Learning Framework - Science",
+		"jurisdiction": "India",
+		"academic_subject": "Science",
+		"in_language": "en",
+		"included_graph_types": [
+			"academic_standards"
+		],
+		"node_count": 874,
+		"path": "as_kg_cbse_science.json"
+	},
+	{
+		"name": "Mathematics Syllabus for Lower Primary | Primary 1 - 3",
+		"jurisdiction": "Rwanda",
+		"academic_subject": "Mathematics",
+		"in_language": "en",
+		"included_graph_types": [
+			"academic_standards"
+		],
+		"node_count": 626,
+		"path": "as_kg_rwanda_math.json"
+	},
+	{
+		"name": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
+		"jurisdiction": "Ghana",
+		"academic_subject": "Mathematics",
+		"in_language": "en",
+		"included_graph_types": [
+			"academic_standards"
+		],
+		"node_count": 302,
+		"path": "as_kg_ghana_math.json"
+	},
+	{
+		"name": "9-Year Basic Education Mathematics Curriculum for Primary 1-3",
+		"jurisdiction": "Nigeria",
+		"academic_subject": "Mathematics",
+		"in_language": "en",
+		"included_graph_types": [
+			"academic_standards"
+		],
+		"node_count": 242,
+		"path": "as_kg_nigeria_math.json"
+	},
+	{
+		"name": "Tamil Nadu Curriculum Framework 2025: Mathematics - Classes 1-5",
+		"jurisdiction": "Tamil Nadu, India",
+		"academic_subject": "Mathematics",
+		"in_language": "en",
+		"included_graph_types": [
+			"academic_standards"
+		],
+		"node_count": 255,
+		"path": "as_kg_rwanda_math.json"
+	},
+	{
+		"name": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
+		"jurisdiction": "Ghana",
+		"academic_subject": "English Language",
+		"in_language": "en",
+		"included_graph_types": [
+			"academic_standards"
+		],
+		"node_count": 430,
+		"path": "as_kg_ghana_english.json"
+	}
+]

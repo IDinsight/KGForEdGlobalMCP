@@ -1,0 +1,72 @@
+{
+ "tool": "find_curriculum_lessons",
+ "args": {
+  "caseIdentifierUUID": "6b9bf846-d7cc-11e8-824f-0242ac160002",
+  "author": "Illustrative Mathematics"
+ },
+ "isError": false,
+ "payload": {
+  "lessons": [
+   {
+    "academicSubject": "Mathematics",
+    "fullOrdinalName": "Grade 3, Unit 5, Section A, Lesson 1",
+    "gradeLevel": [
+     "3"
+    ],
+    "lessonDescription": "Comprehend (in spoken and written language) that the term “partition” refers to splitting a shape into parts. Explain (orally) how to partition shapes into 2, 3, 4, 6, or 8 equal parts. Identify (orally and in writing) equal parts as “halves,” “thirds,” “fourths,” “sixths,” and “eighths.”",
+    "lessonIdentifier": "im:128dfde0-df72-5838-ab20-7107a35add4b",
+    "lessonName": "Name the Parts"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "fullOrdinalName": "Grade 3, Unit 5, Section A, Lesson 3",
+    "gradeLevel": [
+     "3"
+    ],
+    "lessonDescription": "Comprehend (in spoken language) the meaning of the term “unit fraction.” Generalize (orally) that a fraction \\(\\frac{a}{b}\\) refers to a quantity of \\(a\\) parts of size \\(\\frac{1}{b}\\) .",
+    "lessonIdentifier": "im:23770f28-a210-597e-81a4-02172a9f5926",
+    "lessonName": "Non-unit Fractions"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "fullOrdinalName": "Grade 3, Unit 8, Section A, Lesson 3",
+    "gradeLevel": [
+     "3"
+    ],
+    "lessonDescription": "Critique (orally) statements and generalizations about fractions, whole numbers represented as fractions, and fraction comparisons.",
+    "lessonIdentifier": "im:272b1415-dfda-5f4b-aa70-b2264d9af9c4",
+    "lessonName": "Fractions Round Table"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "fullOrdinalName": "Grade 3, Unit 5, Section A, Lesson 2",
+    "gradeLevel": [
+     "3"
+    ],
+    "lessonDescription": "Comprehend (in spoken and written language) the meaning of the term “fraction,” and that the notation \\(\\frac{1}{b}\\) can be used to represent unit fractions. Draw and label to partition shapes into halves, thirds, fourths, sixths, and eighths. Express the size of each part as a unit fraction of the whole.",
+    "lessonIdentifier": "im:4c0a06d6-6ac0-53ae-ae9f-3a440e08d77b",
+    "lessonName": "Name Parts as Fractions"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "fullOrdinalName": "Grade 3, Unit 8, Section A, Lesson 1",
+    "gradeLevel": [
+     "3"
+    ],
+    "lessonDescription": "Determine (orally and in writing) estimates of fractions represented in diagrams and on number lines that are “too low,” “about right,” and “too high.”",
+    "lessonIdentifier": "im:a98eacc8-da59-55ad-8936-b2ca6ad20053",
+    "lessonName": "Estimation Explorations with Fractions"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "fullOrdinalName": "Grade 3, Unit 5, Section A, Lesson 4",
+    "gradeLevel": [
+     "3"
+    ],
+    "lessonDescription": "Justify (orally) that a non-unit fraction has the same value as a number of unit fractions. Represent (using diagrams) a word problem involving non-unit fractions.",
+    "lessonIdentifier": "im:c10ffe35-a4ea-5e78-aeab-c4f86a9076c5",
+    "lessonName": "Build Fractions from Unit Fractions"
+   }
+  ]
+ }
+}

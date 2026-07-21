@@ -1,0 +1,13 @@
+{
+ "tool": "find_standard_statement",
+ "args": {
+  "keywords": [
+   "fraction"
+  ],
+  "academicSubject": "Astrology"
+ },
+ "isError": true,
+ "payload": {
+  "__raw_text__": "Unknown academic subject 'Astrology'. Expected one of: 'Mathematics', 'English Language Arts', 'Science', 'Social Studies', 'Other'."
+ }
+}

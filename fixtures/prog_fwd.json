@@ -1,0 +1,103 @@
+{
+ "tool": "find_standards_progression_from_standard",
+ "args": {
+  "caseIdentifierUUID": "6b9bf846-d7cc-11e8-824f-0242ac160002",
+  "direction": "forward"
+ },
+ "isError": false,
+ "payload": {
+  "standards": [
+   {
+    "academicSubject": "Mathematics",
+    "alignmentScore": 1.0,
+    "caseIdentifierUUID": "6b9d3367-d7cc-11e8-824f-0242ac160002",
+    "description": "Partition shapes into parts with equal areas. Express the area of each part as a unit fraction of the whole. *For example, partition a shape into 4 parts with equal area, and describe the area of each part as $\\frac{1}{4}$ of the area of the shape.*",
+    "gradeLevel": [
+     "3"
+    ],
+    "jurisdiction": "Multi-State",
+    "learningComponents": [],
+    "matchType": "exact",
+    "statementCode": "3.G.A.2"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "alignmentScore": 1.0,
+    "caseIdentifierUUID": "6b9e210d-d7cc-11e8-824f-0242ac160002",
+    "description": "Explain equivalence of fractions in special cases, and compare fractions by reasoning about their size.",
+    "gradeLevel": [
+     "3"
+    ],
+    "jurisdiction": "Multi-State",
+    "learningComponents": [],
+    "matchType": "exact",
+    "statementCode": "3.NF.A.3"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "alignmentScore": 1.0,
+    "caseIdentifierUUID": "6ba053e8-d7cc-11e8-824f-0242ac160002",
+    "description": "Apply and extend previous understandings of division to divide unit fractions by whole numbers and whole numbers by unit fractions.",
+    "gradeLevel": [
+     "5"
+    ],
+    "jurisdiction": "Multi-State",
+    "learningComponents": [],
+    "matchType": "exact",
+    "statementCode": "5.NF.B.7"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "alignmentScore": 1.0,
+    "caseIdentifierUUID": "6ba1136b-d7cc-11e8-824f-0242ac160002",
+    "description": "Understand addition and subtraction of fractions as joining and separating parts referring to the same whole.",
+    "gradeLevel": [
+     "4"
+    ],
+    "jurisdiction": "Multi-State",
+    "learningComponents": [],
+    "matchType": "exact",
+    "statementCode": "4.NF.B.3.a"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "alignmentScore": 1.0,
+    "caseIdentifierUUID": "6ba115f2-d7cc-11e8-824f-0242ac160002",
+    "description": "Understand a fraction $\\frac{a}{b}$ as a multiple of $\\frac{1}{b}$. *For example, use a visual fraction model to represent $\\frac{5}{4}$ as the product $5 \\times (\\frac{1}{4})$, recording the conclusion by the equation $\\frac{5}{4} = 5 \\times (\\frac{1}{4})$.*",
+    "gradeLevel": [
+     "4"
+    ],
+    "jurisdiction": "Multi-State",
+    "learningComponents": [],
+    "matchType": "exact",
+    "statementCode": "4.NF.B.4.a"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "alignmentScore": 1.0,
+    "caseIdentifierUUID": "6ba18d83-d7cc-11e8-824f-0242ac160002",
+    "description": "Decompose a fraction into a sum of fractions with the same denominator in more than one way, recording each decomposition by an equation. Justify decompositions, e.g., by using a visual fraction model.",
+    "gradeLevel": [
+     "4"
+    ],
+    "jurisdiction": "Multi-State",
+    "learningComponents": [],
+    "matchType": "exact",
+    "statementCode": "4.NF.B.3.b"
+   },
+   {
+    "academicSubject": "Mathematics",
+    "alignmentScore": 1.0,
+    "caseIdentifierUUID": "6ba208b6-d7cc-11e8-824f-0242ac160002",
+    "description": "Add and subtract mixed numbers with like denominators, e.g., by replacing each mixed number with an equivalent fraction, and/or by using properties of operations and the relationship between addition and subtraction.",
+    "gradeLevel": [
+     "4"
+    ],
+    "jurisdiction": "Multi-State",
+    "learningComponents": [],
+    "matchType": "exact",
+    "statementCode": "4.NF.B.3.c"
+   }
+  ]
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "tool": "find_standard_statement",
+ "args": {
+  "code": "MS-LS2-3",
+  "academicSubject": "Science"
+ },
+ "isError": false,
+ "payload": {
+  "standards": [
+   {
+    "academicSubject": "Science",
+    "caseIdentifierUUID": "03e2caec-b2f6-11e9-be20-0242ac150005",
+    "description": "Develop a model to describe the cycling of matter and flow of energy among living and nonliving parts of an ecosystem.",
+    "gradeLevels": [
+     "6",
+     "7",
+     "8"
+    ],
+    "jurisdiction": "Multi-State",
+    "statementCode": "MS-LS2-3"
+   }
+  ]
+ }
+}

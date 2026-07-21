@@ -1,0 +1,11 @@
+{
+ "tool": "find_misconceptions_for_standard",
+ "args": {
+  "caseIdentifierUUID": "03e2caec-b2f6-11e9-be20-0242ac150005",
+  "subject": "Mathematics"
+ },
+ "isError": true,
+ "payload": {
+  "__raw_text__": "find_misconceptions_for_standard supports Mathematics standards only; the provided standard's subject is Science."
+ }
+}

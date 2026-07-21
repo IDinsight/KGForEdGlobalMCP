@@ -1,0 +1,18 @@
+{
+ "tool": "find_misconceptions_for_standard",
+ "args": {
+  "caseIdentifierUUID": "6b9bf846-d7cc-11e8-824f-0242ac160002",
+  "subject": "Mathematics"
+ },
+ "isError": false,
+ "payload": {
+  "misconceptions": [
+   {
+    "activityIdentifier": "im:9e1df21a-0eee-52d2-be0c-aba53289f561",
+    "activityName": "Represent Fraction Situations",
+    "content": "<h2>Building on Student Thinking</h2>If students partition into sixths or eighths by creating 6 or 8 parts, respectively, but the parts aren’t equal, consider asking:\n<ul>\n<li>“How did you partition the strip into sixths? Into eighths?”</li>\n<li>“How could you use thirds to partition into sixths? Or use fourths to partition into eighths?”</li>\n</ul>\n",
+    "materialIdentifier": "im:1c5e9d67-59c1-5de6-be3a-e4019bb80920"
+   }
+  ]
+ }
+}

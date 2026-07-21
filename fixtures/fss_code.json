@@ -1,0 +1,22 @@
+{
+ "tool": "find_standard_statement",
+ "args": {
+  "code": "3.NF.A.1",
+  "academicSubject": "Mathematics"
+ },
+ "isError": false,
+ "payload": {
+  "standards": [
+   {
+    "academicSubject": "Mathematics",
+    "caseIdentifierUUID": "6b9bf846-d7cc-11e8-824f-0242ac160002",
+    "description": "Understand a fraction $\\frac{1}{b}$ as the quantity formed by 1 part when a whole is partitioned into b equal parts; understand a fraction $\\frac{a}{b}$ as the quantity formed by a parts of size $\\frac{1}{b}$.",
+    "gradeLevels": [
+     "3"
+    ],
+    "jurisdiction": "Multi-State",
+    "statementCode": "3.NF.A.1"
+   }
+  ]
+ }
+}

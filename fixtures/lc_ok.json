@@ -1,0 +1,19 @@
+{
+ "tool": "find_learning_components_from_standard",
+ "args": {
+  "caseIdentifierUUID": "6b9bf846-d7cc-11e8-824f-0242ac160002"
+ },
+ "isError": false,
+ "payload": {
+  "learning_components": [
+   {
+    "description": "Identify a fraction a/b as the quantity formed by a parts of size 1/b (where b is 2, 3, 4, 6, or 8)",
+    "identifier": "0f80aa86-2c60-5a0f-bd85-7720345949d9"
+   },
+   {
+    "description": "Identify a fraction 1/b as the quantity formed by 1 part when a whole is partitioned into b equal parts (where b is 2, 3, 4, 6, or 8)",
+    "identifier": "188fe970-4e1d-52c4-9f18-5e2fade05494"
+   }
+  ]
+ }
+}
