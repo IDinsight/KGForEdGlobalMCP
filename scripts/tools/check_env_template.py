@@ -9,9 +9,7 @@ from pathlib import Path
 # the location of the .pre-commit-config.yaml file.
 SECTIONS = [
     Path("."),
-    Path("backend"),
-    Path("cicd/deployment/docker-compose"),
-    Path("frontend"),
+    Path("src"),
 ]
 
 # Specify which file pairs to compare in each section.
