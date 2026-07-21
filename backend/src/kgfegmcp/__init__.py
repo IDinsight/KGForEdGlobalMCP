@@ -9,4 +9,4 @@ from kgfegmcp.utils.logging_ import initialize_logger
 Settings = load_settings()
 
 # Only need to initialize loguru once for the entire backend!
-logger = initialize_logger(logging_level=Settings.LOGGING_LOG_LEVEL)
+logger = initialize_logger(logging_level=Settings.log_level)

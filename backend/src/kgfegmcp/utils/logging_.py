@@ -22,7 +22,7 @@ from kgfegmcp.utils.general import Valid, recurse_replace, redact_tokens
 
 _LOGGER_INITIALIZED = False
 Settings = load_settings()
-LOGGING_LOG_LEVEL = Settings.LOGGING_LOG_LEVEL
+LOGGING_LOG_LEVEL = Settings.log_level
 
 # Register custom log levels immediately so that they can be intercepted appropriately.
 logger.level("DEBUG", color="<white>", icon="🐞")
@@ -211,7 +211,7 @@ def initialize_logger(
             {
                 "backtrace": True,
                 "colorize": True,
-                "diagnose": Settings.CHAT_ENV == "local",
+                "diagnose": Settings.environment == "local",
                 "enqueue": True,
                 "filter": redact_tokens,
                 "format": "<g>{time:YYYY-MM-DD HH:mm:ss}</g> | <level>{level.icon} {message}</level>",
@@ -226,7 +226,7 @@ def initialize_logger(
             {
                 "backtrace": True,
                 "delay": True,
-                "diagnose": Settings.CHAT_ENV == "local",
+                "diagnose": Settings.environment == "local",
                 "encoding": "utf-8",
                 "filter": redact_tokens,
                 "level": logging_level,
