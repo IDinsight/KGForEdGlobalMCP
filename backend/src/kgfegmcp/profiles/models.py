@@ -1,4 +1,20 @@
-"""This module contains versioned curriculum interpretation profile contracts."""
+"""This module contains Pydantic models for versioned curriculum interpretation profiles
+
+This module defines immutable configuration contracts that describe how generic domain
+services should interpret a curriculum framework. The models represent aspects such as
+subject normalization, local grade mappings, statement-type semantics, hierarchy and
+parent-cardinality rules, code-search behavior, language policy, known source
+anomalies, source-role capabilities, rights policy, and required disclosures.
+
+The models deliberately keep curriculum-specific semantics in validated data rather
+than generic Python conditionals. Cross-field validation ensures that statement types,
+parent types, code types, hierarchy roots, subject vocabulary, and topology constraints
+reference one another consistently.
+
+These contracts do not load graph files, mutate source packages, repair source content,
+or perform MCP operations. They provide deterministic interpretation metadata for
+catalog, graph, search, resource, and presentation services.
+"""
 
 # Future Library
 from __future__ import annotations
