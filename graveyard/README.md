@@ -2137,10 +2137,6 @@ tool error counts
 cache hit rates
 ```
 
-### 32.3 OpenTelemetry
-
-FastMCP has OpenTelemetry support. Keep it optional for local development and configure an exporter only in environments that require it.
-
 ---
 
 ## 33. Performance and scaling
@@ -2174,7 +2170,7 @@ Possible later backends include SQLite, PostgreSQL, a graph database, a search s
 
 ## 34. Testing strategy
 
-### 34.1 Unit tests
+### 34.1 Unit tests (using pytest ecosystem)
 
 Test:
 
