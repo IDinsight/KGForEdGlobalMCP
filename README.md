@@ -1,7 +1,7 @@
-# Knowledge Graph For Education Global MCP
+# Knowledge Graph for Education Global MCP
 
 <!-- Badges -->
-<p style="text-align: center;">
+<p align="center">
   <a href="https://github.com/econchick/interrogate">
     <img src="./interrogate_badge.svg" alt="Docstring coverage: interrogate">
   </a>
@@ -10,3 +10,42 @@
     <img src="https://img.shields.io/badge/linting-pylint-yellowgreen" alt="Linting: pylint">
   </a>
 </p>
+
+KG for Education Global MCP is a FastMCP-based server for exploring and using 
+curriculum knowledge graphs from countries, states, and educational organizations 
+around the world. It provides a single interface for searching academic standards, 
+navigating curriculum hierarchies, comparing frameworks and historical revisions, and 
+supporting student, teacher, administrator, and curriculum-research workflows through 
+clients such as Claude Desktop.
+
+## Federated architecture
+
+Each curriculum remains an independent, immutable, and versioned graph package. A 
+shared catalog and common MCP services make those packages searchable and comparable 
+through one interface without flattening them into a single source graph. This 
+preserves framework identity, provenance, local terminology, and graph topology while 
+enabling cross-country, cross-organization, and cross-version analysis.
+
+## Current scope
+
+The project currently focuses on Academic Standards knowledge graphs. Planned 
+extensions include Learning Components, Learning Progressions, curriculum resources, 
+assessments, and reviewed cross-framework alignments.
+
+The implementation is designed to remain:
+
+- curriculum-agnostic and configuration-driven;
+- compatible with trees and multi-parent DAGs;
+- auditable, provenance-aware, and versioned;
+- extensible to additional frameworks and graph types; and
+- deterministic at the server layer, with Claude handling user-facing reasoning and generation.
+
+## Project status
+
+This project is under active development. Public MCP tools, resource schemas, package 
+contracts, and deployment workflows may evolve as the initial implementation is 
+completed and validated.
+
+## License
+
+See [LICENSE](./LICENSE).
