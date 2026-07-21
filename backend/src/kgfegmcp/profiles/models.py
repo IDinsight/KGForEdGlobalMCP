@@ -433,113 +433,89 @@ class CurriculumProfile(FrozenSchema):
             If a profile references undeclared types or has conflicting policies.
         """
 
-        _require_unique(
-            field_name="framework_ids",
-            values=tuple(str(value) for value in self.framework_ids),
-        )
-        _require_unique(
-            field_name="grade_level_statement_types",
-            values=self.grade_level_statement_types,
-        )
-        _require_unique(
-            field_name="normalized_subjects", values=self.normalized_subjects
-        )
-        _require_unique(field_name="subject_aliases", values=self.subject_aliases)
-        _require_unique(
-            field_name="comparison_dimensions", values=self.comparison_dimensions
-        )
-        _require_unique(
-            field_name="progression_heuristics", values=self.progression_heuristics
-        )
-        _require_unique(
-            field_name="required_disclosures", values=self.required_disclosures
-        )
+        self._validate_unique_collections()
+        self._validate_subject_mapping()
+        self._validate_local_label_uniqueness()
+        self._validate_statement_type_references()
+        self._validate_hierarchy_node_policies()
+        self._validate_code_type_references()
+        self._validate_anomaly_uniqueness()
+        return self
 
-        vocabulary_values = set(self.subject_vocabulary.values)
-        unknown_subjects = set(self.normalized_subjects) - vocabulary_values
+    def _validate_anomaly_uniqueness(self) -> None:
+        """Require known source anomalies to have unique identifiers.
 
-        if unknown_subjects:
-            formatted_subjects = ", ".join(sorted(unknown_subjects))
-            raise ValueError(
-                f"normalized_subjects are absent from the vocabulary: {formatted_subjects}."
-            )
+        Raises
+        ------
+        ValueError
+            If duplicate anomaly identifiers are present.
+        """
 
-        if self.subject_mapping_status is SubjectMappingStatus.UNREVIEWED:
-            if self.normalized_subjects:
-                raise ValueError(
-                    "Unreviewed subject mappings may not declare normalized subjects."
-                )
-        elif not self.normalized_subjects:
-            raise ValueError(
-                "Reviewed subject mappings must declare normalized subjects."
-            )
-
-        unmatched_value = self.subject_vocabulary.unmatched_value
-
-        if (
-            self.subject_mapping_status is SubjectMappingStatus.MAPPED
-            and unmatched_value in self.normalized_subjects
-        ):
-            raise ValueError(
-                "Mapped subjects may not use the vocabulary unmatched_value."
-            )
-
-        if self.subject_mapping_status is SubjectMappingStatus.OTHER:
-            if unmatched_value is None:
-                raise ValueError(
-                    "Other subject mappings require a vocabulary unmatched_value."
-                )
-
-            if self.normalized_subjects != (unmatched_value,):
-                raise ValueError(
-                    "Other subject mappings must use only the vocabulary unmatched_value."
-                )
-
-            if not self.subject_mapping_note:
-                raise ValueError("Other subject mappings require subject_mapping_note.")
-
-        local_grade_labels = tuple(
-            mapping.local_label for mapping in self.grade_mappings
+        anomaly_ids = tuple(
+            anomaly.anomaly_id for anomaly in self.known_source_anomalies
         )
-        _require_unique(field_name="grade_mappings", values=local_grade_labels)
-        local_stage_labels = tuple(
-            mapping.local_label for mapping in self.education_stage_mappings
-        )
-        _require_unique(
-            field_name="education_stage_mappings", values=local_stage_labels
-        )
+        _require_unique(field_name="known_source_anomalies", values=anomaly_ids)
 
-        statement_type_names = tuple(
-            policy.source_statement_type for policy in self.statement_types
-        )
-        _require_unique(field_name="statement_types", values=statement_type_names)
+    def _validate_code_type_references(self) -> None:
+        """Require statement types and code types to reference declared code types.
+
+        Raises
+        ------
+        ValueError
+            If a statement type references an undeclared code type or a code type
+            references undeclared statement types.
+        """
+
         statement_types_by_name = {
             policy.source_statement_type: policy for policy in self.statement_types
         }
         declared_statement_types = set(statement_types_by_name)
+        declared_code_types = {
+            policy.code_type for policy in self.code_search_policy.code_types
+        }
+
+        for statement_type in self.statement_types:
+            if (
+                statement_type.code_type is not None
+                and statement_type.code_type not in declared_code_types
+            ):
+                raise ValueError(
+                    f"{statement_type.source_statement_type} references undeclared "
+                    f"code type {statement_type.code_type}."
+                )
+
+        for code_type in self.code_search_policy.code_types:
+            unknown_types = set(code_type.statement_types) - declared_statement_types
+            unknown_scope_types = (
+                set(code_type.scope_statement_types) - declared_statement_types
+            )
+
+            if unknown_types or unknown_scope_types:
+                formatted_types = ", ".join(sorted(unknown_types | unknown_scope_types))
+                raise ValueError(
+                    f"Code type {code_type.code_type} references undeclared "
+                    f"statement types: {formatted_types}."
+                )
+
+    def _validate_hierarchy_node_policies(self) -> None:
+        """Validate graph-node hierarchy roots, parents, and cardinality rules.
+
+        Raises
+        ------
+        ValueError
+            If hierarchy roots or parents are not graph-node types, if root and
+            non-root parent declarations are inconsistent, or if a single-parent
+            profile permits multiple parents.
+        """
+
+        statement_types_by_name = {
+            policy.source_statement_type: policy for policy in self.statement_types
+        }
         graph_node_types = {
             name
             for name, policy in statement_types_by_name.items()
             if policy.is_graph_node
         }
-
-        referenced_statement_types = set(self.grade_level_statement_types)
-        referenced_statement_types.update(self.hierarchy.root_statement_types)
-        referenced_statement_types.update(self.hierarchy.statement_type_order)
-
-        for policy in self.statement_types:
-            referenced_statement_types.update(policy.identity_scope)
-            referenced_statement_types.update(
-                parent.parent_statement_type for parent in policy.allowed_parents
-            )
-
-        missing_statement_types = referenced_statement_types - declared_statement_types
-
-        if missing_statement_types:
-            formatted_types = ", ".join(sorted(missing_statement_types))
-            raise ValueError(
-                f"Profile references undeclared statement types: {formatted_types}."
-            )
 
         non_graph_roots = set(self.hierarchy.root_statement_types) - graph_node_types
 
@@ -548,6 +524,7 @@ class CurriculumProfile(FrozenSchema):
             raise ValueError(
                 f"Hierarchy roots must be graph-node types: {formatted_types}."
             )
+
         for policy in self.statement_types:
             non_graph_parents = {
                 parent.parent_statement_type
@@ -599,35 +576,143 @@ class CurriculumProfile(FrozenSchema):
                         f"{statement_type}."
                     )
 
-        declared_code_types = {
-            policy.code_type for policy in self.code_search_policy.code_types
+    def _validate_local_label_uniqueness(self) -> None:
+        """Require grade and education-stage mappings to have unique local labels.
+
+        Raises
+        ------
+        ValueError
+            If duplicate local labels are present in either mapping collection.
+        """
+
+        local_grade_labels = tuple(
+            mapping.local_label for mapping in self.grade_mappings
+        )
+        _require_unique(field_name="grade_mappings", values=local_grade_labels)
+        local_stage_labels = tuple(
+            mapping.local_label for mapping in self.education_stage_mappings
+        )
+        _require_unique(
+            field_name="education_stage_mappings", values=local_stage_labels
+        )
+
+    def _validate_statement_type_references(self) -> None:
+        """Require referenced statement types to be declared and uniquely named.
+
+        Raises
+        ------
+        ValueError
+            If statement-type names are duplicated or a referenced statement type is
+            not declared.
+        """
+
+        statement_type_names = tuple(
+            policy.source_statement_type for policy in self.statement_types
+        )
+        _require_unique(field_name="statement_types", values=statement_type_names)
+        statement_types_by_name = {
+            policy.source_statement_type: policy for policy in self.statement_types
         }
+        declared_statement_types = set(statement_types_by_name)
 
-        for statement_type in self.statement_types:
-            if (
-                statement_type.code_type is not None
-                and statement_type.code_type not in declared_code_types
-            ):
-                raise ValueError(
-                    f"{statement_type.source_statement_type} references undeclared "
-                    f"code type {statement_type.code_type}."
-                )
+        referenced_statement_types = set(self.grade_level_statement_types)
+        referenced_statement_types.update(self.hierarchy.root_statement_types)
+        referenced_statement_types.update(self.hierarchy.statement_type_order)
 
-        for code_type in self.code_search_policy.code_types:
-            unknown_types = set(code_type.statement_types) - declared_statement_types
-            unknown_scope_types = (
-                set(code_type.scope_statement_types) - declared_statement_types
+        for policy in self.statement_types:
+            referenced_statement_types.update(policy.identity_scope)
+            referenced_statement_types.update(
+                parent.parent_statement_type for parent in policy.allowed_parents
             )
 
-            if unknown_types or unknown_scope_types:
-                formatted_types = ", ".join(sorted(unknown_types | unknown_scope_types))
+        missing_statement_types = referenced_statement_types - declared_statement_types
+
+        if missing_statement_types:
+            formatted_types = ", ".join(sorted(missing_statement_types))
+            raise ValueError(
+                f"Profile references undeclared statement types: {formatted_types}."
+            )
+
+    def _validate_subject_mapping(self) -> None:
+        """Validate normalized subjects against the vocabulary and mapping status.
+
+        Raises
+        ------
+        ValueError
+            If normalized subjects are inconsistent with the vocabulary or the declared
+            subject mapping status.
+        """
+
+        vocabulary_values = set(self.subject_vocabulary.values)
+        unknown_subjects = set(self.normalized_subjects) - vocabulary_values
+
+        if unknown_subjects:
+            formatted_subjects = ", ".join(sorted(unknown_subjects))
+            raise ValueError(
+                f"normalized_subjects are absent from the vocabulary: {formatted_subjects}."
+            )
+
+        if self.subject_mapping_status is SubjectMappingStatus.UNREVIEWED:
+            if self.normalized_subjects:
                 raise ValueError(
-                    f"Code type {code_type.code_type} references undeclared "
-                    f"statement types: {formatted_types}."
+                    "Unreviewed subject mappings may not declare normalized subjects."
+                )
+        elif not self.normalized_subjects:
+            raise ValueError(
+                "Reviewed subject mappings must declare normalized subjects."
+            )
+
+        unmatched_value = self.subject_vocabulary.unmatched_value
+
+        if (
+            self.subject_mapping_status is SubjectMappingStatus.MAPPED
+            and unmatched_value in self.normalized_subjects
+        ):
+            raise ValueError(
+                "Mapped subjects may not use the vocabulary unmatched_value."
+            )
+
+        if self.subject_mapping_status is SubjectMappingStatus.OTHER:
+            if unmatched_value is None:
+                raise ValueError(
+                    "Other subject mappings require a vocabulary unmatched_value."
                 )
 
-        anomaly_ids = tuple(
-            anomaly.anomaly_id for anomaly in self.known_source_anomalies
+            if self.normalized_subjects != (unmatched_value,):
+                raise ValueError(
+                    "Other subject mappings must use only the vocabulary unmatched_value."
+                )
+
+            if not self.subject_mapping_note:
+                raise ValueError("Other subject mappings require subject_mapping_note.")
+
+    def _validate_unique_collections(self) -> None:
+        """Require simple string collections to contain no duplicates.
+
+        Raises
+        ------
+        ValueError
+            If any validated collection contains duplicate values.
+        """
+
+        _require_unique(
+            field_name="framework_ids",
+            values=tuple(str(value) for value in self.framework_ids),
         )
-        _require_unique(field_name="known_source_anomalies", values=anomaly_ids)
-        return self
+        _require_unique(
+            field_name="grade_level_statement_types",
+            values=self.grade_level_statement_types,
+        )
+        _require_unique(
+            field_name="normalized_subjects", values=self.normalized_subjects
+        )
+        _require_unique(field_name="subject_aliases", values=self.subject_aliases)
+        _require_unique(
+            field_name="comparison_dimensions", values=self.comparison_dimensions
+        )
+        _require_unique(
+            field_name="progression_heuristics", values=self.progression_heuristics
+        )
+        _require_unique(
+            field_name="required_disclosures", values=self.required_disclosures
+        )
