@@ -1,5 +1,17 @@
-"""This module contains shared domain models independent of package transport and
-FastMCP.
+"""This module contains shared framework-independent domain models.
+
+This module defines immutable models that are used across multiple application layers
+and are not owned by a particular package format, curriculum profile, storage
+implementation, or MCP transport.
+
+The current models separate source rights metadata from operator-controlled exposure
+decisions and define versioned normalized-subject vocabularies. Package manifests,
+curriculum profiles, catalog services, resource policies, and public results can
+therefore rely on the same validated domain contracts.
+
+Curriculum-specific subjects, grade systems, terminology, hierarchy rules, and code
+conventions remain in versioned interpretation profiles rather than being embedded in
+these shared models.
 """
 
 # Standard Library

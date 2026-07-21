@@ -1,4 +1,15 @@
-"""This module contains framework-independent enumerations used by backend contracts."""
+"""This module contains framework-independent enumerations used across the domain.
+
+This module defines the fixed vocabularies shared by package validation, curriculum
+profiles, graph services, search services, resources, and public results. These
+enumerations provide stable values for graph types, validation states, rights review,
+subject mappings, code availability, snapshot relations, and the evidentiary status of
+claims.
+
+The values in this module are intentionally curriculum-agnostic. Local curriculum
+terminology, grade systems, hierarchy labels, and code conventions belong in versioned
+interpretation profiles rather than additional curriculum-specific enum members.
+"""
 
 # Standard Library
 from enum import StrEnum

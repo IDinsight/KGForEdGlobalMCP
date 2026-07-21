@@ -1,5 +1,20 @@
 """This module contains validated identifier types and deterministic identifier
 builders.
+
+This module defines distinct types for framework, snapshot, graph-package, profile,
+node, relationship, CASE-style, artifact, version, language, and checksum identifiers.
+Although these identifiers are serialized as strings, their separate types make domain
+contracts clearer and reduce accidental use of one identifier where another is required.
+
+Operator-controlled identifiers use documented structural constraints, while
+source-controlled node, relationship, and CASE identifiers are treated as opaque values
+and are not normalized. Artifact paths receive additional validation so they can be
+resolved safely beneath a graph-package root.
+
+The module also provides deterministic builders for immutable snapshot IDs, initial
+graph-package IDs, and future graph-type-specific package revisions. It does not
+discover framework identities, calculate artifact checksums, access the filesystem, or
+modify source graph records.
 """
 
 # Standard Library

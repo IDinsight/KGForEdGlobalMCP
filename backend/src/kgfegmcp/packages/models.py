@@ -1,5 +1,21 @@
-"""This module contains functionalities for validating graph-package manifest
-contracts.
+"""This module contains Pydantic models for immutable curriculum graph-package
+manifests.
+
+This module defines the validated contracts that describe one versioned graph package.
+The models represent aspects such as framework metadata, package capabilities,
+package-relative artifact paths, artifact checksums, expected graph counts, validation
+state, curriculum-profile references, snapshot-family relations, rights policy, and
+package identity.
+
+Cross-field validation ensures that framework, snapshot, and graph-package identities
+agree; every declared artifact has exactly one checksum; graph types are declared
+consistently; timestamps are timezone-aware; and snapshot relations are unique and do
+not reference the snapshot itself.
+
+These models describe and validate package metadata only. They do not parse JSONL graph
+records, traverse graphs, interpret curriculum terminology, repair source data, or
+modify source artifacts. Loaders, checksum verification, and graph validation services
+consume these immutable contracts at the package boundary.
 """
 
 # Standard Library

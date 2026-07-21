@@ -434,30 +434,6 @@ class CurriculumProfile(FrozenSchema):
     subject_mapping_status: SubjectMappingStatus
     subject_vocabulary: SubjectVocabulary
 
-    @model_validator(mode="after")
-    def validate_profile(self) -> Self:
-        """Validate cross-references and configuration invariants.
-
-        Returns
-        -------
-        Self
-            Fully validated curriculum profile.
-
-        Raises
-        ------
-        ValueError
-            If a profile references undeclared types or has conflicting policies.
-        """
-
-        self._validate_unique_collections()
-        self._validate_subject_mapping()
-        self._validate_local_label_uniqueness()
-        self._validate_statement_type_references()
-        self._validate_hierarchy_node_policies()
-        self._validate_code_type_references()
-        self._validate_anomaly_uniqueness()
-        return self
-
     def _validate_anomaly_uniqueness(self) -> None:
         """Require known source anomalies to have unique identifiers.
 
@@ -513,33 +489,21 @@ class CurriculumProfile(FrozenSchema):
                     f"statement types: {formatted_types}."
                 )
 
-    def _validate_hierarchy_node_policies(self) -> None:
-        """Validate graph-node hierarchy roots, parents, and cardinality rules.
+    def _validate_declared_parents_are_graph_nodes(
+        self, graph_node_types: set[str]
+    ) -> None:
+        """Require every declared parent reference to be a graph-node type.
+
+        Parameters
+        ----------
+        graph_node_types
+            Names of statement types flagged as graph nodes.
 
         Raises
         ------
         ValueError
-            If hierarchy roots or parents are not graph-node types, if root and
-            non-root parent declarations are inconsistent, or if a single-parent
-            profile permits multiple parents.
+            If a statement type declares a parent that is not a graph-node type.
         """
-
-        statement_types_by_name = {
-            policy.source_statement_type: policy for policy in self.statement_types
-        }
-        graph_node_types = {
-            name
-            for name, policy in statement_types_by_name.items()
-            if policy.is_graph_node
-        }
-
-        non_graph_roots = set(self.hierarchy.root_statement_types) - graph_node_types
-
-        if non_graph_roots:
-            formatted_types = ", ".join(sorted(non_graph_roots))
-            raise ValueError(
-                f"Hierarchy roots must be graph-node types: {formatted_types}."
-            )
 
         for policy in self.statement_types:
             non_graph_parents = {
@@ -555,42 +519,50 @@ class CurriculumProfile(FrozenSchema):
                     f"{formatted_types}."
                 )
 
-        root_statement_types = set(self.hierarchy.root_statement_types)
+    def _validate_hierarchy_node_policies(self) -> None:
+        """Validate graph-node hierarchy roots, parents, and cardinality rules.
 
-        for statement_type, policy in statement_types_by_name.items():
-            if not policy.is_graph_node:
-                continue
+        Raises
+        ------
+        ValueError
+            If hierarchy roots or parents are not graph-node types, if root and
+            non-root parent declarations are inconsistent, or if a single-parent
+            profile permits multiple parents.
+        """
 
-            if statement_type in root_statement_types and policy.allowed_parents:
-                raise ValueError(
-                    f"Root statement type {statement_type} may not declare parents."
-                )
+        graph_node_types = {
+            policy.source_statement_type
+            for policy in self.statement_types
+            if policy.is_graph_node
+        }
+        self._validate_hierarchy_roots_are_graph_nodes(graph_node_types)
+        self._validate_declared_parents_are_graph_nodes(graph_node_types)
+        self._validate_root_parent_consistency()
+        self._validate_single_parent_cardinality()
 
-            if (
-                statement_type not in root_statement_types
-                and not policy.allowed_parents
-            ):
-                raise ValueError(
-                    f"Non-root statement type {statement_type} must declare parents."
-                )
+    def _validate_hierarchy_roots_are_graph_nodes(
+        self, graph_node_types: set[str]
+    ) -> None:
+        """Require every declared hierarchy root to be a graph-node type.
 
-            if not self.hierarchy.allow_multi_parent:
-                max_parent_count = 0
+        Parameters
+        ----------
+        graph_node_types
+            Names of statement types flagged as graph nodes.
 
-                for parent in policy.allowed_parents:
-                    if parent.max_count is None:
-                        raise ValueError(
-                            f"Single-parent profiles may not use an unbounded "
-                            f"maximum for {statement_type}."
-                        )
+        Raises
+        ------
+        ValueError
+            If any hierarchy root is not a graph-node type.
+        """
 
-                    max_parent_count += parent.max_count
+        non_graph_roots = set(self.hierarchy.root_statement_types) - graph_node_types
 
-                if max_parent_count > 1:
-                    raise ValueError(
-                        f"Single-parent profile permits multiple parents for "
-                        f"{statement_type}."
-                    )
+        if non_graph_roots:
+            formatted_types = ", ".join(sorted(non_graph_roots))
+            raise ValueError(
+                f"Hierarchy roots must be graph-node types: {formatted_types}."
+            )
 
     def _validate_local_label_uniqueness(self) -> None:
         """Require grade and education-stage mappings to have unique local labels.
@@ -611,6 +583,68 @@ class CurriculumProfile(FrozenSchema):
         _require_unique(
             field_name="education_stage_mappings", values=local_stage_labels
         )
+
+    def _validate_root_parent_consistency(self) -> None:
+        """Require root and non-root graph nodes to declare parents consistently.
+
+        Raises
+        ------
+        ValueError
+            If a root declares parents or a non-root omits them.
+        """
+
+        root_statement_types = set(self.hierarchy.root_statement_types)
+
+        for policy in self.statement_types:
+            if not policy.is_graph_node:
+                continue
+
+            statement_type = policy.source_statement_type
+            is_root = statement_type in root_statement_types
+
+            if is_root and policy.allowed_parents:
+                raise ValueError(
+                    f"Root statement type {statement_type} may not declare parents."
+                )
+
+            if not is_root and not policy.allowed_parents:
+                raise ValueError(
+                    f"Non-root statement type {statement_type} must declare parents."
+                )
+
+    def _validate_single_parent_cardinality(self) -> None:
+        """Require single-parent profiles to permit at most one bounded parent.
+
+        Raises
+        ------
+        ValueError
+            If a single-parent profile declares an unbounded parent maximum or permits
+            more than one parent for a graph-node statement type.
+        """
+
+        if self.hierarchy.allow_multi_parent:
+            return
+
+        for policy in self.statement_types:
+            if not policy.is_graph_node:
+                continue
+
+            statement_type = policy.source_statement_type
+            max_parent_count = 0
+
+            for parent in policy.allowed_parents:
+                if parent.max_count is None:
+                    raise ValueError(
+                        f"Single-parent profiles may not use an unbounded maximum for "
+                        f"{statement_type}."
+                    )
+
+                max_parent_count += parent.max_count
+
+            if max_parent_count > 1:
+                raise ValueError(
+                    f"Single-parent profile permits multiple parents for {statement_type}."
+                )
 
     def _validate_statement_type_references(self) -> None:
         """Require referenced statement types to be declared and uniquely named.
@@ -732,3 +766,27 @@ class CurriculumProfile(FrozenSchema):
         _require_unique(
             field_name="required_disclosures", values=self.required_disclosures
         )
+
+    @model_validator(mode="after")
+    def validate_profile(self) -> Self:
+        """Validate cross-references and configuration invariants.
+
+        Returns
+        -------
+        Self
+            Fully validated curriculum profile.
+
+        Raises
+        ------
+        ValueError
+            If a profile references undeclared types or has conflicting policies.
+        """
+
+        self._validate_unique_collections()
+        self._validate_subject_mapping()
+        self._validate_local_label_uniqueness()
+        self._validate_statement_type_references()
+        self._validate_hierarchy_node_policies()
+        self._validate_code_type_references()
+        self._validate_anomaly_uniqueness()
+        return self
