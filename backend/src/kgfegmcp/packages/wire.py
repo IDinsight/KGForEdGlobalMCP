@@ -1,0 +1,149 @@
+"""This module defines strict Learning Commons-shaped JSONL wire contracts.
+
+The models in this module describe the external delivery envelopes exactly as they
+arrive in ``nodes.jsonl`` and ``relationships.jsonl``. Known properties are exposed
+with Pythonic field names, while every property value remains an unmodified string and
+unknown properties are retained. Delivery encodings such as string booleans and JSON
+arrays are intentionally decoded in `kgfegmcp.packages.decoder` rather than in these
+raw wire models.
+"""
+
+# Future Library
+from __future__ import annotations
+
+# Standard Library
+from collections.abc import Mapping
+from typing import Literal, cast
+
+# Third Party Library
+from pydantic import ConfigDict, Field, StrictStr, model_validator
+
+# Package Library
+from kgfegmcp.domain.identifiers import NodeId, RelationshipId
+from kgfegmcp.schemas import FrozenSchema
+
+
+class NodeWireEnvelope(FrozenSchema):
+    """Represent one strict raw node record from ``nodes.jsonl``."""
+
+    identifier: NodeId
+    labels: tuple[StrictStr, ...] = Field(min_length=1)
+    properties: NodeWireProperties
+    type: Literal["node"]
+
+
+class RelationshipWireEnvelope(FrozenSchema):
+    """Represent one strict raw relationship record from ``relationships.jsonl``."""
+
+    identifier: RelationshipId
+    label: StrictStr
+    properties: RelationshipWireProperties
+    source_identifier: NodeId = Field(alias="source_identifier")
+    source_labels: tuple[StrictStr, ...] = Field(alias="source_labels", min_length=1)
+    target_identifier: NodeId = Field(alias="target_identifier")
+    target_labels: tuple[StrictStr, ...] = Field(alias="target_labels", min_length=1)
+    type: Literal["relationship"]
+
+
+class WireProperties(FrozenSchema):
+    """Base model for a property object whose source values must remain strings.
+
+    Known properties are declared by subclasses. Unknown source properties are allowed
+    deliberately and survive model validation so the boundary layer never discards
+    source data.
+    """
+
+    model_config = ConfigDict(extra="allow", frozen=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def require_string_property_values(cls, value: object) -> object:
+        """Reject non-string property keys or values before field coercion.
+
+        Parameters
+        ----------
+        value
+            Candidate wire property object.
+
+        Returns
+        -------
+        object
+            The unchanged candidate property object.
+
+        Raises
+        ------
+        ValueError
+            If any property key or value is not a string.
+        """
+
+        if not isinstance(value, Mapping):
+            return value
+
+        invalid_keys = [
+            key
+            for key, property_value in value.items()
+            if not isinstance(key, str) or not isinstance(property_value, str)
+        ]
+
+        if invalid_keys:
+            raise ValueError("Delivery property keys and values must be strings.")
+
+        return value
+
+    def raw_values(self) -> dict[str, str]:
+        """Return all known and unknown properties using original wire names.
+
+        Returns
+        -------
+        dict[str, str]
+            A new dictionary containing every source property string.
+        """
+
+        values = self.model_dump(by_alias=True, exclude_none=True)
+        return cast(dict[str, str], values)
+
+
+class NodeWireProperties(WireProperties):
+    """Represent raw string properties carried by a node envelope."""
+
+    academic_subject: StrictStr | None = None
+    adoption_status: StrictStr | None = None
+    attribution_statement: StrictStr | None = None
+    author: StrictStr | None = None
+    case_identifier_uri: StrictStr | None = Field(
+        alias="caseIdentifierURI", default=None
+    )
+    case_identifier_uuid: StrictStr | None = Field(
+        alias="caseIdentifierUUID", default=None
+    )
+    description: StrictStr | None = None
+    grade_level: StrictStr | None = None
+    identifier: StrictStr | None = None
+    in_language: StrictStr | None = None
+    is_current: StrictStr | None = None
+    jurisdiction: StrictStr | None = None
+    license: StrictStr | None = None
+    name: StrictStr | None = None
+    normalized_statement_type: StrictStr | None = None
+    provider: StrictStr | None = None
+    statement_code: StrictStr | None = None
+    statement_type: StrictStr | None = None
+
+
+class RelationshipWireProperties(WireProperties):
+    """Represent raw string properties carried by a relationship envelope."""
+
+    attribution_statement: StrictStr | None = None
+    author: StrictStr | None = None
+    description: StrictStr | None = None
+    identifier: StrictStr | None = None
+    license: StrictStr | None = None
+    provider: StrictStr | None = None
+    relationship_type: StrictStr | None = None
+    resolution_status: StrictStr | None = None
+    source_entity: StrictStr | None = None
+    source_entity_key: StrictStr | None = None
+    source_entity_value: StrictStr | None = None
+    target_entity: StrictStr | None = None
+    target_entity_key: StrictStr | None = None
+    target_entity_value: StrictStr | None = None

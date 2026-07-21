@@ -22,7 +22,7 @@ from __future__ import annotations
 # Standard Library
 import re
 
-from typing import Annotated, Self
+from typing import Annotated, Self, cast
 
 # Third Party Library
 from pydantic import Field, StringConstraints, model_validator
@@ -420,7 +420,7 @@ class CurriculumProfile(FrozenSchema):
     local_subject: str = Field(min_length=1)
     normalized_subjects: tuple[str, ...]
     profile_id: ProfileId
-    profile_schema_version: SchemaVersion = "1.0"
+    profile_schema_version: SchemaVersion = cast(SchemaVersion, "1.0")
     profile_version: ProfileVersion
     progression_heuristics: tuple[str, ...] = ()
     required_disclosures: tuple[str, ...] = ()

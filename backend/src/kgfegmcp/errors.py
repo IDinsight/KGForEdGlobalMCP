@@ -80,6 +80,12 @@ class ConfigurationError(KGFEGMCPError):
     error_code = "configuration_error"
 
 
+class DeliveryPropertyDecodingError(KGFEGMCPError):
+    """Raised when a string-encoded delivery property cannot be decoded."""
+
+    error_code = "delivery_property_decoding_error"
+
+
 class FrameworkNotFoundError(KGFEGMCPError):
     """Raised when a requested framework or snapshot is unavailable."""
 
@@ -90,6 +96,12 @@ class InvalidCursorError(KGFEGMCPError):
     """Raised when a pagination cursor is malformed or no longer valid."""
 
     error_code = "invalid_cursor"
+
+
+class JSONLParsingError(KGFEGMCPError):
+    """Raised when a JSONL record cannot be read or validated as a wire envelope."""
+
+    error_code = "jsonl_parsing_error"
 
 
 class PackageValidationError(KGFEGMCPError):

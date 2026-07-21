@@ -20,7 +20,7 @@ consume these immutable contracts at the package boundary.
 
 # Standard Library
 from datetime import date, datetime
-from typing import Self
+from typing import Self, cast
 
 # Third Party Library
 from pydantic import Field, model_validator
@@ -369,7 +369,7 @@ class GraphPackageManifest(FrozenSchema):
     graph_package_id: GraphPackageId
     graph_type: GraphType
     included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
-    manifest_version: ManifestVersion = "1.0"
+    manifest_version: ManifestVersion = cast(ManifestVersion, "1.0")
     package_revision: int = Field(default=1, ge=1)
     profile: ProfileReference
     rights: RightsPolicy
