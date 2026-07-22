@@ -2,7 +2,7 @@
 
 ## Comprehensive implementation plan
 
-**Status:** Phase 0 foundational contracts implemented; PR 2 is next  
+**Status:** Phase 0 foundational contracts and PR 2 JSONL boundary implemented; PR 3 package loading and validation is next  
 **Primary runtime:** Python 3.13 with standalone `fastmcp==3.4.4`  
 **Initial client:** Claude Desktop over local STDIO  
 **Initial graph type:** Academic Standards  
@@ -26,7 +26,9 @@ Before making changes, the coding assistant should:
 2. Identify the current implementation phase and its acceptance criteria.
 3. Inspect the existing repository before proposing structural changes.
 4. Keep MCP transport code thin and put graph logic in ordinary domain services.
-5. Add or update tests with every behavioral change.
+5. Add or update tests with every behavioral change unless the operator explicitly
+   defers tests for the current unit; any deferral must remain visible and does not
+   waive the production definition of done.
 6. Avoid hardcoding facts from the six current curriculum packages.
 7. Preserve source graph topology, including valid multi-parent DAGs and explicit unresolved-edge statuses.
 8. Distinguish source facts, deterministic derivations, retrieval candidates, LLM inferences, and reviewed mappings.
@@ -165,13 +167,13 @@ The final export produces two artifact tiers.
 ### 5.1 Detailed source-faithful artifacts
 
 ```text
-academic_standards_kg_bundle.json
-standards_framework.json
-standards_framework_items.jsonl
-relationships_has_child.jsonl
-entity_provenance.json
-unresolved_items.json
-validation_report.json
+as_kg_bundle.json
+as_standards_framework.json
+as_standards_framework_items.jsonl
+as_relationships_has_child.jsonl
+as_entity_provenance.json
+as_unresolved_items.json
+as_validation_report.json
 ```
 
 These artifacts preserve local terminology, local grades, source evidence, merge history, relationship evidence, audit flags, unresolved decisions, deterministic identities, and complete accepted topology.
@@ -179,8 +181,8 @@ These artifacts preserve local terminology, local grades, source evidence, merge
 ### 5.2 Slim Learning Commons-shaped delivery artifacts
 
 ```text
-nodes.jsonl
-relationships.jsonl
+as_nodes_XXX.jsonl
+as_relationships_XXX.jsonl
 ```
 
 These adapt the accepted graph to a compact delivery envelope. They preserve the nodes and relationships but intentionally omit much of the detailed metadata and provenance.
@@ -217,7 +219,7 @@ forward:
 - preserve every valid parent edge and all root paths in a DAG;
 - preserve unresolved relationship statuses;
 - return deterministic, typed result shapes;
-- load native `nodes.jsonl` and `relationships.jsonl` packages;
+- load native `as_nodes_XXX.jsonl` and `as_relationships_XXX.jsonl` packages;
 - make detailed artifacts available as resources when declared by the package manifest;
 - keep subject, grade, language, hierarchy, code, and interpretation rules in validated
   profiles rather than generic Python.
@@ -228,7 +230,7 @@ can be reused.
 
 ### Current implementation state
 
-The foundational Phase 0 contracts have now been implemented under
+Phase 0 and the PR 2 delivery-boundary unit have been implemented under
 `backend/src/kgfegmcp`:
 
 ```text
@@ -244,7 +246,12 @@ domain/
 packages/
     __init__.py
     models.py
+    wire.py
+    decoder.py
 profiles/
+    __init__.py
+    models.py
+graph/
     __init__.py
     models.py
 ```
@@ -262,7 +269,18 @@ The implementation currently provides:
 - environment-backed repository path resolution independent of the caller's working
   directory;
 - six versioned interpretation profiles derived from the supplied upstream runtime
-  configurations.
+  configurations;
+- strict Learning Commons-shaped node and relationship wire-envelope models;
+- preservation of known and unknown raw delivery properties as source strings;
+- lazy, one-physical-line-at-a-time JSONL parsing with line and source-order context;
+- exact decoding of `isCurrent` from `"true"` and `"false"`;
+- decoding of `gradeLevel` from a JSON array encoded inside a string;
+- frozen semantic `FrameworkNode`, `StandardNode`, and `GraphRelationship` records;
+- preservation of outer identifiers, property identifiers, CASE identifiers,
+  relationship outer endpoints, property-declared endpoints, and `resolutionStatus`;
+- typed `JSONLParsingError` and `DeliveryPropertyDecodingError` failures whose public
+  messages expose the artifact file name and line number without exposing unnecessary
+  raw local paths.
 
 The current profiles are stored under:
 
@@ -281,20 +299,39 @@ nigeria-nerdc-mathematics-primary-1-3
 rwanda-reb-mathematics-lower-primary-1-3
 ```
 
-No graph JSONL parser, profile or manifest repository, package validator, graph store,
-catalog, search service, FastMCP application, resources, prompts, or CLI has been
-implemented yet.
+PR 2 verification decoded all current delivery fixtures:
 
-Automated tests were intentionally deferred for the foundational unit at the operator's
-request. This does not change the production definition of done: deterministic tests
-must be added before the affected behavior is considered production-ready.
+```text
+2,735 node records
+2,964 relationship records
+15 unresolved fallback statuses
+235 multi-parent India Science targets
+```
 
-Current top-level package files should be treated as follows:
+The node count consists of 2,729 framework-item records plus one framework record for
+each of the six packages. Representative negative smoke checks covered malformed JSON,
+non-string and null property values, malformed string booleans, malformed embedded
+arrays, unknown-property retention, and safe public path masking.
+
+PR 2 also passed Black formatting, isort checking, Ruff, Pylint, full-package mypy,
+100% Interrogate docstring coverage, and Python compilation.
+
+No manifest or profile repository, checksum service, package aggregate loader, package
+validator, graph store, traversal service, catalog, search service, FastMCP application,
+resource layer, prompt layer, or CLI has been implemented yet.
+
+Automated tests were intentionally deferred for Phase 0 and PR 2 at the operator's
+request. They remain required before the affected behavior is production-ready. Until
+the operator requests tests, each implementation unit must run deterministic formatting,
+linting, type checking, compilation, and representative positive and negative smoke
+checks.
+
+Current top-level and boundary files should be treated as follows:
 
 ```text
 config.py
     Contains environment-backed application settings and explicit repository path
-    resolution. It supports `PATHS_PROJECT_DIR`. Split it only when the settings 
+    resolution. It supports `PATHS_PROJECT_DIR`. Split it only when the settings
     surface becomes too large.
 
 regexes.py
@@ -310,6 +347,20 @@ schemas.py
 errors.py
     Contains the typed domain-error hierarchy and stable error codes. FastMCP-specific
     `ToolError` translation will be implemented later at the MCP boundary.
+
+packages/wire.py
+    Defines the strict external delivery envelopes. It preserves source strings and
+    unknown properties and must not perform semantic decoding or graph validation.
+
+packages/decoder.py
+    Owns JSONL line parsing and delivery-specific string decoding. It must not compare
+    identifiers, resolve endpoints, repair records, or enforce graph-wide invariants.
+
+graph/models.py
+    Defines artifact-local semantic graph records produced by the decoder. These
+    records intentionally do not carry `framework_id`, `snapshot_id`, or
+    `graph_package_id`, because those values come from the package manifest rather than
+    from each JSONL line.
 ```
 
 The root `README.md` should remain a concise project overview and onboarding document.
@@ -331,6 +382,9 @@ The current six complete packages are examples and regression fixtures, not the 
 | India Science | 874 | 1,109 | 831 | Valid multi-parent DAG; 235 items have two parents |
 | Rwanda Mathematics, Primary 1-3 | 626 | 626 | 0 | Tree; entirely uncoded |
 | **Total** | **2,729** | **2,964** | **1,439** | Six complete graph packages |
+
+The table counts framework items. The complete wire fixtures also contain one
+`StandardsFramework` node per package, for a total of 2,735 node records.
 
 These fixtures prove that the implementation must support:
 
@@ -412,7 +466,7 @@ Source packages must be treated as immutable. Reprocessing or correcting a curri
 
 ### Decision 4: source graphs and derived overlays remain separate
 
-Do not write LLM-generated cross-country relationships into source `nodes.jsonl` or `relationships.jsonl`.
+Do not write LLM-generated cross-country relationships into source `as_nodes_XXX.jsonl` or `as_relationships_XXX.jsonl`.
 
 Use separate derived stores for:
 
@@ -617,6 +671,8 @@ phase.
 │   │       ├── packages/
 │   │       │   ├── __init__.py
 │   │       │   ├── models.py
+│   │       │   ├── wire.py
+│   │       │   ├── decoder.py
 │   │       │   ├── loader.py
 │   │       │   ├── validator.py
 │   │       │   └── checksums.py
@@ -731,16 +787,16 @@ phase.
 │   │       └── <snapshot-id>/
 │   │           ├── manifest.json
 │   │           ├── delivery/
-│   │           │   ├── nodes.jsonl
-│   │           │   └── relationships.jsonl
+│   │           │   ├── as_nodes_XXX.jsonl
+│   │           │   └── as_relationships_XXX.jsonl
 │   │           └── detailed/
-│   │               ├── academic_standards_kg_bundle.json
-│   │               ├── standards_framework.json
-│   │               ├── standards_framework_items.jsonl
-│   │               ├── relationships_has_child.jsonl
-│   │               ├── entity_provenance.json
-│   │               ├── unresolved_items.json
-│   │               └── validation_report.json
+│   │               ├── as_kg_bundle.json
+│   │               ├── as_standards_framework.json
+│   │               ├── as_standards_framework_items.jsonl
+│   │               ├── as_relationships_has_child.jsonl
+│   │               ├── as_entity_provenance.json
+│   │               ├── as_unresolved_items.json
+│   │               └── as_validation_report.json
 │   └── derived/
 │       ├── alignments/
 │       └── progressions/
@@ -987,18 +1043,18 @@ The manifest should describe:
     "sourceVersion": "2019"
   },
   "artifacts": {
-    "nodes": "delivery/nodes.jsonl",
-    "relationships": "delivery/relationships.jsonl",
-    "validationReport": "detailed/validation_report.json",
-    "entityProvenance": "detailed/entity_provenance.json",
-    "unresolvedItems": "detailed/unresolved_items.json"
+    "nodes": "delivery/as_nodes.jsonl",
+    "relationships": "delivery/as_relationships.jsonl",
+    "validationReport": "detailed/as_validation_report.json",
+    "entityProvenance": "detailed/as_entity_provenance.json",
+    "unresolvedItems": "detailed/as_unresolved_items.json"
   },
   "checksums": {
-    "delivery/nodes.jsonl": "sha256:<64-lowercase-hex-characters>",
-    "delivery/relationships.jsonl": "sha256:<64-lowercase-hex-characters>",
-    "detailed/validation_report.json": "sha256:<64-lowercase-hex-characters>",
-    "detailed/entity_provenance.json": "sha256:<64-lowercase-hex-characters>",
-    "detailed/unresolved_items.json": "sha256:<64-lowercase-hex-characters>"
+    "delivery/as_nodes.jsonl": "sha256:<64-lowercase-hex-characters>",
+    "delivery/as_relationship.jsonl": "sha256:<64-lowercase-hex-characters>",
+    "detailed/as_validation_report.json": "sha256:<64-lowercase-hex-characters>",
+    "detailed/as_entity_provenance.json": "sha256:<64-lowercase-hex-characters>",
+    "detailed/as_unresolved_items.json": "sha256:<64-lowercase-hex-characters>"
   },
   "counts": {
     "frameworkNodes": 1,
@@ -1216,19 +1272,27 @@ At minimum:
 
 ### 15.4 Preserve raw values
 
-The loader should maintain both:
+The implemented delivery boundary maintains both:
 
 ```text
 raw property dictionary
-normalized typed view
+decoded typed view
 ```
 
-Unknown source properties should be preserved in an `extensions` or `raw_properties` field rather than discarded.
+Every wire property must be a string. Explicit JSON `null`, numeric, boolean, object,
+and array property values are rejected rather than coerced. Optional properties are
+represented by omission. Unknown source properties are accepted and retained in
+`raw_properties`; they are not discarded or promoted into generic Python conditionals.
 
-### 15.5 Learning Commons-shaped boundary adapter
+### 15.5 Implemented Learning Commons-shaped boundary adapter
 
-The delivery JSONL format has wire conventions that should be decoded in one adapter
-layer rather than throughout the services.
+The delivery JSONL wire conventions are implemented in:
+
+```text
+backend/src/kgfegmcp/packages/wire.py
+backend/src/kgfegmcp/packages/decoder.py
+backend/src/kgfegmcp/graph/models.py
+```
 
 Node records use an outer envelope similar to:
 
@@ -1269,29 +1333,53 @@ Relationship records use:
 }
 ```
 
-Boundary rules:
+Implemented boundary behavior:
 
-- values inside `properties` are string-encoded in the slim wire format;
-- `isCurrent` must be decoded from `"true"` or `"false"`;
-- `gradeLevel` must be decoded from a JSON array encoded inside a string;
-- optional null properties may be omitted;
-- outer endpoint fields remain snake_case;
-- property names are camelCase;
-- `identifier` and `caseIdentifierUUID` must remain distinct concepts;
-- relationship endpoints should be validated through both the outer identifiers and
-  the declared property key/value fields;
-- `resolutionStatus` must survive domain conversion;
-- the domain layer should use semantic Python values while retaining the raw strings.
+- `NodeWireEnvelope` and `RelationshipWireEnvelope` strictly validate the outer record
+  type, identifiers, labels, endpoints, and property object;
+- `NodeWireProperties` and `RelationshipWireProperties` expose known properties while
+  accepting unknown property names;
+- all property keys and values must remain strings;
+- wire records are read lazily, one physical line at a time;
+- blank lines are invalid JSONL records and are not silently skipped;
+- each located record retains the one-based physical line number, internal source path,
+  and `source_export_order`;
+- `source_export_order` is the one-based physical JSONL line number and is not an
+  instructional sequence;
+- `isCurrent` decodes only from the exact strings `"true"` and `"false"`;
+- `gradeLevel` decodes only from a valid JSON array string whose elements are all
+  strings, and the typed value preserves source order as a tuple;
+- omitted optional properties remain `None` without invented defaults;
+- all known and unknown source strings are copied into `raw_properties` using their
+  original wire names;
+- outer `identifier`, property `identifier`, `caseIdentifierUUID`, and
+  `caseIdentifierURI` remain separate;
+- relationship outer source and target identifiers remain separate from
+  `sourceEntity`, `sourceEntityKey`, `sourceEntityValue`, `targetEntity`,
+  `targetEntityKey`, and `targetEntityValue`;
+- `resolutionStatus`, including unresolved fallback values, survives decoding;
+- node decoding distinguishes framework records from framework-item records through
+  the delivery labels and requires exactly one supported node kind;
+- relationship decoding does not resolve or compare endpoints;
+- source records are not mutated, repaired, normalized, deduplicated, or reordered.
 
-Only this adapter should know the wire-format encoding details.
+`JSONLParsingError` covers unreadable artifacts, invalid UTF-8, invalid JSON, and invalid
+wire envelopes. `DeliveryPropertyDecodingError` covers malformed encoded properties and
+typed semantic-record conversion failures. Public messages include the artifact file
+name and line number when available; full paths and structured validation details remain
+internal.
+
+Only this boundary layer may know the slim wire-format encodings. Package validation,
+graph-wide invariants, endpoint resolution, topology checks, indexing, traversal, and
+search remain separate responsibilities.
 
 ---
 
-## 16. Domain model
+## 16. Domain and semantic graph records
 
-The domain layer must not depend on FastMCP.
+The domain and graph-record layers must not depend on FastMCP.
 
-The current domain implementation contains:
+The foundational domain implementation contains:
 
 ```text
 domain/enums.py
@@ -1302,67 +1390,129 @@ domain/identifiers.py
     deterministic snapshot and graph-package ID builders.
 
 domain/models.py
-    Shared immutable `RightsPolicy` and `SubjectVocabulary` models.
+    Shared frozen `RightsPolicy` and `SubjectVocabulary` models.
 ```
 
 `RightsPolicy` deliberately preserves source license and attribution metadata separately
 from operator-controlled exposure decisions. `SubjectVocabulary` keeps normalized
 subject values versioned and configurable rather than hardcoded into search logic.
 
-The next boundary-decoder unit should add semantic graph models grounded in the actual
-delivery records, including `FrameworkNode`, `StandardNode`, and `GraphRelationship`.
-Do not add traversal or MCP behavior to these models.
+The implemented semantic graph-record layer contains:
 
-Illustrative future models:
+```text
+graph/__init__.py
+    Exposes the decoded semantic record types.
 
-```python
-class FrameworkSnapshot(BaseModel):
-    framework_id: str
-    snapshot_id: str
-    graph_package_id: str
-    name: str
-    jurisdiction: str
-    jurisdiction_type: str | None
-    issuing_authority: str | None
-    local_subject: str | None
-    normalized_subjects: list[str]
-    languages: list[str]
-    local_grades_or_stages: list[str]
-    normalized_grades: list[str]
-    capabilities: FrameworkCapabilities
-    rights: RightsPolicy
-    profile_ref: ProfileRef
-
-
-class StandardNode(BaseModel):
-    node_id: str
-    framework_id: str
-    snapshot_id: str
-    case_identifier_uuid: str | None
-    case_identifier_uri: str | None
-    description: str
-    statement_code: str | None
-    alternate_statement_code: str | None
-    statement_type: str | None
-    normalized_statement_type: str | None
-    local_subject: str | None
-    normalized_subjects: list[str]
-    local_grade_labels: list[str]
-    normalized_grades: list[str]
-    language: str | None
-    raw_properties: dict[str, str]
-
-
-class GraphRelationship(BaseModel):
-    relationship_id: str
-    framework_id: str
-    snapshot_id: str
-    relationship_type: str
-    source_node_id: str
-    target_node_id: str
-    resolution_status: str | None
-    raw_properties: dict[str, str]
+graph/models.py
+    Defines `GraphNode`, `FrameworkNode`, `StandardNode`, and
+    `GraphRelationship`.
 ```
+
+The `graph` package is currently a semantic-record package, not a graph store. It is the
+boundary between delivery-shaped records and future validation, storage, traversal, and
+search services.
+
+### Implemented node records
+
+`GraphNode` contains the fields shared by decoded nodes:
+
+```text
+node_id
+property_identifier
+case_identifier_uuid
+case_identifier_uri
+labels
+academic_subject
+adoption_status
+attribution_statement
+author
+in_language
+is_current
+jurisdiction
+license
+provider
+raw_properties
+source_export_order
+```
+
+`FrameworkNode` adds:
+
+```text
+name
+```
+
+`StandardNode` adds:
+
+```text
+description
+grade_level
+statement_code
+statement_type
+normalized_statement_type
+```
+
+The decoded `grade_level` is a tuple of source strings. It is not yet a profile-derived
+normalized-grade view. The exported `normalized_statement_type` is preserved as the
+accepted upstream deterministic value and uses the existing typed enum.
+
+### Implemented relationship records
+
+`GraphRelationship` contains:
+
+```text
+relationship_id
+property_identifier
+label
+relationship_type
+source_node_id
+source_labels
+source_entity
+source_entity_key
+source_entity_value
+target_node_id
+target_labels
+target_entity
+target_entity_key
+target_entity_value
+resolution_status
+description
+attribution_statement
+author
+license
+provider
+raw_properties
+source_export_order
+```
+
+These fields deliberately preserve both outer endpoints and property-declared endpoint
+information for later comparison and resolution.
+
+### Package context boundary
+
+The semantic graph records are artifact-local. They do not duplicate
+`framework_id`, `snapshot_id`, or `graph_package_id`, because those values are package
+context supplied by the manifest and package loader. PR 3 should associate decoded
+records with an immutable loaded-package aggregate rather than mutating each source
+record or inventing package identifiers from JSONL content.
+
+### Current non-responsibilities
+
+The graph-record models do not:
+
+- compare outer and property identifiers;
+- resolve relationship endpoints;
+- enforce identifier uniqueness;
+- detect duplicate endpoint pairs;
+- detect self-loops or cycles;
+- calculate reachability;
+- choose a parent;
+- assume a tree;
+- validate profile semantics;
+- perform traversal, indexing, or search;
+- repair or rewrite source records.
+
+Those responsibilities belong to the package validator and later DAG-aware graph
+services.
 
 ### Service protocols
 
@@ -1618,12 +1768,16 @@ Treat annotations as descriptive hints, not security controls.
 
 ### 20.1 Domain error taxonomy
 
-Create typed exceptions:
+The typed exception hierarchy currently includes:
 
 ```text
 KGFEGMCPError
+JSONLParsingError
+DeliveryPropertyDecodingError
 PackageValidationError
+ProfileValidationError
 CatalogError
+ConfigurationError
 FrameworkNotFoundError
 AmbiguousFrameworkError
 StandardNotFoundError
@@ -1634,6 +1788,11 @@ ResourceNotFoundError
 ResourceAccessDeniedError
 AlignmentNotFoundError
 ```
+
+`JSONLParsingError` and `DeliveryPropertyDecodingError` are implemented and used by the
+PR 2 boundary. PR 3 should use `PackageValidationError` and `ProfileValidationError` for
+package- and profile-level failures rather than translating every validation problem
+into a wire parsing error.
 
 ### 20.2 Public versus internal errors
 
@@ -1979,7 +2138,7 @@ kgfegmcp://alignment/{alignment_id}
 
 ### 23.4 Large resources
 
-Raw `nodes.jsonl`, `relationships.jsonl`, and bundles may be large.
+Raw `as_nodes_XXX.jsonl`, `as_relationships_XXX.jsonl`, and bundles may be large.
 
 Provide:
 
@@ -2823,24 +2982,37 @@ tool input/output model drafts, and automated tests.
 
 ## Phase 1: package loader, validator, catalog, and graph domain
 
-### Deliverables
+**Status:** In progress. PR 2 completed the JSONL wire boundary and semantic graph-record
+conversion. PR 3 is the next unit.
 
-- native Learning Commons-shaped JSONL loader;
+### Implemented deliverables
+
+- strict Learning Commons-shaped node and relationship wire models;
+- line-by-line JSONL parsing with safe file and line context;
+- strict delivery-property decoding;
+- raw and unknown property preservation;
+- semantic framework, standard, and relationship records;
+- preservation of unresolved statuses and all endpoint representations.
+
+### Remaining deliverables
+
 - detailed-artifact path support;
-- manifest loader;
-- profile loader;
+- manifest loader and repository;
+- profile loader and repository;
+- checksum verification;
+- immutable loaded-package aggregate;
 - package validator;
+- validation CLI;
 - DAG-aware graph store;
 - catalog repository;
-- CLI commands to validate and inspect packages;
 - artifact-packaging CLI for validated graph packages.
 
 ### Exit criteria
 
-- all six complete packages load simultaneously;
+- all six complete packages load simultaneously by the end of Phase 1;
 - an incomplete package fails or quarantines according to policy;
 - node and edge counts match fixtures;
-- India Science returns all parents;
+- India Science returns all parents after the graph-store unit;
 - Ghana fallback statuses remain visible;
 - identifiers do not assume `identifier == caseIdentifierUUID`;
 - codeless packages load without warnings that imply invalidity.
@@ -3052,10 +3224,11 @@ tool input/output model drafts, and automated tests.
 1. **PR 1 — implemented:** domain identifiers, enums, shared domain models, errors,
    manifest models, profile models, repository path settings, environment template, and
    six initial versioned profiles.
-2. **PR 2 — next:** Learning Commons-shaped JSONL wire models, line parser, strict
-   delivery-property decoder, and semantic graph-domain models.
-3. **PR 3:** manifest and profile repositories, checksum verification, package loader,
-   package validator, and validation CLI.
+2. **PR 2 — implemented:** strict Learning Commons-shaped JSONL wire models,
+   one-line-at-a-time parsing, delivery-property decoding, typed parsing and decoding
+   errors, and semantic graph-record models.
+3. **PR 3 — next:** manifest and profile repositories, checksum verification, immutable
+   package assembly, package validation, and a validation CLI.
 4. **PR 4:** DAG-aware graph store and deterministic traversal.
 5. **PR 5:** catalog repository and six-package integration.
 6. **PR 6:** lexical and profile-controlled code search.
@@ -3070,46 +3243,132 @@ tool input/output model drafts, and automated tests.
     remote hosting.
 
 Each PR should leave the repository importable and reviewable. Deterministic tests remain
-part of the production acceptance criteria even when temporarily deferred by operator
+part of the production acceptance criteria even while temporarily deferred by operator
 instruction.
 
-### Next implementation unit: JSONL boundary adapter
+### PR 2 implementation record
 
-The next unit must remain limited to the external delivery boundary and semantic graph
-record conversion.
-
-Add or update:
+PR 2 added or updated:
 
 ```text
 backend/src/kgfegmcp/packages/wire.py
 backend/src/kgfegmcp/packages/decoder.py
 backend/src/kgfegmcp/graph/__init__.py
 backend/src/kgfegmcp/graph/models.py
+backend/src/kgfegmcp/errors.py
+backend/src/kgfegmcp/packages/models.py
+backend/src/kgfegmcp/profiles/models.py
 ```
 
-The unit should:
+The changes to `packages/models.py` and `profiles/models.py` were limited to explicit
+typing of existing version defaults so full-project static type checking succeeds. They
+did not change the established manifest or profile contracts.
 
-1. define strict raw node and relationship envelope models;
-2. parse JSONL one record at a time with line-number-aware errors;
-3. preserve every raw property string;
-4. decode string booleans strictly;
-5. decode JSON arrays embedded in strings, including `gradeLevel`;
-6. preserve omitted optional properties as absent or `None` without inventing values;
-7. preserve `resolutionStatus`;
-8. keep outer identifiers, property identifiers, CASE UUIDs, and CASE URIs distinct;
-9. preserve deterministic `source_export_order`;
-10. produce immutable semantic graph node and relationship models;
-11. avoid graph-wide validation, traversal, indexing, search, filesystem mutation, or
-    FastMCP imports.
+PR 2 intentionally did not add package validation, graph storage, traversal, catalog,
+search, FastMCP behavior, resources, prompts, or tests.
 
-The decoder must be curriculum-agnostic. It may know the Learning Commons-shaped wire
-encoding, but it must not know country names, local hierarchy semantics, curriculum code
-patterns, or statement-type meanings.
+### Next implementation unit: PR 3 package assembly and validation
 
-Acceptance checks for this unit should include representative records from coded,
-partially coded, uncoded, unresolved-edge, and multi-parent fixtures. Automated tests may
-be added with this unit or in the immediately following validation unit according to the
-operator's current testing direction.
+PR 3 must remain limited to loading package context around the already decoded records
+and deterministically validating one package. Do not add the DAG graph store, catalog,
+search service, FastMCP application, tools, resources, prompts, or package-creation CLI
+in this unit.
+
+Expected files to add or update:
+
+```text
+backend/src/kgfegmcp/packages/checksums.py
+backend/src/kgfegmcp/packages/loader.py
+backend/src/kgfegmcp/packages/validator.py
+backend/src/kgfegmcp/profiles/loader.py
+backend/src/kgfegmcp/cli/__init__.py
+backend/src/kgfegmcp/cli/validate_packages.py
+backend/src/kgfegmcp/errors.py                    # only if a concrete typed gap exists
+backend/src/kgfegmcp/packages/models.py           # only for required package aggregates
+```
+
+Do not split repositories and loaders into additional modules unless inspection shows a
+clear responsibility that cannot remain cohesive in the files above.
+
+#### PR 3 responsibilities
+
+1. Load and validate a manifest without changing its established schema.
+2. Resolve the selected profile only beneath the configured central profile root using
+   `profile_id` and `profile_version`.
+3. Verify the selected profile checksum against the manifest.
+4. Resolve manifest-declared artifact paths beneath the package root without allowing
+   absolute paths, `..`, or symlink escape.
+5. Verify required artifact presence and declared SHA-256 checksums.
+6. Use the existing decoder to stream and decode `as_nodes_XXX.jsonl` and
+   `as_relationships_XXX.jsonl`; do not duplicate wire parsing.
+7. Assemble an immutable package-level object containing manifest context, the selected
+   profile, decoded records, and deterministic validation output.
+8. Keep package identity in package context rather than mutating each decoded graph
+   record.
+9. Validate package-wide invariants separately from parsing:
+   - exactly one `StandardsFramework` node;
+   - supported node labels;
+   - unique outer node identifiers;
+   - unique outer relationship identifiers;
+   - outer and property identifiers agree where the delivery contract requires it;
+   - relationship endpoint pairs are unique unless explicitly allowed;
+   - every outer endpoint resolves;
+   - declared endpoint labels agree with resolved nodes;
+   - property-declared endpoint keys and values agree with the outer endpoints;
+   - self-loops are rejected unless a future relation explicitly permits them;
+   - directed `hasChild` cycles are rejected;
+   - every item is reachable from the framework root unless the graph type explicitly
+     permits detached components;
+   - all valid parent edges are preserved, including multi-parent DAG edges;
+   - `resolutionStatus` values remain visible and are not repaired;
+   - counts agree with the manifest;
+   - manifest framework facets and package metadata are consistent where the contracts
+     define a deterministic comparison;
+   - exported normalized statement types agree with the selected profile mapping;
+   - a declared detailed validation report has an accepted status;
+   - rights policy and required profile references are present.
+10. Produce typed, actionable validation failures with artifact and line or record
+    context where available. Public text must not expose unnecessary raw local paths.
+11. Provide a read-only validation CLI that reports deterministic findings and exits
+    nonzero for invalid packages.
+12. Never edit, normalize, repair, reorder, or rewrite the source JSONL or detailed
+    artifacts.
+
+#### PR 3 boundaries
+
+- Validation may inspect the complete decoded record set, but it must not create the
+  adjacency indexes or traversal APIs planned for PR 4.
+- Cycle and reachability checks in PR 3 establish package acceptance only; they are not
+  a graph store.
+- The validator must support trees and multi-parent DAGs. A second parent is not an
+  error.
+- No country, curriculum, organization, subject, grade, statement-type, or code-specific
+  conditional may appear in generic Python.
+- Correctness-critical interpretation must come from the manifest, profile, or declared
+  graph-type contract.
+- Do not introduce backward-compatibility shims or legacy parsing behavior.
+- New modules, classes, methods, and functions require complete docstrings and precise
+  type hints.
+- Calls to functions with more than one argument must use alphabetically ordered named
+  arguments. One-argument calls do not require a named argument.
+- Automated tests remain deferred until explicitly requested. Run formatting, linting,
+  full type checking, compilation, positive fixture validation, and representative
+  negative validation smoke checks before returning files.
+
+#### PR 3 acceptance checks
+
+- each of the six complete package fixtures can be loaded and validated independently;
+- item, framework-node, relationship, coded-item, unresolved-status, and multi-parent
+  counts remain stable;
+- codeless and partially coded packages are accepted without curriculum-specific code;
+- India Science validates as a DAG without collapsing its 235 multi-parent targets;
+- all 15 unresolved fallback relationships remain present;
+- malformed manifests, missing artifacts, checksum mismatches, unsafe paths, duplicate
+  identifiers, unresolved endpoints, endpoint disagreements, self-loops, cycles,
+  unreachable items, count mismatches, profile checksum mismatches, and invalid detailed
+  validation status produce typed failures;
+- no source artifact is changed;
+- the repository remains importable and passes the required static and smoke checks.
 
 ## 37. Packaging current curriculum artifacts
 
@@ -3227,7 +3486,31 @@ selected profile. Generic loaders do not silently recalculate or repair them.
 
 ### ADR-018: current repository root compatibility
 
-Accepted. `PATHS_PROJECT_DIR` is the application-owned setting;
+Accepted. Application-owned `KGFEGMCP_*` path settings take precedence.
+`PATHS_PROJECT_DIR` remains a supported repository-root fallback for the existing root
+environment and `direnv`. Relative overrides resolve from the configured project root,
+never from the caller's current working directory.
+
+### ADR-019: one strict delivery boundary
+
+Accepted. `packages/wire.py` preserves the source-shaped Learning Commons delivery
+envelopes, and `packages/decoder.py` is the only layer that decodes string booleans and
+embedded JSON arrays. Unknown string properties are retained, explicit non-string
+property values are rejected, and parsing remains separate from package validation.
+
+### ADR-020: artifact-local semantic graph records
+
+Accepted. `graph/models.py` contains frozen semantic records for decoded nodes and
+relationships. Outer and property identifiers, CASE identifiers, outer and
+property-declared endpoints, resolution status, raw properties, and source export order
+remain distinct. Package identity is attached by the package loader rather than copied
+or inferred inside every record.
+
+### ADR-021: physical line order is source export order
+
+Accepted. `source_export_order` is the one-based physical JSONL line number. It provides
+deterministic display and diagnostics but does not assert instructional sequence or
+progression.
 
 ---
 
