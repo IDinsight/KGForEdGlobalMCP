@@ -1,14 +1,21 @@
 """This module discovers graph packages and persists controlled validation transitions.
 
-The repository treats the configured graph-packages root as a filesystem trust
-boundary. It discovers only the established ``<frameworkId>/<snapshotId>`` layout,
-rejects symbolic links and malformed entries, and never accepts arbitrary package paths
-from callers or manifests.
+This module provides the filesystem boundary for graph packages. It treats the
+configured graph-packages root as trusted and discovers packages only through the
+established ``<frameworkId>/<snapshotId>`` directory structure. Package candidates are
+validated against their directory names, kept beneath the configured root, and rejected
+when selected path components are symbolic links, malformed entries, or unsupported
+filesystem objects.
 
-Persistence is intentionally narrow: a valid pending manifest may transition once to
-``passed``, ``failed``, or ``quarantined``. The repository assigns ``validatedAt``,
-keeps ``createdAt`` and every package-defining field unchanged, compares the manifest
-bytes immediately before replacement, and uses a same-directory atomic replacement.
+The repository also owns validation-status persistence. It permits only a one-time
+transition from ``pending`` to ``passed``, ``failed``, or ``quarantined``. Before
+writing, it confirms that the package and manifest still match the versions originally
+loaded. It then assigns ``validatedAt`` and replaces the manifest atomically without
+changing ``createdAt``, artifact bytes, or package-defining manifest fields.
+
+This module does not load profiles, verify artifact checksums, decode graph records, or
+determine whether graph contents satisfy package and profile semantics. Those
+responsibilities belong to the package loader and validator.
 """
 
 # Future Library
@@ -85,8 +92,172 @@ class GraphPackageRepository:
 
     graph_packages_root: Path
 
+    @staticmethod
+    def _atomically_replace_manifest(
+        *,
+        candidate: GraphPackageCandidate,
+        manifest_bytes: bytes,
+        manifest_path: Path,
+        updated_bytes: bytes,
+    ) -> None:
+        """Atomically replace the manifest file with verified updated bytes.
+
+        Parameters
+        ----------
+        candidate
+            Safely discovered package candidate.
+        manifest_bytes
+            Exact bytes expected to still be present immediately before replacement.
+        manifest_path
+            Manifest path proven safe to replace.
+        updated_bytes
+            Canonical bytes to persist in place of the current manifest.
+
+        Raises
+        ------
+        PackageValidationError
+            If the manifest changed just before replacement, or the same-directory
+            atomic replacement could not be completed and verified safely.
+        """
+
+        temporary_path: Path | None = None
+
+        try:
+            with tempfile.NamedTemporaryFile(
+                delete=False,
+                dir=manifest_path.parent,
+                mode="wb",
+                prefix=".package_manifest.",
+                suffix=".tmp",
+            ) as stream:
+                temporary_path = Path(stream.name)
+                stream.write(updated_bytes)
+                stream.flush()
+                os.fsync(stream.fileno())
+
+            original_mode = stat.S_IMODE(os.lstat(manifest_path).st_mode)
+            temporary_path.chmod(original_mode)
+            staged_bytes = _read_regular_file_without_following(temporary_path)
+
+            if staged_bytes != updated_bytes:
+                raise OSError("The staged manifest bytes changed unexpectedly.")
+
+            GraphPackageManifest.model_validate_json(staged_bytes)
+            latest_bytes = _read_regular_file_without_following(manifest_path)
+
+            if latest_bytes != manifest_bytes:
+                # This concurrent-change signal is a PackageValidationError, which is
+                # deliberately not among the wrapped types below, so it propagates
+                # unchanged with its specific message rather than the generic one.
+                raise _package_error(
+                    details={"package_reference": candidate.reference},
+                    message="The package manifest changed during validation.",
+                )
+
+            os.replace(dst=manifest_path, src=temporary_path)
+            temporary_path = None
+
+            persisted_bytes = _read_regular_file_without_following(manifest_path)
+
+            if persisted_bytes != updated_bytes:
+                raise OSError("The persisted manifest bytes changed unexpectedly.")
+
+            GraphPackageManifest.model_validate_json(persisted_bytes)
+
+            if os.name != "nt":
+                directory_descriptor = os.open(
+                    flags=os.O_RDONLY, path=manifest_path.parent
+                )
+
+                try:
+                    os.fsync(directory_descriptor)
+                finally:
+                    os.close(directory_descriptor)
+        except (OSError, ValidationError, ValueError) as error:
+            raise _package_error(
+                details={
+                    "manifest_path": str(manifest_path),
+                    "package_reference": candidate.reference,
+                },
+                message="The package validation status could not be persisted safely.",
+            ) from error
+        finally:
+            if temporary_path is not None:
+                try:
+                    temporary_path.unlink(missing_ok=True)
+                except OSError:
+                    pass
+
+    @staticmethod
+    def _build_terminal_manifest(
+        *,
+        candidate: GraphPackageCandidate,
+        manifest: GraphPackageManifest,
+        target_status: ValidationStatus,
+        validated_at: datetime,
+    ) -> GraphPackageManifest:
+        """Build the terminal manifest, changing only its validation block.
+
+        Parameters
+        ----------
+        candidate
+            Safely discovered package candidate.
+        manifest
+            Validated pending manifest to transition.
+        target_status
+            Terminal status to record in the new validation block.
+        validated_at
+            One-time validation timestamp to record.
+
+        Returns
+        -------
+        GraphPackageManifest
+            Validated manifest identical to the original except its validation block.
+
+        Raises
+        ------
+        PackageValidationError
+            If the transitioned manifest is invalid or any package-defining field
+            (including ``createdAt``) would change.
+        """
+
+        updated_payload = manifest.model_dump(mode="python")
+        updated_payload["validation"] = PackageValidation(
+            status=target_status, validated_at=validated_at
+        )
+
+        try:
+            updated_manifest = GraphPackageManifest.model_validate(updated_payload)
+        except ValidationError as error:
+            raise _package_error(
+                details={
+                    "package_reference": candidate.reference,
+                    "validation_errors": error.errors(
+                        include_input=False, include_url=False
+                    ),
+                },
+                message="The terminal manifest transition is invalid.",
+            ) from error
+
+        defining_before = manifest.model_dump(exclude={"validation"}, mode="python")
+        defining_after = updated_manifest.model_dump(
+            exclude={"validation"}, mode="python"
+        )
+
+        if (
+            defining_before != defining_after
+            or updated_manifest.created_at != manifest.created_at
+        ):
+            raise _package_error(
+                details={"package_reference": candidate.reference},
+                message="Validation attempted to change package-defining manifest fields.",
+            )
+
+        return updated_manifest
+
+    @staticmethod
     def _candidate_from_names(
-        self, *, framework_name: str, root: Path, snapshot_name: str
+        *, framework_name: str, root: Path, snapshot_name: str
     ) -> GraphPackageCandidate:
         """Validate identity names and construct one safe package candidate.
 
@@ -177,6 +348,84 @@ class GraphPackageRepository:
             snapshot_id=snapshot_id,
         )
 
+    @staticmethod
+    def _require_no_name_collision(
+        *,
+        entries: list[os.DirEntry[str]],
+        extra_details: dict[str, object],
+        message: str,
+        names_key: str,
+    ) -> tuple[str, ...]:
+        """Require that entry names are distinct ignoring case.
+
+        Parameters
+        ----------
+        entries
+            Directory entries to check.
+        extra_details
+            Extra private diagnostics merged into a collision error alongside the
+            offending names.
+        message
+            Safe public message for a case-insensitive name collision.
+        names_key
+            Diagnostics key under which the entry names are reported on a collision.
+
+        Returns
+        -------
+        tuple[str, ...]
+            The entry names in their original order.
+
+        Raises
+        ------
+        PackageValidationError
+            If two entry names differ only by case.
+        """
+
+        names = tuple(entry.name for entry in entries)
+
+        if len(names) != len({name.casefold() for name in names}):
+            raise _package_error(
+                details={**extra_details, names_key: names}, message=message
+            )
+
+        return names
+
+    @staticmethod
+    def _require_safe_directory_entry(
+        *, entry: os.DirEntry[str], inspection_message: str, unsafe_message: str
+    ) -> None:
+        """Require that a directory entry is a real, non-symlink subdirectory.
+
+        Parameters
+        ----------
+        entry
+            Directory entry selected beneath a trusted directory.
+        inspection_message
+            Safe public message if the entry cannot be inspected safely.
+        unsafe_message
+            Safe public message if the entry is a symlink or not a directory.
+
+        Raises
+        ------
+        PackageValidationError
+            If the entry cannot be inspected, is a symbolic link, or is not a directory.
+        """
+
+        entry_path = str(Path(entry.path))
+
+        try:
+            is_directory = entry.is_dir(follow_symlinks=False)
+            is_symlink = entry.is_symlink()
+        except OSError as error:
+            raise _package_error(
+                details={"entry_path": entry_path}, message=inspection_message
+            ) from error
+
+        if is_symlink or not is_directory:
+            raise _package_error(
+                details={"entry_path": entry_path}, message=unsafe_message
+            )
+
     def _resolved_root(self) -> Path:
         """Resolve the configured graph-packages root as the trust boundary.
 
@@ -209,157 +458,138 @@ class GraphPackageRepository:
 
         return resolved_root
 
-    def candidate(
-        self, *, framework_id: FrameworkId, snapshot_id: SnapshotId
-    ) -> GraphPackageCandidate:
-        """Resolve one requested package strictly beneath the configured root.
+    def _snapshot_candidates_for_framework(
+        self, *, framework_entry: os.DirEntry[str], root: Path
+    ) -> list[GraphPackageCandidate]:
+        """Resolve every safe snapshot candidate under one framework entry.
 
         Parameters
         ----------
-        framework_id
-            Requested stable framework identifier.
-        snapshot_id
-            Requested immutable snapshot identifier.
+        framework_entry
+            Framework directory entry directly beneath the trust root.
+        root
+            Resolved graph-packages trust boundary.
 
         Returns
         -------
-        GraphPackageCandidate
-            Safe existing package candidate.
-        """
-
-        return self._candidate_from_names(
-            framework_name=str(framework_id),
-            root=self._resolved_root(),
-            snapshot_name=str(snapshot_id),
-        )
-
-    def discover(self) -> tuple[GraphPackageCandidate, ...]:
-        """Discover every package in the established two-level directory layout.
-
-        Returns
-        -------
-        tuple[GraphPackageCandidate, ...]
-            Deterministically ordered safe package candidates.
+        list[GraphPackageCandidate]
+            Name-ordered safe candidates for the framework entry.
 
         Raises
         ------
         PackageValidationError
-            If discovery encounters a symlink, file, special entry, invalid identity,
-            case-insensitive collision, or unreadable directory.
+            If the framework name or any snapshot entry is invalid or unsafe, or a
+            directory cannot be enumerated.
         """
 
-        root = self._resolved_root()
-
         try:
-            with os.scandir(root) as iterator:
-                framework_entries = sorted(iterator, key=lambda entry: entry.name)
-        except OSError as error:
+            _FRAMEWORK_ID_ADAPTER.validate_python(framework_entry.name)
+        except ValidationError as error:
             raise _package_error(
-                details={"graph_packages_root": str(root)},
-                message="The graph-packages root could not be enumerated.",
+                details={
+                    "framework_entry": framework_entry.name,
+                    "validation_errors": error.errors(
+                        include_input=False, include_url=False
+                    ),
+                },
+                message=(
+                    "A graph-packages framework directory has an invalid "
+                    "identifier name."
+                ),
             ) from error
 
-        framework_names = tuple(entry.name for entry in framework_entries)
+        self._require_safe_directory_entry(
+            entry=framework_entry,
+            inspection_message=(
+                "A graph-packages framework entry could not be inspected safely."
+            ),
+            unsafe_message=(
+                "The graph-packages root contains an unsafe framework entry."
+            ),
+        )
 
-        if len(framework_names) != len({name.casefold() for name in framework_names}):
-            raise _package_error(
-                details={"framework_entries": framework_names},
-                message="Framework directories have a case-insensitive name collision.",
-            )
+        framework_path = Path(framework_entry.path)
+        snapshot_entries = self._sorted_directory_entries(
+            directory=framework_path,
+            enumeration_details={"framework_path": str(framework_path)},
+            enumeration_message=(
+                "A framework package directory could not be enumerated."
+            ),
+        )
+        self._require_no_name_collision(
+            entries=snapshot_entries,
+            extra_details={"framework_entry": framework_entry.name},
+            message=("Snapshot directories have a case-insensitive name collision."),
+            names_key="snapshot_entries",
+        )
 
         candidates: list[GraphPackageCandidate] = []
 
-        for framework_entry in framework_entries:
-            framework_path = Path(framework_entry.path)
-
-            try:
-                _FRAMEWORK_ID_ADAPTER.validate_python(framework_entry.name)
-            except ValidationError as error:
-                raise _package_error(
-                    details={
-                        "framework_entry": framework_entry.name,
-                        "validation_errors": error.errors(
-                            include_input=False, include_url=False
-                        ),
-                    },
-                    message=(
-                        "A graph-packages framework directory has an invalid "
-                        "identifier name."
-                    ),
-                ) from error
-
-            try:
-                framework_is_directory = framework_entry.is_dir(follow_symlinks=False)
-                framework_is_symlink = framework_entry.is_symlink()
-            except OSError as error:
-                raise _package_error(
-                    details={"entry_path": str(framework_path)},
-                    message="A graph-packages framework entry could not be inspected safely.",
-                ) from error
-
-            if framework_is_symlink or not framework_is_directory:
-                raise _package_error(
-                    details={"entry_path": str(framework_path)},
-                    message="The graph-packages root contains an unsafe framework entry.",
+        for snapshot_entry in snapshot_entries:
+            self._require_safe_directory_entry(
+                entry=snapshot_entry,
+                inspection_message=(
+                    "A graph-package entry could not be inspected safely."
+                ),
+                unsafe_message=(
+                    "A framework directory contains an unsafe package entry."
+                ),
+            )
+            candidates.append(
+                self._candidate_from_names(
+                    framework_name=framework_entry.name,
+                    root=root,
+                    snapshot_name=snapshot_entry.name,
                 )
+            )
 
-            try:
-                with os.scandir(framework_path) as iterator:
-                    snapshot_entries = sorted(iterator, key=lambda entry: entry.name)
-            except OSError as error:
-                raise _package_error(
-                    details={"framework_path": str(framework_path)},
-                    message="A framework package directory could not be enumerated.",
-                ) from error
+        return candidates
 
-            snapshot_names = tuple(entry.name for entry in snapshot_entries)
+    @staticmethod
+    def _sorted_directory_entries(
+        *,
+        directory: Path,
+        enumeration_details: dict[str, object],
+        enumeration_message: str,
+    ) -> list[os.DirEntry[str]]:
+        """Enumerate a directory into name-sorted entries.
 
-            if len(snapshot_names) != len({name.casefold() for name in snapshot_names}):
-                raise _package_error(
-                    details={
-                        "framework_entry": framework_entry.name,
-                        "snapshot_entries": snapshot_names,
-                    },
-                    message="Snapshot directories have a case-insensitive name collision.",
-                )
+        Parameters
+        ----------
+        directory
+            Directory to enumerate as a filesystem trust member.
+        enumeration_details
+            Private diagnostics reported if enumeration fails.
+        enumeration_message
+            Safe public message reported if enumeration fails.
 
-            for snapshot_entry in snapshot_entries:
-                snapshot_path = Path(snapshot_entry.path)
+        Returns
+        -------
+        list[os.DirEntry[str]]
+            Directory entries sorted by name.
 
-                try:
-                    snapshot_is_directory = snapshot_entry.is_dir(follow_symlinks=False)
-                    snapshot_is_symlink = snapshot_entry.is_symlink()
-                except OSError as error:
-                    raise _package_error(
-                        details={"entry_path": str(snapshot_path)},
-                        message="A graph-package entry could not be inspected safely.",
-                    ) from error
+        Raises
+        ------
+        PackageValidationError
+            If the directory cannot be enumerated.
+        """
 
-                if snapshot_is_symlink or not snapshot_is_directory:
-                    raise _package_error(
-                        details={"entry_path": str(snapshot_path)},
-                        message="A framework directory contains an unsafe package entry.",
-                    )
+        try:
+            with os.scandir(directory) as iterator:
+                return sorted(iterator, key=lambda entry: entry.name)
+        except OSError as error:
+            raise _package_error(
+                details=enumeration_details, message=enumeration_message
+            ) from error
 
-                candidates.append(
-                    self._candidate_from_names(
-                        framework_name=framework_entry.name,
-                        root=root,
-                        snapshot_name=snapshot_entry.name,
-                    )
-                )
-
-        return tuple(candidates)
-
-    def persist_validation_transition(
-        self,
+    @staticmethod
+    def _verify_manifest_contract(
         *,
         candidate: GraphPackageCandidate,
         manifest: GraphPackageManifest,
-        manifest_bytes: bytes,
         target_status: ValidationStatus,
-    ) -> PersistedManifestTransition:
-        """Atomically transition one unchanged pending manifest to a terminal status.
+    ) -> None:
+        """Verify the in-memory status, identity, and package contract.
 
         Parameters
         ----------
@@ -367,21 +597,14 @@ class GraphPackageRepository:
             Safely discovered package candidate.
         manifest
             Validated manifest originally loaded from the candidate.
-        manifest_bytes
-            Exact bytes observed when the manifest was loaded.
         target_status
             Computed terminal status to persist.
-
-        Returns
-        -------
-        PersistedManifestTransition
-            Updated manifest, exact persisted bytes, and one-time validation timestamp.
 
         Raises
         ------
         PackageValidationError
-            If the transition is unsupported, the manifest changed concurrently, its
-            location became unsafe, or atomic persistence fails.
+            If the target status is not terminal, the identity disagrees, the revision
+            or graph-type contract is unsupported, or the manifest is not pending.
         """
 
         if target_status not in _TERMINAL_STATUSES:
@@ -437,6 +660,44 @@ class GraphPackageRepository:
                 message="Only a pending package may transition to a terminal status.",
             )
 
+    def _verify_transition_preconditions(
+        self,
+        *,
+        candidate: GraphPackageCandidate,
+        manifest: GraphPackageManifest,
+        manifest_bytes: bytes,
+        target_status: ValidationStatus,
+    ) -> Path:
+        """Verify every precondition for a pending-to-terminal transition.
+
+        Parameters
+        ----------
+        candidate
+            Safely discovered package candidate.
+        manifest
+            Validated manifest originally loaded from the candidate.
+        manifest_bytes
+            Exact bytes observed when the manifest was loaded.
+        target_status
+            Computed terminal status to persist.
+
+        Returns
+        -------
+        Path
+            Freshly re-resolved manifest path proven safe to replace.
+
+        Raises
+        ------
+        PackageValidationError
+            If the transition is unsupported, the identity or contract disagrees, the
+            manifest is not pending, its location became unsafe, or it changed since it
+            was loaded.
+        """
+
+        self._verify_manifest_contract(
+            candidate=candidate, manifest=manifest, target_status=target_status
+        )
+
         current_candidate = self.candidate(
             framework_id=candidate.framework_id, snapshot_id=candidate.snapshot_id
         )
@@ -488,106 +749,126 @@ class GraphPackageRepository:
                 message="The supplied manifest model does not match its originally loaded bytes.",
             )
 
-        validated_at = datetime.now(timezone.utc).replace(microsecond=0)
-        updated_payload = manifest.model_dump(mode="python")
-        updated_payload["validation"] = PackageValidation(
-            status=target_status, validated_at=validated_at
+        return manifest_path
+
+    def candidate(
+        self, *, framework_id: FrameworkId, snapshot_id: SnapshotId
+    ) -> GraphPackageCandidate:
+        """Resolve one requested package strictly beneath the configured root.
+
+        Parameters
+        ----------
+        framework_id
+            Requested stable framework identifier.
+        snapshot_id
+            Requested immutable snapshot identifier.
+
+        Returns
+        -------
+        GraphPackageCandidate
+            Safe existing package candidate.
+        """
+
+        return self._candidate_from_names(
+            framework_name=str(framework_id),
+            root=self._resolved_root(),
+            snapshot_name=str(snapshot_id),
         )
 
-        try:
-            updated_manifest = GraphPackageManifest.model_validate(updated_payload)
-        except ValidationError as error:
-            raise _package_error(
-                details={
-                    "package_reference": candidate.reference,
-                    "validation_errors": error.errors(
-                        include_input=False, include_url=False
-                    ),
-                },
-                message="The terminal manifest transition is invalid.",
-            ) from error
+    def discover(self) -> tuple[GraphPackageCandidate, ...]:
+        """Discover every package in the established two-level directory layout.
 
-        defining_before = manifest.model_dump(exclude={"validation"}, mode="python")
-        defining_after = updated_manifest.model_dump(
-            exclude={"validation"}, mode="python"
+        Returns
+        -------
+        tuple[GraphPackageCandidate, ...]
+            Deterministically ordered safe package candidates.
+
+        Raises
+        ------
+        PackageValidationError
+            If discovery encounters a symlink, file, special entry, invalid identity,
+            case-insensitive collision, or unreadable directory.
+        """
+
+        root = self._resolved_root()
+        framework_entries = self._sorted_directory_entries(
+            directory=root,
+            enumeration_details={"graph_packages_root": str(root)},
+            enumeration_message="The graph-packages root could not be enumerated.",
+        )
+        self._require_no_name_collision(
+            entries=framework_entries,
+            extra_details={},
+            message=("Framework directories have a case-insensitive name collision."),
+            names_key="framework_entries",
         )
 
-        if (
-            defining_before != defining_after
-            or updated_manifest.created_at != manifest.created_at
-        ):
-            raise _package_error(
-                details={"package_reference": candidate.reference},
-                message="Validation attempted to change package-defining manifest fields.",
+        candidates: list[GraphPackageCandidate] = []
+
+        for framework_entry in framework_entries:
+            candidates.extend(
+                self._snapshot_candidates_for_framework(
+                    framework_entry=framework_entry, root=root
+                )
             )
 
+        return tuple(candidates)
+
+    def persist_validation_transition(
+        self,
+        *,
+        candidate: GraphPackageCandidate,
+        manifest: GraphPackageManifest,
+        manifest_bytes: bytes,
+        target_status: ValidationStatus,
+    ) -> PersistedManifestTransition:
+        """Atomically transition one unchanged pending manifest to a terminal status.
+
+        Parameters
+        ----------
+        candidate
+            Safely discovered package candidate.
+        manifest
+            Validated manifest originally loaded from the candidate.
+        manifest_bytes
+            Exact bytes observed when the manifest was loaded.
+        target_status
+            Computed terminal status to persist.
+
+        Returns
+        -------
+        PersistedManifestTransition
+            Updated manifest, exact persisted bytes, and one-time validation timestamp.
+
+        Raises
+        ------
+        PackageValidationError
+            If the transition is unsupported, the manifest changed concurrently, its
+            location became unsafe, or atomic persistence fails.
+        """
+
+        manifest_path = self._verify_transition_preconditions(
+            candidate=candidate,
+            manifest=manifest,
+            manifest_bytes=manifest_bytes,
+            target_status=target_status,
+        )
+
+        validated_at = datetime.now(timezone.utc).replace(microsecond=0)
+        updated_manifest = self._build_terminal_manifest(
+            candidate=candidate,
+            manifest=manifest,
+            target_status=target_status,
+            validated_at=validated_at,
+        )
         updated_bytes = _canonical_manifest_bytes(updated_manifest)
-        temporary_path: Path | None = None
 
-        try:
-            with tempfile.NamedTemporaryFile(
-                delete=False,
-                dir=manifest_path.parent,
-                mode="wb",
-                prefix=".package_manifest.",
-                suffix=".tmp",
-            ) as stream:
-                temporary_path = Path(stream.name)
-                stream.write(updated_bytes)
-                stream.flush()
-                os.fsync(stream.fileno())
-
-            original_mode = stat.S_IMODE(os.lstat(manifest_path).st_mode)
-            temporary_path.chmod(original_mode)
-            staged_bytes = _read_regular_file_without_following(temporary_path)
-
-            if staged_bytes != updated_bytes:
-                raise OSError("The staged manifest bytes changed unexpectedly.")
-
-            GraphPackageManifest.model_validate_json(staged_bytes)
-            latest_bytes = _read_regular_file_without_following(manifest_path)
-
-            if latest_bytes != manifest_bytes:
-                raise _package_error(
-                    details={"package_reference": candidate.reference},
-                    message="The package manifest changed during validation.",
-                )
-
-            os.replace(dst=manifest_path, src=temporary_path)
-            temporary_path = None
-
-            persisted_bytes = _read_regular_file_without_following(manifest_path)
-
-            if persisted_bytes != updated_bytes:
-                raise OSError("The persisted manifest bytes changed unexpectedly.")
-
-            GraphPackageManifest.model_validate_json(persisted_bytes)
-
-            if os.name != "nt":
-                directory_descriptor = os.open(
-                    flags=os.O_RDONLY, path=manifest_path.parent
-                )
-
-                try:
-                    os.fsync(directory_descriptor)
-                finally:
-                    os.close(directory_descriptor)
-        except PackageValidationError:
-            raise
-        except (OSError, ValidationError, ValueError) as error:
-            raise _package_error(
-                details={
-                    "manifest_path": str(manifest_path),
-                    "package_reference": candidate.reference,
-                },
-                message="The package validation status could not be persisted safely.",
-            ) from error
-        finally:
-            if temporary_path is not None:
-                try:
-                    temporary_path.unlink(missing_ok=True)
-                except OSError:
-                    pass
+        self._atomically_replace_manifest(
+            candidate=candidate,
+            manifest_bytes=manifest_bytes,
+            manifest_path=manifest_path,
+            updated_bytes=updated_bytes,
+        )
 
         return PersistedManifestTransition(
             manifest=updated_manifest,
