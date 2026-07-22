@@ -1,19 +1,34 @@
-"""This module contains functionalities for building or dry-running deterministic
-pending graph-package manifests.
+"""This module contains the entry point for building or dry-running deterministic
+**pending** graph-package manifests.
+
+Invoke from the backend directory with either a build specification:
+
+    python -m kgfegmcp.cli.build_manifests --spec PATH
+
+or explicit package inputs:
+
+    python -m kgfegmcp.cli.build_manifests build \
+        --profile-id PROFILE_ID \
+        --profile-version PROFILE_VERSION \
+        --version-token VERSION_TOKEN \
+        --jurisdiction-type JURISDICTION_TYPE \
+        --nodes PATH \
+        --relationships PATH \
+        --output-root PATH
 """
 
 # Future Library
 from __future__ import annotations
 
 # Standard Library
-import argparse
 import json
-import sys
 
 from collections.abc import Sequence
 from pathlib import Path
 
 # Third Party Library
+import typer
+
 from pydantic import ValidationError
 
 # Package Library
@@ -26,120 +41,61 @@ from kgfegmcp.packages.models import (
     SnapshotRelation,
 )
 
-
-def _build_parser() -> argparse.ArgumentParser:
-    """Create the manifest-build command-line parser.
-
-    Returns
-    -------
-    argparse.ArgumentParser
-        Parser supporting JSON build specifications and explicit build inputs.
-    """
-
-    parser = argparse.ArgumentParser(
-        description=(
-            "Construct a deterministic pending graph package from a selected profile "
-            "and accepted as_* artifacts."
-        )
-    )
-    parser.add_argument(
-        "--additional-artifact",
-        action="append",
-        default=[],
-        help=(
-            "Explicit nonstandard artifact as LOGICAL_NAME=PATH. Repeat for each "
-            "artifact."
-        ),
-        metavar="NAME=PATH",
-    )
-    parser.add_argument(
-        "--detailed-artifact",
-        action="append",
-        default=[],
-        help="Explicit recognized detailed as_* artifact. Repeat as needed.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--detailed-root",
-        "--detailed-artifacts-directory",
-        dest="detailed_artifacts_directory",
-        help="Directory from which only recognized detailed as_* artifacts are used.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Display the proposed manifest and output paths without writing files.",
-    )
-    parser.add_argument(
-        "--jurisdiction-type",
-        help="Operator-approved jurisdiction type for framework metadata.",
-    )
-    parser.add_argument(
-        "--nodes",
-        help="Accepted canonical as_nodes_XXX.jsonl artifact.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--output-root",
-        help="Graph-packages output root.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--profile-id",
-        help="Selected versioned curriculum profile identifier.",
-    )
-    parser.add_argument(
-        "--profile-version",
-        help="Selected immutable curriculum profile version.",
-    )
-    parser.add_argument(
-        "--project-dir",
-        help="Repository root used to resolve project-relative paths.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--relationships",
-        help="Accepted canonical as_relationships_XXX.jsonl artifact.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--snapshot-relation",
-        action="append",
-        default=[],
-        help=(
-            "Operator-approved SnapshotRelation JSON object. Repeat for each relation."
-        ),
-        metavar="JSON",
-    )
-    parser.add_argument(
-        "--source-document",
-        help="Optional source document whose exact-byte checksum is recorded.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--source-publication-date",
-        help="Optional authoritative source publication date in YYYY-MM-DD form.",
-    )
-    parser.add_argument(
-        "--spec",
-        help="Path to one PackageBuildSpec JSON document.",
-        metavar="PATH",
-    )
-    parser.add_argument(
-        "--version-token",
-        help="Authoritative immutable snapshot version token.",
-    )
-    return parser
+cli = typer.Typer(
+    help=(
+        "Construct deterministic pending graph packages from selected profiles and "
+        "accepted artifacts."
+    ),
+    no_args_is_help=True,
+)
 
 
-def _build_explicit_spec(namespace: argparse.Namespace) -> PackageBuildSpec:
+def _build_explicit_spec(
+    *,
+    additional_artifact: Sequence[str],
+    detailed_artifact: Sequence[Path],
+    detailed_artifacts_directory: Path | None,
+    jurisdiction_type: str | None,
+    nodes: Path | None,
+    output_root: Path | None,
+    profile_id: str | None,
+    profile_version: str | None,
+    relationships: Path | None,
+    snapshot_relation: Sequence[str],
+    source_document: Path | None,
+    source_publication_date: str | None,
+    version_token: str | None,
+) -> PackageBuildSpec:
     """Build and validate a specification from explicit CLI values.
 
     Parameters
     ----------
-    namespace
-        Parsed command-line namespace.
+    additional_artifact
+        Repeated explicit nonstandard artifact declarations.
+    detailed_artifact
+        Repeated recognized detailed artifact paths.
+    detailed_artifacts_directory
+        Optional directory containing recognized detailed artifacts.
+    jurisdiction_type
+        Operator-approved jurisdiction type.
+    nodes
+        Accepted canonical node delivery artifact.
+    output_root
+        Graph-packages output root.
+    profile_id
+        Selected curriculum profile identifier.
+    profile_version
+        Selected curriculum profile version.
+    relationships
+        Accepted canonical relationship delivery artifact.
+    snapshot_relation
+        Repeated approved snapshot-relation JSON objects.
+    source_document
+        Optional source document whose checksum is recorded.
+    source_publication_date
+        Optional authoritative source publication date.
+    version_token
+        Authoritative immutable snapshot version token.
 
     Returns
     -------
@@ -154,36 +110,20 @@ def _build_explicit_spec(namespace: argparse.Namespace) -> PackageBuildSpec:
         If the established build specification rejects explicit values.
     """
 
-    additional_artifacts = _parse_additional_artifacts(namespace.additional_artifact)
-    snapshot_relations = _parse_snapshot_relations(namespace.snapshot_relation)
     values = {
-        "additional_artifacts": additional_artifacts,
-        "detailed_artifacts": tuple(
-            Path(value) for value in namespace.detailed_artifact
-        ),
-        "detailed_artifacts_directory": (
-            None
-            if namespace.detailed_artifacts_directory is None
-            else Path(namespace.detailed_artifacts_directory)
-        ),
-        "jurisdiction_type": namespace.jurisdiction_type,
-        "nodes": None if namespace.nodes is None else Path(namespace.nodes),
-        "output_root": (
-            None if namespace.output_root is None else Path(namespace.output_root)
-        ),
-        "profile_id": namespace.profile_id,
-        "profile_version": namespace.profile_version,
-        "relationships": (
-            None if namespace.relationships is None else Path(namespace.relationships)
-        ),
-        "snapshot_relations": snapshot_relations,
-        "source_document": (
-            None
-            if namespace.source_document is None
-            else Path(namespace.source_document)
-        ),
-        "source_publication_date": namespace.source_publication_date,
-        "version_token": namespace.version_token,
+        "additional_artifacts": _parse_additional_artifacts(additional_artifact),
+        "detailed_artifacts": tuple(detailed_artifact),
+        "detailed_artifacts_directory": detailed_artifacts_directory,
+        "jurisdiction_type": jurisdiction_type,
+        "nodes": nodes,
+        "output_root": output_root,
+        "profile_id": profile_id,
+        "profile_version": profile_version,
+        "relationships": relationships,
+        "snapshot_relations": _parse_snapshot_relations(snapshot_relation),
+        "source_document": source_document,
+        "source_publication_date": source_publication_date,
+        "version_token": version_token,
     }
     return PackageBuildSpec.model_validate(values)
 
@@ -199,7 +139,7 @@ def _duplicate_key_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
     Returns
     -------
     dict[str, object]
-        Object preserving the final source order without duplicate keys.
+        Object preserving the source order without duplicate keys.
 
     Raises
     ------
@@ -218,37 +158,76 @@ def _duplicate_key_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
     return result
 
 
-def _explicit_inputs_present(namespace: argparse.Namespace) -> bool:
-    """Return whether any explicit build input accompanies a specification file.
+def _explicit_inputs_present(
+    *,
+    additional_artifact: Sequence[str],
+    detailed_artifact: Sequence[Path],
+    detailed_artifacts_directory: Path | None,
+    jurisdiction_type: str | None,
+    nodes: Path | None,
+    output_root: Path | None,
+    profile_id: str | None,
+    profile_version: str | None,
+    relationships: Path | None,
+    snapshot_relation: Sequence[str],
+    source_document: Path | None,
+    source_publication_date: str | None,
+    version_token: str | None,
+) -> bool:
+    """Return whether explicit build inputs accompany a specification file.
 
     Parameters
     ----------
-    namespace
-        Parsed command-line namespace.
+    additional_artifact
+        Repeated explicit nonstandard artifact declarations.
+    detailed_artifact
+        Repeated recognized detailed artifact paths.
+    detailed_artifacts_directory
+        Optional directory containing recognized detailed artifacts.
+    jurisdiction_type
+        Operator-approved jurisdiction type.
+    nodes
+        Accepted canonical node delivery artifact.
+    output_root
+        Graph-packages output root.
+    profile_id
+        Selected curriculum profile identifier.
+    profile_version
+        Selected curriculum profile version.
+    relationships
+        Accepted canonical relationship delivery artifact.
+    snapshot_relation
+        Repeated approved snapshot-relation JSON objects.
+    source_document
+        Optional source document whose checksum is recorded.
+    source_publication_date
+        Optional authoritative source publication date.
+    version_token
+        Authoritative immutable snapshot version token.
 
     Returns
     -------
     bool
-        ``True`` when at least one non-specification build value was supplied.
+        ``True`` when at least one explicit build value was supplied.
     """
 
-    scalar_names = (
-        "detailed_artifacts_directory",
-        "jurisdiction_type",
-        "nodes",
-        "output_root",
-        "profile_id",
-        "profile_version",
-        "relationships",
-        "source_document",
-        "source_publication_date",
-        "version_token",
+    scalar_values = (
+        detailed_artifacts_directory,
+        jurisdiction_type,
+        nodes,
+        output_root,
+        profile_id,
+        profile_version,
+        relationships,
+        source_document,
+        source_publication_date,
+        version_token,
     )
     return bool(
-        namespace.additional_artifact
-        or namespace.detailed_artifact
-        or namespace.snapshot_relation
-        or any(getattr(namespace, name) is not None for name in scalar_names)
+        additional_artifact
+        or detailed_artifact
+        or snapshot_relation
+        or any(value is not None for value in scalar_values)
     )
 
 
@@ -268,15 +247,14 @@ def _load_spec(path: Path) -> PackageBuildSpec:
     Raises
     ------
     ManifestBuildError
-        If the document is unreadable, malformed, duplicated, or not a JSON object.
+        If the document is unreadable, malformed, duplicated, or not an object.
     ValidationError
         If the established build specification rejects the document.
     """
 
     try:
         payload = json.loads(
-            object_pairs_hook=_duplicate_key_object,
-            s=path.read_bytes(),
+            object_pairs_hook=_duplicate_key_object, s=path.read_bytes()
         )
     except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
         raise ManifestBuildError(
@@ -291,6 +269,53 @@ def _load_spec(path: Path) -> PackageBuildSpec:
         )
 
     return PackageBuildSpec.model_validate(payload)
+
+
+def _missing_explicit_options(
+    *,
+    jurisdiction_type: str | None,
+    nodes: Path | None,
+    output_root: Path | None,
+    profile_id: str | None,
+    profile_version: str | None,
+    relationships: Path | None,
+    version_token: str | None,
+) -> tuple[str, ...]:
+    """Return required explicit options that were not supplied.
+
+    Parameters
+    ----------
+    jurisdiction_type
+        Operator-approved jurisdiction type.
+    nodes
+        Accepted canonical node delivery artifact.
+    output_root
+        Graph-packages output root.
+    profile_id
+        Selected curriculum profile identifier.
+    profile_version
+        Selected curriculum profile version.
+    relationships
+        Accepted canonical relationship delivery artifact.
+    version_token
+        Authoritative immutable snapshot version token.
+
+    Returns
+    -------
+    tuple[str, ...]
+        Missing command-line option names in deterministic order.
+    """
+
+    values = {
+        "--jurisdiction-type": jurisdiction_type,
+        "--nodes": nodes,
+        "--output-root": output_root,
+        "--profile-id": profile_id,
+        "--profile-version": profile_version,
+        "--relationships": relationships,
+        "--version-token": version_token,
+    }
+    return tuple(name for name, value in values.items() if value is None)
 
 
 def _parse_additional_artifacts(values: Sequence[str]) -> dict[str, Path]:
@@ -309,7 +334,7 @@ def _parse_additional_artifacts(values: Sequence[str]) -> dict[str, Path]:
     Raises
     ------
     ManifestBuildError
-        If a declaration is malformed or a logical name is repeated case-insensitively.
+        If a declaration is malformed or a logical name is repeated.
     """
 
     artifacts: dict[str, Path] = {}
@@ -322,17 +347,14 @@ def _parse_additional_artifacts(values: Sequence[str]) -> dict[str, Path]:
         if not separator or not logical_name or not raw_path:
             raise ManifestBuildError(
                 details={"additional_artifact": value},
-                message=(
-                    "Each additional artifact must use the form LOGICAL_NAME=PATH."
-                ),
+                message="Each additional artifact must use LOGICAL_NAME=PATH.",
             )
 
         if normalized_name in normalized_names:
             raise ManifestBuildError(
                 details={"logical_name": logical_name},
                 message=(
-                    "Additional artifact logical names must be case-insensitively "
-                    "unique."
+                    "Additional artifact logical names must be case-insensitively unique."
                 ),
             )
 
@@ -348,12 +370,12 @@ def _parse_snapshot_relations(values: Sequence[str]) -> tuple[SnapshotRelation, 
     Parameters
     ----------
     values
-        Repeated JSON object strings matching the existing SnapshotRelation model.
+        Repeated JSON objects matching the existing SnapshotRelation model.
 
     Returns
     -------
     tuple[SnapshotRelation, ...]
-        Validated snapshot relation records in operator-supplied order.
+        Validated snapshot relation records in supplied order.
 
     Raises
     ------
@@ -367,10 +389,7 @@ def _parse_snapshot_relations(values: Sequence[str]) -> tuple[SnapshotRelation, 
 
     for index, value in enumerate(iterable=values, start=1):
         try:
-            payload = json.loads(
-                object_pairs_hook=_duplicate_key_object,
-                s=value,
-            )
+            payload = json.loads(object_pairs_hook=_duplicate_key_object, s=value)
         except (json.JSONDecodeError, ValueError) as error:
             raise ManifestBuildError(
                 details={"relation_index": index},
@@ -399,20 +418,15 @@ def _render_result(result: PackageBuildResult) -> str:
     Returns
     -------
     str
-        Stable lower-camel-case JSON summary containing the full pending manifest.
+        Stable lower-camel-case JSON summary containing the pending manifest.
     """
 
     payload = result.model_dump(by_alias=True, mode="json")
-    return json.dumps(
-        ensure_ascii=False,
-        indent=2,
-        obj=payload,
-        sort_keys=True,
-    )
+    return json.dumps(ensure_ascii=False, indent=2, obj=payload, sort_keys=True)
 
 
 def _render_validation_error(error: ValidationError) -> str:
-    """Render Pydantic failures without echoing operator-supplied input values.
+    """Render Pydantic failures without echoing supplied input values.
 
     Parameters
     ----------
@@ -434,13 +448,13 @@ def _render_validation_error(error: ValidationError) -> str:
     return "Build inputs are invalid: " + "; ".join(messages)
 
 
-def _settings_for_namespace(namespace: argparse.Namespace) -> BackendSettings:
+def _settings_for_project_dir(project_dir: Path | None) -> BackendSettings:
     """Load settings with an optional explicit repository-root override.
 
     Parameters
     ----------
-    namespace
-        Parsed command-line namespace.
+    project_dir
+        Optional repository root used to resolve project-relative paths.
 
     Returns
     -------
@@ -448,82 +462,227 @@ def _settings_for_namespace(namespace: argparse.Namespace) -> BackendSettings:
         Validated environment-backed repository settings.
     """
 
-    if namespace.project_dir is None:
+    if project_dir is None:
         return load_settings()
 
-    project_dir = Path(namespace.project_dir).expanduser().resolve(strict=False)
-    return BackendSettings(project_dir=project_dir)
+    return BackendSettings(project_dir=project_dir.expanduser().resolve(strict=False))
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    """Execute one manifest build or dry-run command.
+@cli.command()
+def build(  # pylint: disable=R0917
+    additional_artifact: list[str] = typer.Option(
+        None,
+        "--additional-artifact",
+        help=(
+            "Explicit nonstandard artifact as LOGICAL_NAME=PATH. Repeat for each artifact."
+        ),
+        metavar="NAME=PATH",
+    ),
+    detailed_artifact: list[Path] = typer.Option(
+        None,
+        "--detailed-artifact",
+        dir_okay=False,
+        exists=True,
+        file_okay=True,
+        help="Explicit recognized detailed as_* artifact. Repeat as needed.",
+        metavar="PATH",
+        readable=True,
+        resolve_path=True,
+    ),
+    detailed_artifacts_directory: Path | None = typer.Option(
+        None,
+        "--detailed-root",
+        "--detailed-artifacts-directory",
+        dir_okay=True,
+        exists=True,
+        file_okay=False,
+        help="Directory from which recognized detailed as_* artifacts are used.",
+        metavar="PATH",
+        readable=True,
+        resolve_path=True,
+    ),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help="Display the proposed manifest and paths without writing files.",
+    ),
+    jurisdiction_type: str | None = typer.Option(
+        None,
+        "--jurisdiction-type",
+        help="Operator-approved jurisdiction type for framework metadata.",
+    ),
+    nodes: Path | None = typer.Option(
+        None,
+        "--nodes",
+        dir_okay=False,
+        exists=True,
+        file_okay=True,
+        help="Accepted canonical as_nodes_XXX.jsonl artifact.",
+        metavar="PATH",
+        readable=True,
+        resolve_path=True,
+    ),
+    output_root: Path | None = typer.Option(
+        None,
+        "--output-root",
+        dir_okay=True,
+        file_okay=False,
+        help="Graph-packages output root.",
+        metavar="PATH",
+        resolve_path=True,
+    ),
+    profile_id: str | None = typer.Option(
+        None, "--profile-id", help="Selected versioned curriculum profile identifier."
+    ),
+    profile_version: str | None = typer.Option(
+        None, "--profile-version", help="Selected immutable curriculum profile version."
+    ),
+    project_dir: Path | None = typer.Option(
+        None,
+        "--project-dir",
+        dir_okay=True,
+        exists=True,
+        file_okay=False,
+        help="Repository root used to resolve project-relative paths.",
+        metavar="PATH",
+        readable=True,
+        resolve_path=True,
+    ),
+    relationships: Path | None = typer.Option(
+        None,
+        "--relationships",
+        dir_okay=False,
+        exists=True,
+        file_okay=True,
+        help="Accepted canonical as_relationships_XXX.jsonl artifact.",
+        metavar="PATH",
+        readable=True,
+        resolve_path=True,
+    ),
+    snapshot_relation: list[str] = typer.Option(
+        None,
+        "--snapshot-relation",
+        help="Approved SnapshotRelation JSON object. Repeat for each relation.",
+        metavar="JSON",
+    ),
+    source_document: Path | None = typer.Option(
+        None,
+        "--source-document",
+        dir_okay=False,
+        exists=True,
+        file_okay=True,
+        help="Optional source document whose exact-byte checksum is recorded.",
+        metavar="PATH",
+        readable=True,
+        resolve_path=True,
+    ),
+    source_publication_date: str | None = typer.Option(
+        None,
+        "--source-publication-date",
+        help="Optional authoritative source publication date in YYYY-MM-DD form.",
+    ),
+    spec: Path | None = typer.Option(
+        None,
+        "--spec",
+        dir_okay=False,
+        exists=True,
+        file_okay=True,
+        help="Path to one PackageBuildSpec JSON document.",
+        metavar="PATH",
+        readable=True,
+        resolve_path=True,
+    ),
+    version_token: str | None = typer.Option(
+        None, "--version-token", help="Authoritative immutable snapshot version token."
+    ),
+) -> None:
+    """Build or dry-run one deterministic pending graph package.
 
-    Parameters
-    ----------
-    argv
-        Optional argument sequence excluding the executable name.
+    Supply either ``--spec`` or the required explicit build options. A specification
+    file cannot be combined with explicit package inputs. ``--project-dir`` and
+    ``--dry-run`` control execution and may accompany either input mode.
 
-    Returns
-    -------
-    int
-        Process status code: zero for success and one for a typed build failure.
+    Raises
+    ------
+    typer.Exit
+        If input validation or graph-package construction fails.
     """
 
-    parser = _build_parser()
-    namespace = parser.parse_args(args=argv)
+    explicit_inputs_present = _explicit_inputs_present(
+        additional_artifact=additional_artifact,
+        detailed_artifact=detailed_artifact,
+        detailed_artifacts_directory=detailed_artifacts_directory,
+        jurisdiction_type=jurisdiction_type,
+        nodes=nodes,
+        output_root=output_root,
+        profile_id=profile_id,
+        profile_version=profile_version,
+        relationships=relationships,
+        snapshot_relation=snapshot_relation,
+        source_document=source_document,
+        source_publication_date=source_publication_date,
+        version_token=version_token,
+    )
 
-    if namespace.spec is not None and _explicit_inputs_present(namespace):
-        parser.error("--spec may not be combined with explicit build inputs.")
-
-    if namespace.spec is None:
-        required_names = (
-            "jurisdiction_type",
-            "nodes",
-            "output_root",
-            "profile_id",
-            "profile_version",
-            "relationships",
-            "version_token",
+    if spec is not None and explicit_inputs_present:
+        raise typer.BadParameter(
+            "--spec may not be combined with explicit build inputs."
         )
-        missing_names = [
-            name for name in required_names if getattr(namespace, name) is None
-        ]
 
-        if missing_names:
-            options = ", ".join(f"--{name.replace('_', '-')}" for name in missing_names)
-            parser.error(f"Missing required explicit inputs: {options}.")
+    if spec is None:
+        missing_options = _missing_explicit_options(
+            jurisdiction_type=jurisdiction_type,
+            nodes=nodes,
+            output_root=output_root,
+            profile_id=profile_id,
+            profile_version=profile_version,
+            relationships=relationships,
+            version_token=version_token,
+        )
+
+        if missing_options:
+            raise typer.BadParameter(
+                "Missing required explicit inputs: " + ", ".join(missing_options) + "."
+            )
 
     try:
-        spec = (
-            _load_spec(Path(namespace.spec))
-            if namespace.spec is not None
-            else _build_explicit_spec(namespace)
+        build_spec = (
+            _load_spec(spec)
+            if spec is not None
+            else _build_explicit_spec(
+                additional_artifact=additional_artifact,
+                detailed_artifact=detailed_artifact,
+                detailed_artifacts_directory=detailed_artifacts_directory,
+                jurisdiction_type=jurisdiction_type,
+                nodes=nodes,
+                output_root=output_root,
+                profile_id=profile_id,
+                profile_version=profile_version,
+                relationships=relationships,
+                snapshot_relation=snapshot_relation,
+                source_document=source_document,
+                source_publication_date=source_publication_date,
+                version_token=version_token,
+            )
         )
-        settings = _settings_for_namespace(namespace)
+        settings = _settings_for_project_dir(project_dir)
         result = build_graph_package(
-            dry_run=namespace.dry_run,
-            settings=settings,
-            spec=spec,
+            dry_run=dry_run, settings=settings, spec=build_spec
         )
     except ValidationError as error:
-        print(_render_validation_error(error), file=sys.stderr)
-        return 1
+        typer.echo(_render_validation_error(error), err=True)
+        raise typer.Exit(code=1) from error
     except KGFEGMCPError as error:
-        payload = error.public_payload()
-        print(
+        typer.echo(
             json.dumps(
-                ensure_ascii=False,
-                indent=2,
-                obj=payload,
-                sort_keys=True,
+                ensure_ascii=False, indent=2, obj=error.public_payload(), sort_keys=True
             ),
-            file=sys.stderr,
+            err=True,
         )
-        return 1
+        raise typer.Exit(code=1) from error
 
-    print(_render_result(result))
-    return 0
+    typer.echo(_render_result(result))
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    cli()

@@ -52,8 +52,8 @@ from kgfegmcp.domain.identifiers import (
 from kgfegmcp.domain.models import RightsPolicy
 from kgfegmcp.schemas import FrozenSchema
 
-DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(typ=SchemaVersion, val="1.0")
-SOURCE_SCHEMA_VERSION: Final[SchemaVersion] = cast(typ=SchemaVersion, val="1.0")
+DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
+SOURCE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
 
 
 def _require_timezone_aware(*, field_name: str, value: datetime) -> None:

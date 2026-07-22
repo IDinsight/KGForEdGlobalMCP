@@ -1365,10 +1365,10 @@ def _prepare_artifacts(
         "relationships": _artifact_path(f"delivery/{relationships_path.name}"),
     }
     source_specs: list[tuple[str, ArtifactPath, Path]] = [
-        ("nodes", cast(typ=ArtifactPath, val=artifact_values["nodes"]), nodes_path),
+        ("nodes", cast(ArtifactPath, artifact_values["nodes"]), nodes_path),
         (
             "relationships",
-            cast(typ=ArtifactPath, val=artifact_values["relationships"]),
+            cast(ArtifactPath, artifact_values["relationships"]),
             relationships_path,
         ),
     ]
