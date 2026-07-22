@@ -5,11 +5,20 @@ backend.
 # Standard Library
 import re
 
+from typing import Final
+
 # Matches an allowlisted manifest artifact name.
 ARTIFACT_NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 
 # Matches ASCII control characters that are unsafe in identifiers and paths.
 CONTROL_CHARACTER_RE = re.compile(r"[\x00-\x1f\x7f]")
+
+DELIVERY_NODES_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
+    r"^as_nodes_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
+)
+DELIVERY_RELATIONSHIPS_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
+    r"^as_relationships_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
+)
 
 # Matches graph package IDs based on a snapshot, with an optional future package suffix.
 GRAPH_PACKAGE_ID_RE = re.compile(
@@ -27,6 +36,10 @@ LANGUAGE_TAG_RE = re.compile(r"^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$")
 
 # Matches a fully qualified lowercase SHA-256 checksum.
 SHA256_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
+
+SAFE_AS_ARTIFACT_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
+    r"^as_[A-Za-z0-9][A-Za-z0-9._-]*\.(?:json|jsonl)$"
+)
 
 # Matches snapshot IDs in the form <framework>@<version>+<12-character-hash>.
 SNAPSHOT_ID_RE = re.compile(

@@ -87,17 +87,16 @@ from kgfegmcp.packages.wire import (
 )
 from kgfegmcp.profiles.loader import load_curriculum_profile
 from kgfegmcp.profiles.models import CurriculumProfile
-from kgfegmcp.regexes import CONTROL_CHARACTER_RE
+from kgfegmcp.regexes import (
+    CONTROL_CHARACTER_RE,
+    DELIVERY_NODES_BASENAME_RE,
+    DELIVERY_RELATIONSHIPS_BASENAME_RE,
+    SAFE_AS_ARTIFACT_BASENAME_RE,
+)
 
 _ADDITIONAL_COUNT_CODED_ITEMS: Final[str] = "codedItems"
 _ADDITIONAL_COUNT_MULTI_PARENT_TARGETS: Final[str] = "multiParentTargets"
 _ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS: Final[str] = "unresolvedRelationships"
-_DELIVERY_NODES_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
-    r"^as_nodes_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
-)
-_DELIVERY_RELATIONSHIPS_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
-    r"^as_relationships_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
-)
 _MANIFEST_FILENAME: Final[str] = "package_manifest.json"
 _RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
     "as_entity_provenance.json": ("entity_provenance", "entityProvenance"),
@@ -130,13 +129,20 @@ _RESERVED_ADDITIONAL_LOGICAL_NAMES: Final[frozenset[str]] = frozenset(
         "validationreport",
     }
 )
-_SAFE_AS_ARTIFACT_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
-    r"^as_[A-Za-z0-9][A-Za-z0-9._-]*\.(?:json|jsonl)$"
-)
 _ARTIFACT_PATH_ADAPTER: TypeAdapter[ArtifactPath] = TypeAdapter(ArtifactPath)
 _AT_FDCWD: Final[int] = -100
 _DARWIN_RENAME_EXCL: Final[int] = 0x00000004
 _LINUX_RENAME_NOREPLACE: Final[int] = 1
+
+
+class _ExistingPackage(Exception):
+    """Signal that materialization observed an already-present destination.
+
+    This internal control-flow sentinel is raised by materialization helpers when the
+    destination appears while the build holds its lock. It is always caught inside
+    ``_materialize_package`` and converted into an existing-identical result; it never
+    escapes this module.
+    """
 
 
 @dataclass(frozen=True, slots=True)
@@ -210,6 +216,44 @@ class _RelationshipFacts:
     multi_parent_targets: int
     relationships: int
     unresolved_relationships: int
+
+
+def _acquire_build_lock(*, lock_path: Path, plan: _PackagePlan) -> int:
+    """Acquire the exclusive build lock guarding a package destination.
+
+    Parameters
+    ----------
+    lock_path
+        Framework-relative lock file that must be created exclusively.
+    plan
+        Candidate package plan whose destination the lock guards.
+
+    Returns
+    -------
+    int
+        Open file descriptor for the owned lock file.
+
+    Raises
+    ------
+    _ExistingPackage
+        If the destination already exists, signaling that the caller should return the
+        existing-identical result instead of building.
+    ManifestBuildError
+        If another concurrent build already owns the lock.
+    """
+
+    try:
+        return os.open(
+            flags=os.O_CREAT | os.O_EXCL | os.O_WRONLY, mode=0o600, path=lock_path
+        )
+    except FileExistsError as error:
+        if os.path.lexists(plan.destination):
+            raise _ExistingPackage from error
+
+        raise ManifestBuildError(
+            details={"lock_path": str(lock_path)},
+            message="Another package build is already using this destination.",
+        ) from error
 
 
 def _artifact_path(value: str) -> ArtifactPath:
@@ -935,6 +979,25 @@ def _discover_detailed_artifacts(
     return discovered
 
 
+def _ensure_destination_absent(plan: _PackagePlan) -> None:
+    """Require the package destination to remain absent during materialization.
+
+    Parameters
+    ----------
+    plan
+        Candidate package plan whose destination must not yet exist.
+
+    Raises
+    ------
+    _ExistingPackage
+        If the destination already exists, signaling that the caller should return the
+        existing-identical result instead of continuing to build.
+    """
+
+    if os.path.lexists(plan.destination):
+        raise _ExistingPackage
+
+
 def _expected_directories(expected_files: set[str]) -> set[str]:
     """Return every package-relative ancestor directory required by files.
 
@@ -1075,62 +1138,17 @@ def _materialize_package(plan: _PackagePlan) -> PackageBuildResult:
     framework_directory = _prepare_framework_directory(destination)
     lock_path = framework_directory / f".{plan.snapshot_id}.build.lock"
     lock_descriptor: int | None = None
-    lock_owned = False
     staging_path: Path | None = None
 
     try:
-        try:
-            lock_descriptor = os.open(
-                flags=os.O_CREAT | os.O_EXCL | os.O_WRONLY, mode=0o600, path=lock_path
-            )
-            lock_owned = True
-        except FileExistsError as error:
-            if os.path.lexists(destination):
-                return _handle_existing_package(plan)
-
-            raise ManifestBuildError(
-                details={"lock_path": str(lock_path)},
-                message="Another package build is already using this destination.",
-            ) from error
-
-        if os.path.lexists(destination):
-            return _handle_existing_package(plan)
-
+        lock_descriptor = _acquire_build_lock(lock_path=lock_path, plan=plan)
+        _ensure_destination_absent(plan)
         staging_path = Path(
             tempfile.mkdtemp(
                 dir=framework_directory, prefix=f".{plan.snapshot_id}.staging-"
             )
         )
-        _copy_artifacts(
-            artifact_sources=plan.artifact_sources, staging_path=staging_path
-        )
-        _verify_packaged_artifact_checksums(
-            checksums=plan.checksums, package_path=staging_path
-        )
-        _verify_input_fingerprints(plan)
-
-        if os.path.lexists(destination):
-            return _handle_existing_package(plan)
-
-        manifest = _stage_verified_package(plan=plan, staging_path=staging_path)
-
-        if os.path.lexists(destination):
-            return _handle_existing_package(plan)
-
-        try:
-            _atomic_rename_no_replace(destination=destination, source=staging_path)
-        except OSError as error:
-            if os.path.lexists(destination):
-                return _handle_existing_package(plan)
-
-            raise ManifestBuildError(
-                details={
-                    "destination": str(destination),
-                    "staging_path": str(staging_path),
-                },
-                message="The staged package could not be materialized atomically.",
-            ) from error
-
+        manifest = _stage_and_rename(plan=plan, staging_path=staging_path)
         staging_path = None
         return PackageBuildResult(
             created_at_is_provisional=False,
@@ -1140,6 +1158,8 @@ def _materialize_package(plan: _PackagePlan) -> PackageBuildResult:
             package_path=destination,
             warnings=plan.warnings,
         )
+    except _ExistingPackage:
+        return _handle_existing_package(plan)
     finally:
         if lock_descriptor is not None:
             os.close(lock_descriptor)
@@ -1147,7 +1167,7 @@ def _materialize_package(plan: _PackagePlan) -> PackageBuildResult:
         if staging_path is not None:
             shutil.rmtree(ignore_errors=True, path=staging_path)
 
-        if lock_owned:
+        if lock_descriptor is not None:
             try:
                 lock_path.unlink(missing_ok=True)
             except OSError:
@@ -1224,12 +1244,12 @@ def _prepare_artifacts(
     )
     _require_delivery_basename(
         basename=nodes_path.name,
-        pattern=_DELIVERY_NODES_BASENAME_RE,
+        pattern=DELIVERY_NODES_BASENAME_RE,
         role="node delivery artifact",
     )
     _require_delivery_basename(
         basename=relationships_path.name,
-        pattern=_DELIVERY_RELATIONSHIPS_BASENAME_RE,
+        pattern=DELIVERY_RELATIONSHIPS_BASENAME_RE,
         role="relationship delivery artifact",
     )
 
@@ -1285,8 +1305,8 @@ def _prepare_artifacts(
 
         if (
             normalized_basename in _RECOGNIZED_DETAILED_BASENAMES_CASEFOLDED
-            or _DELIVERY_NODES_BASENAME_RE.fullmatch(normalized_basename)
-            or _DELIVERY_RELATIONSHIPS_BASENAME_RE.fullmatch(normalized_basename)
+            or DELIVERY_NODES_BASENAME_RE.fullmatch(normalized_basename)
+            or DELIVERY_RELATIONSHIPS_BASENAME_RE.fullmatch(normalized_basename)
         ):
             _build_error(
                 details={
@@ -1708,7 +1728,7 @@ def _require_safe_as_basename(*, basename: str, role: str) -> None:
     if (
         CONTROL_CHARACTER_RE.search(basename)
         or ".." in basename
-        or _SAFE_AS_ARTIFACT_BASENAME_RE.fullmatch(basename) is None
+        or SAFE_AS_ARTIFACT_BASENAME_RE.fullmatch(basename) is None
     ):
         _build_error(
             details={"basename": basename, "role": role},
@@ -2072,6 +2092,62 @@ def _scan_relationship_facts(
         relationships=relationship_count,
         unresolved_relationships=unresolved_relationships,
     )
+
+
+def _stage_and_rename(
+    *, plan: _PackagePlan, staging_path: Path
+) -> GraphPackageManifest:
+    """Populate, verify, and atomically publish a package from staging.
+
+    Copies source artifacts into the staging directory, verifies packaged checksums and
+    input fingerprints, stages the verified manifest, and atomically renames staging
+    into the final destination. The destination is rechecked before each irreversible
+    step so a concurrent build is recognized rather than overwritten.
+
+    Parameters
+    ----------
+    plan
+        Candidate package plan supplying source files, checksums, and destination.
+    staging_path
+        Existing staging directory on the destination filesystem.
+
+    Returns
+    -------
+    GraphPackageManifest
+        The manifest published into the final destination.
+
+    Raises
+    ------
+    _ExistingPackage
+        If the destination appears before or during atomic materialization.
+    ManifestBuildError
+        If copying, verification, or atomic materialization fails.
+    """
+
+    _copy_artifacts(artifact_sources=plan.artifact_sources, staging_path=staging_path)
+    _verify_packaged_artifact_checksums(
+        checksums=plan.checksums, package_path=staging_path
+    )
+    _verify_input_fingerprints(plan)
+    _ensure_destination_absent(plan)
+    manifest = _stage_verified_package(plan=plan, staging_path=staging_path)
+    _ensure_destination_absent(plan)
+
+    try:
+        _atomic_rename_no_replace(destination=plan.destination, source=staging_path)
+    except OSError as error:
+        if os.path.lexists(plan.destination):
+            raise _ExistingPackage from error
+
+        raise ManifestBuildError(
+            details={
+                "destination": str(plan.destination),
+                "staging_path": str(staging_path),
+            },
+            message="The staged package could not be materialized atomically.",
+        ) from error
+
+    return manifest
 
 
 def _stage_verified_package(
