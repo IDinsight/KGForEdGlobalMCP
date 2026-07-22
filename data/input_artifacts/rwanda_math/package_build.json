@@ -1,0 +1,13 @@
+{
+	"detailedArtifactsDirectory": "data/input_artifacts/rwanda_mathematics/detailed",
+	"jurisdictionType": "country",
+	"nodes": "data/input_artifacts/rwanda_mathematics/delivery/as_nodes_rwanda_math.jsonl",
+	"outputRoot": "data/graph_packages",
+	"packageRevision": 1,
+	"profileId": "rwanda-reb-mathematics-lower-primary-1-3",
+	"profileVersion": "1.0",
+	"relationships": "data/input_artifacts/rwanda_mathematics/delivery/as_relationships_rwanda_math.jsonl",
+	"snapshotRelations": [],
+  "sourcePublicationDate": null,
+	"versionToken": "2025"
+}

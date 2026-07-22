@@ -1,0 +1,13 @@
+{
+	"detailedArtifactsDirectory": "data/input_artifacts/ghana_mathematics/detailed",
+	"jurisdictionType": "country",
+	"nodes": "data/input_artifacts/ghana_mathematics/delivery/as_nodes_ghana_math.jsonl",
+	"outputRoot": "data/graph_packages",
+	"packageRevision": 1,
+  "profileId": "ghana-nacca-primary-mathematics-basic-4-6",
+	"profileVersion": "1.0",
+	"relationships": "data/input_artifacts/ghana_mathematics/delivery/as_relationships_ghana_math.jsonl",
+	"snapshotRelations": [],
+  "sourcePublicationDate": null,
+	"versionToken": "2019"
+}
