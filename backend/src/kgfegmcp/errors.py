@@ -104,6 +104,12 @@ class JSONLParsingError(KGFEGMCPError):
     error_code = "jsonl_parsing_error"
 
 
+class ManifestBuildError(KGFEGMCPError):
+    """Raised when a pending graph-package manifest cannot be built safely."""
+
+    error_code = "manifest_build_error"
+
+
 class PackageValidationError(KGFEGMCPError):
     """Raised when a graph package fails deterministic validation."""
 

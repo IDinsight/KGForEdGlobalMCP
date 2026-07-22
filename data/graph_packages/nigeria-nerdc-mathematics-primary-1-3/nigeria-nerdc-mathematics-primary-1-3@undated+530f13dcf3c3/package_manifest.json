@@ -1,0 +1,107 @@
+{
+	"artifacts": {
+		"academicStandardsBundle": "detailed/as_kg_bundle.json",
+		"additionalArtifacts": {},
+		"entityProvenance": "detailed/as_entity_provenance.json",
+		"nodes": "delivery/as_nodes_nigeria_math.jsonl",
+		"relationships": "delivery/as_relationships_nigeria_math.jsonl",
+		"relationshipsHasChild": "detailed/as_relationships_has_child.jsonl",
+		"standardsFramework": "detailed/as_standards_framework.json",
+		"standardsFrameworkItems": "detailed/as_standards_framework_items.jsonl",
+		"unresolvedItems": "detailed/as_unresolved_items.json",
+		"validationReport": "detailed/as_validation_report.json"
+	},
+	"capabilities": {
+		"codeSearch": "none",
+		"hasDetailedProvenance": true,
+		"hasOfficialActivities": false,
+		"hasOfficialAssessmentGuidance": false,
+		"hasUnresolvedRelationships": false,
+		"multiParent": false,
+		"textSearch": true
+	},
+	"checksums": {
+		"delivery/as_nodes_nigeria_math.jsonl": "sha256:bb4c9c7e718a733de9a3fdb499134671d14f4e1792a45c5d3bee4fcbf2d3b5cf",
+		"delivery/as_relationships_nigeria_math.jsonl": "sha256:2c966cb99ec9147641acb85929197f540942657c45422e382a743638b0719525",
+		"detailed/as_entity_provenance.json": "sha256:a23e9adeca365ff0d45b4713cb55b05bf5a2b2c61c704f853cb8deae3629beff",
+		"detailed/as_kg_bundle.json": "sha256:c1813020493a1ab89bf4f0323f9fc80ff11d8f951f5982a03cdbe6cf049efa27",
+		"detailed/as_relationships_has_child.jsonl": "sha256:d0faba0e54f3a42296e08f7e58e3bc0577286db1a9bd0320cc6aaefef2f3884e",
+		"detailed/as_standards_framework.json": "sha256:24303c2a89a9a2d865fed1a05fafdda6a76495a74de8106a860f0f3b55e00035",
+		"detailed/as_standards_framework_items.jsonl": "sha256:5f60e30c279b99ec94e45fbe5087497fc41e2cd82f97e7960f8e51b86c8f9cb3",
+		"detailed/as_unresolved_items.json": "sha256:f6ffdd6b47267163ddd83fc9b3fa2207a03d603dfd20e9bbef66fb219c479fe2",
+		"detailed/as_validation_report.json": "sha256:d3de56f237203a73891b0dacf053b74dffb47d448b45897cc7933c3115bf174f"
+	},
+	"counts": {
+		"additionalCounts": {
+			"codedItems": 0,
+			"multiParentTargets": 0,
+			"unresolvedRelationships": 0
+		},
+		"frameworkNodes": 1,
+		"itemNodes": 242,
+		"relationships": 242
+	},
+	"createdAt": "2026-07-22T15:55:37Z",
+	"deliverySchemaVersion": "1.0",
+	"framework": {
+		"adoptionStatus": "Adopted",
+		"isCurrent": true,
+		"issuingAuthority": "Nigerian Educational Research and Development Council (NERDC)",
+		"jurisdiction": "Nigeria",
+		"jurisdictionType": "country",
+		"languages": [
+			"en"
+		],
+		"localGradesOrStages": [
+			"PRIMARY ONE",
+			"PRIMARY TWO",
+			"PRIMARY THREE"
+		],
+		"localSubject": "Mathematics",
+		"name": "9-Year Basic Education Mathematics Curriculum for Primary 1-3",
+		"normalizedGrades": [
+			"1",
+			"2",
+			"3"
+		],
+		"normalizedSubjects": [
+			"Mathematics"
+		],
+		"provider": "IDinsight",
+		"sourceDocumentSha256": null,
+		"sourcePublicationDate": null,
+		"sourceVersion": "undated",
+		"subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+		"subjectMappingStatus": "mapped"
+	},
+	"frameworkId": "nigeria-nerdc-mathematics-primary-1-3",
+	"graphPackageId": "nigeria-nerdc-mathematics-primary-1-3@undated+530f13dcf3c3",
+	"graphType": "academic_standards",
+	"includedGraphTypes": [
+		"academic_standards"
+	],
+	"manifestVersion": "1.0",
+	"packageRevision": 1,
+	"profile": {
+		"profileId": "nigeria-nerdc-mathematics-primary-1-3",
+		"profileVersion": "1.0",
+		"sha256": "sha256:edd04364798f9be2f82df95cda005c526ec1473b223595bec72fb3594e726e00"
+	},
+	"rights": {
+		"allowBulkResource": false,
+		"allowFullText": true,
+		"allowGeneratedDerivatives": "allowed",
+		"allowStandardResources": true,
+		"attributionStatement": "Source curriculum published by the Nigerian Educational Research and Development Council (NERDC) as part of the revised 9-Year Basic Education Mathematics Curriculum.",
+		"licenseUri": null,
+		"reviewStatus": "provisional_operator_approved",
+		"sourceLicense": "Unknown"
+	},
+	"snapshotId": "nigeria-nerdc-mathematics-primary-1-3@undated+530f13dcf3c3",
+	"snapshotRelations": [],
+	"sourceSchemaVersion": "1.0",
+	"validation": {
+		"status": "pending",
+		"validatedAt": null
+	}
+}

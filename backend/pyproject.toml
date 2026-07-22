@@ -172,3 +172,6 @@ docs = [
     "mkdocs-open-in-new-tab>=1.0.3",
     "pymdown-extensions>=10.9"
 ]
+
+[project.scripts]
+kgfegmcp-build-manifest = "kgfegmcp.cli.build_manifests:main"

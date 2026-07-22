@@ -13,7 +13,7 @@ from __future__ import annotations
 
 # Standard Library
 from collections.abc import Mapping
-from typing import Literal, cast
+from typing import Final, Literal, cast
 
 # Third Party Library
 from pydantic import ConfigDict, Field, StrictStr, model_validator
@@ -21,6 +21,13 @@ from pydantic import ConfigDict, Field, StrictStr, model_validator
 # Package Library
 from kgfegmcp.domain.identifiers import NodeId, RelationshipId
 from kgfegmcp.schemas import FrozenSchema
+
+DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY: Final[frozenset[str]] = (
+    frozenset({"unresolvedRootFallback"})
+)
+DELIVERY_SCHEMA_1_0_UNRESOLVED_RELATIONSHIP_STATUSES: Final[frozenset[str]] = (
+    frozenset({"unresolvedRootFallback"})
+)
 
 
 class NodeWireEnvelope(FrozenSchema):

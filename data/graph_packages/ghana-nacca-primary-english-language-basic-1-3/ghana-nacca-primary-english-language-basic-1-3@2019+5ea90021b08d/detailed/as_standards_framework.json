@@ -1,0 +1,35 @@
+{
+  "academic_subject": "English Language",
+  "adoption_status": "Adopted",
+  "attribution_statement": "Source curriculum published by the National Council for Curriculum and Assessment (NaCCA), Ministry of Education, Republic of Ghana, September 2019.",
+  "author": "National Council for Curriculum and Assessment (NaCCA), Ministry of Education",
+  "case_identifier_uri": "urn:uuid:862e9144-b9e0-5512-bfa9-55597af6d1d6",
+  "case_identifier_uuid": "862e9144-b9e0-5512-bfa9-55597af6d1d6",
+  "date_created": null,
+  "date_modified": null,
+  "description": null,
+  "identifier": "862e9144-b9e0-5512-bfa9-55597af6d1d6",
+  "in_language": "en",
+  "is_current": true,
+  "jurisdiction": "Ghana",
+  "license": "Unknown",
+  "metadata": {
+    "country": "Ghana",
+    "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
+    "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
+    "grades_or_stages": [
+      "Basic 1",
+      "Basic 2",
+      "Basic 3"
+    ],
+    "languages": [
+      "en"
+    ],
+    "page_count": 125,
+    "pdf_name": "ghana_english.pdf",
+    "primary_language": "en"
+  },
+  "name": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
+  "notes": null,
+  "provider": "IDinsight"
+}

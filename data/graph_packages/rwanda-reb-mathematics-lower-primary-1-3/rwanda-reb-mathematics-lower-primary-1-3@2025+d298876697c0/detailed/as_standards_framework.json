@@ -1,0 +1,35 @@
+{
+  "academic_subject": "Mathematics",
+  "adoption_status": "Adopted",
+  "attribution_statement": "\u00a9 2025 Rwanda Basic Education Board, Kigali. Credit must be provided to REB when the content is quoted.",
+  "author": "Rwanda Basic Education Board (REB)",
+  "case_identifier_uri": "urn:uuid:27fe12d6-cd6b-5812-965b-41748c65ea85",
+  "case_identifier_uuid": "27fe12d6-cd6b-5812-965b-41748c65ea85",
+  "date_created": null,
+  "date_modified": null,
+  "description": null,
+  "identifier": "27fe12d6-cd6b-5812-965b-41748c65ea85",
+  "in_language": "en",
+  "is_current": true,
+  "jurisdiction": "Rwanda",
+  "license": "\u00a9 2025 Rwanda Basic Education Board, Kigali. All rights reserved.",
+  "metadata": {
+    "country": "Rwanda",
+    "doc_key": "7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874",
+    "framework_title": "Mathematics Syllabus for Lower Primary | Primary 1 - 3",
+    "grades_or_stages": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "languages": [
+      "en"
+    ],
+    "page_count": 147,
+    "pdf_name": "rwanda_math_p1_p3.pdf",
+    "primary_language": "en"
+  },
+  "name": "Mathematics Syllabus for Lower Primary | Primary 1 - 3",
+  "notes": null,
+  "provider": "Rwanda Basic Education Board (REB)"
+}

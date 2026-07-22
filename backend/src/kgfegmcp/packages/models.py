@@ -20,10 +20,11 @@ consume these immutable contracts at the package boundary.
 
 # Standard Library
 from datetime import date, datetime
-from typing import Self, cast
+from pathlib import Path
+from typing import Final, Literal, Self, cast
 
 # Third Party Library
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 # Package Library
 from kgfegmcp.domain.enums import (
@@ -45,10 +46,14 @@ from kgfegmcp.domain.identifiers import (
     SchemaVersion,
     Sha256Digest,
     SnapshotId,
+    SnapshotVersionToken,
     build_versioned_graph_package_id,
 )
 from kgfegmcp.domain.models import RightsPolicy
 from kgfegmcp.schemas import FrozenSchema
+
+DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(typ=SchemaVersion, val="1.0")
+SOURCE_SCHEMA_VERSION: Final[SchemaVersion] = cast(typ=SchemaVersion, val="1.0")
 
 
 def _require_timezone_aware(*, field_name: str, value: datetime) -> None:
@@ -459,5 +464,97 @@ class GraphPackageManifest(FrozenSchema):
             for relation in self.snapshot_relations
         ):
             raise ValueError("A snapshot may not relate to itself.")
+
+        return self
+
+
+class PackageBuildResult(FrozenSchema):
+    """Return the deterministic result of creating or proposing one package."""
+
+    created_at_is_provisional: bool = False
+    manifest: GraphPackageManifest
+    manifest_path: Path
+    outcome: Literal["created", "dry_run", "existing_identical"]
+    package_path: Path
+    warnings: tuple[str, ...] = ()
+
+
+class PackageBuildSpec(FrozenSchema):
+    """Describe operator-supplied inputs for one deterministic package build."""
+
+    additional_artifacts: dict[ArtifactName, Path] = Field(default_factory=dict)
+    detailed_artifacts: tuple[Path, ...] = ()
+    detailed_artifacts_directory: Path | None = None
+    jurisdiction_type: str = Field(min_length=1)
+    nodes: Path
+    output_root: Path
+    package_revision: Literal[1] = 1
+    profile_id: ProfileId
+    profile_version: ProfileVersion
+    relationships: Path
+    snapshot_relations: tuple[SnapshotRelation, ...] = ()
+    source_document: Path | None = None
+    source_publication_date: date | None = None
+    version_token: SnapshotVersionToken
+
+    @field_validator("jurisdiction_type")
+    @classmethod
+    def validate_jurisdiction_type(cls, value: str) -> str:
+        """Require a non-empty jurisdiction type without surrounding whitespace.
+
+        Parameters
+        ----------
+        value
+            Operator-supplied jurisdiction type.
+
+        Returns
+        -------
+        str
+            The unchanged validated jurisdiction type.
+
+        Raises
+        ------
+        ValueError
+            If the value is blank or contains surrounding whitespace.
+        """
+
+        if value != value.strip():
+            raise ValueError(
+                "jurisdiction_type may not contain surrounding whitespace."
+            )
+
+        if not value:
+            raise ValueError("jurisdiction_type must be non-empty.")
+
+        return value
+
+    @model_validator(mode="after")
+    def validate_detailed_artifact_inputs(self) -> Self:
+        """Reject ambiguous detailed-artifact discovery inputs.
+
+        Returns
+        -------
+        Self
+            The validated build specification.
+
+        Raises
+        ------
+        ValueError
+            If both a detailed-artifact directory and explicit files are supplied.
+        """
+
+        if self.detailed_artifacts_directory is not None and self.detailed_artifacts:
+            raise ValueError(
+                "detailed_artifacts_directory and detailed_artifacts are mutually exclusive."
+            )
+
+        logical_names = tuple(
+            str(name).casefold() for name in self.additional_artifacts
+        )
+
+        if len(logical_names) != len(set(logical_names)):
+            raise ValueError(
+                "additional_artifacts logical names must be case-insensitively unique."
+            )
 
         return self
