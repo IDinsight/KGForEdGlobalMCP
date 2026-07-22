@@ -256,7 +256,7 @@ def _load_spec(path: Path) -> PackageBuildSpec:
         payload = json.loads(
             object_pairs_hook=_duplicate_key_object, s=path.read_bytes()
         )
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
+    except (OSError, ValueError) as error:
         raise ManifestBuildError(
             details={"spec_path": str(path)},
             message=f"Build specification '{path.name}' is unreadable or malformed.",
@@ -390,7 +390,7 @@ def _parse_snapshot_relations(values: Sequence[str]) -> tuple[SnapshotRelation, 
     for index, value in enumerate(iterable=values, start=1):
         try:
             payload = json.loads(object_pairs_hook=_duplicate_key_object, s=value)
-        except (json.JSONDecodeError, ValueError) as error:
+        except ValueError as error:
             raise ManifestBuildError(
                 details={"relation_index": index},
                 message=f"Snapshot relation {index} is malformed JSON.",
@@ -604,6 +604,9 @@ def build(  # pylint: disable=R0917
 
     Raises
     ------
+    typer.BadParameter
+        If ``--spec`` is combined with explicit inputs or required explicit
+        inputs are missing.
     typer.Exit
         If input validation or graph-package construction fails.
     """

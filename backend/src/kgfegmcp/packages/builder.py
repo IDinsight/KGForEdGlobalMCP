@@ -172,6 +172,16 @@ class _FileFingerprint:
 
 
 @dataclass(frozen=True, slots=True)
+class _NodeFacts:
+    """Hold node-derived counts and the single decoded framework root."""
+
+    coded_items: int
+    framework_root: FrameworkNode
+    item_nodes: int
+    text_items: int
+
+
+@dataclass(frozen=True, slots=True)
 class _PackagePlan:
     """Hold all package-defining values except the materialization timestamp."""
 
@@ -191,6 +201,15 @@ class _PackagePlan:
     snapshot_relations: tuple[SnapshotRelation, ...]
     source_document_fingerprint: _FileFingerprint | None
     warnings: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class _RelationshipFacts:
+    """Hold relationship-derived counts and parent-topology evidence."""
+
+    multi_parent_targets: int
+    relationships: int
+    unresolved_relationships: int
 
 
 def _artifact_path(value: str) -> ArtifactPath:
@@ -518,100 +537,20 @@ def _decode_facts(
         manifest construction.
     """
 
-    coded_items = 0
-    framework_roots: list[FrameworkNode] = []
-    item_nodes = 0
-    text_items = 0
-
-    for node in iter_decoded_nodes(nodes_path):
-        if isinstance(node, FrameworkNode):
-            framework_roots.append(node)
-            continue
-
-        if isinstance(node, StandardNode):
-            item_nodes += 1
-
-            if node.statement_code is not None and node.statement_code.strip():
-                coded_items += 1
-
-            if node.description is not None and node.description.strip():
-                text_items += 1
-
-    if len(framework_roots) != 1:
-        _build_error(
-            details={
-                "framework_root_count": len(framework_roots),
-                "nodes_path": str(nodes_path),
-            },
-            message=(
-                f"Delivery artifact '{nodes_path.name}' must contain exactly one "
-                f"decoded StandardsFramework root."
-            ),
-        )
-
-    parent_sources: dict[str, set[str]] = {}
-    relationship_count = 0
-    unresolved_relationships = 0
-
-    for relationship in iter_decoded_relationships(relationships_path):
-        relationship_count += 1
-        resolution_status = relationship.resolution_status
-
-        if resolution_status is not None:
-            if not resolution_status.strip():
-                _build_error(
-                    details={
-                        "line_number": relationship.source_export_order,
-                        "raw_resolution_status": resolution_status,
-                        "relationships_path": str(relationships_path),
-                    },
-                    message=(
-                        f"Relationship status in '{relationships_path.name}' at line "
-                        f"{relationship.source_export_order} is blank."
-                    ),
-                )
-
-            if (
-                resolution_status
-                not in DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY
-            ):
-                _build_error(
-                    details={
-                        "line_number": relationship.source_export_order,
-                        "raw_resolution_status": resolution_status,
-                        "relationships_path": str(relationships_path),
-                    },
-                    message=(
-                        f"Relationship status in '{relationships_path.name}' at line "
-                        f"{relationship.source_export_order} is not defined by "
-                        f"delivery schema 1.0."
-                    ),
-                )
-
-            if (
-                resolution_status
-                in DELIVERY_SCHEMA_1_0_UNRESOLVED_RELATIONSHIP_STATUSES
-            ):
-                unresolved_relationships += 1
-
-        if relationship.label == hierarchy_relationship_type:
-            target_key = str(relationship.target_node_id)
-            parent_sources.setdefault(target_key, set()).add(
-                str(relationship.source_node_id)
-            )
-
-    multi_parent_targets = sum(
-        len(source_ids) > 1 for source_ids in parent_sources.values()
+    node_facts = _scan_node_facts(nodes_path=nodes_path)
+    relationship_facts = _scan_relationship_facts(
+        hierarchy_relationship_type=hierarchy_relationship_type,
+        relationships_path=relationships_path,
     )
     return _DecodedFacts(
-        coded_items=coded_items,
-        framework_nodes=len(framework_roots),
-        framework_root=framework_roots[0],
-        item_nodes=item_nodes,
-        multi_parent_targets=multi_parent_targets,
-        relationships=relationship_count,
-        text_items=text_items,
-        unresolved_relationships=unresolved_relationships,
+        coded_items=node_facts.coded_items,
+        framework_nodes=1,
+        framework_root=node_facts.framework_root,
+        item_nodes=node_facts.item_nodes,
+        multi_parent_targets=relationship_facts.multi_parent_targets,
+        relationships=relationship_facts.relationships,
+        text_items=node_facts.text_items,
+        unresolved_relationships=relationship_facts.unresolved_relationships,
     )
 
 
@@ -1133,37 +1072,7 @@ def _materialize_package(plan: _PackagePlan) -> PackageBuildResult:
     """
 
     destination = plan.destination
-    framework_directory = destination.parent
-
-    if framework_directory.is_symlink():
-        _build_error(
-            details={"framework_directory": str(framework_directory)},
-            message="The framework output directory may not be a symbolic link.",
-        )
-
-    try:
-        framework_directory.mkdir(exist_ok=True, parents=True)
-    except OSError as error:
-        raise ManifestBuildError(
-            details={"framework_directory": str(framework_directory)},
-            message="The framework output directory could not be created.",
-        ) from error
-
-    resolved_framework_directory = framework_directory.resolve(strict=False)
-
-    if (
-        framework_directory.is_symlink()
-        or not framework_directory.is_dir()
-        or resolved_framework_directory != framework_directory
-    ):
-        _build_error(
-            details={
-                "framework_directory": str(framework_directory),
-                "resolved_framework_directory": str(resolved_framework_directory),
-            },
-            message="The framework output path is not a safe regular directory.",
-        )
-
+    framework_directory = _prepare_framework_directory(destination)
     lock_path = framework_directory / f".{plan.snapshot_id}.build.lock"
     lock_descriptor: int | None = None
     lock_owned = False
@@ -1203,41 +1112,7 @@ def _materialize_package(plan: _PackagePlan) -> PackageBuildResult:
         if os.path.lexists(destination):
             return _handle_existing_package(plan)
 
-        manifest = _create_manifest(created_at=_utc_now_seconds(), plan=plan)
-        staged_manifest_path = staging_path / _MANIFEST_FILENAME
-        manifest_bytes = _canonical_manifest_bytes(manifest)
-
-        try:
-            with staged_manifest_path.open("xb") as stream:
-                written_bytes = stream.write(manifest_bytes)
-                stream.flush()
-                os.fsync(stream.fileno())
-        except OSError as error:
-            raise ManifestBuildError(
-                details={"manifest_path": str(staged_manifest_path)},
-                message="The staged package manifest could not be written safely.",
-            ) from error
-
-        if written_bytes != len(manifest_bytes):
-            _build_error(
-                details={
-                    "actual_byte_count": written_bytes,
-                    "expected_byte_count": len(manifest_bytes),
-                    "manifest_path": str(staged_manifest_path),
-                },
-                message="The staged package manifest was not written completely.",
-            )
-
-        _require_exact_package_tree(
-            checksums=manifest.checksums, package_path=staging_path
-        )
-        _verify_packaged_artifact_checksums(
-            checksums=manifest.checksums, package_path=staging_path
-        )
-        _verify_staged_manifest(
-            expected_manifest=manifest, manifest_path=staged_manifest_path
-        )
-        _verify_input_fingerprints(plan)
+        manifest = _stage_verified_package(plan=plan, staging_path=staging_path)
 
         if os.path.lexists(destination):
             return _handle_existing_package(plan)
@@ -1471,6 +1346,60 @@ def _prepare_artifacts(
         )
     )
     return artifacts, sources
+
+
+def _prepare_framework_directory(destination: Path) -> Path:
+    """Create and validate the framework output directory for a destination.
+
+    Parameters
+    ----------
+    destination
+        Final package directory whose parent is the framework output directory.
+
+    Returns
+    -------
+    Path
+        The validated framework output directory.
+
+    Raises
+    ------
+    ManifestBuildError
+        If the directory is a symbolic link, cannot be created, or does not resolve to
+        a safe regular directory.
+    """
+
+    framework_directory = destination.parent
+
+    if framework_directory.is_symlink():
+        _build_error(
+            details={"framework_directory": str(framework_directory)},
+            message="The framework output directory may not be a symbolic link.",
+        )
+
+    try:
+        framework_directory.mkdir(exist_ok=True, parents=True)
+    except OSError as error:
+        raise ManifestBuildError(
+            details={"framework_directory": str(framework_directory)},
+            message="The framework output directory could not be created.",
+        ) from error
+
+    resolved_framework_directory = framework_directory.resolve(strict=False)
+
+    if (
+        framework_directory.is_symlink()
+        or not framework_directory.is_dir()
+        or resolved_framework_directory != framework_directory
+    ):
+        _build_error(
+            details={
+                "framework_directory": str(framework_directory),
+                "resolved_framework_directory": str(resolved_framework_directory),
+            },
+            message="The framework output path is not a safe regular directory.",
+        )
+
+    return framework_directory
 
 
 def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _PackagePlan:
@@ -2027,6 +1956,184 @@ def _resolve_output_root(*, output_root: Path, project_dir: Path) -> Path:
     return resolved_path
 
 
+def _scan_node_facts(nodes_path: Path) -> _NodeFacts:
+    """Stream node artifacts, derive counts, and require a single root.
+
+    Parameters
+    ----------
+    nodes_path
+        Accepted node delivery artifact.
+
+    Returns
+    -------
+    _NodeFacts
+        Node-derived counts and the single decoded framework root.
+
+    Raises
+    ------
+    ManifestBuildError
+        If the artifact does not decode to exactly one framework root.
+    """
+
+    coded_items = 0
+    framework_roots: list[FrameworkNode] = []
+    item_nodes = 0
+    text_items = 0
+
+    for node in iter_decoded_nodes(nodes_path):
+        if isinstance(node, FrameworkNode):
+            framework_roots.append(node)
+            continue
+
+        if isinstance(node, StandardNode):
+            item_nodes += 1
+
+            if node.statement_code is not None and node.statement_code.strip():
+                coded_items += 1
+
+            if node.description is not None and node.description.strip():
+                text_items += 1
+
+    if len(framework_roots) != 1:
+        _build_error(
+            details={
+                "framework_root_count": len(framework_roots),
+                "nodes_path": str(nodes_path),
+            },
+            message=(
+                f"Delivery artifact '{nodes_path.name}' must contain exactly one "
+                f"decoded StandardsFramework root."
+            ),
+        )
+
+    return _NodeFacts(
+        coded_items=coded_items,
+        framework_root=framework_roots[0],
+        item_nodes=item_nodes,
+        text_items=text_items,
+    )
+
+
+def _scan_relationship_facts(
+    *, hierarchy_relationship_type: str, relationships_path: Path
+) -> _RelationshipFacts:
+    """Stream relationship artifacts, validate status, and derive topology.
+
+    Parameters
+    ----------
+    hierarchy_relationship_type
+        Profile-declared relationship label used for parent topology evidence.
+    relationships_path
+        Accepted relationship delivery artifact.
+
+    Returns
+    -------
+    _RelationshipFacts
+        Relationship-derived counts and parent-topology evidence.
+
+    Raises
+    ------
+    ManifestBuildError
+        If any relationship status violates delivery schema 1.0.
+    """
+
+    parent_sources: dict[str, set[str]] = {}
+    relationship_count = 0
+    unresolved_relationships = 0
+
+    for relationship in iter_decoded_relationships(relationships_path):
+        relationship_count += 1
+        resolution_status = relationship.resolution_status
+
+        if resolution_status is not None:
+            _validate_relationship_status(
+                relationships_path=relationships_path,
+                resolution_status=resolution_status,
+                source_export_order=relationship.source_export_order,
+            )
+
+            if (
+                resolution_status
+                in DELIVERY_SCHEMA_1_0_UNRESOLVED_RELATIONSHIP_STATUSES
+            ):
+                unresolved_relationships += 1
+
+        if relationship.label == hierarchy_relationship_type:
+            target_key = str(relationship.target_node_id)
+            parent_sources.setdefault(target_key, set()).add(
+                str(relationship.source_node_id)
+            )
+
+    multi_parent_targets = sum(
+        len(source_ids) > 1 for source_ids in parent_sources.values()
+    )
+    return _RelationshipFacts(
+        multi_parent_targets=multi_parent_targets,
+        relationships=relationship_count,
+        unresolved_relationships=unresolved_relationships,
+    )
+
+
+def _stage_verified_package(
+    *, plan: _PackagePlan, staging_path: Path
+) -> GraphPackageManifest:
+    """Create, write, and verify the manifest and artifacts in staging.
+
+    Parameters
+    ----------
+    plan
+        Candidate package plan supplying manifest-defining values.
+    staging_path
+        Verified staging directory already populated with copied artifacts.
+
+    Returns
+    -------
+    GraphPackageManifest
+        The manifest written into and verified against the staging directory.
+
+    Raises
+    ------
+    ManifestBuildError
+        If the manifest cannot be written completely or any staged artifact, the staged
+        tree, or the staged manifest fails verification.
+    """
+
+    manifest = _create_manifest(created_at=_utc_now_seconds(), plan=plan)
+    staged_manifest_path = staging_path / _MANIFEST_FILENAME
+    manifest_bytes = _canonical_manifest_bytes(manifest)
+
+    try:
+        with staged_manifest_path.open("xb") as stream:
+            written_bytes = stream.write(manifest_bytes)
+            stream.flush()
+            os.fsync(stream.fileno())
+    except OSError as error:
+        raise ManifestBuildError(
+            details={"manifest_path": str(staged_manifest_path)},
+            message="The staged package manifest could not be written safely.",
+        ) from error
+
+    if written_bytes != len(manifest_bytes):
+        _build_error(
+            details={
+                "actual_byte_count": written_bytes,
+                "expected_byte_count": len(manifest_bytes),
+                "manifest_path": str(staged_manifest_path),
+            },
+            message="The staged package manifest was not written completely.",
+        )
+
+    _require_exact_package_tree(checksums=manifest.checksums, package_path=staging_path)
+    _verify_packaged_artifact_checksums(
+        checksums=manifest.checksums, package_path=staging_path
+    )
+    _verify_staged_manifest(
+        expected_manifest=manifest, manifest_path=staged_manifest_path
+    )
+    _verify_input_fingerprints(plan)
+    return manifest
+
+
 def _utc_now_seconds() -> datetime:
     """Return the current UTC time with deterministic whole-second precision.
 
@@ -2037,6 +2144,53 @@ def _utc_now_seconds() -> datetime:
     """
 
     return datetime.now(timezone.utc).replace(microsecond=0)
+
+
+def _validate_relationship_status(
+    *, relationships_path: Path, resolution_status: str, source_export_order: int
+) -> None:
+    """Require one relationship status to satisfy delivery schema 1.0.
+
+    Parameters
+    ----------
+    relationships_path
+        Accepted relationship delivery artifact, used for diagnostics.
+    resolution_status
+        Non-null status value observed on the relationship.
+    source_export_order
+        One-based export line number, used for diagnostics.
+
+    Raises
+    ------
+    ManifestBuildError
+        If the status is blank or outside the delivery schema 1.0 vocabulary.
+    """
+
+    if not resolution_status.strip():
+        _build_error(
+            details={
+                "line_number": source_export_order,
+                "raw_resolution_status": resolution_status,
+                "relationships_path": str(relationships_path),
+            },
+            message=(
+                f"Relationship status in '{relationships_path.name}' at line "
+                f"{source_export_order} is blank."
+            ),
+        )
+
+    if resolution_status not in DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY:
+        _build_error(
+            details={
+                "line_number": source_export_order,
+                "raw_resolution_status": resolution_status,
+                "relationships_path": str(relationships_path),
+            },
+            message=(
+                f"Relationship status in '{relationships_path.name}' at line "
+                f"{source_export_order} is not defined by delivery schema 1.0."
+            ),
+        )
 
 
 def _verify_input_fingerprints(plan: _PackagePlan) -> None:
