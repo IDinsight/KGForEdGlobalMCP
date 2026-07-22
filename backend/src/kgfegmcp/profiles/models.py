@@ -1,4 +1,4 @@
-"""This module contains Pydantic models for versioned curriculum interpretation profiles
+"""This module defines Pydantic models for versioned curriculum interpretation profiles.
 
 This module defines immutable configuration contracts that describe how generic domain
 services should interpret a curriculum framework. The models represent aspects such as
@@ -22,10 +22,10 @@ from __future__ import annotations
 # Standard Library
 import re
 
-from typing import Annotated, Self, cast
+from typing import Annotated, Final, Self, cast
 
 # Third Party Library
-from pydantic import Field, StringConstraints, model_validator
+from pydantic import Field, StringConstraints, field_validator, model_validator
 
 # Package Library
 from kgfegmcp.domain.enums import (
@@ -46,6 +46,7 @@ from kgfegmcp.schemas import FrozenSchema
 ConfigurationKey = Annotated[
     str, StringConstraints(max_length=100, min_length=1, pattern=r"^[a-z][a-z0-9_]*$")
 ]
+PROFILE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
 
 
 def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
@@ -420,7 +421,7 @@ class CurriculumProfile(FrozenSchema):
     local_subject: str = Field(min_length=1)
     normalized_subjects: tuple[str, ...]
     profile_id: ProfileId
-    profile_schema_version: SchemaVersion = cast(SchemaVersion, "1.0")
+    profile_schema_version: SchemaVersion = PROFILE_SCHEMA_VERSION
     profile_version: ProfileVersion
     progression_heuristics: tuple[str, ...] = ()
     required_disclosures: tuple[str, ...] = ()
@@ -433,6 +434,34 @@ class CurriculumProfile(FrozenSchema):
     subject_mapping_note: str | None = None
     subject_mapping_status: SubjectMappingStatus
     subject_vocabulary: SubjectVocabulary
+
+    @field_validator("profile_schema_version")
+    @classmethod
+    def validate_profile_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
+        """Require the exact repository-supported curriculum-profile schema version.
+
+        Parameters
+        ----------
+        value
+            Declared curriculum-profile schema version.
+
+        Returns
+        -------
+        SchemaVersion
+            The unchanged supported schema version.
+
+        Raises
+        ------
+        ValueError
+            If the profile declares an unsupported schema version.
+        """
+
+        if value != PROFILE_SCHEMA_VERSION:
+            raise ValueError(
+                f"profile_schema_version must equal {PROFILE_SCHEMA_VERSION}."
+            )
+
+        return value
 
     def _validate_anomaly_uniqueness(self) -> None:
         """Require known source anomalies to have unique identifiers.

@@ -1,9 +1,10 @@
 """This module contains functionalities to calculate exact-byte checksums and canonical
 snapshot artifact-set digests.
 
-This module provides the checksum operations used during graph-package construction. It
-calculates qualified SHA-256 digests for in-memory bytes and files without decoding,
-rewriting, normalizing, or otherwise changing their contents.
+This module provides domain-neutral checksum operations used during graph-package
+construction and validation. It calculates qualified SHA-256 digests for in-memory
+bytes and files without decoding, rewriting, normalizing, or otherwise changing their
+contents.
 
 It also calculates the canonical immutable snapshot artifact-set hash. To produce that
 hash, all declared artifact checksums are converted to their qualified sha256:<hex>
@@ -28,7 +29,6 @@ from pydantic import TypeAdapter
 
 # Package Library
 from kgfegmcp.domain.identifiers import Sha256Digest
-from kgfegmcp.errors import ManifestBuildError
 
 _READ_CHUNK_SIZE = 1024 * 1024
 _SHA256_ADAPTER: TypeAdapter[Sha256Digest] = TypeAdapter(Sha256Digest)
@@ -67,21 +67,15 @@ def calculate_file_sha256(path: Path) -> Sha256Digest:
 
     Raises
     ------
-    ManifestBuildError
-        If the artifact cannot be read completely.
+    OSError
+        If the file cannot be opened or read completely.
     """
 
     hasher = hashlib.sha256()
 
-    try:
-        with path.open("rb") as stream:
-            while chunk := stream.read(_READ_CHUNK_SIZE):
-                hasher.update(chunk)
-    except OSError as error:
-        raise ManifestBuildError(
-            details={"file_path": str(path)},
-            message=f"Could not checksum artifact '{path.name}'.",
-        ) from error
+    with path.open("rb") as stream:
+        while chunk := stream.read(_READ_CHUNK_SIZE):
+            hasher.update(chunk)
 
     return _SHA256_ADAPTER.validate_python(f"sha256:{hasher.hexdigest()}")
 

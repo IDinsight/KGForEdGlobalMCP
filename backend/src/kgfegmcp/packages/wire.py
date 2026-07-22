@@ -22,11 +22,18 @@ from pydantic import ConfigDict, Field, StrictStr, model_validator
 from kgfegmcp.domain.identifiers import NodeId, RelationshipId
 from kgfegmcp.schemas import FrozenSchema
 
+DELIVERY_SCHEMA_1_0_ENDPOINT_ENTITY_KEY: Final[str] = "caseIdentifierUUID"
+DELIVERY_SCHEMA_1_0_FRAMEWORK_LABEL: Final[str] = "StandardsFramework"
+DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE: Final[str] = "hasChild"
+DELIVERY_SCHEMA_1_0_ITEM_LABEL: Final[str] = "StandardsFrameworkItem"
+DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS: Final[str] = (
+    "unresolvedRootFallback"
+)
 DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY: Final[frozenset[str]] = frozenset(
-    {"unresolvedRootFallback"}
+    {DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS}
 )
 DELIVERY_SCHEMA_1_0_UNRESOLVED_RELATIONSHIP_STATUSES: Final[frozenset[str]] = frozenset(
-    {"unresolvedRootFallback"}
+    {DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS}
 )
 
 

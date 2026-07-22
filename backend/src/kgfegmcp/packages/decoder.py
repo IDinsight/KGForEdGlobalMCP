@@ -22,10 +22,12 @@ from pydantic import BaseModel, ValidationError
 # Package Library
 from kgfegmcp.errors import DeliveryPropertyDecodingError, JSONLParsingError
 from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
-from kgfegmcp.packages.wire import NodeWireEnvelope, RelationshipWireEnvelope
-
-_FRAMEWORK_LABEL = "StandardsFramework"
-_STANDARD_LABEL = "StandardsFrameworkItem"
+from kgfegmcp.packages.wire import (
+    DELIVERY_SCHEMA_1_0_FRAMEWORK_LABEL,
+    DELIVERY_SCHEMA_1_0_ITEM_LABEL,
+    NodeWireEnvelope,
+    RelationshipWireEnvelope,
+)
 
 GraphNodeT: TypeAlias = FrameworkNode | StandardNode
 WireEnvelopeT = TypeVar("WireEnvelopeT", bound=BaseModel)
@@ -372,8 +374,8 @@ def decode_node_record(
     envelope = located_record.record
     properties = envelope.properties
     labels = tuple(envelope.labels)
-    is_framework = _FRAMEWORK_LABEL in labels
-    is_standard = _STANDARD_LABEL in labels
+    is_framework = DELIVERY_SCHEMA_1_0_FRAMEWORK_LABEL in labels
+    is_standard = DELIVERY_SCHEMA_1_0_ITEM_LABEL in labels
     is_current = _decode_optional_boolean(
         line_number=located_record.line_number,
         path=located_record.source_path,

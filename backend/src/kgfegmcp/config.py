@@ -77,6 +77,9 @@ class BackendSettings(BaseSettings):
     environment: RuntimeEnvironment = Field(
         default="local", validation_alias="KGFEGMCP_ENV"
     )
+    graph_packages_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_GRAPH_PACKAGES_ROOT"
+    )
     invalid_package_policy: InvalidPackagePolicy = Field(
         default=InvalidPackagePolicy.FAIL,
         validation_alias="KGFEGMCP_INVALID_PACKAGE_POLICY",
@@ -113,6 +116,7 @@ class BackendSettings(BaseSettings):
         "catalog_path_override",
         "config_root_override",
         "data_root_override",
+        "graph_packages_root_override",
         "log_root_override",
         "profile_root_override",
         "project_dir",
@@ -269,7 +273,11 @@ class BackendSettings(BaseSettings):
             The resolved immutable graph-package data root.
         """
 
-        return self.data_root / "graph_packages"
+        return _resolve_project_path(
+            configured_path=self.graph_packages_root_override,
+            default_relative_path=self.data_root / "graph_packages",
+            project_dir=self.project_dir,
+        )
 
     @property
     def log_root(self) -> Path:

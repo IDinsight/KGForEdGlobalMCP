@@ -1,4 +1,5 @@
-"""This module deterministic pending graph packages from approved curriculum artifacts.
+"""This module builds deterministic pending graph packages from approved curriculum
+artifacts.
 
 This module coordinates graph-package manifest construction. It resolves and validates
 the selected curriculum profile, decodes delivery artifacts through the existing
@@ -68,6 +69,9 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_relationships,
 )
 from kgfegmcp.packages.models import (
+    ADDITIONAL_COUNT_CODED_ITEMS,
+    ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
+    ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
     DELIVERY_SCHEMA_VERSION,
     SOURCE_SCHEMA_VERSION,
     FrameworkCapabilities,
@@ -94,9 +98,6 @@ from kgfegmcp.regexes import (
     SAFE_AS_ARTIFACT_BASENAME_RE,
 )
 
-_ADDITIONAL_COUNT_CODED_ITEMS: Final[str] = "codedItems"
-_ADDITIONAL_COUNT_MULTI_PARENT_TARGETS: Final[str] = "multiParentTargets"
-_ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS: Final[str] = "unresolvedRelationships"
 _MANIFEST_FILENAME: Final[str] = "package_manifest.json"
 _RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
     "as_entity_provenance.json": ("entity_provenance", "entityProvenance"),
@@ -357,6 +358,34 @@ def _build_error(*, details: dict[str, object], message: str) -> NoReturn:
     raise ManifestBuildError(details=details, message=message)
 
 
+def _calculate_file_sha256(path: Path) -> Sha256Digest:
+    """Calculate one file checksum and translate I/O failures for the builder.
+
+    Parameters
+    ----------
+    path
+        Artifact, profile, or source-document path to checksum exactly.
+
+    Returns
+    -------
+    Sha256Digest
+        Qualified exact-byte SHA-256 digest.
+
+    Raises
+    ------
+    ManifestBuildError
+        If the selected file cannot be read completely.
+    """
+
+    try:
+        return calculate_file_sha256(path)
+    except OSError as error:
+        raise ManifestBuildError(
+            details={"file_path": str(path)},
+            message=f"Could not checksum file '{path.name}'.",
+        ) from error
+
+
 def _canonical_manifest_bytes(manifest: GraphPackageManifest) -> bytes:
     """Serialize a manifest as deterministic UTF-8 JSON ending in one LF.
 
@@ -482,7 +511,7 @@ def _copy_artifacts(
                 message=f"Artifact '{artifact.source_path.name}' could not be copied.",
             ) from error
 
-        staged_sha256 = calculate_file_sha256(destination)
+        staged_sha256 = _calculate_file_sha256(destination)
 
         if staged_sha256 != artifact.sha256:
             _build_error(
@@ -1357,7 +1386,7 @@ def _prepare_artifacts(
                 _ArtifactSource(
                     manifest_name=manifest_name,
                     package_path=package_path,
-                    sha256=calculate_file_sha256(source_path),
+                    sha256=_calculate_file_sha256(source_path),
                     source_path=source_path,
                 )
                 for manifest_name, package_path, source_path in source_specs
@@ -1514,11 +1543,9 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
     destination = output_root / str(framework_id) / str(snapshot_id)
     counts = PackageCounts(
         additional_counts={
-            _ADDITIONAL_COUNT_CODED_ITEMS: facts.coded_items,
-            _ADDITIONAL_COUNT_MULTI_PARENT_TARGETS: facts.multi_parent_targets,
-            _ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS: (
-                facts.unresolved_relationships
-            ),
+            ADDITIONAL_COUNT_CODED_ITEMS: facts.coded_items,
+            ADDITIONAL_COUNT_MULTI_PARENT_TARGETS: facts.multi_parent_targets,
+            ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS: (facts.unresolved_relationships),
         },
         framework_nodes=facts.framework_nodes,
         item_nodes=facts.item_nodes,
@@ -1576,7 +1603,7 @@ def _prepare_source_document(
         path=source_document, project_dir=project_dir, role="source document"
     )
     return _FileFingerprint(
-        path=resolved_path, sha256=calculate_file_sha256(resolved_path)
+        path=resolved_path, sha256=_calculate_file_sha256(resolved_path)
     )
 
 
@@ -2284,7 +2311,7 @@ def _verify_input_fingerprints(plan: _PackagePlan) -> None:
     """
 
     for artifact in plan.artifact_sources:
-        actual_sha256 = calculate_file_sha256(artifact.source_path)
+        actual_sha256 = _calculate_file_sha256(artifact.source_path)
 
         if actual_sha256 != artifact.sha256:
             _build_error(
@@ -2299,7 +2326,7 @@ def _verify_input_fingerprints(plan: _PackagePlan) -> None:
                 ),
             )
 
-    profile_actual_sha256 = calculate_file_sha256(plan.profile_fingerprint.path)
+    profile_actual_sha256 = _calculate_file_sha256(plan.profile_fingerprint.path)
 
     if profile_actual_sha256 != plan.profile_fingerprint.sha256:
         _build_error(
@@ -2314,7 +2341,7 @@ def _verify_input_fingerprints(plan: _PackagePlan) -> None:
     if plan.source_document_fingerprint is None:
         return
 
-    source_document_actual_sha256 = calculate_file_sha256(
+    source_document_actual_sha256 = _calculate_file_sha256(
         plan.source_document_fingerprint.path
     )
 
@@ -2351,7 +2378,7 @@ def _verify_packaged_artifact_checksums(
         packaged_path = _package_file_path(
             package_path=package_path, relative_path=artifact_path
         )
-        actual_sha256 = calculate_file_sha256(packaged_path)
+        actual_sha256 = _calculate_file_sha256(packaged_path)
 
         if actual_sha256 != expected_sha256:
             _build_error(

@@ -1,5 +1,5 @@
-"""This module contains Pydantic models for immutable curriculum graph-package
-manifests.
+"""This module defines immutable graph-package manifest, loading, and validation
+contracts.
 
 This module defines the validated contracts that describe one versioned graph package.
 The models represent aspects such as framework metadata, package capabilities,
@@ -12,19 +12,32 @@ agree; every declared artifact has exactly one checksum; graph types are declare
 consistently; timestamps are timezone-aware; and snapshot relations are unique and do
 not reference the snapshot itself.
 
-These models describe and validate package metadata only. They do not parse JSONL graph
-records, traverse graphs, interpret curriculum terminology, repair source data, or
-modify source artifacts. Loaders, checksum verification, and graph validation services
-consume these immutable contracts at the package boundary.
+The module also defines the supported detailed-validation-report contract, safe
+declared-artifact references, the frozen loaded-package aggregate, and structured
+validation findings and results. It does not parse JSONL records, expose a reusable
+graph store, repair source data, or modify package artifacts.
 """
 
+# Future Library
+from __future__ import annotations
+
 # Standard Library
+from collections.abc import Mapping
 from datetime import date, datetime
 from pathlib import Path
-from typing import Final, Literal, Self, cast
+from typing import Annotated, Final, Literal, Self, cast
 
 # Third Party Library
-from pydantic import Field, field_validator, model_validator
+from pydantic import (
+    ConfigDict,
+    Field,
+    StrictBool,
+    StrictInt,
+    StrictStr,
+    StringConstraints,
+    field_validator,
+    model_validator,
+)
 
 # Package Library
 from kgfegmcp.domain.enums import (
@@ -50,10 +63,44 @@ from kgfegmcp.domain.identifiers import (
     build_versioned_graph_package_id,
 )
 from kgfegmcp.domain.models import RightsPolicy
+from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
+from kgfegmcp.profiles.models import CurriculumProfile
 from kgfegmcp.schemas import FrozenSchema
 
+ADDITIONAL_COUNT_CODED_ITEMS: Final[str] = "codedItems"
+ADDITIONAL_COUNT_MULTI_PARENT_TARGETS: Final[str] = "multiParentTargets"
+ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS: Final[str] = "unresolvedRelationships"
+DELIVERY_REPORT_COUNT_FRAMEWORK_NODES: Final[str] = "learning_commons_framework_nodes"
+DELIVERY_REPORT_COUNT_ITEM_NODES: Final[str] = "learning_commons_item_nodes"
+DELIVERY_REPORT_COUNT_RELATIONSHIPS: Final[str] = "learning_commons_relationships"
+DELIVERY_REPORT_COUNT_UNRESOLVED_RELATIONSHIPS: Final[str] = (
+    "learning_commons_unresolved_fallback_relationships"
+)
 DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
+MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.0")
+REQUIRED_ADDITIONAL_COUNT_NAMES: Final[frozenset[str]] = frozenset(
+    {
+        ADDITIONAL_COUNT_CODED_ITEMS,
+        ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
+        ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
+    }
+)
+REQUIRED_DELIVERY_REPORT_COUNT_NAMES: Final[frozenset[str]] = frozenset(
+    {
+        DELIVERY_REPORT_COUNT_FRAMEWORK_NODES,
+        DELIVERY_REPORT_COUNT_ITEM_NODES,
+        DELIVERY_REPORT_COUNT_RELATIONSHIPS,
+        DELIVERY_REPORT_COUNT_UNRESOLVED_RELATIONSHIPS,
+    }
+)
 SOURCE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
+SUPPORTED_PACKAGE_REVISION: Final[int] = 1
+
+FindingCode = Annotated[
+    str,
+    StringConstraints(max_length=120, min_length=1, pattern=r"^[a-z][a-z0-9_]*$"),
+]
+NonNegativeStrictInt = Annotated[StrictInt, Field(ge=0)]
 
 
 def _require_timezone_aware(*, field_name: str, value: datetime) -> None:
@@ -94,6 +141,173 @@ def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
 
     if len(values) != len(set(values)):
         raise ValueError(f"{field_name} must not contain duplicates.")
+
+
+class DeclaredArtifactReference(FrozenSchema):
+    """Associate one declared artifact with its safe resolved package location."""
+
+    logical_name: ArtifactName
+    package_path: ArtifactPath
+    resolved_path: Path = Field(exclude=True, repr=False)
+    sha256: Sha256Digest
+    size_bytes: int = Field(ge=0)
+
+
+class DetailedValidationReport(FrozenSchema):
+    """Represent the supported detailed ``as_validation_report.json`` contract."""
+
+    errors: tuple[object, ...]
+    learning_commons_export_schema_version: object | None = None
+    object_counts: dict[StrictStr, NonNegativeStrictInt]
+    passed: StrictBool
+    validation_checks: tuple[StrictStr, ...]
+
+    model_config = ConfigDict(extra="allow", frozen=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def require_top_level_object(cls, value: object) -> object:
+        """Require the detailed report to decode to one top-level JSON object.
+
+        Parameters
+        ----------
+        value
+            Decoded JSON value.
+
+        Returns
+        -------
+        object
+            The unchanged report mapping.
+
+        Raises
+        ------
+        ValueError
+            If the report does not decode to an object.
+        """
+
+        if not isinstance(value, Mapping):
+            raise ValueError("The detailed validation report must be a JSON object.")
+
+        return value
+
+    @field_validator("errors", mode="before")
+    @classmethod
+    def require_errors_list(cls, value: object) -> object:
+        """Require the upstream ``errors`` member to be a JSON array.
+
+        Parameters
+        ----------
+        value
+            Decoded upstream member value.
+
+        Returns
+        -------
+        object
+            The unchanged list for normal Pydantic tuple conversion.
+
+        Raises
+        ------
+        ValueError
+            If the member is not a list.
+        """
+
+        if not isinstance(value, list):
+            raise ValueError("errors must be a list.")
+
+        return value
+
+    @field_validator("object_counts", mode="before")
+    @classmethod
+    def require_object_counts_object(cls, value: object) -> object:
+        """Require ``object_counts`` to be a JSON object.
+
+        Parameters
+        ----------
+        value
+            Decoded upstream member value.
+
+        Returns
+        -------
+        object
+            The unchanged mapping for normal field validation.
+
+        Raises
+        ------
+        ValueError
+            If the member is not a dictionary.
+        """
+
+        if not isinstance(value, dict):
+            raise ValueError("object_counts must be an object.")
+
+        return value
+
+    @field_validator("validation_checks", mode="before")
+    @classmethod
+    def require_validation_checks_list(cls, value: object) -> object:
+        """Require ``validation_checks`` to be a JSON array.
+
+        Parameters
+        ----------
+        value
+            Decoded upstream member value.
+
+        Returns
+        -------
+        object
+            The unchanged list for normal Pydantic tuple conversion.
+
+        Raises
+        ------
+        ValueError
+            If the member is not a list.
+        """
+
+        if not isinstance(value, list):
+            raise ValueError("validation_checks must be a list.")
+
+        return value
+
+    @model_validator(mode="after")
+    def validate_report(self) -> Self:
+        """Validate the supported report acceptance contract.
+
+        Returns
+        -------
+        Self
+            The fully validated detailed report.
+
+        Raises
+        ------
+        ValueError
+            If the report did not pass, contains errors, omits required counts, or has
+            blank or duplicate validation-check names.
+        """
+
+        if self.passed is not True:
+            raise ValueError("passed must be the exact boolean true.")
+
+        if self.errors:
+            raise ValueError("errors must be empty for an accepted validation report.")
+
+        if not self.validation_checks:
+            raise ValueError("validation_checks must contain at least one check.")
+
+        if any(not value.strip() for value in self.validation_checks):
+            raise ValueError("validation_checks values must be non-blank strings.")
+
+        if len(self.validation_checks) != len(set(self.validation_checks)):
+            raise ValueError("validation_checks values must be unique.")
+
+        missing_counts = REQUIRED_DELIVERY_REPORT_COUNT_NAMES - set(self.object_counts)
+
+        if missing_counts:
+            formatted_counts = ", ".join(sorted(missing_counts))
+            raise ValueError(
+                f"object_counts is missing required graph counts: {formatted_counts}."
+            )
+
+        return self
 
 
 class FrameworkCapabilities(FrozenSchema):
@@ -175,6 +389,43 @@ class FrameworkMetadata(FrozenSchema):
             raise ValueError("Other subject mappings require subject_mapping_note.")
 
         return self
+
+
+class LoadedGraphPackage(FrozenSchema):
+    """Hold one safely loaded immutable graph-package aggregate for validation."""
+
+    artifacts: tuple[DeclaredArtifactReference, ...]
+    framework_root: FrameworkNode
+    item_nodes: tuple[StandardNode, ...]
+    manifest: GraphPackageManifest
+    manifest_bytes: bytes = Field(exclude=True, repr=False)
+    manifest_path: Path = Field(exclude=True, repr=False)
+    package_root: Path = Field(exclude=True, repr=False)
+    profile: CurriculumProfile
+    profile_path: Path = Field(exclude=True, repr=False)
+    profile_sha256: Sha256Digest
+    relationships: tuple[GraphRelationship, ...]
+    validation_report: DetailedValidationReport | None = None
+
+    def artifact(self, logical_name: str) -> DeclaredArtifactReference | None:
+        """Return a declared artifact reference by logical manifest name.
+
+        Parameters
+        ----------
+        logical_name
+            Public artifact name used by the manifest.
+
+        Returns
+        -------
+        DeclaredArtifactReference | None
+            Matching safe artifact reference, or ``None`` when undeclared.
+        """
+
+        for artifact in self.artifacts:
+            if str(artifact.logical_name) == logical_name:
+                return artifact
+
+        return None
 
 
 class PackageArtifacts(FrozenSchema):
@@ -272,202 +523,6 @@ class PackageArtifacts(FrozenSchema):
         return artifacts
 
 
-class PackageCounts(FrozenSchema):
-    """Record declared graph and optional artifact counts."""
-
-    additional_counts: dict[str, int] = Field(default_factory=dict)
-    framework_nodes: int = Field(default=1, ge=1, le=1)
-    item_nodes: int = Field(ge=0)
-    relationships: int = Field(ge=0)
-
-    @model_validator(mode="after")
-    def validate_additional_counts(self) -> Self:
-        """Validate optional count names and values.
-
-        Returns
-        -------
-        Self
-            Validated package counts.
-
-        Raises
-        ------
-        ValueError
-            If an additional count name is blank or a value is negative.
-        """
-
-        for name, value in self.additional_counts.items():
-            if not name.strip():
-                raise ValueError("additional_counts keys must be non-empty.")
-
-            if value < 0:
-                raise ValueError("additional_counts values must be non-negative.")
-
-        return self
-
-
-class PackageValidation(FrozenSchema):
-    """Record deterministic package-validation state."""
-
-    status: ValidationStatus
-    validated_at: datetime | None = None
-
-    @model_validator(mode="after")
-    def validate_timestamp(self) -> Self:
-        """Validate timestamp requirements for terminal statuses.
-
-        Returns
-        -------
-        Self
-            Validated package-validation record.
-
-        Raises
-        ------
-        ValueError
-            If a terminal status lacks a timestamp or a timestamp is naive.
-        """
-
-        terminal_statuses = {
-            ValidationStatus.FAILED,
-            ValidationStatus.PASSED,
-            ValidationStatus.QUARANTINED,
-        }
-
-        if self.status in terminal_statuses and self.validated_at is None:
-            raise ValueError("Terminal validation statuses require validated_at.")
-
-        if self.status is ValidationStatus.PENDING and self.validated_at is not None:
-            raise ValueError("Pending validation status may not declare validated_at.")
-
-        if self.validated_at is not None:
-            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
-
-        return self
-
-
-class ProfileReference(FrozenSchema):
-    """Reference one immutable curriculum interpretation profile."""
-
-    profile_id: ProfileId
-    profile_version: ProfileVersion
-    sha256: Sha256Digest
-
-
-class SnapshotRelation(FrozenSchema):
-    """Describe an operator-supplied relationship to another snapshot."""
-
-    evidence: str | None = None
-    relation_type: SnapshotRelationType
-    target_snapshot_id: SnapshotId
-
-
-class GraphPackageManifest(FrozenSchema):
-    """Describe one immutable, validated graph package."""
-
-    artifacts: PackageArtifacts
-    capabilities: FrameworkCapabilities
-    checksums: dict[ArtifactPath, Sha256Digest]
-    counts: PackageCounts
-    created_at: datetime
-    delivery_schema_version: SchemaVersion
-    framework: FrameworkMetadata
-    framework_id: FrameworkId
-    graph_package_id: GraphPackageId
-    graph_type: GraphType
-    included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
-    manifest_version: ManifestVersion = cast(ManifestVersion, "1.0")
-    package_revision: int = Field(default=1, ge=1)
-    profile: ProfileReference
-    rights: RightsPolicy
-    snapshot_id: SnapshotId
-    snapshot_relations: tuple[SnapshotRelation, ...] = ()
-    source_schema_version: SchemaVersion
-    validation: PackageValidation
-
-    @model_validator(mode="after")
-    def validate_manifest(self) -> Self:
-        """Validate manifest identities, artifacts, relations, and timestamps.
-
-        Returns
-        -------
-        Self
-            Fully validated package manifest.
-
-        Raises
-        ------
-        ValueError
-            If package identities, checksums, graph types, or relations conflict.
-        """
-
-        _require_timezone_aware(field_name="created_at", value=self.created_at)
-
-        snapshot_framework_id = str(self.snapshot_id).partition("@")[0]
-
-        if snapshot_framework_id != str(self.framework_id):
-            raise ValueError("snapshot_id must be namespaced by framework_id.")
-
-        expected_versioned_package_id = build_versioned_graph_package_id(
-            graph_type=self.graph_type,
-            package_revision=self.package_revision,
-            snapshot_id=self.snapshot_id,
-        )
-        initial_package_id = str(self.snapshot_id)
-        supplied_package_id = str(self.graph_package_id)
-        allowed_package_ids = {initial_package_id, str(expected_versioned_package_id)}
-
-        if supplied_package_id not in allowed_package_ids:
-            raise ValueError(
-                "graph_package_id must equal snapshot_id or the graph-type package ID."
-            )
-
-        if supplied_package_id == initial_package_id:
-            if self.package_revision != 1:
-                raise ValueError(
-                    "A graph_package_id equal to snapshot_id requires package_revision=1."
-                )
-
-            if self.included_graph_types != (self.graph_type,):
-                raise ValueError(
-                    "An initial graph_package_id may include only its primary graph_type."
-                )
-
-        if self.graph_type not in self.included_graph_types:
-            raise ValueError("included_graph_types must contain graph_type.")
-
-        _require_unique(
-            field_name="included_graph_types",
-            values=tuple(value.value for value in self.included_graph_types),
-        )
-
-        declared_paths = {
-            str(path) for path in self.artifacts.declared_artifacts().values()
-        }
-        checksum_paths = {str(path) for path in self.checksums}
-
-        if checksum_paths != declared_paths:
-            missing_paths = sorted(declared_paths - checksum_paths)
-            unexpected_paths = sorted(checksum_paths - declared_paths)
-            raise ValueError(
-                f"checksums must cover exactly the declared artifact paths; "
-                f"missing={missing_paths}, unexpected={unexpected_paths}."
-            )
-
-        relation_keys = tuple(
-            (relation.relation_type.value, str(relation.target_snapshot_id))
-            for relation in self.snapshot_relations
-        )
-
-        if len(relation_keys) != len(set(relation_keys)):
-            raise ValueError("snapshot_relations must not contain duplicates.")
-
-        if any(
-            relation.target_snapshot_id == self.snapshot_id
-            for relation in self.snapshot_relations
-        ):
-            raise ValueError("A snapshot may not relate to itself.")
-
-        return self
-
-
 class PackageBuildResult(FrozenSchema):
     """Return the deterministic result of creating or proposing one package."""
 
@@ -556,5 +611,444 @@ class PackageBuildSpec(FrozenSchema):
             raise ValueError(
                 "additional_artifacts logical names must be case-insensitively unique."
             )
+
+        return self
+
+
+class PackageCounts(FrozenSchema):
+    """Record declared graph counts and exact version-1 additional counts."""
+
+    additional_counts: dict[str, NonNegativeStrictInt]
+    framework_nodes: int = Field(default=1, ge=1, le=1)
+    item_nodes: int = Field(ge=0)
+    relationships: int = Field(ge=0)
+
+    @model_validator(mode="after")
+    def validate_additional_counts(self) -> Self:
+        """Validate exact version-1 additional count names and values.
+
+        Returns
+        -------
+        Self
+            Validated package counts.
+
+        Raises
+        ------
+        ValueError
+            If count names differ from the supported version-1 contract or a value is
+            negative.
+        """
+
+        actual_names = set(self.additional_counts)
+
+        if actual_names != REQUIRED_ADDITIONAL_COUNT_NAMES:
+            missing_names = sorted(REQUIRED_ADDITIONAL_COUNT_NAMES - actual_names)
+            unexpected_names = sorted(actual_names - REQUIRED_ADDITIONAL_COUNT_NAMES)
+            raise ValueError(
+                f"additional_counts must contain exactly the supported keys; "
+                f"missing={missing_names}, unexpected={unexpected_names}."
+            )
+
+        return self
+
+
+class PackageValidation(FrozenSchema):
+    """Record deterministic package-validation state."""
+
+    status: ValidationStatus
+    validated_at: datetime | None = None
+
+    @model_validator(mode="after")
+    def validate_timestamp(self) -> Self:
+        """Validate timestamp requirements for terminal statuses.
+
+        Returns
+        -------
+        Self
+            Validated package-validation record.
+
+        Raises
+        ------
+        ValueError
+            If a terminal status lacks a timestamp or a timestamp is naive.
+        """
+
+        terminal_statuses = {
+            ValidationStatus.FAILED,
+            ValidationStatus.PASSED,
+            ValidationStatus.QUARANTINED,
+        }
+
+        if self.status in terminal_statuses and self.validated_at is None:
+            raise ValueError("Terminal validation statuses require validated_at.")
+
+        if self.status is ValidationStatus.PENDING and self.validated_at is not None:
+            raise ValueError("Pending validation status may not declare validated_at.")
+
+        if self.validated_at is not None:
+            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
+
+        return self
+
+
+class PackageValidationFinding(FrozenSchema):
+    """Describe one stable package-validation error or warning."""
+
+    artifact_name: ArtifactName | None = None
+    code: FindingCode
+    details: dict[str, object] = Field(default_factory=dict, exclude=True, repr=False)
+    message: str = Field(min_length=1)
+    record_id: str | None = None
+    severity: Literal["error", "warning"] = "error"
+    source_export_order: int | None = Field(default=None, ge=1)
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, value: str) -> str:
+        """Require safe finding text without surrounding whitespace.
+
+        Parameters
+        ----------
+        value
+            Public finding message.
+
+        Returns
+        -------
+        str
+            The unchanged public message.
+
+        Raises
+        ------
+        ValueError
+            If the message contains surrounding whitespace.
+        """
+
+        if value != value.strip():
+            raise ValueError("Finding messages may not contain surrounding whitespace.")
+
+        return value
+
+
+class PackageValidationResult(FrozenSchema):
+    """Return one package validation outcome and any controlled status transition."""
+
+    effective_status: ValidationStatus | None = None
+    findings: tuple[PackageValidationFinding, ...]
+    framework_id: FrameworkId | None = None
+    graph_package_id: GraphPackageId | None = None
+    is_valid: bool
+    observed_status: ValidationStatus | None = None
+    package_reference: str = Field(min_length=1)
+    persisted: bool = False
+    profile_id: ProfileId | None = None
+    profile_version: ProfileVersion | None = None
+    read_only: bool
+    snapshot_id: SnapshotId | None = None
+    target_status: ValidationStatus
+    terminal_revalidation: bool = False
+    validated_at: datetime | None = None
+
+    @model_validator(mode="after")
+    def validate_result(self) -> Self:
+        """Validate consistency among findings, status, and persistence metadata.
+
+        Returns
+        -------
+        Self
+            The consistent validation result.
+
+        Raises
+        ------
+        ValueError
+            If validity conflicts with findings or persistence metadata is invalid.
+        """
+
+        has_errors = any(finding.severity == "error" for finding in self.findings)
+
+        if self.is_valid == has_errors:
+            raise ValueError(
+                "is_valid must be true exactly when no error findings exist."
+            )
+
+        if self.target_status is ValidationStatus.PENDING:
+            raise ValueError("target_status must be terminal.")
+
+        if self.is_valid and self.target_status is not ValidationStatus.PASSED:
+            raise ValueError("A valid result must target passed status.")
+
+        if not self.is_valid and self.target_status not in {
+            ValidationStatus.FAILED,
+            ValidationStatus.QUARANTINED,
+        }:
+            raise ValueError(
+                "An invalid result must target failed or quarantined status."
+            )
+
+        if self.persisted and self.read_only:
+            raise ValueError("A read-only validation result may not be persisted.")
+
+        if self.persisted:
+            if self.observed_status is not ValidationStatus.PENDING:
+                raise ValueError(
+                    "A persisted validation result must originate from pending status."
+                )
+
+            if self.effective_status is not self.target_status:
+                raise ValueError(
+                    "A persisted validation result must reach its target status."
+                )
+
+            if self.terminal_revalidation:
+                raise ValueError(
+                    "A terminal revalidation result may not persist another transition."
+                )
+
+            if self.validated_at is None:
+                raise ValueError("Persisted validation results require validated_at.")
+        elif self.effective_status is not self.observed_status:
+            raise ValueError(
+                "A non-persisted result must retain its observed effective status."
+            )
+
+        observed_is_terminal = self.observed_status in {
+            ValidationStatus.FAILED,
+            ValidationStatus.PASSED,
+            ValidationStatus.QUARANTINED,
+        }
+
+        if self.terminal_revalidation != observed_is_terminal:
+            raise ValueError(
+                "terminal_revalidation must reflect an observed terminal status."
+            )
+
+        if self.terminal_revalidation and not self.read_only:
+            raise ValueError("Terminal revalidation must be read-only.")
+
+        if (
+            self.effective_status
+            in {
+                ValidationStatus.FAILED,
+                ValidationStatus.PASSED,
+                ValidationStatus.QUARANTINED,
+            }
+            and self.validated_at is None
+        ):
+            raise ValueError("Effective terminal statuses require validated_at.")
+
+        if self.effective_status in {None, ValidationStatus.PENDING} and (
+            self.validated_at is not None
+        ):
+            raise ValueError(
+                "Pending or unavailable effective status may not declare validated_at."
+            )
+
+        if self.validated_at is not None:
+            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
+
+        return self
+
+
+class ProfileReference(FrozenSchema):
+    """Reference one immutable curriculum interpretation profile."""
+
+    profile_id: ProfileId
+    profile_version: ProfileVersion
+    sha256: Sha256Digest
+
+
+class SnapshotRelation(FrozenSchema):
+    """Describe an operator-supplied relationship to another snapshot."""
+
+    evidence: str | None = None
+    relation_type: SnapshotRelationType
+    target_snapshot_id: SnapshotId
+
+
+class GraphPackageManifest(FrozenSchema):
+    """Describe one immutable, validated graph package."""
+
+    artifacts: PackageArtifacts
+    capabilities: FrameworkCapabilities
+    checksums: dict[ArtifactPath, Sha256Digest]
+    counts: PackageCounts
+    created_at: datetime
+    delivery_schema_version: SchemaVersion
+    framework: FrameworkMetadata
+    framework_id: FrameworkId
+    graph_package_id: GraphPackageId
+    graph_type: GraphType
+    included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
+    manifest_version: ManifestVersion = MANIFEST_VERSION
+    package_revision: int = Field(default=SUPPORTED_PACKAGE_REVISION, ge=1)
+    profile: ProfileReference
+    rights: RightsPolicy
+    snapshot_id: SnapshotId
+    snapshot_relations: tuple[SnapshotRelation, ...] = ()
+    source_schema_version: SchemaVersion
+    validation: PackageValidation
+
+    @field_validator("delivery_schema_version")
+    @classmethod
+    def validate_delivery_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
+        """Require the exact repository-supported delivery schema version.
+
+        Parameters
+        ----------
+        value
+            Declared delivery schema version.
+
+        Returns
+        -------
+        SchemaVersion
+            The unchanged supported schema version.
+
+        Raises
+        ------
+        ValueError
+            If the manifest declares an unsupported delivery schema version.
+        """
+
+        if value != DELIVERY_SCHEMA_VERSION:
+            raise ValueError(
+                f"delivery_schema_version must equal {DELIVERY_SCHEMA_VERSION}."
+            )
+
+        return value
+
+    @field_validator("manifest_version")
+    @classmethod
+    def validate_manifest_version(cls, value: ManifestVersion) -> ManifestVersion:
+        """Require the exact repository-supported manifest version.
+
+        Parameters
+        ----------
+        value
+            Declared manifest version.
+
+        Returns
+        -------
+        ManifestVersion
+            The unchanged supported manifest version.
+
+        Raises
+        ------
+        ValueError
+            If the manifest declares an unsupported manifest version.
+        """
+
+        if value != MANIFEST_VERSION:
+            raise ValueError(f"manifest_version must equal {MANIFEST_VERSION}.")
+
+        return value
+
+    @field_validator("source_schema_version")
+    @classmethod
+    def validate_source_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
+        """Require the exact repository-supported source schema version.
+
+        Parameters
+        ----------
+        value
+            Declared detailed-source schema version.
+
+        Returns
+        -------
+        SchemaVersion
+            The unchanged supported schema version.
+
+        Raises
+        ------
+        ValueError
+            If the manifest declares an unsupported source schema version.
+        """
+
+        if value != SOURCE_SCHEMA_VERSION:
+            raise ValueError(
+                f"source_schema_version must equal {SOURCE_SCHEMA_VERSION}."
+            )
+
+        return value
+
+    @model_validator(mode="after")
+    def validate_manifest(self) -> Self:
+        """Validate manifest identities, artifacts, relations, and timestamps.
+
+        Returns
+        -------
+        Self
+            Fully validated package manifest.
+
+        Raises
+        ------
+        ValueError
+            If package identities, checksums, graph types, or relations conflict.
+        """
+
+        _require_timezone_aware(field_name="created_at", value=self.created_at)
+
+        snapshot_framework_id = str(self.snapshot_id).partition("@")[0]
+
+        if snapshot_framework_id != str(self.framework_id):
+            raise ValueError("snapshot_id must be namespaced by framework_id.")
+
+        expected_versioned_package_id = build_versioned_graph_package_id(
+            graph_type=self.graph_type,
+            package_revision=self.package_revision,
+            snapshot_id=self.snapshot_id,
+        )
+        initial_package_id = str(self.snapshot_id)
+        supplied_package_id = str(self.graph_package_id)
+        allowed_package_ids = {initial_package_id, str(expected_versioned_package_id)}
+
+        if supplied_package_id not in allowed_package_ids:
+            raise ValueError(
+                "graph_package_id must equal snapshot_id or the graph-type package ID."
+            )
+
+        if supplied_package_id == initial_package_id:
+            if self.package_revision != 1:
+                raise ValueError(
+                    "A graph_package_id equal to snapshot_id requires package_revision=1."
+                )
+
+            if self.included_graph_types != (self.graph_type,):
+                raise ValueError(
+                    "An initial graph_package_id may include only its primary graph_type."
+                )
+
+        if self.graph_type not in self.included_graph_types:
+            raise ValueError("included_graph_types must contain graph_type.")
+
+        _require_unique(
+            field_name="included_graph_types",
+            values=tuple(value.value for value in self.included_graph_types),
+        )
+
+        declared_paths = {
+            str(path) for path in self.artifacts.declared_artifacts().values()
+        }
+        checksum_paths = {str(path) for path in self.checksums}
+
+        if checksum_paths != declared_paths:
+            missing_paths = sorted(declared_paths - checksum_paths)
+            unexpected_paths = sorted(checksum_paths - declared_paths)
+            raise ValueError(
+                f"checksums must cover exactly the declared artifact paths; "
+                f"missing={missing_paths}, unexpected={unexpected_paths}."
+            )
+
+        relation_keys = tuple(
+            (relation.relation_type.value, str(relation.target_snapshot_id))
+            for relation in self.snapshot_relations
+        )
+
+        if len(relation_keys) != len(set(relation_keys)):
+            raise ValueError("snapshot_relations must not contain duplicates.")
+
+        if any(
+            relation.target_snapshot_id == self.snapshot_id
+            for relation in self.snapshot_relations
+        ):
+            raise ValueError("A snapshot may not relate to itself.")
 
         return self
