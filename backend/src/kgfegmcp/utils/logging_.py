@@ -1,202 +1,265 @@
-"""This module contains utilities for logging."""
+"""This module provides explicit Loguru configuration and optional function-call
+logging helpers.
+"""
 
-# pylint: disable=W0603
+# Future Library
+from __future__ import annotations
+
 # Standard Library
 import functools
 import inspect
 import logging
-import os
 import sys
 
+from collections.abc import Callable, Mapping
 from pathlib import Path
-from typing import Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, ParamSpec, TypeVar, cast
 
 # Third Party Library
-import loguru
-
 from loguru import logger
 
 # Package Library
-from kgfegmcp.config import load_settings
+from kgfegmcp.config import LogLevel, RuntimeEnvironment
 from kgfegmcp.utils.general import Valid, recurse_replace, redact_tokens
 
-_LOGGER_INITIALIZED = False
-Settings = load_settings()
-LOGGING_LOG_LEVEL = Settings.log_level
+if TYPE_CHECKING:
+    # Third Party Library
+    from loguru import (
+        AsyncHandlerConfig,
+        BasicHandlerConfig,
+        FileHandlerConfig,
+        Logger,
+        Record,
+    )
+else:
+    Logger = type(logger)
 
-# Register custom log levels immediately so that they can be intercepted appropriately.
-logger.level("DEBUG", color="<white>", icon="🐞")
-logger.level("INFO", color="<cyan>", icon="ℹ️")
-logger.level("WARNING", color="<bold><magenta>", icon="⚠️")
-logger.level("ERROR", color="<bold><red>", icon="❗")
-logger.level("ATTN", no=35, color="<bold><yellow>", icon="🚨")
-logger.level("CHAT", no=15, color="<bold><blue>", icon="💬")
-logger.level("CELEBRATE", no=25, color="<bold><green>", icon="🎉")
+_CUSTOM_LEVELS: tuple[tuple[str, int | None, str, str], ...] = (
+    ("DEBUG", None, "<white>", "🐞"),
+    ("INFO", None, "<cyan>", "ℹ️"),
+    ("WARNING", None, "<bold><magenta>", "⚠️"),
+    ("ERROR", None, "<bold><red>", "❗"),
+    ("ATTN", 35, "<bold><yellow>", "🚨"),
+    ("CHAT", 15, "<bold><blue>", "💬"),
+    ("CELEBRATE", 25, "<bold><green>", "🎉"),
+)
+_RUNTIME_ENVIRONMENTS: frozenset[str] = frozenset({"dev", "local", "prod", "testing"})
+P = ParamSpec("P")
+R = TypeVar("R")
+LogDecorator = Callable[[Callable[P, R]], Callable[P, R]]
 
 
 class InterceptHandler(logging.Handler):
-    """A logging handler that intercepts standard library `logging` records and
-    forwards them to Loguru for consistent logging across the application.
-    """
+    """Forward standard-library logging records to the configured Loguru logger."""
 
     def emit(self, record: logging.LogRecord) -> None:
-        """Emit a logging record by forwarding it to loguru.
+        """Forward one standard-library record without changing its exception context.
 
         Parameters
         ----------
         record
-            The log record emitted by the standard logging system.
+            Record emitted by the standard-library logging system.
         """
 
         try:
-            # Try to map the stdlib log level name to loguru level.
             level: int | str = logger.level(record.levelname).name
-        except KeyError:
-            # Fall back to the numeric level if the name is unknown to loguru.
+        except ValueError:
             level = record.levelno
 
-        # Traverse the call stack to find the original log call.
-        frame, depth = logging.currentframe(), 2
-        while frame and frame.f_back and frame.f_code.co_filename == logging.__file__:
+        frame = logging.currentframe()
+        depth = 2
+
+        while (
+            frame is not None
+            and frame.f_back is not None
+            and frame.f_code.co_filename == logging.__file__
+        ):
             frame = frame.f_back
             depth += 1
+
         logger.opt(depth=depth, exception=record.exc_info).log(
             level, record.getMessage()
         )
 
 
-def _escape_angle_brackets(x: Any) -> str:
-    """Escape angle brackets for colorized logging. If this is not done, then
-    `loguru` will throw a `ValueError` when attempting to log objects with angle
-    brackets. See: https://github.com/Delgan/loguru/issues/140 for more details.
+def _default_handlers(
+    *,
+    environment: RuntimeEnvironment,
+    log_fp: str | Path | None,
+    logging_level: LogLevel,
+) -> list[BasicHandlerConfig | FileHandlerConfig | AsyncHandlerConfig]:
+    """Build the default Loguru handlers for explicit application initialization.
 
     Parameters
     ----------
-    x
-        Any object.
+    environment
+        Validated runtime environment.
+    log_fp
+        Optional JSON log destination.
+    logging_level
+        Validated Loguru threshold.
+
+    Returns
+    -------
+    list[BasicHandlerConfig | FileHandlerConfig | AsyncHandlerConfig]
+        Handler declarations accepted by ``logger.configure``.
+    """
+
+    diagnose = environment == "local"
+    stderr_handler: BasicHandlerConfig = {
+        "backtrace": True,
+        "colorize": True,
+        "diagnose": diagnose,
+        "enqueue": True,
+        "filter": cast(Callable[[Record], bool], _redact_log_record),
+        "format": (
+            "<g>{time:YYYY-MM-DD HH:mm:ss}</g> | "
+            "<level>{level.icon} {message}</level>"
+        ),
+        "level": logging_level,
+        "serialize": False,
+        "sink": sys.stderr,
+    }
+    handlers: list[BasicHandlerConfig | FileHandlerConfig | AsyncHandlerConfig] = [
+        stderr_handler
+    ]
+
+    if log_fp is not None:
+        file_handler: FileHandlerConfig = {
+            "backtrace": True,
+            "delay": True,
+            "diagnose": diagnose,
+            "encoding": "utf-8",
+            "enqueue": True,
+            "filter": cast(Callable[[Record], bool], _redact_log_record),
+            "level": logging_level,
+            "rotation": "10 MB",
+            "serialize": True,
+            "sink": log_fp,
+        }
+        handlers.append(file_handler)
+
+    return handlers
+
+
+def _escape_angle_brackets(value: object) -> str:
+    """Escape angle brackets before interpolating arbitrary values into Loguru markup.
+
+    Parameters
+    ----------
+    value
+        Value whose string representation will be logged.
 
     Returns
     -------
     str
-        The string version of `x` with escaped angle brackets.
+        String representation with Loguru markup delimiters escaped.
     """
 
-    return recurse_replace(r"\>", ">", recurse_replace(r"\<", "<", str(x)))
+    opening_escaped = recurse_replace(new_str=r"\<", orig_str="<", x=str(value))
+    return cast(str, recurse_replace(new_str=r"\>", orig_str=">", x=opening_escaped))
 
 
 def _generate_entry_log_str(
-    *, args: Any, extra_args: list[str], kwargs: Any, name: str
+    *,
+    args: tuple[object, ...],
+    extra_args: tuple[str, ...],
+    kwargs: Mapping[str, object],
+    name: str,
 ) -> str:
-    """Generate a log string for function entry.
+    """Build one deterministic function-entry message.
 
     Parameters
     ----------
     args
-        Additional positional arguments.
+        Positional arguments supplied to the decorated callable.
     extra_args
-        List of additional items to log when entering a function.
+        Attribute names to read from the first positional argument when available.
     kwargs
-        Additional keyword arguments
+        Keyword arguments supplied to the decorated callable.
     name
-        The name of the function to log.
+        Qualified callable name.
 
     Returns
     -------
     str
-        The log string for function entry.
+        Escaped function-entry message.
     """
 
-    a_str = _escape_angle_brackets(args)
-    k_str = _escape_angle_brackets(kwargs)
-    extra_args_str = "\n".join(
-        f"{_escape_angle_brackets(arg)}: {_escape_angle_brackets(getattr(args[0], arg, 'N/A'))}"
-        for arg in extra_args
+    owner = args[0] if args else None
+    extra_lines = tuple(
+        (
+            f"{_escape_angle_brackets(attribute_name)}: "
+            f"{_escape_angle_brackets(getattr(owner, attribute_name, 'N/A'))}"
+        )
+        for attribute_name in extra_args
     )
-    return f"ENTERING: '{name}'\n\nargs:\n{a_str}\n\nkwargs:\n{k_str}\n\nextra_args:\n{extra_args_str}"
+    extra_args_str = "\n".join(extra_lines)
+    return (
+        f"ENTERING: '{name}'\n\n"
+        f"args:\n{_escape_angle_brackets(args)}\n\n"
+        f"kwargs:\n{_escape_angle_brackets(kwargs)}\n\n"
+        f"extra_args:\n{extra_args_str}"
+    )
 
 
-def _generate_exit_log_str(*, name: str, result: Any) -> str:
-    """Generate a log string for function entry.
+def _generate_exit_log_str(*, name: str, result: object) -> str:
+    """Build one deterministic function-exit message.
 
     Parameters
     ----------
     name
-        The name of the function to log.
+        Qualified callable name.
     result
-        The result from calling the function to log.
+        Value returned by the decorated callable.
 
     Returns
     -------
     str
-        The log string for function exit.
+        Escaped function-exit message.
     """
 
-    r_str = _escape_angle_brackets(result)
-    return f"EXITING: '{name}'\nresult={r_str}"
+    return f"EXITING: '{name}'\nresult={_escape_angle_brackets(result)}"
 
 
 def initialize_logger(
     *,
-    config: Optional[dict[str, Any]] = None,
-    logging_level: str = LOGGING_LOG_LEVEL,
-    log_fp: Optional[str | Path] = None,
-) -> "loguru.Logger":
-    """Initialize a `loguru` logger object.
+    config: dict[str, Any] | None = None,
+    environment: RuntimeEnvironment = "local",
+    log_fp: str | Path | None = None,
+    logging_level: LogLevel = "INFO",
+) -> Logger:
+    """Configure Loguru and standard-library interception explicitly.
 
     Parameters
     ----------
     config
-        Dictionary used to initialize the logger object. If None, a default dictionary
-        of parameters will be used.
-    logging_level
-        Specifies the logging level.
+        Optional complete keyword configuration for ``logger.configure``. When omitted,
+        deterministic stderr and optional file handlers are constructed here.
+    environment
+        Runtime environment controlling diagnostic trace detail in default handlers.
     log_fp
-        If specified, then log will also be written to this filepath.
+        Optional JSON log destination used only with the default configuration.
+    logging_level
+        Validated root and Loguru logging threshold.
 
     Returns
     -------
-    loguru.Logger
-        `loguru` logger object.
+    Logger
+        Configured process-wide Loguru logger.
 
     Raises
     ------
     ValueError
-        If the logging level is an invalid valid.
+        If the environment or logging level is unsupported, custom levels conflict, or
+        ``config`` and ``log_fp`` are both set.
     """
 
-    global _LOGGER_INITIALIZED
-
-    # Configure logfire.
-    # logfire.configure(
-    #     code_source=logfire.CodeSource(
-    #         repository="https://github.com/IDinsight/SenegalKG",
-    #         revision="main",
-    #     ),
-    #     console=False,
-    # )
-
-    # Remove any default handlers attached to the root logger.
-    logging.root.handlers = []
-
-    # Install intercept handler at the root logger.
-    logging.root.setLevel(logging.INFO)
-    logging.root.addHandler(InterceptHandler())
-
-    # Intercept all loggers.
-    for existing_logger in logging.root.manager.loggerDict.values():
-        if isinstance(existing_logger, logging.PlaceHolder):
-            continue  # Skip incomplete logger definitions
-        existing_logger.handlers = [InterceptHandler()]
-        existing_logger.propagate = False
-
-    # Prevent re-initialization and avoid running in Uvicorn's parent process during
-    # --reload.
-    if (
-        _LOGGER_INITIALIZED
-        and os.getenv("RUN_MAIN") != "true"
-        and os.getenv("WERKZEUG_RUN_MAIN") != "true"
-    ):
-        return logger
+    if environment not in _RUNTIME_ENVIRONMENTS:
+        raise ValueError(
+            f"Invalid runtime environment: {environment}. "
+            f"Valid environments are: {tuple(sorted(_RUNTIME_ENVIRONMENTS))}"
+        )
 
     if not Valid.is_valid_logging_level(logging_level=logging_level):
         raise ValueError(
@@ -204,191 +267,236 @@ def initialize_logger(
             f"Valid logging levels are: {Valid().logging_levels}"
         )
 
+    if config is not None and log_fp is not None:
+        raise ValueError("log_fp may not be combined with an explicit logger config.")
+
+    _register_log_levels()
     logger.remove()
 
-    config = config or {
-        "handlers": [
-            {
-                "backtrace": True,
-                "colorize": True,
-                "diagnose": Settings.environment == "local",
-                "enqueue": True,
-                "filter": redact_tokens,
-                "format": "<g>{time:YYYY-MM-DD HH:mm:ss}</g> | <level>{level.icon} {message}</level>",
-                "level": logging_level,
-                "serialize": False,
-                "sink": sys.stderr,
-            },
-        ]
-    }
-    if log_fp:
-        config["handlers"].append(
-            {
-                "backtrace": True,
-                "delay": True,
-                "diagnose": Settings.environment == "local",
-                "encoding": "utf-8",
-                "filter": redact_tokens,
-                "level": logging_level,
-                "rotation": "10 MB",
-                "serialize": True,
-                "sink": log_fp,
-            },
+    if config is None:
+        handlers = _default_handlers(
+            environment=environment,
+            log_fp=log_fp,
+            logging_level=logging_level,
         )
+        logger.configure(handlers=handlers)
+    else:
+        logger.configure(**config)
 
-    logger.configure(**config)
-    _LOGGER_INITIALIZED = True
-
+    _install_standard_logging_intercept(logging_level=logging_level)
     return logger
+
+
+def _install_standard_logging_intercept(*, logging_level: LogLevel) -> None:
+    """Install one explicit process-wide standard-library logging intercept.
+
+    Parameters
+    ----------
+    logging_level
+        Root logging threshold established by the application entry point.
+    """
+
+    intercept_handler = InterceptHandler()
+    logging.root.handlers.clear()
+    logging.root.setLevel(logging_level)
+    logging.root.addHandler(intercept_handler)
+
+    for existing_logger in logging.root.manager.loggerDict.values():
+        if isinstance(existing_logger, logging.PlaceHolder):
+            continue
+
+        existing_logger.handlers = [intercept_handler]
+        existing_logger.propagate = False
+
+
+def _log_message(*, level: str | int, message: str) -> None:
+    """Write one already-rendered message through Loguru's dynamic-level API.
+
+    Parameters
+    ----------
+    level
+        Loguru level name or number.
+    message
+        Fully rendered message.
+    """
+
+    logger.opt(depth=2).log(level, message)
+
+
+def _redact_log_record(record: dict[str, Any]) -> bool:
+    """Redact sensitive tokens in one Loguru record and retain the record.
+
+    Parameters
+    ----------
+    record
+        Mutable Loguru record supplied to a handler filter.
+
+    Returns
+    -------
+    bool
+        Always ``True`` so the redacted record remains eligible for emission.
+    """
+
+    redacted_record = redact_tokens(record)
+    record.clear()
+    record.update(redacted_record)
+    return True
+
+
+def _register_log_levels() -> None:
+    """Register or update application Loguru levels during explicit initialization.
+
+    Raises
+    ------
+    ValueError
+        If an existing custom level uses a different numeric severity.
+    """
+
+    for name, number, color, icon in _CUSTOM_LEVELS:
+        try:
+            existing_level = logger.level(name)
+        except ValueError:
+            if number is None:
+                raise ValueError(
+                    f"Required standard Loguru level is unavailable: {name}."
+                ) from None
+
+            logger.level(color=color, icon=icon, name=name, no=number)
+            continue
+
+        if number is not None and existing_level.no != number:
+            raise ValueError(
+                f"Existing Loguru level {name} uses severity "
+                f"{existing_level.no}, expected {number}."
+            )
+
+        logger.level(color=color, icon=icon, name=name)
 
 
 def log_func_call(
     *,
     entry: bool = True,
     exit_: bool = True,
-    extra_args: Optional[list[str]] = None,
-    level: str | int = LOGGING_LOG_LEVEL,
-) -> Any:
-    """Return a wrapper for logging entry and exit into functions.
+    extra_args: tuple[str, ...] | None = None,
+    level: str | int = "INFO",
+) -> LogDecorator[P, R]:
+    """Decorate a synchronous or asynchronous callable with entry and exit logging.
 
     Parameters
     ----------
     entry
-        Specifies whether the function is being entered.
+        Whether to emit an entry message.
     exit_
-        Specifies whether the function is being exited.
+        Whether to emit an exit message.
     extra_args
-        List of additional items to log when entering a function.
+        Optional attribute names read from the first positional argument.
     level
-        Specifies the logging level.
+        Loguru level name or number.
 
     Returns
     -------
-    Any
-        The return value from calling a function.
+    LogDecorator[P, R]
+        Signature-preserving decorator for the supplied callable.
     """
 
-    extra_args_ = extra_args or []
-    logger_ = logger.opt(depth=1)
+    logged_attributes = extra_args or ()
 
-    def log_and_call(
-        func: Callable, args: tuple, kwargs: dict, name: str, is_async: bool
-    ) -> Any:
-        """Log the entry and exit of a function call and executes the function,
-        handling both synchronous and asynchronous functions.
-
-        Parameters
-        ----------
-        func : Callable[..., Any]
-            The function to be called (sync or async).
-        args : tuple[Any, ...]
-            Positional arguments to be passed to the function.
-        kwargs : dict[str, Any]
-            Keyword arguments to be passed to the function.
-        name : str
-            The fully-qualified name of the function, used in log messages.
-        is_async : bool
-            Whether the function is a coroutine (async) function.
-
-        Returns
-        -------
-        Any
-            The result of the function call, either from an awaited coroutine or a direct call.
-        """
-
-        if entry:
-            logger_.log(
-                level,
-                _generate_entry_log_str(
-                    args=args, extra_args=extra_args_, kwargs=kwargs, name=name
-                ),
-            )
-
-        async def _async() -> Any:
-            """Handle logging and execution of an asynchronous function.
-
-            Returns
-            -------
-            Any
-                The result of the awaited async function.
-            """
-
-            result = await func(*args, **kwargs)
-            if exit_:
-                logger_.log(level, _generate_exit_log_str(name=name, result=result))
-            return result
-
-        def _sync() -> Any:
-            """Handle logging and execution of a synchronous function.
-
-            Returns
-            -------
-            Any
-                The result of the function call.
-            """
-
-            result = func(*args, **kwargs)
-            if exit_:
-                logger_.log(level, _generate_exit_log_str(name=name, result=result))
-            return result
-
-        return _async() if is_async else _sync()
-
-    def wrapper(func: Callable) -> Callable:
-        """Wrapper for logging entry and exit into functions.
+    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+        """Wrap one callable while preserving its public signature metadata.
 
         Parameters
         ----------
         func
-            A function wrap for logging entry and exit.
+            Synchronous or asynchronous callable to wrap.
 
         Returns
         -------
-        Callable
-            Function that logs entry and exit into functions.
+        Callable[P, R]
+            Wrapped callable with optional entry and exit logging.
         """
 
         name = func.__qualname__
-        is_async = inspect.iscoroutinefunction(func)
+
+        if inspect.iscoroutinefunction(func):
+
+            @functools.wraps(func)
+            async def async_wrapped(*args: P.args, **kwargs: P.kwargs) -> Any:
+                """Log and await one asynchronous decorated callable.
+
+                Parameters
+                ----------
+                args
+                    Positional arguments supplied to the decorated callable.
+                kwargs
+                    Keyword arguments supplied to the decorated callable.
+
+                Returns
+                -------
+                Any
+                    Result of the decorated callable.
+                """
+
+                if entry:
+                    _log_message(
+                        level=level,
+                        message=_generate_entry_log_str(
+                            args=cast(tuple[object, ...], args),
+                            extra_args=logged_attributes,
+                            kwargs=cast(Mapping[str, object], kwargs),
+                            name=name,
+                        ),
+                    )
+
+                result = await func(*args, **kwargs)
+
+                if exit_:
+                    _log_message(
+                        level=level,
+                        message=_generate_exit_log_str(name=name, result=result),
+                    )
+
+                return result
+
+            return cast(Callable[P, R], async_wrapped)
 
         @functools.wraps(func)
-        async def async_wrapped(*args: Any, **kwargs: Any) -> Any:
-            """Async wrapper for logging entry and exit into functions.
+        def sync_wrapped(*args: P.args, **kwargs: P.kwargs) -> R:
+            """Log and call one synchronous decorated callable.
 
             Parameters
             ----------
             args
-                Additional positional arguments.
+                Positional arguments supplied to the decorated callable.
             kwargs
-                Additional keyword arguments
+                Keyword arguments supplied to the decorated callable.
 
             Returns
             -------
-            Any
-                The return value from calling a function.
+            R
+                Result of the decorated callable.
             """
 
-            return await log_and_call(func, args, kwargs, name, is_async=True)
+            if entry:
+                _log_message(
+                    level=level,
+                    message=_generate_entry_log_str(
+                        args=cast(tuple[object, ...], args),
+                        extra_args=logged_attributes,
+                        kwargs=cast(Mapping[str, object], kwargs),
+                        name=name,
+                    ),
+                )
 
-        @functools.wraps(func)
-        def sync_wrapped(*args: Any, **kwargs: Any) -> Any:
-            """Sync wrapper for logging entry and exit into functions.
+            result = func(*args, **kwargs)
 
-            Parameters
-            ----------
-            args
-                Additional positional arguments.
-            kwargs
-                Additional keyword arguments
+            if exit_:
+                _log_message(
+                    level=level,
+                    message=_generate_exit_log_str(name=name, result=result),
+                )
 
-            Returns
-            -------
-            Any
-                The return value from calling a function.
-            """
+            return result
 
-            return log_and_call(func, args, kwargs, name, is_async=False)
+        return sync_wrapped
 
-        return async_wrapped if is_async else sync_wrapped
-
-    return wrapper
+    return decorator
