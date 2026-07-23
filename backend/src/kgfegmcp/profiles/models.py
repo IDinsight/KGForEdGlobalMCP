@@ -16,9 +16,6 @@ or perform MCP operations. They provide deterministic interpretation metadata fo
 catalog, graph, search, resource, and presentation services.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Standard Library
 import re
 
@@ -101,6 +98,47 @@ class CodeParentRule(FrozenSchema):
         return self
 
 
+class CodeTypePolicy(FrozenSchema):
+    """Define matching and scope behavior for one configured code type."""
+
+    code_type: ConfigurationKey
+    patterns: tuple[str, ...] = Field(min_length=1)
+    scope_statement_types: tuple[str, ...] = ()
+    statement_types: tuple[str, ...] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_code_type(self) -> Self:
+        """Validate regular expressions and referenced statement-type uniqueness.
+
+        Returns
+        -------
+        Self
+            Validated code-type policy.
+
+        Raises
+        ------
+        ValueError
+            If a regular expression is invalid or a collection has duplicates.
+        """
+
+        for pattern in self.patterns:
+            try:
+                re.compile(pattern)
+            except re.error as error:
+                raise ValueError(
+                    f"Invalid regex for code type {self.code_type}: {error}."
+                ) from error
+
+        _require_unique(
+            field_name=f"{self.code_type}.scope_statement_types",
+            values=self.scope_statement_types,
+        )
+        _require_unique(
+            field_name=f"{self.code_type}.statement_types", values=self.statement_types
+        )
+        return self
+
+
 class CodeSearchPolicy(FrozenSchema):
     """Define deterministic exact and optional prefix code-search behavior."""
 
@@ -164,47 +202,6 @@ class CodeSearchPolicy(FrozenSchema):
                 raise ValueError(
                     f"Code-parent rule references undeclared types: {formatted_types}."
                 )
-        return self
-
-
-class CodeTypePolicy(FrozenSchema):
-    """Define matching and scope behavior for one configured code type."""
-
-    code_type: ConfigurationKey
-    patterns: tuple[str, ...] = Field(min_length=1)
-    scope_statement_types: tuple[str, ...] = ()
-    statement_types: tuple[str, ...] = Field(min_length=1)
-
-    @model_validator(mode="after")
-    def validate_code_type(self) -> Self:
-        """Validate regular expressions and referenced statement-type uniqueness.
-
-        Returns
-        -------
-        Self
-            Validated code-type policy.
-
-        Raises
-        ------
-        ValueError
-            If a regular expression is invalid or a collection has duplicates.
-        """
-
-        for pattern in self.patterns:
-            try:
-                re.compile(pattern)
-            except re.error as error:
-                raise ValueError(
-                    f"Invalid regex for code type {self.code_type}: {error}."
-                ) from error
-
-        _require_unique(
-            field_name=f"{self.code_type}.scope_statement_types",
-            values=self.scope_statement_types,
-        )
-        _require_unique(
-            field_name=f"{self.code_type}.statement_types", values=self.statement_types
-        )
         return self
 
 

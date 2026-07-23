@@ -31,7 +31,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
-from typing import Self, cast
+from typing import TYPE_CHECKING, Self, cast
 
 # Package Library
 from kgfegmcp.domain.identifiers import (
@@ -56,7 +56,11 @@ from kgfegmcp.graph.models import (
     StandardNode,
     graph_relationship_order_key,
 )
-from kgfegmcp.packages.models import LoadedGraphPackage
+
+if TYPE_CHECKING:
+    # Package Library
+    from kgfegmcp.packages.models import LoadedGraphPackage
+
 
 AdjacencyKey = tuple[str, NodeId]
 

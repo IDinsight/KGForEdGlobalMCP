@@ -19,9 +19,6 @@ does not parse JSONL records, expose a reusable graph store, repair source data,
 modify package artifacts.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Standard Library
 from collections.abc import Mapping
 from datetime import date, datetime
@@ -102,173 +99,6 @@ FindingCode = Annotated[
     StringConstraints(max_length=120, min_length=1, pattern=r"^[a-z][a-z0-9_]*$"),
 ]
 NonNegativeStrictInt = Annotated[StrictInt, Field(ge=0)]
-
-
-def _require_persistence_consistency(result: PackageValidationResult) -> None:
-    """Require persistence metadata to agree with the observed transition.
-
-    A persisted result must originate from pending status, reach its target status,
-    avoid persisting alongside a terminal revalidation, and record a validation
-    timestamp. A non-persisted result must retain its observed effective status. A
-    read-only result may never be persisted.
-
-    Parameters
-    ----------
-    result
-        Validation result whose persistence metadata is checked.
-
-    Raises
-    ------
-    ValueError
-        If persistence metadata is internally inconsistent.
-    """
-
-    if result.persisted and result.read_only:
-        raise ValueError("A read-only validation result may not be persisted.")
-
-    if not result.persisted:
-        if result.effective_status is not result.observed_status:
-            raise ValueError(
-                "A non-persisted result must retain its observed effective status."
-            )
-        return
-
-    if result.observed_status is not ValidationStatus.PENDING:
-        raise ValueError(
-            "A persisted validation result must originate from pending status."
-        )
-
-    if result.effective_status is not result.target_status:
-        raise ValueError("A persisted validation result must reach its target status.")
-
-    if result.terminal_revalidation:
-        raise ValueError(
-            "A terminal revalidation result may not persist another transition."
-        )
-
-    if result.validated_at is None:
-        raise ValueError("Persisted validation results require validated_at.")
-
-
-def _require_terminal_consistency(result: PackageValidationResult) -> None:
-    """Require terminal-status flags and the timestamp to agree.
-
-    The terminal-revalidation flag must reflect whether the observed status is
-    terminal, and such revalidation must be read-only. A terminal effective status
-    requires a timestamp, while a pending or unavailable effective status must not
-    declare one.
-
-    Parameters
-    ----------
-    result
-        Validation result whose terminal-status flags are checked.
-
-    Raises
-    ------
-    ValueError
-        If terminal-status flags or the timestamp are inconsistent.
-    """
-
-    terminal_statuses = {
-        ValidationStatus.FAILED,
-        ValidationStatus.PASSED,
-        ValidationStatus.QUARANTINED,
-    }
-
-    if result.terminal_revalidation != (result.observed_status in terminal_statuses):
-        raise ValueError(
-            "terminal_revalidation must reflect an observed terminal status."
-        )
-
-    if result.terminal_revalidation and not result.read_only:
-        raise ValueError("Terminal revalidation must be read-only.")
-
-    if result.effective_status in terminal_statuses and result.validated_at is None:
-        raise ValueError("Effective terminal statuses require validated_at.")
-
-    if (
-        result.effective_status in {None, ValidationStatus.PENDING}
-        and result.validated_at is not None
-    ):
-        raise ValueError(
-            "Pending or unavailable effective status may not declare validated_at."
-        )
-
-
-def _require_timezone_aware(*, field_name: str, value: datetime) -> None:
-    """Require a datetime value to include an effective UTC offset.
-
-    Parameters
-    ----------
-    field_name
-        Field name used in the validation error.
-    value
-        Datetime to validate.
-
-    Raises
-    ------
-    ValueError
-        If the datetime is naive or has no effective UTC offset.
-    """
-
-    if value.tzinfo is None or value.utcoffset() is None:
-        raise ValueError(f"{field_name} must be timezone-aware.")
-
-
-def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
-    """Require a tuple of strings to contain no duplicates.
-
-    Parameters
-    ----------
-    field_name
-        Field name used in the validation error.
-    values
-        String values to validate.
-
-    Raises
-    ------
-    ValueError
-        If duplicate values are present.
-    """
-
-    if len(values) != len(set(values)):
-        raise ValueError(f"{field_name} must not contain duplicates.")
-
-
-def _require_valid_target_status(result: PackageValidationResult) -> None:
-    """Require the target status to agree with result validity and findings.
-
-    A result is valid exactly when it has no error findings. The target status must be
-    terminal, must be passed for a valid result, and must be failed or quarantined for
-    an invalid result.
-
-    Parameters
-    ----------
-    result
-        Validation result whose validity and target status are checked.
-
-    Raises
-    ------
-    ValueError
-        If validity conflicts with findings or the target status.
-    """
-
-    has_errors = any(finding.severity == "error" for finding in result.findings)
-
-    if result.is_valid == has_errors:
-        raise ValueError("is_valid must be true exactly when no error findings exist.")
-
-    if result.target_status is ValidationStatus.PENDING:
-        raise ValueError("target_status must be terminal.")
-
-    if result.is_valid and result.target_status is not ValidationStatus.PASSED:
-        raise ValueError("A valid result must target passed status.")
-
-    if not result.is_valid and result.target_status not in {
-        ValidationStatus.FAILED,
-        ValidationStatus.QUARANTINED,
-    }:
-        raise ValueError("An invalid result must target failed or quarantined status.")
 
 
 class ArtifactIntegrityObservation(FrozenSchema):
@@ -567,6 +397,287 @@ class FrameworkMetadata(FrozenSchema):
         return self
 
 
+class PackageArtifacts(FrozenSchema):
+    """Declare immutable package-relative artifact paths."""
+
+    academic_standards_bundle: ArtifactPath | None = None
+    additional_artifacts: dict[ArtifactName, ArtifactPath] = Field(default_factory=dict)
+    entity_provenance: ArtifactPath | None = None
+    nodes: ArtifactPath
+    relationships: ArtifactPath
+    relationships_has_child: ArtifactPath | None = None
+    standards_framework: ArtifactPath | None = None
+    standards_framework_items: ArtifactPath | None = None
+    unresolved_items: ArtifactPath | None = None
+    validation_report: ArtifactPath | None = None
+
+    @model_validator(mode="after")
+    def validate_artifacts(self) -> Self:
+        """Validate artifact-name and path uniqueness.
+
+        Returns
+        -------
+        Self
+            Validated artifact declaration.
+
+        Raises
+        ------
+        ValueError
+            If an additional name is reserved or two names resolve to one path.
+        """
+
+        reserved_names = {
+            "academicStandardsBundle",
+            "entityProvenance",
+            "nodes",
+            "relationships",
+            "relationshipsHasChild",
+            "standardsFramework",
+            "standardsFrameworkItems",
+            "unresolvedItems",
+            "validationReport",
+        }
+        conflicting_names = reserved_names.intersection(
+            str(name) for name in self.additional_artifacts
+        )
+
+        if conflicting_names:
+            formatted_names = ", ".join(sorted(conflicting_names))
+            raise ValueError(
+                f"additional_artifacts uses reserved names: {formatted_names}."
+            )
+
+        paths = tuple(str(path) for path in self.declared_artifacts().values())
+        _require_unique(field_name="artifact paths", values=paths)
+        return self
+
+    def declared_artifacts(self) -> dict[str, ArtifactPath]:
+        """Return every declared artifact by its public manifest name.
+
+        Returns
+        -------
+        dict[str, ArtifactPath]
+            Deterministically ordered artifact-name to path mapping.
+        """
+
+        artifacts: dict[str, ArtifactPath] = {
+            "nodes": self.nodes,
+            "relationships": self.relationships,
+        }
+        optional_artifacts = {
+            "academicStandardsBundle": self.academic_standards_bundle,
+            "entityProvenance": self.entity_provenance,
+            "relationshipsHasChild": self.relationships_has_child,
+            "standardsFramework": self.standards_framework,
+            "standardsFrameworkItems": self.standards_framework_items,
+            "unresolvedItems": self.unresolved_items,
+            "validationReport": self.validation_report,
+        }
+        artifacts.update(
+            {
+                name: path
+                for name, path in optional_artifacts.items()
+                if path is not None
+            }
+        )
+        artifacts.update(
+            {
+                str(name): path
+                for name, path in sorted(
+                    self.additional_artifacts.items(),
+                    key=lambda item: str(item[0]),
+                )
+            }
+        )
+        return artifacts
+
+
+class PackageCounts(FrozenSchema):
+    """Record declared graph counts and exact version-1 additional counts."""
+
+    additional_counts: dict[str, NonNegativeStrictInt]
+    framework_nodes: int = Field(default=1, ge=1, le=1)
+    item_nodes: int = Field(ge=0)
+    relationships: int = Field(ge=0)
+
+    @model_validator(mode="after")
+    def validate_additional_counts(self) -> Self:
+        """Validate exact version-1 additional count names and values.
+
+        Returns
+        -------
+        Self
+            Validated package counts.
+
+        Raises
+        ------
+        ValueError
+            If count names differ from the supported version-1 contract or a value is
+            negative.
+        """
+
+        actual_names = set(self.additional_counts)
+
+        if actual_names != REQUIRED_ADDITIONAL_COUNT_NAMES:
+            missing_names = sorted(REQUIRED_ADDITIONAL_COUNT_NAMES - actual_names)
+            unexpected_names = sorted(actual_names - REQUIRED_ADDITIONAL_COUNT_NAMES)
+            raise ValueError(
+                f"additional_counts must contain exactly the supported keys; "
+                f"missing={missing_names}, unexpected={unexpected_names}."
+            )
+
+        return self
+
+
+class PackageIntegritySnapshot(FrozenSchema):
+    """Capture the exact package and profile state accepted during one load."""
+
+    artifact_observations: tuple[ArtifactIntegrityObservation, ...]
+    manifest_bytes: bytes = Field(exclude=True, repr=False)
+    package_directories: tuple[str, ...]
+    package_files: tuple[str, ...]
+    package_tree_signature: tuple[str, ...]
+    profile_finding_signature: tuple[str, ...] = ()
+    profile_sha256: Sha256Digest | None = None
+
+
+class PackageValidation(FrozenSchema):
+    """Record deterministic package-validation state."""
+
+    status: ValidationStatus
+    validated_at: datetime | None = None
+
+    @model_validator(mode="after")
+    def validate_timestamp(self) -> Self:
+        """Validate timestamp requirements for terminal statuses.
+
+        Returns
+        -------
+        Self
+            Validated package-validation record.
+
+        Raises
+        ------
+        ValueError
+            If a terminal status lacks a timestamp or a timestamp is naive.
+        """
+
+        terminal_statuses = {
+            ValidationStatus.FAILED,
+            ValidationStatus.PASSED,
+            ValidationStatus.QUARANTINED,
+        }
+
+        if self.status in terminal_statuses and self.validated_at is None:
+            raise ValueError("Terminal validation statuses require validated_at.")
+
+        if self.status is ValidationStatus.PENDING and self.validated_at is not None:
+            raise ValueError("Pending validation status may not declare validated_at.")
+
+        if self.validated_at is not None:
+            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
+
+        return self
+
+
+class PackageValidationFinding(FrozenSchema):
+    """Describe one stable package-validation error or warning."""
+
+    artifact_name: ArtifactName | None = None
+    code: FindingCode
+    details: dict[str, object] = Field(default_factory=dict, exclude=True, repr=False)
+    message: str = Field(min_length=1)
+    record_id: str | None = None
+    severity: Literal["error", "warning"] = "error"
+    source_export_order: int | None = Field(default=None, ge=1)
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, value: str) -> str:
+        """Require safe finding text without surrounding whitespace.
+
+        Parameters
+        ----------
+        value
+            Public finding message.
+
+        Returns
+        -------
+        str
+            The unchanged public message.
+
+        Raises
+        ------
+        ValueError
+            If the message contains surrounding whitespace.
+        """
+
+        if value != value.strip():
+            raise ValueError("Finding messages may not contain surrounding whitespace.")
+
+        return value
+
+
+class PackageValidationResult(FrozenSchema):
+    """Return one package validation outcome and any controlled status transition."""
+
+    effective_status: ValidationStatus | None = None
+    findings: tuple[PackageValidationFinding, ...]
+    framework_id: FrameworkId | None = None
+    graph_package_id: GraphPackageId | None = None
+    is_valid: bool
+    observed_status: ValidationStatus | None = None
+    package_reference: str = Field(min_length=1)
+    persisted: bool = False
+    profile_id: ProfileId | None = None
+    profile_version: ProfileVersion | None = None
+    read_only: bool
+    snapshot_id: SnapshotId | None = None
+    target_status: ValidationStatus
+    terminal_revalidation: bool = False
+    validated_at: datetime | None = None
+
+    @model_validator(mode="after")
+    def validate_result(self) -> Self:
+        """Validate consistency among findings, status, and persistence metadata.
+
+        Returns
+        -------
+        Self
+            The consistent validation result.
+
+        Raises
+        ------
+        ValueError
+            If validity conflicts with findings or persistence metadata is invalid.
+        """
+
+        _require_valid_target_status(self)
+        _require_persistence_consistency(self)
+        _require_terminal_consistency(self)
+
+        if self.validated_at is not None:
+            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
+
+        return self
+
+
+class ProfileReference(FrozenSchema):
+    """Reference one immutable curriculum interpretation profile."""
+
+    profile_id: ProfileId
+    profile_version: ProfileVersion
+    sha256: Sha256Digest
+
+
+class SnapshotRelation(FrozenSchema):
+    """Describe an operator-supplied relationship to another snapshot."""
+
+    evidence: str | None = None
+    relation_type: SnapshotRelationType
+    target_snapshot_id: SnapshotId
+
+
 class GraphPackageManifest(FrozenSchema):
     """Describe one immutable, validated graph package."""
 
@@ -794,101 +905,6 @@ class LoadedGraphPackage(FrozenSchema):
         return None
 
 
-class PackageArtifacts(FrozenSchema):
-    """Declare immutable package-relative artifact paths."""
-
-    academic_standards_bundle: ArtifactPath | None = None
-    additional_artifacts: dict[ArtifactName, ArtifactPath] = Field(default_factory=dict)
-    entity_provenance: ArtifactPath | None = None
-    nodes: ArtifactPath
-    relationships: ArtifactPath
-    relationships_has_child: ArtifactPath | None = None
-    standards_framework: ArtifactPath | None = None
-    standards_framework_items: ArtifactPath | None = None
-    unresolved_items: ArtifactPath | None = None
-    validation_report: ArtifactPath | None = None
-
-    @model_validator(mode="after")
-    def validate_artifacts(self) -> Self:
-        """Validate artifact-name and path uniqueness.
-
-        Returns
-        -------
-        Self
-            Validated artifact declaration.
-
-        Raises
-        ------
-        ValueError
-            If an additional name is reserved or two names resolve to one path.
-        """
-
-        reserved_names = {
-            "academicStandardsBundle",
-            "entityProvenance",
-            "nodes",
-            "relationships",
-            "relationshipsHasChild",
-            "standardsFramework",
-            "standardsFrameworkItems",
-            "unresolvedItems",
-            "validationReport",
-        }
-        conflicting_names = reserved_names.intersection(
-            str(name) for name in self.additional_artifacts
-        )
-
-        if conflicting_names:
-            formatted_names = ", ".join(sorted(conflicting_names))
-            raise ValueError(
-                f"additional_artifacts uses reserved names: {formatted_names}."
-            )
-
-        paths = tuple(str(path) for path in self.declared_artifacts().values())
-        _require_unique(field_name="artifact paths", values=paths)
-        return self
-
-    def declared_artifacts(self) -> dict[str, ArtifactPath]:
-        """Return every declared artifact by its public manifest name.
-
-        Returns
-        -------
-        dict[str, ArtifactPath]
-            Deterministically ordered artifact-name to path mapping.
-        """
-
-        artifacts: dict[str, ArtifactPath] = {
-            "nodes": self.nodes,
-            "relationships": self.relationships,
-        }
-        optional_artifacts = {
-            "academicStandardsBundle": self.academic_standards_bundle,
-            "entityProvenance": self.entity_provenance,
-            "relationshipsHasChild": self.relationships_has_child,
-            "standardsFramework": self.standards_framework,
-            "standardsFrameworkItems": self.standards_framework_items,
-            "unresolvedItems": self.unresolved_items,
-            "validationReport": self.validation_report,
-        }
-        artifacts.update(
-            {
-                name: path
-                for name, path in optional_artifacts.items()
-                if path is not None
-            }
-        )
-        artifacts.update(
-            {
-                str(name): path
-                for name, path in sorted(
-                    self.additional_artifacts.items(),
-                    key=lambda item: str(item[0]),
-                )
-            }
-        )
-        return artifacts
-
-
 class PackageBuildResult(FrozenSchema):
     """Return the deterministic result of creating or proposing one package."""
 
@@ -981,187 +997,168 @@ class PackageBuildSpec(FrozenSchema):
         return self
 
 
-class PackageCounts(FrozenSchema):
-    """Record declared graph counts and exact version-1 additional counts."""
+def _require_persistence_consistency(result: PackageValidationResult) -> None:
+    """Require persistence metadata to agree with the observed transition.
 
-    additional_counts: dict[str, NonNegativeStrictInt]
-    framework_nodes: int = Field(default=1, ge=1, le=1)
-    item_nodes: int = Field(ge=0)
-    relationships: int = Field(ge=0)
+    A persisted result must originate from pending status, reach its target status,
+    avoid persisting alongside a terminal revalidation, and record a validation
+    timestamp. A non-persisted result must retain its observed effective status. A
+    read-only result may never be persisted.
 
-    @model_validator(mode="after")
-    def validate_additional_counts(self) -> Self:
-        """Validate exact version-1 additional count names and values.
+    Parameters
+    ----------
+    result
+        Validation result whose persistence metadata is checked.
 
-        Returns
-        -------
-        Self
-            Validated package counts.
+    Raises
+    ------
+    ValueError
+        If persistence metadata is internally inconsistent.
+    """
 
-        Raises
-        ------
-        ValueError
-            If count names differ from the supported version-1 contract or a value is
-            negative.
-        """
+    if result.persisted and result.read_only:
+        raise ValueError("A read-only validation result may not be persisted.")
 
-        actual_names = set(self.additional_counts)
-
-        if actual_names != REQUIRED_ADDITIONAL_COUNT_NAMES:
-            missing_names = sorted(REQUIRED_ADDITIONAL_COUNT_NAMES - actual_names)
-            unexpected_names = sorted(actual_names - REQUIRED_ADDITIONAL_COUNT_NAMES)
+    if not result.persisted:
+        if result.effective_status is not result.observed_status:
             raise ValueError(
-                f"additional_counts must contain exactly the supported keys; "
-                f"missing={missing_names}, unexpected={unexpected_names}."
+                "A non-persisted result must retain its observed effective status."
             )
+        return
 
-        return self
+    if result.observed_status is not ValidationStatus.PENDING:
+        raise ValueError(
+            "A persisted validation result must originate from pending status."
+        )
 
+    if result.effective_status is not result.target_status:
+        raise ValueError("A persisted validation result must reach its target status.")
 
-class PackageIntegritySnapshot(FrozenSchema):
-    """Capture the exact package and profile state accepted during one load."""
+    if result.terminal_revalidation:
+        raise ValueError(
+            "A terminal revalidation result may not persist another transition."
+        )
 
-    artifact_observations: tuple[ArtifactIntegrityObservation, ...]
-    manifest_bytes: bytes = Field(exclude=True, repr=False)
-    package_directories: tuple[str, ...]
-    package_files: tuple[str, ...]
-    package_tree_signature: tuple[str, ...]
-    profile_finding_signature: tuple[str, ...] = ()
-    profile_sha256: Sha256Digest | None = None
-
-
-class PackageValidation(FrozenSchema):
-    """Record deterministic package-validation state."""
-
-    status: ValidationStatus
-    validated_at: datetime | None = None
-
-    @model_validator(mode="after")
-    def validate_timestamp(self) -> Self:
-        """Validate timestamp requirements for terminal statuses.
-
-        Returns
-        -------
-        Self
-            Validated package-validation record.
-
-        Raises
-        ------
-        ValueError
-            If a terminal status lacks a timestamp or a timestamp is naive.
-        """
-
-        terminal_statuses = {
-            ValidationStatus.FAILED,
-            ValidationStatus.PASSED,
-            ValidationStatus.QUARANTINED,
-        }
-
-        if self.status in terminal_statuses and self.validated_at is None:
-            raise ValueError("Terminal validation statuses require validated_at.")
-
-        if self.status is ValidationStatus.PENDING and self.validated_at is not None:
-            raise ValueError("Pending validation status may not declare validated_at.")
-
-        if self.validated_at is not None:
-            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
-
-        return self
+    if result.validated_at is None:
+        raise ValueError("Persisted validation results require validated_at.")
 
 
-class PackageValidationFinding(FrozenSchema):
-    """Describe one stable package-validation error or warning."""
+def _require_terminal_consistency(result: PackageValidationResult) -> None:
+    """Require terminal-status flags and the timestamp to agree.
 
-    artifact_name: ArtifactName | None = None
-    code: FindingCode
-    details: dict[str, object] = Field(default_factory=dict, exclude=True, repr=False)
-    message: str = Field(min_length=1)
-    record_id: str | None = None
-    severity: Literal["error", "warning"] = "error"
-    source_export_order: int | None = Field(default=None, ge=1)
+    The terminal-revalidation flag must reflect whether the observed status is
+    terminal, and such revalidation must be read-only. A terminal effective status
+    requires a timestamp, while a pending or unavailable effective status must not
+    declare one.
 
-    @field_validator("message")
-    @classmethod
-    def validate_message(cls, value: str) -> str:
-        """Require safe finding text without surrounding whitespace.
+    Parameters
+    ----------
+    result
+        Validation result whose terminal-status flags are checked.
 
-        Parameters
-        ----------
-        value
-            Public finding message.
+    Raises
+    ------
+    ValueError
+        If terminal-status flags or the timestamp are inconsistent.
+    """
 
-        Returns
-        -------
-        str
-            The unchanged public message.
+    terminal_statuses = {
+        ValidationStatus.FAILED,
+        ValidationStatus.PASSED,
+        ValidationStatus.QUARANTINED,
+    }
 
-        Raises
-        ------
-        ValueError
-            If the message contains surrounding whitespace.
-        """
+    if result.terminal_revalidation != (result.observed_status in terminal_statuses):
+        raise ValueError(
+            "terminal_revalidation must reflect an observed terminal status."
+        )
 
-        if value != value.strip():
-            raise ValueError("Finding messages may not contain surrounding whitespace.")
+    if result.terminal_revalidation and not result.read_only:
+        raise ValueError("Terminal revalidation must be read-only.")
 
-        return value
+    if result.effective_status in terminal_statuses and result.validated_at is None:
+        raise ValueError("Effective terminal statuses require validated_at.")
 
-
-class PackageValidationResult(FrozenSchema):
-    """Return one package validation outcome and any controlled status transition."""
-
-    effective_status: ValidationStatus | None = None
-    findings: tuple[PackageValidationFinding, ...]
-    framework_id: FrameworkId | None = None
-    graph_package_id: GraphPackageId | None = None
-    is_valid: bool
-    observed_status: ValidationStatus | None = None
-    package_reference: str = Field(min_length=1)
-    persisted: bool = False
-    profile_id: ProfileId | None = None
-    profile_version: ProfileVersion | None = None
-    read_only: bool
-    snapshot_id: SnapshotId | None = None
-    target_status: ValidationStatus
-    terminal_revalidation: bool = False
-    validated_at: datetime | None = None
-
-    @model_validator(mode="after")
-    def validate_result(self) -> Self:
-        """Validate consistency among findings, status, and persistence metadata.
-
-        Returns
-        -------
-        Self
-            The consistent validation result.
-
-        Raises
-        ------
-        ValueError
-            If validity conflicts with findings or persistence metadata is invalid.
-        """
-
-        _require_valid_target_status(self)
-        _require_persistence_consistency(self)
-        _require_terminal_consistency(self)
-
-        if self.validated_at is not None:
-            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
-
-        return self
+    if (
+        result.effective_status in {None, ValidationStatus.PENDING}
+        and result.validated_at is not None
+    ):
+        raise ValueError(
+            "Pending or unavailable effective status may not declare validated_at."
+        )
 
 
-class ProfileReference(FrozenSchema):
-    """Reference one immutable curriculum interpretation profile."""
+def _require_timezone_aware(*, field_name: str, value: datetime) -> None:
+    """Require a datetime value to include an effective UTC offset.
 
-    profile_id: ProfileId
-    profile_version: ProfileVersion
-    sha256: Sha256Digest
+    Parameters
+    ----------
+    field_name
+        Field name used in the validation error.
+    value
+        Datetime to validate.
+
+    Raises
+    ------
+    ValueError
+        If the datetime is naive or has no effective UTC offset.
+    """
+
+    if value.tzinfo is None or value.utcoffset() is None:
+        raise ValueError(f"{field_name} must be timezone-aware.")
 
 
-class SnapshotRelation(FrozenSchema):
-    """Describe an operator-supplied relationship to another snapshot."""
+def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
+    """Require a tuple of strings to contain no duplicates.
 
-    evidence: str | None = None
-    relation_type: SnapshotRelationType
-    target_snapshot_id: SnapshotId
+    Parameters
+    ----------
+    field_name
+        Field name used in the validation error.
+    values
+        String values to validate.
+
+    Raises
+    ------
+    ValueError
+        If duplicate values are present.
+    """
+
+    if len(values) != len(set(values)):
+        raise ValueError(f"{field_name} must not contain duplicates.")
+
+
+def _require_valid_target_status(result: PackageValidationResult) -> None:
+    """Require the target status to agree with result validity and findings.
+
+    A result is valid exactly when it has no error findings. The target status must be
+    terminal, must be passed for a valid result, and must be failed or quarantined for
+    an invalid result.
+
+    Parameters
+    ----------
+    result
+        Validation result whose validity and target status are checked.
+
+    Raises
+    ------
+    ValueError
+        If validity conflicts with findings or the target status.
+    """
+
+    has_errors = any(finding.severity == "error" for finding in result.findings)
+
+    if result.is_valid == has_errors:
+        raise ValueError("is_valid must be true exactly when no error findings exist.")
+
+    if result.target_status is ValidationStatus.PENDING:
+        raise ValueError("target_status must be terminal.")
+
+    if result.is_valid and result.target_status is not ValidationStatus.PASSED:
+        raise ValueError("A valid result must target passed status.")
+
+    if not result.is_valid and result.target_status not in {
+        ValidationStatus.FAILED,
+        ValidationStatus.QUARANTINED,
+    }:
+        raise ValueError("An invalid result must target failed or quarantined status.")

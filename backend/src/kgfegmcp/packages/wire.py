@@ -8,9 +8,6 @@ arrays are intentionally decoded in `kgfegmcp.packages.decoder` rather than in t
 raw wire models.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Standard Library
 from collections.abc import Mapping
 from typing import Final, Literal, cast
@@ -35,28 +32,6 @@ DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY: Final[frozenset[str]] = froz
 DELIVERY_SCHEMA_1_0_UNRESOLVED_RELATIONSHIP_STATUSES: Final[frozenset[str]] = frozenset(
     {DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS}
 )
-
-
-class NodeWireEnvelope(FrozenSchema):
-    """Represent one strict raw node record from ``nodes.jsonl``."""
-
-    identifier: NodeId
-    labels: tuple[StrictStr, ...] = Field(min_length=1)
-    properties: NodeWireProperties
-    type: Literal["node"]
-
-
-class RelationshipWireEnvelope(FrozenSchema):
-    """Represent one strict raw relationship record from ``relationships.jsonl``."""
-
-    identifier: RelationshipId
-    label: StrictStr
-    properties: RelationshipWireProperties
-    source_identifier: NodeId = Field(alias="source_identifier")
-    source_labels: tuple[StrictStr, ...] = Field(alias="source_labels", min_length=1)
-    target_identifier: NodeId = Field(alias="target_identifier")
-    target_labels: tuple[StrictStr, ...] = Field(alias="target_labels", min_length=1)
-    type: Literal["relationship"]
 
 
 class WireProperties(FrozenSchema):
@@ -161,3 +136,25 @@ class RelationshipWireProperties(WireProperties):
     target_entity: StrictStr | None = None
     target_entity_key: StrictStr | None = None
     target_entity_value: StrictStr | None = None
+
+
+class NodeWireEnvelope(FrozenSchema):
+    """Represent one strict raw node record from ``nodes.jsonl``."""
+
+    identifier: NodeId
+    labels: tuple[StrictStr, ...] = Field(min_length=1)
+    properties: NodeWireProperties
+    type: Literal["node"]
+
+
+class RelationshipWireEnvelope(FrozenSchema):
+    """Represent one strict raw relationship record from ``relationships.jsonl``."""
+
+    identifier: RelationshipId
+    label: StrictStr
+    properties: RelationshipWireProperties
+    source_identifier: NodeId = Field(alias="source_identifier")
+    source_labels: tuple[StrictStr, ...] = Field(alias="source_labels", min_length=1)
+    target_identifier: NodeId = Field(alias="target_identifier")
+    target_labels: tuple[StrictStr, ...] = Field(alias="target_labels", min_length=1)
+    type: Literal["relationship"]

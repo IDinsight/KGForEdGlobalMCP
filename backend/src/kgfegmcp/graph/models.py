@@ -13,9 +13,6 @@ and explicit truncation state. They do not load packages, validate package accep
 mutate source records, infer instructional sequence, or perform cross-package discovery.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Standard Library
 from enum import StrEnum
 from typing import Annotated, Self, TypeAlias
@@ -41,6 +38,122 @@ from kgfegmcp.domain.identifiers import (
 from kgfegmcp.schemas import FrozenSchema
 
 SourceExportOrder = Annotated[int, Field(ge=1)]
+
+
+class GraphNode(FrozenSchema):
+    """Represent fields shared by every decoded delivery node."""
+
+    academic_subject: str | None = None
+    adoption_status: str | None = None
+    attribution_statement: str | None = None
+    author: str | None = None
+    case_identifier_uri: CaseIdentifierUri | None = None
+    case_identifier_uuid: CaseIdentifierUuid | None = None
+    in_language: LanguageTag | None = None
+    is_current: bool | None = None
+    jurisdiction: str | None = None
+    labels: tuple[str, ...]
+    license: str | None = None
+    node_id: NodeId
+    property_identifier: NodeId | None = None
+    provider: str | None = None
+    raw_properties: dict[str, str]
+    source_export_order: SourceExportOrder
+
+
+class GraphRelationship(FrozenSchema):
+    """Represent one decoded relationship without resolving its endpoints."""
+
+    attribution_statement: str | None = None
+    author: str | None = None
+    description: str | None = None
+    label: str
+    license: str | None = None
+    property_identifier: RelationshipId | None = None
+    provider: str | None = None
+    raw_properties: dict[str, str]
+    relationship_id: RelationshipId
+    relationship_type: str | None = None
+    resolution_status: str | None = None
+    source_entity: str | None = None
+    source_entity_key: str | None = None
+    source_entity_value: str | None = None
+    source_labels: tuple[str, ...]
+    source_node_id: NodeId
+    source_export_order: SourceExportOrder
+    target_entity: str | None = None
+    target_entity_key: str | None = None
+    target_entity_value: str | None = None
+    target_labels: tuple[str, ...]
+    target_node_id: NodeId
+
+
+class FrameworkNode(GraphNode):
+    """Represent one decoded standards-framework node."""
+
+    name: str | None = None
+
+
+class StandardNode(GraphNode):
+    """Represent one decoded standards-framework-item node."""
+
+    description: str | None = None
+    grade_level: tuple[str, ...] | None = None
+    normalized_statement_type: NormalizedStatementType | None = None
+    statement_code: str | None = None
+    statement_type: str | None = None
+
+
+GraphNodeRecord: TypeAlias = FrameworkNode | StandardNode
+
+
+class DirectRelationshipDirection(StrEnum):
+    """Identify whether a direct-neighbor result contains parents or children."""
+
+    CHILDREN = "children"
+    PARENTS = "parents"
+
+
+class GraphTraversalDirection(StrEnum):
+    """Identify whether a bounded traversal walks ancestors or descendants."""
+
+    ANCESTORS = "ancestors"
+    DESCENDANTS = "descendants"
+
+
+class TraversalTruncationReason(StrEnum):
+    """Identify the deterministic size bound that prevented complete output."""
+
+    MAX_NODES = "max_nodes"
+    MAX_PATH_NODE_OCCURRENCES = "max_path_node_occurrences"
+    MAX_PATHS = "max_paths"
+
+
+class GraphPackageIdentity(FrozenSchema):
+    """Identify the exact validated graph package associated with graph results."""
+
+    framework_id: FrameworkId
+    graph_package_id: GraphPackageId
+    graph_type: GraphType
+    package_revision: int = Field(ge=1)
+    profile_id: ProfileId
+    profile_sha256: Sha256Digest
+    profile_version: ProfileVersion
+    snapshot_id: SnapshotId
+
+
+class GraphNodeResult(FrozenSchema):
+    """Associate one exact graph node with its immutable package identity."""
+
+    node: GraphNodeRecord
+    package_identity: GraphPackageIdentity
+
+
+class GraphNeighbor(FrozenSchema):
+    """Associate one adjacent node with the exact authored relationship evidence."""
+
+    node: GraphNodeRecord
+    relationship: GraphRelationship
 
 
 class DirectNodeRelationshipsResult(FrozenSchema):
@@ -111,99 +224,176 @@ class DirectNodeRelationshipsResult(FrozenSchema):
         return self
 
 
-class DirectRelationshipDirection(StrEnum):
-    """Identify whether a direct-neighbor result contains parents or children."""
+class TraversalNode(FrozenSchema):
+    """Associate one returned graph node with its minimum traversal depth."""
 
-    CHILDREN = "children"
-    PARENTS = "parents"
-
-
-class GraphNode(FrozenSchema):
-    """Represent fields shared by every decoded delivery node."""
-
-    academic_subject: str | None = None
-    adoption_status: str | None = None
-    attribution_statement: str | None = None
-    author: str | None = None
-    case_identifier_uri: CaseIdentifierUri | None = None
-    case_identifier_uuid: CaseIdentifierUuid | None = None
-    in_language: LanguageTag | None = None
-    is_current: bool | None = None
-    jurisdiction: str | None = None
-    labels: tuple[str, ...]
-    license: str | None = None
-    node_id: NodeId
-    property_identifier: NodeId | None = None
-    provider: str | None = None
-    raw_properties: dict[str, str]
-    source_export_order: SourceExportOrder
-
-
-class FrameworkNode(GraphNode):
-    """Represent one decoded standards-framework node."""
-
-    name: str | None = None
-
-
-class GraphNeighbor(FrozenSchema):
-    """Associate one adjacent node with the exact authored relationship evidence."""
-
+    depth: int = Field(ge=0)
     node: GraphNodeRecord
-    relationship: GraphRelationship
 
 
-class GraphNodeResult(FrozenSchema):
-    """Associate one exact graph node with its immutable package identity."""
+class TraversalResult(FrozenSchema):
+    """Return one deterministic bounded ancestor or descendant traversal."""
 
-    node: GraphNodeRecord
+    direction: GraphTraversalDirection
+    is_complete: bool
+    max_depth: int = Field(ge=0)
+    max_nodes: int = Field(ge=1)
+    nodes: tuple[TraversalNode, ...] = Field(min_length=1)
+    origin_node_id: NodeId
     package_identity: GraphPackageIdentity
+    relationships: tuple[GraphRelationship, ...]
+    relationship_type: str = Field(min_length=1)
+    truncation_reason: TraversalTruncationReason | None = None
 
+    @model_validator(mode="after")
+    def validate_traversal(self) -> Self:
+        """Require traversal bounds, ordering, identity, and induced edges to agree.
 
-class GraphPackageIdentity(FrozenSchema):
-    """Identify the exact validated graph package associated with graph results."""
+        Returns
+        -------
+        Self
+            The validated bounded traversal result.
 
-    framework_id: FrameworkId
-    graph_package_id: GraphPackageId
-    graph_type: GraphType
-    package_revision: int = Field(ge=1)
-    profile_id: ProfileId
-    profile_sha256: Sha256Digest
-    profile_version: ProfileVersion
-    snapshot_id: SnapshotId
+        Raises
+        ------
+        ValueError
+            If node identity, depth, ordering, relationship membership, or truncation
+            metadata is inconsistent.
+        """
 
+        node_ids = tuple(traversal_node.node.node_id for traversal_node in self.nodes)
 
-class GraphRelationship(FrozenSchema):
-    """Represent one decoded relationship without resolving its endpoints."""
+        self._validate_traversal_node_set(node_ids=node_ids)
+        self._validate_traversal_node_order()
+        self._validate_traversal_truncation()
+        self._validate_traversal_relationships(node_ids=node_ids)
 
-    attribution_statement: str | None = None
-    author: str | None = None
-    description: str | None = None
-    label: str
-    license: str | None = None
-    property_identifier: RelationshipId | None = None
-    provider: str | None = None
-    raw_properties: dict[str, str]
-    relationship_id: RelationshipId
-    relationship_type: str | None = None
-    resolution_status: str | None = None
-    source_entity: str | None = None
-    source_entity_key: str | None = None
-    source_entity_value: str | None = None
-    source_labels: tuple[str, ...]
-    source_node_id: NodeId
-    source_export_order: SourceExportOrder
-    target_entity: str | None = None
-    target_entity_key: str | None = None
-    target_entity_value: str | None = None
-    target_labels: tuple[str, ...]
-    target_node_id: NodeId
+        return self
 
+    def _validate_traversal_node_set(self, node_ids: tuple[NodeId, ...]) -> None:
+        """Require unique nodes, a bounded count, one depth-zero origin, and depth.
 
-class GraphTraversalDirection(StrEnum):
-    """Identify whether a bounded traversal walks ancestors or descendants."""
+        Parameters
+        ----------
+        node_ids
+            Outer node identifiers in stored traversal order.
 
-    ANCESTORS = "ancestors"
-    DESCENDANTS = "descendants"
+        Raises
+        ------
+        ValueError
+            If nodes repeat, exceed ``max_nodes``, omit or duplicate the origin at
+            depth zero, or exceed ``max_depth``.
+        """
+
+        if len(node_ids) != len(set(node_ids)):
+            raise ValueError("Traversal results may not contain duplicate nodes.")
+
+        if len(self.nodes) > self.max_nodes:
+            raise ValueError("Traversal results may not exceed max_nodes.")
+
+        origin_entries = tuple(
+            traversal_node
+            for traversal_node in self.nodes
+            if traversal_node.node.node_id == self.origin_node_id
+        )
+
+        if len(origin_entries) != 1 or origin_entries[0].depth != 0:
+            raise ValueError(
+                "Traversal results must contain the origin exactly once at depth zero."
+            )
+
+        if any(traversal_node.depth > self.max_depth for traversal_node in self.nodes):
+            raise ValueError("Traversal node depth may not exceed max_depth.")
+
+    def _validate_traversal_node_order(self) -> None:
+        """Require nodes to use deterministic depth-then-source order.
+
+        Raises
+        ------
+        ValueError
+            If the stored node order differs from the deterministic order.
+        """
+
+        ordered_nodes = list(self.nodes)
+        ordered_nodes.sort(
+            key=lambda traversal_node: (
+                traversal_node.depth,
+                *graph_node_order_key(traversal_node.node),
+            )
+        )
+
+        if self.nodes != tuple(ordered_nodes):
+            raise ValueError(
+                "Traversal nodes must use deterministic depth and source order."
+            )
+
+    def _validate_traversal_relationships(self, node_ids: tuple[NodeId, ...]) -> None:
+        """Require unique, correctly typed, induced, deterministically ordered edges.
+
+        Parameters
+        ----------
+        node_ids
+            Outer node identifiers in stored traversal order.
+
+        Raises
+        ------
+        ValueError
+            If a relationship identifier repeats, a relationship uses a foreign type,
+            an endpoint is outside the returned node set, or the stored relationship
+            order differs from the deterministic order.
+        """
+
+        returned_node_ids = set(node_ids)
+        relationship_ids = tuple(
+            relationship.relationship_id for relationship in self.relationships
+        )
+
+        if len(relationship_ids) != len(set(relationship_ids)):
+            raise ValueError(
+                "Traversal results may not repeat a relationship identifier."
+            )
+
+        for relationship in self.relationships:
+            if relationship.label != self.relationship_type:
+                raise ValueError(
+                    "Traversal relationships must use the selected relationship type."
+                )
+
+            if (
+                relationship.source_node_id not in returned_node_ids
+                or relationship.target_node_id not in returned_node_ids
+            ):
+                raise ValueError(
+                    "Traversal relationships must be induced by the returned node set."
+                )
+
+        ordered_relationships = list(self.relationships)
+        ordered_relationships.sort(key=graph_relationship_order_key)
+
+        if self.relationships != tuple(ordered_relationships):
+            raise ValueError(
+                "Traversal relationships must use deterministic source order."
+            )
+
+    def _validate_traversal_truncation(self) -> None:
+        """Require truncation metadata to agree with completion state.
+
+        Raises
+        ------
+        ValueError
+            If a complete result declares a truncation reason, or an incomplete result
+            omits the ``max_nodes`` truncation reason.
+        """
+
+        if self.is_complete:
+            if self.truncation_reason is not None:
+                raise ValueError(
+                    "A complete traversal result may not declare a truncation reason."
+                )
+        elif self.truncation_reason is not TraversalTruncationReason.MAX_NODES:
+            raise ValueError(
+                "An incomplete node traversal must declare max_nodes truncation."
+            )
 
 
 class RootPath(FrozenSchema):
@@ -281,28 +471,23 @@ class RootPathsResult(FrozenSchema):
             metadata conflict.
         """
 
-        if len(self.paths) > self.max_paths:
-            raise ValueError("Root-path results may not exceed max_paths.")
+        self._validate_root_paths_size_bounds()
+        self._validate_root_paths_truncation()
+        self._validate_root_paths_endpoints_and_types()
+        self._validate_root_paths_order()
+        self._validate_root_paths_singleton()
 
-        node_occurrences = sum(len(path.nodes) for path in self.paths)
+        return self
 
-        if node_occurrences > self.max_path_node_occurrences:
-            raise ValueError(
-                "Root-path results may not exceed max_path_node_occurrences."
-            )
+    def _validate_root_paths_endpoints_and_types(self) -> None:
+        """Require every path to span root-to-origin within the type and depth bound.
 
-        if self.is_complete:
-            if self.truncation_reason is not None:
-                raise ValueError(
-                    "A complete root-path result may not declare a truncation reason."
-                )
-        elif self.truncation_reason not in {
-            TraversalTruncationReason.MAX_PATH_NODE_OCCURRENCES,
-            TraversalTruncationReason.MAX_PATHS,
-        }:
-            raise ValueError(
-                "An incomplete root-path result must declare a path-size truncation."
-            )
+        Raises
+        ------
+        ValueError
+            If a path does not begin at the framework root, does not end at the origin
+            node, exceeds ``max_depth``, or uses a foreign relationship type.
+        """
 
         for path in self.paths:
             if path.nodes[0].node_id != self.framework_root_id:
@@ -322,172 +507,92 @@ class RootPathsResult(FrozenSchema):
                     "Root-path relationships must use the selected relationship type."
                 )
 
-        ordered_paths = list(self.paths)
-        ordered_paths.sort(key=root_path_order_key)
-        expected_path_order = tuple(ordered_paths)
-
-        if self.paths != expected_path_order:
-            raise ValueError(
-                "Root paths must use deterministic root-to-origin relationship order."
-            )
-
-        if self.origin_node_id == self.framework_root_id:
-            if len(self.paths) != 1:
-                raise ValueError(
-                    "The framework root must return exactly one singleton root path."
-                )
-
-            root_path = self.paths[0]
-
-            if len(root_path.nodes) != 1 or root_path.relationships:
-                raise ValueError(
-                    "The framework root path must contain one node and no relationships."
-                )
-
-            if not self.is_complete:
-                raise ValueError("The framework root path result must be complete.")
-
-        return self
-
-
-class StandardNode(GraphNode):
-    """Represent one decoded standards-framework-item node."""
-
-    description: str | None = None
-    grade_level: tuple[str, ...] | None = None
-    normalized_statement_type: NormalizedStatementType | None = None
-    statement_code: str | None = None
-    statement_type: str | None = None
-
-
-class TraversalNode(FrozenSchema):
-    """Associate one returned graph node with its minimum traversal depth."""
-
-    depth: int = Field(ge=0)
-    node: GraphNodeRecord
-
-
-class TraversalResult(FrozenSchema):
-    """Return one deterministic bounded ancestor or descendant traversal."""
-
-    direction: GraphTraversalDirection
-    is_complete: bool
-    max_depth: int = Field(ge=0)
-    max_nodes: int = Field(ge=1)
-    nodes: tuple[TraversalNode, ...] = Field(min_length=1)
-    origin_node_id: NodeId
-    package_identity: GraphPackageIdentity
-    relationships: tuple[GraphRelationship, ...]
-    relationship_type: str = Field(min_length=1)
-    truncation_reason: TraversalTruncationReason | None = None
-
-    @model_validator(mode="after")
-    def validate_traversal(self) -> Self:
-        """Require traversal bounds, ordering, identity, and induced edges to agree.
-
-        Returns
-        -------
-        Self
-            The validated bounded traversal result.
+    def _validate_root_paths_order(self) -> None:
+        """Require paths to use deterministic root-to-origin relationship order.
 
         Raises
         ------
         ValueError
-            If node identity, depth, ordering, relationship membership, or truncation
-            metadata is inconsistent.
+            If the stored path order differs from the deterministic order.
         """
 
-        node_ids = tuple(traversal_node.node.node_id for traversal_node in self.nodes)
+        ordered_paths = list(self.paths)
+        ordered_paths.sort(key=root_path_order_key)
 
-        if len(node_ids) != len(set(node_ids)):
-            raise ValueError("Traversal results may not contain duplicate nodes.")
-
-        if len(self.nodes) > self.max_nodes:
-            raise ValueError("Traversal results may not exceed max_nodes.")
-
-        origin_entries = tuple(
-            traversal_node
-            for traversal_node in self.nodes
-            if traversal_node.node.node_id == self.origin_node_id
-        )
-
-        if len(origin_entries) != 1 or origin_entries[0].depth != 0:
+        if self.paths != tuple(ordered_paths):
             raise ValueError(
-                "Traversal results must contain the origin exactly once at depth zero."
+                "Root paths must use deterministic root-to-origin relationship order."
             )
 
-        if any(traversal_node.depth > self.max_depth for traversal_node in self.nodes):
-            raise ValueError("Traversal node depth may not exceed max_depth.")
+    def _validate_root_paths_singleton(self) -> None:
+        """Require the framework-root origin to return one complete singleton path.
 
-        ordered_nodes = list(self.nodes)
-        ordered_nodes.sort(
-            key=lambda traversal_node: (
-                traversal_node.depth,
-                *graph_node_order_key(traversal_node.node),
-            )
-        )
-        expected_node_order = tuple(ordered_nodes)
+        Raises
+        ------
+        ValueError
+            If the origin equals the framework root but the result is not a single
+            complete path containing exactly one node and no relationships.
+        """
 
-        if self.nodes != expected_node_order:
+        if self.origin_node_id != self.framework_root_id:
+            return
+
+        if len(self.paths) != 1:
             raise ValueError(
-                "Traversal nodes must use deterministic depth and source order."
+                "The framework root must return exactly one singleton root path."
             )
+
+        root_path = self.paths[0]
+
+        if len(root_path.nodes) != 1 or root_path.relationships:
+            raise ValueError(
+                "The framework root path must contain one node and no relationships."
+            )
+
+        if not self.is_complete:
+            raise ValueError("The framework root path result must be complete.")
+
+    def _validate_root_paths_size_bounds(self) -> None:
+        """Require the path count and node occurrences to respect their bounds.
+
+        Raises
+        ------
+        ValueError
+            If ``max_paths`` or ``max_path_node_occurrences`` is exceeded.
+        """
+
+        if len(self.paths) > self.max_paths:
+            raise ValueError("Root-path results may not exceed max_paths.")
+
+        node_occurrences = sum(len(path.nodes) for path in self.paths)
+
+        if node_occurrences > self.max_path_node_occurrences:
+            raise ValueError(
+                "Root-path results may not exceed max_path_node_occurrences."
+            )
+
+    def _validate_root_paths_truncation(self) -> None:
+        """Require truncation metadata to agree with completion state.
+
+        Raises
+        ------
+        ValueError
+            If a complete result declares a truncation reason, or an incomplete result
+            omits a valid path-size truncation reason.
+        """
 
         if self.is_complete:
             if self.truncation_reason is not None:
                 raise ValueError(
-                    "A complete traversal result may not declare a truncation reason."
+                    "A complete root-path result may not declare a truncation reason."
                 )
-        elif self.truncation_reason is not TraversalTruncationReason.MAX_NODES:
+        elif self.truncation_reason not in {
+            TraversalTruncationReason.MAX_PATH_NODE_OCCURRENCES,
+            TraversalTruncationReason.MAX_PATHS,
+        }:
             raise ValueError(
-                "An incomplete node traversal must declare max_nodes truncation."
+                "An incomplete root-path result must declare a path-size truncation."
             )
-
-        returned_node_ids = set(node_ids)
-        relationship_ids = tuple(
-            relationship.relationship_id for relationship in self.relationships
-        )
-
-        if len(relationship_ids) != len(set(relationship_ids)):
-            raise ValueError(
-                "Traversal results may not repeat a relationship identifier."
-            )
-
-        for relationship in self.relationships:
-            if relationship.label != self.relationship_type:
-                raise ValueError(
-                    "Traversal relationships must use the selected relationship type."
-                )
-
-            if (
-                relationship.source_node_id not in returned_node_ids
-                or relationship.target_node_id not in returned_node_ids
-            ):
-                raise ValueError(
-                    "Traversal relationships must be induced by the returned node set."
-                )
-
-        ordered_relationships = list(self.relationships)
-        ordered_relationships.sort(key=graph_relationship_order_key)
-        expected_relationship_order = tuple(ordered_relationships)
-
-        if self.relationships != expected_relationship_order:
-            raise ValueError(
-                "Traversal relationships must use deterministic source order."
-            )
-
-        return self
-
-
-class TraversalTruncationReason(StrEnum):
-    """Identify the deterministic size bound that prevented complete output."""
-
-    MAX_NODES = "max_nodes"
-    MAX_PATH_NODE_OCCURRENCES = "max_path_node_occurrences"
-    MAX_PATHS = "max_paths"
-
-
-GraphNodeRecord: TypeAlias = FrameworkNode | StandardNode
 
 
 def graph_node_order_key(node: GraphNodeRecord) -> tuple[int, str]:

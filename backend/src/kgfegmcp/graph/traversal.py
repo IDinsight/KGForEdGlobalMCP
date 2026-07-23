@@ -1,15 +1,32 @@
-"""This module provides deterministic bounded traversal over one immutable graph store.
+"""This module provides deterministic, bounded traversal over one package graph store.
 
-Traversal operates only on indexes already built from a successfully validated loaded
-package. Ancestor and descendant results include the origin at depth zero, preserve
-minimum edge depth, include every selected-type relationship induced by the bounded
-returned node set, and expose deterministic size truncation. Root-path traversal
-returns only complete framework-root-to-origin paths and preserves every valid DAG
-branch without selecting a preferred parent.
+This module walks the directed relationships indexed by ``GraphStore``. It supports
+ancestor traversal, descendant traversal, and enumeration of complete paths from the
+framework root to a selected node while preserving valid multi-parent DAG structure.
 
-The implementation uses explicit cycle guards as a defensive invariant check. It does
-not revalidate package acceptance, infer instructional sequence, repair graph records,
-load artifacts, perform search, or cross package boundaries.
+A simple way to think about traversal is as following arrows on a map. ``GraphStore``
+organizes the map, while this module follows its arrows to answer questions such as
+which nodes are above or below an origin and which complete root paths reach it.
+
+Ancestor and descendant traversal includes the origin node at depth zero, records each
+returned node's minimum edge depth, and includes every qualifying selected-type
+relationship induced by the bounded returned node set. Node, depth, and size limits are
+applied deterministically. When a size limit prevents completion, the result reports
+that it is incomplete and identifies the truncation reason.
+
+Root-path traversal preserves every valid parent branch and never selects a preferred
+parent. It returns only complete framework-root-to-origin paths and bounds output by
+both the number of paths and the total number of node occurrences across those paths. A
+path that would exceed either limit is omitted in full rather than returned partially.
+
+Defensive cycle guards ensure that traversal terminates if an invalid cyclic graph is
+encountered despite the successfully validated-package construction precondition.
+Normal DAG convergence, where separate branches reach the same node, is not treated as
+a cycle.
+
+This module does not load or validate packages, repair relationships, modify graph
+records, infer instructional sequence, perform search, cross package boundaries, or
+persist traversal results.
 """
 
 # Future Library
@@ -59,6 +76,40 @@ def _adjacent_node_id(
         return relationship.source_node_id
 
     return relationship.target_node_id
+
+
+def _group_relationships_by_source(
+    relationships: tuple[GraphRelationship, ...],
+) -> dict[NodeId, list[GraphRelationship]]:
+    """Group relationships into per-source-node outgoing adjacency lists.
+
+    Relationship order within each source node's list is preserved from the input,
+    which keeps any dependent depth-first walk deterministic.
+
+    Parameters
+    ----------
+    relationships
+        Relationships whose source endpoints define the adjacency grouping.
+
+    Returns
+    -------
+    dict[NodeId, list[GraphRelationship]]
+        Mapping from each source node identifier to its outgoing relationships in input
+        order.
+    """
+
+    outgoing_relationships: dict[NodeId, list[GraphRelationship]] = {}
+
+    for relationship in relationships:
+        source_relationships = outgoing_relationships.get(relationship.source_node_id)
+
+        if source_relationships is None:
+            source_relationships = []
+            outgoing_relationships[relationship.source_node_id] = source_relationships
+
+        source_relationships.append(relationship)
+
+    return outgoing_relationships
 
 
 def _raise_cycle(
@@ -145,6 +196,25 @@ def _validate_root_path_limits(
 
     if max_paths < 1:
         raise ValueError("max_paths must be greater than or equal to one.")
+
+
+@dataclass(frozen=True, slots=True)
+class _RootPathLimits:
+    """Immutable output-size bounds for complete root-path enumeration.
+
+    Attributes
+    ----------
+    max_depth
+        Maximum relationship count in one requested root path.
+    max_path_node_occurrences
+        Maximum sum of node counts across complete returned paths.
+    max_paths
+        Maximum number of complete returned paths.
+    """
+
+    max_depth: int
+    max_path_node_occurrences: int
+    max_paths: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -250,8 +320,135 @@ class GraphTraversal:
             if relationship.target_node_id in ancestor_node_ids
         )
 
-    def _guard_relationship_subgraph_against_cycles(
+    def _enumerate_root_paths(
         self,
+        *,
+        ancestor_node_ids: frozenset[NodeId],
+        limits: _RootPathLimits,
+        origin_node_id: NodeId,
+        relationship_type: str,
+        root_node: GraphNodeRecord,
+    ) -> tuple[tuple[RootPath, ...], TraversalTruncationReason | None]:
+        """Enumerate complete framework-root-to-origin paths within all bounds.
+
+        A deterministic depth-first walk emits complete paths in lexicographic
+        root-to-origin relationship order. When the next complete path would exceed
+        both output-size bounds, ``max_paths`` takes precedence as the reported
+        truncation reason.
+
+        Parameters
+        ----------
+        ancestor_node_ids
+            Nodes known to reach the origin within the depth boundary.
+        limits
+            Output-size bounds applied while enumerating complete paths.
+        origin_node_id
+            Outer identifier of the path origin node that terminates each path.
+        relationship_type
+            Exact selected canonical relationship label.
+        root_node
+            Framework root node that begins every enumerated path.
+
+        Returns
+        -------
+        tuple[tuple[RootPath, ...], TraversalTruncationReason | None]
+            Collected complete paths and the reported truncation reason, which is
+            ``None`` when every requested path was returned.
+
+        Raises
+        ------
+        PackageValidationError
+            If a relationship endpoint is unavailable despite the successful
+            package-validation construction precondition, or if a directed cycle is
+            encountered within the requested path boundary.
+        """
+
+        initial_relationships = self._eligible_root_path_relationships(
+            ancestor_node_ids=ancestor_node_ids,
+            node_id=root_node.node_id,
+            relationship_type=relationship_type,
+        )
+        stack: list[tuple[NodeId, tuple[GraphRelationship, ...], int]] = [
+            (root_node.node_id, initial_relationships, 0)
+        ]
+        active_node_ids: set[NodeId] = {root_node.node_id}
+        path_nodes: list[GraphNodeRecord] = [root_node]
+        path_relationships: list[GraphRelationship] = []
+        paths: list[RootPath] = []
+        path_node_occurrences = 0
+
+        # pylint: disable=redefined-variable-type
+        truncation_reason: TraversalTruncationReason | None = None
+
+        while stack:
+            current_node_id, relationships, next_relationship_index = stack[-1]
+
+            if current_node_id == origin_node_id:
+                if len(paths) >= limits.max_paths:
+                    truncation_reason = TraversalTruncationReason.MAX_PATHS
+                    break
+
+                candidate_occurrences = path_node_occurrences + len(path_nodes)
+
+                if candidate_occurrences > limits.max_path_node_occurrences:
+                    truncation_reason = (
+                        TraversalTruncationReason.MAX_PATH_NODE_OCCURRENCES
+                    )
+                    break
+
+                paths.append(
+                    RootPath(
+                        nodes=tuple(path_nodes), relationships=tuple(path_relationships)
+                    )
+                )
+                path_node_occurrences = candidate_occurrences
+                self._pop_root_path_frame(
+                    active_node_ids=active_node_ids,
+                    path_nodes=path_nodes,
+                    path_relationships=path_relationships,
+                    stack=stack,
+                )
+                continue
+
+            if len(path_relationships) >= limits.max_depth or (
+                next_relationship_index >= len(relationships)
+            ):
+                self._pop_root_path_frame(
+                    active_node_ids=active_node_ids,
+                    path_nodes=path_nodes,
+                    path_relationships=path_relationships,
+                    stack=stack,
+                )
+                continue
+
+            relationship = relationships[next_relationship_index]
+            stack[-1] = current_node_id, relationships, next_relationship_index + 1
+            target_node_id = relationship.target_node_id
+
+            if target_node_id in active_node_ids:
+                _raise_cycle(
+                    node_id=target_node_id,
+                    relationship=relationship,
+                    relationship_type=relationship_type,
+                )
+
+            target_node = self.store._require_relationship_endpoint(
+                node_id=target_node_id, relationship_id=relationship.relationship_id
+            )
+            active_node_ids.add(target_node_id)
+            path_nodes.append(target_node)
+            path_relationships.append(relationship)
+            next_relationships = self._eligible_root_path_relationships(
+                ancestor_node_ids=ancestor_node_ids,
+                node_id=target_node_id,
+                relationship_type=relationship_type,
+            )
+            stack.append((target_node_id, next_relationships, 0))
+
+        return tuple(paths), truncation_reason
+
+    @staticmethod
+    def _guard_relationship_subgraph_against_cycles(
         *,
         node_ids: frozenset[NodeId],
         relationship_type: str,
@@ -278,21 +475,7 @@ class GraphTraversal:
             If a deterministic depth-first walk encounters an active-path back edge.
         """
 
-        outgoing_relationships: dict[NodeId, list[GraphRelationship]] = {}
-
-        for relationship in relationships:
-            source_relationships = outgoing_relationships.get(
-                relationship.source_node_id
-            )
-
-            if source_relationships is None:
-                source_relationships = []
-                outgoing_relationships[relationship.source_node_id] = (
-                    source_relationships
-                )
-
-            source_relationships.append(relationship)
-
+        outgoing_relationships = _group_relationships_by_source(relationships)
         node_state: dict[NodeId, int] = {}
 
         ordered_node_ids = list(node_ids)
@@ -384,6 +567,39 @@ class GraphTraversal:
         ordered_relationships = list(relationships_by_id.values())
         ordered_relationships.sort(key=graph_relationship_order_key)
         return tuple(ordered_relationships)
+
+    @staticmethod
+    def _pop_root_path_frame(
+        *,
+        active_node_ids: set[NodeId],
+        path_nodes: list[GraphNodeRecord],
+        path_relationships: list[GraphRelationship],
+        stack: list[tuple[NodeId, tuple[GraphRelationship, ...], int]],
+    ) -> None:
+        """Unwind the current depth-first frame after a node is fully explored.
+
+        The active-node set, path-node stack, relationship stack, and traversal stack
+        are mutated in place so the caller resumes at the parent frame.
+
+        Parameters
+        ----------
+        active_node_ids
+            Identifiers on the active path; the popped node is removed.
+        path_nodes
+            Ordered nodes on the active path; the last node is removed.
+        path_relationships
+            Ordered relationships on the active path; the last relationship is removed
+            when the path is not already at the root.
+        stack
+            Depth-first traversal stack; the top frame is removed.
+        """
+
+        stack.pop()
+        popped_node = path_nodes.pop()
+        active_node_ids.remove(popped_node.node_id)
+
+        if path_relationships:
+            path_relationships.pop()
 
     def _relationships_for(
         self,
@@ -629,118 +845,23 @@ class GraphTraversal:
 
         if origin_node.node_id == root_node.node_id:
             root_path = RootPath(nodes=(root_node,), relationships=())
-            return RootPathsResult(
-                framework_root_id=self.store.framework_root_id,
-                is_complete=True,
-                max_depth=max_depth,
-                max_path_node_occurrences=max_path_node_occurrences,
-                max_paths=max_paths,
-                origin_node_id=origin_node.node_id,
-                package_identity=self.store.package_identity,
-                paths=(root_path,),
-                relationship_type=selected_relationship_type,
-                truncation_reason=None,
-            )
-
-        if self.store.framework_root_id not in ancestor_node_ids:
-            return RootPathsResult(
-                framework_root_id=self.store.framework_root_id,
-                is_complete=True,
-                max_depth=max_depth,
-                max_path_node_occurrences=max_path_node_occurrences,
-                max_paths=max_paths,
-                origin_node_id=origin_node.node_id,
-                package_identity=self.store.package_identity,
-                paths=(),
-                relationship_type=selected_relationship_type,
-                truncation_reason=None,
-            )
-
-        initial_relationships = self._eligible_root_path_relationships(
-            ancestor_node_ids=ancestor_node_ids,
-            node_id=root_node.node_id,
-            relationship_type=selected_relationship_type,
-        )
-        stack: list[tuple[NodeId, tuple[GraphRelationship, ...], int]] = [
-            (root_node.node_id, initial_relationships, 0)
-        ]
-        active_node_ids: set[NodeId] = {root_node.node_id}
-        path_nodes: list[GraphNodeRecord] = [root_node]
-        path_relationships: list[GraphRelationship] = []
-        paths: list[RootPath] = []
-        path_node_occurrences = 0
-        truncation_reason: TraversalTruncationReason | None = None
-
-        while stack:
-            current_node_id, relationships, next_relationship_index = stack[-1]
-
-            if current_node_id == origin_node.node_id:
-                candidate_path = RootPath(
-                    nodes=tuple(path_nodes), relationships=tuple(path_relationships)
-                )
-
-                if len(paths) >= max_paths:
-                    truncation_reason = TraversalTruncationReason.MAX_PATHS
-                    break
-
-                candidate_occurrences = path_node_occurrences + len(path_nodes)
-
-                if candidate_occurrences > max_path_node_occurrences:
-                    truncation_reason = (
-                        TraversalTruncationReason.MAX_PATH_NODE_OCCURRENCES
-                    )
-                    break
-
-                paths.append(candidate_path)
-                path_node_occurrences = candidate_occurrences
-                stack.pop()
-                popped_node = path_nodes.pop()
-                active_node_ids.remove(popped_node.node_id)
-
-                if path_relationships:
-                    path_relationships.pop()
-
-                continue
-
-            if len(path_relationships) >= max_depth or next_relationship_index >= len(
-                relationships
-            ):
-                stack.pop()
-                popped_node = path_nodes.pop()
-                active_node_ids.remove(popped_node.node_id)
-
-                if path_relationships:
-                    path_relationships.pop()
-
-                continue
-
-            relationship = relationships[next_relationship_index]
-            stack[-1] = (
-                current_node_id,
-                relationships,
-                next_relationship_index + 1,
-            )
-            target_node_id = relationship.target_node_id
-
-            if target_node_id in active_node_ids:
-                _raise_cycle(
-                    node_id=target_node_id,
-                    relationship=relationship,
-                    relationship_type=selected_relationship_type,
-                )
-
-            target_node = self.store._require_relationship_endpoint(
-                node_id=target_node_id, relationship_id=relationship.relationship_id
-            )
-            active_node_ids.add(target_node_id)
-            path_nodes.append(target_node)
-            path_relationships.append(relationship)
-            next_relationships = self._eligible_root_path_relationships(
+            paths: tuple[RootPath, ...] = (root_path,)
+            truncation_reason: TraversalTruncationReason | None = None
+        elif self.store.framework_root_id not in ancestor_node_ids:
+            paths = ()
+            truncation_reason = None
+        else:
+            paths, truncation_reason = self._enumerate_root_paths(
                 ancestor_node_ids=ancestor_node_ids,
-                node_id=target_node_id,
+                limits=_RootPathLimits(
+                    max_depth=max_depth,
+                    max_path_node_occurrences=max_path_node_occurrences,
+                    max_paths=max_paths,
+                ),
+                origin_node_id=origin_node.node_id,
                 relationship_type=selected_relationship_type,
+                root_node=root_node,
             )
-            stack.append((target_node_id, next_relationships, 0))
 
         return RootPathsResult(
             framework_root_id=self.store.framework_root_id,
@@ -750,7 +871,7 @@ class GraphTraversal:
             max_paths=max_paths,
             origin_node_id=origin_node.node_id,
             package_identity=self.store.package_identity,
-            paths=tuple(paths),
+            paths=paths,
             relationship_type=selected_relationship_type,
             truncation_reason=truncation_reason,
         )

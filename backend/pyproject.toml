@@ -174,4 +174,5 @@ docs = [
 ]
 
 [project.scripts]
-kgfegmcp-build-manifest = "kgfegmcp.cli.build_manifests:main"
+kgfegmcp-build-manifest = "kgfegmcp.cli.build_manifests:cli"
+kgfegmcp-validate-packages = "kgfegmcp.cli.validate_packages:cli"
