@@ -639,6 +639,32 @@ class CatalogLoadResult:
         _validate_catalog_load_runtime_order(self)
 
 
+def _is_accepted_catalog_result(result: PackageValidationResult) -> bool:
+    """Return whether validation evidence proves catalog package acceptance.
+
+    Parameters
+    ----------
+    result
+        Read-only package validation result to evaluate.
+
+    Returns
+    -------
+    bool
+        ``True`` only for a valid terminal passed revalidation with exact package
+        identity and no persistence.
+    """
+
+    return (
+        result.effective_status is ValidationStatus.PASSED
+        and result.graph_package_id is not None
+        and result.is_valid
+        and result.observed_status is ValidationStatus.PASSED
+        and not result.persisted
+        and result.read_only
+        and result.terminal_revalidation
+    )
+
+
 def _validate_catalog_load_correspondence(
     load_result: CatalogLoadResult,
 ) -> _CatalogLoadCorrespondence:
@@ -683,13 +709,7 @@ def _validate_catalog_load_correspondence(
     accepted_results = tuple(
         result
         for result in load_result.validation_results
-        if result.effective_status is ValidationStatus.PASSED
-        and result.graph_package_id is not None
-        and result.is_valid
-        and result.observed_status is ValidationStatus.PASSED
-        and not result.persisted
-        and result.read_only
-        and result.terminal_revalidation
+        if _is_accepted_catalog_result(result)
     )
     accepted_results_by_id = {
         str(result.graph_package_id): result for result in accepted_results
@@ -765,10 +785,10 @@ def _validate_catalog_load_evidence(load_result: CatalogLoadResult) -> None:
     Raises
     ------
     ValueError
-        If any validation result is not read-only and non-persisting, references repeat
-        or are out of deterministic order, the excluded count does not match the
-        discovered and accepted packages, or the runtime count does not equal the
-        catalog graph-package count.
+        If validation evidence is not read-only and non-persisting, an observed passed
+        package lacks complete acceptance evidence, references repeat or are out of
+        deterministic order, the excluded count is inconsistent, or runtime and catalog
+        package counts differ.
     """
 
     if any(
@@ -777,6 +797,15 @@ def _validate_catalog_load_evidence(load_result: CatalogLoadResult) -> None:
     ):
         raise ValueError(
             "Catalog validation results must be read-only and non-persisting."
+        )
+
+    if any(
+        result.observed_status is ValidationStatus.PASSED
+        and not _is_accepted_catalog_result(result)
+        for result in load_result.validation_results
+    ):
+        raise ValueError(
+            "Observed passed packages must have complete accepted validation evidence."
         )
 
     package_references = tuple(
