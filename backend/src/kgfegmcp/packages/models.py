@@ -104,6 +104,97 @@ FindingCode = Annotated[
 NonNegativeStrictInt = Annotated[StrictInt, Field(ge=0)]
 
 
+def _require_persistence_consistency(result: PackageValidationResult) -> None:
+    """Require persistence metadata to agree with the observed transition.
+
+    A persisted result must originate from pending status, reach its target status,
+    avoid persisting alongside a terminal revalidation, and record a validation
+    timestamp. A non-persisted result must retain its observed effective status. A
+    read-only result may never be persisted.
+
+    Parameters
+    ----------
+    result
+        Validation result whose persistence metadata is checked.
+
+    Raises
+    ------
+    ValueError
+        If persistence metadata is internally inconsistent.
+    """
+
+    if result.persisted and result.read_only:
+        raise ValueError("A read-only validation result may not be persisted.")
+
+    if not result.persisted:
+        if result.effective_status is not result.observed_status:
+            raise ValueError(
+                "A non-persisted result must retain its observed effective status."
+            )
+        return
+
+    if result.observed_status is not ValidationStatus.PENDING:
+        raise ValueError(
+            "A persisted validation result must originate from pending status."
+        )
+
+    if result.effective_status is not result.target_status:
+        raise ValueError("A persisted validation result must reach its target status.")
+
+    if result.terminal_revalidation:
+        raise ValueError(
+            "A terminal revalidation result may not persist another transition."
+        )
+
+    if result.validated_at is None:
+        raise ValueError("Persisted validation results require validated_at.")
+
+
+def _require_terminal_consistency(result: PackageValidationResult) -> None:
+    """Require terminal-status flags and the timestamp to agree.
+
+    The terminal-revalidation flag must reflect whether the observed status is
+    terminal, and such revalidation must be read-only. A terminal effective status
+    requires a timestamp, while a pending or unavailable effective status must not
+    declare one.
+
+    Parameters
+    ----------
+    result
+        Validation result whose terminal-status flags are checked.
+
+    Raises
+    ------
+    ValueError
+        If terminal-status flags or the timestamp are inconsistent.
+    """
+
+    terminal_statuses = {
+        ValidationStatus.FAILED,
+        ValidationStatus.PASSED,
+        ValidationStatus.QUARANTINED,
+    }
+
+    if result.terminal_revalidation != (result.observed_status in terminal_statuses):
+        raise ValueError(
+            "terminal_revalidation must reflect an observed terminal status."
+        )
+
+    if result.terminal_revalidation and not result.read_only:
+        raise ValueError("Terminal revalidation must be read-only.")
+
+    if result.effective_status in terminal_statuses and result.validated_at is None:
+        raise ValueError("Effective terminal statuses require validated_at.")
+
+    if (
+        result.effective_status in {None, ValidationStatus.PENDING}
+        and result.validated_at is not None
+    ):
+        raise ValueError(
+            "Pending or unavailable effective status may not declare validated_at."
+        )
+
+
 def _require_timezone_aware(*, field_name: str, value: datetime) -> None:
     """Require a datetime value to include an effective UTC offset.
 
@@ -142,6 +233,42 @@ def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
 
     if len(values) != len(set(values)):
         raise ValueError(f"{field_name} must not contain duplicates.")
+
+
+def _require_valid_target_status(result: PackageValidationResult) -> None:
+    """Require the target status to agree with result validity and findings.
+
+    A result is valid exactly when it has no error findings. The target status must be
+    terminal, must be passed for a valid result, and must be failed or quarantined for
+    an invalid result.
+
+    Parameters
+    ----------
+    result
+        Validation result whose validity and target status are checked.
+
+    Raises
+    ------
+    ValueError
+        If validity conflicts with findings or the target status.
+    """
+
+    has_errors = any(finding.severity == "error" for finding in result.findings)
+
+    if result.is_valid == has_errors:
+        raise ValueError("is_valid must be true exactly when no error findings exist.")
+
+    if result.target_status is ValidationStatus.PENDING:
+        raise ValueError("target_status must be terminal.")
+
+    if result.is_valid and result.target_status is not ValidationStatus.PASSED:
+        raise ValueError("A valid result must target passed status.")
+
+    if not result.is_valid and result.target_status not in {
+        ValidationStatus.FAILED,
+        ValidationStatus.QUARANTINED,
+    }:
+        raise ValueError("An invalid result must target failed or quarantined status.")
 
 
 class ArtifactIntegrityObservation(FrozenSchema):
@@ -1014,84 +1141,9 @@ class PackageValidationResult(FrozenSchema):
             If validity conflicts with findings or persistence metadata is invalid.
         """
 
-        has_errors = any(finding.severity == "error" for finding in self.findings)
-
-        if self.is_valid == has_errors:
-            raise ValueError(
-                "is_valid must be true exactly when no error findings exist."
-            )
-
-        if self.target_status is ValidationStatus.PENDING:
-            raise ValueError("target_status must be terminal.")
-
-        if self.is_valid and self.target_status is not ValidationStatus.PASSED:
-            raise ValueError("A valid result must target passed status.")
-
-        if not self.is_valid and self.target_status not in {
-            ValidationStatus.FAILED,
-            ValidationStatus.QUARANTINED,
-        }:
-            raise ValueError(
-                "An invalid result must target failed or quarantined status."
-            )
-
-        if self.persisted and self.read_only:
-            raise ValueError("A read-only validation result may not be persisted.")
-
-        if self.persisted:
-            if self.observed_status is not ValidationStatus.PENDING:
-                raise ValueError(
-                    "A persisted validation result must originate from pending status."
-                )
-
-            if self.effective_status is not self.target_status:
-                raise ValueError(
-                    "A persisted validation result must reach its target status."
-                )
-
-            if self.terminal_revalidation:
-                raise ValueError(
-                    "A terminal revalidation result may not persist another transition."
-                )
-
-            if self.validated_at is None:
-                raise ValueError("Persisted validation results require validated_at.")
-        elif self.effective_status is not self.observed_status:
-            raise ValueError(
-                "A non-persisted result must retain its observed effective status."
-            )
-
-        observed_is_terminal = self.observed_status in {
-            ValidationStatus.FAILED,
-            ValidationStatus.PASSED,
-            ValidationStatus.QUARANTINED,
-        }
-
-        if self.terminal_revalidation != observed_is_terminal:
-            raise ValueError(
-                "terminal_revalidation must reflect an observed terminal status."
-            )
-
-        if self.terminal_revalidation and not self.read_only:
-            raise ValueError("Terminal revalidation must be read-only.")
-
-        if (
-            self.effective_status
-            in {
-                ValidationStatus.FAILED,
-                ValidationStatus.PASSED,
-                ValidationStatus.QUARANTINED,
-            }
-            and self.validated_at is None
-        ):
-            raise ValueError("Effective terminal statuses require validated_at.")
-
-        if self.effective_status in {None, ValidationStatus.PENDING} and (
-            self.validated_at is not None
-        ):
-            raise ValueError(
-                "Pending or unavailable effective status may not declare validated_at."
-            )
+        _require_valid_target_status(self)
+        _require_persistence_consistency(self)
+        _require_terminal_consistency(self)
 
         if self.validated_at is not None:
             _require_timezone_aware(field_name="validated_at", value=self.validated_at)
