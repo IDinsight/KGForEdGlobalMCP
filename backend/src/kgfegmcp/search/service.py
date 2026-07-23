@@ -1,11 +1,25 @@
-"""Provide deterministic in-memory search over independent accepted package indexes.
+"""This module coordinates deterministic search over independent accepted package
+indexes.
 
-The service in this module is constructed only from a complete PR 6
-``CatalogLoadResult``. It builds immutable package-local lexical, code, and facet
-indexes over the exact retained source node instances, using construction-local
-memoization for code-scope resolution. Exact package selection is
-routed through ``CatalogService``; federated search aggregates completed package-local
-hits without merging graph, relationship, identifier, or index namespaces.
+The `SearchService` is the public execution boundary for search. It is constructed only
+from a complete `~kgfegmcp.catalog.models.CatalogLoadResult`, after package loading,
+validation, graph-store construction, and catalog construction have already succeeded.
+
+During construction, the service creates one immutable lexical index, code index, and
+controlled-facet resolver for each accepted package runtime. It retains the existing
+independent graph store and exact source node instances owned by that runtime. It does
+not reload packages, repeat validation, or create replacement graph stores.
+
+For each request, the service resolves exact package selection through
+`~kgfegmcp.catalog.service.CatalogService` or filters the accepted runtimes for
+federated search. It then executes each selected package-local index independently,
+applies package-governed filters, builds provenance and warning evidence, ranks results
+deterministically, and returns an immutable cursor-paginated page.
+
+Federated search aggregates completed results without merging graph, relationship,
+identifier, lexical, or code namespaces. The service does not perform fuzzy search,
+embeddings, semantic inference, alignments, framework comparison, instructional
+sequence inference, filesystem access, configuration loading, or FastMCP registration.
 """
 
 # Future Library
@@ -19,7 +33,7 @@ import json
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
-from typing import Final
+from typing import Final, Literal
 
 # Third Party Library
 from pydantic import TypeAdapter, ValidationError
@@ -84,7 +98,7 @@ from kgfegmcp.search.normalizers import (
 )
 
 _SHA256_ADAPTER: Final[TypeAdapter[Sha256Digest]] = TypeAdapter(Sha256Digest)
-CURSOR_VERSION: Final[int] = 1
+CURSOR_VERSION: Final[Literal[1]] = 1
 OrderingPosition = tuple[int | str, ...]
 RANKING_VERSION: Final[str] = "deterministic_search_ranking_v1"
 
@@ -92,7 +106,7 @@ RANKING_VERSION: Final[str] = "deterministic_search_ranking_v1"
 class _UnsignedCursorState(FrozenSchema):
     """Represent stable cursor fields covered by the payload checksum."""
 
-    cursor_version: int = CURSOR_VERSION
+    cursor_version: Literal[1] = CURSOR_VERSION
     effective_query_sha256: Sha256Digest
     index_set_sha256: Sha256Digest
     last_ordering_position: OrderingPosition

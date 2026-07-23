@@ -1,4 +1,23 @@
-"""Provide versioned deterministic normalization for lexical, facet, and code search."""
+"""This module provides versioned deterministic normalization for search keys.
+
+This module converts source text and caller-supplied queries into stable comparison
+values used by lexical, facet, and statement-code search. Normalization affects lookup
+keys only; it never modifies the exact source values retained in graph packages or
+returned in search evidence.
+
+Lexical normalization applies Unicode NFKC normalization and case folding, then splits
+text into ordered runs of Unicode letters, marks, and numbers. Facet normalization
+applies Unicode NFKC normalization, case folding, and whitespace collapsing while
+preserving meaningful punctuation.
+
+Code normalization is governed by the exact package profile. It follows the profile's
+case, whitespace, punctuation, and prefix-delimiter policies and preserves configured
+delimiter boundaries needed for deterministic prefix lookup.
+
+Each normalization contract has an explicit version identifier so index metadata and
+pagination state can detect behavior changes. This module performs no package
+selection, indexing, ranking, graph traversal, or curriculum-specific inference.
+"""
 
 # Future Library
 from __future__ import annotations

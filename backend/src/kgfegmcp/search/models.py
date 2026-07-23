@@ -1,9 +1,22 @@
-"""Define immutable contracts for deterministic package-scoped search.
+"""This module defines immutable contracts for deterministic package-scoped search.
 
-The models in this module describe package selection, lexical and code requests,
-filters, deterministic evidence, warnings, pagination cursors, results, and index
-metadata. They preserve exact package identity and source node instances while keeping
-search behavior independent of any particular curriculum or fixture.
+This module contains the public data models used to request search, select exact or
+federated package scopes, apply controlled filters, describe deterministic matches,
+report capability warnings, paginate results, and expose index metadata.
+
+The request models keep lexical, exact-code, and prefix-code behavior separate so a
+caller cannot accidentally supply options that do not belong to the selected search
+mode. Result models preserve the exact source node, graph-package identity, matched
+fields, normalized terms, score explanation, facet evidence, code-scope evidence, and
+code-parent derivation evidence for every hit.
+
+Cursors are opaque immutable values whose private payload is created and validated by
+the search service. Package identities and source records remain explicit so a
+federated result never loses its package provenance.
+
+These models describe contracts only. They do not build indexes, search graph packages,
+access configuration, read files, validate packages, infer hierarchy, or perform
+semantic matching.
 """
 
 # Future Library

@@ -1,4 +1,24 @@
-"""Build and query immutable profile-governed package-local code indexes."""
+"""This module builds and queries immutable profile-governed package-local code indexes.
+
+This module creates one independent statement-code index for each accepted graph
+package. Every indexed posting retains the exact source node, authored code, normalized
+lookup value, configured code type, and package-local scope evidence.
+
+Code normalization and prefix behavior come only from the exact curriculum profile
+loaded with the package. Exact lookup may return multiple source records because a code
+is not assumed to be a globally unique identifier. Prefix lookup is available only when
+the profile explicitly enables it and matches only exact values or configured delimiter
+boundaries.
+
+Configured code-parent rules produce retrieval evidence only. They never create,
+replace, or reinterpret graph relationships. The existing package
+`~kgfegmcp.graph.store.GraphStore` remains authoritative for hierarchy, parentage,
+identifiers, and traversal.
+
+All indexing and lookup remain package-local. This module does not read package files,
+load settings, validate packages, merge code namespaces, infer instructional sequence,
+or add curriculum-specific behavior.
+"""
 
 # Future Library
 from __future__ import annotations

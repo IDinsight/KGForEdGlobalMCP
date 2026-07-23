@@ -1,4 +1,23 @@
-"""Build and query immutable package-local lexical description indexes."""
+"""This module builds and queries immutable package-local lexical description indexes.
+
+This module creates one independent word index for the source descriptions in each
+accepted graph package. Every indexed document retains the exact source
+`~kgfegmcp.graph.models.StandardNode` instance and the deterministic normalized tokens
+derived from its description.
+
+Lexical search supports any-token matching, all-token matching, and contiguous
+exact-phrase matching. Results are returned with deterministic token evidence and
+integer coverage scores so the service layer can rank them without fuzzy, statistical,
+semantic, or model-generated inference.
+
+Only source descriptions are searchable through this index. Statement codes,
+identifiers, grades, subjects, relationship data, raw properties, and source export
+order are not treated as lexical text.
+
+The index is package-local and immutable. This module does not select packages, apply
+catalog routing, perform pagination, read files, validate packages, or merge lexical
+namespaces across graph packages.
+"""
 
 # Future Library
 from __future__ import annotations
