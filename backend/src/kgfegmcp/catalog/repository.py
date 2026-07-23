@@ -1,19 +1,33 @@
-"""Build one immutable catalog from safely discovered, read-only validated packages.
+"""This module constructs the catalog from discovered and validated graph packages.
 
-``CatalogRepository`` is the PR 6 orchestration boundary. It delegates package
-discovery to ``GraphPackageRepository`` and integrity plus semantic acceptance to the
-existing ``GraphPackageValidator``. Only terminal ``passed`` packages that still pass
-read-only validation become queryable catalog entries.
+The catalog repository is the coordination boundary between package discovery, package
+validation, graph-store construction, and immutable catalog creation. It uses the
+existing graph-package repository and validator rather than scanning directories,
+parsing manifests, loading profiles, or decoding graph artifacts independently.
 
-Each accepted package receives one independent PR 5 ``GraphStore`` after the caller's
-required validation gate has been established. Pending, failed, and quarantined
-packages remain excluded. Invalid unaccepted packages either fail catalog construction
-or are excluded according to the configured invalid-package policy. An accepted
-``passed`` package that no longer validates always fails construction.
+Catalog construction follows a strict read-only lifecycle:
 
-This module does not scan arbitrary paths, reload profiles independently, recalculate
-checksums, decode graph records, repeat semantic validation, persist status, merge graph
-namespaces, implement search, or depend on FastMCP.
+1. Discover package candidates through :class:`GraphPackageRepository`;
+2. Validate every candidate with persistence disabled;
+3. Include only packages whose observed terminal status is ``passed`` and whose current
+    validation result remains valid;
+4. Construct a :class:`GraphStore` only after confirming that the validation outcome
+    contains a loaded package and reports a valid result;
+5. Create one independent runtime for each accepted graph package;
+6. Group packages by exact snapshot and framework identifiers; and
+7. Return one complete immutable catalog load result.
+
+A terminal ``passed`` package that fails revalidation is a catalog integrity error and
+prevents catalog publication. Pending, failed, and quarantined packages do not become
+queryable catalog entries. Invalid-package policy may control whether other invalid
+candidates stop construction or are excluded, but it never makes an unaccepted package
+queryable.
+
+The repository preserves package isolation, source records, DAG relationships,
+unresolved relationship statuses, source tuple ordering, and existing graph behavior.
+It does not merge graphs, infer snapshot families, select current snapshots, perform
+searches, initialize application state, configure logging, or persist validation
+changes.
 """
 
 # Standard Library

@@ -1,13 +1,31 @@
-"""Provide deterministic in-memory catalog selection and graph-store routing.
+"""This module provides deterministic in-memory catalog selection and graph-store
+routing.
 
-``CatalogService`` consumes one complete ``CatalogLoadResult`` and builds immutable
-indexes for exact framework, snapshot, graph-package, graph-type, and runtime lookup.
-It selects a snapshot only by exact identity or by one unique source-declared current
-snapshot. Ambiguity is reported rather than resolved heuristically.
+The catalog service is the read-only query boundary for an already constructed catalog.
+It builds immutable indexes over framework families, snapshots, graph packages, loaded
+packages, and graph stores so callers can resolve catalog entries without accessing the
+filesystem or repeating package validation.
 
-The service never reads the filesystem, reloads or validates packages, merges graph
-stores, ranks search results, infers snapshot families, or depends on FastMCP. Once a
-package is selected, callers use its existing PR 5 ``GraphStore`` for graph operations.
+The service supports two snapshot-selection modes:
+
+* an exact snapshot ID selects that snapshot only when it belongs to the requested
+    framework family;
+* an omitted snapshot ID selects the single snapshot explicitly marked as current for
+    that framework.
+
+The service does not guess when selection is unclear. A missing framework, snapshot, or
+current snapshot produces a not-found error. More than one current snapshot produces an
+ambiguity error. A valid snapshot that does not contain the requested graph type
+produces a capability-unavailable error.
+
+After selection, the service routes the caller to the catalog metadata, validated
+loaded package, or independent per-package graph store associated with the selected
+graph package. It never searches another package as a fallback and never creates global
+node, relationship, or traversal indexes across packages.
+
+This module performs no package discovery, file loading, validation, graph-store
+construction, settings loading, logging initialization, semantic inference, lexical
+search, cross-package traversal, or FastMCP application startup.
 """
 
 # Future Library

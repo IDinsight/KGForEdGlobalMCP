@@ -1,13 +1,31 @@
-"""Define immutable framework-catalog and runtime integration contracts.
+"""This module defines immutable metadata and runtime contracts for the package catalog.
 
-The catalog models in this module describe accepted graph packages, immutable source
-snapshots, and conceptual framework families without flattening their source graphs.
-Source-facing metadata remains separate from normalized, profile-derived facets.
+This module describes the read-only structures used to represent validated graph
+packages in the catalog. The models organize catalog information into four levels:
 
-The runtime contracts retain the exact validated loaded package and its independent
-``GraphStore`` so later services can route queries without reloading, revalidating, or
-merging package namespaces. This module does not discover files, select packages,
-perform graph traversal, implement search, or depend on FastMCP.
+* a graph package represents one independently queryable package;
+* a framework snapshot groups packages belonging to the same exact snapshot;
+* a framework family groups snapshots sharing the same exact framework ID;
+* a catalog result contains all accepted framework families and packages.
+
+Source-authored metadata is kept separate from normalized profile-derived facets so
+callers can distinguish original curriculum terminology from catalog-facing normalized
+values.
+
+Runtime contracts associate each catalog package with the exact validated loaded
+package and graph store from which it was created. These associations allow later
+services to route queries without reloading files, repeating validation, or rebuilding
+graph indexes.
+
+The models enforce catalog-wide invariants, including deterministic ordering, identity
+consistency, count consistency, package-to-runtime correspondence, and the
+all-or-nothing treatment of terminal ``passed`` packages. An observed terminal
+``passed`` package cannot be silently treated as excluded when its validation evidence
+is incomplete or invalid.
+
+This module performs no filesystem access, package discovery, validation, configuration
+loading, logging initialization, graph traversal, or application startup. It defines
+contracts only.
 """
 
 # Standard Library
