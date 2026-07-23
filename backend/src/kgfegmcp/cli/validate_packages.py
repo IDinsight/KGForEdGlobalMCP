@@ -1,8 +1,9 @@
 """This module contains the entry point for graph-package validation.
 
-This module loads application settings, constructs the graph-package repository,
-profile repository, package loader, and package validator, and serializes public
-validation results as deterministic JSON.
+This module loads environment-backed application settings, constructs the graph-package
+repository, profile repository, package loader, and package validator, and serializes
+public validation results as deterministic JSON. Environment variables may be populated
+by a shell tool such as direnv before the command starts.
 
 The ``one`` command validates one exact framework snapshot. The ``pending`` command
 discovers and validates all pending packages beneath the configured graph-packages
@@ -41,7 +42,6 @@ from __future__ import annotations
 # Standard Library
 import json
 
-from pathlib import Path
 from typing import Annotated
 
 # Third Party Library
@@ -67,38 +67,6 @@ cli = typer.Typer(
     help="Validate curriculum graph packages and control terminal status.",
     no_args_is_help=True,
 )
-
-
-def _load_cli_settings(
-    *, env_file: Path | None, project_dir: Path | None
-) -> BackendSettings:
-    """Load settings for the validation CLI without caller-working-directory paths.
-
-    Parameters
-    ----------
-    env_file
-        Optional explicit environment file.
-    project_dir
-        Optional explicit absolute repository root.
-
-    Returns
-    -------
-    BackendSettings
-        Validated immutable settings.
-    """
-
-    if env_file is None and project_dir is None:
-        return load_settings()
-
-    values: dict[str, object] = {}
-
-    if project_dir is not None:
-        values["project_dir"] = project_dir.expanduser().resolve(strict=False)
-
-    if env_file is not None:
-        values["_env_file"] = env_file.expanduser().resolve(strict=False)
-
-    return BackendSettings(**values)
 
 
 def _resolved_policy(
@@ -201,10 +169,6 @@ def _write_error(error: KGFEGMCPError) -> None:
 @cli.command("one")
 def validate_one(
     *,
-    env_file: Annotated[
-        Path | None,
-        typer.Option(help="Optional explicit environment file.", metavar="PATH"),
-    ] = None,
     framework_id: Annotated[
         str, typer.Option(help="Stable framework identifier.", metavar="FRAMEWORK_ID")
     ],
@@ -213,10 +177,6 @@ def validate_one(
         typer.Option(
             help="Terminal status for an invalid pending package.", metavar="POLICY"
         ),
-    ] = None,
-    project_dir: Annotated[
-        Path | None,
-        typer.Option(help="Optional absolute repository root.", metavar="PATH"),
     ] = None,
     read_only: Annotated[
         bool, typer.Option(help="Validate without changing package validation status.")
@@ -229,14 +189,10 @@ def validate_one(
 
     Parameters
     ----------
-    env_file
-        Optional explicit environment file.
     framework_id
         Stable framework identifier.
     invalid_package_policy
         Optional invalid-package terminal policy override.
-    project_dir
-        Optional absolute repository root.
     read_only
         Whether status persistence is prohibited.
     snapshot_id
@@ -251,7 +207,7 @@ def validate_one(
     try:
         validated_framework_id = _FRAMEWORK_ID_ADAPTER.validate_python(framework_id)
         validated_snapshot_id = _SNAPSHOT_ID_ADAPTER.validate_python(snapshot_id)
-        settings = _load_cli_settings(env_file=env_file, project_dir=project_dir)
+        settings = load_settings()
         validator = _validator(settings)
         candidate = validator.repository.candidate(
             framework_id=validated_framework_id, snapshot_id=validated_snapshot_id
@@ -287,19 +243,11 @@ def validate_one(
 @cli.command("pending")
 def validate_pending(
     *,
-    env_file: Annotated[
-        Path | None,
-        typer.Option(help="Optional explicit environment file.", metavar="PATH"),
-    ] = None,
     invalid_package_policy: Annotated[
         InvalidPackagePolicy | None,
         typer.Option(
             help="Terminal status for invalid pending packages.", metavar="POLICY"
         ),
-    ] = None,
-    project_dir: Annotated[
-        Path | None,
-        typer.Option(help="Optional absolute repository root.", metavar="PATH"),
     ] = None,
     read_only: Annotated[
         bool, typer.Option(help="Validate without changing package validation status.")
@@ -309,12 +257,8 @@ def validate_pending(
 
     Parameters
     ----------
-    env_file
-        Optional explicit environment file.
     invalid_package_policy
         Optional invalid-package terminal policy override.
-    project_dir
-        Optional absolute repository root.
     read_only
         Whether status persistence is prohibited.
 
@@ -325,7 +269,7 @@ def validate_pending(
     """
 
     try:
-        settings = _load_cli_settings(env_file=env_file, project_dir=project_dir)
+        settings = load_settings()
         outcomes = _validator(settings).validate_pending(
             invalid_package_policy=_resolved_policy(
                 policy=invalid_package_policy, settings=settings

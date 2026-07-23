@@ -1,5 +1,7 @@
 """This module contains the entry point for building or dry-running deterministic
-**pending** graph-package manifests.
+**pending** graph-package manifests. Settings are loaded through the established
+environment-backed application configuration, which may be populated by a shell tool
+such as direnv before the command starts.
 
 Invoke from the backend directory with either a build specification:
 
@@ -7,7 +9,7 @@ Invoke from the backend directory with either a build specification:
 
 or explicit package inputs:
 
-    python -m kgfegmcp.cli.build_manifests build \
+    python -m kgfegmcp.cli.build_manifests \
         --profile-id PROFILE_ID \
         --profile-version PROFILE_VERSION \
         --version-token VERSION_TOKEN \
@@ -32,7 +34,7 @@ import typer
 from pydantic import ValidationError
 
 # Package Library
-from kgfegmcp.config import BackendSettings, load_settings
+from kgfegmcp.config import load_settings
 from kgfegmcp.errors import KGFEGMCPError, ManifestBuildError
 from kgfegmcp.packages.builder import build_graph_package
 from kgfegmcp.packages.models import (
@@ -448,29 +450,9 @@ def _render_validation_error(error: ValidationError) -> str:
     return "Build inputs are invalid: " + "; ".join(messages)
 
 
-def _settings_for_project_dir(project_dir: Path | None) -> BackendSettings:
-    """Load settings with an optional explicit repository-root override.
-
-    Parameters
-    ----------
-    project_dir
-        Optional repository root used to resolve project-relative paths.
-
-    Returns
-    -------
-    BackendSettings
-        Validated environment-backed repository settings.
-    """
-
-    if project_dir is None:
-        return load_settings()
-
-    return BackendSettings(project_dir=project_dir.expanduser().resolve(strict=False))
-
-
 @cli.command()
 def build(  # pylint: disable=R0917
-    additional_artifact: list[str] = typer.Option(
+    additional_artifact: list[str] | None = typer.Option(
         None,
         "--additional-artifact",
         help=(
@@ -478,7 +460,7 @@ def build(  # pylint: disable=R0917
         ),
         metavar="NAME=PATH",
     ),
-    detailed_artifact: list[Path] = typer.Option(
+    detailed_artifact: list[Path] | None = typer.Option(
         None,
         "--detailed-artifact",
         dir_okay=False,
@@ -537,17 +519,6 @@ def build(  # pylint: disable=R0917
     profile_version: str | None = typer.Option(
         None, "--profile-version", help="Selected immutable curriculum profile version."
     ),
-    project_dir: Path | None = typer.Option(
-        None,
-        "--project-dir",
-        dir_okay=True,
-        exists=True,
-        file_okay=False,
-        help="Repository root used to resolve project-relative paths.",
-        metavar="PATH",
-        readable=True,
-        resolve_path=True,
-    ),
     relationships: Path | None = typer.Option(
         None,
         "--relationships",
@@ -559,7 +530,7 @@ def build(  # pylint: disable=R0917
         readable=True,
         resolve_path=True,
     ),
-    snapshot_relation: list[str] = typer.Option(
+    snapshot_relation: list[str] | None = typer.Option(
         None,
         "--snapshot-relation",
         help="Approved SnapshotRelation JSON object. Repeat for each relation.",
@@ -599,21 +570,25 @@ def build(  # pylint: disable=R0917
     """Build or dry-run one deterministic pending graph package.
 
     Supply either ``--spec`` or the required explicit build options. A specification
-    file cannot be combined with explicit package inputs. ``--project-dir`` and
-    ``--dry-run`` control execution and may accompany either input mode.
+    file cannot be combined with explicit package inputs. ``--dry-run`` may accompany
+    either input mode.
 
     Raises
     ------
     typer.BadParameter
-        If ``--spec`` is combined with explicit inputs or required explicit
-        inputs are missing.
+        If ``--spec`` is combined with explicit inputs or required explicit inputs are
+        missing.
     typer.Exit
         If input validation or graph-package construction fails.
     """
 
+    additional_artifact_values = tuple(additional_artifact or ())
+    detailed_artifact_values = tuple(detailed_artifact or ())
+    snapshot_relation_values = tuple(snapshot_relation or ())
+
     explicit_inputs_present = _explicit_inputs_present(
-        additional_artifact=additional_artifact,
-        detailed_artifact=detailed_artifact,
+        additional_artifact=additional_artifact_values,
+        detailed_artifact=detailed_artifact_values,
         detailed_artifacts_directory=detailed_artifacts_directory,
         jurisdiction_type=jurisdiction_type,
         nodes=nodes,
@@ -621,7 +596,7 @@ def build(  # pylint: disable=R0917
         profile_id=profile_id,
         profile_version=profile_version,
         relationships=relationships,
-        snapshot_relation=snapshot_relation,
+        snapshot_relation=snapshot_relation_values,
         source_document=source_document,
         source_publication_date=source_publication_date,
         version_token=version_token,
@@ -653,8 +628,8 @@ def build(  # pylint: disable=R0917
             _load_spec(spec)
             if spec is not None
             else _build_explicit_spec(
-                additional_artifact=additional_artifact,
-                detailed_artifact=detailed_artifact,
+                additional_artifact=additional_artifact_values,
+                detailed_artifact=detailed_artifact_values,
                 detailed_artifacts_directory=detailed_artifacts_directory,
                 jurisdiction_type=jurisdiction_type,
                 nodes=nodes,
@@ -662,13 +637,13 @@ def build(  # pylint: disable=R0917
                 profile_id=profile_id,
                 profile_version=profile_version,
                 relationships=relationships,
-                snapshot_relation=snapshot_relation,
+                snapshot_relation=snapshot_relation_values,
                 source_document=source_document,
                 source_publication_date=source_publication_date,
                 version_token=version_token,
             )
         )
-        settings = _settings_for_project_dir(project_dir)
+        settings = load_settings()
         result = build_graph_package(
             dry_run=dry_run, settings=settings, spec=build_spec
         )
