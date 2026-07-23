@@ -62,6 +62,12 @@ class AmbiguousFrameworkError(KGFEGMCPError):
     error_code = "ambiguous_framework"
 
 
+class AmbiguousGraphNodeError(KGFEGMCPError):
+    """Raised when an exact identifier resolves to several graph nodes."""
+
+    error_code = "ambiguous_graph_node"
+
+
 class CapabilityUnavailableError(KGFEGMCPError):
     """Raised when a selected package does not provide a requested capability."""
 
@@ -90,6 +96,12 @@ class FrameworkNotFoundError(KGFEGMCPError):
     """Raised when a requested framework or snapshot is unavailable."""
 
     error_code = "framework_not_found"
+
+
+class GraphNodeNotFoundError(KGFEGMCPError):
+    """Raised when a requested graph node identifier cannot be resolved."""
+
+    error_code = "graph_node_not_found"
 
 
 class InvalidCursorError(KGFEGMCPError):

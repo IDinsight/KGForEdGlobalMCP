@@ -1,17 +1,52 @@
-"""This package provides curriculum-agnostic semantic records for decoded graph data.
+"""This package exposes curriculum-agnostic graph records, storage, and traversal
+contracts.
 
-The package contains immutable models representing nodes and relationships after
-delivery-specific JSONL values have been parsed and decoded. These models form the
-boundary between source-shaped wire records and graph services such as validation,
-storage, traversal, and search.
-
-The package preserves original property values, distinct identifier forms, relationship
-endpoint representations, resolution information, and deterministic source order. It
-does not currently validate graph-wide invariants, resolve relationship endpoints,
-repair source records, or assume that the graph is a tree.
+The package preserves decoded source records and provides one immutable in-memory store
+per successfully validated package. Exact identifier lookups, direct relationships,
+bounded ancestor and descendant traversal, and complete DAG root paths remain
+independent of package loading, validation, catalog routing, search, FastMCP,
+resources, and prompts.
 """
 
 # Package Library
-from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
+from kgfegmcp.graph.models import (
+    DirectNodeRelationshipsResult,
+    DirectRelationshipDirection,
+    FrameworkNode,
+    GraphNeighbor,
+    GraphNode,
+    GraphNodeRecord,
+    GraphNodeResult,
+    GraphPackageIdentity,
+    GraphRelationship,
+    GraphTraversalDirection,
+    RootPath,
+    RootPathsResult,
+    StandardNode,
+    TraversalNode,
+    TraversalResult,
+    TraversalTruncationReason,
+)
+from kgfegmcp.graph.store import GraphStore
+from kgfegmcp.graph.traversal import GraphTraversal
 
-__all__ = ["FrameworkNode", "GraphRelationship", "StandardNode"]
+__all__ = [
+    "DirectNodeRelationshipsResult",
+    "DirectRelationshipDirection",
+    "FrameworkNode",
+    "GraphNeighbor",
+    "GraphNode",
+    "GraphNodeRecord",
+    "GraphNodeResult",
+    "GraphPackageIdentity",
+    "GraphRelationship",
+    "GraphStore",
+    "GraphTraversal",
+    "GraphTraversalDirection",
+    "RootPath",
+    "RootPathsResult",
+    "StandardNode",
+    "TraversalNode",
+    "TraversalResult",
+    "TraversalTruncationReason",
+]
