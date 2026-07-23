@@ -13,8 +13,9 @@ import json
 
 from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
+from io import BytesIO
 from pathlib import Path
-from typing import Generic, NoReturn, TypeAlias, TypeVar
+from typing import BinaryIO, Generic, NoReturn, TypeAlias, TypeVar
 
 # Third Party Library
 from pydantic import BaseModel, ValidationError
@@ -30,6 +31,7 @@ from kgfegmcp.packages.wire import (
 )
 
 GraphNodeT: TypeAlias = FrameworkNode | StandardNode
+JSONLSource: TypeAlias = Path | bytes
 WireEnvelopeT = TypeVar("WireEnvelopeT", bound=BaseModel)
 
 
@@ -159,6 +161,119 @@ def _decode_optional_string_array(
     return tuple(decoded_value)
 
 
+def _iter_stream_wire_records(
+    *, model_type: type[WireEnvelopeT], path: Path, stream: BinaryIO
+) -> Iterator[LocatedWireRecord[WireEnvelopeT]]:
+    """Validate one wire envelope per physical line from an open binary stream.
+
+    Parameters
+    ----------
+    model_type
+        Pydantic wire-envelope class used to validate each decoded JSON value.
+    path
+        Logical source path used for safe diagnostics.
+    stream
+        Open binary stream positioned at the beginning of the JSONL content.
+
+    Yields
+    ------
+    LocatedWireRecord[WireEnvelopeT]
+        Validated envelope with file, line, and deterministic export-order context.
+
+    Raises
+    ------
+    JSONLParsingError
+        If a line is not UTF-8 or valid JSON, or a decoded value does not satisfy the
+        requested wire-envelope schema.
+    """
+
+    for line_number, raw_line in enumerate(stream, start=1):
+        try:
+            text = raw_line.decode("utf-8")
+        except UnicodeDecodeError:
+            _raise_jsonl_parsing_error(
+                line_number=line_number, path=path, reason="line is not valid UTF-8."
+            )
+
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError as error:
+            _raise_jsonl_parsing_error(
+                line_number=line_number,
+                path=path,
+                reason=f"invalid JSON ({error.msg}).",
+            )
+
+        try:
+            record = model_type.model_validate(payload)
+        except ValidationError as error:
+            _raise_jsonl_parsing_error(
+                line_number=line_number,
+                path=path,
+                reason="record does not match the required wire envelope.",
+                validation_errors=error.errors(include_input=False, include_url=False),
+            )
+
+        yield LocatedWireRecord(
+            line_number=line_number,
+            record=record,
+            source_export_order=line_number,
+            source_path=path,
+        )
+
+
+def _iter_wire_records(
+    *, model_type: type[WireEnvelopeT], source: JSONLSource, source_path: Path | None
+) -> Iterator[LocatedWireRecord[WireEnvelopeT]]:
+    """Read and validate one wire envelope per physical JSONL line.
+
+    Parameters
+    ----------
+    model_type
+        Pydantic wire-envelope class used to validate each decoded JSON value.
+    source
+        JSONL artifact path or exact already-verified artifact bytes.
+    source_path
+        Logical source path used for diagnostics when ``source`` contains bytes.
+
+    Yields
+    ------
+    LocatedWireRecord[WireEnvelopeT]
+        Validated envelope with file, line, and deterministic export-order context.
+
+    Raises
+    ------
+    JSONLParsingError
+        If the file cannot be read, a line is not UTF-8 or valid JSON, or a decoded
+        value does not satisfy the requested wire-envelope schema.
+    ValueError
+        If exact bytes are supplied without a logical diagnostic path.
+    """
+
+    if isinstance(source, Path):
+        path = source
+
+        try:
+            with source.open("rb") as stream:
+                yield from _iter_stream_wire_records(
+                    model_type=model_type, path=path, stream=stream
+                )
+        except OSError:
+            _raise_jsonl_parsing_error(
+                line_number=None, path=path, reason="artifact could not be read."
+            )
+
+        return
+
+    if source_path is None:
+        raise ValueError("A logical source_path is required for in-memory JSONL bytes.")
+
+    with BytesIO(source) as stream:
+        yield from _iter_stream_wire_records(
+            model_type=model_type, path=source_path, stream=stream
+        )
+
+
 def _raise_jsonl_parsing_error(
     *,
     line_number: int | None,
@@ -278,75 +393,6 @@ def _raise_record_decoding_error(
             f"Could not decode record in '{path.name}' at line {line_number}: {reason}"
         ),
     )
-
-
-def _iter_wire_records(
-    *, model_type: type[WireEnvelopeT], path: Path
-) -> Iterator[LocatedWireRecord[WireEnvelopeT]]:
-    """Read and validate one wire envelope per physical JSONL line.
-
-    Parameters
-    ----------
-    model_type
-        Pydantic wire-envelope class used to validate each decoded JSON value.
-    path
-        JSONL artifact path.
-
-    Yields
-    ------
-    LocatedWireRecord[WireEnvelopeT]
-        Validated envelope with file, line, and deterministic export-order context.
-
-    Raises
-    ------
-    JSONLParsingError
-        If the file cannot be read, a line is not UTF-8 or valid JSON, or a decoded
-        value does not satisfy the requested wire-envelope schema.
-    """
-
-    try:
-        with path.open("rb") as stream:
-            for line_number, raw_line in enumerate(stream, start=1):
-                try:
-                    text = raw_line.decode("utf-8")
-                except UnicodeDecodeError:
-                    _raise_jsonl_parsing_error(
-                        line_number=line_number,
-                        path=path,
-                        reason="line is not valid UTF-8.",
-                    )
-
-                try:
-                    payload = json.loads(text)
-                except json.JSONDecodeError as error:
-                    _raise_jsonl_parsing_error(
-                        line_number=line_number,
-                        path=path,
-                        reason=f"invalid JSON ({error.msg}).",
-                    )
-
-                try:
-                    record = model_type.model_validate(payload)
-                except ValidationError as error:
-                    _raise_jsonl_parsing_error(
-                        line_number=line_number,
-                        path=path,
-                        reason="record does not match the required wire envelope.",
-                        validation_errors=error.errors(
-                            include_input=False, include_url=False
-                        ),
-                    )
-
-                yield LocatedWireRecord(
-                    line_number=line_number,
-                    record=record,
-                    source_export_order=line_number,
-                    source_path=path,
-                )
-    except OSError:
-        _raise_jsonl_parsing_error(
-            line_number=None, path=path, reason="artifact could not be read."
-        )
 
 
 def decode_node_record(
@@ -512,13 +558,17 @@ def decode_relationship_record(
         )
 
 
-def iter_decoded_nodes(path: Path) -> Iterator[GraphNodeT]:
+def iter_decoded_nodes(
+    *, source: JSONLSource, source_path: Path | None = None
+) -> Iterator[GraphNodeT]:
     """Parse and decode every node record from a JSONL artifact lazily.
 
     Parameters
     ----------
-    path
-        Path to ``nodes.jsonl`` or an equivalent node delivery artifact.
+    source
+        Path to a node delivery artifact or its exact already-verified bytes.
+    source_path
+        Logical source path used for diagnostics when ``source`` contains bytes.
 
     Yields
     ------
@@ -526,17 +576,23 @@ def iter_decoded_nodes(path: Path) -> Iterator[GraphNodeT]:
         One semantic node per physical source line.
     """
 
-    for located_record in iter_node_wire_records(path):
+    for located_record in iter_node_wire_records(
+        source=source, source_path=source_path
+    ):
         yield decode_node_record(located_record)
 
 
-def iter_decoded_relationships(path: Path) -> Iterator[GraphRelationship]:
+def iter_decoded_relationships(
+    *, source: JSONLSource, source_path: Path | None = None
+) -> Iterator[GraphRelationship]:
     """Parse and decode every relationship record from a JSONL artifact lazily.
 
     Parameters
     ----------
-    path
-        Path to ``relationships.jsonl`` or an equivalent relationship artifact.
+    source
+        Path to a relationship delivery artifact or its exact verified bytes.
+    source_path
+        Logical source path used for diagnostics when ``source`` contains bytes.
 
     Yields
     ------
@@ -544,17 +600,23 @@ def iter_decoded_relationships(path: Path) -> Iterator[GraphRelationship]:
         One semantic relationship per physical source line.
     """
 
-    for located_record in iter_relationship_wire_records(path):
+    for located_record in iter_relationship_wire_records(
+        source=source, source_path=source_path
+    ):
         yield decode_relationship_record(located_record)
 
 
-def iter_node_wire_records(path: Path) -> Iterator[LocatedWireRecord[NodeWireEnvelope]]:
+def iter_node_wire_records(
+    *, source: JSONLSource, source_path: Path | None = None
+) -> Iterator[LocatedWireRecord[NodeWireEnvelope]]:
     """Parse a node JSONL artifact into located strict wire envelopes.
 
     Parameters
     ----------
-    path
-        Path to ``nodes.jsonl`` or an equivalent node delivery artifact.
+    source
+        Path to a node delivery artifact or its exact already-verified bytes.
+    source_path
+        Logical source path used for diagnostics when ``source`` contains bytes.
 
     Yields
     ------
@@ -562,18 +624,22 @@ def iter_node_wire_records(path: Path) -> Iterator[LocatedWireRecord[NodeWireEnv
         One validated node envelope per physical source line.
     """
 
-    yield from _iter_wire_records(model_type=NodeWireEnvelope, path=path)
+    yield from _iter_wire_records(
+        model_type=NodeWireEnvelope, source=source, source_path=source_path
+    )
 
 
 def iter_relationship_wire_records(
-    path: Path,
+    *, source: JSONLSource, source_path: Path | None = None
 ) -> Iterator[LocatedWireRecord[RelationshipWireEnvelope]]:
     """Parse a relationship JSONL artifact into located strict wire envelopes.
 
     Parameters
     ----------
-    path
-        Path to ``relationships.jsonl`` or an equivalent relationship artifact.
+    source
+        Path to a relationship delivery artifact or its exact verified bytes.
+    source_path
+        Logical source path used for diagnostics when ``source`` contains bytes.
 
     Yields
     ------
@@ -581,4 +647,6 @@ def iter_relationship_wire_records(
         One validated relationship envelope per physical source line.
     """
 
-    yield from _iter_wire_records(model_type=RelationshipWireEnvelope, path=path)
+    yield from _iter_wire_records(
+        model_type=RelationshipWireEnvelope, source=source, source_path=source_path
+    )

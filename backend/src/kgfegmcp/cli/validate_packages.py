@@ -1,5 +1,22 @@
 """This module contains the entry point for graph-package validation.
 
+This module loads application settings, constructs the graph-package repository,
+profile repository, package loader, and package validator, and serializes public
+validation results as deterministic JSON.
+
+The ``one`` command validates one exact framework snapshot. The ``pending`` command
+discovers and validates all pending packages beneath the configured graph-packages
+root. Read-only mode reports findings without changing manifest state. When persistence
+is allowed, invalid pending packages use the configured or explicitly selected
+``failed`` or ``quarantined`` policy. Terminal packages selected individually are
+revalidated read-only and are never rewritten.
+
+The CLI returns success for valid results, a distinct nonzero status for invalid
+packages, and a separate status for invocation, configuration, or domain failures. It
+does not implement package discovery, artifact loading, checksum verification, graph
+validation, profile semantics, or status persistence itself; those responsibilities
+remain in the underlying repositories, loader, and validator.
+
 Invoke from the backend directory to validate one framework snapshot without changing
 its validation status:
 

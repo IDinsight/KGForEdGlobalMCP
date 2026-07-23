@@ -8,10 +8,11 @@ when selected path components are symbolic links, malformed entries, or unsuppor
 filesystem objects.
 
 The repository also owns validation-status persistence. It permits only a one-time
-transition from ``pending`` to ``passed``, ``failed``, or ``quarantined``. Before
-writing, it confirms that the package and manifest still match the versions originally
-loaded. It then assigns ``validatedAt`` and replaces the manifest atomically without
-changing ``createdAt``, artifact bytes, or package-defining manifest fields.
+transition from ``pending`` to ``passed``, ``failed``, or ``quarantined``. The loader
+and validator verify package integrity before requesting persistence; this repository
+then reconfirms the candidate location and exact manifest bytes immediately before the
+write. It assigns ``validatedAt`` and replaces the manifest atomically without changing
+``createdAt``, artifact bytes, or package-defining manifest fields.
 
 This module does not load profiles, verify artifact checksums, decode graph records, or
 determine whether graph contents satisfy package and profile semantics. Those

@@ -12,10 +12,11 @@ agree; every declared artifact has exactly one checksum; graph types are declare
 consistently; timestamps are timezone-aware; and snapshot relations are unique and do
 not reference the snapshot itself.
 
-The module also defines the supported detailed-validation-report contract, safe
-declared-artifact references, the frozen loaded-package aggregate, and structured
-validation findings and results. It does not parse JSONL records, expose a reusable
-graph store, repair source data, or modify package artifacts.
+The module also defines the small supported detailed-validation-report contract, safe
+declared-artifact references, immutable package-integrity observations and snapshots,
+the frozen loaded-package aggregate, and structured validation findings and results. It
+does not parse JSONL records, expose a reusable graph store, repair source data, or
+modify package artifacts.
 """
 
 # Future Library
@@ -95,13 +96,6 @@ REQUIRED_DELIVERY_REPORT_COUNT_NAMES: Final[frozenset[str]] = frozenset(
 )
 SOURCE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
 SUPPORTED_PACKAGE_REVISION: Final[int] = 1
-TERMINAL_VALIDATION_STATUSES: Final[frozenset[ValidationStatus]] = frozenset(
-    {
-        ValidationStatus.FAILED,
-        ValidationStatus.PASSED,
-        ValidationStatus.QUARANTINED,
-    }
-)
 
 FindingCode = Annotated[
     str,
@@ -148,6 +142,54 @@ def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
 
     if len(values) != len(set(values)):
         raise ValueError(f"{field_name} must not contain duplicates.")
+
+
+class ArtifactIntegrityObservation(FrozenSchema):
+    """Record the exact load-time state observed for one declared artifact."""
+
+    finding_code: FindingCode | None = None
+    finding_signature: str | None = Field(default=None, min_length=1)
+    logical_name: ArtifactName
+    package_path: ArtifactPath
+    sha256: Sha256Digest | None = None
+    size_bytes: int | None = Field(default=None, ge=0)
+
+    @model_validator(mode="after")
+    def validate_observation(self) -> Self:
+        """Require successful observations to carry checksum and size together.
+
+        Returns
+        -------
+        Self
+            Consistent artifact-integrity observation.
+
+        Raises
+        ------
+        ValueError
+            If success or failure fields are internally inconsistent.
+        """
+
+        has_failure = (
+            self.finding_code is not None and self.finding_signature is not None
+        )
+        has_verified_values = self.sha256 is not None and self.size_bytes is not None
+
+        if not has_failure and not has_verified_values:
+            raise ValueError(
+                "Artifact observations require either failure or verified values."
+            )
+
+        if has_failure and has_verified_values:
+            raise ValueError(
+                "Failed artifact observations may not declare verified values."
+            )
+
+        if (self.finding_code is None) != (self.finding_signature is None):
+            raise ValueError(
+                "Artifact failure code and signature must be declared together."
+            )
+
+        return self
 
 
 class DeclaredArtifactReference(FrozenSchema):
@@ -394,6 +436,196 @@ class FrameworkMetadata(FrozenSchema):
             and not self.subject_mapping_note
         ):
             raise ValueError("Other subject mappings require subject_mapping_note.")
+
+        return self
+
+
+class GraphPackageManifest(FrozenSchema):
+    """Describe one immutable, validated graph package."""
+
+    artifacts: PackageArtifacts
+    capabilities: FrameworkCapabilities
+    checksums: dict[ArtifactPath, Sha256Digest]
+    counts: PackageCounts
+    created_at: datetime
+    delivery_schema_version: SchemaVersion
+    framework: FrameworkMetadata
+    framework_id: FrameworkId
+    graph_package_id: GraphPackageId
+    graph_type: GraphType
+    included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
+    manifest_version: ManifestVersion = MANIFEST_VERSION
+    package_revision: int = Field(default=SUPPORTED_PACKAGE_REVISION, ge=1)
+    profile: ProfileReference
+    rights: RightsPolicy
+    snapshot_id: SnapshotId
+    snapshot_relations: tuple[SnapshotRelation, ...] = ()
+    source_schema_version: SchemaVersion
+    validation: PackageValidation
+
+    @field_validator("delivery_schema_version")
+    @classmethod
+    def validate_delivery_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
+        """Require the exact repository-supported delivery schema version.
+
+        Parameters
+        ----------
+        value
+            Declared delivery schema version.
+
+        Returns
+        -------
+        SchemaVersion
+            The unchanged supported schema version.
+
+        Raises
+        ------
+        ValueError
+            If the manifest declares an unsupported delivery schema version.
+        """
+
+        if value != DELIVERY_SCHEMA_VERSION:
+            raise ValueError(
+                f"delivery_schema_version must equal {DELIVERY_SCHEMA_VERSION}."
+            )
+
+        return value
+
+    @field_validator("manifest_version")
+    @classmethod
+    def validate_manifest_version(cls, value: ManifestVersion) -> ManifestVersion:
+        """Require the exact repository-supported manifest version.
+
+        Parameters
+        ----------
+        value
+            Declared manifest version.
+
+        Returns
+        -------
+        ManifestVersion
+            The unchanged supported manifest version.
+
+        Raises
+        ------
+        ValueError
+            If the manifest declares an unsupported manifest version.
+        """
+
+        if value != MANIFEST_VERSION:
+            raise ValueError(f"manifest_version must equal {MANIFEST_VERSION}.")
+
+        return value
+
+    @field_validator("source_schema_version")
+    @classmethod
+    def validate_source_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
+        """Require the exact repository-supported source schema version.
+
+        Parameters
+        ----------
+        value
+            Declared detailed-source schema version.
+
+        Returns
+        -------
+        SchemaVersion
+            The unchanged supported schema version.
+
+        Raises
+        ------
+        ValueError
+            If the manifest declares an unsupported source schema version.
+        """
+
+        if value != SOURCE_SCHEMA_VERSION:
+            raise ValueError(
+                f"source_schema_version must equal {SOURCE_SCHEMA_VERSION}."
+            )
+
+        return value
+
+    @model_validator(mode="after")
+    def validate_manifest(self) -> Self:
+        """Validate manifest identities, artifacts, relations, and timestamps.
+
+        Returns
+        -------
+        Self
+            Fully validated package manifest.
+
+        Raises
+        ------
+        ValueError
+            If package identities, checksums, graph types, or relations conflict.
+        """
+
+        _require_timezone_aware(field_name="created_at", value=self.created_at)
+
+        snapshot_framework_id = str(self.snapshot_id).partition("@")[0]
+
+        if snapshot_framework_id != str(self.framework_id):
+            raise ValueError("snapshot_id must be namespaced by framework_id.")
+
+        expected_versioned_package_id = build_versioned_graph_package_id(
+            graph_type=self.graph_type,
+            package_revision=self.package_revision,
+            snapshot_id=self.snapshot_id,
+        )
+        initial_package_id = str(self.snapshot_id)
+        supplied_package_id = str(self.graph_package_id)
+        allowed_package_ids = {initial_package_id, str(expected_versioned_package_id)}
+
+        if supplied_package_id not in allowed_package_ids:
+            raise ValueError(
+                "graph_package_id must equal snapshot_id or the graph-type package ID."
+            )
+
+        if supplied_package_id == initial_package_id:
+            if self.package_revision != 1:
+                raise ValueError(
+                    "A graph_package_id equal to snapshot_id requires package_revision=1."
+                )
+
+            if self.included_graph_types != (self.graph_type,):
+                raise ValueError(
+                    "An initial graph_package_id may include only its primary graph_type."
+                )
+
+        if self.graph_type not in self.included_graph_types:
+            raise ValueError("included_graph_types must contain graph_type.")
+
+        _require_unique(
+            field_name="included_graph_types",
+            values=tuple(value.value for value in self.included_graph_types),
+        )
+
+        declared_paths = {
+            str(path) for path in self.artifacts.declared_artifacts().values()
+        }
+        checksum_paths = {str(path) for path in self.checksums}
+
+        if checksum_paths != declared_paths:
+            missing_paths = sorted(declared_paths - checksum_paths)
+            unexpected_paths = sorted(checksum_paths - declared_paths)
+            raise ValueError(
+                f"checksums must cover exactly the declared artifact paths; "
+                f"missing={missing_paths}, unexpected={unexpected_paths}."
+            )
+
+        relation_keys = tuple(
+            (relation.relation_type.value, str(relation.target_snapshot_id))
+            for relation in self.snapshot_relations
+        )
+
+        if len(relation_keys) != len(set(relation_keys)):
+            raise ValueError("snapshot_relations must not contain duplicates.")
+
+        if any(
+            relation.target_snapshot_id == self.snapshot_id
+            for relation in self.snapshot_relations
+        ):
+            raise ValueError("A snapshot may not relate to itself.")
 
         return self
 
@@ -659,6 +891,18 @@ class PackageCounts(FrozenSchema):
         return self
 
 
+class PackageIntegritySnapshot(FrozenSchema):
+    """Capture the exact package and profile state accepted during one load."""
+
+    artifact_observations: tuple[ArtifactIntegrityObservation, ...]
+    manifest_bytes: bytes = Field(exclude=True, repr=False)
+    package_directories: tuple[str, ...]
+    package_files: tuple[str, ...]
+    package_tree_signature: tuple[str, ...]
+    profile_finding_signature: tuple[str, ...] = ()
+    profile_sha256: Sha256Digest | None = None
+
+
 class PackageValidation(FrozenSchema):
     """Record deterministic package-validation state."""
 
@@ -680,7 +924,13 @@ class PackageValidation(FrozenSchema):
             If a terminal status lacks a timestamp or a timestamp is naive.
         """
 
-        if self.status in TERMINAL_VALIDATION_STATUSES and self.validated_at is None:
+        terminal_statuses = {
+            ValidationStatus.FAILED,
+            ValidationStatus.PASSED,
+            ValidationStatus.QUARANTINED,
+        }
+
+        if self.status in terminal_statuses and self.validated_at is None:
             raise ValueError("Terminal validation statuses require validated_at.")
 
         if self.status is ValidationStatus.PENDING and self.validated_at is not None:
@@ -764,110 +1014,6 @@ class PackageValidationResult(FrozenSchema):
             If validity conflicts with findings or persistence metadata is invalid.
         """
 
-        self._validate_validity_target_status()
-        self._validate_persistence()
-        self._validate_terminal_revalidation()
-        self._validate_effective_status_timestamp()
-        return self
-
-    def _validate_effective_status_timestamp(self) -> None:
-        """Validate ``validated_at`` against the effective status.
-
-        Raises
-        ------
-        ValueError
-            If an effective terminal status omits ``validated_at``, a pending or
-            unavailable effective status declares ``validated_at``, or a supplied
-            ``validated_at`` is not timezone-aware.
-        """
-
-        if (
-            self.effective_status in TERMINAL_VALIDATION_STATUSES
-            and self.validated_at is None
-        ):
-            raise ValueError("Effective terminal statuses require validated_at.")
-
-        if self.effective_status in {None, ValidationStatus.PENDING} and (
-            self.validated_at is not None
-        ):
-            raise ValueError(
-                "Pending or unavailable effective status may not declare validated_at."
-            )
-
-        if self.validated_at is not None:
-            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
-
-    def _validate_persistence(self) -> None:
-        """Validate persistence metadata against read-only and transition rules.
-
-        Raises
-        ------
-        ValueError
-            If a persisted result is read-only, does not originate from pending status,
-            does not reach its target status, persists a terminal revalidation, or
-            omits ``validated_at``; or if a non-persisted result fails to retain its
-            observed effective status.
-        """
-
-        if self.persisted and self.read_only:
-            raise ValueError("A read-only validation result may not be persisted.")
-
-        if not self.persisted:
-            if self.effective_status is not self.observed_status:
-                raise ValueError(
-                    "A non-persisted result must retain its observed effective status."
-                )
-
-            return
-
-        if self.observed_status is not ValidationStatus.PENDING:
-            raise ValueError(
-                "A persisted validation result must originate from pending status."
-            )
-
-        if self.effective_status is not self.target_status:
-            raise ValueError(
-                "A persisted validation result must reach its target status."
-            )
-
-        if self.terminal_revalidation:
-            raise ValueError(
-                "A terminal revalidation result may not persist another transition."
-            )
-
-        if self.validated_at is None:
-            raise ValueError("Persisted validation results require validated_at.")
-
-    def _validate_terminal_revalidation(self) -> None:
-        """Validate the terminal-revalidation flag against observed state.
-
-        Raises
-        ------
-        ValueError
-            If ``terminal_revalidation`` does not reflect an observed terminal status,
-            or a terminal revalidation is not read-only.
-        """
-
-        observed_is_terminal = self.observed_status in TERMINAL_VALIDATION_STATUSES
-
-        if self.terminal_revalidation != observed_is_terminal:
-            raise ValueError(
-                "terminal_revalidation must reflect an observed terminal status."
-            )
-
-        if self.terminal_revalidation and not self.read_only:
-            raise ValueError("Terminal revalidation must be read-only.")
-
-    def _validate_validity_target_status(self) -> None:
-        """Validate that validity agrees with findings and the targeted status.
-
-        Raises
-        ------
-        ValueError
-            If ``is_valid`` disagrees with the presence of error findings, or the
-            targeted status is inconsistent with ``is_valid``.
-        """
-
         has_errors = any(finding.severity == "error" for finding in self.findings)
 
         if self.is_valid == has_errors:
@@ -889,6 +1035,69 @@ class PackageValidationResult(FrozenSchema):
                 "An invalid result must target failed or quarantined status."
             )
 
+        if self.persisted and self.read_only:
+            raise ValueError("A read-only validation result may not be persisted.")
+
+        if self.persisted:
+            if self.observed_status is not ValidationStatus.PENDING:
+                raise ValueError(
+                    "A persisted validation result must originate from pending status."
+                )
+
+            if self.effective_status is not self.target_status:
+                raise ValueError(
+                    "A persisted validation result must reach its target status."
+                )
+
+            if self.terminal_revalidation:
+                raise ValueError(
+                    "A terminal revalidation result may not persist another transition."
+                )
+
+            if self.validated_at is None:
+                raise ValueError("Persisted validation results require validated_at.")
+        elif self.effective_status is not self.observed_status:
+            raise ValueError(
+                "A non-persisted result must retain its observed effective status."
+            )
+
+        observed_is_terminal = self.observed_status in {
+            ValidationStatus.FAILED,
+            ValidationStatus.PASSED,
+            ValidationStatus.QUARANTINED,
+        }
+
+        if self.terminal_revalidation != observed_is_terminal:
+            raise ValueError(
+                "terminal_revalidation must reflect an observed terminal status."
+            )
+
+        if self.terminal_revalidation and not self.read_only:
+            raise ValueError("Terminal revalidation must be read-only.")
+
+        if (
+            self.effective_status
+            in {
+                ValidationStatus.FAILED,
+                ValidationStatus.PASSED,
+                ValidationStatus.QUARANTINED,
+            }
+            and self.validated_at is None
+        ):
+            raise ValueError("Effective terminal statuses require validated_at.")
+
+        if self.effective_status in {None, ValidationStatus.PENDING} and (
+            self.validated_at is not None
+        ):
+            raise ValueError(
+                "Pending or unavailable effective status may not declare validated_at."
+            )
+
+        if self.validated_at is not None:
+            _require_timezone_aware(field_name="validated_at", value=self.validated_at)
+
+        return self
+
 
 class ProfileReference(FrozenSchema):
     """Reference one immutable curriculum interpretation profile."""
@@ -904,193 +1113,3 @@ class SnapshotRelation(FrozenSchema):
     evidence: str | None = None
     relation_type: SnapshotRelationType
     target_snapshot_id: SnapshotId
-
-
-class GraphPackageManifest(FrozenSchema):
-    """Describe one immutable, validated graph package."""
-
-    artifacts: PackageArtifacts
-    capabilities: FrameworkCapabilities
-    checksums: dict[ArtifactPath, Sha256Digest]
-    counts: PackageCounts
-    created_at: datetime
-    delivery_schema_version: SchemaVersion
-    framework: FrameworkMetadata
-    framework_id: FrameworkId
-    graph_package_id: GraphPackageId
-    graph_type: GraphType
-    included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
-    manifest_version: ManifestVersion = MANIFEST_VERSION
-    package_revision: int = Field(default=SUPPORTED_PACKAGE_REVISION, ge=1)
-    profile: ProfileReference
-    rights: RightsPolicy
-    snapshot_id: SnapshotId
-    snapshot_relations: tuple[SnapshotRelation, ...] = ()
-    source_schema_version: SchemaVersion
-    validation: PackageValidation
-
-    @field_validator("delivery_schema_version")
-    @classmethod
-    def validate_delivery_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
-        """Require the exact repository-supported delivery schema version.
-
-        Parameters
-        ----------
-        value
-            Declared delivery schema version.
-
-        Returns
-        -------
-        SchemaVersion
-            The unchanged supported schema version.
-
-        Raises
-        ------
-        ValueError
-            If the manifest declares an unsupported delivery schema version.
-        """
-
-        if value != DELIVERY_SCHEMA_VERSION:
-            raise ValueError(
-                f"delivery_schema_version must equal {DELIVERY_SCHEMA_VERSION}."
-            )
-
-        return value
-
-    @field_validator("manifest_version")
-    @classmethod
-    def validate_manifest_version(cls, value: ManifestVersion) -> ManifestVersion:
-        """Require the exact repository-supported manifest version.
-
-        Parameters
-        ----------
-        value
-            Declared manifest version.
-
-        Returns
-        -------
-        ManifestVersion
-            The unchanged supported manifest version.
-
-        Raises
-        ------
-        ValueError
-            If the manifest declares an unsupported manifest version.
-        """
-
-        if value != MANIFEST_VERSION:
-            raise ValueError(f"manifest_version must equal {MANIFEST_VERSION}.")
-
-        return value
-
-    @field_validator("source_schema_version")
-    @classmethod
-    def validate_source_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
-        """Require the exact repository-supported source schema version.
-
-        Parameters
-        ----------
-        value
-            Declared detailed-source schema version.
-
-        Returns
-        -------
-        SchemaVersion
-            The unchanged supported schema version.
-
-        Raises
-        ------
-        ValueError
-            If the manifest declares an unsupported source schema version.
-        """
-
-        if value != SOURCE_SCHEMA_VERSION:
-            raise ValueError(
-                f"source_schema_version must equal {SOURCE_SCHEMA_VERSION}."
-            )
-
-        return value
-
-    @model_validator(mode="after")
-    def validate_manifest(self) -> Self:
-        """Validate manifest identities, artifacts, relations, and timestamps.
-
-        Returns
-        -------
-        Self
-            Fully validated package manifest.
-
-        Raises
-        ------
-        ValueError
-            If package identities, checksums, graph types, or relations conflict.
-        """
-
-        _require_timezone_aware(field_name="created_at", value=self.created_at)
-
-        snapshot_framework_id = str(self.snapshot_id).partition("@")[0]
-
-        if snapshot_framework_id != str(self.framework_id):
-            raise ValueError("snapshot_id must be namespaced by framework_id.")
-
-        expected_versioned_package_id = build_versioned_graph_package_id(
-            graph_type=self.graph_type,
-            package_revision=self.package_revision,
-            snapshot_id=self.snapshot_id,
-        )
-        initial_package_id = str(self.snapshot_id)
-        supplied_package_id = str(self.graph_package_id)
-        allowed_package_ids = {initial_package_id, str(expected_versioned_package_id)}
-
-        if supplied_package_id not in allowed_package_ids:
-            raise ValueError(
-                "graph_package_id must equal snapshot_id or the graph-type package ID."
-            )
-
-        if supplied_package_id == initial_package_id:
-            if self.package_revision != 1:
-                raise ValueError(
-                    "A graph_package_id equal to snapshot_id requires package_revision=1."
-                )
-
-            if self.included_graph_types != (self.graph_type,):
-                raise ValueError(
-                    "An initial graph_package_id may include only its primary graph_type."
-                )
-
-        if self.graph_type not in self.included_graph_types:
-            raise ValueError("included_graph_types must contain graph_type.")
-
-        _require_unique(
-            field_name="included_graph_types",
-            values=tuple(value.value for value in self.included_graph_types),
-        )
-
-        declared_paths = {
-            str(path) for path in self.artifacts.declared_artifacts().values()
-        }
-        checksum_paths = {str(path) for path in self.checksums}
-
-        if checksum_paths != declared_paths:
-            missing_paths = sorted(declared_paths - checksum_paths)
-            unexpected_paths = sorted(checksum_paths - declared_paths)
-            raise ValueError(
-                f"checksums must cover exactly the declared artifact paths; "
-                f"missing={missing_paths}, unexpected={unexpected_paths}."
-            )
-
-        relation_keys = tuple(
-            (relation.relation_type.value, str(relation.target_snapshot_id))
-            for relation in self.snapshot_relations
-        )
-
-        if len(relation_keys) != len(set(relation_keys)):
-            raise ValueError("snapshot_relations must not contain duplicates.")
-
-        if any(
-            relation.target_snapshot_id == self.snapshot_id
-            for relation in self.snapshot_relations
-        ):
-            raise ValueError("A snapshot may not relate to itself.")
-
-        return self

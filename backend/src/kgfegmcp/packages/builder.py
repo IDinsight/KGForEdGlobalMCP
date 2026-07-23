@@ -64,10 +64,7 @@ from kgfegmcp.packages.checksums import (
     calculate_file_sha256,
     calculate_snapshot_artifact_set_sha256,
 )
-from kgfegmcp.packages.decoder import (
-    iter_decoded_nodes,
-    iter_decoded_relationships,
-)
+from kgfegmcp.packages.decoder import iter_decoded_nodes, iter_decoded_relationships
 from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_CODED_ITEMS,
     ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
@@ -2027,7 +2024,7 @@ def _scan_node_facts(nodes_path: Path) -> _NodeFacts:
     item_nodes = 0
     text_items = 0
 
-    for node in iter_decoded_nodes(nodes_path):
+    for node in iter_decoded_nodes(source=nodes_path):
         if isinstance(node, FrameworkNode):
             framework_roots.append(node)
             continue
@@ -2088,7 +2085,7 @@ def _scan_relationship_facts(
     relationship_count = 0
     unresolved_relationships = 0
 
-    for relationship in iter_decoded_relationships(relationships_path):
+    for relationship in iter_decoded_relationships(source=relationships_path):
         relationship_count += 1
         resolution_status = relationship.resolution_status
 

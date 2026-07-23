@@ -16,9 +16,12 @@ exception, are applied independently of any curriculum.
 
 The validator preserves every distinct valid relationship, including valid multi-parent
 hierarchy edges. It produces immutable structured findings and computes a target status
-of ``passed``, ``failed``, or ``quarantined``. When persistence is permitted, it
-delegates the controlled pending-to-terminal manifest transition to the package
-repository; read-only and terminal-package validation never rewrite package state.
+of ``passed``, ``failed``, or ``quarantined``. Before persistence, it requires the
+loader to verify that the package and selected profile still match the immutable
+load-time integrity snapshot. A changed package remains ``pending`` and must be
+validated again. Otherwise, the validator delegates the controlled pending-to-terminal
+manifest transition to the package repository; read-only and terminal-package
+validation never rewrite package state.
 
 Temporary validation-local mappings and sets may be used to inspect the graph, but this
 module does not provide a reusable graph store, traversal API, catalog, search service,
@@ -56,7 +59,6 @@ from kgfegmcp.packages.models import (
     DELIVERY_REPORT_COUNT_ITEM_NODES,
     DELIVERY_REPORT_COUNT_RELATIONSHIPS,
     DELIVERY_REPORT_COUNT_UNRESOLVED_RELATIONSHIPS,
-    CurriculumProfile,
     FrameworkCapabilities,
     LoadedGraphPackage,
     PackageValidationFinding,
@@ -71,7 +73,11 @@ from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY,
     DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS,
 )
-from kgfegmcp.profiles.models import CodeTypePolicy, StatementTypePolicy
+from kgfegmcp.profiles.models import (
+    CodeTypePolicy,
+    CurriculumProfile,
+    StatementTypePolicy,
+)
 
 _TERMINAL_STATUSES: Final[frozenset[ValidationStatus]] = frozenset(
     {
@@ -142,16 +148,6 @@ class GraphPackageValidator:
         if load_result.loaded_package is not None:
             findings.extend(validate_loaded_package(load_result.loaded_package))
 
-        is_valid = not any(finding.severity == "error" for finding in findings)
-        target_status = (
-            ValidationStatus.PASSED
-            if is_valid
-            else (
-                ValidationStatus.QUARANTINED
-                if invalid_package_policy is InvalidPackagePolicy.QUARANTINE
-                else ValidationStatus.FAILED
-            )
-        )
         manifest = load_result.manifest
         observed_status = manifest.validation.status if manifest is not None else None
         terminal_revalidation = observed_status in _TERMINAL_STATUSES
@@ -167,12 +163,39 @@ class GraphPackageValidator:
             for finding in findings
         )
         persistence_context_available = (
-            manifest is not None
+            load_result.integrity_snapshot is not None
             and load_result.manifest_bytes is not None
+            and manifest is not None
             and not persistence_blocked
         )
         effective_read_only = (
             read_only or terminal_revalidation or not persistence_context_available
+        )
+        persistence_suppressed = False
+
+        if (
+            not effective_read_only
+            and load_result.integrity_snapshot is not None
+            and manifest is not None
+            and observed_status is ValidationStatus.PENDING
+        ):
+            change_findings = self.loader.verify_unchanged(
+                candidate=load_result.candidate,
+                integrity_snapshot=load_result.integrity_snapshot,
+                manifest=manifest,
+            )
+            findings.extend(change_findings)
+            persistence_suppressed = bool(change_findings)
+
+        is_valid = not any(finding.severity == "error" for finding in findings)
+        target_status = (
+            ValidationStatus.PASSED
+            if is_valid
+            else (
+                ValidationStatus.QUARANTINED
+                if invalid_package_policy is InvalidPackagePolicy.QUARANTINE
+                else ValidationStatus.FAILED
+            )
         )
         persisted = False
         effective_status = observed_status
@@ -182,6 +205,7 @@ class GraphPackageValidator:
 
         if (
             not effective_read_only
+            and not persistence_suppressed
             and manifest is not None
             and load_result.manifest_bytes is not None
             and observed_status is ValidationStatus.PENDING

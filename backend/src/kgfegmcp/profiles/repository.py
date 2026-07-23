@@ -1,5 +1,15 @@
-"""This module provides the versioned curriculum-profile repository used at package
-boundaries.
+"""This module provides the repository boundary for exact versioned curriculum profiles.
+
+This module exposes a small repository service for resolving one curriculum profile by
+its established profile ID and immutable version beneath the configured profile root.
+It delegates filesystem containment, descendant-symlink rejection, exact-byte reading,
+schema validation, identity verification, and checksum calculation to the profile
+loader.
+
+The repository gives package-loading services a stable dependency without duplicating
+profile path or parsing rules. It does not select profiles automatically, compare a
+profile checksum with a graph-package manifest, interpret curriculum semantics,
+validate graph records, or modify profile files.
 """
 
 # Standard Library

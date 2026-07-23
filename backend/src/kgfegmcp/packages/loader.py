@@ -9,15 +9,19 @@ manifest.
 
 The loader verifies exact packaged-byte checksums, rejects missing, undeclared, or
 unsafe package content, and confirms that the verified artifact set reproduces the
-manifest snapshot identity. Delivery artifacts are decoded exclusively through the
-existing graph-record decoder. When declared, the supported detailed validation report
-is parsed into its PR 4 report model; other detailed artifacts are preserved without
-introducing new artifact schemas.
+manifest snapshot identity. Delivery records and the supported detailed validation
+report are decoded or parsed from the same exact bytes that were checksum-verified.
+Other detailed artifacts are preserved without introducing new artifact schemas.
 
-Loading produces structured findings instead of repairing files or changing package
-state. This module does not enforce graph topology, reachability, profile parent rules,
-capabilities, or package-wide semantic correctness. It also does not persist validation
-status, build reusable graph indexes, or expose traversal services.
+Each valid manifest load records an immutable package-integrity snapshot. Before
+terminal persistence, the validator can ask this module to compare the current
+manifest, package tree, declared artifacts, and selected profile state with that
+snapshot. A changed package is reported rather than repaired or transitioned.
+
+Loading produces structured findings instead of changing package state. This module
+does not enforce graph topology, reachability, profile parent rules, capabilities, or
+package-wide semantic correctness. It also does not persist validation status, build
+reusable graph indexes, or expose traversal services.
 """
 
 # Future Library
@@ -51,10 +55,11 @@ from kgfegmcp.errors import (
     PackageValidationError,
     ProfileValidationError,
 )
-from kgfegmcp.graph.models import FrameworkNode, StandardNode
+from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
 from kgfegmcp.packages.checksums import (
-    calculate_file_sha256,
+    calculate_bytes_sha256,
     calculate_snapshot_artifact_set_sha256,
+    calculate_stream_sha256,
 )
 from kgfegmcp.packages.decoder import (
     iter_decoded_nodes,
@@ -62,10 +67,12 @@ from kgfegmcp.packages.decoder import (
 )
 from kgfegmcp.packages.models import (
     SUPPORTED_PACKAGE_REVISION,
+    ArtifactIntegrityObservation,
     DeclaredArtifactReference,
     DetailedValidationReport,
     GraphPackageManifest,
     LoadedGraphPackage,
+    PackageIntegritySnapshot,
     PackageValidationFinding,
 )
 from kgfegmcp.packages.repository import (
@@ -110,6 +117,9 @@ _BLOCKING_FINDING_CODES: Final[frozenset[str]] = frozenset(
         "snapshot_identity_unverifiable",
     }
 )
+_CAPTURED_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
+    {"nodes", "relationships", "validationReport"}
+)
 _MANIFEST_LOGICAL_NAME: Final[str] = "packageManifest"
 _MANIFEST_VERSION_FINDINGS: Final[tuple[tuple[frozenset[str], str, str], ...]] = (
     (
@@ -135,12 +145,14 @@ _SNAPSHOT_VERSION_TOKEN_ADAPTER: TypeAdapter[SnapshotVersionToken] = TypeAdapter
 
 @dataclass(frozen=True, slots=True)
 class _ArtifactVerificationResult:
-    """Hold declared-artifact verification references, checksums, and findings."""
+    """Hold artifact observations, verified content, references, and findings."""
 
-    checksums: list[Sha256Digest]
-    findings: list[PackageValidationFinding]
+    captured_contents: tuple[tuple[ArtifactName, bytes], ...]
+    checksums: tuple[Sha256Digest, ...]
+    findings: tuple[PackageValidationFinding, ...]
     integrity_failed: bool
-    references: list[DeclaredArtifactReference]
+    observations: tuple[ArtifactIntegrityObservation, ...]
+    references: tuple[DeclaredArtifactReference, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,7 +171,17 @@ class _DecodedDelivery:
 
     framework_root: FrameworkNode
     item_nodes: tuple[StandardNode, ...]
-    relationships: tuple[object, ...]
+    relationships: tuple[GraphRelationship, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class _PackageTreeVerification:
+    """Hold exact package-tree observations and validation findings."""
+
+    directories: tuple[str, ...]
+    files: tuple[str, ...]
+    findings: tuple[PackageValidationFinding, ...]
+    signature: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -348,8 +370,8 @@ class GraphPackageLoader:
         Returns
         -------
         GraphPackageLoadResult
-            Exact manifest context, structured findings, and an immutable loaded
-            package when integrity and decoding permit assembly.
+            Exact manifest context, integrity snapshot, structured findings, and an
+            immutable loaded package when integrity and decoding permit assembly.
         """
 
         candidate, early_result = self._resolve_candidate(candidate)
@@ -363,6 +385,7 @@ class GraphPackageLoader:
             return _blocked_result(
                 candidate=candidate,
                 findings=findings,
+                integrity_snapshot=None,
                 manifest=manifest,
                 manifest_bytes=manifest_bytes,
             )
@@ -374,23 +397,32 @@ class GraphPackageLoader:
                 declared_artifacts=declared_artifacts, declared_paths=declared_paths
             )
         )
-        findings.extend(
-            _package_tree_findings(
-                declared_paths=declared_paths, package_root=candidate.package_path
-            )
+        tree_verification = _verify_package_tree(
+            declared_paths=declared_paths, package_root=candidate.package_path
         )
+        findings.extend(tree_verification.findings)
 
         loaded_profile, profile_findings = self._load_profile(manifest=manifest)
         findings.extend(profile_findings)
 
         verification = _verify_declared_artifacts(
             candidate=candidate,
+            capture_contents=True,
             declared_artifacts=declared_artifacts,
             manifest=manifest,
         )
         findings.extend(verification.findings)
         artifact_references = verification.references
         artifact_integrity_failed = verification.integrity_failed
+        integrity_snapshot = _build_integrity_snapshot(
+            manifest_bytes=manifest_bytes,
+            profile_findings=profile_findings,
+            profile_sha256=(
+                loaded_profile.sha256 if loaded_profile is not None else None
+            ),
+            tree_verification=tree_verification,
+            verification=verification,
+        )
 
         if len(verification.checksums) == len(declared_artifacts):
             snapshot_findings, snapshot_failed = _snapshot_identity_findings(
@@ -399,7 +431,10 @@ class GraphPackageLoader:
             findings.extend(snapshot_findings)
             artifact_integrity_failed = artifact_integrity_failed or snapshot_failed
 
-        loaded_report, report_findings = _validation_report(artifact_references)
+        loaded_report, report_findings = _validation_report(
+            captured_contents=verification.captured_contents,
+            references=artifact_references,
+        )
         findings.extend(report_findings)
 
         if (
@@ -410,23 +445,28 @@ class GraphPackageLoader:
             return _blocked_result(
                 candidate=candidate,
                 findings=findings,
+                integrity_snapshot=integrity_snapshot,
                 manifest=manifest,
                 manifest_bytes=manifest_bytes,
             )
 
-        delivery, delivery_findings = _decode_delivery(artifact_references)
+        delivery, delivery_findings = _decode_delivery(
+            captured_contents=verification.captured_contents,
+            references=artifact_references,
+        )
         findings.extend(delivery_findings)
 
         if delivery is None:
             return _blocked_result(
                 candidate=candidate,
                 findings=findings,
+                integrity_snapshot=integrity_snapshot,
                 manifest=manifest,
                 manifest_bytes=manifest_bytes,
             )
 
         loaded_package = LoadedGraphPackage(
-            artifacts=tuple(artifact_references),
+            artifacts=artifact_references,
             framework_root=delivery.framework_root,
             item_nodes=delivery.item_nodes,
             manifest=manifest,
@@ -442,10 +482,87 @@ class GraphPackageLoader:
         return GraphPackageLoadResult(
             candidate=candidate,
             findings=tuple(findings),
+            integrity_snapshot=integrity_snapshot,
             loaded_package=loaded_package,
             manifest=manifest,
             manifest_bytes=manifest_bytes,
         )
+
+    def verify_unchanged(
+        self,
+        *,
+        candidate: GraphPackageCandidate,
+        integrity_snapshot: PackageIntegritySnapshot,
+        manifest: GraphPackageManifest,
+    ) -> tuple[PackageValidationFinding, ...]:
+        """Verify that package and profile state remain unchanged after loading.
+
+        Parameters
+        ----------
+        candidate
+            Candidate originally loaded through this repository boundary.
+        integrity_snapshot
+            Exact package and profile observations captured during the load.
+        manifest
+            Validated manifest that defines the declared artifacts and profile.
+
+        Returns
+        -------
+        tuple[PackageValidationFinding, ...]
+            Empty when the state is unchanged, otherwise one blocking change finding.
+        """
+
+        candidate, early_result = self._resolve_candidate(candidate)
+
+        if early_result is not None:
+            return (_package_changed_finding(early_result.findings),)
+
+        try:
+            manifest_bytes = _read_regular_file(candidate.manifest_path)
+        except (OSError, ValueError) as error:
+            return (
+                _package_changed_finding(
+                    (
+                        _finding(
+                            code="manifest_unreadable",
+                            details={"reason": str(error)},
+                            message="The package manifest is missing or unreadable.",
+                        ),
+                    )
+                ),
+            )
+
+        declared_artifacts = manifest.artifacts.declared_artifacts()
+        declared_paths = tuple(str(path) for path in declared_artifacts.values())
+        tree_verification = _verify_package_tree(
+            declared_paths=declared_paths, package_root=candidate.package_path
+        )
+        loaded_profile, profile_findings = self._load_profile(manifest=manifest)
+        verification = _verify_declared_artifacts(
+            candidate=candidate,
+            capture_contents=False,
+            declared_artifacts=declared_artifacts,
+            manifest=manifest,
+        )
+        current_snapshot = _build_integrity_snapshot(
+            manifest_bytes=manifest_bytes,
+            profile_findings=profile_findings,
+            profile_sha256=(
+                loaded_profile.sha256 if loaded_profile is not None else None
+            ),
+            tree_verification=tree_verification,
+            verification=verification,
+        )
+
+        if current_snapshot == integrity_snapshot:
+            return ()
+
+        change_findings = (
+            *tree_verification.findings,
+            *profile_findings,
+            *verification.findings,
+        )
+        return (_package_changed_finding(change_findings),)
 
 
 @dataclass(frozen=True, slots=True)
@@ -454,6 +571,7 @@ class GraphPackageLoadResult:
 
     candidate: GraphPackageCandidate
     findings: tuple[PackageValidationFinding, ...]
+    integrity_snapshot: PackageIntegritySnapshot | None = None
     loaded_package: LoadedGraphPackage | None = None
     manifest: GraphPackageManifest | None = None
     manifest_bytes: bytes | None = None
@@ -599,10 +717,11 @@ def _blocked_result(
     *,
     candidate: GraphPackageCandidate,
     findings: list[PackageValidationFinding],
+    integrity_snapshot: PackageIntegritySnapshot | None,
     manifest: GraphPackageManifest | None,
     manifest_bytes: bytes | None,
 ) -> GraphPackageLoadResult:
-    """Build a blocking load result that carries manifest context but no package.
+    """Build a blocking load result that carries available integrity context.
 
     Parameters
     ----------
@@ -610,6 +729,8 @@ def _blocked_result(
         Repository-confirmed package candidate.
     findings
         Accumulated findings explaining why assembly was blocked.
+    integrity_snapshot
+        Exact package state when a valid manifest allowed it to be captured.
     manifest
         Validated manifest when one was parsed, otherwise ``None``.
     manifest_bytes
@@ -624,9 +745,77 @@ def _blocked_result(
     return GraphPackageLoadResult(
         candidate=candidate,
         findings=tuple(findings),
+        integrity_snapshot=integrity_snapshot,
         manifest=manifest,
         manifest_bytes=manifest_bytes,
     )
+
+
+def _build_integrity_snapshot(
+    *,
+    manifest_bytes: bytes,
+    profile_findings: list[PackageValidationFinding],
+    profile_sha256: Sha256Digest | None,
+    tree_verification: _PackageTreeVerification,
+    verification: _ArtifactVerificationResult,
+) -> PackageIntegritySnapshot:
+    """Build one immutable snapshot of package and profile load-time state.
+
+    Parameters
+    ----------
+    manifest_bytes
+        Exact package-manifest bytes observed during loading.
+    profile_findings
+        Findings produced while resolving and checking the selected profile.
+    profile_sha256
+        Exact profile checksum when the profile was readable.
+    tree_verification
+        Exact observed package-tree members and issue signature.
+    verification
+        Per-artifact integrity observations from the same load.
+
+    Returns
+    -------
+    PackageIntegritySnapshot
+        Immutable state used to detect changes before terminal persistence.
+    """
+
+    return PackageIntegritySnapshot(
+        artifact_observations=verification.observations,
+        manifest_bytes=manifest_bytes,
+        package_directories=tree_verification.directories,
+        package_files=tree_verification.files,
+        package_tree_signature=tree_verification.signature,
+        profile_finding_signature=tuple(
+            _finding_state_signature(finding) for finding in profile_findings
+        ),
+        profile_sha256=profile_sha256,
+    )
+
+
+def _captured_content(
+    *, captured_contents: tuple[tuple[str, bytes], ...], logical_name: str
+) -> bytes | None:
+    """Return captured verified bytes for one logical artifact name.
+
+    Parameters
+    ----------
+    captured_contents
+        Logical artifact names paired with their exact verified bytes.
+    logical_name
+        Manifest artifact name to locate.
+
+    Returns
+    -------
+    bytes | None
+        Exact verified bytes, or ``None`` when content was not captured.
+    """
+
+    for captured_name, content in captured_contents:
+        if str(captured_name) == logical_name:
+            return content
+
+    return None
 
 
 def _case_collision_finding(
@@ -660,6 +849,44 @@ def _case_collision_finding(
 
     casefold_entries[casefold_path] = relative_path
     return None
+
+
+def _checksum_regular_file(path: Path) -> tuple[Sha256Digest, int]:
+    """Checksum one regular file without following its final path component.
+
+    Parameters
+    ----------
+    path
+        Selected declared artifact path.
+
+    Returns
+    -------
+    tuple[Sha256Digest, int]
+        Exact qualified checksum and observed byte size.
+
+    Raises
+    ------
+    OSError
+        If the file cannot be opened or read.
+    ValueError
+        If the selected entry is not a regular file.
+    """
+
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    descriptor = os.open(flags=flags, path=path)
+
+    try:
+        file_stat = os.fstat(descriptor)
+
+        if not stat.S_ISREG(file_stat.st_mode):
+            raise ValueError("The selected package entry is not a regular file.")
+
+        with os.fdopen(descriptor, "rb", closefd=False) as stream:
+            sha256 = calculate_stream_sha256(stream)
+
+        return sha256, file_stat.st_size
+    finally:
+        os.close(descriptor)
 
 
 def _classify_tree_entry(
@@ -778,12 +1005,16 @@ def _collect_package_tree(
 
 
 def _decode_delivery(
-    references: list[DeclaredArtifactReference],
+    *,
+    captured_contents: tuple[tuple[ArtifactName, bytes], ...],
+    references: tuple[DeclaredArtifactReference, ...],
 ) -> tuple[_DecodedDelivery | None, list[PackageValidationFinding]]:
-    """Decode delivery nodes and relationships and isolate the framework root.
+    """Decode verified delivery bytes and isolate the framework root.
 
     Parameters
     ----------
+    captured_contents
+        Exact checksum-verified bytes captured for parsed PR 4 artifacts.
     references
         Verified declared-artifact references including nodes and relationships.
 
@@ -802,11 +1033,33 @@ def _decode_delivery(
         for reference in references
         if str(reference.logical_name) == "relationships"
     )
+    nodes_content = _captured_content(
+        captured_contents=captured_contents, logical_name="nodes"
+    )
+    relationships_content = _captured_content(
+        captured_contents=captured_contents, logical_name="relationships"
+    )
+
+    if nodes_content is None or relationships_content is None:
+        findings.append(
+            _finding(
+                code="delivery_verified_content_missing",
+                message="Verified delivery bytes were unavailable for decoding.",
+            )
+        )
+        return None, findings
 
     try:
-        decoded_nodes = tuple(iter_decoded_nodes(nodes_reference.resolved_path))
+        decoded_nodes = tuple(
+            iter_decoded_nodes(
+                source=nodes_content, source_path=nodes_reference.resolved_path
+            )
+        )
         relationships = tuple(
-            iter_decoded_relationships(relationships_reference.resolved_path)
+            iter_decoded_relationships(
+                source=relationships_content,
+                source_path=relationships_reference.resolved_path,
+            )
         )
     except (DeliveryPropertyDecodingError, JSONLParsingError) as error:
         findings.append(
@@ -911,6 +1164,30 @@ def _finding(
         severity="error",
         source_export_order=source_export_order,
     )
+
+
+def _finding_state_signature(finding: PackageValidationFinding) -> str:
+    """Serialize one finding's private state into a stable internal signature.
+
+    Parameters
+    ----------
+    finding
+        Structured validation finding whose diagnostic state is captured.
+
+    Returns
+    -------
+    str
+        Stable code and sorted diagnostic representation.
+    """
+
+    details = json.dumps(
+        default=str,
+        ensure_ascii=False,
+        obj=finding.details,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+    return f"{finding.code}:{details}"
 
 
 def _manifest_error_finding(
@@ -1057,58 +1334,30 @@ def _manifest_semantic_findings(
     return findings
 
 
-def _package_tree_findings(
-    *, declared_paths: tuple[str, ...], package_root: Path
-) -> list[PackageValidationFinding]:
-    """Enumerate the package tree and diff it against declared expectations.
+def _package_changed_finding(
+    findings: tuple[PackageValidationFinding, ...],
+) -> PackageValidationFinding:
+    """Summarize evidence that package state changed during validation.
 
     Parameters
     ----------
-    declared_paths
-        String forms of the declared artifact paths.
-    package_root
-        Safely discovered package root.
+    findings
+        Current-state findings that helped identify the change.
 
     Returns
     -------
-    list[PackageValidationFinding]
-        Tree-enumeration findings plus missing, undeclared, and extra-directory
-        findings.
+    PackageValidationFinding
+        One safe blocking finding requiring a fresh validation run.
     """
 
-    tree_files, tree_directories, tree_findings = _collect_package_tree(package_root)
-    findings: list[PackageValidationFinding] = list(tree_findings)
-    expected_files = {PACKAGE_MANIFEST_FILENAME, *declared_paths}
-    expected_directories = _expected_directories(expected_files)
-
-    for missing_path in sorted(expected_files - tree_files):
-        findings.append(
-            _finding(
-                code="package_declared_file_missing",
-                details={"package_path": missing_path},
-                message=f"Expected package file '{missing_path}' is missing.",
-            )
-        )
-
-    for unexpected_path in sorted(tree_files - expected_files):
-        findings.append(
-            _finding(
-                code="package_undeclared_file",
-                details={"package_path": unexpected_path},
-                message=f"Package file '{unexpected_path}' is not declared.",
-            )
-        )
-
-    for unexpected_directory in sorted(tree_directories - expected_directories):
-        findings.append(
-            _finding(
-                code="package_undeclared_directory",
-                details={"package_path": unexpected_directory},
-                message=f"Package directory '{unexpected_directory}' is not required by declared content.",
-            )
-        )
-
-    return findings
+    return _finding(
+        code="package_changed_during_validation",
+        details={"change_codes": tuple(finding.code for finding in findings)},
+        message=(
+            "The package changed while validation was running and must be "
+            "validated again."
+        ),
+    )
 
 
 def _parse_json_object(value: bytes) -> dict[str, object]:
@@ -1300,7 +1549,7 @@ def _scan_directory(
 def _snapshot_identity_findings(
     *,
     candidate: GraphPackageCandidate,
-    checksums: list[Sha256Digest],
+    checksums: tuple[Sha256Digest, ...],
     manifest: GraphPackageManifest,
 ) -> tuple[list[PackageValidationFinding], bool]:
     """Recompute snapshot identity from artifact checksums and compare it.
@@ -1386,6 +1635,47 @@ def _snapshot_version_token(snapshot_id: str) -> SnapshotVersionToken:
     return _SNAPSHOT_VERSION_TOKEN_ADAPTER.validate_python(version_token)
 
 
+def _tree_finding_signature(
+    *, finding: PackageValidationFinding, package_root: Path
+) -> str:
+    """Build one stable package-relative signature for a tree finding.
+
+    Parameters
+    ----------
+    finding
+        Structured package-tree finding.
+    package_root
+        Safely discovered package root used to remove local path prefixes.
+
+    Returns
+    -------
+    str
+        Stable finding code and package-relative context.
+    """
+
+    context = ""
+
+    for key in ("package_path", "entry_path", "directory_path"):
+        value = finding.details.get(key)
+
+        if not isinstance(value, str):
+            continue
+
+        candidate_path = Path(value)
+
+        if candidate_path.is_absolute():
+            try:
+                context = candidate_path.relative_to(package_root).as_posix()
+            except ValueError:
+                context = candidate_path.name
+        else:
+            context = PurePosixPath(value).as_posix()
+
+        break
+
+    return f"{finding.code}:{context}"
+
+
 def _validate_candidate_location(
     candidate: GraphPackageCandidate,
 ) -> PackageValidationFinding | None:
@@ -1454,12 +1744,16 @@ def _validate_candidate_location(
 
 
 def _validation_report(
-    references: list[DeclaredArtifactReference],
+    *,
+    captured_contents: tuple[tuple[ArtifactName, bytes], ...],
+    references: tuple[DeclaredArtifactReference, ...],
 ) -> tuple[DetailedValidationReport | None, list[PackageValidationFinding]]:
-    """Read and validate the optional declared detailed validation report.
+    """Parse the optional validation report from its exact verified bytes.
 
     Parameters
     ----------
+    captured_contents
+        Exact checksum-verified bytes captured for parsed PR 4 artifacts.
     references
         Verified declared-artifact references, optionally including the report.
 
@@ -1482,11 +1776,24 @@ def _validation_report(
     if report_reference is None:
         return None, findings
 
+    report_bytes = _captured_content(
+        captured_contents=captured_contents, logical_name="validationReport"
+    )
+
+    if report_bytes is None:
+        findings.append(
+            _finding(
+                artifact_name=report_reference.logical_name,
+                code="detailed_validation_report_verified_content_missing",
+                message="Verified detailed validation-report bytes were unavailable for parsing.",
+            )
+        )
+        return None, findings
+
     try:
-        report_bytes = _read_regular_file(report_reference.resolved_path)
         report_object = _parse_json_object(report_bytes)
         loaded_report = DetailedValidationReport.model_validate(report_object)
-    except (OSError, ValueError, ValidationError) as error:
+    except (ValueError, ValidationError) as error:
         details: dict[str, object] = {
             "artifact_path": str(report_reference.package_path),
             "reason": str(error),
@@ -1513,15 +1820,18 @@ def _validation_report(
 def _verify_declared_artifacts(
     *,
     candidate: GraphPackageCandidate,
+    capture_contents: bool,
     declared_artifacts: Mapping[str, ArtifactPath],
     manifest: GraphPackageManifest,
 ) -> _ArtifactVerificationResult:
-    """Resolve, checksum, and reference every declared artifact from bytes.
+    """Resolve, checksum, and reference every declared artifact from exact bytes.
 
     Parameters
     ----------
     candidate
         Safely discovered package candidate providing the package root.
+    capture_contents
+        Whether parsed artifacts should retain their verified exact bytes.
     declared_artifacts
         Mapping of logical artifact names to package-relative paths.
     manifest
@@ -1530,12 +1840,15 @@ def _verify_declared_artifacts(
     Returns
     -------
     _ArtifactVerificationResult
-        Collected references, checksums, findings, and the integrity flag.
+        Collected observations, verified content, references, checksums, findings, and
+        the integrity flag.
     """
 
+    captured_contents: list[tuple[ArtifactName, bytes]] = []
     references: list[DeclaredArtifactReference] = []
     checksums: list[Sha256Digest] = []
     findings: list[PackageValidationFinding] = []
+    observations: list[ArtifactIntegrityObservation] = []
     integrity_failed = False
 
     for logical_name, package_path in declared_artifacts.items():
@@ -1548,25 +1861,45 @@ def _verify_declared_artifacts(
             findings.append(
                 path_finding.model_copy(update={"artifact_name": artifact_name})
             )
+            observations.append(
+                ArtifactIntegrityObservation(
+                    finding_code=path_finding.code,
+                    finding_signature=_finding_state_signature(path_finding),
+                    logical_name=artifact_name,
+                    package_path=package_path,
+                )
+            )
             integrity_failed = True
             continue
 
         assert resolved_path is not None
 
         try:
-            actual_sha256 = calculate_file_sha256(resolved_path)
-            size_bytes = resolved_path.stat(follow_symlinks=False).st_size
-        except OSError as error:
-            findings.append(
-                _finding(
-                    artifact_name=artifact_name,
-                    code="artifact_checksum_unreadable",
-                    details={
-                        "artifact_path": str(package_path),
-                        "resolved_path": str(resolved_path),
-                        "reason": str(error),
-                    },
-                    message=f"Declared artifact '{package_path}' could not be checksummed.",
+            if capture_contents and logical_name in _CAPTURED_ARTIFACT_NAMES:
+                content = _read_regular_file(resolved_path)
+                actual_sha256 = calculate_bytes_sha256(content)
+                size_bytes = len(content)
+                captured_contents.append((artifact_name, content))
+            else:
+                actual_sha256, size_bytes = _checksum_regular_file(resolved_path)
+        except (OSError, ValueError) as error:
+            finding = _finding(
+                artifact_name=artifact_name,
+                code="artifact_checksum_unreadable",
+                details={
+                    "artifact_path": str(package_path),
+                    "resolved_path": str(resolved_path),
+                    "reason": str(error),
+                },
+                message=f"Declared artifact '{package_path}' could not be checksummed.",
+            )
+            findings.append(finding)
+            observations.append(
+                ArtifactIntegrityObservation(
+                    finding_code=finding.code,
+                    finding_signature=_finding_state_signature(finding),
+                    logical_name=artifact_name,
+                    package_path=package_path,
                 )
             )
             integrity_failed = True
@@ -1590,6 +1923,14 @@ def _verify_declared_artifacts(
             integrity_failed = True
 
         checksums.append(actual_sha256)
+        observations.append(
+            ArtifactIntegrityObservation(
+                logical_name=artifact_name,
+                package_path=package_path,
+                sha256=actual_sha256,
+                size_bytes=size_bytes,
+            )
+        )
         references.append(
             DeclaredArtifactReference(
                 logical_name=artifact_name,
@@ -1601,8 +1942,74 @@ def _verify_declared_artifacts(
         )
 
     return _ArtifactVerificationResult(
-        checksums=checksums,
-        findings=findings,
+        captured_contents=tuple(captured_contents),
+        checksums=tuple(checksums),
+        findings=tuple(findings),
         integrity_failed=integrity_failed,
-        references=references,
+        observations=tuple(observations),
+        references=tuple(references),
+    )
+
+
+def _verify_package_tree(
+    *, declared_paths: tuple[str, ...], package_root: Path
+) -> _PackageTreeVerification:
+    """Enumerate the package tree and diff it against declared expectations.
+
+    Parameters
+    ----------
+    declared_paths
+        String forms of the declared artifact paths.
+    package_root
+        Safely discovered package root.
+
+    Returns
+    -------
+    _PackageTreeVerification
+        Exact observed tree members, stable issue signatures, and findings.
+    """
+
+    tree_files, tree_directories, tree_findings = _collect_package_tree(package_root)
+    findings: list[PackageValidationFinding] = list(tree_findings)
+    expected_files = {PACKAGE_MANIFEST_FILENAME, *declared_paths}
+    expected_directories = _expected_directories(expected_files)
+
+    for missing_path in sorted(expected_files - tree_files):
+        findings.append(
+            _finding(
+                code="package_declared_file_missing",
+                details={"package_path": missing_path},
+                message=f"Expected package file '{missing_path}' is missing.",
+            )
+        )
+
+    for unexpected_path in sorted(tree_files - expected_files):
+        findings.append(
+            _finding(
+                code="package_undeclared_file",
+                details={"package_path": unexpected_path},
+                message=f"Package file '{unexpected_path}' is not declared.",
+            )
+        )
+
+    for unexpected_directory in sorted(tree_directories - expected_directories):
+        findings.append(
+            _finding(
+                code="package_undeclared_directory",
+                details={"package_path": unexpected_directory},
+                message=f"Package directory '{unexpected_directory}' is not required by declared content.",
+            )
+        )
+
+    signature = tuple(
+        sorted(
+            _tree_finding_signature(finding=finding, package_root=package_root)
+            for finding in findings
+        )
+    )
+    return _PackageTreeVerification(
+        directories=tuple(sorted(tree_directories)),
+        files=tuple(sorted(tree_files)),
+        findings=tuple(findings),
+        signature=signature,
     )
