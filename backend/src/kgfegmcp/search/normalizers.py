@@ -227,9 +227,7 @@ class CodeNormalizer:
 
         suffix = value[index:]
 
-        for delimiter_index in range(len(self.source_delimiters)):
-            delimiter = self.source_delimiters[delimiter_index]
-
+        for delimiter_index, delimiter in enumerate(self.source_delimiters):
             if suffix.startswith(delimiter):
                 return delimiter_index
 

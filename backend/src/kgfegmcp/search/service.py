@@ -13,7 +13,6 @@ from __future__ import annotations
 
 # Standard Library
 import base64
-import binascii
 import hashlib
 import json
 
@@ -324,31 +323,26 @@ class _FacetResolver:
         ):
             return False
 
-        if not self._matches_local_grades(
-            evidence=evidence, requested_values=filters.local_grade_labels
-        ):
-            return False
-
-        if not _matches_normalized_values(
-            actual_values=evidence.normalized_grades,
-            requested_values=filters.normalized_grades,
-        ):
-            return False
-
-        if not self._matches_local_subjects(
-            actual_value=evidence.local_subject, requested_values=filters.local_subjects
-        ):
-            return False
-
-        if not _matches_normalized_values(
-            actual_values=evidence.normalized_subjects,
-            requested_values=filters.normalized_subjects,
-        ):
-            return False
-
-        return self._matches_statement_types(
-            actual_value=evidence.statement_type,
-            requested_values=filters.statement_types,
+        return (
+            self._matches_local_grades(
+                evidence=evidence, requested_values=filters.local_grade_labels
+            )
+            and _matches_normalized_values(
+                actual_values=evidence.normalized_grades,
+                requested_values=filters.normalized_grades,
+            )
+            and self._matches_local_subjects(
+                actual_value=evidence.local_subject,
+                requested_values=filters.local_subjects,
+            )
+            and _matches_normalized_values(
+                actual_values=evidence.normalized_subjects,
+                requested_values=filters.normalized_subjects,
+            )
+            and self._matches_statement_types(
+                actual_value=evidence.statement_type,
+                requested_values=filters.statement_types,
+            )
         )
 
     def _matches_local_grades(
@@ -618,15 +612,15 @@ class SearchService:
 
         packages = self._select_packages(query.scope)
 
-        if type(query) is TextSearchQuery:
+        if isinstance(query, TextSearchQuery):
             ranked_hits, warnings, normalized_queries = self._search_text(
                 packages=packages, query=query
             )
-        elif type(query) is ExactCodeSearchQuery:
+        elif isinstance(query, ExactCodeSearchQuery):
             ranked_hits, warnings, normalized_queries = self._search_code(
                 packages=packages, query=query
             )
-        elif type(query) is PrefixCodeSearchQuery:
+        elif isinstance(query, PrefixCodeSearchQuery):
             ranked_hits, warnings, normalized_queries = self._search_code(
                 packages=packages, query=query
             )
@@ -870,7 +864,7 @@ class SearchService:
             Selected package search runtimes in established catalog order.
         """
 
-        if type(scope) is ExactPackageSearchScope:
+        if isinstance(scope, ExactPackageSearchScope):
             catalog_package = self.catalog_service.get_graph_package(
                 framework_id=scope.framework_id,
                 graph_type=scope.graph_type,
@@ -1312,13 +1306,7 @@ def _decode_cursor(cursor: SearchCursor) -> _CursorState:
         decoded_bytes = base64.urlsafe_b64decode(cursor.root + padding)
         payload = json.loads(decoded_bytes.decode())
         state = _CursorState.model_validate(payload)
-    except (
-        binascii.Error,
-        json.JSONDecodeError,
-        UnicodeDecodeError,
-        ValidationError,
-        ValueError,
-    ) as error:
+    except (ValidationError, ValueError) as error:
         raise InvalidCursorError(
             details={"reason": "malformed_cursor"},
             message="The search cursor is malformed or unsupported.",
@@ -1465,7 +1453,7 @@ def _insert_controlled_value(
     if existing_value is None:
         return
 
-    if type(existing_value) is GradeMapping:
+    if isinstance(existing_value, GradeMapping):
         existing_canonical_value = existing_value.local_label
     else:
         existing_canonical_value = existing_value.source_statement_type
