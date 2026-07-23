@@ -3,14 +3,16 @@ resolution.
 """
 
 # Standard Library
-import os
-
 from pathlib import Path
-from typing import Literal, Self
+from typing import Literal
 
 # Third Party Library
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import (
+    BaseSettings,
+    PydanticBaseSettingsSource,
+    SettingsConfigDict,
+)
 
 # Package Library
 from kgfegmcp.domain.enums import InvalidPackagePolicy
@@ -103,13 +105,47 @@ class BackendSettings(BaseSettings):
 
     model_config = SettingsConfigDict(
         case_sensitive=True,
-        env_file_encoding="utf-8",
+        env_file=None,
         env_ignore_empty=True,
         extra="ignore",
         frozen=True,
         populate_by_name=True,
         validate_default=True,
     )
+
+    @classmethod
+    def settings_customise_sources(  # pylint: disable=R0917
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        """Exclude dotenv and file-secret parsing from the settings source chain.
+
+        Parameters
+        ----------
+        settings_cls
+            Concrete settings class for which Pydantic assembled the sources.
+        init_settings
+            Explicit constructor values supplied by application code.
+        env_settings
+            Existing process-environment source populated externally by direnv.
+        dotenv_settings
+            Pydantic dotenv source, intentionally excluded from the returned chain.
+        file_secret_settings
+            Pydantic file-secret source, intentionally excluded from the returned chain.
+
+        Returns
+        -------
+        tuple[PydanticBaseSettingsSource, ...]
+            Constructor and process-environment sources in deterministic precedence
+            order.
+        """
+
+        del cls, dotenv_settings, file_secret_settings, settings_cls
+        return init_settings, env_settings
 
     @field_validator(
         "cache_root_override",
@@ -246,23 +282,6 @@ class BackendSettings(BaseSettings):
 
         return self.data_root / "derived"
 
-    @classmethod
-    def from_env_file(cls, env_file: Path) -> Self:
-        """Load settings from an explicit environment file.
-
-        Parameters
-        ----------
-        env_file
-            Path to the environment file.
-
-        Returns
-        -------
-        Self
-            Validated backend settings.
-        """
-
-        return cls(_env_file=env_file.expanduser().resolve(strict=False))
-
     @property
     def graph_packages_root(self) -> Path:
         """Return the immutable graph-package data root.
@@ -342,35 +361,3 @@ class BackendSettings(BaseSettings):
             default_relative_path=Path("config/server.json"),
             project_dir=self.project_dir,
         )
-
-
-def load_settings(env_file: Path | None = None) -> BackendSettings:
-    """Load settings without import-time configuration side effects.
-
-    Parameters
-    ----------
-    env_file
-        Optional explicit environment-file path. When omitted, the loader checks the
-        project root from ``PATHS_PROJECT_DIR`` and then the source-layout default.
-
-    Returns
-    -------
-    BackendSettings
-        Validated immutable application settings.
-    """
-
-    if env_file is not None:
-        return BackendSettings.from_env_file(env_file)
-
-    project_dir_value = os.getenv("PATHS_PROJECT_DIR")
-    project_dir = (
-        Path(project_dir_value).expanduser().resolve(strict=False)
-        if project_dir_value
-        else _default_project_dir()
-    )
-    default_env_file = project_dir / ".env"
-
-    if default_env_file.is_file():
-        return BackendSettings.from_env_file(default_env_file)
-
-    return BackendSettings()

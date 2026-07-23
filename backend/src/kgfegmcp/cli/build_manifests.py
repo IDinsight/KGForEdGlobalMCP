@@ -34,7 +34,7 @@ import typer
 from pydantic import ValidationError
 
 # Package Library
-from kgfegmcp.config import load_settings
+from kgfegmcp.config import BackendSettings
 from kgfegmcp.errors import KGFEGMCPError, ManifestBuildError
 from kgfegmcp.packages.builder import build_graph_package
 from kgfegmcp.packages.models import (
@@ -643,7 +643,7 @@ def build(  # pylint: disable=R0917
                 version_token=version_token,
             )
         )
-        settings = load_settings()
+        settings = BackendSettings()
         result = build_graph_package(
             dry_run=dry_run, settings=settings, spec=build_spec
         )

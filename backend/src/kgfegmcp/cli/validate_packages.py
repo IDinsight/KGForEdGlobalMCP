@@ -50,7 +50,7 @@ import typer
 from pydantic import TypeAdapter, ValidationError
 
 # Package Library
-from kgfegmcp.config import BackendSettings, load_settings
+from kgfegmcp.config import BackendSettings
 from kgfegmcp.domain.enums import InvalidPackagePolicy
 from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
 from kgfegmcp.errors import KGFEGMCPError, PackageValidationError
@@ -207,7 +207,7 @@ def validate_one(
     try:
         validated_framework_id = _FRAMEWORK_ID_ADAPTER.validate_python(framework_id)
         validated_snapshot_id = _SNAPSHOT_ID_ADAPTER.validate_python(snapshot_id)
-        settings = load_settings()
+        settings = BackendSettings()
         validator = _validator(settings)
         candidate = validator.repository.candidate(
             framework_id=validated_framework_id, snapshot_id=validated_snapshot_id
@@ -269,7 +269,7 @@ def validate_pending(
     """
 
     try:
-        settings = load_settings()
+        settings = BackendSettings()
         outcomes = _validator(settings).validate_pending(
             invalid_package_policy=_resolved_policy(
                 policy=invalid_package_policy, settings=settings
