@@ -1,111 +1,111 @@
 {
-	"artifacts": {
-		"academicStandardsBundle": "detailed/as_kg_bundle.json",
-		"additionalArtifacts": {},
-		"entityProvenance": "detailed/as_entity_provenance.json",
-		"nodes": "delivery/as_nodes_india_madhi_math.jsonl",
-		"relationships": "delivery/as_relationships_india_madhi_math.jsonl",
-		"relationshipsHasChild": "detailed/as_relationships_has_child.jsonl",
-		"standardsFramework": "detailed/as_standards_framework.json",
-		"standardsFrameworkItems": "detailed/as_standards_framework_items.jsonl",
-		"unresolvedItems": "detailed/as_unresolved_items.json",
-		"validationReport": "detailed/as_validation_report.json"
-	},
-	"capabilities": {
-		"codeSearch": "partial",
-		"hasDetailedProvenance": true,
-		"hasOfficialActivities": false,
-		"hasOfficialAssessmentGuidance": false,
-		"hasUnresolvedRelationships": false,
-		"multiParent": false,
-		"textSearch": true
-	},
-	"checksums": {
-		"delivery/as_nodes_india_madhi_math.jsonl": "sha256:28034933d0a3b37bf4106a127d996ede2783edde3d610d461b49522293dd3af5",
-		"delivery/as_relationships_india_madhi_math.jsonl": "sha256:82eb24232423b9b5165c445cac752d0fee516b97741153bab3b4b23433a5dedb",
-		"detailed/as_entity_provenance.json": "sha256:52afcc26c3275a6be9af229624b1066245a9d2944a3d2e3e240c4112b2b1e099",
-		"detailed/as_kg_bundle.json": "sha256:61580105147f6c419139f1121a9c0e9adf485919eb0999dc008bcf264c798d3f",
-		"detailed/as_relationships_has_child.jsonl": "sha256:8620bdf88fa8cf6d6066cadc26486873be61f95d981f7682c2c28eb392754b7c",
-		"detailed/as_standards_framework.json": "sha256:5fc545404a4afb10f0a0c303762bd922ac163e333203575a4b58bf1dd23f26fd",
-		"detailed/as_standards_framework_items.jsonl": "sha256:7e669995bf367a5f24493802c1b426b85e6d0f57b7409835dcbe8a7f781ffdc1",
-		"detailed/as_unresolved_items.json": "sha256:f6ffdd6b47267163ddd83fc9b3fa2207a03d603dfd20e9bbef66fb219c479fe2",
-		"detailed/as_validation_report.json": "sha256:0eb44c6d33e1c298760a59c9db3dc4a32f528b7bff575e85f9bf097ae02c1012"
-	},
-	"counts": {
-		"additionalCounts": {
-			"codedItems": 35,
-			"multiParentTargets": 0,
-			"unresolvedRelationships": 0
-		},
-		"frameworkNodes": 1,
-		"itemNodes": 255,
-		"relationships": 255
-	},
-	"createdAt": "2026-07-22T15:55:36Z",
-	"deliverySchemaVersion": "1.0",
-	"framework": {
-		"adoptionStatus": "Proposed Draft",
-		"isCurrent": true,
-		"issuingAuthority": "TNSCERT",
-		"jurisdiction": "Tamil Nadu, India",
-		"jurisdictionType": "state",
-		"languages": [
-			"en"
-		],
-		"localGradesOrStages": [
-			"Class-1",
-			"Class-2",
-			"Class-3",
-			"Class-4",
-			"Class-5"
-		],
-		"localSubject": "Mathematics",
-		"name": "Tamil Nadu Curriculum Framework 2025: Mathematics - Classes 1-5",
-		"normalizedGrades": [
-			"1",
-			"2",
-			"3",
-			"4",
-			"5"
-		],
-		"normalizedSubjects": [
-			"Mathematics"
-		],
-		"provider": "Tamil Nadu State Council of Educational Research and Training (TNSCERT)",
-		"sourceDocumentSha256": null,
-		"sourcePublicationDate": null,
-		"sourceVersion": "2025-proposed-draft",
-		"subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
-		"subjectMappingStatus": "mapped"
-	},
-	"frameworkId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
-	"graphPackageId": "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+ebbb76c4c52c",
-	"graphType": "academic_standards",
-	"includedGraphTypes": [
-		"academic_standards"
-	],
-	"manifestVersion": "1.0",
-	"packageRevision": 1,
-	"profile": {
-		"profileId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
-		"profileVersion": "1.0",
-		"sha256": "sha256:3f7eab3d58b63e2a2ba17662775ab6058c85fedeace2db0af5dd773d5d245d7b"
-	},
-	"rights": {
-		"allowBulkResource": false,
-		"allowFullText": true,
-		"allowGeneratedDerivatives": "allowed",
-		"allowStandardResources": true,
-		"attributionStatement": "Tamil Nadu Curriculum Framework 2025, Proposed Draft Syllabus, Pedagogical Approaches and Assessment Strategies, Mathematics - Classes 1-5, TNSCERT.",
-		"licenseUri": null,
-		"reviewStatus": "provisional_operator_approved",
-		"sourceLicense": "Not specified in source PDF"
-	},
-	"snapshotId": "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+ebbb76c4c52c",
-	"snapshotRelations": [],
-	"sourceSchemaVersion": "1.0",
-	"validation": {
-		"status": "pending",
-		"validatedAt": null
-	}
+  "artifacts": {
+    "academicStandardsBundle": "detailed/as_kg_bundle.json",
+    "additionalArtifacts": {},
+    "entityProvenance": "detailed/as_entity_provenance.json",
+    "nodes": "delivery/as_nodes_india_madhi_math.jsonl",
+    "relationships": "delivery/as_relationships_india_madhi_math.jsonl",
+    "relationshipsHasChild": "detailed/as_relationships_has_child.jsonl",
+    "standardsFramework": "detailed/as_standards_framework.json",
+    "standardsFrameworkItems": "detailed/as_standards_framework_items.jsonl",
+    "unresolvedItems": "detailed/as_unresolved_items.json",
+    "validationReport": "detailed/as_validation_report.json"
+  },
+  "capabilities": {
+    "codeSearch": "partial",
+    "hasDetailedProvenance": true,
+    "hasOfficialActivities": false,
+    "hasOfficialAssessmentGuidance": false,
+    "hasUnresolvedRelationships": false,
+    "multiParent": false,
+    "textSearch": true
+  },
+  "checksums": {
+    "delivery/as_nodes_india_madhi_math.jsonl": "sha256:28034933d0a3b37bf4106a127d996ede2783edde3d610d461b49522293dd3af5",
+    "delivery/as_relationships_india_madhi_math.jsonl": "sha256:82eb24232423b9b5165c445cac752d0fee516b97741153bab3b4b23433a5dedb",
+    "detailed/as_entity_provenance.json": "sha256:52afcc26c3275a6be9af229624b1066245a9d2944a3d2e3e240c4112b2b1e099",
+    "detailed/as_kg_bundle.json": "sha256:61580105147f6c419139f1121a9c0e9adf485919eb0999dc008bcf264c798d3f",
+    "detailed/as_relationships_has_child.jsonl": "sha256:8620bdf88fa8cf6d6066cadc26486873be61f95d981f7682c2c28eb392754b7c",
+    "detailed/as_standards_framework.json": "sha256:5fc545404a4afb10f0a0c303762bd922ac163e333203575a4b58bf1dd23f26fd",
+    "detailed/as_standards_framework_items.jsonl": "sha256:7e669995bf367a5f24493802c1b426b85e6d0f57b7409835dcbe8a7f781ffdc1",
+    "detailed/as_unresolved_items.json": "sha256:f6ffdd6b47267163ddd83fc9b3fa2207a03d603dfd20e9bbef66fb219c479fe2",
+    "detailed/as_validation_report.json": "sha256:0eb44c6d33e1c298760a59c9db3dc4a32f528b7bff575e85f9bf097ae02c1012"
+  },
+  "counts": {
+    "additionalCounts": {
+      "codedItems": 35,
+      "multiParentTargets": 0,
+      "unresolvedRelationships": 0
+    },
+    "frameworkNodes": 1,
+    "itemNodes": 255,
+    "relationships": 255
+  },
+  "createdAt": "2026-07-22T15:55:36Z",
+  "deliverySchemaVersion": "1.0",
+  "framework": {
+    "adoptionStatus": "Proposed Draft",
+    "isCurrent": true,
+    "issuingAuthority": "TNSCERT",
+    "jurisdiction": "Tamil Nadu, India",
+    "jurisdictionType": "state",
+    "languages": [
+      "en"
+    ],
+    "localGradesOrStages": [
+      "Class-1",
+      "Class-2",
+      "Class-3",
+      "Class-4",
+      "Class-5"
+    ],
+    "localSubject": "Mathematics",
+    "name": "Tamil Nadu Curriculum Framework 2025: Mathematics - Classes 1-5",
+    "normalizedGrades": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "normalizedSubjects": [
+      "Mathematics"
+    ],
+    "provider": "Tamil Nadu State Council of Educational Research and Training (TNSCERT)",
+    "sourceDocumentSha256": null,
+    "sourcePublicationDate": null,
+    "sourceVersion": "2025-proposed-draft",
+    "subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+    "subjectMappingStatus": "mapped"
+  },
+  "frameworkId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
+  "graphPackageId": "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+ebbb76c4c52c",
+  "graphType": "academic_standards",
+  "includedGraphTypes": [
+    "academic_standards"
+  ],
+  "manifestVersion": "1.0",
+  "packageRevision": 1,
+  "profile": {
+    "profileId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
+    "profileVersion": "1.0",
+    "sha256": "sha256:3f7eab3d58b63e2a2ba17662775ab6058c85fedeace2db0af5dd773d5d245d7b"
+  },
+  "rights": {
+    "allowBulkResource": false,
+    "allowFullText": true,
+    "allowGeneratedDerivatives": "allowed",
+    "allowStandardResources": true,
+    "attributionStatement": "Tamil Nadu Curriculum Framework 2025, Proposed Draft Syllabus, Pedagogical Approaches and Assessment Strategies, Mathematics - Classes 1-5, TNSCERT.",
+    "licenseUri": null,
+    "reviewStatus": "provisional_operator_approved",
+    "sourceLicense": "Not specified in source PDF"
+  },
+  "snapshotId": "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+ebbb76c4c52c",
+  "snapshotRelations": [],
+  "sourceSchemaVersion": "1.0",
+  "validation": {
+    "status": "passed",
+    "validatedAt": "2026-07-23T00:45:50Z"
+  }
 }
