@@ -16,9 +16,6 @@ checksums, decode graph records, repeat semantic validation, persist status, mer
 namespaces, implement search, or depend on FastMCP.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Standard Library
 from collections import defaultdict
 from dataclasses import dataclass

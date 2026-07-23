@@ -42,6 +42,56 @@ SnapshotGraphTypeKey = tuple[SnapshotId, GraphType]
 
 
 @dataclass(frozen=True, slots=True)
+class _CatalogIndexes:
+    """Hold the mutable catalog-derived indexes produced during construction.
+
+    Attributes
+    ----------
+    current_snapshots_by_framework_id
+        Per-framework tuples of source-declared current snapshots.
+    families_by_framework_id
+        Exact framework families keyed by their framework identifier.
+    graph_packages_by_id
+        Catalog graph packages keyed by their exact graph-package identifier.
+    graph_packages_by_snapshot_and_graph_type
+        Catalog graph packages keyed by their snapshot and graph-type route.
+    snapshots_by_framework_id
+        Per-framework tuples of every accepted snapshot.
+    snapshots_by_id
+        Exact snapshots keyed by their immutable snapshot identifier.
+    """
+
+    current_snapshots_by_framework_id: dict[
+        FrameworkId, tuple[CatalogFrameworkSnapshot, ...]
+    ]
+    families_by_framework_id: dict[FrameworkId, CatalogFrameworkFamily]
+    graph_packages_by_id: dict[GraphPackageId, CatalogGraphPackage]
+    graph_packages_by_snapshot_and_graph_type: dict[
+        SnapshotGraphTypeKey, CatalogGraphPackage
+    ]
+    snapshots_by_framework_id: dict[FrameworkId, tuple[CatalogFrameworkSnapshot, ...]]
+    snapshots_by_id: dict[SnapshotId, CatalogFrameworkSnapshot]
+
+
+@dataclass(frozen=True, slots=True)
+class _RuntimeIndexes:
+    """Hold the mutable runtime-derived indexes produced during construction.
+
+    Attributes
+    ----------
+    runtimes_by_graph_package_id
+        Package runtimes keyed by their exact graph-package identifier.
+    runtimes_by_snapshot_and_graph_type
+        Package runtimes keyed by their snapshot and graph-type route.
+    """
+
+    runtimes_by_graph_package_id: dict[GraphPackageId, CatalogPackageRuntime]
+    runtimes_by_snapshot_and_graph_type: dict[
+        SnapshotGraphTypeKey, CatalogPackageRuntime
+    ]
+
+
+@dataclass(frozen=True, slots=True)
 class CatalogService:
     """Route exact framework and graph-package selections through immutable indexes."""
 
@@ -90,126 +140,39 @@ class CatalogService:
             If any catalog or runtime identity would overwrite another index entry.
         """
 
-        current_snapshots_by_framework_id: dict[
-            FrameworkId, tuple[CatalogFrameworkSnapshot, ...]
-        ] = {}
-        families_by_framework_id: dict[FrameworkId, CatalogFrameworkFamily] = {}
-        graph_packages_by_id: dict[GraphPackageId, CatalogGraphPackage] = {}
-        graph_packages_by_snapshot_and_graph_type: dict[
-            SnapshotGraphTypeKey, CatalogGraphPackage
-        ] = {}
-        snapshots_by_framework_id: dict[
-            FrameworkId, tuple[CatalogFrameworkSnapshot, ...]
-        ] = {}
-        snapshots_by_id: dict[SnapshotId, CatalogFrameworkSnapshot] = {}
-
-        for family in load_result.catalog.frameworks:
-            if family.framework_id in families_by_framework_id:
-                _raise_index_conflict(
-                    identifier=str(family.framework_id), index_name="framework"
-                )
-
-            families_by_framework_id[family.framework_id] = family
-            snapshots_by_framework_id[family.framework_id] = family.snapshots
-            current_snapshots_by_framework_id[family.framework_id] = tuple(
-                snapshot
-                for snapshot in family.snapshots
-                if snapshot.source_metadata.is_current
-            )
-
-            for snapshot in family.snapshots:
-                if snapshot.snapshot_id in snapshots_by_id:
-                    _raise_index_conflict(
-                        identifier=str(snapshot.snapshot_id), index_name="snapshot"
-                    )
-
-                snapshots_by_id[snapshot.snapshot_id] = snapshot
-
-                for graph_package in snapshot.graph_packages:
-                    identity = graph_package.package_identity
-                    route_key = snapshot.snapshot_id, identity.graph_type
-
-                    if identity.graph_package_id in graph_packages_by_id:
-                        _raise_index_conflict(
-                            identifier=str(identity.graph_package_id),
-                            index_name="graph package",
-                        )
-
-                    if route_key in graph_packages_by_snapshot_and_graph_type:
-                        _raise_index_conflict(
-                            identifier=(
-                                f"{snapshot.snapshot_id}/{identity.graph_type.value}"
-                            ),
-                            index_name="snapshot graph-type route",
-                        )
-
-                    graph_packages_by_id[identity.graph_package_id] = graph_package
-                    graph_packages_by_snapshot_and_graph_type[route_key] = graph_package
-
-        runtimes_by_graph_package_id: dict[GraphPackageId, CatalogPackageRuntime] = {}
-        runtimes_by_snapshot_and_graph_type: dict[
-            SnapshotGraphTypeKey, CatalogPackageRuntime
-        ] = {}
-
-        for runtime in load_result.package_runtimes:
-            identity = runtime.catalog_package.package_identity
-            route_key = identity.snapshot_id, identity.graph_type
-
-            if identity.graph_package_id in runtimes_by_graph_package_id:
-                _raise_index_conflict(
-                    identifier=str(identity.graph_package_id),
-                    index_name="graph-package runtime",
-                )
-
-            if route_key in runtimes_by_snapshot_and_graph_type:
-                _raise_index_conflict(
-                    identifier=f"{identity.snapshot_id}/{identity.graph_type.value}",
-                    index_name="runtime graph-type route",
-                )
-
-            if identity.graph_package_id not in graph_packages_by_id:
-                raise CatalogError(
-                    details={"graph_package_id": str(identity.graph_package_id)},
-                    message=(
-                        "A package runtime has no corresponding catalog graph package."
-                    ),
-                )
-
-            runtimes_by_graph_package_id[identity.graph_package_id] = runtime
-            runtimes_by_snapshot_and_graph_type[route_key] = runtime
-
-        if set(runtimes_by_graph_package_id) != set(graph_packages_by_id):
-            raise CatalogError(
-                details={
-                    "catalog_graph_package_ids": tuple(
-                        sorted(str(value) for value in graph_packages_by_id)
-                    ),
-                    "runtime_graph_package_ids": tuple(
-                        sorted(str(value) for value in runtimes_by_graph_package_id)
-                    ),
-                },
-                message=(
-                    "Catalog graph packages and runtime graph stores do not correspond."
-                ),
-            )
+        catalog_indexes = _build_catalog_indexes(load_result=load_result)
+        runtime_indexes = _build_runtime_indexes(
+            graph_packages_by_id=catalog_indexes.graph_packages_by_id,
+            load_result=load_result,
+        )
+        _verify_graph_package_correspondence(
+            graph_packages_by_id=catalog_indexes.graph_packages_by_id,
+            runtimes_by_graph_package_id=(runtime_indexes.runtimes_by_graph_package_id),
+        )
 
         return cls(
             _current_snapshots_by_framework_id=MappingProxyType(
-                current_snapshots_by_framework_id
+                catalog_indexes.current_snapshots_by_framework_id
             ),
-            _families_by_framework_id=MappingProxyType(families_by_framework_id),
-            _graph_packages_by_id=MappingProxyType(graph_packages_by_id),
+            _families_by_framework_id=MappingProxyType(
+                catalog_indexes.families_by_framework_id
+            ),
+            _graph_packages_by_id=MappingProxyType(
+                catalog_indexes.graph_packages_by_id
+            ),
             _graph_packages_by_snapshot_and_graph_type=MappingProxyType(
-                graph_packages_by_snapshot_and_graph_type
+                catalog_indexes.graph_packages_by_snapshot_and_graph_type
             ),
             _runtimes_by_graph_package_id=MappingProxyType(
-                runtimes_by_graph_package_id
+                runtime_indexes.runtimes_by_graph_package_id
             ),
             _runtimes_by_snapshot_and_graph_type=MappingProxyType(
-                runtimes_by_snapshot_and_graph_type
+                runtime_indexes.runtimes_by_snapshot_and_graph_type
             ),
-            _snapshots_by_framework_id=MappingProxyType(snapshots_by_framework_id),
-            _snapshots_by_id=MappingProxyType(snapshots_by_id),
+            _snapshots_by_framework_id=MappingProxyType(
+                catalog_indexes.snapshots_by_framework_id
+            ),
+            _snapshots_by_id=MappingProxyType(catalog_indexes.snapshots_by_id),
             load_result=load_result,
         )
 
@@ -516,6 +479,170 @@ class CatalogService:
         return self.catalog
 
 
+def _build_catalog_indexes(load_result: CatalogLoadResult) -> _CatalogIndexes:
+    """Build every catalog-derived index from one complete load.
+
+    Parameters
+    ----------
+    load_result
+        All-or-nothing catalog load returned by ``CatalogRepository``.
+
+    Returns
+    -------
+    _CatalogIndexes
+        Framework, snapshot, graph-package, and route indexes.
+
+    Raises
+    ------
+    CatalogError
+        If any framework, snapshot, package, or route identity is duplicated.
+    """
+
+    indexes = _CatalogIndexes(
+        current_snapshots_by_framework_id={},
+        families_by_framework_id={},
+        graph_packages_by_id={},
+        graph_packages_by_snapshot_and_graph_type={},
+        snapshots_by_framework_id={},
+        snapshots_by_id={},
+    )
+
+    for family in load_result.catalog.frameworks:
+        if family.framework_id in indexes.families_by_framework_id:
+            _raise_index_conflict(
+                identifier=str(family.framework_id), index_name="framework"
+            )
+
+        indexes.families_by_framework_id[family.framework_id] = family
+        indexes.snapshots_by_framework_id[family.framework_id] = family.snapshots
+        indexes.current_snapshots_by_framework_id[family.framework_id] = tuple(
+            snapshot
+            for snapshot in family.snapshots
+            if snapshot.source_metadata.is_current
+        )
+
+        for snapshot in family.snapshots:
+            if snapshot.snapshot_id in indexes.snapshots_by_id:
+                _raise_index_conflict(
+                    identifier=str(snapshot.snapshot_id), index_name="snapshot"
+                )
+
+            indexes.snapshots_by_id[snapshot.snapshot_id] = snapshot
+            _index_snapshot(
+                graph_packages_by_id=indexes.graph_packages_by_id,
+                graph_packages_by_snapshot_and_graph_type=(
+                    indexes.graph_packages_by_snapshot_and_graph_type
+                ),
+                snapshot=snapshot,
+            )
+
+    return indexes
+
+
+def _build_runtime_indexes(
+    *,
+    graph_packages_by_id: dict[GraphPackageId, CatalogGraphPackage],
+    load_result: CatalogLoadResult,
+) -> _RuntimeIndexes:
+    """Build every runtime-derived index from one complete load.
+
+    Parameters
+    ----------
+    graph_packages_by_id
+        Catalog graph packages used to confirm each runtime corresponds.
+    load_result
+        All-or-nothing catalog load returned by ``CatalogRepository``.
+
+    Returns
+    -------
+    _RuntimeIndexes
+        Runtime indexes keyed by graph-package identity and snapshot route.
+
+    Raises
+    ------
+    CatalogError
+        If a runtime identity or route is duplicated, or a runtime has no corresponding
+        catalog graph package.
+    """
+
+    indexes = _RuntimeIndexes(
+        runtimes_by_graph_package_id={}, runtimes_by_snapshot_and_graph_type={}
+    )
+
+    for runtime in load_result.package_runtimes:
+        identity = runtime.catalog_package.package_identity
+        route_key = identity.snapshot_id, identity.graph_type
+
+        if identity.graph_package_id in indexes.runtimes_by_graph_package_id:
+            _raise_index_conflict(
+                identifier=str(identity.graph_package_id),
+                index_name="graph-package runtime",
+            )
+
+        if route_key in indexes.runtimes_by_snapshot_and_graph_type:
+            _raise_index_conflict(
+                identifier=f"{identity.snapshot_id}/{identity.graph_type.value}",
+                index_name="runtime graph-type route",
+            )
+
+        if identity.graph_package_id not in graph_packages_by_id:
+            raise CatalogError(
+                details={"graph_package_id": str(identity.graph_package_id)},
+                message=(
+                    "A package runtime has no corresponding catalog graph package."
+                ),
+            )
+
+        indexes.runtimes_by_graph_package_id[identity.graph_package_id] = runtime
+        indexes.runtimes_by_snapshot_and_graph_type[route_key] = runtime
+
+    return indexes
+
+
+def _index_snapshot(
+    *,
+    graph_packages_by_id: dict[GraphPackageId, CatalogGraphPackage],
+    graph_packages_by_snapshot_and_graph_type: dict[
+        SnapshotGraphTypeKey, CatalogGraphPackage
+    ],
+    snapshot: CatalogFrameworkSnapshot,
+) -> None:
+    """Index one snapshot's graph packages by identity and snapshot route.
+
+    Parameters
+    ----------
+    graph_packages_by_id
+        Accumulating package index mutated with each accepted package.
+    graph_packages_by_snapshot_and_graph_type
+        Accumulating route index mutated with each accepted package.
+    snapshot
+        Exact immutable snapshot whose graph packages are indexed.
+
+    Raises
+    ------
+    CatalogError
+        If a graph-package identity or snapshot route would be overwritten.
+    """
+
+    for graph_package in snapshot.graph_packages:
+        identity = graph_package.package_identity
+        route_key = snapshot.snapshot_id, identity.graph_type
+
+        if identity.graph_package_id in graph_packages_by_id:
+            _raise_index_conflict(
+                identifier=str(identity.graph_package_id), index_name="graph package"
+            )
+
+        if route_key in graph_packages_by_snapshot_and_graph_type:
+            _raise_index_conflict(
+                identifier=(f"{snapshot.snapshot_id}/{identity.graph_type.value}"),
+                index_name="snapshot graph-type route",
+            )
+
+        graph_packages_by_id[identity.graph_package_id] = graph_package
+        graph_packages_by_snapshot_and_graph_type[route_key] = graph_package
+
+
 def _raise_index_conflict(*, identifier: str, index_name: str) -> None:
     """Raise one stable catalog error for an attempted duplicate index key.
 
@@ -536,3 +663,39 @@ def _raise_index_conflict(*, identifier: str, index_name: str) -> None:
         details={"identifier": identifier, "index_name": index_name},
         message="Catalog construction encountered a duplicate identity or route.",
     )
+
+
+def _verify_graph_package_correspondence(
+    *,
+    graph_packages_by_id: dict[GraphPackageId, CatalogGraphPackage],
+    runtimes_by_graph_package_id: dict[GraphPackageId, CatalogPackageRuntime],
+) -> None:
+    """Confirm catalog graph packages and runtime graph stores correspond exactly.
+
+    Parameters
+    ----------
+    graph_packages_by_id
+        Catalog graph packages keyed by their exact graph-package identifier.
+    runtimes_by_graph_package_id
+        Package runtimes keyed by their exact graph-package identifier.
+
+    Raises
+    ------
+    CatalogError
+        If the two graph-package identifier sets are not identical.
+    """
+
+    if set(runtimes_by_graph_package_id) != set(graph_packages_by_id):
+        raise CatalogError(
+            details={
+                "catalog_graph_package_ids": tuple(
+                    sorted(str(value) for value in graph_packages_by_id)
+                ),
+                "runtime_graph_package_ids": tuple(
+                    sorted(str(value) for value in runtimes_by_graph_package_id)
+                ),
+            },
+            message=(
+                "Catalog graph packages and runtime graph stores do not correspond."
+            ),
+        )

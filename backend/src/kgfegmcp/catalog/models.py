@@ -10,9 +10,6 @@ merging package namespaces. This module does not discover files, select packages
 perform graph traversal, implement search, or depend on FastMCP.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Standard Library
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -486,6 +483,22 @@ class CatalogResult(FrozenSchema):
 
 
 @dataclass(frozen=True, slots=True)
+class _CatalogLoadCorrespondence:
+    """Carry the catalog-load lookup maps shared across runtime validation phases.
+
+    Attributes
+    ----------
+    accepted_results_by_id
+        Accepted validation results keyed by their exact graph-package identifier.
+    catalog_snapshots_by_id
+        Catalog snapshots keyed by their exact snapshot identifier.
+    """
+
+    accepted_results_by_id: dict[str, PackageValidationResult]
+    catalog_snapshots_by_id: dict[SnapshotId, CatalogFrameworkSnapshot]
+
+
+@dataclass(frozen=True, slots=True)
 class CatalogPackageRuntime:
     """Retain one catalog entry, validated loaded package, and independent store."""
 
@@ -617,150 +630,253 @@ class CatalogLoadResult:
             If discovery counts, validation outcomes, or accepted runtimes disagree.
         """
 
-        if self.discovered_package_count < 0:
-            raise ValueError("discovered_package_count must be non-negative.")
+        _validate_catalog_load_counts(self)
+        _validate_catalog_load_evidence(self)
+        correspondence = _validate_catalog_load_correspondence(self)
+        _validate_catalog_load_runtime_evidence(
+            correspondence=correspondence, load_result=self
+        )
+        _validate_catalog_load_runtime_order(self)
 
-        if self.excluded_package_count < 0:
-            raise ValueError("excluded_package_count must be non-negative.")
 
-        if self.discovered_package_count != len(self.validation_results):
-            raise ValueError(
-                "discovered_package_count must equal the validation-result count."
-            )
+def _validate_catalog_load_correspondence(
+    load_result: CatalogLoadResult,
+) -> _CatalogLoadCorrespondence:
+    """Validate catalog-load identifier correspondence and return shared lookup maps.
 
-        if any(
-            not result.read_only or result.persisted
-            for result in self.validation_results
+    Parameters
+    ----------
+    load_result
+        Catalog-load result whose runtime, catalog, and accepted identifiers are
+        validated for exact correspondence.
+
+    Returns
+    -------
+    _CatalogLoadCorrespondence
+        Lookup maps reused by later per-runtime validation phases.
+
+    Raises
+    ------
+    ValueError
+        If runtime or accepted identifiers repeat, the runtime identifiers do not
+        correspond exactly to the catalog packages or the accepted validation results,
+        or the runtime metadata does not equal the public catalog packages.
+    """
+
+    catalog_packages_by_id = {
+        str(graph_package.package_identity.graph_package_id): graph_package
+        for framework in load_result.catalog.frameworks
+        for snapshot in framework.snapshots
+        for graph_package in snapshot.graph_packages
+    }
+    catalog_snapshots_by_id = {
+        snapshot.snapshot_id: snapshot
+        for framework in load_result.catalog.frameworks
+        for snapshot in framework.snapshots
+    }
+    runtime_packages_by_id = {
+        str(runtime.catalog_package.package_identity.graph_package_id): (
+            runtime.catalog_package
+        )
+        for runtime in load_result.package_runtimes
+    }
+    accepted_results = tuple(
+        result
+        for result in load_result.validation_results
+        if result.effective_status is ValidationStatus.PASSED
+        and result.graph_package_id is not None
+        and result.is_valid
+        and result.observed_status is ValidationStatus.PASSED
+        and not result.persisted
+        and result.read_only
+        and result.terminal_revalidation
+    )
+    accepted_results_by_id = {
+        str(result.graph_package_id): result for result in accepted_results
+    }
+    runtime_ids = tuple(runtime_packages_by_id)
+    catalog_ids = tuple(catalog_packages_by_id)
+    accepted_result_ids = tuple(
+        str(result.graph_package_id) for result in accepted_results
+    )
+
+    _require_unique(field_name="runtime graph package identifiers", values=runtime_ids)
+    _require_unique(
+        field_name="accepted validation graph package identifiers",
+        values=accepted_result_ids,
+    )
+
+    if set(runtime_ids) != set(catalog_ids):
+        raise ValueError(
+            "Catalog runtimes must correspond exactly to catalog graph packages."
+        )
+
+    if set(runtime_ids) != set(accepted_result_ids):
+        raise ValueError(
+            "Catalog runtimes must correspond exactly to accepted validation results."
+        )
+
+    if runtime_packages_by_id != catalog_packages_by_id:
+        raise ValueError(
+            "Catalog runtime metadata must equal the public catalog packages."
+        )
+
+    return _CatalogLoadCorrespondence(
+        accepted_results_by_id=accepted_results_by_id,
+        catalog_snapshots_by_id=catalog_snapshots_by_id,
+    )
+
+
+def _validate_catalog_load_counts(load_result: CatalogLoadResult) -> None:
+    """Validate that catalog-load discovery counts agree with validation evidence.
+
+    Parameters
+    ----------
+    load_result
+        Catalog-load result whose discovery counts are validated.
+
+    Raises
+    ------
+    ValueError
+        If either package count is negative or the discovered count does not equal the
+        validation-result count.
+    """
+
+    if load_result.discovered_package_count < 0:
+        raise ValueError("discovered_package_count must be non-negative.")
+
+    if load_result.excluded_package_count < 0:
+        raise ValueError("excluded_package_count must be non-negative.")
+
+    if load_result.discovered_package_count != len(load_result.validation_results):
+        raise ValueError(
+            "discovered_package_count must equal the validation-result count."
+        )
+
+
+def _validate_catalog_load_evidence(load_result: CatalogLoadResult) -> None:
+    """Validate catalog-load validation-result invariants, order, and derived counts.
+
+    Parameters
+    ----------
+    load_result
+        Catalog-load result whose validation evidence and counts are validated.
+
+    Raises
+    ------
+    ValueError
+        If any validation result is not read-only and non-persisting, references repeat
+        or are out of deterministic order, the excluded count does not match the
+        discovered and accepted packages, or the runtime count does not equal the
+        catalog graph-package count.
+    """
+
+    if any(
+        not result.read_only or result.persisted
+        for result in load_result.validation_results
+    ):
+        raise ValueError(
+            "Catalog validation results must be read-only and non-persisting."
+        )
+
+    package_references = tuple(
+        result.package_reference for result in load_result.validation_results
+    )
+    _require_unique(
+        field_name="validation package references", values=package_references
+    )
+
+    if package_references != tuple(sorted(package_references)):
+        raise ValueError(
+            "Catalog validation results must use deterministic repository order."
+        )
+
+    expected_excluded_count = load_result.discovered_package_count - len(
+        load_result.package_runtimes
+    )
+
+    if load_result.excluded_package_count != expected_excluded_count:
+        raise ValueError(
+            "excluded_package_count does not match discovered and accepted packages."
+        )
+
+    if len(load_result.package_runtimes) != load_result.catalog.graph_package_count:
+        raise ValueError(
+            "Catalog runtime count must equal the catalog graph-package count."
+        )
+
+
+def _validate_catalog_load_runtime_evidence(
+    *, correspondence: _CatalogLoadCorrespondence, load_result: CatalogLoadResult
+) -> None:
+    """Validate that every package runtime matches its evidence and snapshot metadata.
+
+    Parameters
+    ----------
+    correspondence
+        Shared lookup maps produced during identifier-correspondence validation.
+    load_result
+        Catalog-load result whose package runtimes are validated against their accepted
+        validation evidence and catalog snapshot metadata.
+
+    Raises
+    ------
+    ValueError
+        If a runtime's accepted validation evidence or its catalog snapshot metadata
+        does not match the runtime.
+    """
+
+    for runtime in load_result.package_runtimes:
+        identity = runtime.catalog_package.package_identity
+        graph_package_id = str(identity.graph_package_id)
+        manifest = runtime.loaded_package.manifest
+        result = correspondence.accepted_results_by_id[graph_package_id]
+        snapshot = correspondence.catalog_snapshots_by_id[identity.snapshot_id]
+        expected_source_metadata = CatalogSourceMetadata.from_framework_metadata(
+            manifest.framework
+        )
+
+        if (
+            result.framework_id != identity.framework_id
+            or result.graph_package_id != identity.graph_package_id
+            or result.profile_id != identity.profile_id
+            or result.profile_version != identity.profile_version
+            or result.snapshot_id != identity.snapshot_id
+            or (result.validated_at != runtime.catalog_package.validation.validated_at)
         ):
             raise ValueError(
-                "Catalog validation results must be read-only and non-persisting."
+                "Accepted validation evidence must match its package runtime."
             )
 
-        package_references = tuple(
-            result.package_reference for result in self.validation_results
-        )
-        _require_unique(
-            field_name="validation package references", values=package_references
-        )
-
-        if package_references != tuple(sorted(package_references)):
+        if (
+            snapshot.framework_id != identity.framework_id
+            or snapshot.source_metadata != expected_source_metadata
+            or snapshot.snapshot_relations != manifest.snapshot_relations
+        ):
             raise ValueError(
-                "Catalog validation results must use deterministic repository order."
+                "Catalog snapshot metadata must match every package runtime."
             )
 
-        expected_excluded_count = self.discovered_package_count - len(
-            self.package_runtimes
-        )
 
-        if self.excluded_package_count != expected_excluded_count:
-            raise ValueError(
-                "excluded_package_count does not match discovered and accepted packages."
-            )
+def _validate_catalog_load_runtime_order(load_result: CatalogLoadResult) -> None:
+    """Validate that catalog-load package runtimes use deterministic package order.
 
-        if len(self.package_runtimes) != self.catalog.graph_package_count:
-            raise ValueError(
-                "Catalog runtime count must equal the catalog graph-package count."
-            )
+    Parameters
+    ----------
+    load_result
+        Catalog-load result whose package-runtime order is validated.
 
-        catalog_packages_by_id = {
-            str(graph_package.package_identity.graph_package_id): graph_package
-            for framework in self.catalog.frameworks
-            for snapshot in framework.snapshots
-            for graph_package in snapshot.graph_packages
-        }
-        catalog_snapshots_by_id = {
-            snapshot.snapshot_id: snapshot
-            for framework in self.catalog.frameworks
-            for snapshot in framework.snapshots
-        }
-        runtime_packages_by_id = {
-            str(runtime.catalog_package.package_identity.graph_package_id): (
-                runtime.catalog_package
-            )
-            for runtime in self.package_runtimes
-        }
-        accepted_results = tuple(
-            result
-            for result in self.validation_results
-            if result.effective_status is ValidationStatus.PASSED
-            and result.graph_package_id is not None
-            and result.is_valid
-            and result.observed_status is ValidationStatus.PASSED
-            and not result.persisted
-            and result.read_only
-            and result.terminal_revalidation
-        )
-        accepted_results_by_id = {
-            str(result.graph_package_id): result for result in accepted_results
-        }
-        runtime_ids = tuple(runtime_packages_by_id)
-        catalog_ids = tuple(catalog_packages_by_id)
-        accepted_result_ids = tuple(
-            str(result.graph_package_id) for result in accepted_results
-        )
+    Raises
+    ------
+    ValueError
+        If the package runtimes are not in deterministic package order.
+    """
 
-        _require_unique(
-            field_name="runtime graph package identifiers", values=runtime_ids
-        )
-        _require_unique(
-            field_name="accepted validation graph package identifiers",
-            values=accepted_result_ids,
-        )
+    ordered_runtimes = list(load_result.package_runtimes)
+    ordered_runtimes.sort(key=catalog_runtime_order_key)
 
-        if set(runtime_ids) != set(catalog_ids):
-            raise ValueError(
-                "Catalog runtimes must correspond exactly to catalog graph packages."
-            )
-
-        if set(runtime_ids) != set(accepted_result_ids):
-            raise ValueError(
-                "Catalog runtimes must correspond exactly to accepted validation results."
-            )
-
-        if runtime_packages_by_id != catalog_packages_by_id:
-            raise ValueError(
-                "Catalog runtime metadata must equal the public catalog packages."
-            )
-
-        for runtime in self.package_runtimes:
-            identity = runtime.catalog_package.package_identity
-            graph_package_id = str(identity.graph_package_id)
-            manifest = runtime.loaded_package.manifest
-            result = accepted_results_by_id[graph_package_id]
-            snapshot = catalog_snapshots_by_id[identity.snapshot_id]
-            expected_source_metadata = CatalogSourceMetadata.from_framework_metadata(
-                manifest.framework
-            )
-
-            if (
-                result.framework_id != identity.framework_id
-                or result.graph_package_id != identity.graph_package_id
-                or result.profile_id != identity.profile_id
-                or result.profile_version != identity.profile_version
-                or result.snapshot_id != identity.snapshot_id
-                or (
-                    result.validated_at
-                    != runtime.catalog_package.validation.validated_at
-                )
-            ):
-                raise ValueError(
-                    "Accepted validation evidence must match its package runtime."
-                )
-
-            if (
-                snapshot.framework_id != identity.framework_id
-                or snapshot.source_metadata != expected_source_metadata
-                or snapshot.snapshot_relations != manifest.snapshot_relations
-            ):
-                raise ValueError(
-                    "Catalog snapshot metadata must match every package runtime."
-                )
-
-        ordered_runtimes = list(self.package_runtimes)
-        ordered_runtimes.sort(key=catalog_runtime_order_key)
-
-        if self.package_runtimes != tuple(ordered_runtimes):
-            raise ValueError("Catalog runtimes must use deterministic package order.")
+    if load_result.package_runtimes != tuple(ordered_runtimes):
+        raise ValueError("Catalog runtimes must use deterministic package order.")
 
 
 def catalog_framework_order_key(framework: CatalogFrameworkFamily) -> tuple[str]:
