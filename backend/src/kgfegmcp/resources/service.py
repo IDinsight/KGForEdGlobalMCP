@@ -303,7 +303,7 @@ class ResourceService:
         canonical_uri
             Exact resource URI for the derived content.
         package
-            Optional package identity for the derived content.4
+            Optional package identity for the derived content.
         resource_kind
             Resource family kind for the derived content.
         source_artifacts
@@ -476,7 +476,7 @@ class ResourceService:
         graph_package_id
             Graph package identifier.
         loaded_package
-            Loaded package identifier.
+            Accepted loaded package containing the retained manifest bytes.
 
         Returns
         -------

@@ -46,7 +46,7 @@ class ResourceRepository:
         Raises
         ------
         ResourceNotFoundError
-            If the manifest did not declare the logical artifact name.
+            When the package does not identify exactly one matching declaration.
         """
 
         references = tuple(

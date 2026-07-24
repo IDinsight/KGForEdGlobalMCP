@@ -221,8 +221,10 @@ class ResourcePolicy:
 
         Raises
         ------
+        ResourceAccessDeniedError
+            If package rights deny the requested resource family.
         ValueError
-            If the package does not permit the requested exposure.
+            If called for generic artifact access, which requires artifact_decision().
         """
 
         if resource_kind is ResourceKind.ARTIFACT:
