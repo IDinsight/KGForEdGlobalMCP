@@ -13,7 +13,6 @@ from __future__ import annotations
 import json
 
 from dataclasses import dataclass
-from json import JSONDecodeError
 
 # Third Party Library
 from pydantic import BaseModel
@@ -114,7 +113,7 @@ def _parse_json_object(content: bytes) -> dict[str, object]:
     try:
         text = content.decode("utf-8")
         value = json.loads(object_pairs_hook=_reject_duplicate_json_keys, s=text)
-    except (JSONDecodeError, UnicodeDecodeError, ValueError) as error:
+    except ValueError as error:
         raise ResourceNotFoundError(
             details={"reason": type(error).__name__},
             message="The accepted resource artifact is not valid JSON object content.",
@@ -215,6 +214,78 @@ class ResourceService:
             is not self.catalog_service
         ):
             raise ValueError("ResourceService dependencies must share CatalogService.")
+
+    def _available_artifact_names(
+        self, *, logical_names: tuple[str, ...], runtime: CatalogPackageRuntime
+    ) -> tuple[ArtifactName, ...]:
+        """Return permitted generic artifact names for one package in public order.
+
+        Parameters
+        ----------
+        logical_names
+            Sorted declared logical names for the selected package.
+        runtime
+            Exact accepted package runtime supplying the current access rights.
+
+        Returns
+        -------
+        tuple[ArtifactName, ...]
+            Generic artifact names the current rights permit, in deterministic order.
+        """
+
+        rights = runtime.catalog_package.rights
+        available: list[ArtifactName] = []
+
+        for logical_name in logical_names:
+            try:
+                self.policy.artifact_decision(logical_name=logical_name, rights=rights)
+            except (ResourceNotFoundError, ResourceAccessDeniedError):
+                continue
+
+            available.append(ArtifactName(logical_name))
+
+        return tuple(available)
+
+    def _available_standards_kinds(
+        self, runtime: CatalogPackageRuntime
+    ) -> tuple[ResourceKind, ...]:
+        """Return permitted academic-standards resource kinds for one package.
+
+        Parameters
+        ----------
+        runtime
+            Exact accepted package runtime supplying the graph type, detailed
+            provenance capability, and current access rights.
+
+        Returns
+        -------
+        tuple[ResourceKind, ...]
+            Academic-standards resource kinds the current rights permit, or an empty
+            tuple when the package is not an academic-standards graph.
+        """
+
+        if (
+            runtime.catalog_package.package_identity.graph_type
+            is not GraphType.ACADEMIC_STANDARDS
+        ):
+            return ()
+
+        available: list[ResourceKind] = []
+
+        for resource_kind in (ResourceKind.RELATIONSHIP, ResourceKind.STANDARD):
+            if self._permits_resource_kind(
+                resource_kind=resource_kind, runtime=runtime
+            ):
+                available.append(resource_kind)
+
+        if runtime.catalog_package.capabilities.has_detailed_provenance and (
+            self._permits_resource_kind(
+                resource_kind=ResourceKind.STANDARD_PROVENANCE, runtime=runtime
+            )
+        ):
+            available.append(ResourceKind.STANDARD_PROVENANCE)
+
+        return tuple(available)
 
     def _build_derived_document(
         self,
@@ -539,6 +610,33 @@ class ResourceService:
             package.package_identity.graph_package_id
         )
 
+    def _permits_resource_kind(
+        self, *, resource_kind: ResourceKind, runtime: CatalogPackageRuntime
+    ) -> bool:
+        """Return whether current package rights permit one resource kind.
+
+        Parameters
+        ----------
+        resource_kind
+            Candidate resource family kind to test against the current rights.
+        runtime
+            Exact accepted package runtime supplying the current access rights.
+
+        Returns
+        -------
+        bool
+            ``True`` when policy grants access to the resource kind, else ``False``.
+        """
+
+        try:
+            self.policy.require_resource_access(
+                resource_kind=resource_kind, rights=runtime.catalog_package.rights
+            )
+        except ResourceAccessDeniedError:
+            return False
+
+        return True
+
     def artifact(
         self,
         *,
@@ -740,25 +838,15 @@ class ResourceService:
         """
 
         runtime = self.catalog_service.get_package_runtime(graph_package_id)
-        rights = runtime.catalog_package.rights
         logical_names = tuple(
             sorted(
-                (
-                    str(reference.logical_name)
-                    for reference in runtime.loaded_package.artifacts
-                )
+                str(reference.logical_name)
+                for reference in runtime.loaded_package.artifacts
             )
         )
-        available_artifacts: list[ArtifactName] = []
-
-        for logical_name in logical_names:
-            try:
-                self.policy.artifact_decision(logical_name=logical_name, rights=rights)
-            except (ResourceNotFoundError, ResourceAccessDeniedError):
-                continue
-
-            available_artifacts.append(ArtifactName(logical_name))
-
+        available_artifacts = self._available_artifact_names(
+            logical_names=logical_names, runtime=runtime
+        )
         available_kinds: list[ResourceKind] = [
             ResourceKind.INTERPRETATION_PROFILE,
             ResourceKind.MANIFEST,
@@ -767,46 +855,19 @@ class ResourceService:
         if "validationReport" in logical_names:
             available_kinds.append(ResourceKind.VALIDATION)
 
-        if "unresolvedItems" in logical_names:
-            try:
-                self.policy.require_resource_access(
-                    resource_kind=ResourceKind.UNRESOLVED, rights=rights
-                )
-            except ResourceAccessDeniedError:
-                pass
-            else:
-                available_kinds.append(ResourceKind.UNRESOLVED)
-
-        if (
-            runtime.catalog_package.package_identity.graph_type
-            is GraphType.ACADEMIC_STANDARDS
+        if "unresolvedItems" in logical_names and self._permits_resource_kind(
+            resource_kind=ResourceKind.UNRESOLVED, runtime=runtime
         ):
-            for resource_kind in (ResourceKind.RELATIONSHIP, ResourceKind.STANDARD):
-                try:
-                    self.policy.require_resource_access(
-                        resource_kind=resource_kind, rights=rights
-                    )
-                except ResourceAccessDeniedError:
-                    continue
+            available_kinds.append(ResourceKind.UNRESOLVED)
 
-                available_kinds.append(resource_kind)
-
-            if runtime.catalog_package.capabilities.has_detailed_provenance:
-                try:
-                    self.policy.require_resource_access(
-                        resource_kind=ResourceKind.STANDARD_PROVENANCE, rights=rights
-                    )
-                except ResourceAccessDeniedError:
-                    pass
-                else:
-                    available_kinds.append(ResourceKind.STANDARD_PROVENANCE)
+        available_kinds.extend(self._available_standards_kinds(runtime))
 
         if available_artifacts:
             available_kinds.append(ResourceKind.ARTIFACT)
 
         return (
             tuple(sorted(available_kinds, key=lambda value: value.value)),
-            tuple(available_artifacts),
+            available_artifacts,
         )
 
     def relationship(
