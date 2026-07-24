@@ -1,4 +1,18 @@
-"""This module builds the reviewed MCP Bundle distribution for the local STDIO server.
+"""This module builds and verifies the MCP Bundle distributed to local desktop MCP
+hosts.
+
+This module assembles the existing generic server runtime and its required
+configuration and data files into a clean MCPB staging directory. It excludes
+development-only files, rejects unsafe filesystem entries, and confirms that the MCPB
+manifest agrees with the locked Python project metadata.
+
+After staging, the module delegates manifest validation and archive creation to the
+official ``mcpb`` command. It then independently inspects the resulting archive to
+confirm that all required files are present, no unexpected or unsafe entries were added,
+and every packaged file matches the staged source byte for byte.
+
+This module only prepares the deployment package. It does not alter or implement
+curriculum, graph, comparison, search, prompt, resource, or other domain behavior.
 
 The command assembles a temporary bundle root from the repository's generic runtime
 source, locked backend project metadata, framework profiles, prompt configurations, and

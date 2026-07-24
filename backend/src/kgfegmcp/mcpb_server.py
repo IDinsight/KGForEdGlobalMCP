@@ -1,9 +1,13 @@
-"""This module runs the packaged FastMCP server over the local STDIO transport.
+"""This module provides the packaged STDIO entry point for the FastMCP server.
 
-MCP Bundle hosts execute this module as the server entry point. Application settings
-continue to come from the inherited process environment, including the explicit
-``PATHS_PROJECT_DIR`` value supplied by the bundle manifest. The ordinary application
-factory remains the single server assembly boundary.
+MCP Bundle hosts execute this module to start the application. The module intentionally
+contains no domain or server-assembly logic of its own. It delegates construction to
+the ordinary ``create_mcp`` application factory so packaged and repository-local
+execution use the same registration, bootstrap, configuration, and error boundaries.
+
+Runtime paths and other settings are inherited from the environment supplied by the
+bundle host. The completed server runs over protocol-only STDIO with the startup banner
+disabled so non-protocol output cannot interfere with MCP communication.
 """
 
 # Package Library

@@ -1,5 +1,17 @@
-"""This module runs deterministic subprocess STDIO smoke coverage for the FastMCP
-server.
+"""This module smoke-tests the real FastMCP server through a locked STDIO subprocess.
+
+This module starts the server in a separate process using the locked ``uv`` project and
+the same explicit application paths supplied by the MCP Bundle manifest. It then
+connects as an MCP client, completes the protocol handshake, and requests the published
+tools, prompts, fixed resources, and resource templates.
+
+The smoke check requires those component inventories to match the approved server
+surface exactly. A successful run also confirms that normal logging does not corrupt
+protocol stdout and that the subprocess closes cleanly when the client disconnects.
+
+The command can exercise either the repository layout or a retained MCPB staging
+directory. It is a deployment and protocol check, not a complete domain or behavioral
+test suite.
 
 The command launches the real server through the locked ``uv`` project, passes the
 application paths explicitly, completes an MCP client handshake, lists every component
