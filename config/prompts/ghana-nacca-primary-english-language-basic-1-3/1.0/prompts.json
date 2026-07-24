@@ -1,0 +1,226 @@
+{
+	"frameworkIds": [
+		"ghana-nacca-primary-english-language-basic-1-3"
+	],
+	"profileId": "ghana-nacca-primary-english-language-basic-1-3",
+	"profileVersion": "1.0",
+	"promptConfigId": "ghana-nacca-primary-english-language-basic-1-3-guidance",
+	"promptConfigSchemaVersion": "1.0",
+	"promptConfigVersion": "1.0.0",
+	"prompts": {
+		"inferredProgressionHypothesis": {
+			"counterEvidenceGuidance": {
+				"instructions": [
+					"For every proposed transition, check whether the later-grade statement merely repeats a familiar oral-language, phonics, reading, writing, or grammar context rather than clearly increasing independence, text complexity, audience awareness, accuracy, fluency, or meaning-making demand.",
+					"Treat repeated wording, printed code anomalies, same-code records, numbering inconsistencies, and explicitly unresolved parent relationships as counter-evidence or uncertainty rather than silently repairing the source.",
+					"Do not interpret the absence of a sub-strand in one grade, a check mark in the scope-and-sequence table, or a change in strand placement as proof that a skill was mastered, omitted intentionally, or taught in a fixed prerequisite order.",
+					"Where first-language knowledge, cultural familiarity, or oral participation may support English development, describe that only as contextual support unless the retrieved standards explicitly establish a curricular sequence."
+				],
+				"mode": "append"
+			},
+			"evidenceGuidance": {
+				"instructions": [
+					"Compare BASIC 1, BASIC 2, and BASIC 3 evidence using exact indicator wording, action verbs, expected independence, oral or written mode, text type, vocabulary or decoding demand, fluency or comprehension demand, audience and purpose, and hierarchy placement as separate evidence dimensions.",
+					"Use the repeated strands Oral Language, Reading, Writing, Using Writing Conventions/Grammar Usage, and Extensive Reading as organizing context, while recognizing that shared strand placement alone does not establish progression.",
+					"Look for source-supported shifts such as listening and reciting toward interpreting or composing; supported decoding toward structural analysis of words; retelling toward inference, summary, or response; simple words and sentences toward coherent paragraphs; and oral modelling toward increasingly independent language use.",
+					"Treat Listening, Speaking, Reading, and Writing as connected but distinct evidence streams. A stronger statement in one skill does not automatically prove an equivalent increase in another skill.",
+					"Preserve exact curriculum reference codes such as B3.4.9.3.2 as evidence labels, but do not treat code similarity, numerical order, or shared wording as proof of stable identity, prerequisite, or official progression."
+				],
+				"mode": "append"
+			},
+			"inferenceGuidance": {
+				"instructions": [
+					"Describe a possible progression as an LLM-inferred hypothesis about increasing independence, linguistic complexity, accuracy, fluency, comprehension, composition, audience awareness, or integration of skills; never describe it as the official teaching sequence unless the retrieved source explicitly states that sequence.",
+					"Distinguish development in decoding, vocabulary, comprehension, oral communication, writing process, grammar-in-use, and extensive reading rather than collapsing all language development into one linear scale.",
+					"Do not infer that a learner has mastered an earlier indicator merely because a later-grade indicator appears related or uses a more advanced action verb.",
+					"When a proposed progression depends on first-language transfer, cultural knowledge, or a particular classroom practice, label that reasoning as generated and state the evidence gap."
+				],
+				"mode": "append"
+			},
+			"sequencePresentationGuidance": {
+				"instructions": [
+					"Present each proposed BASIC 1-to-BASIC 2, BASIC 2-to-BASIC 3, or BASIC 1-to-BASIC 3 transition with exact source statements, source paths, the specific change in language demand, supporting evidence, counter-considerations, and a qualitative uncertainty statement.",
+					"Organize long reviews by language domain or strand so oral language, decoding and phonics, vocabulary and comprehension, fluency, writing, grammar usage, and extensive reading remain distinguishable.",
+					"When evidence supports more than one plausible route, show alternatives rather than forcing a single linear sequence across all learners or all language skills.",
+					"Use the source grade labels BASIC 1, BASIC 2, and BASIC 3 in the display and keep normalized grade numbers separate."
+				],
+				"mode": "append"
+			}
+		},
+		"studentHandbookSection": {
+			"audienceGuidance": {
+				"instructions": [
+					"Address the reader as a learner in BASIC 1, BASIC 2, or BASIC 3 and use short, encouraging sentences suited to an early-primary learner studying English as a second language.",
+					"Support confidence in listening, speaking, reading, and writing without assuming the learner's first language, home literacy environment, reading level, disability, assessment history, or access to technology.",
+					"Use the curriculum term learner and explain unfamiliar terms such as Strand, Sub-Strand, Content Standard, Indicator, Exemplar, phonics, vocabulary, fluency, or comprehension only when they are needed.",
+					"Respect approximate language, invented spelling, oral rehearsal, and developmental variation as parts of learning while still modelling clear and accurate English."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Prefer short generated examples drawn from familiar Ghanaian school and community life, such as greetings, family and friends, classroom objects, food, markets, games, festivals, transport, animals, health, safety, the environment, weather, or local places, while avoiding stereotypes and invented factual claims.",
+					"For oral-language examples, use brief original dialogues, questions, instructions, requests, presentations, songs, rhymes, or story prompts and label them as generated; do not reproduce copyrighted lyrics or imply that an invented text appears in the curriculum.",
+					"For reading examples, match the retrieved evidence: use sound blending or segmentation for phonics, word families or digraphs where relevant, short level-appropriate passages for comprehension, and age-appropriate text features for prediction and inference.",
+					"For writing examples, move from labels, words, and simple sentences toward guided paragraphs, narrative, description, opinion, or informative writing only when the selected BASIC grade and indicator support that form.",
+					"Use common Ghanaian personal names or place-neutral settings selectively, and never use a real learner's personal information."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Begin with the meaning of the retrieved indicator's action verb - such as listen, recite, identify, blend, segment, decode, retell, infer, describe, compose, revise, proofread, present, or summarise - so the learner understands what kind of language work is expected.",
+					"Connect listening, speaking, reading, and writing where useful: say or hear the language first, notice how it works, read it in context, and then use it in speech or writing without forcing every skill into every explanation.",
+					"Teach grammar through meaningful sentences, conversation, reading, and writing rather than lengthy definitions or abstract terminology, especially for BASIC 1-BASIC 3.",
+					"For comprehension, prompt the learner to use pictures, titles, prior knowledge, vocabulary, sequence, characters, facts, clues, and personal connections while distinguishing what the text says from what the learner infers.",
+					"Keep pronunciation, spelling, text length, vocabulary, handwriting, composition, and grammar expectations within the retrieved grade-level scope."
+				],
+				"mode": "append"
+			},
+			"sectionStructureGuidance": {
+				"instructions": [
+					"Use a learner-friendly structure such as: Curriculum expectation; Listen and say; Read and notice; Try it; Write or tell your response; Check and reflect. Adapt the headings when the indicator concerns only some of these skills.",
+					"Include the exact content-standard or indicator code near the source-backed expectation when available, but explain that the code is a reference label rather than a reading level or difficulty score.",
+					"Include a short generated self-check that asks the learner to demonstrate the selected action, such as reading aloud, explaining meaning, answering a question, retelling, composing a sentence, revising a draft, or using a language form in context.",
+					"When extensive reading is relevant, encourage choice, enjoyment, discussion, and a brief response to an age-appropriate book rather than reducing independent reading to a worksheet."
+				],
+				"mode": "append"
+			}
+		},
+		"studentStudySupport": {
+			"audienceGuidance": {
+				"instructions": [
+					"Use clear, warm English appropriate to the requested BASIC 1, BASIC 2, or BASIC 3 context, with short directions, visible examples, and enough repetition for an early-primary learner studying English as a second language.",
+					"Build confidence through supportive correction, oral rehearsal, repeated reading, and opportunities to try again; do not shame approximate pronunciation, invented spelling, or an incomplete first attempt.",
+					"Use the curriculum term learner and do not claim knowledge of an individual learner's ability, diagnosis, first language, assessment record, or home circumstances.",
+					"Avoid assuming access to private tutoring, printed books at home, reliable internet, a phone, or a particular Ghanaian language."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use brief generated examples from familiar school, home, and community contexts, including greetings, family, classroom objects, food, games, transport, animals, weather, safety, health, the environment, festivals, and everyday events, while avoiding stereotypes or invented local statistics.",
+					"Use low-cost materials where helpful, such as letter cards, picture cards, classroom labels, bottle tops, paper strips, a chalkboard, locally available objects, simple story pictures, or a learner-made word wall.",
+					"For sound work, clearly separate letter names, letter sounds, syllables, rhyming endings, blends, digraphs, and whole-word meaning; do not introduce a technical distinction unless it supports the retrieved indicator.",
+					"For reading and vocabulary practice, use short original texts and sentences that are decodable or level-appropriate for the selected indicator, while avoiding copyrighted passages or song lyrics.",
+					"For writing practice, provide a model or sentence frame only as temporary support and invite the learner to produce a personal or imaginative response when the source scope allows it."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Use a simple learning cycle suited to the selected indicator: hear or observe a model, join in, practise with support, try independently, receive feedback, and reflect on meaning or accuracy.",
+					"For phonics and decoding, model the exact sound or word operation, let the learner blend or segment aloud, connect the result to meaning, and then use the word in a sentence where appropriate.",
+					"For comprehension, use before-reading, during-reading, and after-reading prompts, including prediction, clarification, factual and inferential questions, sequence, retelling, and links to experience only when supported by the selected scope.",
+					"For writing, separate idea generation, drafting, revising, proofreading, and sharing when the indicator concerns writing as a process; do not demand polished spelling and punctuation during initial idea generation.",
+					"Explain grammar and writing conventions through meaningful use in speech, reading, or writing, not through memorising lengthy definitions."
+				],
+				"mode": "append"
+			},
+			"practiceGuidance": {
+				"instructions": [
+					"Balance generated practice across listening, speaking, reading, and writing as appropriate to the selected indicator rather than turning every task into written drill.",
+					"Sequence practice from imitation or supported participation toward independent use, using repetition with variation rather than repeating identical items only.",
+					"Include at least one meaning-focused task, such as choosing a suitable response, predicting, retelling, explaining a word in context, describing a picture, asking a question, or creating a sentence or short text.",
+					"When suitable, include pair or family-friendly oral practice that can also be completed alone, and provide a no-device alternative for any audio, image, or ICT suggestion.",
+					"Provide answer guidance that models an acceptable response or explains the language pattern while allowing more than one reasonable answer for open speaking, interpretation, or composition tasks; remind the learner that practice is not official proof of mastery."
+				],
+				"mode": "append"
+			}
+		},
+		"teacherGuideDraft": {
+			"assessmentGuidance": {
+				"instructions": [
+					"When source assessment evidence is available, distinguish assessment as learning, assessment for learning, and assessment of learning from any newly generated checks, observations, questions, rubrics, or records.",
+					"Align generated evidence to the retrieved indicator's action verb and to the relevant language mode: listening evidence should not be inferred only from writing, speaking should not be inferred only from silent reading, and reading comprehension should not be reduced to oral fluency alone.",
+					"Use varied formative evidence such as observation, learner talk, response to instructions, oral retelling, sound blending or segmentation, reading aloud, vocabulary use, comprehension responses, writing samples, self-reflection, peer feedback, and published work as appropriate.",
+					"Use criterion-referenced language tied to the selected indicator and avoid claiming that one generated task comprehensively measures a strand, term, reading level, language proficiency, or learner mastery.",
+					"Provide timely, specific feedback prompts that identify what the learner did successfully and the next manageable step, while keeping all generated assessment material explicitly labelled as generated."
+				],
+				"mode": "append"
+			},
+			"differentiationGuidance": {
+				"instructions": [
+					"Differentiate by text length, vocabulary support, task complexity, grouping, response mode, modelling, prompting, time, and degree of independence without silently changing the source-backed indicator.",
+					"Use scaffolding such as activating prior knowledge, pre-teaching key vocabulary, modelling aloud, using pictures or real objects, echo or choral practice, sentence frames, shared reading or writing, exemplars, and gradual removal of support.",
+					"Provide multiple ways to participate, including listening, speaking, pointing, acting, drawing, arranging cards, reading, and writing, so emerging readers, shy speakers, and learners needing additional support can contribute safely without being diagnosed or labelled.",
+					"Recognize learners' first-language knowledge and cultural experience as possible resources for meaning-making, but do not invent official translations, bilingual standards, or fixed language-transfer rules; provide English source wording separately.",
+					"Offer low-resource alternatives for any proposed audio, video, digital text, projector, printer, or device activity so differently resourced schools can address the same language goal."
+				],
+				"mode": "append"
+			},
+			"lessonStructureGuidance": {
+				"instructions": [
+					"Structure the generated lesson around an exact source-backed indicator, activation of familiar language or experience, teacher modelling, guided participation, collaborative or individual practice, independent use, feedback, and a brief reflection or application.",
+					"Integrate Listening, Speaking, Reading, and Writing when the language purpose supports integration, while keeping the primary assessed skill and evidence clear.",
+					"For reading lessons, use a suitable before-reading, during-reading, and after-reading sequence; for writing-process indicators, distinguish pre-writing, drafting, revising, proofreading or editing, and sharing or publishing.",
+					"For grammar or writing conventions, begin with meaningful oral or written examples, draw attention to the form in context, provide guided use, and return the form to communication rather than centring terminology.",
+					"Identify the exact source-backed Content Standard and Indicator separately from generated objectives, texts, questions, activities, timing, resources, differentiation, and success checks; treat exemplars as guidance rather than a mandatory script."
+				],
+				"mode": "append"
+			},
+			"pedagogyGuidance": {
+				"instructions": [
+					"Prioritize developmental, social-constructivist, participatory, thematic, and learner-centred language learning in which learners interact, make meaning, test interpretations, and use English for purposeful communication.",
+					"Teach English as a second language with respect for learners' existing linguistic and cultural resources, while preserving the curriculum's English source wording and avoiding unsupported claims about a learner's first language.",
+					"Use oral language deliberately through songs, rhymes, storytelling, dramatisation, conversation, listening comprehension, questions, instructions, requests, and presentations, with frequent opportunities for every learner to speak and listen meaningfully.",
+					"Teach early reading through developmentally appropriate phonological or phonemic awareness, phonics, blending, segmentation, word families, digraphs, vocabulary, fluency, comprehension, and meaning-making according to the selected indicator rather than using one method for every reading need.",
+					"Integrate grammar with listening, speaking, reading, and writing; model and practise correct, fluent use in everyday contexts and avoid lengthy abstract grammatical explanations for BASIC 1-BASIC 3.",
+					"Cultivate extensive reading through learner choice, book talk, independent or paired reading, and age-appropriate responses. When relevant, preserve the curriculum's stated expectation of five books per term, or fifteen per year, without inventing titles or treating a count alone as evidence of comprehension.",
+					"Use core competencies and values naturally through dialogue, collaboration, creativity, critical thinking, cultural identity, personal development, responsible digital literacy, respect, diversity, equity, teamwork, truth, and integrity without turning the language lesson into moral preaching.",
+					"Use ICT only where it adds language-learning value and is feasible, and always provide an equitable non-digital alternative."
+				],
+				"mode": "append"
+			}
+		}
+	},
+	"shared": {
+		"languageGuidance": {
+			"instructions": [
+				"Use clear Ghanaian educational English and the source term learner when the requested output language is English.",
+				"Preserve exact English source wording, curriculum reference codes, language examples, and local hierarchy terms when citing evidence.",
+				"The accepted framework is English-only: do not create official bilingual pairs, translations, or cross-language equivalents. If the requested output language is not English, label the translation as generated and retain the original English evidence where needed.",
+				"Treat the curriculum's discussion of first-language foundations as contextual educational guidance, not as a source of official translations or assumptions about any learner's home language."
+			],
+			"mode": "append"
+		},
+		"localContextGuidance": {
+			"instructions": [
+				"Prefer locally plausible contexts only when they clarify the selected English-language skill, and do not present invented Ghanaian customs, statistics, dialect features, prices, events, or regional practices as source facts.",
+				"Use familiar contexts selectively, including home, school, classroom, market, community places, food, greetings, festivals, stories, songs, games, transport, health, safety, animals, the environment, computers, and climate awareness, while respecting diversity across Ghana.",
+				"Adapt generated examples to the caller's stated setting and materials while offering low-cost alternatives such as pictures, letter or word cards, labels, locally available objects, paper, chalkboard work, peer talk, role-play, and learner-made texts.",
+				"Do not force a local context into phonics, spelling, grammar, or text analysis when a simpler neutral example would be clearer."
+			],
+			"mode": "append"
+		},
+		"outputGuidance": {
+			"instructions": [
+				"Separate the exact source-backed curriculum expectation from generated explanation, texts, examples, questions, pedagogy, practice, assessment, and synthesis.",
+				"When available, display the source path BASIC grade > Strand > Sub-Strand > Content Standard > Indicator together with the exact indicator or content-standard code.",
+				"Identify the main language skill or mode being addressed and show connections to Listening, Speaking, Reading, and Writing only when the source or generated task supports them.",
+				"Use short sections, dialogue formatting, word or sound breakdowns, sentence frames, simple tables, reading steps, or writing-process checklists when they improve clarity, while preserving accessibility in text-only clients."
+			],
+			"mode": "append"
+		},
+		"terminologyGuidance": {
+			"instructions": [
+				"Use the source hierarchy terms BASIC 1, BASIC 2, BASIC 3, Strand, Sub-Strand, Content Standard, Indicator, and Exemplar rather than replacing them with generic international labels.",
+				"Use the source strand names Oral Language, Reading, Writing, Using Writing Conventions/Grammar Usage, and Extensive Reading, preserving visible source variants when quoting exact evidence.",
+				"Describe an Exemplar as source-visible support and guidance for expected outcomes and possible teaching and learning activity, not as a separate standard, registered official activity node, or mandatory lesson prescription.",
+				"Treat curriculum reference codes such as B1.2.2.1.3 as reference labels whose segments indicate class, strand, sub-strand, content standard, and indicator; do not treat them as universally unique identities.",
+				"Use the curriculum's learning-domain labels Knowledge, Understanding and Application; Language Skills; and Attitudes and Values when discussing intended learning behaviour or assessment design."
+			],
+			"mode": "append"
+		},
+		"warningGuidance": {
+			"instructions": [
+				"Disclose that the accepted source preserves printed code and numbering anomalies and some explicit unresolved-root fallback relationships, so code or hierarchy matches may require source-path review.",
+				"Do not infer an official prerequisite or learning progression solely from BASIC grade order, curriculum code order, scope-and-sequence check marks, or the structural hasChild hierarchy.",
+				"Do not describe a generated passage, rhyme, dialogue, activity, worksheet, assessment, resource, or teaching method as NaCCA-prescribed unless retrieved evidence explicitly supports that role.",
+				"Do not treat a generated Ghanaian context, first-language bridge, pronunciation claim, learner response, reading level, or local fact as source-authored curriculum evidence.",
+				"Do not infer learner mastery, language proficiency, disability, first language, or reading age from a standards statement or generated response."
+			],
+			"mode": "append"
+		}
+	}
+}

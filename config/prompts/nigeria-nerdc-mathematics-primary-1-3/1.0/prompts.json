@@ -1,0 +1,223 @@
+{
+	"frameworkIds": [
+		"nigeria-nerdc-mathematics-primary-1-3"
+	],
+	"profileId": "nigeria-nerdc-mathematics-primary-1-3",
+	"profileVersion": "1.0",
+	"promptConfigId": "nigeria-nerdc-mathematics-primary-1-3-guidance",
+	"promptConfigSchemaVersion": "1.0",
+	"promptConfigVersion": "1.0.0",
+	"prompts": {
+		"inferredProgressionHypothesis": {
+			"counterEvidenceGuidance": {
+				"instructions": [
+					"For every proposed transition, check whether the later Primary level merely increases the number range, changes a tool or representation, repeats a topic label, or adds a written procedure without clearly increasing conceptual, strategic, or reasoning demand.",
+					"Do not treat page order, topic ordinals, repeated labels such as Addition, Subtraction, Fractions, Length, Time, Money, or Data Collection, or the structural hasChild hierarchy as proof of a source-authored prerequisite sequence.",
+					"Treat the absence of stable statement codes, source-visible editorial inconsistencies, old currency examples, arithmetic slips, duplicated numbering, and wording or table-layout ambiguity as uncertainty; preserve exact source evidence and do not silently repair it.",
+					"Where a proposed bridge crosses Themes or Sub-Themes, explain the mathematical relationship explicitly. Shared everyday contexts, resources, or evaluation formats do not by themselves establish progression."
+				],
+				"mode": "append"
+			},
+			"evidenceGuidance": {
+				"instructions": [
+					"Compare exact Performance Objectives across PRIMARY ONE, PRIMARY TWO, and PRIMARY THREE using number range, operation, representation, material or instrument, standard versus non-standard unit, expected accuracy, application context, independence, and reasoning demand as separate evidence dimensions.",
+					"Use the exact source hierarchy Grade > Theme > Sub-Theme > Topic > Performance Objective. Keep repeated Topic labels scoped to their Grade, Theme, and Sub-Theme because the visible ordinals are local table labels, not official codes or global identifiers.",
+					"Give particular attention to source-supported developments such as 1-5 through 999 and H.T.U. place value; concrete halves and quarters through equivalent and ordered fractions; small-number operations through renaming, multiplication, division, factors and multiples; and natural measures through metre, centimetre, gram, kilogram, litre, perimeter, clocks, calendars, pictograms, and mode.",
+					"Distinguish mathematical content from teacher activities, pupil activities, resources, and evaluation guides. Those source columns may provide contextual evidence, but the Academic Standards graph represents Performance Objectives and grouping structure rather than official activity, resource, or assessment nodes.",
+					"Preserve exact source terminology, symbols, units, and local grade labels when citing evidence, including PRIMARY ONE, PRIMARY TWO, PRIMARY THREE, H.T.U., open sentences, exchanging or renaming, primary measures, secondary measures, and every day statistics."
+				],
+				"mode": "append"
+			},
+			"inferenceGuidance": {
+				"instructions": [
+					"Describe every proposed sequence as an LLM-inferred hypothesis about increasing range, abstraction, representation, procedural fluency, strategic choice, measurement standardisation, application, or independence; never call it an official NERDC progression unless retrieved source text explicitly states that relationship.",
+					"Distinguish scope expansion from conceptual development. Moving from 99 to 200 or 999, adding more digits, or adding a formal algorithm may increase difficulty without proving deeper reasoning or mastery.",
+					"Allow for revisiting and parallel development across number and numeration, basic operations, algebraic processes, mensuration and geometry, and every day statistics rather than forcing all standards into one linear pathway.",
+					"Do not infer learner mastery, readiness, deficiency, or international grade equivalence from the presence or order of a Performance Objective. Label any bridge supplied by general mathematics knowledge rather than retrieved source evidence as generated."
+				],
+				"mode": "append"
+			},
+			"sequencePresentationGuidance": {
+				"instructions": [
+					"Present each proposed transition with exact source and target grade labels, Theme, Sub-Theme, Topic, Performance Objective wording, source paths, the specific change in demand, supporting evidence, counter-evidence, and a qualitative uncertainty statement.",
+					"Show changes in number range, concrete material, spoken or written representation, place value, operation, measurement unit, problem context, accuracy expectation, and learner independence in separate fields or short subsections.",
+					"When one earlier objective could plausibly support several later objectives, or several earlier objectives could support one later objective, show the alternatives instead of inventing a single mandatory path.",
+					"Use the source labels PRIMARY ONE, PRIMARY TWO, and PRIMARY THREE and keep normalized grades 1, 2, and 3 separate; explicitly disclose that the hasChild hierarchy is structural and not itself an instructional progression."
+				],
+				"mode": "append"
+			}
+		},
+		"studentHandbookSection": {
+			"audienceGuidance": {
+				"instructions": [
+					"Write for a pupil in PRIMARY ONE, PRIMARY TWO, or PRIMARY THREE using short, encouraging, age-appropriate language without assuming the pupil's prior attainment, home resources, literacy level, or access to technology.",
+					"Begin with familiar objects, actions, talk, and pictures described in words before moving to numerals, symbols, tables, algorithms, or formal units, especially for PRIMARY ONE and early PRIMARY TWO work.",
+					"Promote accuracy, checking, confidence, persistence, and willingness to explain a method, while making clear that completing one generated exercise does not prove mastery.",
+					"Support the pupil in using precise mathematical words such as more, less, equal, tens, units, hundreds, fraction, half, quarter, longer, shorter, heavier, lighter, capacity, perimeter, symmetry, pictogram, factor, and multiple when those terms fit the selected source objective."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use generated examples from familiar Nigerian or neutral everyday settings such as classrooms, homes, markets, simple shopping corners, school timetables, calendars, containers, gardens, games, travel, and sharing objects, without inventing current prices, regional facts, or social stereotypes.",
+					"Prefer source-relevant low-cost materials such as stones, beans, seeds, bottle tops, buttons, leaves, sticks, strings, cards, counters, paper shapes, abaci, clocks, calendars, rulers, balances, cups, buckets, tins, and classroom objects when they clarify the mathematics.",
+					"For money examples, use Nigerian naira and kobo notation consistently. Preserve historical source denominations exactly when quoting them, but identify them as source-era examples and do not present them as current circulating denominations or current price guidance.",
+					"Represent ideas in more than one way when useful: objects, bundles, groups, number lines, H.T.U. charts, drawings, folded paper, arrays, open sentences, equations, tables, clocks, calendars, shapes, pictograms, or short word problems. Label all added examples as generated.",
+					"Keep number ranges, fraction types, operations, units, money limits, and expected methods within the retrieved grade-specific Performance Objective."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Start from the exact source-backed action, such as sort, classify, identify, count, read, write, arrange, compare, measure, add, subtract, multiply, divide, draw, represent, collect, interpret, or apply, and explain what the pupil is expected to do.",
+					"Use a concrete-to-representational-to-symbolic flow when it fits the source: handle or group objects, say what is happening, draw or record it, then use numerals, symbols, or a written method.",
+					"For place value and operations, connect bundles, expanded form, H.T.U. columns, and conventional notation; for fractions, emphasise equal parts and collections before symbolic comparison or computation.",
+					"For measurement, compare estimates with actual measurements and explain why standard units may be needed after natural or non-standard units. For data, connect collection and arrangement to pictograms and mode only within the selected grade scope.",
+					"Invite the pupil to explain how they know, try another valid method, check accuracy, and connect the idea to an everyday activity without claiming the generated context is source-authored."
+				],
+				"mode": "append"
+			},
+			"sectionStructureGuidance": {
+				"instructions": [
+					"Use a pupil-friendly structure such as: Source expectation; What you need; Try it with objects; Say or draw what happened; Write the mathematics; Check your answer; Use it in daily life; Reflect. Adapt the headings to the selected grade and objective.",
+					"Display the exact source path Grade > Theme > Sub-Theme > Topic > Performance Objective. Do not invent a statement code, and explain that a visible topic number is only a local source label.",
+					"Include one worked example, one guided attempt, one independent attempt, and one short reflection or self-check when appropriate, while keeping every generated task inside the retrieved scope.",
+					"Where the source text or table contains an apparent typo, obsolete money example, or ambiguous wording, quote it separately, state the uncertainty, and avoid silently converting it into a corrected official statement."
+				],
+				"mode": "append"
+			}
+		},
+		"studentStudySupport": {
+			"audienceGuidance": {
+				"instructions": [
+					"Support a pupil in PRIMARY ONE, PRIMARY TWO, or PRIMARY THREE with warm, direct language and small steps, without assuming that the pupil has mastered earlier objectives or has specialist materials at home.",
+					"Use oral explanation, movement, objects, drawings, and short questions before formal notation when developmentally appropriate, and steadily help the pupil express their own reasoning.",
+					"Respect different valid strategies and response modes. Do not shame errors, equate speed with understanding, or describe a generated result as proof of mastery.",
+					"Keep the requested difficulty within the exact source objective: foundational support may simplify representation or numbers inside the source range, while extension may vary context or reasoning without importing later-grade content."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use familiar and low-cost examples involving counters, beans, seeds, bottle tops, leaves, sticks, bundles, cards, paper shapes, clocks, calendars, containers, classroom objects, and simple market or sharing situations when they fit the selected objective.",
+					"For Nigerian money examples, use naira and kobo notation. Preserve source-era denominations only when discussing the source, and clearly separate them from generated modern contexts rather than assuming they are current legal tender.",
+					"For fractions, use equal sharing, paper folding, colouring, and collections; for operations, use grouping, repeated addition or subtraction, place-value bundles, open sentences, and checking; for measurement, use both estimates and appropriate tools.",
+					"Label every invented scenario, number set, diagram description, worked example, and practice item as generated rather than official NERDC material."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Retrieve and restate the exact Performance Objective and source path before explaining it, then separate the source wording from the generated teaching explanation.",
+					"Explain one idea at a time and show the connection among objects, spoken reasoning, drawings or tables, and mathematical symbols. Use H.T.U. language for place value only when supported by the selected grade objective.",
+					"Use source terminology such as exchanging or renaming, open sentences, natural units, standard units, primary measures, secondary measures, and every day statistics, while adding a brief pupil-friendly explanation where needed.",
+					"When source wording appears inconsistent or an example appears arithmetically incorrect, do not silently correct it; identify the issue, explain the mathematically sound interpretation as generated, and preserve the original evidence separately.",
+					"End explanations with a check for understanding that asks the pupil to show, say, draw, measure, calculate, or explain rather than relying only on recall."
+				],
+				"mode": "append"
+			},
+			"practiceGuidance": {
+				"instructions": [
+					"Build practice from supported demonstration to guided work and independent application, using no more than the requested number of items and keeping all values, units, and operations inside the source scope.",
+					"Mix short oral, object-based, drawing, sorting, measuring, calculation, open-sentence, and everyday-application tasks as appropriate instead of producing only written sums.",
+					"Include opportunities to estimate, compare, explain, check accuracy, and identify an error or alternative method. Provide answers with reasoning, not only final values.",
+					"For pupils needing support, reduce the number of objects or steps, provide a worked example, use a place-value or fraction aid, and allow oral or practical responses without changing the mathematical expectation.",
+					"For extension, vary representation, ask for a justification, create a related story, or compare methods; do not jump to a later Primary level unless the caller explicitly requests cross-grade enrichment and it is labelled generated."
+				],
+				"mode": "append"
+			}
+		},
+		"teacherGuideDraft": {
+			"assessmentGuidance": {
+				"instructions": [
+					"Align every generated assessment opportunity to the exact Performance Objective and observable action, using the source Evaluation Guide as contextual evidence only when it has been retrieved from the detailed source artifact.",
+					"Collect evidence through observation, pupil talk, sorting, grouping, manipulation, drawing, reading and writing numbers, calculation, measuring, practical demonstrations, short oral questions, written work, and everyday applications as appropriate.",
+					"Assess both accuracy and reasoning. Ask pupils to explain a method, compare results, check an answer, or show why a unit or operation is suitable rather than relying only on one final response.",
+					"Use quick checks, guided practice, peer explanation, and individual follow-up to identify misconceptions early. Any checklist, rubric, quiz, or marking approach created by the model must be labelled generated, not official NERDC assessment guidance.",
+					"Do not treat performance on one task as comprehensive evidence of mastery, and do not silently score source-visible typos or obsolete currency examples as though they were current mathematical requirements."
+				],
+				"mode": "append"
+			},
+			"differentiationGuidance": {
+				"instructions": [
+					"Start from what pupils can already show with objects, speech, movement, pictures, or informal methods, and provide multiple entry points without assuming that every pupil has the same language, home experience, or prior schooling.",
+					"Differentiate through number range within the source limit, quantity of objects, representation, prompts, grouping, time, tool choice, and response mode without silently lowering or extending the selected Performance Objective.",
+					"Use low-cost and locally available alternatives for proposed resources, such as stones, seeds, bottle tops, sticks, strings, paper, containers, improvised balances, hand spans, and drawn charts, while considering hygiene and safety.",
+					"Support pupils with visual, tactile, oral, or motor needs through larger materials, high-contrast marks, partner description, accessible layouts, alternative measuring tools, extra processing time, and opportunities to respond orally or practically.",
+					"Avoid stereotypes about region, language, gender, disability, religion, household income, or market experience, and ensure that group activities give every pupil a meaningful mathematical role."
+				],
+				"mode": "append"
+			},
+			"lessonStructureGuidance": {
+				"instructions": [
+					"Structure the lesson around the exact Grade, Theme, Sub-Theme, Topic, and Performance Objective, then separate source-backed expectations from generated lesson aims, examples, activities, resources, timing, and assessment checks.",
+					"Use a sequence such as prior knowledge and oral warm-up; concrete or practical exploration; pupil description and comparison; teacher-guided representation; symbolic or written method where appropriate; everyday application; accuracy check; and reflection.",
+					"Include teacher questions and anticipated pupil actions that reveal reasoning, such as how objects were grouped, why one fraction is larger, what a digit represents, why a standard unit is useful, or how an answer can be checked.",
+					"Where the source suggests teacher and pupil activities, treat them as contextual source evidence rather than mandatory scripts. Adapt generated activities to the available classroom while preserving the selected mathematical objective.",
+					"Plan a safe alternative for cutting, liquids, coins, heavy objects, moving around the classroom, or improvised measuring tools, and avoid requiring materials or technology that are not realistically available."
+				],
+				"mode": "append"
+			},
+			"pedagogyGuidance": {
+				"instructions": [
+					"Prioritise active mathematics through sorting, classifying, counting, grouping, sharing, folding, colouring, measuring, comparing, drawing, role-play, games, shopping simulations, clock and calendar work, data collection, and pupil explanation when those actions fit the selected objective.",
+					"Move from familiar concrete objects and natural units toward pictures, charts, mathematical vocabulary, standard units, and written symbols, while revisiting meaning whenever a procedure is introduced.",
+					"Connect place value to bundles and expanded form; operations to combining, taking away, repeated addition, grouping, sharing, factors, and multiples; fractions to equal parts; and data to real classroom collections and pictograms.",
+					"Emphasise correct calculation and measurement while treating checking as a reasoning process, not only repeated drill. Invite more than one valid method before formalising a conventional procedure.",
+					"Use everyday Nigerian contexts selectively and accurately, but do not present generated prices, currency denominations, festivals, occupations, or local practices as source facts. Preserve source wording separately from generated contextualisation.",
+					"Use digital tools only when they add mathematical value and are available; always provide a non-digital route because the source pedagogy is grounded primarily in physical materials, classroom interaction, and practical activity."
+				],
+				"mode": "append"
+			}
+		}
+	},
+	"shared": {
+		"languageGuidance": {
+			"instructions": [
+				"Use clear Nigerian educational English and preserve exact visible source wording, local grade labels, Theme, Sub-Theme, Topic, Performance Objective text, mathematical symbols, and units when citing evidence.",
+				"The retained framework is English-only and the profile does not authorize bilingual source pairing. If another output language is requested, label the translation as generated and retain original English source terms where needed to protect meaning.",
+				"Use child-friendly language alongside formal mathematical vocabulary, and distinguish source-era spelling or notation from generated clarification rather than silently standardising it.",
+				"Use pupil and pupils when referring directly to the source's audience, unless the caller asks for a different inclusive term in generated prose."
+			],
+			"mode": "append"
+		},
+		"localContextGuidance": {
+			"instructions": [
+				"Prefer plausible Nigerian or neutral everyday contexts only when they illuminate the selected mathematics, and do not present invented prices, demographic facts, regional practices, or current currency information as source evidence.",
+				"Use source-relevant contexts and materials such as classroom collections, homes, markets or a classroom shop, bottle tops, beans, seeds, stones, sticks, leaves, cards, clocks, calendars, containers, rulers, balances, and pupil-collected data selectively.",
+				"Use Nigerian naira and kobo notation consistently for generated money examples. Preserve exact historical denominations when quoting the source, but clearly identify them as source-era evidence and avoid asserting that they are currently circulating.",
+				"When using holidays or national events as calendar examples, treat the date or event as generated context unless the exact source artifact has been retrieved and cited, and avoid religious or cultural assumptions about individual pupils."
+			],
+			"mode": "append"
+		},
+		"outputGuidance": {
+			"instructions": [
+				"Separate exact source-backed Grade, Theme, Sub-Theme, Topic, and Performance Objective evidence from generated explanation, pedagogy, examples, practice, assessment, or progression synthesis.",
+				"When available, display the full source path Grade > Theme > Sub-Theme > Topic > Performance Objective and exact framework, snapshot, and graph-package identities. Do not invent codes for uncoded records.",
+				"Use concise tables, labelled steps, object groupings described in words, H.T.U. layouts, number lines, open sentences, diagrams, clocks, calendars, measurement records, or pictograms when they improve clarity and remain accessible in text-only clients.",
+				"Preserve uncertainty around undated publication status, unknown source license, source-visible errors, old currency examples, and missing codes; do not make generated material appear to be an official NERDC textbook page, lesson plan, or assessment instrument."
+			],
+			"mode": "append"
+		},
+		"terminologyGuidance": {
+			"instructions": [
+				"Use the source terms 9-Year Basic Education Mathematics Curriculum for Primary 1-3, Nigerian Educational Research and Development Council (NERDC), PRIMARY ONE, PRIMARY TWO, PRIMARY THREE, Theme, Sub-Theme, Topic, and Performance Objective.",
+				"Use the exact hierarchy Grade > Theme > Sub-Theme > Topic > Performance Objective. Treat Theme, Sub-Theme, and Topic as grouping nodes and Performance Objective as the academic standard statement.",
+				"Preserve source labels including NUMBER AND NUMERATION, BASIC OPERATIONS, ALGEBRAIC PROCESSES, MENSURATION AND GEOMETRY, EVERY DAY STATISTICS, Whole Number, Fraction, Open Sentences, Primary Measures, Secondary Measures, Shapes, and Data Collection and Presentation when relevant.",
+				"Treat visible topic ordinals such as 1., 2., or 3. as local display material scoped to a Grade, Theme, and Sub-Theme, not as stable codes or global identifiers.",
+				"Preserve source mathematical terms and conventions such as exchanging or renaming, H.T.U., natural units, standard units, square corners, pictograms, mode, naira, kobo, metre, centimetre, gram, kilogram, litre, half past, quarter to, factors, and multiples."
+			],
+			"mode": "append"
+		},
+		"warningGuidance": {
+			"instructions": [
+				"Code search is unavailable because the framework has no stable statement codes. Repeated labels and visible topic ordinals must be interpreted through text and full hierarchy context, not as identifiers.",
+				"Do not infer an official prerequisite or progression solely from Primary level, table order, repeated topic names, visible numbering, or the structural hasChild hierarchy.",
+				"The Academic Standards graph excludes teacher activities, pupil activities, teaching and learning resources, and evaluation guides as node types. Local guidance may reflect patterns visible in the source PDF, but generated lessons and assessments must remain clearly labelled as generated.",
+				"Do not silently correct apparent arithmetic mistakes, old money denominations, duplicated numbering, spelling, punctuation, unit notation, or table-continuation problems in the source. Preserve the source evidence and state the uncertainty or generated correction separately.",
+				"Normalized grades are retrieval facets, an Academic Standard does not prove mastery, and text similarity or a shared topic name does not establish official equivalence with another framework."
+			],
+			"mode": "append"
+		}
+	}
+}

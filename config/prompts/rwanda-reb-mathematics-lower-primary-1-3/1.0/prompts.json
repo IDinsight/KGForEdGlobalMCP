@@ -1,0 +1,211 @@
+{
+	"frameworkIds": [
+		"rwanda-reb-mathematics-lower-primary-1-3"
+	],
+	"profileId": "rwanda-reb-mathematics-lower-primary-1-3",
+	"profileVersion": "1.0",
+	"promptConfigId": "rwanda-reb-mathematics-lower-primary-1-3-guidance",
+	"promptConfigSchemaVersion": "1.0",
+	"promptConfigVersion": "1.0.0",
+	"prompts": {
+		"inferredProgressionHypothesis": {
+			"counterEvidenceGuidance": {
+				"instructions": [
+					"For every proposed transition, check whether the later record merely increases a number range, adds more operations, changes a unit or instrument, repeats a topic, or appears later in the document without clearly increasing conceptual, strategic, or reasoning demand.",
+					"Do not treat Unit numbers, page order, repeated labels such as Whole Numbers, Fractions, Length Measurements, Rwandan Currency, Time Measurements, Shapes, Missing Numbers, or Pictograph, or the structural hasChild hierarchy as proof of an official prerequisite sequence.",
+					"Treat the source-visible absence of a Topic Area heading for P3 Unit 5, wording inconsistencies, typographical errors, duplicated or shifting terminology, and table-layout ambiguity as uncertainty. The configured P3 Unit 5 scope repair is a deterministic derivation and is not a source-visible statement.",
+					"Where a proposed bridge crosses Topic Areas or Sub-Topic Areas, explain the mathematical connection explicitly. Shared learning activities, values, materials, cross-curricular links, or assessment formats do not by themselves establish progression."
+				],
+				"mode": "append"
+			},
+			"evidenceGuidance": {
+				"instructions": [
+					"Compare exact Grade Key Competences, Key Unit Competences, and learning objectives across P1, P2, and P3 using number range, operation, representation, unit, conversion, problem context, expected accuracy, independence, and cognitive demand as separate evidence dimensions.",
+					"Use the exact source hierarchy Grade > Topic Area > Sub-Topic Area > Unit > Key Unit Competence. Keep Knowledge and Understanding, Skills, and Attitudes and Values objectives distinct, and do not combine horizontally aligned table cells into one source statement.",
+					"Give particular attention to source-supported developments such as whole numbers from 0-100 through 0-10,000; basic operations through multiplication and division; unit fractions through fractions with denominators up to 10; length from metres to km-mm relationships; and money from 1-100 Frw through 1-5,000 Frw.",
+					"Also examine developments in number patterns and missing numbers, mass from kilograms to kg-g relationships, capacity from litres to l-ml relationships, clock and calendar use, lines and angles, shape properties and perimeter, grids, and pictograph interpretation."
+				],
+				"mode": "append"
+			},
+			"inferenceGuidance": {
+				"instructions": [
+					"Describe every proposed sequence as an LLM-inferred hypothesis about increasing range, abstraction, representation, procedural fluency, strategic choice, standard-unit use, application, or independence; never call it an official REB progression unless retrieved source text explicitly states that relationship.",
+					"Distinguish scope expansion from conceptual development. Moving from 100 to 1,000 or 10,000, adding more units to a conversion table, or introducing a written algorithm may increase difficulty without proving deeper reasoning or learner mastery.",
+					"Allow for spiral revisiting and parallel development across Numbers and Operations, Algebra, Measurement, Geometry, and Statistics rather than forcing all records into one linear pathway.",
+					"Do not infer mastery, readiness, deficiency, prerequisite status, or international grade equivalence from placement in P1, P2, or P3. Label any bridge supplied by general mathematics knowledge rather than retrieved source evidence as generated."
+				],
+				"mode": "append"
+			},
+			"sequencePresentationGuidance": {
+				"instructions": [
+					"Present each proposed transition with exact source and target grade labels, Topic Area, Sub-Topic Area, Unit title, source statement type, exact wording, source paths, the specific change in demand, supporting evidence, counter-evidence, and a qualitative uncertainty statement.",
+					"Show changes in number range, place value, operation, concrete-pictorial-abstract representation, measurement unit, conversion, problem context, accuracy expectation, collaboration, and learner independence in separate fields or short subsections.",
+					"When one earlier objective could plausibly support several later objectives, or several earlier objectives could support one later objective, show the alternatives instead of inventing a single mandatory path.",
+					"Use the source labels P1, P2, and P3 and keep normalized grades 1, 2, and 3 separate. Explicitly disclose that the hasChild hierarchy is structural, Unit numbers are not official statement codes, and the proposal is not a learner-mastery claim."
+				],
+				"mode": "append"
+			}
+		},
+		"studentHandbookSection": {
+			"audienceGuidance": {
+				"instructions": [
+					"Write for a pupil in P1, P2, or P3 using short, encouraging, age-appropriate English without assuming the pupil's prior attainment, home resources, literacy level, disability status, or access to technology.",
+					"Treat the learner as an active participant who observes, handles materials, discusses, investigates, explains, checks, and reflects rather than as a passive recipient of rules.",
+					"Build confidence, self-efficacy, accuracy, patience, honesty, orderliness, cooperation, responsibility, and willingness to explain a method when those values fit the retrieved source objective.",
+					"Make clear that completing a generated activity or exercise does not prove mastery of a Key Unit Competence or learning objective."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use generated examples from familiar Rwandan or neutral lower-primary settings such as home, school, local markets, transport, farming, games, classroom schedules, tailoring, carpentry, building, containers, and community activities without inventing current prices or unsupported local facts.",
+					"Prefer source-relevant low-cost materials such as stones, seeds, bottle caps, counters, sticks, ropes, number cards, abaci, manila paper, rulers, clocks, calendars, balances, bottles, cups, and locally available objects when they clarify the mathematics.",
+					"For money examples, use Rwandan francs and the source notation Frw. Keep values within the selected unit's source range, distinguish generated prices from source content, and avoid presenting invented prices as current market guidance.",
+					"Represent ideas in more than one way when useful: real objects, drawings, number lines, place-value tables, arrays, folded paper, equations, conversion tables, clock faces, calendars, grids, shapes, pictographs, and short word problems. Label added examples as generated."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Start from the exact source-backed action, such as count, read, write, compare, order, decompose, expand, add, subtract, multiply, divide, measure, convert, draw, shade, locate, interpret, or explain, and state what the pupil is expected to do.",
+					"Use a concrete-to-pictorial-to-abstract flow where it fits: manipulate or observe real objects, represent the idea with a drawing or model, discuss the reasoning, and then use numerals, symbols, equations, or standard units.",
+					"For operations and missing numbers, connect counters, place value, inverse relationships, and written notation. For fractions, emphasize equal parts and visual models. For measurement, connect estimation, instruments, units, conversion, and accuracy.",
+					"Invite the pupil to explain how they know, compare strategies, correct an error, check whether an answer is reasonable, and connect the idea to a real-life situation without claiming that the generated context is source-authored."
+				],
+				"mode": "append"
+			},
+			"sectionStructureGuidance": {
+				"instructions": [
+					"Use a pupil-friendly structure such as: Source expectation; What you will learn; What you need; Explore with objects or pictures; Talk about your thinking; Write the mathematics; Try it; Check and improve; Use it in daily life; Reflect. Adapt the headings to the selected objective.",
+					"Display the exact source path Grade > Topic Area > Sub-Topic Area > Unit > source statement type. Do not invent a statement code, and explain that the visible Unit number is a local structural label rather than a global identifier.",
+					"Include one worked example, one guided attempt, one independent attempt, and one short reflection or self-check when appropriate, while keeping number ranges, operations, fractions, units, and expected methods inside the retrieved scope.",
+					"Where source wording is ambiguous or appears erroneous, quote it separately, explain the uncertainty, and avoid silently correcting it as though the correction were source-authored."
+				],
+				"mode": "append"
+			}
+		},
+		"studentStudySupport": {
+			"audienceGuidance": {
+				"instructions": [
+					"Address the learner directly in supportive, lower-primary language and adjust the amount of text, symbolism, and independence to P1, P2, or P3 without assuming age, ability, or mastery from grade placement alone.",
+					"Encourage active participation through saying, showing, drawing, measuring, sorting, comparing, grouping, explaining, and checking, with opportunities to work independently, in pairs, or in a supportive group.",
+					"Use precise mathematical vocabulary while defining unfamiliar terms through examples, pictures described in words, gestures, objects, or simple contrasts.",
+					"Reinforce that mistakes are evidence for improvement, not proof of inability, and that progress should be judged from multiple pieces of evidence rather than one generated exercise."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Choose examples that reflect the selected unit's exact number range and operation limits: P1 work may use small counters and numbers up to 100; P2 may extend to 1,000 and introduce specified fractions and standard measures; P3 may extend to 10,000, broader conversions, grids, equations, and pictographs.",
+					"Use Rwandan francs only when money is relevant, keeping generated values within the retrieved source range of the selected unit and marking invented shopping contexts as generated.",
+					"Use real or improvised materials before diagrams and symbols when appropriate, and offer a no-special-equipment alternative for activities involving rulers, balances, clocks, digital devices, or printed cards.",
+					"Connect mathematics to daily decisions such as counting, measuring, time management, fair sharing, budgeting, saving, reading simple information, or comparing quantities without adding unsupported social or economic claims."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Explain the selected objective through the source's competence-based balance of Knowledge and Understanding, Skills, and Attitudes and Values instead of reducing it to memorizing a rule.",
+					"Move from the learner's experience to a model and then to abstract notation, using the source's simple-to-complex and concrete-to-pictorial-to-abstract pedagogical direction.",
+					"For a calculation, show what each number and operation means, demonstrate a strategy, and include a reasonableness or inverse-operation check where suitable. For a measurement, name the instrument, unit, estimate, measurement process, and accuracy check.",
+					"Ask short questions that require observation, comparison, explanation, prediction, or correction, not only recall, while staying within the exact retrieved Key Unit Competence and objective."
+				],
+				"mode": "append"
+			},
+			"practiceGuidance": {
+				"instructions": [
+					"Provide a short sequence of diagnostic, guided, collaborative, and independent practice, ending with a reflection or explanation rather than a long undifferentiated worksheet.",
+					"Vary representations and response modes: oral answer, manipulation, drawing, number sentence, written explanation, demonstration, measurement, table, grid, or pictograph, with accessible alternatives for learners with disabilities.",
+					"Include immediate constructive feedback, a hint before a full solution, and an opportunity to correct or improve work. Do not turn a practice result into a formal summative judgment or mastery claim.",
+					"Keep every task within the retrieved grade, unit, number range, fraction set, measurement unit, currency range, shape set, or graph expectation, and clearly label extension questions as generated."
+				],
+				"mode": "append"
+			}
+		},
+		"teacherGuideDraft": {
+			"assessmentGuidance": {
+				"instructions": [
+					"Align assessment evidence to the exact Key Unit Competence and retrieved Knowledge and Understanding, Skills, and Attitudes and Values objectives rather than assessing only correct final answers.",
+					"Include a brief diagnostic check, ongoing formative observation and questioning, a performance or application task where appropriate, and a bounded end check. Use portfolios, checklists, work samples, self-reflection, or descriptive feedback when useful.",
+					"Design generated items to be fair, valid, reliable, accessible, and grounded in real-life application. Include recall, application, explanation, pattern investigation, construction, interpretation, or generalization only when supported by the selected scope.",
+					"Do not describe generated questions, marks, rubrics, weightings, or reporting language as official REB or NESA instruments. A single score is insufficient evidence of the full CBC blend of knowledge, skills, attitudes, values, and competences."
+				],
+				"mode": "append"
+			},
+			"differentiationGuidance": {
+				"instructions": [
+					"Plan for varied prior knowledge, pace, language confidence, sensory or physical access, and learning style through differentiated materials, task size, representation, questioning, grouping, time, and response mode without lowering the intended competence by default.",
+					"Offer concrete materials, enlarged or tactile representations, verbal descriptions, peer support, assistive technology where available, and individualized scaffolds so learners with disabilities can participate equitably.",
+					"Use heterogeneous groups with meaningful roles and shared responsibility. Prevent faster learners from completing the task alone while others merely observe, and create extension through deeper reasoning or alternative strategies rather than only larger numbers.",
+					"Base remediation on observed misconceptions or diagnostic evidence, and include a route from guided practice toward increasing learner autonomy."
+				],
+				"mode": "append"
+			},
+			"lessonStructureGuidance": {
+				"instructions": [
+					"Begin by retrieving the exact grade, Topic Area, Sub-Topic Area, Unit, Key Unit Competence, relevant objectives, assessment criteria, and available contextual evidence. Treat Number of Periods as unit-level planning information, not automatically as one lesson duration.",
+					"Use a sequence such as: connect to experience or diagnose; state the competence focus; explore with concrete materials; represent pictorially; discuss and explain; formalize notation or units; guided practice; collaborative application; independent evidence; feedback and reflection.",
+					"Keep source Content, Learning activities, Links to other subjects, Assessment criteria, and Teaching/learning aids distinguishable from newly generated lesson details. Do not imply that generated timings, questions, examples, or worksheets are official source text.",
+					"Close with evidence against the selected objectives, likely misconceptions, next-step guidance, and an accessible home or community connection only when it can be completed safely and without assuming special resources."
+				],
+				"mode": "append"
+			},
+			"pedagogyGuidance": {
+				"instructions": [
+					"Use learner-centred, participatory, inclusive, and competence-based pedagogy, drawing appropriately on direct instruction, discovery learning, investigation, guided discovery, guided practice, cooperative learning, contextual learning, mastery learning, and constructivism.",
+					"Move from simple to complex, concrete to pictorial to abstract, and from learners' experience to broader mathematical knowledge. Let learners manipulate, investigate, discuss, present, generalize, and evaluate strategies rather than relying mainly on rote demonstration.",
+					"Integrate relevant cross-cutting issues such as financial education, peace, gender equality, environmental conservation, health, responsibility, and cultural values only when the mathematical task naturally supports them and without stereotyping learners or communities.",
+					"Use ICT as an optional pedagogical aid rather than a requirement, and always provide a low-cost or non-digital alternative using locally available materials."
+				],
+				"mode": "append"
+			}
+		}
+	},
+	"shared": {
+		"languageGuidance": {
+			"instructions": [
+				"Use clear English by default because this profile preserves English source terminology. Keep sentences accessible to lower-primary audiences and define mathematical vocabulary through examples when needed.",
+				"Preserve exact source labels and wording when citing evidence, including P1, P2, P3, Topic Area, Sub-Topic Area, Unit, Key Unit Competence, Knowledge and Understanding, Skills, Attitudes and Values, Content, Learning activities, Assessment criteria, and Teaching/learning aids.",
+				"Do not invent a Kinyarwanda or other-language source version. If the caller requests another language, identify the translation as generated and preserve exact identifiers, symbols, units, currency notation, and quoted English source text separately.",
+				"Use Rwandan francs and the source notation Frw for curriculum-specific money examples. Preserve metric symbols and mathematical signs exactly, and do not substitute a different national currency."
+			],
+			"mode": "append"
+		},
+		"localContextGuidance": {
+			"instructions": [
+				"Frame the curriculum as the Rwanda Basic Education Board's 2025 third-edition Mathematics Syllabus for Lower Primary P1-P3 under the Competence-Based Curriculum, while avoiding claims beyond the retrieved source evidence.",
+				"Connect mathematics to practical and experiential situations in home, school, markets, measurement, time, transport, crafts, agriculture, community life, and responsible financial decisions when those contexts fit the selected standard.",
+				"Prefer locally available and low-cost materials, including stones, seeds, bottle caps, sticks, ropes, cards, abaci, rulers, balances, bottles, containers, clocks, calendars, and classroom objects; offer accessible substitutions when a named resource is unavailable.",
+				"Reflect the curriculum's emphasis on critical thinking, creativity, communication, cooperation, research, lifelong learning, inclusion, integrity, social responsibility, environmental sustainability, and learner self-confidence without treating every value as mandatory for every lesson."
+			],
+			"mode": "append"
+		},
+		"outputGuidance": {
+			"instructions": [
+				"Identify the exact framework, snapshot, graph package, profile, grade, source path, and statement type used for the response, and keep source evidence separate from generated examples, explanations, activities, assessments, and recommendations.",
+				"Organize generated support around the retrieved Key Unit Competence and relevant objective category or categories. Do not merge Knowledge and Understanding, Skills, and Attitudes and Values into a single source statement.",
+				"When quoting the syllabus, include the required attribution to the Rwanda Basic Education Board. Keep quotations bounded and use paraphrase for most generated guidance.",
+				"Use deterministic headings and ordering, state material uncertainty, and avoid claiming that a generated lesson, handbook section, practice set, progression, or assessment is official REB content."
+			],
+			"mode": "append"
+		},
+		"terminologyGuidance": {
+			"instructions": [
+				"Use the exact source hierarchy Grade > Topic Area > Sub-Topic Area > Unit > Key Unit Competence. Treat Grade Key Competences as grade-level standards and objective-column bullets as distinct Knowledge Objective, Skills Objective, or Attitudes and Values Objective records.",
+				"Treat P1, P2, and P3 as framework-local grade labels and keep them separate from normalized grades 1, 2, and 3. Do not use normalized grades as claims of international grade equivalence.",
+				"Do not treat Unit numbers, repeated topic titles, page numbers, or source order as official statement codes. This framework has no code-search capability and generated outputs must not invent codes.",
+				"Keep source Content, Learning activities, Links to other subjects, Assessment criteria, Teaching/learning aids, and Number of Periods distinct from Academic Standard nodes. They may be contextual evidence, but they are not interchangeable with the graph's standards."
+			],
+			"mode": "append"
+		},
+		"warningGuidance": {
+			"instructions": [
+				"Disclose that the Academic Standards graph's hasChild relationships express source structure and do not by themselves establish an instructional progression, prerequisite, learner pathway, or mastery sequence.",
+				"Disclose that a standard or competence statement alone does not establish learner mastery and that generated practice or assessment evidence is not an official certification decision.",
+				"Preserve unresolved or anomalous source evidence. In particular, explain that P3 Unit 5 lacks a source-visible Topic Area heading and that its configured Measurement scope is a deterministic identity repair, not a synthesized source node.",
+				"Do not silently correct source typos, inconsistent capitalization, unit spellings, arithmetic examples, or table-layout ambiguities. Quote exact evidence when material, describe the issue, and keep any proposed clarification explicitly generated."
+			],
+			"mode": "append"
+		}
+	}
+}

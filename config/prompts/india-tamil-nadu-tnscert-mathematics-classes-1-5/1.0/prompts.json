@@ -1,0 +1,221 @@
+{
+	"frameworkIds": [
+		"india-tamil-nadu-tnscert-mathematics-classes-1-5"
+	],
+	"profileId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
+	"profileVersion": "1.0",
+	"promptConfigId": "india-tamil-nadu-tnscert-mathematics-classes-1-5-guidance",
+	"promptConfigSchemaVersion": "1.0",
+	"promptConfigVersion": "1.0.0",
+	"prompts": {
+		"inferredProgressionHypothesis": {
+			"counterEvidenceGuidance": {
+				"instructions": [
+					"For every proposed transition, check whether the later Class statement merely changes the number range, object set, representation, unit, or written format without clearly increasing conceptual, strategic, or reasoning demand.",
+					"Do not treat a blank Class cell, a new Curricular Goal in Classes 3-5, or the absence of an intermediate Content item as evidence that an idea was mastered, intentionally omitted, or taught in a fixed prerequisite order.",
+					"Treat the proposed-draft status, uncoded Content leaves, partial code coverage, the authored code surface C 1.5, and any wording or table-layout ambiguity as uncertainty rather than silently correcting or completing the source.",
+					"Where a proposed connection crosses Curricular Goals, explain the mathematical relationship explicitly; shared topics such as number, shape, measurement, data, money, or problem solving do not by themselves establish a source-authored progression."
+				],
+				"mode": "append"
+			},
+			"evidenceGuidance": {
+				"instructions": [
+					"Compare exact Class-1 through Class-5 Content statements using grade scope, action, quantity range, operation, representation, material or tool, mathematical vocabulary, expected independence, problem context, and reasoning demand as separate evidence dimensions.",
+					"Use the source hierarchy Curricular Goal > Competency > Content while keeping Class applicability separate as scope metadata; Class is not an additional graph node or hierarchy level.",
+					"Give particular attention to source-supported shifts from bodily movement, sensing, concrete material, observation, spoken description, and comparison toward estimation, mental computation, symbolic representation, written calculation, justification, generalisation, and independent problem solving.",
+					"Trace possible conceptual bridges carefully across the two source sections: initial number, shape, measurement, time, money, data, and computational-thinking experiences in Classes 1-2; and whole-number operations, fractions, geometry, measurement, data, patterns, puzzles, and systematic reasoning in Classes 3-5.",
+					"Preserve exact CG and competency code surfaces as evidence labels, but do not treat code similarity, numerical order, canonicalised punctuation, or a shared Competency row as proof of stable identity, prerequisite, or official progression."
+				],
+				"mode": "append"
+			},
+			"inferenceGuidance": {
+				"instructions": [
+					"Describe every proposed sequence as an LLM-inferred hypothesis about increasing abstraction, range, representation, fluency, strategic choice, explanation, or independence; never call it an official TNSCERT progression unless retrieved source text explicitly states that sequence.",
+					"Distinguish conceptual development from procedural expansion. Larger numbers, more operations, standard units, or written algorithms may increase scope without necessarily demonstrating deeper reasoning.",
+					"Allow for revisiting, branching, and parallel development across number sense, operations, fractions, geometry, measurement, time, money, data, patterns, and computational thinking rather than forcing one linear pathway.",
+					"Do not infer learner mastery, readiness, or deficiency from the presence of a later-Class Content statement, and label any bridge supplied by general mathematics knowledge rather than retrieved evidence as generated."
+				],
+				"mode": "append"
+			},
+			"sequencePresentationGuidance": {
+				"instructions": [
+					"Present each proposed transition with the exact source and target Class labels, Curricular Goal, Competency, Content wording, source paths, the specific change in demand, supporting evidence, counter-evidence, and a qualitative uncertainty statement.",
+					"Show changes in concrete experience, oral expression, representation, number or measurement range, strategy, symbolic procedure, problem context, and reasoning in separate fields or short subsections.",
+					"When more than one plausible path exists, show alternatives and explain what evidence would be needed to choose among them rather than creating a single mandatory sequence.",
+					"Use the source labels Class-1 through Class-5 and keep normalized grade numbers separate; explicitly disclose that the structural hasChild hierarchy is not itself an instructional progression."
+				],
+				"mode": "append"
+			}
+		},
+		"studentHandbookSection": {
+			"audienceGuidance": {
+				"instructions": [
+					"Write for a learner in Class-1 through Class-5 using warm, confidence-building language and a level of reading demand appropriate to the requested Class without assuming the learner's prior attainment or home resources.",
+					"For Classes 1-2, favour short oral directions, pictures described in words, movement, handling objects, and adult-supported conversation; for Classes 3-5, gradually support more independent reading, recording, calculation, and explanation.",
+					"Value the learner's own spoken explanation before introducing formal mathematical vocabulary, while helping the learner refine words such as more, less, equal, near, far, pattern, fraction, angle, perimeter, estimate, and data.",
+					"Promote a positive mathematical identity, curiosity, persistence, and willingness to try another method; never describe a generated response or self-check as proof of mastery."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use generated examples from familiar school and everyday contexts in Tamil Nadu or neutral Indian settings, such as classroom objects, home-to-school routes, local maps, markets, buses or railway stations, clocks, calendars, containers, gardens, games, price lists, bills, and simple surveys, without inventing local facts or current prices.",
+					"Use source-relevant low-cost materials such as leaves, seeds, beads, pebbles, buttons, paper folds, grids, dot paper, mirrors, cups, containers, measuring tape, simple balances, tally marks, toys, and craft materials when they clarify the idea.",
+					"For money examples, preserve the source's Indian rupee notation such as ₹ and Rs, keep amounts inside the selected Class scope, and do not invent exchange rates, inflation data, or mandatory market prices.",
+					"Represent ideas in more than one way when useful: bodily movement, objects, drawings, spoken descriptions, number lines, arrays, tables, pictographs, bar graphs, maps, equations, or written calculations; label all added examples as generated.",
+					"For fractions and operations, follow the source preference for activity and material before algorithms, and use multiple approaches before presenting a conventional procedure when the selected Content supports that move."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Begin with the exact source-backed action, such as observe, describe, distinguish, group, count, represent, compare, estimate, measure, construct, interpret, reason, or solve, and explain what the learner is expected to do.",
+					"Use the source's learning movement when appropriate: bodily sensing and material handling; observation and spoken description; estimation and mental work; then pictures, notation, and symbolic or written arithmetic.",
+					"Help the learner make reasoning clear to self and others by asking how they know, what they noticed, whether another method works, and how they can check the answer.",
+					"Keep number ranges, fraction types, operations, units, time conventions, money amounts, shapes, graph types, and expected independence inside the retrieved Class-specific Content scope.",
+					"Do not present one textbook method as the only correct method when several mathematically valid strategies fit the source expectation."
+				],
+				"mode": "append"
+			},
+			"sectionStructureGuidance": {
+				"instructions": [
+					"Use a learner-friendly structure such as: Source expectation; Notice or explore; Say, draw, or make it; Work it out; Explain your thinking; Try another way; Check and reflect. Adapt the headings to the selected Class and Content.",
+					"Display the exact Class scope and the source path Curricular Goal > Competency > Content. Include a CG or Competency code when available, while explaining that many Content statements are intentionally uncoded leaves.",
+					"Include a short generated self-check that asks for a demonstration, representation, estimate, comparison, explanation, or solution rather than answer-only recall.",
+					"Where the topic permits multiple answers or methods, provide success criteria that value clear reasoning, appropriate representation, and a sensible check as well as correctness."
+				],
+				"mode": "append"
+			}
+		},
+		"studentStudySupport": {
+			"audienceGuidance": {
+				"instructions": [
+					"Use clear, encouraging English appropriate to the requested Class-1 through Class-5 context, and do not assume the learner's first language, assessment history, access to tutoring, or access to digital devices.",
+					"Create a safe, low-pressure study experience that treats questions, approximations, and errors as useful evidence of thinking rather than as reasons for shame.",
+					"Encourage the learner to speak, listen, handle, draw, estimate, calculate, and explain as appropriate, because spoken mathematical language and class discussion are central to this framework.",
+					"Match the amount of independence to the selected Class: more adult or peer-supported activity in Classes 1-3 and gradually more independent work in Classes 4-5."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Choose generated examples that fit the exact Class-scoped Content and use plausible everyday settings such as arranging objects, sharing equally, measuring with a hand span or scale, reading a clock, planning a route, comparing containers, using a price list, recording travel modes, or making patterns.",
+					"Use low-cost manipulatives and household or classroom objects first when the mathematical idea benefits from them, then connect the activity to drawings, words, mental strategies, and symbols.",
+					"Use Indian rupees for money tasks and source spellings and conventions such as metre, centimetre, millimetre, litre, millilitre, kilogram, gram, railway time, and 12-hour or 24-hour clock only when supported by the selected Class Content.",
+					"Avoid silently advancing to a later-Class algorithm, unit conversion, number range, fraction operation, graph type, or geometric vocabulary merely because it would make the example easier to generate."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Explain ideas through the framework's preferred sequence: games or meaningful activity with concrete material, estimation and description, mental reasoning, and only then symbolic arithmetic when the selected Content supports it.",
+					"Use the learner's own words as a starting point and introduce precise mathematical vocabulary by connecting it to what the learner can see, move, compare, draw, or calculate.",
+					"Show multiple valid strategies for operations and problem solving, compare what each strategy makes easier, and explain why a method works rather than presenting steps for copying alone.",
+					"For Classes 1-2, keep problem solving primarily oral, visual, and activity-based; from Class-3 onward, add written problems and records gradually while retaining discussion and hands-on reasoning.",
+					"Include estimation or a reasonableness check where suitable, and separate exact source expectations from generated teaching explanations."
+				],
+				"mode": "append"
+			},
+			"practiceGuidance": {
+				"instructions": [
+					"Balance generated practice across noticing, oral explanation, concrete or visual representation, mental computation, estimation, written calculation, application, and reflection rather than offering drill alone.",
+					"Include at least one task that permits more than one strategy, asks the learner to explain or compare methods, or invites creation of a pattern, example, puzzle, route, arrangement, or data display when suitable.",
+					"Sequence practice from supported pair or small-group exploration toward individual work, especially in Classes 1-3, while allowing additional time and representations for learners who need them.",
+					"Provide answer guidance that discusses reasoning and acceptable alternatives; do not use one generated answer method as the sole success criterion unless the source explicitly requires it.",
+					"Keep all quantities, operations, units, representations, and written demands inside the selected Content's Class scope and remind the learner that practice performance is not official evidence of mastery."
+				],
+				"mode": "append"
+			}
+		},
+		"teacherGuideDraft": {
+			"assessmentGuidance": {
+				"instructions": [
+					"Frame assessment principally as assurance that every child is developing sustainable numeracy, mathematical thinking, and expression, rather than reducing the lesson to marks or one end-of-lesson score.",
+					"Align generated observations and tasks to the exact Class-scoped Content action, and collect evidence through conversation, activity, manipulation, drawing, estimation, mental methods, written work, explanation, and problem solving as appropriate.",
+					"Use a portfolio-style record to notice each learner's trajectory across terms and competencies when suitable, while making clear that any proposed checklist, rubric, or recording format is generated rather than an official source artifact.",
+					"Observe how learners reason and express their thinking, including partially successful approaches and alternative methods, rather than expecting one right answer obtained by one textbook procedure.",
+					"Use meaningful lived-experience problems, timely feedback, self-reflection, and peer discussion while avoiding claims that one generated task comprehensively measures a Curricular Goal, Competency, Class, or learner."
+				],
+				"mode": "append"
+			},
+			"differentiationGuidance": {
+				"instructions": [
+					"Design a classroom in which children feel safe, comfortable, and free to explore, speak, make, draw, and revise their ideas without public embarrassment.",
+					"Differentiate through materials, number ranges within the source scope, question prompts, representation, grouping, language support, time, and response mode without silently lowering or extending the selected mathematical expectation.",
+					"Use pair and group work, especially pairs and threes in Classes 1-3, before moving toward greater individual independence in Classes 4-5; ensure each learner still has an opportunity to explain personal reasoning.",
+					"Offer low-resource and accessible alternatives for every proposed tool or activity, using commonly available objects, tactile materials, enlarged visuals, oral response, movement, or peer support as appropriate.",
+					"Build from learners' prior experiences and spoken language without stereotyping family, region, language, disability, gender, income, or access to technology."
+				],
+				"mode": "append"
+			},
+			"lessonStructureGuidance": {
+				"instructions": [
+					"Structure the draft around a meaningful situation or puzzle, activation of prior experience, game or hands-on exploration, learner conversation, noticing and estimation, connection among representations, mental strategy, symbolic or written work when appropriate, independent application, and reflection.",
+					"For Classes 1-2, give priority to safety, bodily sensing, concrete objects, stories, conversation, drawing, singing, play, and craft; for Classes 3-5, retain activity while gradually increasing arithmetic fluency, written recording, measurement, spatial reasoning, and independent problem solving.",
+					"Identify the exact source-backed Class, Curricular Goal, Competency, and Content separately from generated objectives, examples, materials, questions, timing, and assessment checks.",
+					"Plan questions that reveal confusion early and invite learners to describe what they notice, compare approaches, justify a choice, estimate a result, and explain how they checked it.",
+					"Treat the source's framework-wide pedagogical and assessment text as contextual guidance, not as proof that a generated activity, worksheet, lesson sequence, or assessment instrument is TNSCERT-prescribed."
+				],
+				"mode": "append"
+			},
+			"pedagogyGuidance": {
+				"instructions": [
+					"Prioritise an activity medium in which mathematical content is integrated into conversation, story narration, play with toys and objects, drawing, singing, movement, games, puzzles, and craft rather than taught only as isolated symbolic rules.",
+					"Follow the source emphasis on concrete experience before abstraction: bodily movement and sensing, material handling, observing and noticing, spoken expression, estimation, mental arithmetic, and then symbolic arithmetic when developmentally and curricularly appropriate.",
+					"Use class discussion to understand learners' confusions and help them make reasoning clear to themselves and others; give the child's language precedence while steadily developing accurate mathematical vocabulary.",
+					"Invite multiple approaches to addition, subtraction, multiplication, division, measurement, spatial tasks, data, and puzzles before introducing or privileging a standard written procedure.",
+					"Use real-life problem contexts, systematic listing, pattern finding, estimation, mapping, data representation, and computational-thinking tasks to develop flexible problem solving rather than routine execution alone.",
+					"Protect learner confidence and positive attitudes toward mathematics, and treat productive struggle as compatible with support, collaboration, and timely teacher intervention.",
+					"Use digital tools only when they add mathematical value and are feasible, and always provide a non-digital route because the source pedagogy does not depend on specialist technology."
+				],
+				"mode": "append"
+			}
+		}
+	},
+	"shared": {
+		"languageGuidance": {
+			"instructions": [
+				"Use clear Indian educational English and preserve the source's exact English wording, Class labels, CG and Competency codes, mathematical notation, units, and rupee notation when citing evidence.",
+				"The retained framework source is English-only and the profile does not authorize bilingual source pairing. If another output language is requested, label the translation as generated and retain original English source terms where necessary to protect meaning.",
+				"Use child-friendly everyday language before or alongside formal mathematical vocabulary, reflecting the source emphasis on spoken expression and classroom discussion."
+			],
+			"mode": "append"
+		},
+		"localContextGuidance": {
+			"instructions": [
+				"Prefer plausible Tamil Nadu or neutral Indian everyday contexts only when they illuminate the selected mathematics, and do not present invented prices, travel times, demographic data, customs, or regional statistics as source facts.",
+				"Use locally and source-relevant materials and situations such as leaves, seeds, beads, pebbles, buttons, paper folding, local maps, home-to-school routes, markets, buses or railway stations, calendars, clocks, containers, simple balances, price lists, bills, and classroom surveys selectively.",
+				"Use ₹ or Rs consistently for generated money examples, preserve source amount limits, and never substitute a foreign currency or fabricate current market information."
+			],
+			"mode": "append"
+		},
+		"outputGuidance": {
+			"instructions": [
+				"Separate exact source-backed Curricular Goal, Competency, and Content evidence from generated explanation, pedagogy, examples, practice, assessment, and synthesis.",
+				"When available, display the source path Curricular Goal > Competency > Content together with the Class-1 through Class-5 scope; do not display Class as an invented hierarchy node.",
+				"Use concise tables, labelled steps, diagrams described in words, arrays, number lines, grids, maps, pictographs, bar graphs, or worked examples when they improve clarity and remain accessible in text-only clients.",
+				"Preserve the document's Proposed Draft status and avoid language implying final adoption, mandatory textbook sequencing, or official learner attainment."
+			],
+			"mode": "append"
+		},
+		"terminologyGuidance": {
+			"instructions": [
+				"Use the source terms Tamil Nadu Curriculum Framework 2025, Proposed Draft Syllabus, Curricular Goal, Competency, Content, Class-1, Class-2, Class-3, Class-4, and Class-5 rather than replacing them with generic international labels.",
+				"Treat CG-1 through CG-5 and C-coded Competencies as source-visible grouping references. Preserve the authored surface C 1.5 when quoting it, while recognising C-1.5 as its configured canonical lookup form.",
+				"Describe Content as an uncoded, Class-scoped leaf expectation beneath one Competency. Class applicability is metadata on Content and is not an additional hierarchy level.",
+				"Preserve source-specific mathematical terminology and conventions including Indo-Arabic numerals, ₹ and Rs, railway time or 24-hour clock, metre and centimetre spellings, hand span, cubit, pace, cups, containers, and simple balance when relevant."
+			],
+			"mode": "append"
+		},
+		"warningGuidance": {
+			"instructions": [
+				"Disclose that this is a 2025 Proposed Draft and do not present generated materials as final TNSCERT policy, adopted syllabus requirements, or official classroom resources.",
+				"Code search is partial: Curricular Goals and Competencies are coded, while Content leaves are uncoded and identified through their exact Curricular Goal, Competency, and Class scope. Code matches are not official equivalence evidence.",
+				"Do not infer an official prerequisite or learning progression solely from Class order, table position, code order, or the structural hasChild hierarchy.",
+				"The Academic Standards graph excludes Pedagogical Approaches and Assessment Strategies as node types. Local prompt guidance may reflect those framework-wide source sections, but every newly generated activity, lesson, portfolio format, or assessment task must remain labelled as generated.",
+				"Do not silently correct source wording, authored code punctuation, table continuations, or apparent editorial inconsistencies; preserve source evidence and state uncertainty when meaning is ambiguous."
+			],
+			"mode": "append"
+		}
+	}
+}

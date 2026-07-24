@@ -1,0 +1,208 @@
+{
+	"frameworkIds": [
+		"ghana-nacca-primary-mathematics-basic-4-6"
+	],
+	"profileId": "ghana-nacca-primary-mathematics-basic-4-6",
+	"profileVersion": "1.0",
+	"promptConfigId": "ghana-nacca-primary-mathematics-basic-4-6-guidance",
+	"promptConfigSchemaVersion": "1.0",
+	"promptConfigVersion": "1.0.0",
+	"prompts": {
+		"inferredProgressionHypothesis": {
+			"counterEvidenceGuidance": {
+				"instructions": [
+					"For every proposed transition, check whether the later-grade statement merely repeats a topic, changes representation, or adds a larger number range without clearly increasing conceptual or cognitive demand.",
+					"Treat missing intermediate standards, editorial duplication, reused codes, and same-code/different-content records as counter-evidence or uncertainty rather than repairing the sequence silently.",
+					"Where a proposed connection crosses strands or sub-strands, explain why it is a mathematical connection and not evidence of a source-authored progression path."
+				],
+				"mode": "append"
+			},
+			"evidenceGuidance": {
+				"instructions": [
+					"Compare Basic 4, Basic 5, and Basic 6 evidence using exact indicator wording, action verbs, number ranges, representations, operations, local grade context, and hierarchy placement as separate evidence dimensions.",
+					"Use the repeated B4-B6 strands—Number, Algebra, Geometry and Measurement, and Data—as organizing context, while recognizing that shared strand placement alone does not establish progression.",
+					"Give particular weight to shifts from concrete or pictorial work toward symbolic, generalized, multi-step, justificatory, investigative, or data-interpretive work when the retrieved statements explicitly support those shifts.",
+					"Preserve exact curriculum reference codes such as B4.1.3.2.1 as evidence labels, but do not treat code similarity or numeric order as proof of identity, prerequisite, or progression."
+				],
+				"mode": "append"
+			},
+			"inferenceGuidance": {
+				"instructions": [
+					"Describe a possible progression as a reasoned hypothesis about increasing scope, representation, strategy, or cognitive demand; never describe it as the official teaching order unless the retrieved source explicitly states that order.",
+					"Distinguish conceptual development from simple increases in calculation size, procedural complexity, or grade label.",
+					"Do not infer that a learner has mastered an earlier indicator merely because a later-grade indicator appears related."
+				],
+				"mode": "append"
+			},
+			"sequencePresentationGuidance": {
+				"instructions": [
+					"Present each proposed B4-to-B5, B5-to-B6, or B4-to-B6 transition with the exact source statements, the specific change in demand, supporting hierarchy context, counter-considerations, and a qualitative uncertainty statement.",
+					"When evidence supports more than one plausible sequence, show the alternatives rather than forcing a single linear path.",
+					"Use the source grade labels BASIC 4, BASIC 5, and BASIC 6 in the sequence display and keep normalized grade numbers separate."
+				],
+				"mode": "append"
+			}
+		},
+		"studentHandbookSection": {
+			"audienceGuidance": {
+				"instructions": [
+					"Address the reader as a learner in BASIC 4, BASIC 5, or BASIC 6 and use encouraging language that supports curiosity, persistence, careful reasoning, and confidence in mathematics.",
+					"Use the curriculum term learner rather than assuming an individual learner's performance, ability, or assessment history.",
+					"Explain unfamiliar curriculum terms briefly, including strand, sub-strand, content standard, indicator, and exemplar, when they are material to the section."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Prefer generated examples that are plausible in Ghanaian learners' everyday experience, such as Ghana cedi, markets, sharing food or liquids, cloth measurement, rainfall, journeys, school timetables, classroom objects, farming, or community data, while avoiding stereotypes and invented factual claims.",
+					"Where useful, use accessible materials found in the source exemplars, such as bottle tops, straws, pebbles, graph paper, rulers, clocks, dice, playing cards, number lines, tables, or locally available objects.",
+					"Represent important ideas in more than one way when suitable—for example with concrete objects, pictures, number lines, tables, graphs, words, and mathematical symbols—and mark all added examples as generated."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Begin with the meaning of the retrieved indicator's action verb—such as identify, model, compare, explain, justify, investigate, interpret, or create—so the learner understands what kind of mathematical work is expected.",
+					"Move from familiar or concrete meaning to pictorial and symbolic representation when that sequence fits the retrieved evidence.",
+					"Encourage the learner to explain how an answer was obtained, check whether it is reasonable, compare strategies, and learn constructively from errors instead of presenting mathematics as answer-only rule memorization.",
+					"Keep the explanation within the retrieved grade-level scope, including stated number ranges, operation limits, representations, and measurement units."
+				],
+				"mode": "append"
+			},
+			"sectionStructureGuidance": {
+				"instructions": [
+					"Use a learner-friendly structure such as: Curriculum expectation; Key idea; One or more generated representations or worked examples; Try it; Explain your thinking; Check and reflect.",
+					"Include the exact content-standard or indicator code near the source-backed expectation when available, but explain that the code is a reference label rather than a difficulty score.",
+					"When relevant, identify the mathematical practice or core competency being exercised—such as problem solving, critical thinking, justification, collaboration, attention to precision, creativity, or digital literacy—without turning the section into a checklist."
+				],
+				"mode": "append"
+			}
+		},
+		"studentStudySupport": {
+			"audienceGuidance": {
+				"instructions": [
+					"Use clear, supportive English appropriate to the requested BASIC 4, BASIC 5, or BASIC 6 context, and use the curriculum term learner.",
+					"Promote mathematical confidence, curiosity, persistence, responsibility, and willingness to revise an answer when better evidence or reasoning is available.",
+					"Avoid assuming access to expensive devices, specialist manipulatives, private tutoring, or a particular home environment."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use generated examples grounded in familiar Ghanaian or school-life contexts when they clarify the mathematics, including Ghana cedi, local buying and selling, sharing quantities, rainfall, travel time, classroom measurement, calendars, games, or simple surveys.",
+					"Use low-cost or commonly available objects such as bottle tops, straws, stones, paper strips, graph sheets, rulers, clocks, dice, cards, or containers where hands-on modelling would help.",
+					"Use the source-visible Ghana cedi notation only in relevant money examples, and do not invent current prices, exchange rates, or economic facts.",
+					"Where the retrieved indicator uses a specific representation or strategy, include that representation and, when appropriate, one alternative strategy so the learner can compare methods."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Explain the idea through a hands-on and minds-on sequence: connect to prior experience, model or visualize the idea, describe the pattern or relationship, then use mathematical symbols and notation.",
+					"Ask the learner to say or write why a method works, not only what steps to copy, and include a quick reasonableness check where appropriate.",
+					"Preserve the retrieved indicator's exact scope and action verb; do not silently teach content from a later grade or present a more advanced method as required.",
+					"When a topic has several valid strategies, present them as alternatives and invite comparison rather than naming one method as the only correct approach unless the source explicitly requires it."
+				],
+				"mode": "append"
+			},
+			"practiceGuidance": {
+				"instructions": [
+					"Balance generated practice across fluency, representation, application, reasoning, and explanation rather than providing drill alone.",
+					"Include at least one item that asks the learner to find or correct an error, justify a choice, describe a pattern, create an example, or pose a question when suitable for the retrieved indicator.",
+					"Sequence practice from supported concrete or pictorial work toward greater independence, while keeping all values and operations inside the retrieved grade-level limits.",
+					"Provide answer guidance that explains reasoning and common checks, and remind the learner that practice performance is not official evidence of mastery."
+				],
+				"mode": "append"
+			}
+		},
+		"teacherGuideDraft": {
+			"assessmentGuidance": {
+				"instructions": [
+					"When source assessment evidence is available, distinguish assessment as learning, assessment for learning, and assessment of learning from any newly generated checks or rubrics.",
+					"Align generated checks to the retrieved indicator's action verb and include evidence from Knowledge, Understanding and Application, mathematical process skills, and attitudes or values only where the lesson can genuinely elicit them.",
+					"Prefer varied formative evidence such as observation, questioning, learner explanations, representations, error analysis, short tasks, peer discussion, self-reflection, and products or performances rather than relying only on written answers.",
+					"Use criterion-referenced language tied to the selected indicator and avoid claiming that one generated task comprehensively measures the entire strand, term, or learner.",
+					"Include timely feedback prompts that help the teacher adjust instruction and help learners understand their next step, while keeping all generated assessment material explicitly labelled as generated."
+				],
+				"mode": "append"
+			},
+			"differentiationGuidance": {
+				"instructions": [
+					"Offer practical differentiation by task, question, representation, grouping, support, time, and expected form of response without lowering the source-backed mathematical expectation silently.",
+					"Use scaffolding that breaks a concept into smaller parts, models it in multiple ways, pre-teaches necessary vocabulary, provides an exemplar, states the learning purpose clearly, and then gradually removes support.",
+					"Provide low-resource alternatives for any proposed ICT or specialist material so that learners in differently resourced schools can access the same mathematical idea.",
+					"Design participation so girls and boys, learners with different prior experiences, and learners needing additional support can contribute safely and meaningfully; do not diagnose or label individual learners.",
+					"Connect tasks to learners' backgrounds and prior experiences while avoiding assumptions or stereotypes about region, language, family income, disability, or culture."
+				],
+				"mode": "append"
+			},
+			"lessonStructureGuidance": {
+				"instructions": [
+					"Structure the generated lesson around a meaningful problem or question, activation of prior knowledge, hands-on or visual exploration, learner discourse, explicit connection to symbols or procedures, guided practice, independent application, and reflection.",
+					"Make the teacher's role primarily facilitative: pose questions, surface learner strategies, press for justification, connect representations, and use evidence of understanding to decide the next move.",
+					"Include opportunities for learners to work individually and collaboratively, communicate in words, symbols, pictures, tables, or graphs, and demonstrate learning through a product, explanation, investigation, or performance when appropriate.",
+					"Identify the exact source-backed content standard and indicator separately from generated objectives, activities, examples, timing, and success checks.",
+					"Treat source exemplars as support and guidance that may inform the draft, not as proof that one activity is mandatory or the only acceptable route to the indicator."
+				],
+				"mode": "append"
+			},
+			"pedagogyGuidance": {
+				"instructions": [
+					"Prioritize inquiry-based, learner-centred, hands-on and minds-on mathematics that helps learners construct meaning from experience before or alongside formal notation.",
+					"Use questioning that elicits prediction, comparison, explanation, justification, generalization, evaluation, and creation rather than emphasizing recall and formula use alone.",
+					"Use concrete, pictorial, verbal, tabular, graphical, and symbolic representations as appropriate, and explicitly help learners connect one representation to another.",
+					"Invite multiple strategies, productive discussion of mistakes, attention to precision, and checks for reasonableness so that deep learning is favored over surface memorization.",
+					"Integrate core competencies and values naturally through the mathematical work, especially problem solving, critical thinking, creativity, communication, collaboration, cultural identity, personal responsibility, perseverance, respect for evidence, and digital literacy.",
+					"Use ICT only where it adds mathematical value and is feasible—for example calculators, spreadsheets, multimedia, or data handling—and always provide an equitable non-digital alternative.",
+					"When creating local applications, prefer authentic Ghanaian school, household, market, environmental, civic, or community contexts, but verify any factual data supplied by the caller and do not invent local statistics."
+				],
+				"mode": "append"
+			}
+		}
+	},
+	"shared": {
+		"languageGuidance": {
+			"instructions": [
+				"Use clear Ghanaian educational English and the source term learner when the requested output language is English.",
+				"Preserve exact English source wording, curriculum reference codes, mathematical notation, and local hierarchy terms when citing evidence.",
+				"If the requested output language is not English, label the translation as generated and retain the original English source term or quotation where necessary to avoid changing curriculum meaning."
+			],
+			"mode": "append"
+		},
+		"localContextGuidance": {
+			"instructions": [
+				"Prefer locally plausible contexts only when they illuminate the selected mathematics, and do not present invented Ghanaian prices, statistics, customs, or regional practices as source facts.",
+				"Adapt generated examples to the caller's stated materials and setting while offering low-cost alternatives such as bottle tops, straws, pebbles, paper, graph sheets, rulers, clocks, dice, cards, or containers.",
+				"Use Ghana cedi, local measurement, rainfall, journeys, markets, school timetables, classroom objects, community surveys, and civic calendar examples selectively rather than forcing local context into every topic."
+			],
+			"mode": "append"
+		},
+		"outputGuidance": {
+			"instructions": [
+				"Separate the exact source-backed curriculum expectation from generated explanation, pedagogy, examples, practice, assessment, and synthesis.",
+				"When available, display the source path BASIC grade > Strand > Sub-Strand > Content Standard > Indicator together with the exact indicator or content-standard code.",
+				"Connect mathematical content to relevant subject-specific practices, core competencies, attitudes, or values only when the retrieved source or generated task supports that connection.",
+				"Favor concise tables, labelled steps, number lines, diagrams described in words, or worked examples when these make the mathematics clearer, while preserving accessibility in text-only clients."
+			],
+			"mode": "append"
+		},
+		"terminologyGuidance": {
+			"instructions": [
+				"Use the source hierarchy terms BASIC 4, BASIC 5, BASIC 6, Strand, Sub-Strand, Content Standard, Indicator, and Exemplar rather than replacing them with generic international labels.",
+				"Describe an exemplar as source-visible support and guidance for expected outcomes and possible teaching and learning activity, not as a separate standard or a mandatory lesson prescription.",
+				"Treat curriculum reference codes such as B4.1.1.1.1 as reference labels whose segments indicate class, strand, sub-strand, content standard, and indicator; do not treat them as universally unique identities.",
+				"Use the curriculum's three learning-domain labels—Knowledge, Understanding and Application; Process Skills; and Attitudes and Values—when discussing intended learning behavior or assessment design."
+			],
+			"mode": "append"
+		},
+		"warningGuidance": {
+			"instructions": [
+				"Disclose that the source contains reused codes, same-code/different-content records, and editorial duplicates, so a code match may retrieve more than one distinct source-visible statement.",
+				"Do not infer an official prerequisite or learning progression solely from BASIC grade order, curriculum code order, or the structural hasChild hierarchy.",
+				"Do not describe a generated activity, worksheet, assessment, resource, or teaching method as NaCCA-prescribed unless retrieved source evidence explicitly supports that role.",
+				"Do not treat a generated Ghanaian context, example value, learner response, or local statistic as source-authored curriculum evidence."
+			],
+			"mode": "append"
+		}
+	}
+}
