@@ -1,9 +1,9 @@
 """This module registers approved FastMCP components on the application server.
 
-This module defines the single explicit boundary through which tools, resources,
-resource templates, and prompts are added to the FastMCP server. Centralized
-registration keeps the server's public MCP surface deliberate and prevents components
-from being registered through import-time decorators or automatic module discovery.
+This module is the single explicit boundary through which tools are added to the
+FastMCP server. Centralized registration keeps the public MCP surface deliberate and
+prevents import-time decorators or automatic module discovery from adding tools,
+resources, resource templates, or prompts.
 """
 
 # Future Library
@@ -11,6 +11,13 @@ from __future__ import annotations
 
 # Standard Library
 from typing import TYPE_CHECKING
+
+# Package Library
+from kgfegmcp.mcp.tools.capabilities import register_capability_tools
+from kgfegmcp.mcp.tools.context import register_context_tools
+from kgfegmcp.mcp.tools.frameworks import register_framework_tools
+from kgfegmcp.mcp.tools.standards import register_standard_tools
+from kgfegmcp.mcp.tools.statistics import register_statistics_tools
 
 if TYPE_CHECKING:
     # Third Party Library
@@ -21,12 +28,7 @@ if TYPE_CHECKING:
 
 
 def register_components(server: FastMCP[dict[str, AppState]]) -> None:
-    """Register the components implemented for the current application phase.
-
-    This establishes the explicit registration boundary but intentionally registers no
-    tools, resources, resource templates, or prompts. Later implementation units must
-    add components through this function rather than through import-time decorators or
-    automatic discovery.
+    """Register read-only tools.
 
     Parameters
     ----------
@@ -34,4 +36,8 @@ def register_components(server: FastMCP[dict[str, AppState]]) -> None:
         FastMCP server receiving explicitly approved components.
     """
 
-    del server
+    register_capability_tools(server)
+    register_context_tools(server)
+    register_framework_tools(server)
+    register_standard_tools(server)
+    register_statistics_tools(server)

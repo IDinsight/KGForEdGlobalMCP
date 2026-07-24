@@ -46,7 +46,7 @@ from kgfegmcp.domain.enums import (
     EpistemicStatus,
     NormalizedStatementType,
 )
-from kgfegmcp.domain.identifiers import GraphPackageId, Sha256Digest
+from kgfegmcp.domain.identifiers import GraphPackageId, NodeId, Sha256Digest
 from kgfegmcp.errors import (
     CapabilityUnavailableError,
     CatalogError,
@@ -600,6 +600,52 @@ class SearchService:
             catalog_service=catalog_service,
             metadata=metadata,
         )
+
+    def get_node_facet_evidence(
+        self, *, graph_package_id: GraphPackageId, node_id: NodeId
+    ) -> SearchFacetEvidence:
+        """Return package-local source and normalized facets for one item node.
+
+        Parameters
+        ----------
+        graph_package_id
+            Exact accepted graph-package identifier.
+        node_id
+            Exact outer node identifier within the selected package namespace.
+
+        Returns
+        -------
+        SearchFacetEvidence
+            Facet evidence produced by the package's existing profile resolver.
+
+        Raises
+        ------
+        CatalogError
+            If the package has no search runtime or the selected node is not an item.
+        GraphNodeNotFoundError
+            If the exact node identifier is unavailable in the selected package.
+        """
+
+        package = self._packages_by_graph_package_id.get(graph_package_id)
+
+        if package is None:
+            raise CatalogError(
+                details={"graph_package_id": str(graph_package_id)},
+                message="The selected graph package has no search runtime.",
+            )
+
+        node = package.catalog_runtime.graph_store.get_node_by_id(node_id).node
+
+        if not isinstance(node, StandardNode):
+            raise CatalogError(
+                details={
+                    "graph_package_id": str(graph_package_id),
+                    "node_id": str(node_id),
+                },
+                message="Facet evidence is available only for standard item nodes.",
+            )
+
+        return package.facets.evidence(node=node, scopes=())
 
     def search(self, query: SearchQuery) -> SearchPage:
         """Execute one deterministic exact-package or federated search request.

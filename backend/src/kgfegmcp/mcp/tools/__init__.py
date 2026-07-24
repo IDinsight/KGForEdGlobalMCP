@@ -1,0 +1,94 @@
+"""Provide shared helpers for the canonical read-only FastMCP tool adapters.
+
+The helpers in this module retrieve the immutable application state yielded by the
+FastMCP lifespan, define the common read-only tool annotations, and construct paired
+human-readable and structured tool results. They do not perform catalog routing,
+search, graph traversal, package loading, or component registration.
+"""
+
+# Standard Library
+from typing import Any
+
+# Third Party Library
+from fastmcp import Context
+from fastmcp.tools.base import ToolResult
+from mcp.types import ToolAnnotations
+
+# Package Library
+from kgfegmcp.bootstrap import AppState
+from kgfegmcp.schemas import FrozenSchema
+
+READ_ONLY_TOOL_ANNOTATIONS = ToolAnnotations(
+    destructiveHint=False, idempotentHint=True, openWorldHint=False, readOnlyHint=True
+)
+
+
+def build_tool_result(*, content: str, result: FrozenSchema) -> ToolResult:
+    """Build one deterministic FastMCP result with text and structured evidence.
+
+    Parameters
+    ----------
+    content
+        Deterministic human-readable summary of the complete structured result.
+    result
+        Immutable Pydantic result model serialized through its public aliases.
+
+    Returns
+    -------
+    ToolResult
+        FastMCP result containing both text content and structured JSON content.
+    """
+
+    return ToolResult(
+        content=content,
+        structured_content=result.model_dump(by_alias=True, mode="json"),
+    )
+
+
+def get_app_state(context: Context) -> AppState:
+    """Return the exact immutable application state from the FastMCP lifespan.
+
+    Parameters
+    ----------
+    context
+        Injected FastMCP request context.
+
+    Returns
+    -------
+    AppState
+        Application state constructed once by ``app_lifespan``.
+
+    Raises
+    ------
+    RuntimeError
+        If the expected state is absent or has an unexpected runtime type.
+    """
+
+    try:
+        state = context.lifespan_context["state"]
+    except KeyError as error:
+        raise RuntimeError(
+            "FastMCP lifespan context does not contain application state."
+        ) from error
+
+    if not isinstance(state, AppState):
+        raise RuntimeError("FastMCP lifespan state is not an AppState instance.")
+
+    return state
+
+
+def result_schema(model: type[FrozenSchema]) -> dict[str, Any]:
+    """Generate the exact serialization schema registered for one tool result.
+
+    Parameters
+    ----------
+    model
+        Immutable Pydantic result model exposed by the tool.
+
+    Returns
+    -------
+    dict[str, Any]
+        Complete JSON schema using the models' public camel-case aliases.
+    """
+
+    return model.model_json_schema(by_alias=True, mode="serialization")

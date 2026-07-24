@@ -1,0 +1,169 @@
+"""This module reports only capabilities implemented by the accepted PR 9 runtime.
+
+The service joins the retained catalog load and existing search metadata without
+probing the filesystem, registering components, or advertising planned resources,
+prompts, semantic retrieval, comparisons, alignments, or future graph domains.
+"""
+
+# Standard Library
+from dataclasses import dataclass
+from typing import Final
+
+# Package Library
+from kgfegmcp.catalog.models import CatalogLoadResult
+from kgfegmcp.domain.enums import CodeAvailability, GraphType
+from kgfegmcp.errors import CatalogError
+from kgfegmcp.search.models import PackageSearchIndexMetadata, SearchMode
+from kgfegmcp.search.service import SearchService
+from kgfegmcp.services.models import GetCapabilitiesResult, PackageCapabilityResult
+
+_IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
+    "bounded_ancestor_traversal",
+    "bounded_descendant_traversal",
+    "catalog_discovery",
+    "complete_root_path_enumeration",
+    "direct_graph_navigation",
+    "exact_framework_lookup",
+    "exact_standard_lookup",
+    "framework_statistics",
+    "lexical_standard_search",
+    "profile_governed_exact_code_search",
+    "profile_governed_prefix_code_search",
+    "unique_current_framework_routing",
+)
+_SERVER_NAME: Final[str] = "Knowledge Graph For Education Global MCP"
+_TOOL_NAMES: Final[tuple[str, ...]] = (
+    "get_capabilities",
+    "get_framework",
+    "get_framework_statistics",
+    "get_standard",
+    "get_standard_context",
+    "list_frameworks",
+    "search_standards",
+)
+_UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
+    "alignments",
+    "comparisons",
+    "embeddings",
+    "learning_components",
+    "learning_progressions",
+    "mutations",
+    "resources",
+    "persistence",
+    "prompts",
+    "semantic_search",
+)
+
+
+def _implemented_search_modes(
+    *, code_availability: CodeAvailability, prefix_available: bool, text_available: bool
+) -> tuple[SearchMode, ...]:
+    """Return exact search modes implemented for one accepted package.
+
+    Parameters
+    ----------
+    code_availability
+        Profile-governed statement-code coverage.
+    prefix_available
+        Whether the selected profile enables delimiter-boundary prefix search.
+    text_available
+        Whether deterministic lexical search is enabled for the package.
+
+    Returns
+    -------
+    tuple[SearchMode, ...]
+        Implemented modes in stable public order.
+    """
+
+    modes: list[SearchMode] = []
+
+    if text_available:
+        modes.append(SearchMode.TEXT)
+
+    if code_availability is not CodeAvailability.NONE:
+        modes.append(SearchMode.CODE_EXACT)
+
+        if prefix_available:
+            modes.append(SearchMode.CODE_PREFIX)
+
+    return tuple(modes)
+
+
+@dataclass(frozen=True, slots=True)
+class CapabilitiesService:
+    """Describe exact server and package capabilities from retained application data."""
+
+    catalog_load_result: CatalogLoadResult
+    search_service: SearchService
+
+    def get_capabilities(self) -> GetCapabilitiesResult:
+        """Return exact implemented server-level and package-level capabilities.
+
+        Returns
+        -------
+        GetCapabilitiesResult
+            Implemented tools, graph types, package modes, and unavailable features.
+
+        Raises
+        ------
+        CatalogError
+            If accepted package runtimes and search index metadata do not correspond.
+        """
+
+        metadata_by_graph_package_id: dict[str, PackageSearchIndexMetadata] = {
+            str(metadata.package_identity.graph_package_id): metadata
+            for metadata in self.search_service.metadata.packages
+        }
+        snapshots_by_id = {
+            snapshot.snapshot_id: snapshot
+            for family in self.catalog_load_result.catalog.frameworks
+            for snapshot in family.snapshots
+        }
+        package_results: list[PackageCapabilityResult] = []
+        available_graph_types: set[GraphType] = set()
+
+        for runtime in self.catalog_load_result.package_runtimes:
+            package = runtime.catalog_package
+            identity = package.package_identity
+            metadata = metadata_by_graph_package_id.get(str(identity.graph_package_id))
+            snapshot = snapshots_by_id.get(identity.snapshot_id)
+
+            if metadata is None or snapshot is None:
+                raise CatalogError(
+                    details={"graph_package_id": str(identity.graph_package_id)},
+                    message=(
+                        "Accepted package capability evidence is incomplete or "
+                        "inconsistent."
+                    ),
+                )
+
+            profile = runtime.loaded_package.profile
+            available_graph_types.add(identity.graph_type)
+            package_results.append(
+                PackageCapabilityResult(
+                    implemented_search_modes=_implemented_search_modes(
+                        code_availability=profile.code_search_policy.availability,
+                        prefix_available=(
+                            profile.code_search_policy.allow_prefix_search
+                        ),
+                        text_available=package.capabilities.text_search,
+                    ),
+                    package=package,
+                    search_index=metadata,
+                    source_metadata=snapshot.source_metadata,
+                    traversal_relationship_type=(
+                        runtime.graph_store.hierarchy_relationship_type
+                    ),
+                )
+            )
+
+        return GetCapabilitiesResult(
+            available_graph_types=tuple(
+                sorted(available_graph_types, key=lambda value: value.value)
+            ),
+            implemented_features=_IMPLEMENTED_FEATURES,
+            packages=tuple(package_results),
+            server_name=_SERVER_NAME,
+            tool_names=_TOOL_NAMES,
+            unavailable_features=_UNAVAILABLE_FEATURES,
+        )
