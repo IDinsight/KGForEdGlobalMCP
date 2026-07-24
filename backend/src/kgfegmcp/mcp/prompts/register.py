@@ -1,8 +1,17 @@
-"""This module explicitly registers the four approved PR 11 FastMCP prompts.
+"""This module registers the approved FastMCP prompt components explicitly.
 
-Registration is imperative, deterministic, and invoked only by ``mcp/register.py``.
-Importing this module does not construct settings, load application state, inspect
-configuration files, or register components automatically.
+This module constructs and registers the four PR 11 prompt components in canonical
+public order:
+
+* ``student_study_support``;
+* ``teacher_guide_draft``;
+* ``student_handbook_section``;
+* ``inferred_progression_hypothesis``.
+
+Registration is imperative and is invoked only from the sole MCP component-registration
+boundary in ``kgfegmcp.mcp.register``. Importing this module does not construct the
+application, load settings, inspect prompt configuration, access curriculum packages,
+or register components automatically.
 """
 
 # Future Library

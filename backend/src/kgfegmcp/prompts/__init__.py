@@ -1,9 +1,18 @@
-"""This package exposes generic prompt workflow contracts and services.
+"""This package provides ordinary application contracts and services for prompt
+workflows.
 
-The package contains curriculum-agnostic prompt definitions, optional versioned
-framework-local soft guidance, rights-aware prompt policy, deterministic rendering, and
-bootstrap-time prompt configuration loading. Importing it performs no filesystem access,
-application bootstrap, package loading, or FastMCP registration.
+This package contains the curriculum-agnostic prompt definitions, typed prompt and
+configuration models, optional framework-local prompt-configuration loading,
+correctness-critical prompt policy, and deterministic prompt-rendering service used by
+the FastMCP adapter layer.
+
+Framework-local configuration may customize only declared soft-guidance sections.
+Missing configuration falls back to the generic server-level prompts, while present
+configuration must pass strict bootstrap-time validation.
+
+Importing this package performs no filesystem access, application bootstrap, curriculum
+package loading, prompt rendering, FastMCP registration, LLM invocation, or MCP
+sampling.
 """
 
 # Package Library

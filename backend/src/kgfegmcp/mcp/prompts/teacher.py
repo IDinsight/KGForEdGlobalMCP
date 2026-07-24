@@ -1,9 +1,13 @@
-"""This module exposes the teacher-oriented generic FastMCP prompt.
+"""This module exposes the teacher-oriented FastMCP prompt workflow.
 
-``teacher_guide_draft`` is a thin adapter over the ordinary prompt service. It accepts
-curriculum-agnostic parameters, retrieves immutable lifespan state, and returns a
-rights-gated workflow that separates source-backed expectations from generated
-pedagogy.
+This module defines the public ``teacher_guide_draft`` prompt function. The function
+accepts curriculum-agnostic, typed MCP arguments, retrieves immutable application state
+from the injected FastMCP ``Context``, delegates deterministic rendering to
+``PromptService``, and converts the result into one FastMCP user-role prompt message.
+
+The adapter does not load prompt configuration, interpret curriculum packages, enforce
+rights independently, search standards, traverse graphs, generate pedagogy, call an
+LLM, or use MCP sampling.
 """
 
 # Future Library

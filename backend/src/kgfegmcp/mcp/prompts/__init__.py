@@ -1,9 +1,14 @@
-"""This package contains thin FastMCP adapters for generic prompt workflows.
+"""This package provides shared FastMCP adapters for generic prompt workflows.
 
-The adapters retrieve immutable lifespan state, delegate deterministic rendering to the
-ordinary prompt service, translate application failures at the MCP boundary, and return
-one user-role text message with dynamic prompt metadata. They do not load files, search
-standards, traverse graphs, enforce rights independently, call an LLM, or use sampling.
+This package is the protocol-facing boundary between FastMCP and the ordinary prompt
+application layer. It converts deterministic ``PromptRenderResult`` values into FastMCP
+``PromptResult`` messages and attaches exact runtime metadata for framework, snapshot,
+profile, prompt configuration, and prompt-version auditability.
+
+The package does not select curriculum packages, load prompt configuration, merge
+guidance, enforce rights policy, search standards, traverse graphs, call an LLM, or use
+MCP sampling. Those responsibilities remain in the ordinary ``kgfegmcp.prompts``
+package.
 """
 
 # Third Party Library

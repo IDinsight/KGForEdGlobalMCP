@@ -1,12 +1,19 @@
-"""This module loads optional framework-local prompt configuration safely.
+"""This module loads optional framework-local prompt configuration during application
+bootstrap.
 
-The repository resolves only exact paths derived from accepted curriculum-profile
-identities. A missing ``prompts.json`` is valid and means that the generic server-level
-prompt defaults apply. A present file is bounded, checksumed, strictly validated, and
-required to match the accepted profile and framework identities.
+``PromptConfigRepository`` resolves only the exact ``prompts.json`` path derived from
+each accepted curriculum profile identifier and version. A missing file is valid and
+means that the generic server-level prompt defaults apply. A present file is bounded,
+read safely, checksumed, strictly validated, and required to declare framework and
+profile identities that match the accepted runtime package.
 
-The repository performs no directory scanning, graph-package mutation, standard search,
-graph traversal, FastMCP registration, or prompt rendering.
+The loader enforces the configured prompt-root trust boundary, rejects unsafe symbolic
+links and path escapes, and does not perform directory scanning or automatic prompt
+discovery.
+
+This module does not mutate graph packages, search standards, traverse graphs, merge
+prompt guidance, render prompt text, register FastMCP components, call an LLM, or use
+MCP sampling.
 """
 
 # Future Library
@@ -65,14 +72,14 @@ def _configuration_error(
     return PromptConfigurationError(details=details, message=message)
 
 
-def _read_configuration(
-    *,
-    max_file_bytes: int,
-    profile: CurriculumProfile,
-    requested_path: Path,
-    resolved_root: Path,
-) -> LoadedPromptConfig:
-    """Read, validate, checksum, and identity-check one prompt configuration.
+def _read_bounded_bytes(
+    *, max_file_bytes: int, profile: CurriculumProfile, resolved_path: Path
+) -> bytes:
+    """Read one prompt configuration while enforcing the exact-byte size limit.
+
+    The reported size is checked before reading and the materialized bytes are checked
+    afterwards, so a file that grows between the two calls is still rejected rather
+    than read past the configured bound.
 
     Parameters
     ----------
@@ -80,42 +87,19 @@ def _read_configuration(
         Maximum exact byte length accepted for one configuration document.
     profile
         Exact accepted profile that selected the configuration.
-    requested_path
-        Existing non-symlink ``prompts.json`` path.
-    resolved_root
-        Canonical prompt-root trust boundary.
+    resolved_path
+        Canonical configuration path contained by the prompt root.
 
     Returns
     -------
-    LoadedPromptConfig
-        Validated configuration and exact-byte checksum evidence.
+    bytes
+        Exact configuration bytes bounded by the configured size limit.
 
     Raises
     ------
     PromptConfigurationError
-        If path containment, size, JSON schema, or identity checks fail.
+        If the file is unreadable or exceeds the configured size limit.
     """
-
-    try:
-        resolved_path = requested_path.resolve(strict=True)
-    except OSError as error:
-        raise _configuration_error(
-            message=(
-                f"Prompt configuration for profile '{profile.profile_id}' version "
-                f"'{profile.profile_version}' is unreadable."
-            ),
-            path=requested_path,
-        ) from error
-
-    if not resolved_path.is_relative_to(resolved_root):
-        raise _configuration_error(
-            message=(
-                f"Prompt configuration for profile '{profile.profile_id}' version "
-                f"'{profile.profile_version}' does not resolve safely beneath the "
-                f"configured prompt root."
-            ),
-            path=resolved_path,
-        )
 
     try:
         stat_result = resolved_path.stat()
@@ -157,6 +141,47 @@ def _read_configuration(
             path=resolved_path,
         )
 
+    return config_bytes
+
+
+def _read_configuration(
+    *,
+    max_file_bytes: int,
+    profile: CurriculumProfile,
+    requested_path: Path,
+    resolved_root: Path,
+) -> LoadedPromptConfig:
+    """Read, validate, checksum, and identity-check one prompt configuration.
+
+    Parameters
+    ----------
+    max_file_bytes
+        Maximum exact byte length accepted for one configuration document.
+    profile
+        Exact accepted profile that selected the configuration.
+    requested_path
+        Existing non-symlink ``prompts.json`` path.
+    resolved_root
+        Canonical prompt-root trust boundary.
+
+    Returns
+    -------
+    LoadedPromptConfig
+        Validated configuration and exact-byte checksum evidence.
+
+    Raises
+    ------
+    PromptConfigurationError
+        If path containment, size, JSON schema, or identity checks fail.
+    """
+
+    resolved_path = _resolve_within_root(
+        profile=profile, requested_path=requested_path, resolved_root=resolved_root
+    )
+    config_bytes = _read_bounded_bytes(
+        max_file_bytes=max_file_bytes, profile=profile, resolved_path=resolved_path
+    )
+
     try:
         config = FrameworkPromptConfig.model_validate_json(config_bytes)
     except ValidationError as error:
@@ -169,26 +194,7 @@ def _read_configuration(
             validation_errors=error.errors(include_input=False, include_url=False),
         ) from error
 
-    if (
-        config.profile_id != profile.profile_id
-        or config.profile_version != profile.profile_version
-    ):
-        raise _configuration_error(
-            message=(
-                f"Prompt configuration for profile '{profile.profile_id}' version "
-                f"'{profile.profile_version}' declares a different profile identity."
-            ),
-            path=resolved_path,
-        )
-
-    if config.framework_ids != profile.framework_ids:
-        raise _configuration_error(
-            message=(
-                f"Prompt configuration for profile '{profile.profile_id}' version "
-                f"'{profile.profile_version}' declares different framework identities."
-            ),
-            path=resolved_path,
-        )
+    _verify_declared_identity(config=config, profile=profile, source_path=resolved_path)
 
     return LoadedPromptConfig(
         config=config,
@@ -240,6 +246,97 @@ def _resolve_optional_root(prompt_root: Path) -> Path | None:
         )
 
     return resolved_root
+
+
+def _resolve_within_root(
+    *, profile: CurriculumProfile, requested_path: Path, resolved_root: Path
+) -> Path:
+    """Resolve one prompt path and confirm it stays beneath the prompt root.
+
+    Parameters
+    ----------
+    profile
+        Exact accepted profile that selected the configuration.
+    requested_path
+        Existing non-symlink ``prompts.json`` path.
+    resolved_root
+        Canonical prompt-root trust boundary.
+
+    Returns
+    -------
+    Path
+        Canonical configuration path contained by the prompt root.
+
+    Raises
+    ------
+    PromptConfigurationError
+        If the path is unreadable or resolves outside the prompt root.
+    """
+
+    try:
+        resolved_path = requested_path.resolve(strict=True)
+    except OSError as error:
+        raise _configuration_error(
+            message=(
+                f"Prompt configuration for profile '{profile.profile_id}' version "
+                f"'{profile.profile_version}' is unreadable."
+            ),
+            path=requested_path,
+        ) from error
+
+    if not resolved_path.is_relative_to(resolved_root):
+        raise _configuration_error(
+            message=(
+                f"Prompt configuration for profile '{profile.profile_id}' version "
+                f"'{profile.profile_version}' does not resolve safely beneath the "
+                f"configured prompt root."
+            ),
+            path=resolved_path,
+        )
+
+    return resolved_path
+
+
+def _verify_declared_identity(
+    *, config: FrameworkPromptConfig, profile: CurriculumProfile, source_path: Path
+) -> None:
+    """Confirm a configuration declares the accepted profile and framework identities.
+
+    Parameters
+    ----------
+    config
+        Parsed configuration whose declared identities are checked.
+    profile
+        Exact accepted profile that selected the configuration.
+    source_path
+        Canonical configuration path retained only in internal error details.
+
+    Raises
+    ------
+    PromptConfigurationError
+        If the declared profile or framework identities differ from the profile.
+    """
+
+    if (
+        config.profile_id != profile.profile_id
+        or config.profile_version != profile.profile_version
+    ):
+        raise _configuration_error(
+            message=(
+                f"Prompt configuration for profile '{profile.profile_id}' version "
+                f"'{profile.profile_version}' declares a different profile identity."
+            ),
+            path=source_path,
+        )
+
+    if config.framework_ids != profile.framework_ids:
+        raise _configuration_error(
+            message=(
+                f"Prompt configuration for profile '{profile.profile_id}' version "
+                f"'{profile.profile_version}' declares different framework identities."
+            ),
+            path=source_path,
+        )
 
 
 def _verify_optional_components(

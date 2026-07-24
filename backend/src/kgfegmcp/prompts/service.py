@@ -1,13 +1,21 @@
-"""This module renders generic, profile-aware, rights-gated prompt workflows.
+"""This module renders generic, profile-aware, rights-gated prompt workflows
+deterministically.
 
-``PromptService`` selects one exact accepted Academic Standards package through the
-existing catalog service, applies optional framework-local soft guidance selected by
-profile identity, enforces prompt policy, and produces deterministic text instructing a
-client-side Claude model to use the existing read-only tools and resources.
+``PromptService`` selects the exact accepted framework, snapshot, graph package, and
+curriculum profile through the existing catalog service. It retrieves any
+bootstrap-loaded framework-local prompt configuration selected by exact profile
+identity, applies the prompt policy, merges approved soft guidance with generic
+server-level defaults, incorporates caller-supplied context as untrusted data, and
+renders a deterministic workflow for the client-side model.
 
-The service does not call an LLM, use MCP sampling, search standards, traverse graphs,
-read resources, load files, mutate packages, or implement comparison or alignment
-behavior.
+The rendered workflow instructs the client to use the existing read-only MCP tools and
+resources while preserving source evidence, normalized metadata, identifier namespaces,
+rights, attribution, generated-content labels, required disclosures, and
+unsupported-claim warnings.
+
+The service does not call an LLM, use MCP sampling, perform standards search or graph
+traversal itself, read MCP resources, load files during prompt retrieval, mutate graph
+packages, persist generated content, or implement comparison or alignment services.
 """
 
 # Future Library

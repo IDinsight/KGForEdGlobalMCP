@@ -1,9 +1,15 @@
-"""This module exposes the inferred-progression generic FastMCP prompt.
+"""This module exposes the inferred-progression FastMCP prompt workflow.
 
-The adapter delegates to the ordinary prompt service and returns instructions for a
-client-side, evidence-linked progression hypothesis. It does not create Learning
-Progressions data, persist edges, traverse the graph during prompt retrieval, call an
-LLM, or use sampling.
+This module defines the public ``inferred_progression_hypothesis`` prompt function. The
+function accepts curriculum-agnostic, typed MCP arguments, retrieves immutable
+application state from the injected FastMCP ``Context``, delegates deterministic
+rendering to ``PromptService``, and converts the result into one FastMCP user-role
+prompt message.
+
+The adapter does not create Learning Progressions data, persist progression edges, load
+prompt configuration, enforce rights independently, search standards, traverse graphs
+during prompt retrieval, call an LLM, or use MCP sampling. Any progression produced by
+the client-side model remains explicitly labeled as an LLM-inferred hypothesis.
 """
 
 # Future Library

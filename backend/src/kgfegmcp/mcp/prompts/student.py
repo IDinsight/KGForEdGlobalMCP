@@ -1,9 +1,14 @@
-"""This module exposes the student-oriented generic FastMCP prompts.
+"""This module exposes the student-oriented FastMCP prompt workflows.
 
-The module implements ``student_study_support`` and ``student_handbook_section`` as thin
-adapters over the ordinary prompt service. The functions accept curriculum-agnostic
-parameters, obtain exact lifespan state through FastMCP ``Context``, and return one
-rights-gated deterministic prompt workflow.
+This module defines the public ``student_study_support`` and
+``student_handbook_section`` prompt functions. Each function accepts
+curriculum-agnostic, typed MCP arguments, retrieves immutable application state from
+the injected FastMCP ``Context``, delegates deterministic rendering to
+``PromptService``, and converts the result into one FastMCP user-role prompt message.
+
+The adapters contain no curriculum-specific branching and do not load files, resolve
+prompt configuration, enforce rights independently, search standards, traverse graphs,
+generate educational content, call an LLM, or use MCP sampling.
 """
 
 # Future Library

@@ -1,13 +1,19 @@
-"""This module defines immutable contracts for generic MCP prompt workflows.
+"""This module defines typed contracts for generic prompt workflows and local
+configuration.
 
-The models in this module describe prompt names and parameters, optional versioned
-framework-local prompt guidance, loaded prompt-configuration evidence, and rendered
-prompt results. Framework-local configuration is selected by exact curriculum-profile
-identity and may modify only declared soft-guidance sections.
+This module declares the prompt names, versions, parameter enums, constrained value
+types, framework-local guidance models, prompt-overlay models, loaded configuration
+records, immutable configuration registry, and rendered prompt result used by the
+ordinary prompt application layer.
 
-These contracts are curriculum-agnostic. They do not access the filesystem, resolve
-catalog packages, enforce rights, search standards, traverse graphs, render FastMCP
-messages, or register MCP components.
+The configuration models define the only soft-guidance sections that a framework-local
+``prompts.json`` may append to or replace. They also enforce schema version, framework
+identity, profile identity, instruction counts, instruction sizes, and cross-field
+configuration consistency.
+
+These contracts are curriculum-agnostic. They do not access the filesystem, select
+catalog packages, enforce derivative-rights policy, search standards, traverse graphs,
+render FastMCP messages, register MCP components, call an LLM, or use MCP sampling.
 """
 
 # Future Library

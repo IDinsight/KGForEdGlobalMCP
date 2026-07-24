@@ -1,12 +1,18 @@
 """This module enforces correctness-critical policy for generated prompt workflows.
 
-The policy requires explicit permission for generated derivative works, an approved
-rights-review state, compatible profile capabilities for code-focused requests, and a
-bounded final rendered prompt. These checks are ordinary application logic so they do
-not exist only as advisory text inside an MCP prompt.
+``PromptPolicy`` applies the non-overridable checks required before a rendered workflow
+may be returned. It requires explicit permission to generate derivative material,
+requires an accepted rights-review state, verifies that code-focused requests are
+supported by the selected curriculum profile, and enforces the maximum rendered-prompt
+size.
 
-The policy does not resolve frameworks, read configuration files, search standards,
-traverse graphs, generate educational content, or register FastMCP components.
+These checks are implemented as ordinary application logic so that rights, capability,
+and size enforcement cannot be weakened or replaced by framework-local prompt text or
+caller-supplied context.
+
+This module does not resolve frameworks, load configuration files, merge guidance,
+search standards, traverse graphs, generate educational content, register FastMCP
+components, call an LLM, or use MCP sampling.
 """
 
 # Future Library

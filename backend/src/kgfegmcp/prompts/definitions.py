@@ -1,12 +1,17 @@
-"""This module defines generic server-level prompt text and soft defaults.
+"""This module defines generic server-level prompt text and overridable soft guidance.
 
-The constants in this module are curriculum-agnostic, versioned through the public
-prompt version, and deterministic. Framework-local configuration may replace or append
-only the declared soft-guidance blocks. Correctness-critical rights, attribution,
-evidence, privacy, routing, and disclosure policy remains outside these definitions.
+This module contains the curriculum-agnostic descriptions, shared workflow text,
+required disclosures, unsupported-claim warnings, evidence-status rules, and default
+soft-guidance blocks used to render the four generic prompt workflows.
 
-Importing this module performs no filesystem access, application bootstrap, package
-loading, prompt rendering, or FastMCP registration.
+Framework-local prompt configuration may append to or replace only the explicitly
+declared soft-guidance blocks. Correctness-critical behavior—including rights
+authorization, attribution requirements, evidence-status boundaries, privacy rules,
+identifier separation, package isolation, and generated-content disclosures—does not
+depend solely on configurable text in this module.
+
+Importing this module performs no filesystem access, package selection, configuration
+loading, prompt rendering, FastMCP registration, LLM invocation, or MCP sampling.
 """
 
 # Future Library
