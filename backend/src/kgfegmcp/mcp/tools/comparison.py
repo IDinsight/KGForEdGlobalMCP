@@ -2,10 +2,10 @@
 tool.
 
 This module provides the protocol-facing ``compare_framework_evidence`` tool and its
-explicit registration function. The tool accepts the typed discriminated comparison
-request, obtains the lifespan-owned ``ComparisonService``, delegates the complete
-operation to that ordinary service, and returns both a stable readable summary and the
-full structured comparison result.
+explicit registration function. The public tool accepts comparison fields directly at
+the top level, constructs the existing typed ordinary comparison request, obtains the
+lifespan-owned ``ComparisonService``, delegates the complete operation to that service,
+and returns both a stable readable summary and the full structured comparison result.
 
 Each selected framework is represented by an independently retrieved exact-package
 section. Package-local match order, search warnings, hierarchy evidence, result limits,
@@ -19,17 +19,16 @@ persistence, semantic search, source-package mutation, server-side LLM invocatio
 sampling, or curriculum-specific branching.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Standard Library
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated, Final
 
 # Third Party Library
 from fastmcp import Context
 from fastmcp.tools.base import ToolResult
+from pydantic import Field, TypeAdapter
 
 # Package Library
+from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
@@ -38,10 +37,12 @@ from kgfegmcp.mcp.tools import (
     get_app_state,
     result_schema,
 )
+from kgfegmcp.search.models import SearchMode, SearchQueryText, TextMatch
 from kgfegmcp.services.comparison_models import (
     CompareFrameworkEvidenceResult,
     FrameworkComparisonRequest,
 )
+from kgfegmcp.services.models import CatalogFilterValue
 
 if TYPE_CHECKING:
     # Third Party Library
@@ -49,6 +50,85 @@ if TYPE_CHECKING:
 
     # Package Library
     from kgfegmcp.bootstrap import AppState
+
+
+_COMPARISON_REQUEST_ADAPTER: Final[TypeAdapter[FrameworkComparisonRequest]] = (
+    TypeAdapter(FrameworkComparisonRequest)
+)
+ComparisonFrameworkIds = Annotated[
+    tuple[FrameworkId, ...], Field(alias="frameworkIds", max_length=8, min_length=2)
+]
+ComparisonGradeFilters = Annotated[tuple[CatalogFilterValue, ...], Field(max_length=64)]
+ComparisonSnapshotIds = Annotated[
+    tuple[SnapshotId, ...], Field(alias="snapshotIds", max_length=8)
+]
+
+
+def _build_comparison_request(
+    *,
+    framework_ids: ComparisonFrameworkIds,
+    include_context_paths: bool,
+    include_groupings: bool,
+    local_grade_labels: ComparisonGradeFilters,
+    match: TextMatch | None,
+    max_matches_per_framework: int,
+    mode: SearchMode,
+    normalized_grades: ComparisonGradeFilters,
+    query: SearchQueryText,
+    snapshot_ids: ComparisonSnapshotIds,
+) -> FrameworkComparisonRequest:
+    """Construct one existing ordinary comparison request from public tool fields.
+
+    Parameters
+    ----------
+    framework_ids
+        Two through eight distinct conceptual framework identifiers.
+    include_context_paths
+        Whether bounded hierarchy paths are included for returned matches.
+    include_groupings
+        Whether grouping nodes are eligible for comparison retrieval.
+    local_grade_labels
+        Shared exact local grade or stage filters.
+    match
+        Text matching policy, required only for text mode.
+    max_matches_per_framework
+        Independent package-local candidate quota from one through ten.
+    mode
+        Text, exact-code, or code-prefix comparison mode.
+    normalized_grades
+        Shared normalized retrieval-facet filters.
+    query
+        Topic text or code query used for evidence retrieval.
+    snapshot_ids
+        Optional exact snapshots, with at most one per selected framework.
+
+    Returns
+    -------
+    FrameworkComparisonRequest
+        Existing validated ordinary request for the selected mode.
+
+    Raises
+    ------
+    pydantic.ValidationError
+        If the direct fields do not satisfy the existing discriminated request union.
+    """
+
+    request_data: dict[str, object] = {
+        "framework_ids": framework_ids,
+        "include_context_paths": include_context_paths,
+        "include_groupings": include_groupings,
+        "local_grade_labels": local_grade_labels,
+        "max_matches_per_framework": max_matches_per_framework,
+        "mode": mode.value,
+        "normalized_grades": normalized_grades,
+        "query": query,
+        "snapshot_ids": snapshot_ids,
+    }
+
+    if match is not None:
+        request_data["match"] = match
+
+    return _COMPARISON_REQUEST_ADAPTER.validate_python(request_data)
 
 
 def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
@@ -102,22 +182,70 @@ def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
 
 
 async def compare_framework_evidence(
-    request: FrameworkComparisonRequest, context: Context
+    *,
+    context: Context,
+    framework_ids: ComparisonFrameworkIds,
+    include_context_paths: Annotated[bool, Field(alias="includeContextPaths")] = True,
+    include_groupings: Annotated[bool, Field(alias="includeGroupings")] = False,
+    local_grade_labels: Annotated[
+        ComparisonGradeFilters, Field(alias="localGradeLabels")
+    ] = (),
+    match: TextMatch | None = None,
+    max_matches_per_framework: Annotated[
+        int, Field(alias="maxMatchesPerFramework", ge=1, le=10)
+    ] = 5,
+    mode: SearchMode,
+    normalized_grades: Annotated[
+        ComparisonGradeFilters, Field(alias="normalizedGrades")
+    ] = (),
+    query: SearchQueryText,
+    snapshot_ids: ComparisonSnapshotIds = (),
 ) -> ToolResult:
     """Return independently bounded exact-package evidence for selected frameworks.
 
     Parameters
     ----------
-    request
-        Discriminated text, exact-code, or code-prefix comparison request.
     context
         Injected FastMCP request context containing immutable application state.
+    framework_ids
+        Two through eight distinct conceptual framework identifiers.
+    include_context_paths
+        Whether bounded hierarchy paths are included for returned matches.
+    include_groupings
+        Whether grouping nodes are eligible for comparison retrieval.
+    local_grade_labels
+        Shared exact local grade or stage filters.
+    match
+        Text matching policy, required only for text mode.
+    max_matches_per_framework
+        Independent package-local candidate quota from one through ten.
+    mode
+        Text, exact-code, or code-prefix comparison mode.
+    normalized_grades
+        Shared normalized retrieval-facet filters.
+    query
+        Topic text or code query used for evidence retrieval.
+    snapshot_ids
+        Optional exact snapshots, with at most one per selected framework.
 
     Returns
     -------
     ToolResult
         Readable summary and complete ``CompareFrameworkEvidenceResult`` evidence.
     """
+
+    request = _build_comparison_request(
+        framework_ids=framework_ids,
+        include_context_paths=include_context_paths,
+        include_groupings=include_groupings,
+        local_grade_labels=local_grade_labels,
+        match=match,
+        max_matches_per_framework=max_matches_per_framework,
+        mode=mode,
+        normalized_grades=normalized_grades,
+        query=query,
+        snapshot_ids=snapshot_ids,
+    )
 
     with tool_error_boundary("compare_framework_evidence"):
         state = get_app_state(context)
@@ -129,7 +257,7 @@ async def compare_framework_evidence(
         )
 
 
-def register_comparison_tools(server: FastMCP[dict[str, AppState]]) -> None:
+def register_comparison_tools(server: "FastMCP[dict[str, AppState]]") -> None:
     """Register the deterministic cross-framework evidence tool explicitly.
 
     Parameters
