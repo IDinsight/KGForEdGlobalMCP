@@ -371,6 +371,37 @@ class CatalogService:
 
         return self._select_snapshot(framework_id=framework_id, snapshot_id=snapshot_id)
 
+    def get_framework_family(self, framework_id: FrameworkId) -> CatalogFrameworkFamily:
+        """Return one exact accepted framework family.
+
+        Parameters
+        ----------
+        framework_id
+            Exact conceptual framework identifier.
+
+        Returns
+        -------
+        CatalogFrameworkFamily
+            Accepted family containing every immutable snapshot in catalog order.
+
+        Raises
+        ------
+        FrameworkNotFoundError
+            If the exact framework family is unavailable.
+        """
+
+        family = self._families_by_framework_id.get(framework_id)
+
+        if family is None:
+            raise FrameworkNotFoundError(
+                details={"framework_id": str(framework_id)},
+                message=(
+                    "No catalog framework matched the requested framework identifier."
+                ),
+            )
+
+        return family
+
     def get_graph_package(
         self,
         *,
@@ -484,6 +515,37 @@ class CatalogService:
             framework_id=framework_id, graph_type=graph_type, snapshot_id=snapshot_id
         )
         return runtime.loaded_package
+
+    def get_package_runtime(
+        self, graph_package_id: GraphPackageId
+    ) -> CatalogPackageRuntime:
+        """Return one exact accepted package runtime by package identifier.
+
+        Parameters
+        ----------
+        graph_package_id
+            Exact immutable graph-package identifier.
+
+        Returns
+        -------
+        CatalogPackageRuntime
+            Existing catalog entry, loaded package, and independent graph store.
+
+        Raises
+        ------
+        FrameworkNotFoundError
+            If the exact graph-package identifier is unavailable.
+        """
+
+        runtime = self._runtimes_by_graph_package_id.get(graph_package_id)
+
+        if runtime is None:
+            raise FrameworkNotFoundError(
+                details={"graph_package_id": str(graph_package_id)},
+                message="The requested graph package is unavailable.",
+            )
+
+        return runtime
 
     def list_frameworks(self) -> CatalogResult:
         """Return the complete deterministic catalog without filtering or pagination.

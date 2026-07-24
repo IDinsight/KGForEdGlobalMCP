@@ -879,6 +879,7 @@ class LoadedGraphPackage(FrozenSchema):
     manifest_path: Path = Field(exclude=True, repr=False)
     package_root: Path = Field(exclude=True, repr=False)
     profile: CurriculumProfile
+    profile_bytes: bytes = Field(exclude=True, repr=False)
     profile_path: Path = Field(exclude=True, repr=False)
     profile_sha256: Sha256Digest
     relationships: tuple[GraphRelationship, ...]

@@ -474,6 +474,7 @@ class GraphPackageLoader:
             manifest_path=candidate.manifest_path,
             package_root=candidate.package_path,
             profile=loaded_profile.profile,
+            profile_bytes=loaded_profile.bytes_,
             profile_path=loaded_profile.path,
             profile_sha256=loaded_profile.sha256,
             relationships=delivery.relationships,

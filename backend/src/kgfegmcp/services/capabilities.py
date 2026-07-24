@@ -5,23 +5,31 @@ accepted graph-package metadata, and existing search-index metadata into one tru
 description of the server's implemented behavior.
 
 The service reports the canonical tools, available graph types, package-specific search
-modes, traversal support, implemented features, and explicitly unavailable features. It
-does not inspect the filesystem, dynamically test packages, register MCP components, or
-advertise planned resources, prompts, semantic retrieval, comparisons, alignments,
-persistence, or future graph domains.
+modes, traversal support, implemented features, approved resource URI families, and
+explicitly unavailable features. It does not inspect the filesystem, dynamically test
+packages, register MCP components, or advertise prompts, semantic retrieval,
+comparisons, alignments, persistence, or future graph domains.
 """
+
+# Future Library
+from __future__ import annotations
 
 # Standard Library
 from dataclasses import dataclass
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 # Package Library
 from kgfegmcp.catalog.models import CatalogLoadResult
 from kgfegmcp.domain.enums import CodeAvailability, GraphType
 from kgfegmcp.errors import CatalogError
+from kgfegmcp.resources.uri import CATALOG_URI, RESOURCE_URI_TEMPLATES
 from kgfegmcp.search.models import PackageSearchIndexMetadata, SearchMode
 from kgfegmcp.search.service import SearchService
 from kgfegmcp.services.models import GetCapabilitiesResult, PackageCapabilityResult
+
+if TYPE_CHECKING:
+    # Package Library
+    from kgfegmcp.resources.service import ResourceService
 
 _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "bounded_ancestor_traversal",
@@ -33,8 +41,11 @@ _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "exact_standard_lookup",
     "framework_statistics",
     "lexical_standard_search",
+    "manifest_declared_artifact_access",
     "profile_governed_exact_code_search",
     "profile_governed_prefix_code_search",
+    "read_only_resources",
+    "rights_aware_resource_access",
     "unique_current_framework_routing",
 )
 _SERVER_NAME: Final[str] = "Knowledge Graph For Education Global MCP"
@@ -56,7 +67,6 @@ _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
     "mutations",
     "persistence",
     "prompts",
-    "resources",
     "semantic_search",
 )
 
@@ -100,7 +110,33 @@ class CapabilitiesService:
     """Describe exact server and package capabilities from retained application data."""
 
     catalog_load_result: CatalogLoadResult
+    resource_service: ResourceService
     search_service: SearchService
+
+    def __post_init__(self) -> None:
+        """Require capability evidence to share one accepted catalog runtime.
+
+        Raises
+        ------
+        ValueError
+            If independently constructed services or catalog results are mixed.
+        """
+
+        if (
+            self.resource_service.catalog_service.load_result
+            is not self.catalog_load_result
+        ):
+            raise ValueError(
+                "CapabilitiesService and ResourceService must share CatalogLoadResult."
+            )
+
+        if (
+            self.search_service.catalog_service.load_result
+            is not self.catalog_load_result
+        ):
+            raise ValueError(
+                "CapabilitiesService and SearchService must share CatalogLoadResult."
+            )
 
     def get_capabilities(self) -> GetCapabilitiesResult:
         """Return exact implemented server-level and package-level capabilities.
@@ -144,9 +180,18 @@ class CapabilitiesService:
                 )
 
             profile = runtime.loaded_package.profile
+            resource_kinds, resource_artifacts = (
+                self.resource_service.package_resource_capabilities(
+                    identity.graph_package_id
+                )
+            )
             available_graph_types.add(identity.graph_type)
             package_results.append(
                 PackageCapabilityResult(
+                    available_resource_artifacts=resource_artifacts,
+                    available_resource_kinds=tuple(
+                        resource_kind.value for resource_kind in resource_kinds
+                    ),
                     implemented_search_modes=_implemented_search_modes(
                         code_availability=profile.code_search_policy.availability,
                         prefix_available=(
@@ -169,6 +214,9 @@ class CapabilitiesService:
             ),
             implemented_features=_IMPLEMENTED_FEATURES,
             packages=tuple(package_results),
+            resource_representations=("deterministic_derived", "raw_source"),
+            resource_uri_templates=RESOURCE_URI_TEMPLATES,
+            resource_uris=(CATALOG_URI,),
             server_name=_SERVER_NAME,
             tool_names=_TOOL_NAMES,
             unavailable_features=_UNAVAILABLE_FEATURES,

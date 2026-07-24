@@ -6,9 +6,10 @@ dependencies in their approved order, builds the complete accepted catalog throu
 existing validation gate, and constructs independent package-local search indexes from
 that catalog result.
 
-The resulting ``AppState`` retains the settings, catalog result, catalog service, and
-search service that MCP components use during one server lifespan. Importing this
-module defines the construction process but does not execute it or access runtime files.
+The resulting ``AppState`` retains the settings, catalog result, catalog service,
+search service, and resource service that MCP components use during one server
+lifespan. Importing this module defines the construction process but does not execute
+it or access runtime files.
 """
 
 # Future Library
@@ -29,7 +30,12 @@ from kgfegmcp.packages.loader import GraphPackageLoader
 from kgfegmcp.packages.repository import GraphPackageRepository
 from kgfegmcp.packages.validator import GraphPackageValidator
 from kgfegmcp.profiles.repository import ProfileRepository
+from kgfegmcp.resources.policy import ResourcePolicy
+from kgfegmcp.resources.repository import ResourceRepository
+from kgfegmcp.resources.service import ResourceService
 from kgfegmcp.search.service import SearchService
+from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.services.standards import StandardsService
 
 _LOGGER = logging.getLogger("fastmcp.kgfegmcp.bootstrap")
 
@@ -44,6 +50,8 @@ class AppState:
         Complete all-or-nothing catalog result and read-only validation evidence.
     catalog_service
         Exact and unique-current in-memory catalog routing service.
+    resource_service
+        Rights-aware read-only resource service over the same accepted runtime.
     search_service
         Deterministic search service with independent package-local indexes.
     settings
@@ -52,6 +60,7 @@ class AppState:
 
     catalog_load_result: CatalogLoadResult
     catalog_service: CatalogService
+    resource_service: ResourceService
     search_service: SearchService
     settings: BackendSettings
 
@@ -72,6 +81,19 @@ class AppState:
         if self.catalog_service.load_result is not self.catalog_load_result:
             raise ValueError(
                 "AppState services must share the retained CatalogLoadResult."
+            )
+
+        if self.resource_service.catalog_service is not self.catalog_service:
+            raise ValueError(
+                "AppState must retain the CatalogService owned by ResourceService."
+            )
+
+        if (
+            self.resource_service.standards_service.search_service
+            is not self.search_service
+        ):
+            raise ValueError(
+                "AppState resource and search services must share SearchService."
             )
 
 
@@ -115,9 +137,28 @@ def bootstrap_application() -> AppState:
         )
         catalog_load_result = catalog_repository.load()
         search_service = SearchService.from_catalog_load_result(catalog_load_result)
+        catalog_service = search_service.catalog_service
+        framework_service = FrameworkService(catalog_service=catalog_service)
+        standards_service = StandardsService(
+            catalog_service=catalog_service,
+            framework_service=framework_service,
+            search_service=search_service,
+        )
+        resource_policy = ResourcePolicy(
+            max_resource_bytes=settings.max_resource_bytes,
+            max_resource_source_bytes=settings.max_resource_source_bytes,
+        )
+        resource_repository = ResourceRepository(policy=resource_policy)
+        resource_service = ResourceService(
+            catalog_service=catalog_service,
+            policy=resource_policy,
+            repository=resource_repository,
+            standards_service=standards_service,
+        )
         state = AppState(
             catalog_load_result=catalog_load_result,
-            catalog_service=search_service.catalog_service,
+            catalog_service=catalog_service,
+            resource_service=resource_service,
             search_service=search_service,
             settings=settings,
         )

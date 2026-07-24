@@ -27,6 +27,7 @@ from kgfegmcp.mcp.tools import (
     build_tool_result,
     get_app_state,
     result_schema,
+    standard_resource_links,
 )
 from kgfegmcp.services.frameworks import FrameworkService
 from kgfegmcp.services.models import GetStandardContextRequest, GetStandardContextResult
@@ -124,7 +125,14 @@ async def get_standard_context(
             search_service=state.search_service,
         )
         result = service.get_standard_context(request)
-        return build_tool_result(content=_format_context(result), result=result)
+        resource_links = standard_resource_links(
+            node=result.standard.node, package=result.standard.package, state=state
+        )
+        return build_tool_result(
+            content=_format_context(result),
+            resource_links=resource_links,
+            result=result,
+        )
 
 
 def register_context_tools(server: FastMCP[dict[str, AppState]]) -> None:

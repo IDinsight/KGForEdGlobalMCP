@@ -32,6 +32,7 @@ from kgfegmcp.catalog.models import (
 )
 from kgfegmcp.domain.enums import GraphType, NormalizedStatementType, ValidationStatus
 from kgfegmcp.domain.identifiers import (
+    ArtifactName,
     CaseIdentifierUri,
     CaseIdentifierUuid,
     FrameworkId,
@@ -542,6 +543,8 @@ class GetFrameworkStatisticsResult(FrozenSchema):
 class PackageCapabilityResult(FrozenSchema):
     """Describe implemented capabilities for one accepted package runtime."""
 
+    available_resource_artifacts: tuple[ArtifactName, ...]
+    available_resource_kinds: tuple[str, ...]
     implemented_search_modes: tuple[SearchMode, ...]
     package: CatalogGraphPackage
     search_index: PackageSearchIndexMetadata
@@ -555,6 +558,9 @@ class GetCapabilitiesResult(FrozenSchema):
     available_graph_types: tuple[GraphType, ...]
     implemented_features: tuple[str, ...]
     packages: tuple[PackageCapabilityResult, ...]
+    resource_representations: tuple[str, ...]
+    resource_uri_templates: tuple[str, ...]
+    resource_uris: tuple[str, ...]
     server_name: str = Field(min_length=1)
     tool_names: tuple[str, ...]
     unavailable_features: tuple[str, ...]

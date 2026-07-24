@@ -26,6 +26,8 @@ from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
     build_tool_result,
+    catalog_resource_links,
+    framework_resource_links,
     get_app_state,
     result_schema,
 )
@@ -140,7 +142,16 @@ async def get_framework(request: GetFrameworkRequest, context: Context) -> ToolR
         state = get_app_state(context)
         service = FrameworkService(catalog_service=state.catalog_service)
         result = service.get_framework(request)
-        return build_tool_result(content=_format_framework(result), result=result)
+        resource_links = framework_resource_links(
+            framework_id=result.framework.framework_id,
+            graph_package_count=len(result.framework.graph_packages),
+            snapshot_id=result.framework.snapshot_id,
+        )
+        return build_tool_result(
+            content=_format_framework(result),
+            resource_links=resource_links,
+            result=result,
+        )
 
 
 async def list_frameworks(
@@ -165,7 +176,11 @@ async def list_frameworks(
         state = get_app_state(context)
         service = FrameworkService(catalog_service=state.catalog_service)
         result = service.list_frameworks(request)
-        return build_tool_result(content=_format_framework_list(result), result=result)
+        return build_tool_result(
+            content=_format_framework_list(result),
+            resource_links=catalog_resource_links(),
+            result=result,
+        )
 
 
 def register_framework_tools(server: FastMCP[dict[str, AppState]]) -> None:

@@ -11,7 +11,11 @@ the catalog, or create search indexes.
 """
 
 # Package Library
-from kgfegmcp.mcp.errors import tool_error_boundary
+from kgfegmcp.mcp.errors import resource_error_boundary, tool_error_boundary
 from kgfegmcp.mcp.register import register_components
 
-__all__ = ["register_components", "tool_error_boundary"]
+__all__ = [
+    "register_components",
+    "resource_error_boundary",
+    "tool_error_boundary",
+]

@@ -7,8 +7,8 @@ complete structured result.
 
 The reported capabilities describe only behavior implemented by the currently accepted
 runtime and graph packages. The module does not inspect the filesystem, calculate
-package capabilities itself, or advertise planned features such as resources, prompts,
-semantic search, comparisons, alignments, persistence, or additional graph domains.
+package capabilities itself, or advertise prompts, semantic search, comparisons,
+alignments, persistence, or additional graph domains.
 """
 
 # Future Library
@@ -26,6 +26,7 @@ from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
     build_tool_result,
+    catalog_resource_links,
     get_app_state,
     result_schema,
 )
@@ -61,7 +62,12 @@ def _format_capabilities(result: GetCapabilitiesResult) -> str:
             f"Tools: {', '.join(result.tool_names)}",
             f"Graph types: {graph_types}",
             f"Accepted packages: {len(result.packages)}",
-            ("Unavailable PR 9 features: " f"{', '.join(result.unavailable_features)}"),
+            (
+                f"Resources: "
+                f"{len(result.resource_uris)} fixed, "
+                f"{len(result.resource_uri_templates)} templates"
+            ),
+            f"Unavailable features: {', '.join(result.unavailable_features)}",
         )
     )
 
@@ -84,10 +90,15 @@ async def get_capabilities(context: Context) -> ToolResult:
         state = get_app_state(context)
         service = CapabilitiesService(
             catalog_load_result=state.catalog_load_result,
+            resource_service=state.resource_service,
             search_service=state.search_service,
         )
         result = service.get_capabilities()
-        return build_tool_result(content=_format_capabilities(result), result=result)
+        return build_tool_result(
+            content=_format_capabilities(result),
+            resource_links=catalog_resource_links(),
+            result=result,
+        )
 
 
 def register_capability_tools(server: FastMCP[dict[str, AppState]]) -> None:

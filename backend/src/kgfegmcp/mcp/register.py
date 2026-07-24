@@ -1,9 +1,9 @@
 """This module registers approved FastMCP components on the application server.
 
-This module is the single explicit boundary through which tools are added to the
-FastMCP server. Centralized registration keeps the public MCP surface deliberate and
-prevents import-time decorators or automatic module discovery from adding tools,
-resources, resource templates, or prompts.
+This module is the single explicit boundary through which tools and resources are
+added to the FastMCP server. Centralized registration keeps the public MCP surface
+deliberate and prevents import-time decorators or automatic module discovery from
+adding tools, resources, resource templates, or prompts.
 """
 
 # Future Library
@@ -13,6 +13,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 # Package Library
+from kgfegmcp.mcp.resources.register import register_resource_components
 from kgfegmcp.mcp.tools.capabilities import register_capability_tools
 from kgfegmcp.mcp.tools.context import register_context_tools
 from kgfegmcp.mcp.tools.frameworks import register_framework_tools
@@ -28,7 +29,7 @@ if TYPE_CHECKING:
 
 
 def register_components(server: FastMCP[dict[str, AppState]]) -> None:
-    """Register read-only tools.
+    """Register approved read-only tools and resources.
 
     Parameters
     ----------
@@ -41,3 +42,4 @@ def register_components(server: FastMCP[dict[str, AppState]]) -> None:
     register_framework_tools(server)
     register_standard_tools(server)
     register_statistics_tools(server)
+    register_resource_components(server)

@@ -15,6 +15,8 @@ instructional order.
 from __future__ import annotations
 
 # Standard Library
+import logging
+
 from typing import TYPE_CHECKING
 
 # Third Party Library
@@ -26,6 +28,7 @@ from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
     build_tool_result,
+    framework_resource_links,
     get_app_state,
     result_schema,
 )
@@ -41,6 +44,8 @@ if TYPE_CHECKING:
 
     # Package Library
     from kgfegmcp.bootstrap import AppState
+
+_LOGGER = logging.getLogger("fastmcp.kgfegmcp.mcp.tools.statistics")
 
 
 def _format_statistics(result: GetFrameworkStatisticsResult) -> str:
@@ -102,7 +107,32 @@ async def get_framework_statistics(
             catalog_service=state.catalog_service, search_service=state.search_service
         )
         result = service.get_framework_statistics(request)
-        return build_tool_result(content=_format_statistics(result), result=result)
+        identity = result.package.package_identity
+
+        try:
+            snapshot = state.catalog_service.get_framework(
+                framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
+            )
+            resource_links = framework_resource_links(
+                framework_id=identity.framework_id,
+                graph_package_count=len(snapshot.graph_packages),
+                snapshot_id=identity.snapshot_id,
+            )
+        except Exception as error:  # pylint: disable=W0718
+            _LOGGER.warning(
+                msg=(
+                    f"Optional statistics resource-link construction failed without "
+                    f"affecting the tool result: "
+                    f"error_type={type(error).__name__}, "
+                    f"graph_package_id={identity.graph_package_id}."
+                )
+            )
+            resource_links = ()
+        return build_tool_result(
+            content=_format_statistics(result),
+            resource_links=resource_links,
+            result=result,
+        )
 
 
 def register_statistics_tools(server: FastMCP[dict[str, AppState]]) -> None:

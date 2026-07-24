@@ -29,6 +29,7 @@ from kgfegmcp.mcp.tools import (
     build_tool_result,
     get_app_state,
     result_schema,
+    standard_resource_links,
 )
 from kgfegmcp.search.models import ExactPackageSearchScope
 from kgfegmcp.services.frameworks import FrameworkService
@@ -217,7 +218,14 @@ async def get_standard(request: GetStandardRequest, context: Context) -> ToolRes
     with tool_error_boundary("get_standard"):
         state = get_app_state(context)
         result = _standards_service(state).get_standard(request)
-        return build_tool_result(content=_format_standard(result), result=result)
+        resource_links = standard_resource_links(
+            node=result.node, package=result.package, state=state
+        )
+        return build_tool_result(
+            content=_format_standard(result),
+            resource_links=resource_links,
+            result=result,
+        )
 
 
 def register_standard_tools(server: FastMCP[dict[str, AppState]]) -> None:

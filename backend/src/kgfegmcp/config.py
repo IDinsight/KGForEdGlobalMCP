@@ -4,10 +4,10 @@ resolution.
 
 # Standard Library
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Self
 
 # Third Party Library
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import (
     BaseSettings,
     PydanticBaseSettingsSource,
@@ -90,6 +90,14 @@ class BackendSettings(BaseSettings):
     log_root_override: Path | None = Field(
         default=None, validation_alias="KGFEGMCP_LOG_ROOT"
     )
+    max_resource_bytes: int = Field(
+        default=8 * 1_024 * 1_024, ge=1, validation_alias="KGFEGMCP_MAX_RESOURCE_BYTES"
+    )
+    max_resource_source_bytes: int = Field(
+        default=32 * 1_024 * 1_024,
+        ge=1,
+        validation_alias="KGFEGMCP_MAX_RESOURCE_SOURCE_BYTES",
+    )
     profile_root_override: Path | None = Field(
         default=None, validation_alias="KGFEGMCP_PROFILE_ROOT"
     )
@@ -146,6 +154,28 @@ class BackendSettings(BaseSettings):
 
         del cls, dotenv_settings, file_secret_settings, settings_cls
         return init_settings, env_settings
+
+    @model_validator(mode="after")
+    def validate_resource_limits(self) -> Self:
+        """Require source reads to be at least as large as returned resources.
+
+        Returns
+        -------
+        Self
+            Validated immutable backend settings.
+
+        Raises
+        ------
+        ValueError
+            If the source-read limit is smaller than the returned-resource limit.
+        """
+
+        if self.max_resource_source_bytes < self.max_resource_bytes:
+            raise ValueError(
+                "max_resource_source_bytes must be at least max_resource_bytes."
+            )
+
+        return self
 
     @field_validator(
         "cache_root_override",
