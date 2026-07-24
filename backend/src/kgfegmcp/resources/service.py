@@ -1,9 +1,16 @@
-"""Assemble read-only resources from the accepted application runtime.
+"""This module assembles read-only resources from the accepted application runtime.
 
-``ResourceService`` reuses existing catalog routing, exact graph lookup, standards
-retrieval, package rights, retained source records, and package-local artifact
-references. It does not discover packages, construct graph stores, rebuild search
-indexes, infer curriculum semantics, or accept caller-supplied filesystem paths.
+``ResourceService`` is the ordinary application coordinator for resource delivery. It
+reuses the existing catalog and standards services, exact package-local graph stores,
+accepted package models, ``ResourcePolicy``, and ``ResourceRepository`` to produce
+complete ``ResourceDocument`` values.
+
+The service resolves exact framework and snapshot identities, selects packages by their
+graph contract, applies resource rights, obtains verified source bytes or accepted
+in-memory records, creates deterministic derived JSON, and attaches public identity and
+checksum evidence. It does not discover or reload packages, construct graph stores,
+rebuild search indexes, accept caller-supplied filesystem paths, register FastMCP
+components, or infer curriculum-specific semantics.
 """
 
 # Future Library

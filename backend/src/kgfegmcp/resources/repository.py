@@ -1,9 +1,13 @@
-"""This module reads exact bytes from already accepted graph-package evidence.
+"""This module reads exact resource bytes from already accepted graph packages.
 
-The repository accepts only ``LoadedGraphPackage`` objects produced by the approved
-validation gate. Artifact selection uses exact manifest logical names and retained safe
-paths; callers never provide filesystem paths. Re-read artifact bytes are checked
-against their accepted size and SHA-256 before they are returned.
+``ResourceRepository`` operates only on ``LoadedGraphPackage`` instances produced after
+the approved package-validation gate. It resolves artifacts by exact logical manifest
+name, reads only their retained package-local paths, enforces source-size limits, and
+verifies the actual byte length and SHA-256 before returning content.
+
+Callers never provide arbitrary filesystem paths. This module does not discover or load
+packages, choose framework snapshots, evaluate graph semantics, perform graph lookup,
+serialize derived resources, or register FastMCP components.
 """
 
 # Future Library

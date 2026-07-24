@@ -1,9 +1,13 @@
 """This module defines immutable contracts for read-only resource delivery.
 
-The models distinguish raw accepted source bytes from deterministic derived JSON, carry
-exact package and profile identity, and expose checksum evidence without revealing
-local filesystem paths. They contain no catalog routing, rights decisions, file access,
-FastMCP registration, or curriculum-specific behavior.
+The models in this module describe resource kinds, raw and derived representations,
+source-checksum evidence, public identity metadata, detailed standard provenance, and
+the final content returned by ``ResourceService``. They distinguish exact accepted
+source bytes from deterministic generated JSON and never expose local filesystem paths.
+
+This module contains data contracts only. It does not route catalog requests, evaluate
+rights, select packages or artifacts, access files, register FastMCP components, or
+contain curriculum-specific behavior.
 """
 
 # Future Library

@@ -1,8 +1,14 @@
-"""This module applies rights, exposure, MIME, and size policy to resources.
+"""This module applies rights, exposure, MIME-type, and size policy to resources.
 
-The policy is curriculum-agnostic and operates only on accepted manifest rights and
-closed logical artifact classes. Additional artifacts remain representable in package
-manifests but are denied until a future schema supplies an explicit exposure contract.
+This module determines whether an accepted package permits a requested resource and
+which limits and MIME type apply. It evaluates standard-resource, full-text, and
+bulk-resource rights independently and maps approved manifest artifact names to closed
+exposure classes.
+
+Additional manifest artifacts remain representable but fail closed until an explicit
+future contract defines their exposure class, MIME type, rights requirements, and size
+policy. This module makes policy decisions only; it does not resolve packages, read
+files, validate checksums, query graph stores, or register MCP resources.
 """
 
 # Future Library

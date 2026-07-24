@@ -1,9 +1,9 @@
-"""This package exposes the curriculum-agnostic read-only resource boundary.
+"""This package exposes the public curriculum-agnostic read-only resource boundary.
 
-The package provides immutable resource models, closed URI constructors, rights and
-size policy, checksum-verified accepted-artifact access, and a service that composes
-existing catalog, graph, search, and standards behavior. Importing it performs no
-filesystem access, package loading, application bootstrap, or FastMCP registration.
+This package provides the approved resource models, URI constructors, access policy,
+accepted-artifact repository, and orchestration service used to deliver read-only
+catalog and graph-package resources. Its public exports allow application and MCP
+modules to use one explicit resource API without depending on internal module layout.
 """
 
 # Package Library

@@ -1,9 +1,14 @@
-"""Register the approved read-only FastMCP resource surface.
+"""This module registers the approved read-only resources with FastMCP.
 
-Every adapter retrieves the one lifespan ``AppState`` and delegates to its ordinary
-``ResourceService``. This module contains no catalog routing, package loading, checksum
-validation, graph lookup, rights logic, artifact selection, or curriculum-specific
-behavior.
+This module defines the thin MCP-facing adapters for the fixed catalog resource and the
+approved resource templates. Each adapter receives typed values from FastMCP, retrieves
+the existing lifespan ``AppState``, delegates the request to ``ResourceService``, and
+converts the returned ``ResourceDocument`` into a FastMCP ``ResourceResult``.
+
+Resource registration is explicit and occurs only through
+``register_resource_components``. This module does not perform catalog routing, package
+selection, rights evaluation, artifact resolution, filesystem access, checksum
+validation, graph lookup, domain serialization, or curriculum-specific interpretation.
 """
 
 # Future Library

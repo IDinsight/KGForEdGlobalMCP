@@ -1,8 +1,13 @@
-"""Provide shared FastMCP adapters for read-only resources.
+"""This package provides shared FastMCP adapters for read-only resources.
 
-The helpers in this package convert ordinary resource documents into explicit FastMCP
-resource results and retrieve the immutable lifespan state. They do not route catalog
-requests, select packages, enforce rights, read artifacts, or serialize domain models.
+This module forms the small transport bridge between the ordinary resource layer and
+FastMCP. It converts a ``ResourceDocument`` returned by ``ResourceService`` into an
+explicit FastMCP ``ResourceResult`` and retrieves the exact ``AppState`` created by the
+application lifespan.
+
+The helpers here do not resolve frameworks or packages, enforce rights, select
+artifacts, read files, validate checksums, query graph stores, serialize domain models,
+or contain curriculum-specific behavior.
 """
 
 # Third Party Library

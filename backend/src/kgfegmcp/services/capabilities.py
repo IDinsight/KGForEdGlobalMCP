@@ -4,11 +4,12 @@ This module provides ``CapabilitiesService``, which combines the retained catalo
 accepted graph-package metadata, and existing search-index metadata into one truthful
 description of the server's implemented behavior.
 
-The service reports the canonical tools, available graph types, package-specific search
-modes, traversal support, implemented features, approved resource URI families, and
-explicitly unavailable features. It does not inspect the filesystem, dynamically test
-packages, register MCP components, or advertise prompts, semantic retrieval,
-comparisons, alignments, persistence, or future graph domains.
+The service reports the canonical tools and prompts, available graph types,
+package-specific search modes, traversal support, implemented features, approved
+resource URI families, optional framework prompt overlays, and explicitly unavailable
+features. It does not inspect the filesystem, dynamically test packages, register MCP
+components, or advertise semantic retrieval, comparisons, alignments, persistence, or
+future graph domains.
 """
 
 # Future Library
@@ -22,6 +23,7 @@ from typing import TYPE_CHECKING, Final
 from kgfegmcp.catalog.models import CatalogLoadResult
 from kgfegmcp.domain.enums import CodeAvailability, GraphType
 from kgfegmcp.errors import CatalogError
+from kgfegmcp.prompts.models import PROMPT_CONFIG_SCHEMA_VERSION, PROMPT_NAMES
 from kgfegmcp.resources.uri import CATALOG_URI, RESOURCE_URI_TEMPLATES
 from kgfegmcp.search.models import PackageSearchIndexMetadata, SearchMode
 from kgfegmcp.search.service import SearchService
@@ -39,6 +41,7 @@ _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "direct_graph_navigation",
     "exact_framework_lookup",
     "exact_standard_lookup",
+    "framework_prompt_overlays",
     "framework_statistics",
     "lexical_standard_search",
     "manifest_declared_artifact_access",
@@ -46,6 +49,7 @@ _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "profile_governed_prefix_code_search",
     "read_only_resources",
     "rights_aware_resource_access",
+    "role_oriented_prompt_workflows",
     "unique_current_framework_routing",
 )
 _SERVER_NAME: Final[str] = "Knowledge Graph For Education Global MCP"
@@ -66,7 +70,6 @@ _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
     "learning_progressions",
     "mutations",
     "persistence",
-    "prompts",
     "semantic_search",
 )
 
@@ -212,8 +215,11 @@ class CapabilitiesService:
             available_graph_types=tuple(
                 sorted(available_graph_types, key=lambda value: value.value)
             ),
+            framework_prompt_overlays_optional=True,
             implemented_features=_IMPLEMENTED_FEATURES,
             packages=tuple(package_results),
+            prompt_config_schema_version=PROMPT_CONFIG_SCHEMA_VERSION,
+            prompt_names=PROMPT_NAMES,
             resource_representations=("deterministic_derived", "raw_source"),
             resource_uri_templates=RESOURCE_URI_TEMPLATES,
             resource_uris=(CATALOG_URI,),

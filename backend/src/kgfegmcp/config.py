@@ -62,7 +62,7 @@ def _resolve_project_path(
 
 
 class BackendSettings(BaseSettings):
-    """Validated settings for catalog, profile, data, and runtime paths."""
+    """Validated settings for catalog, profile, prompt, data, and runtime paths."""
 
     cache_root_override: Path | None = Field(
         default=None, validation_alias="KGFEGMCP_CACHE_ROOT"
@@ -103,6 +103,9 @@ class BackendSettings(BaseSettings):
     )
     project_dir: Path = Field(
         default_factory=_default_project_dir, validation_alias="PATHS_PROJECT_DIR"
+    )
+    prompt_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_PROMPT_ROOT"
     )
     results_root_override: Path | None = Field(
         default=None, validation_alias="KGFEGMCP_RESULTS_ROOT"
@@ -186,6 +189,7 @@ class BackendSettings(BaseSettings):
         "log_root_override",
         "profile_root_override",
         "project_dir",
+        "prompt_root_override",
         "results_root_override",
         "server_config_path_override",
         mode="before",
@@ -357,6 +361,22 @@ class BackendSettings(BaseSettings):
         return _resolve_project_path(
             configured_path=self.profile_root_override,
             default_relative_path=Path("config/profiles"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def prompt_root(self) -> Path:
+        """Return the optional framework-local prompt-configuration root.
+
+        Returns
+        -------
+        Path
+            The resolved versioned prompt-configuration root.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.prompt_root_override,
+            default_relative_path=Path("config/prompts"),
             project_dir=self.project_dir,
         )
 

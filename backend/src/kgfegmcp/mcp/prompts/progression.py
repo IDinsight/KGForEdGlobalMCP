@@ -1,0 +1,89 @@
+"""This module exposes the inferred-progression generic FastMCP prompt.
+
+The adapter delegates to the ordinary prompt service and returns instructions for a
+client-side, evidence-linked progression hypothesis. It does not create Learning
+Progressions data, persist edges, traverse the graph during prompt retrieval, call an
+LLM, or use sampling.
+"""
+
+# Future Library
+from __future__ import annotations
+
+# Third Party Library
+from fastmcp import Context
+from fastmcp.prompts import PromptResult
+
+# Package Library
+from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
+from kgfegmcp.mcp.errors import prompt_error_boundary
+from kgfegmcp.mcp.prompts import build_prompt_result
+from kgfegmcp.mcp.tools import get_app_state
+from kgfegmcp.prompts.models import (
+    ProgressionCandidateLimit,
+    ProgressionDirection,
+    PromptFocusMode,
+    PromptFocusText,
+    PromptGradeOrStage,
+    PromptLocalContext,
+)
+
+
+async def inferred_progression_hypothesis(
+    *,
+    candidate_limit: ProgressionCandidateLimit = 8,
+    context: Context,
+    direction: ProgressionDirection = ProgressionDirection.BOTH,
+    focus_mode: PromptFocusMode = PromptFocusMode.TOPIC,
+    framework_id: FrameworkId,
+    grade_or_stage: PromptGradeOrStage,
+    local_context: PromptLocalContext | None = None,
+    output_language: LanguageTag | None = None,
+    snapshot_id: SnapshotId | None = None,
+    topic_or_standard: PromptFocusText,
+) -> PromptResult:
+    """Return a workflow for an evidence-linked inferred progression hypothesis.
+
+    Parameters
+    ----------
+    candidate_limit
+        Maximum number of standards candidates to review, from 2 through 20.
+    context
+        Injected FastMCP request context containing immutable application state.
+    direction
+        Earlier-to-later, later-to-earlier, or bidirectional review.
+    focus_mode
+        Topic, statement code, or explicit identifier namespace.
+    framework_id
+        Exact conceptual framework identifier.
+    grade_or_stage
+        Local or normalized grade/stage scope for candidate retrieval.
+    local_context
+        Optional local nuance treated as untrusted caller context.
+    output_language
+        Optional BCP 47-style output language tag.
+    snapshot_id
+        Optional exact immutable snapshot identifier; omission uses unique-current
+        routing.
+    topic_or_standard
+        Topic text, statement code, or exact anchor selected by ``focus_mode``.
+
+    Returns
+    -------
+    PromptResult
+        One deterministic user-role prompt message with exact runtime metadata.
+    """
+
+    with prompt_error_boundary("inferred_progression_hypothesis"):
+        state = get_app_state(context)
+        result = state.prompt_service.inferred_progression_hypothesis(
+            candidate_limit=candidate_limit,
+            direction=direction,
+            focus_mode=focus_mode,
+            framework_id=framework_id,
+            grade_or_stage=grade_or_stage,
+            local_context=local_context,
+            output_language=output_language,
+            snapshot_id=snapshot_id,
+            topic_or_standard=topic_or_standard,
+        )
+        return build_prompt_result(result)

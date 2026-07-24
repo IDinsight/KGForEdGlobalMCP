@@ -1,9 +1,13 @@
-"""This module defines the approved resource URI templates and constructors.
+"""This module defines the approved resource URI templates and link constructors.
 
-FastMCP performs template matching and percent decoding. This module provides only
-closed template constants and deterministic URI construction for server-generated
-links. It does not parse raw request URIs, resolve packages, access files, or enforce
-rights.
+This module contains the fixed ``kgfegmcp://`` catalog URI, the approved FastMCP
+resource-template strings, and deterministic constructors for server-generated resource
+links. Identifier values are percent-encoded as individual URI path segments before
+being inserted into a constructed link.
+
+FastMCP remains responsible for matching incoming resource templates and decoding their
+parameters. This module does not parse raw request URIs, resolve frameworks or
+packages, enforce rights, access artifacts, query graph stores, or register resources.
 """
 
 # Standard Library

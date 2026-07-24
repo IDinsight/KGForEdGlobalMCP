@@ -134,6 +134,24 @@ class ProfileValidationError(KGFEGMCPError):
     error_code = "profile_validation_error"
 
 
+class PromptAccessDeniedError(KGFEGMCPError):
+    """Raised when rights policy blocks a generated-derivative prompt."""
+
+    error_code = "prompt_access_denied"
+
+
+class PromptConfigurationError(KGFEGMCPError):
+    """Raised when optional framework prompt configuration is invalid."""
+
+    error_code = "prompt_configuration_error"
+
+
+class PromptRenderingError(KGFEGMCPError):
+    """Raised when a deterministic prompt cannot be rendered safely."""
+
+    error_code = "prompt_rendering_error"
+
+
 class ResourceAccessDeniedError(KGFEGMCPError):
     """Raised when rights or exposure policy blocks a resource read."""
 

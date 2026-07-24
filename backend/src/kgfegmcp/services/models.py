@@ -39,6 +39,7 @@ from kgfegmcp.domain.identifiers import (
     LanguageTag,
     NodeId,
     RelationshipId,
+    SchemaVersion,
     Sha256Digest,
     SnapshotId,
 )
@@ -556,8 +557,11 @@ class GetCapabilitiesResult(FrozenSchema):
     """Describe exact server-level and package-level implemented capabilities."""
 
     available_graph_types: tuple[GraphType, ...]
+    framework_prompt_overlays_optional: bool
     implemented_features: tuple[str, ...]
     packages: tuple[PackageCapabilityResult, ...]
+    prompt_config_schema_version: SchemaVersion
+    prompt_names: tuple[str, ...]
     resource_representations: tuple[str, ...]
     resource_uri_templates: tuple[str, ...]
     resource_uris: tuple[str, ...]

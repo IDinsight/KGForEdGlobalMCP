@@ -7,8 +7,8 @@ complete structured result.
 
 The reported capabilities describe only behavior implemented by the currently accepted
 runtime and graph packages. The module does not inspect the filesystem, calculate
-package capabilities itself, or advertise prompts, semantic search, comparisons,
-alignments, persistence, or additional graph domains.
+package capabilities itself, or advertise semantic search, comparisons, alignments,
+persistence, or additional graph domains.
 """
 
 # Future Library
@@ -52,7 +52,8 @@ def _format_capabilities(result: GetCapabilitiesResult) -> str:
     Returns
     -------
     str
-        Stable summary of tools, graph types, package count, and unavailable features.
+        Stable summary of tools, prompts, graph types, package count, and unavailable
+        features.
     """
 
     graph_types = ", ".join(value.value for value in result.available_graph_types)
@@ -60,12 +61,17 @@ def _format_capabilities(result: GetCapabilitiesResult) -> str:
         (
             f"Server: {result.server_name}",
             f"Tools: {', '.join(result.tool_names)}",
+            f"Prompts: {', '.join(result.prompt_names)}",
             f"Graph types: {graph_types}",
             f"Accepted packages: {len(result.packages)}",
             (
                 f"Resources: "
                 f"{len(result.resource_uris)} fixed, "
                 f"{len(result.resource_uri_templates)} templates"
+            ),
+            (
+                f"Framework prompt overlays: optional, schema "
+                f"{result.prompt_config_schema_version}"
             ),
             f"Unavailable features: {', '.join(result.unavailable_features)}",
         )
@@ -113,8 +119,9 @@ def register_capability_tools(server: FastMCP[dict[str, AppState]]) -> None:
     server.tool(
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
-            "Report only tools, graph types, search modes, traversal behavior, and "
-            "package capabilities implemented by the accepted runtime."
+            "Report only tools, prompts, resources, graph types, search modes, "
+            "traversal behavior, and package capabilities implemented by the accepted "
+            "runtime."
         ),
         name="get_capabilities",
         output_schema=result_schema(GetCapabilitiesResult),

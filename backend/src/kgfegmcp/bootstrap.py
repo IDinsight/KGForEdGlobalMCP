@@ -1,15 +1,15 @@
 """This module constructs the immutable application state for one server lifespan.
 
 This module is the composition root for the application's existing configuration,
-profile, graph-package, validation, catalog, and search components. It creates those
-dependencies in their approved order, builds the complete accepted catalog through the
-existing validation gate, and constructs independent package-local search indexes from
-that catalog result.
+profile, graph-package, validation, catalog, prompt, resource, and search components.
+It creates those dependencies in their approved order, builds the complete accepted
+catalog through the existing validation gate, and constructs independent package-local
+search indexes from that catalog result.
 
 The resulting ``AppState`` retains the settings, catalog result, catalog service,
-search service, and resource service that MCP components use during one server
-lifespan. Importing this module defines the construction process but does not execute
-it or access runtime files.
+prompt service, resource service, and search service that MCP components use during one
+server lifespan. Importing this module defines the construction process but does not
+execute it or access runtime files.
 """
 
 # Future Library
@@ -30,6 +30,8 @@ from kgfegmcp.packages.loader import GraphPackageLoader
 from kgfegmcp.packages.repository import GraphPackageRepository
 from kgfegmcp.packages.validator import GraphPackageValidator
 from kgfegmcp.profiles.repository import ProfileRepository
+from kgfegmcp.prompts.repository import PromptConfigRepository
+from kgfegmcp.prompts.service import PromptService
 from kgfegmcp.resources.policy import ResourcePolicy
 from kgfegmcp.resources.repository import ResourceRepository
 from kgfegmcp.resources.service import ResourceService
@@ -50,6 +52,8 @@ class AppState:
         Complete all-or-nothing catalog result and read-only validation evidence.
     catalog_service
         Exact and unique-current in-memory catalog routing service.
+    prompt_service
+        Generic, profile-aware prompt service over the same accepted runtime.
     resource_service
         Rights-aware read-only resource service over the same accepted runtime.
     search_service
@@ -60,6 +64,7 @@ class AppState:
 
     catalog_load_result: CatalogLoadResult
     catalog_service: CatalogService
+    prompt_service: PromptService
     resource_service: ResourceService
     search_service: SearchService
     settings: BackendSettings
@@ -81,6 +86,11 @@ class AppState:
         if self.catalog_service.load_result is not self.catalog_load_result:
             raise ValueError(
                 "AppState services must share the retained CatalogLoadResult."
+            )
+
+        if self.prompt_service.catalog_service is not self.catalog_service:
+            raise ValueError(
+                "AppState must retain the CatalogService owned by PromptService."
             )
 
         if self.resource_service.catalog_service is not self.catalog_service:
@@ -112,8 +122,9 @@ def bootstrap_application() -> AppState:
     Raises
     ------
     Exception
-        Re-raises any settings, repository, validation, catalog, graph-store, or search
-        construction failure after recording an internal startup diagnostic.
+        Re-raises any settings, repository, validation, catalog, prompt, graph-store,
+        resource, or search construction failure after recording an internal startup
+        diagnostic.
     """
 
     started_at = perf_counter()
@@ -136,9 +147,18 @@ def bootstrap_application() -> AppState:
             validator=package_validator,
         )
         catalog_load_result = catalog_repository.load()
+        prompt_config_repository = PromptConfigRepository(
+            prompt_root=settings.prompt_root
+        )
+        prompt_config_registry = prompt_config_repository.load_registry(
+            catalog_load_result
+        )
         search_service = SearchService.from_catalog_load_result(catalog_load_result)
         catalog_service = search_service.catalog_service
         framework_service = FrameworkService(catalog_service=catalog_service)
+        prompt_service = PromptService(
+            catalog_service=catalog_service, config_registry=prompt_config_registry
+        )
         standards_service = StandardsService(
             catalog_service=catalog_service,
             framework_service=framework_service,
@@ -158,6 +178,7 @@ def bootstrap_application() -> AppState:
         state = AppState(
             catalog_load_result=catalog_load_result,
             catalog_service=catalog_service,
+            prompt_service=prompt_service,
             resource_service=resource_service,
             search_service=search_service,
             settings=settings,
