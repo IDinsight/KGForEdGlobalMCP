@@ -11,9 +11,6 @@ prompt configuration, enforce rights independently, search standards, traverse g
 generate educational content, call an LLM, or use MCP sampling.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Third Party Library
 from fastmcp import Context
 from fastmcp.prompts import PromptResult

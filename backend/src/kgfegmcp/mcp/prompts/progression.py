@@ -12,9 +12,6 @@ during prompt retrieval, call an LLM, or use MCP sampling. Any progression produ
 the client-side model remains explicitly labeled as an LLM-inferred hypothesis.
 """
 
-# Future Library
-from __future__ import annotations
-
 # Third Party Library
 from fastmcp import Context
 from fastmcp.prompts import PromptResult
