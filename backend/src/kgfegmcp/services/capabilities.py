@@ -1,8 +1,14 @@
-"""This module reports only capabilities implemented by the accepted PR 9 runtime.
+"""This module reports capabilities implemented by the accepted application runtime.
 
-The service joins the retained catalog load and existing search metadata without
-probing the filesystem, registering components, or advertising planned resources,
-prompts, semantic retrieval, comparisons, alignments, or future graph domains.
+This module provides ``CapabilitiesService``, which combines the retained catalog load,
+accepted graph-package metadata, and existing search-index metadata into one truthful
+description of the server's implemented behavior.
+
+The service reports the canonical tools, available graph types, package-specific search
+modes, traversal support, implemented features, and explicitly unavailable features. It
+does not inspect the filesystem, dynamically test packages, register MCP components, or
+advertise planned resources, prompts, semantic retrieval, comparisons, alignments,
+persistence, or future graph domains.
 """
 
 # Standard Library
@@ -48,9 +54,9 @@ _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
     "learning_components",
     "learning_progressions",
     "mutations",
-    "resources",
     "persistence",
     "prompts",
+    "resources",
     "semantic_search",
 )
 

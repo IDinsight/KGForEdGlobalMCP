@@ -1,9 +1,15 @@
-"""Register and implement canonical standard search and lookup FastMCP tools.
+"""This module exposes canonical standards search and exact lookup as FastMCP tools.
 
-These adapters delegate package selection, filtering, code normalization, lexical
-matching, ranking, cursor handling, exact identifier lookup, and package-local facet
-evidence to ordinary services. They contain no curriculum-specific rules or duplicate
-graph and search behavior.
+This module implements and registers the ``search_standards`` and ``get_standard`` MCP
+tools. The adapters retrieve immutable application state, construct the ordinary
+framework and standards services, delegate the requested operation, and return a
+deterministic human-readable summary alongside the complete structured result.
+
+The module may format or truncate text for display, but it does not select packages,
+normalize codes, tokenize text, apply filters, rank results, handle search cursors,
+resolve identifier namespaces, inspect graph stores, or calculate facet evidence. Those
+responsibilities remain in the existing framework, standards, search, catalog, and
+graph services.
 """
 
 # Future Library

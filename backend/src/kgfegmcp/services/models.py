@@ -1,12 +1,18 @@
-"""This module defines immutable PR 9 orchestration request and result models.
+"""This module defines immutable request and result models.
 
-The models in this module compose the existing catalog, graph, traversal, and search
-contracts into the canonical framework and standards tool surface. They preserve exact
-source records, package identity, profile identity, normalized evidence, warnings, and
-pagination state without introducing curriculum-specific semantics.
+This module contains the validated data contracts shared by the ordinary services and
+the MCP tool adapters. The models describe framework discovery, framework lookup,
+standards search, exact standard lookup, graph context, framework statistics, runtime
+capabilities, typed identifier namespaces, pagination cursors, and supporting count or
+status evidence.
 
-This module performs no filesystem access, package validation, catalog routing, graph
-traversal, search execution, or FastMCP registration.
+The models compose existing catalog, graph, traversal, and search contracts while
+preserving exact source records, normalized evidence, package identity, profile
+identity, warnings, relationship statuses, and pagination state.
+
+This module defines and validates data shapes only. It does not access the filesystem,
+load packages, route catalog requests, execute search, traverse graphs, calculate
+statistics, retrieve application state, or register FastMCP components.
 """
 
 # Future Library

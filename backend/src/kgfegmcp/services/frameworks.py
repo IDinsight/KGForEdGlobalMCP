@@ -1,19 +1,24 @@
-"""This module provides deterministic framework discovery and snapshot orchestration.
+"""This module coordinates deterministic framework discovery and snapshot selection.
 
-The service composes the existing in-memory ``CatalogService`` with framework-level
-filtering and a separate catalog cursor namespace. It does not access the filesystem,
-validate packages, construct graph stores, select standards, or execute search.
+This module provides ``FrameworkService`` and the private framework-cursor helpers used
+by it. The service works with the existing in-memory ``CatalogService`` to list
+accepted framework snapshots, apply framework-level filters, paginate results, retrieve
+an exact or unique-current framework, resolve snapshot identifiers, and select the
+snapshots that may participate in standards search.
+
+Framework pagination uses its own checksum-protected cursor namespace and does not
+reuse the standards-search cursor. The service does not access the filesystem, load or
+validate packages, construct graph stores, select graph nodes, execute standards
+search, or infer curriculum equivalence or instructional sequence.
 """
 
 # Standard Library
 import base64
-import binascii
 import hashlib
 import json
 import unicodedata
 
 from dataclasses import dataclass
-from json import JSONDecodeError
 from typing import Final
 
 # Third Party Library
@@ -111,13 +116,7 @@ def _decode_cursor(cursor: FrameworkCursor) -> _FrameworkCursorState:
         decoded = base64.urlsafe_b64decode(f"{cursor.root}{padding}".encode("ascii"))
         payload = json.loads(decoded.decode("utf-8"))
         state = _FrameworkCursorState.model_validate(payload)
-    except (
-        binascii.Error,
-        JSONDecodeError,
-        UnicodeDecodeError,
-        ValidationError,
-        ValueError,
-    ) as error:
+    except (ValidationError, ValueError) as error:
         raise InvalidCursorError(
             details={"cursor_kind": _FRAMEWORK_CURSOR_KIND},
             message="The framework pagination cursor is malformed.",
@@ -196,6 +195,120 @@ def _encode_cursor(
     return FrameworkCursor(encoded)
 
 
+def _matches_currency(
+    *, request: ListFrameworksRequest, snapshot: CatalogFrameworkSnapshot
+) -> bool:
+    """Return whether one snapshot satisfies the ``is_current`` discovery filter.
+
+    Parameters
+    ----------
+    request
+        Validated framework-discovery request.
+    snapshot
+        Accepted snapshot to evaluate.
+
+    Returns
+    -------
+    bool
+        ``True`` when the filter is unset or the snapshot currency matches.
+    """
+
+    requested = request.is_current
+    return requested is None or snapshot.source_metadata.is_current is requested
+
+
+def _matches_graph_types(
+    *, request: ListFrameworksRequest, snapshot: CatalogFrameworkSnapshot
+) -> bool:
+    """Return whether one snapshot exposes any requested graph type.
+
+    Parameters
+    ----------
+    request
+        Validated framework-discovery request.
+    snapshot
+        Accepted snapshot to evaluate.
+
+    Returns
+    -------
+    bool
+        ``True`` when the filter is empty or any requested graph type is available.
+    """
+
+    return not request.graph_types or bool(
+        set(request.graph_types).intersection(snapshot.available_graph_types)
+    )
+
+
+def _matches_normalized_grades(
+    *, request: ListFrameworksRequest, snapshot: CatalogFrameworkSnapshot
+) -> bool:
+    """Return whether one snapshot satisfies the normalized-grade discovery filter.
+
+    Parameters
+    ----------
+    request
+        Validated framework-discovery request.
+    snapshot
+        Accepted snapshot to evaluate.
+
+    Returns
+    -------
+    bool
+        ``True`` when the filter is empty or any package normalized grade matches.
+    """
+
+    normalized_grades = tuple(
+        value
+        for package in snapshot.graph_packages
+        for value in package.profile_facets.normalized_grades
+    )
+    return _matches_requested_values(
+        actual_values=normalized_grades, requested_values=request.normalized_grades
+    )
+
+
+def _matches_query(
+    *, request: ListFrameworksRequest, snapshot: CatalogFrameworkSnapshot
+) -> bool:
+    """Return whether one snapshot satisfies the free-text query filter.
+
+    Every whitespace-delimited query token must appear within the normalized,
+    unit-separated concatenation of the snapshot's searchable source fields.
+
+    Parameters
+    ----------
+    request
+        Validated framework-discovery request.
+    snapshot
+        Accepted snapshot to evaluate.
+
+    Returns
+    -------
+    bool
+        ``True`` when no query is supplied or every query token is present.
+    """
+
+    if request.query is None:
+        return True
+
+    source = snapshot.source_metadata
+    fields = (
+        str(snapshot.framework_id),
+        str(snapshot.snapshot_id),
+        source.issuing_authority or "",
+        source.jurisdiction,
+        source.jurisdiction_type or "",
+        source.local_subject,
+        source.name,
+        source.provider or "",
+        source.source_version or "",
+    )
+    haystack = "\u001f".join(_normalize_catalog_value(value) for value in fields)
+    tokens = tuple(_normalize_catalog_value(request.query).split())
+    return all(token in haystack for token in tokens)
+
+
 def _matches_requested_values(
     *, actual_values: tuple[str, ...], requested_values: tuple[str, ...]
 ) -> bool:
@@ -222,6 +335,77 @@ def _matches_requested_values(
     return bool(actual_keys.intersection(requested_keys))
 
 
+def _matches_source_metadata(
+    *, request: ListFrameworksRequest, snapshot: CatalogFrameworkSnapshot
+) -> bool:
+    """Return whether one snapshot satisfies every source-metadata discovery filter.
+
+    Parameters
+    ----------
+    request
+        Validated framework-discovery request.
+    snapshot
+        Accepted snapshot to evaluate.
+
+    Returns
+    -------
+    bool
+        ``True`` only when the jurisdiction, jurisdiction-type, issuing-authority,
+        subject, language, and local-grade filters are all satisfied.
+    """
+
+    source = snapshot.source_metadata
+    return (
+        _matches_requested_values(
+            actual_values=(source.jurisdiction,), requested_values=request.jurisdictions
+        )
+        and _matches_requested_values(
+            actual_values=_optional_values(source.jurisdiction_type),
+            requested_values=request.jurisdiction_types,
+        )
+        and _matches_requested_values(
+            actual_values=_optional_values(source.issuing_authority),
+            requested_values=request.issuing_authorities,
+        )
+        and _matches_requested_values(
+            actual_values=(source.local_subject,), requested_values=request.subjects
+        )
+        and _matches_requested_values(
+            actual_values=tuple(str(value) for value in source.languages),
+            requested_values=tuple(str(value) for value in request.languages),
+        )
+        and _matches_requested_values(
+            actual_values=source.local_grades_or_stages,
+            requested_values=request.local_grades,
+        )
+    )
+
+
+def _matches_validation_status(
+    *, request: ListFrameworksRequest, snapshot: CatalogFrameworkSnapshot
+) -> bool:
+    """Return whether one snapshot satisfies the package validation-status filter.
+
+    Parameters
+    ----------
+    request
+        Validated framework-discovery request.
+    snapshot
+        Accepted snapshot to evaluate.
+
+    Returns
+    -------
+    bool
+        ``True`` when the filter is empty or any package validation status matches.
+    """
+
+    return not request.validation_status or bool(
+        {package.validation.status for package in snapshot.graph_packages}.intersection(
+            request.validation_status
+        )
+    )
+
+
 def _normalize_catalog_value(value: str) -> str:
     """Normalize one catalog comparison value without replacing source evidence.
 
@@ -238,6 +422,23 @@ def _normalize_catalog_value(value: str) -> str:
 
     normalized = unicodedata.normalize("NFKC", value).casefold()
     return " ".join(normalized.split())
+
+
+def _optional_values(value: str | None) -> tuple[str, ...]:
+    """Wrap an optional catalog value as a comparison tuple.
+
+    Parameters
+    ----------
+    value
+        Exact source value that may be absent.
+
+    Returns
+    -------
+    tuple[str, ...]
+        A single-item tuple when the value is truthy, otherwise an empty tuple.
+    """
+
+    return (value,) if value else ()
 
 
 def _snapshot_order_key(snapshot: CatalogFrameworkSnapshot) -> tuple[str, str]:
@@ -311,95 +512,14 @@ class FrameworkService:
             ``True`` only when every filter dimension is satisfied.
         """
 
-        source = snapshot.source_metadata
-        packages = snapshot.graph_packages
-
-        if (
-            request.is_current is not None
-            and source.is_current is not request.is_current
-        ):
-            return False
-
-        if request.graph_types and not set(request.graph_types).intersection(
-            snapshot.available_graph_types
-        ):
-            return False
-
-        if not _matches_requested_values(
-            actual_values=(source.jurisdiction,), requested_values=request.jurisdictions
-        ):
-            return False
-
-        if not _matches_requested_values(
-            actual_values=(
-                (source.jurisdiction_type,) if source.jurisdiction_type else ()
-            ),
-            requested_values=request.jurisdiction_types,
-        ):
-            return False
-
-        if not _matches_requested_values(
-            actual_values=(
-                (source.issuing_authority,) if source.issuing_authority else ()
-            ),
-            requested_values=request.issuing_authorities,
-        ):
-            return False
-
-        if not _matches_requested_values(
-            actual_values=(source.local_subject,), requested_values=request.subjects
-        ):
-            return False
-
-        if not _matches_requested_values(
-            actual_values=tuple(str(value) for value in source.languages),
-            requested_values=tuple(str(value) for value in request.languages),
-        ):
-            return False
-
-        if not _matches_requested_values(
-            actual_values=source.local_grades_or_stages,
-            requested_values=request.local_grades,
-        ):
-            return False
-
-        normalized_grades = tuple(
-            value
-            for package in packages
-            for value in package.profile_facets.normalized_grades
+        return (
+            _matches_currency(request=request, snapshot=snapshot)
+            and _matches_graph_types(request=request, snapshot=snapshot)
+            and _matches_source_metadata(request=request, snapshot=snapshot)
+            and _matches_normalized_grades(request=request, snapshot=snapshot)
+            and _matches_validation_status(request=request, snapshot=snapshot)
+            and _matches_query(request=request, snapshot=snapshot)
         )
-
-        if not _matches_requested_values(
-            actual_values=normalized_grades, requested_values=request.normalized_grades
-        ):
-            return False
-
-        if request.validation_status and not set(
-            request.validation_status
-        ).intersection(package.validation.status for package in packages):
-            return False
-
-        if request.query is not None:
-            fields = (
-                str(snapshot.framework_id),
-                str(snapshot.snapshot_id),
-                source.issuing_authority or "",
-                source.jurisdiction,
-                source.jurisdiction_type or "",
-                source.local_subject,
-                source.name,
-                source.provider or "",
-                source.source_version or "",
-            )
-            haystack = "\u001f".join(
-                _normalize_catalog_value(value) for value in fields
-            )
-            tokens = tuple(_normalize_catalog_value(request.query).split())
-
-            if not all(token in haystack for token in tokens):
-                return False
-
-        return True
 
     def get_framework(self, request: GetFrameworkRequest) -> GetFrameworkResult:
         """Return one exact or unique-current framework snapshot.

@@ -1,9 +1,14 @@
-"""Register and implement the canonical framework discovery FastMCP tools.
+"""This module exposes canonical framework discovery and lookup as FastMCP tools.
 
-The adapters in this module retrieve immutable lifespan state, delegate all framework
-filtering, routing, and pagination to ``FrameworkService``, translate domain errors at
-the approved boundary, and return deterministic text alongside complete structured
-results.
+This module implements and registers the ``list_frameworks`` and ``get_framework`` MCP
+tools. The adapters retrieve immutable lifespan state, delegate framework filtering,
+snapshot routing, and pagination to ``FrameworkService``, translate application errors
+at the approved MCP boundary, and return deterministic readable summaries together with
+complete structured results.
+
+The module does not load packages, inspect files, validate manifests, filter framework
+records itself, decode framework cursors, select standards, or guess which framework
+snapshot should be used.
 """
 
 # Future Library

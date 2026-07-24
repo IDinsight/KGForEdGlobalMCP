@@ -1,9 +1,19 @@
-"""This module derives curriculum-agnostic structural framework statistics.
+"""This module derives curriculum-agnostic structural statistics for one framework
+package.
 
-The service reads one accepted package runtime through the existing catalog, graph,
-traversal, and facet boundaries. It reports source and normalized counts separately and
-does not infer mastery, equivalence, progression, difficulty, preferred parentage, or
-instructional sequence from graph topology or source export order.
+This module provides ``FrameworkStatisticsService``, which reads one accepted package
+through the existing catalog, graph, traversal, and facet-evidence boundaries. It
+calculates deterministic counts for nodes, relationships, codes, source and normalized
+facets, hierarchy depths, parent counts, multi-parent targets, and unresolved
+relationship statuses.
+
+Source-authored values and normalized values are counted separately. Structural depth
+means graph distance from the framework root and is not treated as educational level,
+difficulty, progression, or instructional sequence.
+
+The service does not modify graph data, select a preferred parent, infer mastery,
+equivalence, prerequisites, or curriculum progression, or use source export order as an
+instructional ordering signal.
 """
 
 # Standard Library

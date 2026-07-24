@@ -1,8 +1,14 @@
-"""Register and implement the canonical capability-reporting FastMCP tool.
+"""This module exposes the canonical runtime-capabilities operation as a FastMCP tool.
 
-The adapter reports only functionality implemented by the retained accepted runtime.
-It does not probe the filesystem or advertise planned resources, prompts, semantic
-search, comparisons, alignments, persistence, or future graph domains.
+This module implements and registers the ``get_capabilities`` MCP tool. The tool
+retrieves the immutable application state, delegates capability reporting to
+``CapabilitiesService``, and returns both a deterministic readable summary and the
+complete structured result.
+
+The reported capabilities describe only behavior implemented by the currently accepted
+runtime and graph packages. The module does not inspect the filesystem, calculate
+package capabilities itself, or advertise planned features such as resources, prompts,
+semantic search, comparisons, alignments, persistence, or additional graph domains.
 """
 
 # Future Library

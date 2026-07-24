@@ -1,7 +1,13 @@
-"""Expose the canonical PR 9 orchestration models and services.
+"""This package exposes the canonical application-service contracts.
 
-Importing this package does not construct settings, load graph packages, build indexes,
-access the filesystem, or register MCP components.
+The services package is the application orchestration layer between protocol adapters
+and the existing catalog, graph, traversal, search, package, and profile domains. Its
+services translate complete application requests into calls to those existing domain
+boundaries and assemble immutable results for callers such as the FastMCP tools.
+
+Importing this package exposes approved request models, result models, and service
+classes. It does not construct settings, load or validate graph packages, access the
+filesystem, build graph or search indexes, start FastMCP, or register MCP components.
 """
 
 # Package Library

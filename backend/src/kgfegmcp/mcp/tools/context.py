@@ -1,8 +1,13 @@
-"""Register and implement the canonical standard-context FastMCP tool.
+"""This module exposes canonical standard hierarchy context as a FastMCP tool.
 
-The adapter in this module delegates exact lookup and every graph operation to the
-ordinary standards service. It does not infer preferred parents, instructional
-sequence, equivalence, progression, or mastery from source order or graph topology.
+This module implements and registers the ``get_standard_context`` MCP tool. It
+retrieves the immutable application state, constructs the ordinary framework and
+standards services, delegates exact lookup and graph-context retrieval to those
+services, and returns deterministic text alongside the complete structured result.
+
+The adapter does not traverse the graph, choose a preferred parent, remove unresolved
+relationship evidence, or infer instructional sequence, mastery, equivalence,
+progression, prerequisites, or difficulty from graph topology or source ordering.
 """
 
 # Future Library

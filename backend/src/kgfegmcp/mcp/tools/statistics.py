@@ -1,8 +1,14 @@
-"""Register and implement the canonical framework-statistics FastMCP tool.
+"""This module exposes canonical framework statistics as a FastMCP tool.
 
-The adapter delegates structural aggregation to ``FrameworkStatisticsService``. The
-reported counts remain descriptive graph and metadata evidence and make no claims about
-mastery, difficulty, equivalence, progression, prerequisites, or instructional order.
+This module implements and registers the ``get_framework_statistics`` MCP tool. It
+retrieves immutable application state, delegates all structural aggregation to
+``FrameworkStatisticsService``, and returns a deterministic readable summary together
+with the complete structured statistics result.
+
+The adapter does not count nodes, relationships, grades, statement types, codes,
+parents, depths, or unresolved statuses itself. It also makes no claims about mastery,
+difficulty, equivalence, progression, prerequisites, preferred parentage, or
+instructional order.
 """
 
 # Future Library

@@ -1,12 +1,20 @@
-"""This module provides canonical standards search, lookup, and context orchestration.
+"""This module coordinates canonical standards search, exact lookup, and graph context.
 
-The service adapts public PR 9 requests to the existing catalog, graph, traversal, and
-search contracts. It preserves package isolation and exact identifier namespaces and
-does not reimplement code normalization, lexical matching, filtering, ranking, cursor
-logic, graph traversal, or package routing.
+This module provides ``StandardsService``, which adapts validated requests to the
+existing framework, catalog, search, graph-store, and traversal boundaries. It resolves
+the selected framework snapshots, constructs existing search scopes and filters,
+delegates deterministic search, performs exact namespace-specific standard lookup, and
+assembles requested hierarchy context and relationship-status evidence.
+
+The service preserves independent package namespaces and does not merge identifiers,
+graphs, relationships, lexical indexes, code indexes, or cursors across packages. It
+does not reimplement code normalization, lexical matching, filtering, ranking, search
+pagination, catalog routing, or graph traversal, and it does not infer preferred
+parents, instructional sequence, mastery, equivalence, progression, or prerequisites.
 """
 
 # Standard Library
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 # Package Library
@@ -118,6 +126,66 @@ class StandardsService:
             normalized_statement_types=request.normalized_statement_types,
             normalized_subjects=request.normalized_subjects,
             statement_types=request.statement_types,
+        )
+
+    @staticmethod
+    def _relationship_statuses(
+        *,
+        ancestor_relationships: Iterable[GraphRelationship],
+        child_relationships: Iterable[GraphRelationship],
+        descendant_relationships: Iterable[GraphRelationship],
+        parent_relationships: Iterable[GraphRelationship],
+        root_path_relationships: Iterable[GraphRelationship],
+    ) -> tuple[ContextRelationshipStatus, ...]:
+        """Deduplicate gathered relationships and derive accepted resolution statuses.
+
+        Relationships are merged in deterministic branch order (parents, children,
+        ancestors, descendants, then root paths) so that a relationship appearing in
+        more than one branch keeps its last-seen instance, matching the existing
+        single-pass collection behavior.
+
+        Parameters
+        ----------
+        ancestor_relationships
+            Relationships from the bounded ancestor traversal.
+        child_relationships
+            Relationships from the optional direct-children lookup.
+        descendant_relationships
+            Relationships from the optional bounded descendant traversal.
+        parent_relationships
+            Relationships from the direct-parents lookup.
+        root_path_relationships
+            Relationships from the optional complete root-path traversal.
+
+        Returns
+        -------
+        tuple[ContextRelationshipStatus, ...]
+            Deterministically ordered statuses for each unique relationship that
+            carries an explicit resolution status.
+        """
+
+        ordered_sources = (
+            parent_relationships,
+            child_relationships,
+            ancestor_relationships,
+            descendant_relationships,
+            root_path_relationships,
+        )
+        unique_relationships = {
+            str(relationship.relationship_id): relationship
+            for source in ordered_sources
+            for relationship in source
+        }
+        ordered_relationships = sorted(
+            unique_relationships.values(), key=graph_relationship_order_key
+        )
+        return tuple(
+            ContextRelationshipStatus(
+                relationship_id=relationship.relationship_id,
+                resolution_status=relationship.resolution_status,
+            )
+            for relationship in ordered_relationships
+            if relationship.resolution_status is not None
         )
 
     @staticmethod
@@ -295,75 +363,63 @@ class StandardsService:
         direct_parents = store.direct_parents(
             node_id=standard.node.node_id, relationship_type=relationship_type
         )
-        direct_children = None
-
-        if request.include_direct_children:
-            direct_children = store.direct_children(
+        direct_children = (
+            store.direct_children(
                 node_id=standard.node.node_id, relationship_type=relationship_type
             )
-
+            if request.include_direct_children
+            else None
+        )
         ancestors = traversal.ancestors(
             max_depth=request.ancestor_depth,
             max_nodes=request.max_nodes,
             node_id=standard.node.node_id,
             relationship_type=relationship_type,
         )
-        descendants = None
-
-        if request.include_descendants:
-            descendants = traversal.descendants(
+        descendants = (
+            traversal.descendants(
                 max_depth=request.child_depth,
                 max_nodes=request.max_nodes,
                 node_id=standard.node.node_id,
                 relationship_type=relationship_type,
             )
-
-        root_paths = None
-
-        if request.include_all_root_paths:
-            root_paths = traversal.all_root_paths(
+            if request.include_descendants
+            else None
+        )
+        root_paths = (
+            traversal.all_root_paths(
                 max_depth=request.ancestor_depth,
                 max_path_node_occurrences=request.max_path_node_occurrences,
                 max_paths=request.max_paths,
                 node_id=standard.node.node_id,
                 relationship_type=relationship_type,
             )
-
-        relationships: dict[str, GraphRelationship] = {}
-
-        for neighbor in direct_parents.neighbors:
-            relationships[str(neighbor.relationship.relationship_id)] = (
-                neighbor.relationship
-            )
-
-        if direct_children is not None:
-            for neighbor in direct_children.neighbors:
-                relationships[str(neighbor.relationship.relationship_id)] = (
-                    neighbor.relationship
-                )
-
-        for relationship in ancestors.relationships:
-            relationships[str(relationship.relationship_id)] = relationship
-
-        if descendants is not None:
-            for relationship in descendants.relationships:
-                relationships[str(relationship.relationship_id)] = relationship
-
-        if root_paths is not None:
-            for path in root_paths.paths:
-                for relationship in path.relationships:
-                    relationships[str(relationship.relationship_id)] = relationship
-
-        ordered_relationships = tuple(
-            sorted(relationships.values(), key=graph_relationship_order_key)
+            if request.include_all_root_paths
+            else None
         )
-        relationship_statuses = tuple(
-            ContextRelationshipStatus(
-                relationship_id=relationship.relationship_id,
-                resolution_status=relationship.resolution_status,
-            )
-            for relationship in ordered_relationships
-            if relationship.resolution_status is not None
+
+        relationship_statuses = self._relationship_statuses(
+            ancestor_relationships=ancestors.relationships,
+            child_relationships=(
+                (neighbor.relationship for neighbor in direct_children.neighbors)
+                if direct_children is not None
+                else ()
+            ),
+            descendant_relationships=(
+                descendants.relationships if descendants is not None else ()
+            ),
+            parent_relationships=(
+                neighbor.relationship for neighbor in direct_parents.neighbors
+            ),
+            root_path_relationships=(
+                (
+                    relationship
+                    for path in root_paths.paths
+                    for relationship in path.relationships
+                )
+                if root_paths is not None
+                else ()
+            ),
         )
         return GetStandardContextResult(
             ancestors=ancestors,

@@ -1,9 +1,19 @@
-"""Provide shared helpers for the canonical read-only FastMCP tool adapters.
+"""This package provides shared infrastructure for the canonical read-only FastMCP
+tools.
 
-The helpers in this module retrieve the immutable application state yielded by the
-FastMCP lifespan, define the common read-only tool annotations, and construct paired
-human-readable and structured tool results. They do not perform catalog routing,
-search, graph traversal, package loading, or component registration.
+This package is the thin protocol-facing layer between FastMCP and the application's
+ordinary services. Its modules receive validated MCP requests, retrieve the immutable
+application state created by the server lifespan, call the appropriate service, and
+return deterministic human-readable and structured results.
+
+The shared helpers in this module define the common read-only tool annotations,
+retrieve and validate lifespan application state, generate result schemas, and build
+FastMCP results containing both text and structured evidence.
+
+This package does not implement catalog routing, package selection, search, filtering,
+ranking, code normalization, cursor handling, graph traversal, statistics, package
+loading, or validation. Those responsibilities remain in the ordinary application
+services and domain modules.
 """
 
 # Standard Library
