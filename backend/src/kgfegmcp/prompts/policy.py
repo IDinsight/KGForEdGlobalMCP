@@ -64,6 +64,35 @@ class PromptPolicy:
         if self.max_rendered_prompt_bytes < 1:
             raise ValueError("max_rendered_prompt_bytes must be positive.")
 
+    @classmethod
+    def require_all_derivative_generation_allowed(
+        cls, *, prompt_name: PromptName, rights_policies: tuple[RightsPolicy, ...]
+    ) -> None:
+        """Require independent derivative authorization for every selected package.
+
+        Parameters
+        ----------
+        prompt_name
+            Exact multi-framework generated-content workflow being requested.
+        rights_policies
+            Exact rights policy for every selected package in deterministic order.
+
+        Raises
+        ------
+        PromptAccessDeniedError
+            If any selected package lacks explicit generated-derivative authorization.
+        ValueError
+            If no package rights were supplied.
+        """
+
+        if not rights_policies:
+            raise ValueError("At least one package rights policy is required.")
+
+        for rights in rights_policies:
+            cls.require_derivative_generation_allowed(
+                prompt_name=prompt_name, rights=rights
+            )
+
     @staticmethod
     def require_derivative_generation_allowed(
         *, prompt_name: PromptName, rights: RightsPolicy

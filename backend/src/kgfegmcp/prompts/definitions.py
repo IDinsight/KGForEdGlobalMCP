@@ -2,7 +2,7 @@
 
 This module contains the curriculum-agnostic descriptions, shared workflow text,
 required disclosures, unsupported-claim warnings, evidence-status rules, and default
-soft-guidance blocks used to render the four generic prompt workflows.
+soft-guidance blocks used to render the six generic prompt workflows.
 
 Framework-local prompt configuration may append to or replace only the explicitly
 declared soft-guidance blocks. Correctness-critical behavior—including rights
@@ -22,6 +22,43 @@ from typing import Final
 
 # Package Library
 from kgfegmcp.prompts.models import PromptName
+
+ADMINISTRATOR_ALIGNMENT_REVIEW_DEFAULT_GUIDANCE: Final[
+    tuple[tuple[str, str, tuple[str, ...]], ...]
+] = (
+    (
+        "evidence_matrix_guidance",
+        "Evidence matrix guidance",
+        (
+            "Build the administrative matrix from exact source-backed evidence and "
+            "identify every candidate-only correspondence explicitly.",
+        ),
+    ),
+    (
+        "governance_guidance",
+        "Governance guidance",
+        (
+            "Separate governance and implementation considerations from claims about "
+            "curriculum equivalence or official alignment.",
+        ),
+    ),
+    (
+        "risk_framing_guidance",
+        "Risk framing guidance",
+        (
+            "State evidence gaps, rights constraints, unresolved relationships, and "
+            "implementation risks without resolving them by assumption.",
+        ),
+    ),
+    (
+        "review_question_guidance",
+        "Review question guidance",
+        (
+            "End with concrete questions requiring human review before any policy or "
+            "mapping decision.",
+        ),
+    ),
+)
 
 COMMON_EVIDENCE_STATUS_RULES: Final[tuple[str, ...]] = (
     "Use [SOURCE-ASSERTED] only for facts directly supported by retained source or "
@@ -44,6 +81,55 @@ COMMON_UNSUPPORTED_CLAIMS: Final[tuple[str, ...]] = (
     "Normalized grades and subjects are retrieval aids; they are not equivalence claims.",
     "A standards statement does not by itself establish learner mastery.",
     "Preserve unresolved and ambiguous evidence as unresolved or ambiguous.",
+)
+
+COMPARISON_DISCLOSURES: Final[tuple[str, ...]] = (
+    "Normalized grades are retrieval facets, not international grade equivalence.",
+    "A hasChild relationship is structural, not a source-authored progression or "
+    "prerequisite.",
+    "A standard statement does not prove learner mastery.",
+    "Code, identifier, grade, hierarchy, or text similarity does not establish "
+    "official equivalence.",
+    "Cross-framework matches are exploratory retrieval evidence.",
+    "Generated comparative conclusions are LLM-inferred.",
+    "Rights, attribution, and provenance apply independently to every selected package.",
+)
+
+CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE: Final[
+    tuple[tuple[str, str, tuple[str, ...]], ...]
+] = (
+    (
+        "comparison_dimension_guidance",
+        "Comparison dimension guidance",
+        (
+            "Organize each framework section using that package profile's declared "
+            "comparison dimensions.",
+        ),
+    ),
+    (
+        "synthesis_guidance",
+        "Synthesis guidance",
+        (
+            "Keep source-backed observations separate from explicitly LLM-inferred "
+            "cross-framework synthesis.",
+        ),
+    ),
+    (
+        "terminology_guidance",
+        "Terminology guidance",
+        (
+            "Preserve each framework's local terminology and grades inside its own "
+            "section rather than harmonizing labels globally.",
+        ),
+    ),
+    (
+        "uncertainty_guidance",
+        "Uncertainty guidance",
+        (
+            "Retain candidate, incomplete, anomalous, and unresolved evidence labels "
+            "throughout the comparison.",
+        ),
+    ),
 )
 
 PROGRESSION_DEFAULT_GUIDANCE: Final[tuple[tuple[str, str, tuple[str, ...]], ...]] = (
@@ -88,6 +174,14 @@ PROGRESSION_DISCLOSURE: Final[str] = (
 )
 
 PROMPT_DESCRIPTIONS: Final[dict[PromptName, str]] = {
+    PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW: (
+        "Guide an evidence-grounded cross-framework administrative review without "
+        "creating or asserting an official alignment."
+    ),
+    PromptName.CROSS_FRAMEWORK_COMPARISON: (
+        "Guide an exploratory cross-framework comparison over independently "
+        "retrieved exact-package evidence."
+    ),
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS: (
         "Guide an evidence-linked, explicitly LLM-inferred likely progression review "
         "within one accepted framework."
@@ -260,6 +354,12 @@ TEACHER_GUIDE_DEFAULT_GUIDANCE: Final[tuple[tuple[str, str, tuple[str, ...]], ..
 PROMPT_SPECIFIC_DEFAULTS: Final[
     dict[PromptName, tuple[tuple[str, str, tuple[str, ...]], ...]]
 ] = {
+    PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW: (
+        ADMINISTRATOR_ALIGNMENT_REVIEW_DEFAULT_GUIDANCE
+    ),
+    PromptName.CROSS_FRAMEWORK_COMPARISON: (
+        CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE
+    ),
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS: PROGRESSION_DEFAULT_GUIDANCE,
     PromptName.STUDENT_HANDBOOK_SECTION: STUDENT_HANDBOOK_DEFAULT_GUIDANCE,
     PromptName.STUDENT_STUDY_SUPPORT: STUDENT_STUDY_DEFAULT_GUIDANCE,
@@ -267,8 +367,11 @@ PROMPT_SPECIFIC_DEFAULTS: Final[
 }
 
 __all__ = [
+    "ADMINISTRATOR_ALIGNMENT_REVIEW_DEFAULT_GUIDANCE",
     "COMMON_EVIDENCE_STATUS_RULES",
     "COMMON_UNSUPPORTED_CLAIMS",
+    "COMPARISON_DISCLOSURES",
+    "CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE",
     "PROGRESSION_DISCLOSURE",
     "PROMPT_DESCRIPTIONS",
     "PROMPT_SPECIFIC_DEFAULTS",

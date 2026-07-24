@@ -554,7 +554,7 @@ class PackageCapabilityResult(FrozenSchema):
 
 
 class GetCapabilitiesResult(FrozenSchema):
-    """Describe exact server-level and package-level implemented capabilities."""
+    """Describe implemented tools, prompts, resources, and package capabilities."""
 
     available_graph_types: tuple[GraphType, ...]
     framework_prompt_overlays_optional: bool

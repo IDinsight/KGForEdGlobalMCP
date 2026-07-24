@@ -104,6 +104,12 @@ class GraphNodeNotFoundError(KGFEGMCPError):
     error_code = "graph_node_not_found"
 
 
+class InvalidComparisonSelectionError(KGFEGMCPError):
+    """Raised when cross-framework selectors do not form a valid exact selection."""
+
+    error_code = "invalid_comparison_selection"
+
+
 class InvalidCursorError(KGFEGMCPError):
     """Raised when a pagination cursor is malformed or no longer valid."""
 

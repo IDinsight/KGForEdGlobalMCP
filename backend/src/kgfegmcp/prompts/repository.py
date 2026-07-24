@@ -1,5 +1,5 @@
 """This module loads optional framework-local prompt configuration during application
-bootstrap.
+bootstrap, including optional comparison guidance.
 
 ``PromptConfigRepository`` resolves only the exact ``prompts.json`` path derived from
 each accepted curriculum profile identifier and version. A missing file is valid and

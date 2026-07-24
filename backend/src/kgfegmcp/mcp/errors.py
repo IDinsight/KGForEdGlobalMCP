@@ -3,7 +3,8 @@
 Expected application-domain errors become stable public ``PromptError``,
 ``ResourceError``, or ``ToolError`` messages. Unexpected exceptions are logged
 internally and replaced with fixed messages that disclose no paths or implementation
-details. Existing FastMCP boundary errors pass through unchanged.
+details. Typed comparison-selection failures follow the same stable domain-error path.
+Existing FastMCP boundary errors pass through unchanged.
 """
 
 # Future Library

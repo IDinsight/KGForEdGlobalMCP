@@ -7,7 +7,7 @@ complete structured result.
 
 The reported capabilities describe only behavior implemented by the currently accepted
 runtime and graph packages. The module does not inspect the filesystem, calculate
-package capabilities itself, or advertise semantic search, comparisons, alignments,
+package capabilities itself, or advertise semantic search, official alignments,
 persistence, or additional graph domains.
 """
 

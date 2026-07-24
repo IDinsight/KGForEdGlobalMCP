@@ -12,6 +12,19 @@ filesystem, build graph or search indexes, start FastMCP, or register MCP compon
 
 # Package Library
 from kgfegmcp.services.capabilities import CapabilitiesService
+from kgfegmcp.services.comparison import ComparisonService
+from kgfegmcp.services.comparison_models import (
+    CompareFrameworkEvidenceResult,
+    ComparisonMatchEvidence,
+    ComparisonRequestSummary,
+    ComparisonWarning,
+    ComparisonWarningCode,
+    ExactCodeFrameworkComparisonRequest,
+    FrameworkComparisonRequest,
+    FrameworkComparisonSection,
+    PrefixCodeFrameworkComparisonRequest,
+    TextFrameworkComparisonRequest,
+)
 from kgfegmcp.services.frameworks import FrameworkService
 from kgfegmcp.services.models import (
     CaseUriStandardIdentifier,
@@ -52,9 +65,18 @@ __all__ = [
     "CaseUriStandardIdentifier",
     "CaseUuidStandardIdentifier",
     "CodePresenceStatistics",
+    "CompareFrameworkEvidenceResult",
+    "ComparisonMatchEvidence",
+    "ComparisonRequestSummary",
+    "ComparisonService",
+    "ComparisonWarning",
+    "ComparisonWarningCode",
     "ContextRelationshipStatus",
     "DepthCount",
+    "ExactCodeFrameworkComparisonRequest",
     "ExactCodeStandardsSearchRequest",
+    "FrameworkComparisonRequest",
+    "FrameworkComparisonSection",
     "FrameworkCursor",
     "FrameworkService",
     "FrameworkStatistics",
@@ -75,10 +97,12 @@ __all__ = [
     "NullableValueCount",
     "PackageCapabilityResult",
     "ParentCountBucket",
+    "PrefixCodeFrameworkComparisonRequest",
     "PrefixCodeStandardsSearchRequest",
     "SearchStandardsResult",
     "StandardsSearchRequest",
     "StandardsService",
+    "TextFrameworkComparisonRequest",
     "TextStandardsSearchRequest",
     "UnresolvedRelationshipStatistics",
 ]

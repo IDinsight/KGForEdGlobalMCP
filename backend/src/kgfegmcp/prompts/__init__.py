@@ -17,11 +17,20 @@ sampling.
 
 # Package Library
 from kgfegmcp.prompts.models import (
+    AdministratorAlignmentReviewGuidance,
+    ComparisonFrameworkIds,
+    ComparisonGradeFilters,
+    ComparisonMatchLimit,
+    ComparisonSearchMode,
+    ComparisonSnapshotIds,
+    CrossFrameworkComparisonGuidance,
     FrameworkPromptConfig,
     InferredProgressionHypothesisGuidance,
     LoadedPromptConfig,
+    MultiContextPromptRenderResult,
     ProgressionDirection,
     PromptConfigRegistry,
+    PromptContextEvidence,
     PromptFocusMode,
     PromptGuidanceBlock,
     PromptGuidanceMode,
@@ -39,12 +48,21 @@ from kgfegmcp.prompts.repository import PromptConfigRepository
 from kgfegmcp.prompts.service import PromptService
 
 __all__ = [
+    "AdministratorAlignmentReviewGuidance",
+    "ComparisonFrameworkIds",
+    "ComparisonGradeFilters",
+    "ComparisonMatchLimit",
+    "ComparisonSearchMode",
+    "ComparisonSnapshotIds",
+    "CrossFrameworkComparisonGuidance",
     "FrameworkPromptConfig",
     "InferredProgressionHypothesisGuidance",
     "LoadedPromptConfig",
+    "MultiContextPromptRenderResult",
     "ProgressionDirection",
     "PromptConfigRegistry",
     "PromptConfigRepository",
+    "PromptContextEvidence",
     "PromptFocusMode",
     "PromptGuidanceBlock",
     "PromptGuidanceMode",

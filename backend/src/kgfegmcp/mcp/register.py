@@ -16,6 +16,7 @@ from typing import TYPE_CHECKING
 from kgfegmcp.mcp.prompts.register import register_prompt_components
 from kgfegmcp.mcp.resources.register import register_resource_components
 from kgfegmcp.mcp.tools.capabilities import register_capability_tools
+from kgfegmcp.mcp.tools.comparison import register_comparison_tools
 from kgfegmcp.mcp.tools.context import register_context_tools
 from kgfegmcp.mcp.tools.frameworks import register_framework_tools
 from kgfegmcp.mcp.tools.standards import register_standard_tools
@@ -39,6 +40,7 @@ def register_components(server: FastMCP[dict[str, AppState]]) -> None:
     """
 
     register_capability_tools(server)
+    register_comparison_tools(server)
     register_context_tools(server)
     register_framework_tools(server)
     register_standard_tools(server)

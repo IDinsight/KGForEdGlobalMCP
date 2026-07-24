@@ -8,7 +8,7 @@ The service reports the canonical tools and prompts, available graph types,
 package-specific search modes, traversal support, implemented features, approved
 resource URI families, optional framework prompt overlays, and explicitly unavailable
 features. It does not inspect the filesystem, dynamically test packages, register MCP
-components, or advertise semantic retrieval, comparisons, alignments, persistence, or
+components, or advertise semantic retrieval, official alignments, persistence, or
 future graph domains.
 """
 
@@ -38,6 +38,8 @@ _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "bounded_descendant_traversal",
     "catalog_discovery",
     "complete_root_path_enumeration",
+    "comparison_prompt_workflows",
+    "deterministic_cross_framework_evidence",
     "direct_graph_navigation",
     "exact_framework_lookup",
     "exact_standard_lookup",
@@ -55,6 +57,7 @@ _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
 _SERVER_NAME: Final[str] = "Knowledge Graph For Education Global MCP"
 _TOOL_NAMES: Final[tuple[str, ...]] = (
     "get_capabilities",
+    "compare_framework_evidence",
     "get_framework",
     "get_framework_statistics",
     "get_standard",
@@ -63,14 +66,18 @@ _TOOL_NAMES: Final[tuple[str, ...]] = (
     "search_standards",
 )
 _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
+    "accepted_mapping_overlays",
+    "alignment_persistence",
     "alignments",
-    "comparisons",
     "embeddings",
     "learning_components",
     "learning_progressions",
-    "mutations",
-    "persistence",
+    "mcp_sampling",
+    "semantic_candidate_retrieval",
     "semantic_search",
+    "server_side_llm",
+    "snapshot_alignment_candidate_retrieval",
+    "snapshot_diff",
 )
 
 

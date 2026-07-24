@@ -29,6 +29,8 @@ from typing import Annotated, Final, Self, cast
 from pydantic import AfterValidator, Field, StringConstraints, model_validator
 
 # Package Library
+from kgfegmcp.catalog.models import CatalogSourceMetadata
+from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import (
     FrameworkId,
     GraphPackageId,
@@ -38,6 +40,7 @@ from kgfegmcp.domain.identifiers import (
     Sha256Digest,
     SnapshotId,
 )
+from kgfegmcp.domain.models import RightsPolicy
 from kgfegmcp.regexes import KEBAB_CASE_ID_RE, VERSION_TOKEN_RE
 from kgfegmcp.schemas import FrozenSchema
 
@@ -93,6 +96,85 @@ def _require_non_whitespace(value: str) -> str:
     return value
 
 
+def _require_unique_framework_ids(
+    values: tuple[FrameworkId, ...],
+) -> tuple[FrameworkId, ...]:
+    """Require exact framework selectors to be unique.
+
+    Parameters
+    ----------
+    values
+        Validated framework identifiers.
+
+    Returns
+    -------
+    tuple[FrameworkId, ...]
+        Unchanged unique identifiers.
+
+    Raises
+    ------
+    ValueError
+        If an identifier is repeated.
+    """
+
+    if len(values) != len(set(values)):
+        raise ValueError("framework_ids must not contain duplicate values.")
+
+    return values
+
+
+def _require_unique_grade_values(values: tuple[str, ...]) -> tuple[str, ...]:
+    """Require exact prompt grade or stage filters to be unique.
+
+    Parameters
+    ----------
+    values
+        Validated local or normalized grade values.
+
+    Returns
+    -------
+    tuple[str, ...]
+        Unchanged unique values.
+
+    Raises
+    ------
+    ValueError
+        If a filter value is repeated.
+    """
+
+    if len(values) != len(set(values)):
+        raise ValueError("Prompt grade filters must not contain duplicate values.")
+
+    return values
+
+
+def _require_unique_snapshot_ids(
+    values: tuple[SnapshotId, ...],
+) -> tuple[SnapshotId, ...]:
+    """Require exact snapshot selectors to be unique.
+
+    Parameters
+    ----------
+    values
+        Validated snapshot identifiers.
+
+    Returns
+    -------
+    tuple[SnapshotId, ...]
+        Unchanged unique identifiers.
+
+    Raises
+    ------
+    ValueError
+        If an identifier is repeated.
+    """
+
+    if len(values) != len(set(values)):
+        raise ValueError("snapshot_ids must not contain duplicate values.")
+
+    return values
+
+
 PromptConfigId = Annotated[
     str, StringConstraints(max_length=200, min_length=3, pattern=KEBAB_CASE_ID_RE)
 ]
@@ -112,6 +194,22 @@ PromptGradeOrStage = Annotated[
     str,
     StringConstraints(max_length=128, min_length=1),
     AfterValidator(_require_non_whitespace),
+]
+ComparisonFrameworkIds = Annotated[
+    tuple[FrameworkId, ...],
+    Field(max_length=8, min_length=2),
+    AfterValidator(_require_unique_framework_ids),
+]
+ComparisonGradeFilters = Annotated[
+    tuple[PromptGradeOrStage, ...],
+    Field(max_length=64),
+    AfterValidator(_require_unique_grade_values),
+]
+ComparisonMatchLimit = Annotated[int, Field(ge=1, le=10)]
+ComparisonSnapshotIds = Annotated[
+    tuple[SnapshotId, ...],
+    Field(max_length=8),
+    AfterValidator(_require_unique_snapshot_ids),
 ]
 PromptLocalContext = Annotated[
     str,
@@ -142,6 +240,8 @@ MAX_RENDERED_PROMPT_BYTES: Final[int] = 64 * 1_024
 class PromptName(StrEnum):
     """Identify one explicitly registered generic server-level prompt."""
 
+    ADMINISTRATOR_ALIGNMENT_REVIEW = "administrator_alignment_review"
+    CROSS_FRAMEWORK_COMPARISON = "cross_framework_comparison"
     INFERRED_PROGRESSION_HYPOTHESIS = "inferred_progression_hypothesis"
     STUDENT_HANDBOOK_SECTION = "student_handbook_section"
     STUDENT_STUDY_SUPPORT = "student_study_support"
@@ -153,6 +253,8 @@ PROMPT_NAMES: Final[tuple[str, ...]] = (
     PromptName.TEACHER_GUIDE_DRAFT.value,
     PromptName.STUDENT_HANDBOOK_SECTION.value,
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS.value,
+    PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW.value,
+    PromptName.CROSS_FRAMEWORK_COMPARISON.value,
 )
 
 
@@ -171,6 +273,14 @@ class PromptFocusMode(StrEnum):
     NODE_ID = "node_id"
     STATEMENT_CODE = "statement_code"
     TOPIC = "topic"
+
+
+class ComparisonSearchMode(StrEnum):
+    """Identify the package-local search mode requested by a comparison prompt."""
+
+    CODE_EXACT = "code_exact"
+    CODE_PREFIX = "code_prefix"
+    TEXT = "text"
 
 
 class ProgressionDirection(StrEnum):
@@ -262,9 +372,29 @@ class InferredProgressionHypothesisGuidance(FrozenSchema):
     sequence_presentation_guidance: PromptGuidanceBlock | None = None
 
 
+class AdministratorAlignmentReviewGuidance(FrozenSchema):
+    """Define optional soft guidance for the administrator comparison workflow."""
+
+    evidence_matrix_guidance: PromptGuidanceBlock | None = None
+    governance_guidance: PromptGuidanceBlock | None = None
+    risk_framing_guidance: PromptGuidanceBlock | None = None
+    review_question_guidance: PromptGuidanceBlock | None = None
+
+
+class CrossFrameworkComparisonGuidance(FrozenSchema):
+    """Define optional soft guidance for the cross-framework comparison workflow."""
+
+    comparison_dimension_guidance: PromptGuidanceBlock | None = None
+    synthesis_guidance: PromptGuidanceBlock | None = None
+    terminology_guidance: PromptGuidanceBlock | None = None
+    uncertainty_guidance: PromptGuidanceBlock | None = None
+
+
 class PromptOverlays(FrozenSchema):
     """Group optional framework-local guidance by exact generic prompt name."""
 
+    administrator_alignment_review: AdministratorAlignmentReviewGuidance | None = None
+    cross_framework_comparison: CrossFrameworkComparisonGuidance | None = None
     inferred_progression_hypothesis: InferredProgressionHypothesisGuidance | None = None
     student_handbook_section: StudentHandbookSectionGuidance | None = None
     student_study_support: StudentStudySupportGuidance | None = None
@@ -311,6 +441,8 @@ class FrameworkPromptConfig(FrozenSchema):
 
         shared_count = _count_guidance_instructions(self.shared)
         prompt_counts = (
+            _count_guidance_instructions(self.prompts.administrator_alignment_review),
+            _count_guidance_instructions(self.prompts.cross_framework_comparison),
             _count_guidance_instructions(self.prompts.inferred_progression_hypothesis),
             _count_guidance_instructions(self.prompts.student_handbook_section),
             _count_guidance_instructions(self.prompts.student_study_support),
@@ -403,6 +535,102 @@ class PromptConfigRegistry:
                 return configuration
 
         return None
+
+
+class PromptContextEvidence(FrozenSchema):
+    """Record one exact package context used by a multi-framework prompt."""
+
+    attribution_statement: str = Field(min_length=1)
+    framework_id: FrameworkId
+    graph_package_id: GraphPackageId
+    graph_type: GraphType
+    profile_id: ProfileId
+    profile_sha256: Sha256Digest
+    profile_version: ProfileVersion
+    prompt_config_id: PromptConfigId | None = None
+    prompt_config_sha256: Sha256Digest | None = None
+    prompt_config_version: PromptConfigVersion | None = None
+    rights: RightsPolicy
+    snapshot_id: SnapshotId
+    source_metadata: CatalogSourceMetadata
+
+    @model_validator(mode="after")
+    def validate_context_identity(self) -> Self:
+        """Require complete optional configuration and exact attribution evidence.
+
+        Returns
+        -------
+        Self
+            Validated immutable context evidence.
+
+        Raises
+        ------
+        ValueError
+            If configuration identity is partial or attribution differs from rights.
+        """
+
+        config_values = (
+            self.prompt_config_id,
+            self.prompt_config_sha256,
+            self.prompt_config_version,
+        )
+
+        if any(value is None for value in config_values) and any(
+            value is not None for value in config_values
+        ):
+            raise ValueError(
+                "Prompt configuration ID, version, and SHA-256 must be present or "
+                "absent together."
+            )
+
+        if self.attribution_statement != self.rights.attribution_statement:
+            raise ValueError("Prompt attribution must match exact package rights.")
+
+        return self
+
+
+class MultiContextPromptRenderResult(FrozenSchema):
+    """Return one deterministic prompt workflow over multiple exact packages."""
+
+    contexts: tuple[PromptContextEvidence, ...] = Field(max_length=8, min_length=2)
+    description: str = Field(min_length=1)
+    message: str = Field(min_length=1)
+    prompt_name: PromptName
+    prompt_version: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_context_order(self) -> Self:
+        """Require distinct frameworks and canonical exact-context order.
+
+        Returns
+        -------
+        Self
+            Validated deterministic multi-context prompt result.
+
+        Raises
+        ------
+        ValueError
+            If frameworks repeat or contexts are not canonically ordered.
+        """
+
+        framework_ids = tuple(str(context.framework_id) for context in self.contexts)
+
+        if len(framework_ids) != len(set(framework_ids)):
+            raise ValueError("Multi-context prompts require distinct framework IDs.")
+
+        context_keys = tuple(
+            (
+                str(context.framework_id),
+                str(context.snapshot_id),
+                str(context.graph_package_id),
+            )
+            for context in self.contexts
+        )
+
+        if context_keys != tuple(sorted(context_keys)):
+            raise ValueError("Prompt contexts must use canonical identity order.")
+
+        return self
 
 
 class PromptRenderResult(FrozenSchema):
