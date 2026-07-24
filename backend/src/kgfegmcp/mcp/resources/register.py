@@ -50,9 +50,9 @@ if TYPE_CHECKING:
 async def read_artifact(
     *,
     artifact_name: ArtifactName,
+    context: Context,
     framework_id: FrameworkId,
     snapshot_id: SnapshotId,
-    context: Context,
 ) -> ResourceResult:
     """Return one approved exact manifest-declared artifact.
 
@@ -60,12 +60,12 @@ async def read_artifact(
     ----------
     artifact_name
         Exact logical artifact name declared by the accepted manifest.
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
@@ -103,16 +103,16 @@ async def read_catalog(context: Context) -> ResourceResult:
 
 
 async def read_framework(
-    *, framework_id: FrameworkId, context: Context
+    *, context: Context, framework_id: FrameworkId
 ) -> ResourceResult:
     """Return one exact accepted framework family.
 
     Parameters
     ----------
-    framework_id
-        Exact conceptual framework identifier.
     context
         Injected FastMCP request context.
+    framework_id
+        Exact conceptual framework identifier.
 
     Returns
     -------
@@ -126,18 +126,18 @@ async def read_framework(
 
 
 async def read_interpretation_profile(
-    *, framework_id: FrameworkId, snapshot_id: SnapshotId, context: Context
+    *, context: Context, framework_id: FrameworkId, snapshot_id: SnapshotId
 ) -> ResourceResult:
     """Return exact retained bytes for one accepted interpretation profile.
 
     Parameters
     ----------
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
@@ -154,18 +154,18 @@ async def read_interpretation_profile(
 
 
 async def read_manifest(
-    *, framework_id: FrameworkId, snapshot_id: SnapshotId, context: Context
+    *, context: Context, framework_id: FrameworkId, snapshot_id: SnapshotId
 ) -> ResourceResult:
     """Return exact retained bytes for one accepted package manifest.
 
     Parameters
     ----------
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
@@ -183,23 +183,23 @@ async def read_manifest(
 
 async def read_relationship(
     *,
+    context: Context,
     framework_id: FrameworkId,
     relationship_id: RelationshipId,
     snapshot_id: SnapshotId,
-    context: Context,
 ) -> ResourceResult:
     """Return one exact package-local relationship.
 
     Parameters
     ----------
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     relationship_id
         Exact package-local relationship identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
@@ -219,23 +219,23 @@ async def read_relationship(
 
 async def read_standard(
     *,
+    context: Context,
     framework_id: FrameworkId,
     node_id: NodeId,
     snapshot_id: SnapshotId,
-    context: Context,
 ) -> ResourceResult:
     """Return one exact standard selected through the outer node-ID namespace.
 
     Parameters
     ----------
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     node_id
         Exact package-local outer node identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
@@ -253,23 +253,23 @@ async def read_standard(
 
 async def read_standard_provenance(
     *,
+    context: Context,
     framework_id: FrameworkId,
     node_id: NodeId,
     snapshot_id: SnapshotId,
-    context: Context,
 ) -> ResourceResult:
     """Return one exact standard's selected detailed provenance entry.
 
     Parameters
     ----------
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     node_id
         Exact package-local outer node identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
@@ -286,18 +286,18 @@ async def read_standard_provenance(
 
 
 async def read_unresolved(
-    *, framework_id: FrameworkId, snapshot_id: SnapshotId, context: Context
+    *, context: Context, framework_id: FrameworkId, snapshot_id: SnapshotId
 ) -> ResourceResult:
     """Return exact bytes for one accepted unresolved-items report.
 
     Parameters
     ----------
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
@@ -314,18 +314,18 @@ async def read_unresolved(
 
 
 async def read_validation(
-    *, framework_id: FrameworkId, snapshot_id: SnapshotId, context: Context
+    *, context: Context, framework_id: FrameworkId, snapshot_id: SnapshotId
 ) -> ResourceResult:
     """Return exact bytes for one accepted detailed validation report.
 
     Parameters
     ----------
+    context
+        Injected FastMCP request context.
     framework_id
         Exact conceptual framework identifier.
     snapshot_id
         Exact immutable framework snapshot identifier.
-    context
-        Injected FastMCP request context.
 
     Returns
     -------
