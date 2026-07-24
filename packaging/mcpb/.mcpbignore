@@ -1,0 +1,13 @@
+.DS_Store
+.git
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+__MACOSX
+__pycache__
+*.pyc
+*.pyo
+build
+dist
+htmlcov

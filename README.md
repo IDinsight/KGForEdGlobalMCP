@@ -42,9 +42,26 @@ The implementation is designed to remain:
 
 ## Project status
 
-This project is under active development. Public MCP tools, resource schemas, package 
-contracts, and deployment workflows may evolve as the initial implementation is 
-completed and validated.
+The current local server exposes eight tools, one fixed resource, nine resource 
+templates, and six prompts. 
+
+## Local packaging and STDIO verification
+
+Install the official MCPB CLI, then build the one-click local bundle:
+
+```bash
+npm install -g @anthropic-ai/mcpb
+uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
+```
+
+Run the repository server through the real locked STDIO subprocess path:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
+```
+
+Use `--stage-output` during the build and `--bundle-root` during the smoke command to
+exercise the exact staged MCPB runtime before installation in a desktop host.
 
 ## License
 
