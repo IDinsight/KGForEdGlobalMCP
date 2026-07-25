@@ -11,57 +11,311 @@
   </a>
 </p>
 
-KG for Education Global MCP is a FastMCP-based server for exploring and using 
-curriculum knowledge graphs from countries, states, and educational organizations 
-around the world. It provides a single interface for searching academic standards, 
-navigating curriculum hierarchies, comparing frameworks and historical revisions, and 
-supporting student, teacher, administrator, and curriculum-research workflows through 
-clients such as Claude Desktop.
+Knowledge Graph for Education Global MCP is a curriculum-agnostic FastMCP server for
+exploring curriculum knowledge graphs from countries, states, and educational
+organizations. It provides one interface for discovering frameworks, searching academic
+standards, navigating curriculum hierarchies, retrieving provenance-aware resources,
+and assembling deterministic evidence for cross-framework comparison.
 
-## Federated architecture
+Claude Desktop acts as the reasoning and generation layer. The server remains read-only
+and deterministic: it loads accepted graph packages, validates and indexes them, returns
+source-grounded evidence, and does not call a server-side LLM.
 
-Each curriculum remains an independent, immutable, and versioned graph package. A 
-shared catalog and common MCP services make those packages searchable and comparable 
-through one interface without flattening them into a single source graph. This 
-preserves framework identity, provenance, local terminology, and graph topology while 
-enabling cross-country, cross-organization, and cross-version analysis.
+## Architecture
 
-## Current scope
+Each curriculum is retained as an independent, immutable, and versioned graph package.
+A shared catalog and common MCP services make the packages searchable through one 
+server without flattening them into a single source graph.
 
-The project currently focuses on Academic Standards knowledge graphs. Planned 
-extensions include Learning Components, Learning Progressions, curriculum resources, 
-assessments, and reviewed cross-framework alignments.
+This preserves:
 
-The implementation is designed to remain:
+- exact framework, snapshot, and package identity;
+- source terminology and local grade labels;
+- provenance, rights, and validation evidence;
+- tree and multi-parent DAG topology; and
+- unresolved relationship statuses.
 
-- curriculum-agnostic and configuration-driven;
-- compatible with trees and multi-parent DAGs;
-- auditable, provenance-aware, and versioned;
-- extensible to additional frameworks and graph types; and
-- deterministic at the server layer, with Claude handling user-facing reasoning and generation.
+The current implementation focuses on Academic Standards graphs and is designed to
+remain configuration-driven rather than curriculum-specific.
 
-## Project status
+## Current MCP surface
 
-The current local server exposes eight tools, one fixed resource, nine resource 
-templates, and six prompts. 
+The server exposes:
 
-## Local packaging and STDIO verification
+- **8 tools**
+- **1 fixed resource**
+- **9 resource templates**
+- **6 prompts**
 
-Install the official MCPB CLI, then build the one-click local bundle:
+### Tools
+
+- `list_frameworks`
+- `get_framework`
+- `search_standards`
+- `get_standard`
+- `get_standard_context`
+- `get_framework_statistics`
+- `get_capabilities`
+- `compare_framework_evidence`
+
+### Prompts
+
+- `student_study_support`
+- `teacher_guide_draft`
+- `student_handbook_section`
+- `inferred_progression_hypothesis`
+- `administrator_alignment_review`
+- `cross_framework_comparison`
+
+## Prerequisites
+
+Install:
+
+- [uv](https://docs.astral.sh/uv/)
+- Git
+- Python 3.13 through `uv`
+- Claude Desktop for local MCP use
+
+The project requires Python `>=3.13,<3.14`.
+
+Install the required Python version:
 
 ```bash
-npm install -g @anthropic-ai/mcpb
-uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
+uv python install 3.13
 ```
 
-Run the repository server through the real locked STDIO subprocess path:
+Node.js and npm are needed only when building an optional `.mcpb` distribution.
+
+## Repository setup
+
+Clone the repository and enter its root:
+
+```bash
+git clone <repository-url>
+cd KGForEdGlobalMCP
+```
+
+Create or update the locked backend environment:
+
+```bash
+uv --directory backend sync --locked --no-dev
+```
+
+The application resolves the repository-level `config/` and `data/` directories from
+its installed source layout. Optional `KGFEGMCP_*` environment variables can override
+those paths, but are not required for ordinary repository-local commands.
+
+To install development tooling as well:
+
+```bash
+uv --directory backend sync --locked --extra dev
+```
+
+## Verify the local server
+
+Run the real server through a separate locked STDIO subprocess:
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 ```
 
-Use `--stage-output` during the build and `--bundle-root` during the smoke command to
-exercise the exact staged MCPB runtime before installation in a desktop host.
+The smoke command:
+
+1. starts `python -m kgfegmcp.mcpb_server`;
+2. completes an MCP handshake;
+3. verifies the exact 8-tool, 1-resource, 9-template, and 6-prompt inventory; and
+4. confirms that the subprocess exits cleanly.
+
+A successful run returns a JSON result with `"status": "passed"`.
+
+The server entry point can also be started directly:
+
+```bash
+uv --directory backend run --locked --no-dev \
+  python -m kgfegmcp.mcpb_server
+```
+
+That command is not an interactive shell. It waits for an MCP client and reserves
+stdout for protocol traffic.
+
+## Connect Claude Desktop
+
+The confirmed local integration uses Claude Desktop's MCP configuration file:
+
+```text
+~/Library/Application Support/Claude/claude_desktop_config.json
+```
+
+Find the absolute paths required by Claude Desktop:
+
+```bash
+command -v uv
+pwd
+```
+
+Add the following entry under the existing top-level `mcpServers` object. Replace
+`/absolute/path/to/uv` and `/absolute/path/to/repository` with the values from your
+machine. Preserve unrelated Claude Desktop settings already present in the file.
+
+```json
+{
+  "mcpServers": {
+    "curriculum-knowledge-graph": {
+      "command": "/absolute/path/to/uv",
+      "args": [
+        "--directory",
+        "/absolute/path/to/repository/backend",
+        "run",
+        "--locked",
+        "--no-dev",
+        "python",
+        "-m",
+        "kgfegmcp.mcpb_server"
+      ],
+      "env": {
+        "KGFEGMCP_CONFIG_ROOT": "/absolute/path/to/repository/config",
+        "KGFEGMCP_DATA_ROOT": "/absolute/path/to/repository/data",
+        "KGFEGMCP_ENV": "local",
+        "KGFEGMCP_GRAPH_PACKAGES_ROOT": "/absolute/path/to/repository/data/graph_packages",
+        "KGFEGMCP_INVALID_PACKAGE_POLICY": "fail",
+        "KGFEGMCP_LOG_LEVEL": "INFO",
+        "KGFEGMCP_PROFILE_ROOT": "/absolute/path/to/repository/config/profiles",
+        "KGFEGMCP_PROMPT_ROOT": "/absolute/path/to/repository/config/prompts",
+        "PATHS_PROJECT_DIR": "/absolute/path/to/repository"
+      }
+    }
+  }
+}
+```
+
+When the file already contains other keys, replace only the empty `mcpServers` object or
+add the `curriculum-knowledge-graph` member to the existing object.
+
+Validate the JSON:
+
+```bash
+jq empty "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+```
+
+Fully quit and reopen Claude Desktop:
+
+```bash
+osascript -e 'quit app "Claude"'
+```
+
+After restart, enable **curriculum-knowledge-graph** under **Connectors** in a new
+conversation.
+
+A simple first request is:
+
+```text
+Use the curriculum-knowledge-graph connector to list all available frameworks.
+```
+
+## Optional MCPB package
+
+The repository can build a deterministic MCP Bundle containing the locked Python
+metadata, source package, profiles, prompt configurations, and accepted graph packages.
+
+Install the official MCPB CLI:
+
+```bash
+npm install -g @anthropic-ai/mcpb
+```
+
+Build the bundle:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
+```
+
+The default output is:
+
+```text
+dist/kgfegmcp-0.1.0.mcpb
+```
+
+Retain the exact staging directory for review:
+
+```bash
+rm -rf ./dist/kgfegmcp-stage
+
+uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb \
+  --stage-output ./dist/kgfegmcp-stage
+```
+
+Smoke-test the staged runtime:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke \
+  --bundle-root ./dist/kgfegmcp-stage
+```
+
+The bundle does not contain a virtual environment or vendored dependencies. Its runtime
+uses locked `uv` project metadata and starts the server with:
+
+```text
+python -m kgfegmcp.mcpb_server
+```
+
+Claude Desktop custom-extension installation behavior may vary by client build. Manual
+registration through `claude_desktop_config.json` is the confirmed local connection
+method.
+
+## Useful CLI commands
+
+Show command help:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke --help
+uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
+uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
+uv --directory backend run --locked --no-dev kgfegmcp-validate-packages --help
+```
+
+## Troubleshooting
+
+### Connector does not appear
+
+Confirm that:
+
+- `command` is the absolute result of `command -v uv`;
+- the repository and backend paths are absolute;
+- the JSON passes `jq empty`;
+- Claude Desktop was fully quit and reopened; and
+- the repository STDIO smoke still passes.
+
+Inspect Claude's logs on macOS:
+
+```bash
+find "$HOME/Library/Logs/Claude" \
+  -maxdepth 1 \
+  -type f \
+  -iname '*mcp*' \
+  -print
+```
+
+### `No module named 'mcp.types'`
+
+Always launch the server as a module:
+
+```text
+python -m kgfegmcp.mcpb_server
+```
+
+Do not execute `src/kgfegmcp/mcpb_server.py` by filesystem path. Direct file execution
+can cause the internal `kgfegmcp.mcp` package to shadow the external MCP SDK package.
+
+### Protocol output errors
+
+STDIO stdout is reserved for MCP protocol messages. Application logging must remain on
+stderr, and production code should not use uncontrolled `print()` calls.
+
+## Project documentation
+
+- `instructions.md` is the architectural and implementation source of truth.
+- `backend/README.md` contains backend-specific operational notes.
+- `packaging/mcpb/README.md` describes the MCP Bundle packaging workflow.
 
 ## License
 
