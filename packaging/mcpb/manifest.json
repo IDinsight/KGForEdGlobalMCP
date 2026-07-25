@@ -6,8 +6,8 @@
 	"compatibility": {
 		"platforms": [
 			"darwin",
-			"win32",
-			"linux"
+			"linux",
+			"win32"
 		],
 		"runtimes": {
 			"python": ">=3.13,<3.14"
@@ -26,10 +26,8 @@
 	"manifest_version": "0.4",
 	"name": "kgfegmcp",
 	"server": {
-		"type": "uv",
 		"entry_point": "src/kgfegmcp/mcpb_server.py",
 		"mcp_config": {
-			"command": "uv",
 			"args": [
 				"run",
 				"--directory",
@@ -37,8 +35,10 @@
 				"--locked",
 				"--no-dev",
 				"python",
-				"${__dirname}/src/kgfegmcp/mcpb_server.py"
+				"-m",
+				"kgfegmcp.mcpb_server"
 			],
+			"command": "uv",
 			"env": {
 				"KGFEGMCP_CONFIG_ROOT": "${__dirname}/config",
 				"KGFEGMCP_DATA_ROOT": "${__dirname}/data",
@@ -50,7 +50,8 @@
 				"KGFEGMCP_PROMPT_ROOT": "${__dirname}/config/prompts",
 				"PATHS_PROJECT_DIR": "${__dirname}"
 			}
-		}
+		},
+		"type": "uv"
 	},
 	"version": "0.1.0"
 }

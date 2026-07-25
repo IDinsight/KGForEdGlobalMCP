@@ -209,7 +209,6 @@ async def _run_smoke(bundle_root: Path | None) -> dict[str, object]:
     runtime_root, project_root = _runtime_paths(
         bundle_root=bundle_root, repository_root=repository_root
     )
-    entry_point = runtime_root / "src" / "kgfegmcp" / "mcpb_server.py"
     transport = StdioTransport(
         args=[
             "run",
@@ -218,7 +217,8 @@ async def _run_smoke(bundle_root: Path | None) -> dict[str, object]:
             "--locked",
             "--no-dev",
             "python",
-            str(entry_point),
+            "-m",
+            "kgfegmcp.mcpb_server",
         ],
         command="uv",
         cwd=str(runtime_root),

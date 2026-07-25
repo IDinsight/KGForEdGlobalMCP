@@ -8,8 +8,8 @@ manifest agrees with the locked Python project metadata.
 
 After staging, the module delegates manifest validation and archive creation to the
 official ``mcpb`` command. It then independently inspects the resulting archive to
-confirm that all required files are present, no unexpected or unsafe entries were added,
-and every packaged file matches the staged source byte for byte.
+confirm that all required files are present, no unexpected or unsafe entries were
+added, and every packaged file matches the staged source byte for byte.
 
 This module only prepares the deployment package. It does not alter or implement
 curriculum, graph, comparison, search, prompt, resource, or other domain behavior.
@@ -62,7 +62,8 @@ _EXPECTED_MCP_CONFIG_ARGS = (
     "--locked",
     "--no-dev",
     "python",
-    "${__dirname}/src/kgfegmcp/mcpb_server.py",
+    "-m",
+    "kgfegmcp.mcpb_server",
 )
 _EXPECTED_MCP_CONFIG_ENV = {
     "KGFEGMCP_CONFIG_ROOT": "${__dirname}/config",
