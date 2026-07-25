@@ -500,7 +500,6 @@ def _validate_manifest_contract(
 
     mcp_config = server.get("mcp_config")
     project_authors = project.get("authors")
-    runtimes = compatibility.get("runtimes")
 
     if not isinstance(mcp_config, dict):
         raise ValueError("MCPB server is missing the mcp_config object.")
@@ -510,9 +509,6 @@ def _validate_manifest_contract(
 
     if not isinstance(project_authors[0], dict):
         raise ValueError("Packaged pyproject.toml has an invalid primary author.")
-
-    if not isinstance(runtimes, dict):
-        raise ValueError("MCPB compatibility is missing the runtimes object.")
 
     if manifest.get("manifest_version") != "0.4":
         raise ValueError("MCPB manifest_version must be exactly '0.4'.")
@@ -530,11 +526,6 @@ def _validate_manifest_contract(
 
     if author != project_authors[0]:
         raise ValueError("MCPB manifest author must match the primary project author.")
-
-    if runtimes.get("python") != project.get("requires-python"):
-        raise ValueError(
-            "MCPB Python compatibility must match project requires-python exactly."
-        )
 
     if server.get("entry_point") != _EXPECTED_ENTRY_POINT:
         raise ValueError("MCPB server entry_point is not the approved STDIO module.")

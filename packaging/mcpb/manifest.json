@@ -8,10 +8,7 @@
 			"darwin",
 			"linux",
 			"win32"
-		],
-		"runtimes": {
-			"python": ">=3.13,<3.14"
-		}
+		]
 	},
 	"description": "Explore, navigate, and compare immutable curriculum knowledge graph packages through MCP.",
 	"display_name": "Curriculum Knowledge Graph MCP",
