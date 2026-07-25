@@ -1,9 +1,22 @@
-"""This module contains typed domain exceptions for stable public error translation."""
+"""This module contains typed domain exceptions for stable public error translation.
+
+Expected domain failures carry a stable error code, an actionable public message, and
+an optional typed recovery hint. Structured internal details remain available for
+server diagnostics but are never exposed blindly at MCP boundaries.
+"""
 
 # Standard Library
 from collections.abc import Mapping
 from types import MappingProxyType
-from typing import ClassVar
+from typing import ClassVar, NotRequired, TypedDict
+
+
+class PublicErrorPayload(TypedDict):
+    """Describe the stable structured representation of one expected domain error."""
+
+    code: str
+    message: str
+    recoveryHint: NotRequired[str]
 
 
 class KGFEGMCPError(Exception):
@@ -12,7 +25,11 @@ class KGFEGMCPError(Exception):
     error_code: ClassVar[str] = "kgfegmcp_error"
 
     def __init__(
-        self, message: str, *, details: Mapping[str, object] | None = None
+        self,
+        message: str,
+        *,
+        details: Mapping[str, object] | None = None,
+        recovery_hint: str | None = None,
     ) -> None:
         """Initialize a stable domain error.
 
@@ -22,11 +39,13 @@ class KGFEGMCPError(Exception):
             Actionable public message suitable for later MCP error translation.
         details
             Optional internal structured details that must not be exposed blindly.
+        recovery_hint
+            Optional public next action that helps a caller correct the request.
 
         Raises
         ------
         ValueError
-            If ``message`` is empty.
+            If ``message`` is empty or a supplied recovery hint is empty.
         """
 
         normalized_message = message.strip()
@@ -34,20 +53,49 @@ class KGFEGMCPError(Exception):
         if not normalized_message:
             raise ValueError("Domain error messages must be non-empty.")
 
+        normalized_recovery_hint = (
+            recovery_hint.strip() if recovery_hint is not None else None
+        )
+
+        if recovery_hint is not None and not normalized_recovery_hint:
+            raise ValueError("Domain error recovery hints must be non-empty.")
+
         super().__init__(normalized_message)
         self.details = MappingProxyType(dict(details or {}))
         self.message = normalized_message
+        self.recovery_hint = normalized_recovery_hint
 
-    def public_payload(self) -> dict[str, str]:
-        """Return the stable public error representation.
+    def public_message(self) -> str:
+        """Return one stable human-readable public error message.
 
         Returns
         -------
-        dict[str, str]
-            Error code and actionable public message.
+        str
+            Error code and message, followed by an optional corrective next action.
         """
 
-        return {"code": self.error_code, "message": self.message}
+        message = f"{self.error_code}: {self.message}"
+
+        if self.recovery_hint is None:
+            return message
+
+        return f"{message} Next action: {self.recovery_hint}"
+
+    def public_payload(self) -> PublicErrorPayload:
+        """Return the stable structured public error representation.
+
+        Returns
+        -------
+        PublicErrorPayload
+            Error code, actionable message, and optional corrective next action.
+        """
+
+        payload: PublicErrorPayload = {"code": self.error_code, "message": self.message}
+
+        if self.recovery_hint is not None:
+            payload["recoveryHint"] = self.recovery_hint
+
+        return payload
 
 
 class AlignmentNotFoundError(KGFEGMCPError):

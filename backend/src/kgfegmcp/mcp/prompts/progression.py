@@ -20,12 +20,15 @@ from fastmcp.prompts import PromptResult
 from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_prompt_result
+from kgfegmcp.mcp.prompts.arguments import (
+    PromptFocusModeArgument,
+    PromptFocusTextArgument,
+)
 from kgfegmcp.mcp.tools import get_app_state
 from kgfegmcp.prompts.models import (
     ProgressionCandidateLimit,
     ProgressionDirection,
     PromptFocusMode,
-    PromptFocusText,
     PromptGradeOrStage,
     PromptLocalContext,
 )
@@ -36,13 +39,13 @@ async def inferred_progression_hypothesis(
     candidate_limit: ProgressionCandidateLimit = 8,
     context: Context,
     direction: ProgressionDirection = ProgressionDirection.BOTH,
-    focus_mode: PromptFocusMode = PromptFocusMode.TOPIC,
+    focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
     grade_or_stage: PromptGradeOrStage,
     local_context: PromptLocalContext | None = None,
     output_language: LanguageTag | None = None,
     snapshot_id: SnapshotId | None = None,
-    topic_or_standard: PromptFocusText,
+    topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for an evidence-linked inferred progression hypothesis.
 
@@ -55,7 +58,8 @@ async def inferred_progression_hypothesis(
     direction
         Earlier-to-later, later-to-earlier, or bidirectional review.
     focus_mode
-        Topic, statement code, or explicit identifier namespace.
+        Interpretation mode for ``topic_or_standard``; statement-code support depends
+        on the selected framework profile.
     framework_id
         Exact conceptual framework identifier.
     grade_or_stage
@@ -68,7 +72,7 @@ async def inferred_progression_hypothesis(
         Optional exact immutable snapshot identifier; omission uses unique-current
         routing.
     topic_or_standard
-        Topic text, statement code, or exact anchor selected by ``focus_mode``.
+        Topic text, stable statement code, or exact anchor selected by ``focus_mode``.
 
     Returns
     -------

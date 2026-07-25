@@ -19,12 +19,15 @@ from fastmcp.prompts import PromptResult
 from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_prompt_result
+from kgfegmcp.mcp.prompts.arguments import (
+    PromptFocusModeArgument,
+    PromptFocusTextArgument,
+)
 from kgfegmcp.mcp.tools import get_app_state
 from kgfegmcp.prompts.models import (
     HandbookWordCount,
     PracticeCount,
     PromptFocusMode,
-    PromptFocusText,
     PromptGradeOrStage,
     PromptLocalContext,
     StudyDifficulty,
@@ -34,14 +37,14 @@ from kgfegmcp.prompts.models import (
 async def student_handbook_section(
     *,
     context: Context,
-    focus_mode: PromptFocusMode = PromptFocusMode.TOPIC,
+    focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
     grade_or_stage: PromptGradeOrStage,
     local_context: PromptLocalContext | None = None,
     output_language: LanguageTag | None = None,
     snapshot_id: SnapshotId | None = None,
     target_word_count: HandbookWordCount = 500,
-    topic_or_standard: PromptFocusText,
+    topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for an evidence-grounded generated handbook section.
 
@@ -50,7 +53,8 @@ async def student_handbook_section(
     context
         Injected FastMCP request context containing immutable application state.
     focus_mode
-        Topic, statement code, or explicit identifier namespace.
+        Interpretation mode for ``topic_or_standard``; statement-code support depends
+        on the selected framework profile.
     framework_id
         Exact conceptual framework identifier.
     grade_or_stage
@@ -60,11 +64,13 @@ async def student_handbook_section(
     output_language
         Optional BCP 47-style output language tag.
     snapshot_id
-        Optional exact immutable snapshot identifier; omission uses unique-current routing.
+        Optional exact immutable snapshot identifier; omission uses unique-current
+        routing.
     target_word_count
         Approximate generated section length, from 150 through 1500 words.
     topic_or_standard
-        Topic text, statement code, or exact identifier selected by ``focus_mode``.
+        Topic text, stable statement code, or exact identifier selected by
+        ``focus_mode``.
 
     Returns
     -------
@@ -91,14 +97,14 @@ async def student_study_support(
     *,
     context: Context,
     difficulty: StudyDifficulty = StudyDifficulty.ON_LEVEL,
-    focus_mode: PromptFocusMode = PromptFocusMode.TOPIC,
+    focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
     grade_or_stage: PromptGradeOrStage,
     local_context: PromptLocalContext | None = None,
     output_language: LanguageTag | None = None,
     practice_count: PracticeCount = 5,
     snapshot_id: SnapshotId | None = None,
-    topic_or_standard: PromptFocusText,
+    topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for evidence-grounded generated student study support.
 
@@ -109,7 +115,8 @@ async def student_study_support(
     difficulty
         Requested generated support level.
     focus_mode
-        Topic, statement code, or explicit identifier namespace.
+        Interpretation mode for ``topic_or_standard``; statement-code support depends
+        on the selected framework profile.
     framework_id
         Exact conceptual framework identifier.
     grade_or_stage
@@ -124,7 +131,8 @@ async def student_study_support(
         Optional exact immutable snapshot identifier; omission uses unique-current
         routing.
     topic_or_standard
-        Topic text, statement code, or exact identifier selected by ``focus_mode``.
+        Topic text, stable statement code, or exact identifier selected by
+        ``focus_mode``.
 
     Returns
     -------

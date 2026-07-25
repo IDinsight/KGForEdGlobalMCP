@@ -18,11 +18,14 @@ from fastmcp.prompts import PromptResult
 from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_prompt_result
+from kgfegmcp.mcp.prompts.arguments import (
+    PromptFocusModeArgument,
+    PromptFocusTextArgument,
+)
 from kgfegmcp.mcp.tools import get_app_state
 from kgfegmcp.prompts.models import (
     LessonDurationMinutes,
     PromptFocusMode,
-    PromptFocusText,
     PromptGradeOrStage,
     PromptLearnerContext,
     PromptLocalContext,
@@ -34,7 +37,7 @@ async def teacher_guide_draft(
     *,
     available_materials: PromptMaterials | None = None,
     context: Context,
-    focus_mode: PromptFocusMode = PromptFocusMode.TOPIC,
+    focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
     grade_or_stage: PromptGradeOrStage,
     learner_context: PromptLearnerContext | None = None,
@@ -42,7 +45,7 @@ async def teacher_guide_draft(
     local_context: PromptLocalContext | None = None,
     output_language: LanguageTag | None = None,
     snapshot_id: SnapshotId | None = None,
-    topic_or_standard: PromptFocusText,
+    topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for an evidence-grounded generated teacher guide.
 
@@ -53,7 +56,8 @@ async def teacher_guide_draft(
     context
         Injected FastMCP request context containing immutable application state.
     focus_mode
-        Topic, statement code, or explicit identifier namespace.
+        Interpretation mode for ``topic_or_standard``; statement-code support depends
+        on the selected framework profile.
     framework_id
         Exact conceptual framework identifier.
     grade_or_stage
@@ -70,7 +74,8 @@ async def teacher_guide_draft(
         Optional exact immutable snapshot identifier; omission uses unique-current
         routing.
     topic_or_standard
-        Topic text, statement code, or exact identifier selected by ``focus_mode``.
+        Topic text, stable statement code, or exact identifier selected by
+        ``focus_mode``.
 
     Returns
     -------

@@ -164,10 +164,25 @@ class PromptPolicy:
                     "focus_mode": focus_mode.value,
                     "profile_id": str(profile.profile_id),
                     "prompt_name": prompt_name.value,
+                    "supported_focus_modes": (
+                        PromptFocusMode.CASE_IDENTIFIER_URI.value,
+                        PromptFocusMode.CASE_IDENTIFIER_UUID.value,
+                        PromptFocusMode.NODE_ID.value,
+                        PromptFocusMode.TOPIC.value,
+                    ),
                 },
                 message=(
-                    "The selected framework does not support statement-code lookup; "
-                    "use topic or an explicit standard identifier instead."
+                    f"Prompt '{prompt_name.value}' cannot use "
+                    f"focus_mode='statement_code' because the selected framework "
+                    f"does not provide stable statement codes."
+                ),
+                recovery_hint=(
+                    "Reopen the prompt and set focus_mode='topic' when "
+                    "topic_or_standard contains a title or visible label. Use "
+                    "focus_mode='node_id', 'case_identifier_uuid', or "
+                    "'case_identifier_uri' when topic_or_standard contains the "
+                    "corresponding exact identifier. Keep the remaining inputs "
+                    "unchanged."
                 ),
             )
 

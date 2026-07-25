@@ -139,7 +139,7 @@ def prompt_error_boundary(operation: str) -> Iterator[None]:
         raise
     except KGFEGMCPError as error:
         _log_expected_error(error=error, operation=normalized_operation)
-        raise PromptError(f"{error.error_code}: {error.message}") from None
+        raise PromptError(error.public_message()) from None
     except Exception as error:
         _log_unexpected_error(error=error, operation=normalized_operation)
         raise PromptError(_INTERNAL_PROMPT_ERROR_MESSAGE) from None
@@ -176,7 +176,7 @@ def resource_error_boundary(operation: str) -> Iterator[None]:
         raise
     except KGFEGMCPError as error:
         _log_expected_error(error=error, operation=normalized_operation)
-        raise ResourceError(f"{error.error_code}: {error.message}") from None
+        raise ResourceError(error.public_message()) from None
     except Exception as error:
         _log_unexpected_error(error=error, operation=normalized_operation)
         raise ResourceError(_INTERNAL_RESOURCE_ERROR_MESSAGE) from None
@@ -213,7 +213,7 @@ def tool_error_boundary(operation: str) -> Iterator[None]:
         raise
     except KGFEGMCPError as error:
         _log_expected_error(error=error, operation=normalized_operation)
-        raise ToolError(f"{error.error_code}: {error.message}") from None
+        raise ToolError(error.public_message()) from None
     except Exception as error:
         _log_unexpected_error(error=error, operation=normalized_operation)
         raise ToolError(_INTERNAL_TOOL_ERROR_MESSAGE) from None
