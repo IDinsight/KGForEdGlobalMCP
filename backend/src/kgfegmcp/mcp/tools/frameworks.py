@@ -45,6 +45,24 @@ if TYPE_CHECKING:
 
     # Package Library
     from kgfegmcp.bootstrap import AppState
+    from kgfegmcp.catalog.models import CatalogGraphPackage, CatalogSourceMetadata
+
+
+def _format_boolean(value: bool) -> str:
+    """Format one boolean as deterministic lower-case text.
+
+    Parameters
+    ----------
+    value
+        Boolean value to format.
+
+    Returns
+    -------
+    str
+        ``true`` or ``false``.
+    """
+
+    return str(value).lower()
 
 
 def _format_framework(result: GetFrameworkResult) -> str:
@@ -58,7 +76,7 @@ def _format_framework(result: GetFrameworkResult) -> str:
     Returns
     -------
     str
-        Stable summary of source identity and every exact graph package.
+        Stable summary of complete source metadata and every exact graph package.
     """
 
     framework = result.framework
@@ -66,19 +84,12 @@ def _format_framework(result: GetFrameworkResult) -> str:
         f"Framework: {framework.source_metadata.name}",
         f"Framework ID: {framework.framework_id}",
         f"Snapshot ID: {framework.snapshot_id}",
-        f"Current: {str(framework.source_metadata.is_current).lower()}",
+        *_format_source_metadata(framework.source_metadata),
         "Graph packages:",
     ]
 
     for package in framework.graph_packages:
-        identity = package.package_identity
-        lines.append(
-            (
-                f"- {identity.graph_package_id} | "
-                f"graph_type={identity.graph_type.value} | "
-                f"profile={identity.profile_id}@{identity.profile_version}"
-            )
-        )
+        lines.extend(_format_graph_package(package))
 
     return "\n".join(lines)
 
@@ -94,7 +105,7 @@ def _format_framework_list(result: ListFrameworksResult) -> str:
     Returns
     -------
     str
-        Stable line-oriented summary retaining exact framework and snapshot IDs.
+        Stable summary exposing exact source metadata and package capabilities.
     """
 
     lines = [
@@ -105,21 +116,210 @@ def _format_framework_list(result: ListFrameworksResult) -> str:
     ]
 
     for snapshot in result.items:
-        graph_types = ",".join(
+        graph_types = tuple(
             graph_type.value for graph_type in snapshot.available_graph_types
         )
-        lines.append(
+        metadata = snapshot.source_metadata
+        lines.extend(
             (
-                f"{snapshot.framework_id} | {snapshot.snapshot_id} | "
-                f"current={str(snapshot.source_metadata.is_current).lower()} | "
-                f"graph_types={graph_types}"
+                "",
+                f"Framework: {metadata.name}",
+                f"Framework ID: {snapshot.framework_id}",
+                f"Snapshot ID: {snapshot.snapshot_id}",
+                *_format_source_metadata(metadata),
+                f"Graph types: {_format_values(graph_types)}",
+                "Graph packages:",
             )
         )
+        lines.extend(
+            f"- {_format_package_summary(package)}"
+            for package in snapshot.graph_packages
+        )
 
-    lines.append(
-        f"Next cursor: {'present' if result.next_cursor is not None else 'none'}"
+    lines.extend(
+        (
+            "",
+            f"Next cursor: {'present' if result.next_cursor is not None else 'none'}",
+        )
     )
     return "\n".join(lines)
+
+
+def _format_graph_package(package: CatalogGraphPackage) -> list[str]:
+    """Format complete public metadata for one accepted graph package.
+
+    Parameters
+    ----------
+    package
+        Accepted catalog graph package to render.
+
+    Returns
+    -------
+    list[str]
+        Stable line-oriented package identity, capability, count, validation, and
+        rights metadata.
+    """
+
+    capabilities = package.capabilities
+    identity = package.package_identity
+    rights = package.rights
+    return [
+        f"- Graph package ID: {identity.graph_package_id}",
+        f"  Graph type: {identity.graph_type.value}",
+        f"  Package revision: {identity.package_revision}",
+        f"  Profile: {identity.profile_id}@{identity.profile_version}",
+        f"  Code search: {capabilities.code_search.value}",
+        f"  Text search: {_format_boolean(capabilities.text_search)}",
+        (
+            "  Detailed provenance: "
+            f"{_format_boolean(capabilities.has_detailed_provenance)}"
+        ),
+        (
+            "  Official activities: "
+            f"{_format_boolean(capabilities.has_official_activities)}"
+        ),
+        (
+            "  Official assessment guidance: "
+            f"{_format_boolean(capabilities.has_official_assessment_guidance)}"
+        ),
+        (
+            "  Unresolved relationships: "
+            f"{_format_boolean(capabilities.has_unresolved_relationships)}"
+        ),
+        f"  Multi-parent: {_format_boolean(capabilities.multi_parent)}",
+        f"  Counts: {_format_package_counts(package)}",
+        f"  Validation status: {package.validation.status.value}",
+        f"  Rights review status: {rights.review_status.value}",
+        f"  Source license: {rights.source_license}",
+        (
+            "  Standard resources allowed: "
+            f"{_format_boolean(rights.allow_standard_resources)}"
+        ),
+        f"  Full text allowed: {_format_boolean(rights.allow_full_text)}",
+        f"  Bulk resource allowed: {_format_boolean(rights.allow_bulk_resource)}",
+        ("  Generated derivatives: " f"{rights.allow_generated_derivatives.value}"),
+        f"  Attribution: {rights.attribution_statement}",
+    ]
+
+
+def _format_optional_value(value: object | None) -> str:
+    """Format one optional value without inventing missing metadata.
+
+    Parameters
+    ----------
+    value
+        Source or package value that may be absent.
+
+    Returns
+    -------
+    str
+        Exact string representation or ``none`` when the value is absent.
+    """
+
+    return "none" if value is None else str(value)
+
+
+def _format_package_counts(package: CatalogGraphPackage) -> str:
+    """Format exact declared counts for one accepted graph package.
+
+    Parameters
+    ----------
+    package
+        Accepted catalog graph package whose counts must be rendered.
+
+    Returns
+    -------
+    str
+        Stable comma-separated count assignments.
+    """
+
+    count_parts = [
+        f"framework_nodes={package.counts.framework_nodes}",
+        f"item_nodes={package.counts.item_nodes}",
+        f"relationships={package.counts.relationships}",
+    ]
+    count_parts.extend(
+        f"{name}={value}"
+        for name, value in sorted(package.counts.additional_counts.items())
+    )
+    return ", ".join(count_parts)
+
+
+def _format_package_summary(package: CatalogGraphPackage) -> str:
+    """Format one compact package summary for framework discovery output.
+
+    Parameters
+    ----------
+    package
+        Accepted catalog graph package to summarize.
+
+    Returns
+    -------
+    str
+        Stable package identity, capability, profile, and validation summary.
+    """
+
+    capabilities = package.capabilities
+    identity = package.package_identity
+    return (
+        f"{identity.graph_package_id} | graph_type={identity.graph_type.value} | "
+        f"profile={identity.profile_id}@{identity.profile_version} | "
+        f"code_search={capabilities.code_search.value} | "
+        f"text_search={_format_boolean(capabilities.text_search)} | "
+        f"validation={package.validation.status.value}"
+    )
+
+
+def _format_source_metadata(metadata: CatalogSourceMetadata) -> list[str]:
+    """Format complete source-facing metadata for one framework snapshot.
+
+    Parameters
+    ----------
+    metadata
+        Validated source metadata retained in the accepted catalog.
+
+    Returns
+    -------
+    list[str]
+        Stable line-oriented source metadata without inferred values.
+    """
+
+    return [
+        f"Adoption status: {_format_optional_value(metadata.adoption_status)}",
+        f"Current: {_format_boolean(metadata.is_current)}",
+        f"Issuing authority: {_format_optional_value(metadata.issuing_authority)}",
+        f"Jurisdiction: {metadata.jurisdiction}",
+        f"Jurisdiction type: {_format_optional_value(metadata.jurisdiction_type)}",
+        f"Languages: {_format_values(tuple(metadata.languages))}",
+        (
+            "Local grades or stages: "
+            f"{_format_values(tuple(metadata.local_grades_or_stages))}"
+        ),
+        f"Local subject: {metadata.local_subject}",
+        f"Provider: {_format_optional_value(metadata.provider)}",
+        (
+            "Source publication date: "
+            f"{_format_optional_value(metadata.source_publication_date)}"
+        ),
+        f"Source version: {_format_optional_value(metadata.source_version)}",
+    ]
+
+
+def _format_values(values: tuple[object, ...]) -> str:
+    """Format one ordered tuple while preserving its source order.
+
+    Parameters
+    ----------
+    values
+        Ordered values to render.
+
+    Returns
+    -------
+    str
+        Comma-separated exact values or ``none`` for an empty tuple.
+    """
+
+    return ", ".join(str(value) for value in values) or "none"
 
 
 async def get_framework(request: GetFrameworkRequest, context: Context) -> ToolResult:
@@ -195,8 +395,8 @@ def register_framework_tools(server: FastMCP[dict[str, AppState]]) -> None:
     server.tool(
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
-            "List accepted immutable framework snapshots using exact source and "
-            "normalized catalog filters with checksum-protected pagination."
+            "List accepted immutable framework snapshots with exact source metadata, "
+            "package capabilities, validation status, and checksum-protected pagination."
         ),
         name="list_frameworks",
         output_schema=result_schema(ListFrameworksResult),
@@ -205,8 +405,8 @@ def register_framework_tools(server: FastMCP[dict[str, AppState]]) -> None:
     server.tool(
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
-            "Return one exact framework snapshot or the uniquely current snapshot "
-            "for a framework family."
+            "Return one exact or uniquely current framework snapshot with complete "
+            "source metadata, package capabilities, counts, validation, and rights."
         ),
         name="get_framework",
         output_schema=result_schema(GetFrameworkResult),
