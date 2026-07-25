@@ -274,6 +274,50 @@ def _load_json_object(path: Path) -> dict[str, object]:
     return payload
 
 
+def _manifest_sections(
+    manifest: dict[str, object],
+) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
+    """Return the validated author, mcp_config, and server manifest objects.
+
+    Parameters
+    ----------
+    manifest
+        Parsed MCPB manifest template.
+
+    Returns
+    -------
+    tuple[dict[str, object], dict[str, object], dict[str, object]]
+        The manifest author object, the server ``mcp_config`` object, and the server
+        object, in that order.
+
+    Raises
+    ------
+    ValueError
+        If the author, compatibility, server, or ``mcp_config`` object is missing or is
+        not a JSON object.
+    """
+
+    author = manifest.get("author")
+    compatibility = manifest.get("compatibility")
+    server = manifest.get("server")
+
+    if not isinstance(author, dict):
+        raise ValueError("MCPB manifest is missing the author object.")
+
+    if not isinstance(compatibility, dict):
+        raise ValueError("MCPB manifest is missing the compatibility object.")
+
+    if not isinstance(server, dict):
+        raise ValueError("MCPB manifest is missing the server object.")
+
+    mcp_config = server.get("mcp_config")
+
+    if not isinstance(mcp_config, dict):
+        raise ValueError("MCPB server is missing the mcp_config object.")
+
+    return author, mcp_config, server
+
+
 def _project_root() -> Path:
     """Return the repository root containing ``backend``, ``config``, and ``data``.
 
@@ -284,6 +328,67 @@ def _project_root() -> Path:
     """
 
     return Path(__file__).resolve().parents[4]
+
+
+def _project_sections(
+    project_metadata: dict[str, object],
+) -> tuple[dict[str, object], dict[str, object]]:
+    """Return the validated primary author and ``[project]`` table objects.
+
+    Parameters
+    ----------
+    project_metadata
+        Parsed packaged ``pyproject.toml`` document.
+
+    Returns
+    -------
+    tuple[dict[str, object], dict[str, object]]
+        The primary project author object and the ``[project]`` table, in that order.
+
+    Raises
+    ------
+    ValueError
+        If the ``[project]`` table or its authors are missing, or if the primary author
+        is not a JSON object.
+    """
+
+    project = project_metadata.get("project")
+
+    if not isinstance(project, dict):
+        raise ValueError("Packaged pyproject.toml is missing the [project] table.")
+
+    project_authors = project.get("authors")
+
+    if not isinstance(project_authors, list) or not project_authors:
+        raise ValueError("Packaged pyproject.toml is missing project authors.")
+
+    if not isinstance(project_authors[0], dict):
+        raise ValueError("Packaged pyproject.toml has an invalid primary author.")
+
+    return project_authors[0], project
+
+
+def _reject_archive_symlinks(infos: Sequence[zipfile.ZipInfo]) -> None:
+    """Reject any archive member stored as a symbolic link.
+
+    Parameters
+    ----------
+    infos
+        Archive member metadata records to inspect.
+
+    Raises
+    ------
+    ValueError
+        If any member's stored Unix mode identifies a symbolic link.
+    """
+
+    for info in infos:
+        mode = info.external_attr >> 16
+
+        if stat.S_ISLNK(mode):
+            raise ValueError(
+                f"MCPB archive may not contain symlinks: '{info.filename}'."
+            )
 
 
 def _require_regular_tree(source: Path) -> None:
@@ -463,6 +568,30 @@ def _stage_bundle(*, destination: Path, project_root: Path) -> dict[str, object]
     return manifest
 
 
+def _staged_bundle_files(stage_root: Path) -> dict[str, Path]:
+    """Return the staged bundle files keyed by POSIX-relative archive path.
+
+    Parameters
+    ----------
+    stage_root
+        Complete assembled source directory used by the packer.
+
+    Returns
+    -------
+    dict[str, Path]
+        Mapping of each staged regular file's POSIX-relative path to its absolute
+        source path, excluding the packer-only ``.mcpbignore`` control file.
+    """
+
+    staged_files = {
+        path.relative_to(stage_root).as_posix(): path
+        for path in stage_root.rglob("*")
+        if path.is_file()
+    }
+    staged_files.pop(".mcpbignore", None)
+    return staged_files
+
+
 def _validate_manifest_contract(
     *, manifest: dict[str, object], project_metadata: dict[str, object]
 ) -> None:
@@ -481,34 +610,40 @@ def _validate_manifest_contract(
         If required manifest identity, version, or server fields are inconsistent.
     """
 
-    author = manifest.get("author")
-    compatibility = manifest.get("compatibility")
-    project = project_metadata.get("project")
-    server = manifest.get("server")
+    author, mcp_config, server = _manifest_sections(manifest)
+    primary_author, project = _project_sections(project_metadata)
+    _validate_manifest_identity(
+        author=author, manifest=manifest, primary_author=primary_author, project=project
+    )
+    _validate_manifest_server(mcp_config=mcp_config, server=server)
 
-    if not isinstance(author, dict):
-        raise ValueError("MCPB manifest is missing the author object.")
 
-    if not isinstance(compatibility, dict):
-        raise ValueError("MCPB manifest is missing the compatibility object.")
+def _validate_manifest_identity(
+    *,
+    author: dict[str, object],
+    manifest: dict[str, object],
+    primary_author: dict[str, object],
+    project: dict[str, object],
+) -> None:
+    """Require manifest identity and version fields to match the project.
 
-    if not isinstance(project, dict):
-        raise ValueError("Packaged pyproject.toml is missing the [project] table.")
+    Parameters
+    ----------
+    author
+        Author object declared in the MCPB manifest.
+    manifest
+        Parsed MCPB manifest template.
+    primary_author
+        Primary author object declared in the packaged project metadata.
+    project
+        Parsed ``[project]`` table from the packaged ``pyproject.toml``.
 
-    if not isinstance(server, dict):
-        raise ValueError("MCPB manifest is missing the server object.")
-
-    mcp_config = server.get("mcp_config")
-    project_authors = project.get("authors")
-
-    if not isinstance(mcp_config, dict):
-        raise ValueError("MCPB server is missing the mcp_config object.")
-
-    if not isinstance(project_authors, list) or not project_authors:
-        raise ValueError("Packaged pyproject.toml is missing project authors.")
-
-    if not isinstance(project_authors[0], dict):
-        raise ValueError("Packaged pyproject.toml has an invalid primary author.")
+    Raises
+    ------
+    ValueError
+        If the manifest version, name, project version, or author does not match the
+        packaged project.
+    """
 
     if manifest.get("manifest_version") != "0.4":
         raise ValueError("MCPB manifest_version must be exactly '0.4'.")
@@ -524,8 +659,28 @@ def _validate_manifest_contract(
             "MCPB manifest version must match backend project version exactly."
         )
 
-    if author != project_authors[0]:
+    if author != primary_author:
         raise ValueError("MCPB manifest author must match the primary project author.")
+
+
+def _validate_manifest_server(
+    *, mcp_config: dict[str, object], server: dict[str, object]
+) -> None:
+    """Require the manifest server and ``mcp_config`` to match the locked launch.
+
+    Parameters
+    ----------
+    mcp_config
+        Parsed ``mcp_config`` object from the MCPB manifest server.
+    server
+        Parsed server object from the MCPB manifest.
+
+    Raises
+    ------
+    ValueError
+        If the server entry point or type, or any ``mcp_config`` command, arguments,
+        environment, or field set, differs from the approved launch.
+    """
 
     if server.get("entry_point") != _EXPECTED_ENTRY_POINT:
         raise ValueError("MCPB server entry_point is not the approved STDIO module.")
@@ -549,6 +704,88 @@ def _validate_manifest_contract(
 
     if set(mcp_config) != {"args", "command", "env"}:
         raise ValueError("MCPB mcp_config contains unsupported fields.")
+
+
+def _verify_archive_content(
+    *, archive: zipfile.ZipFile, staged_files: dict[str, Path], stage_root: Path
+) -> None:
+    """Verify packaged file bytes match their staged sources exactly.
+
+    Parameters
+    ----------
+    archive
+        Opened MCPB archive to inspect.
+    staged_files
+        Mapping of staged file POSIX paths to their source paths.
+    stage_root
+        Complete assembled source directory used by the packer.
+
+    Raises
+    ------
+    ValueError
+        If any packaged file, or the optional ``.mcpbignore`` control file, differs
+        from its staged source bytes.
+    """
+
+    for name, staged_path in sorted(staged_files.items()):
+        if archive.read(name) != staged_path.read_bytes():
+            raise ValueError(f"MCPB archive content differs from staged file '{name}'.")
+
+    archive_names = set(archive.namelist())
+
+    if (
+        ".mcpbignore" in archive_names
+        and archive.read(".mcpbignore") != (stage_root / ".mcpbignore").read_bytes()
+    ):
+        raise ValueError("MCPB archive content differs from staged file '.mcpbignore'.")
+
+
+def _verify_archive_members(
+    *, archive: zipfile.ZipFile, staged_files: dict[str, Path]
+) -> None:
+    """Verify archive member safety and file-name completeness.
+
+    Parameters
+    ----------
+    archive
+        Opened MCPB archive to inspect.
+    staged_files
+        Mapping of staged file POSIX paths to their source paths.
+
+    Raises
+    ------
+    ValueError
+        If members use unsafe or duplicate paths or symlinks, or if the archive omits
+        staged files, adds unexpected files, or lacks a required path.
+    """
+
+    infos = tuple(archive.infolist())
+    paths = tuple(_safe_archive_path(info.filename) for info in infos)
+
+    if len(paths) != len(set(paths)):
+        raise ValueError("MCPB archive contains duplicate member paths.")
+
+    _reject_archive_symlinks(infos)
+
+    member_names = {str(path).rstrip("/") for path in paths}
+    archive_file_names = {
+        str(path) for info, path in zip(infos, paths, strict=True) if not info.is_dir()
+    }
+    permitted_archive_files = set(staged_files) | {".mcpbignore"}
+    missing_files = sorted(set(staged_files) - archive_file_names)
+    unexpected_files = sorted(archive_file_names - permitted_archive_files)
+
+    if missing_files:
+        raise ValueError(
+            "MCPB archive is missing staged file(s): " + ", ".join(missing_files)
+        )
+
+    if unexpected_files:
+        raise ValueError(
+            "MCPB archive contains unexpected file(s): " + ", ".join(unexpected_files)
+        )
+
+    _verify_required_paths(member_names)
 
 
 def _verify_bundle(
@@ -575,78 +812,43 @@ def _verify_bundle(
     if not bundle_path.is_file():
         raise ValueError(f"MCPB archive was not created: '{bundle_path}'.")
 
-    staged_files = {
-        path.relative_to(stage_root).as_posix(): path
-        for path in stage_root.rglob("*")
-        if path.is_file()
-    }
-    staged_files.pop(".mcpbignore", None)
+    staged_files = _staged_bundle_files(stage_root)
 
     with zipfile.ZipFile(bundle_path) as archive:
-        infos = tuple(archive.infolist())
-        paths = tuple(_safe_archive_path(info.filename) for info in infos)
-
-        if len(paths) != len(set(paths)):
-            raise ValueError("MCPB archive contains duplicate member paths.")
-
-        for info in infos:
-            mode = info.external_attr >> 16
-
-            if stat.S_ISLNK(mode):
-                raise ValueError(
-                    f"MCPB archive may not contain symlinks: '{info.filename}'."
-                )
-
-        member_names = {str(path).rstrip("/") for path in paths}
-        archive_file_names = {
-            str(path)
-            for info, path in zip(infos, paths, strict=True)
-            if not info.is_dir()
-        }
-        permitted_archive_files = set(staged_files) | {".mcpbignore"}
-        missing_files = sorted(set(staged_files) - archive_file_names)
-        unexpected_files = sorted(archive_file_names - permitted_archive_files)
-
-        if missing_files:
-            raise ValueError(
-                "MCPB archive is missing staged file(s): " + ", ".join(missing_files)
-            )
-
-        if unexpected_files:
-            raise ValueError(
-                "MCPB archive contains unexpected file(s): "
-                + ", ".join(unexpected_files)
-            )
-
-        for required_path in _REQUIRED_ARCHIVE_PATHS:
-            if not any(
-                name == required_path or name.startswith(f"{required_path}/")
-                for name in member_names
-            ):
-                raise ValueError(
-                    f"MCPB archive is missing required path '{required_path}'."
-                )
-
-        for name, staged_path in sorted(staged_files.items()):
-            if archive.read(name) != staged_path.read_bytes():
-                raise ValueError(
-                    f"MCPB archive content differs from staged file '{name}'."
-                )
-
-        if (
-            ".mcpbignore" in archive_file_names
-            and archive.read(".mcpbignore") != (stage_root / ".mcpbignore").read_bytes()
-        ):
-            raise ValueError(
-                "MCPB archive content differs from staged file '.mcpbignore'."
-            )
-
+        _verify_archive_members(archive=archive, staged_files=staged_files)
+        _verify_archive_content(
+            archive=archive, staged_files=staged_files, stage_root=stage_root
+        )
         archive_manifest = json.loads(
             object_pairs_hook=_duplicate_key_object, s=archive.read("manifest.json")
         )
 
     if archive_manifest != expected_manifest:
         raise ValueError("Packed MCPB manifest differs from the staged manifest.")
+
+
+def _verify_required_paths(member_names: set[str]) -> None:
+    """Require every mandatory bundle path to be present among archive members.
+
+    Parameters
+    ----------
+    member_names
+        Normalized archive member names without trailing separators.
+
+    Raises
+    ------
+    ValueError
+        If any required file or directory path is absent from the archive.
+    """
+
+    for required_path in _REQUIRED_ARCHIVE_PATHS:
+        if not any(
+            name == required_path or name.startswith(f"{required_path}/")
+            for name in member_names
+        ):
+            raise ValueError(
+                f"MCPB archive is missing required path '{required_path}'."
+            )
 
 
 @cli.command()
