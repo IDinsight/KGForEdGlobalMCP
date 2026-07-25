@@ -56,6 +56,7 @@ _EXPECTED_PROMPT_NAMES = (
     "teacher_guide_draft",
 )
 _EXPECTED_TOOL_NAMES = (
+    "collect_progression_evidence",
     "compare_framework_evidence",
     "get_capabilities",
     "get_framework",

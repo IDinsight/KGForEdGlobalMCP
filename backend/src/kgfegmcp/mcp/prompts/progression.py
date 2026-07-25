@@ -7,9 +7,10 @@ rendering to ``PromptService``, and converts the result into one FastMCP user-ro
 prompt message.
 
 The adapter does not create Learning Progressions data, persist progression edges, load
-prompt configuration, enforce rights independently, search standards, traverse graphs
-during prompt retrieval, call an LLM, or use MCP sampling. Any progression produced by
-the client-side model remains explicitly labeled as an LLM-inferred hypothesis.
+prompt configuration, enforce rights independently, collect evidence, call an LLM, or
+use MCP sampling. The rendered workflow requires Claude to use the deterministic
+``collect_progression_evidence`` tool, whose retained-candidate limit is enforced by
+the server.
 """
 
 # Third Party Library
@@ -21,6 +22,8 @@ from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_prompt_result
 from kgfegmcp.mcp.prompts.arguments import (
+    ProgressionLocalGradeLabelsArgument,
+    ProgressionNormalizedGradesArgument,
     PromptFocusModeArgument,
     PromptFocusTextArgument,
 )
@@ -29,7 +32,6 @@ from kgfegmcp.prompts.models import (
     ProgressionCandidateLimit,
     ProgressionDirection,
     PromptFocusMode,
-    PromptGradeOrStage,
     PromptLocalContext,
 )
 
@@ -41,8 +43,9 @@ async def inferred_progression_hypothesis(
     direction: ProgressionDirection = ProgressionDirection.BOTH,
     focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
-    grade_or_stage: PromptGradeOrStage,
     local_context: PromptLocalContext | None = None,
+    local_grade_labels: ProgressionLocalGradeLabelsArgument = (),
+    normalized_grades: ProgressionNormalizedGradesArgument = (),
     output_language: LanguageTag | None = None,
     snapshot_id: SnapshotId | None = None,
     topic_or_standard: PromptFocusTextArgument,
@@ -52,7 +55,7 @@ async def inferred_progression_hypothesis(
     Parameters
     ----------
     candidate_limit
-        Maximum number of standards candidates to review, from 2 through 20.
+        Hard maximum number of unique standard-item candidates, from 2 through 20.
     context
         Injected FastMCP request context containing immutable application state.
     direction
@@ -62,10 +65,12 @@ async def inferred_progression_hypothesis(
         on the selected framework profile.
     framework_id
         Exact conceptual framework identifier.
-    grade_or_stage
-        Local or normalized grade/stage scope for candidate retrieval.
     local_context
         Optional local nuance treated as untrusted caller context.
+    local_grade_labels
+        Exact source-facing grades or stages parsed from a JSON-array prompt value.
+    normalized_grades
+        Normalized retrieval facets parsed from a JSON-array prompt value.
     output_language
         Optional BCP 47-style output language tag.
     snapshot_id
@@ -87,8 +92,9 @@ async def inferred_progression_hypothesis(
             direction=direction,
             focus_mode=focus_mode,
             framework_id=framework_id,
-            grade_or_stage=grade_or_stage,
             local_context=local_context,
+            local_grade_labels=local_grade_labels,
+            normalized_grades=normalized_grades,
             output_language=output_language,
             snapshot_id=snapshot_id,
             topic_or_standard=topic_or_standard,

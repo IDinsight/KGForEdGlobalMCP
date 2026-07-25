@@ -195,6 +195,11 @@ PromptGradeOrStage = Annotated[
     StringConstraints(max_length=128, min_length=1),
     AfterValidator(_require_non_whitespace),
 ]
+ProgressionGradeFilters = Annotated[
+    tuple[PromptGradeOrStage, ...],
+    Field(max_length=32),
+    AfterValidator(_require_unique_grade_values),
+]
 ComparisonFrameworkIds = Annotated[
     tuple[FrameworkId, ...],
     Field(max_length=8, min_length=2),

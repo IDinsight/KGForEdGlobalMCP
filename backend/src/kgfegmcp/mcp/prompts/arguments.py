@@ -1,8 +1,9 @@
-"""This module defines shared client-visible argument metadata for MCP prompts.
+"""This module defines shared client-visible argument metadata for MCP prompt workflows.
 
-The aliases add static guidance to FastMCP prompt schemas without embedding any
-framework-specific capability decisions. Runtime profile policy remains authoritative
-because one public prompt must serve coded, partially coded, and uncoded frameworks.
+The aliases add static FastMCP prompt guidance without embedding framework-specific
+capability or grade decisions. Runtime package and profile policy remains authoritative
+because the same public prompts serve many coded, partially coded, and uncoded
+frameworks with different local grade systems.
 """
 
 # Standard Library
@@ -12,8 +13,34 @@ from typing import Annotated
 from pydantic import Field
 
 # Package Library
-from kgfegmcp.prompts.models import PromptFocusMode, PromptFocusText
+from kgfegmcp.prompts.models import (
+    ProgressionGradeFilters,
+    PromptFocusMode,
+    PromptFocusText,
+)
 
+ProgressionLocalGradeLabelsArgument = Annotated[
+    ProgressionGradeFilters,
+    Field(
+        description=(
+            "Exact source-facing grade or stage labels. MCP prompt clients send "
+            "complex arguments as JSON strings, so enter a JSON array such as "
+            '["Grade 1", "Grade 2"]. Do not enter a comma-separated '
+            "prose string. Values must match the selected framework snapshot."
+        )
+    ),
+]
+ProgressionNormalizedGradesArgument = Annotated[
+    ProgressionGradeFilters,
+    Field(
+        description=(
+            "Normalized grade retrieval facets. MCP prompt clients send complex "
+            "arguments as JSON strings, so enter a JSON array such as "
+            '["1", "2"]. Do not enter a comma-separated prose string. '
+            "These are retrieval aids and do not establish grade equivalence."
+        )
+    ),
+]
 PromptFocusModeArgument = Annotated[
     PromptFocusMode,
     Field(
@@ -38,4 +65,9 @@ PromptFocusTextArgument = Annotated[
     ),
 ]
 
-__all__ = ["PromptFocusModeArgument", "PromptFocusTextArgument"]
+__all__ = [
+    "ProgressionLocalGradeLabelsArgument",
+    "ProgressionNormalizedGradesArgument",
+    "PromptFocusModeArgument",
+    "PromptFocusTextArgument",
+]

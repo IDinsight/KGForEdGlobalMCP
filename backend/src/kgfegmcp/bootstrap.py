@@ -7,9 +7,9 @@ catalog through the existing validation gate, and constructs independent package
 search indexes from that catalog result.
 
 The resulting ``AppState`` retains the settings, catalog result, catalog service,
-comparison service, prompt service, resource service, and search service that MCP
-components use during one server lifespan. Importing this module defines the
-construction process but does not execute it or access runtime files.
+comparison service, progression-evidence service, prompt service, resource service, and
+search service that MCP components use during one server lifespan. Importing this
+module defines the construction process but does not execute it or access runtime files.
 """
 
 # Future Library
@@ -38,6 +38,7 @@ from kgfegmcp.resources.service import ResourceService
 from kgfegmcp.search.service import SearchService
 from kgfegmcp.services.comparison import ComparisonService
 from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.services.progression import ProgressionEvidenceService
 from kgfegmcp.services.standards import StandardsService
 
 _LOGGER = logging.getLogger("fastmcp.kgfegmcp.bootstrap")
@@ -55,6 +56,8 @@ class AppState:
         Exact and unique-current in-memory catalog routing service.
     comparison_service
         Deterministic exact-package comparison service over the accepted runtime.
+    progression_evidence_service
+        Deterministic bounded progression-evidence service over the accepted runtime.
     prompt_service
         Generic, profile-aware prompt service over the same accepted runtime.
     resource_service
@@ -68,6 +71,7 @@ class AppState:
     catalog_load_result: CatalogLoadResult
     catalog_service: CatalogService
     comparison_service: ComparisonService
+    progression_evidence_service: ProgressionEvidenceService
     prompt_service: PromptService
     resource_service: ResourceService
     search_service: SearchService
@@ -103,6 +107,22 @@ class AppState:
         ):
             raise ValueError(
                 "AppState comparison and search services must share SearchService."
+            )
+
+        if (
+            self.progression_evidence_service.catalog_service
+            is not self.catalog_service
+        ):
+            raise ValueError(
+                "AppState must retain the CatalogService owned by ProgressionEvidenceService."
+            )
+
+        if (
+            self.progression_evidence_service.standards_service
+            is not self.comparison_service.standards_service
+        ):
+            raise ValueError(
+                "AppState comparison and progression services must share StandardsService."
             )
 
         if self.prompt_service.catalog_service is not self.catalog_service:
@@ -192,6 +212,9 @@ def bootstrap_application() -> AppState:
         comparison_service = ComparisonService(
             catalog_service=catalog_service, standards_service=standards_service
         )
+        progression_evidence_service = ProgressionEvidenceService(
+            catalog_service=catalog_service, standards_service=standards_service
+        )
         resource_policy = ResourcePolicy(
             max_resource_bytes=settings.max_resource_bytes,
             max_resource_source_bytes=settings.max_resource_source_bytes,
@@ -207,6 +230,7 @@ def bootstrap_application() -> AppState:
             catalog_load_result=catalog_load_result,
             catalog_service=catalog_service,
             comparison_service=comparison_service,
+            progression_evidence_service=progression_evidence_service,
             prompt_service=prompt_service,
             resource_service=resource_service,
             search_service=search_service,

@@ -42,7 +42,7 @@ remain configuration-driven rather than curriculum-specific.
 
 The server exposes:
 
-- **8 tools**
+- **9 tools**
 - **1 fixed resource**
 - **9 resource templates**
 - **6 prompts**
@@ -57,6 +57,7 @@ The server exposes:
 - `get_framework_statistics`
 - `get_capabilities`
 - `compare_framework_evidence`
+- `collect_progression_evidence`
 
 ### Prompts
 
@@ -66,6 +67,15 @@ The server exposes:
 - `inferred_progression_hypothesis`
 - `administrator_alignment_review`
 - `cross_framework_comparison`
+
+`inferred_progression_hypothesis` accepts `local_grade_labels` and
+`normalized_grades` as typed arrays rather than a combined grade string. At the MCP
+prompt boundary, enter these complex values as JSON arrays, for example
+`["Grade 1", "Grade 2"]`; do not enter comma-separated prose. Its workflow
+calls `collect_progression_evidence` once; that tool validates the grade
+scope, canonicalizes grade sets in package-declared order, deduplicates standard-item
+candidates, balances selection across requested scopes, reports uncovered scopes, and
+enforces the requested candidate limit before Claude generates a hypothesis.
 
 ## Prerequisites
 

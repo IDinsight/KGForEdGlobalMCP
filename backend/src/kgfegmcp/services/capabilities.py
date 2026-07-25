@@ -40,6 +40,7 @@ _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "complete_root_path_enumeration",
     "comparison_prompt_workflows",
     "deterministic_cross_framework_evidence",
+    "deterministic_progression_evidence",
     "direct_graph_navigation",
     "exact_framework_lookup",
     "exact_standard_lookup",
@@ -58,6 +59,7 @@ _SERVER_NAME: Final[str] = "Knowledge Graph For Education Global MCP"
 _TOOL_NAMES: Final[tuple[str, ...]] = (
     "get_capabilities",
     "compare_framework_evidence",
+    "collect_progression_evidence",
     "get_framework",
     "get_framework_statistics",
     "get_standard",

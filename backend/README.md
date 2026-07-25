@@ -22,14 +22,14 @@ The application uses:
 
 The fixed MCP inventory is:
 
-- **8 tools**
+- **9 tools**
 - **1 fixed resource**
 - **9 resource templates**
 - **6 prompts**
 
 Application state is constructed once inside the FastMCP lifespan. The accepted graph
-packages, catalog service, search service, comparison service, resource service, and
-prompt service share the same immutable runtime objects.
+packages, catalog service, search service, comparison service, progression-evidence
+service, resource service, and prompt service share the same immutable runtime objects.
 
 ## Backend layout
 
@@ -349,6 +349,7 @@ get_standard_context
 get_framework_statistics
 get_capabilities
 compare_framework_evidence
+collect_progression_evidence
 ```
 
 ### Prompts
@@ -361,6 +362,16 @@ inferred_progression_hypothesis
 administrator_alignment_review
 cross_framework_comparison
 ```
+
+The progression prompt accepts `local_grade_labels` and `normalized_grades` as
+typed arrays. MCP prompt clients serialize these complex values as JSON strings, so
+enter JSON arrays such as `["Grade 1", "Grade 2"]`, not a comma-separated
+prose string. It renders one direct
+`collect_progression_evidence` call. The ordinary progression-evidence service
+validates and canonically orders those scopes, excludes grouping nodes from the
+candidate count, deduplicates exact standards, applies deterministic grade-balanced
+selection, reports requested scopes without retained evidence, and returns no more than
+`candidate_limit` retained candidates.
 
 ### Resources
 
