@@ -78,12 +78,34 @@ class AppState:
     settings: BackendSettings
 
     def __post_init__(self) -> None:
-        """Require catalog and search services to share the retained load result.
+        """Require every retained service to share the same runtime objects.
+
+        Each invariant is delegated to a focused validator so that no single method
+        exceeds the project complexity budget and each remains independently testable.
+        The validators run in a fixed order, so the first violated invariant raises
+        exactly as an inline sequence of checks would.
 
         Raises
         ------
         ValueError
-            If the application state mixes independently constructed catalog objects.
+            If the application state mixes independently constructed catalog,
+            standards, or search objects across its retained services.
+        """
+
+        self._validate_catalog_consistency()
+        self._validate_comparison_service()
+        self._validate_progression_evidence_service()
+        self._validate_prompt_service()
+        self._validate_resource_service()
+
+    def _validate_catalog_consistency(self) -> None:
+        """Require the retained catalog service and load result to be shared.
+
+        Raises
+        ------
+        ValueError
+            If the search service owns a different catalog service, or the catalog
+            service retains a different load result.
         """
 
         if self.catalog_service is not self.search_service.catalog_service:
@@ -95,6 +117,16 @@ class AppState:
             raise ValueError(
                 "AppState services must share the retained CatalogLoadResult."
             )
+
+    def _validate_comparison_service(self) -> None:
+        """Require the comparison service to share the retained runtime objects.
+
+        Raises
+        ------
+        ValueError
+            If the comparison service owns a different catalog service, or its
+            standards service references a different search service.
+        """
 
         if self.comparison_service.catalog_service is not self.catalog_service:
             raise ValueError(
@@ -108,6 +140,16 @@ class AppState:
             raise ValueError(
                 "AppState comparison and search services must share SearchService."
             )
+
+    def _validate_progression_evidence_service(self) -> None:
+        """Require the progression-evidence service to share retained objects.
+
+        Raises
+        ------
+        ValueError
+            If the progression-evidence service owns a different catalog service, or a
+            different standards service than the comparison service.
+        """
 
         if (
             self.progression_evidence_service.catalog_service
@@ -125,10 +167,30 @@ class AppState:
                 "AppState comparison and progression services must share StandardsService."
             )
 
+    def _validate_prompt_service(self) -> None:
+        """Require the prompt service to share the retained catalog service.
+
+        Raises
+        ------
+        ValueError
+            If the prompt service owns a different catalog service.
+        """
+
         if self.prompt_service.catalog_service is not self.catalog_service:
             raise ValueError(
                 "AppState must retain the CatalogService owned by PromptService."
             )
+
+    def _validate_resource_service(self) -> None:
+        """Require the resource service to share the retained runtime objects.
+
+        Raises
+        ------
+        ValueError
+            If the resource service owns a different catalog service, references a
+            different standards service than the comparison service, or its standards
+            service references a different search service.
+        """
 
         if self.resource_service.catalog_service is not self.catalog_service:
             raise ValueError(
