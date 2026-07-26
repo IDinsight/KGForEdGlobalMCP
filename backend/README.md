@@ -363,6 +363,10 @@ administrator_alignment_review
 cross_framework_comparison
 ```
 
+The public `compare_framework_evidence` tool uses flat `matchMode` and
+`matchOperator` fields for text retrieval. It no longer accepts a public nested `match`
+object; the MCP adapter constructs the ordinary typed text-match model internally.
+
 The progression prompt accepts `local_grade_labels` and `normalized_grades` as
 typed arrays. MCP prompt clients serialize these complex values as JSON strings, so
 enter JSON arrays such as `["Grade 1", "Grade 2"]`, not a comma-separated

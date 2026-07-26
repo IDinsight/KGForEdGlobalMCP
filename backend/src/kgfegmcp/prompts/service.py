@@ -188,7 +188,8 @@ def _comparison_tool_call(
     }
 
     if search_mode is ComparisonSearchMode.TEXT:
-        payload["match"] = {"matchMode": "tokens", "operator": "all"}
+        payload["matchMode"] = "tokens"
+        payload["matchOperator"] = "all"
 
     return payload
 

@@ -68,6 +68,11 @@ The server exposes:
 - `administrator_alignment_review`
 - `cross_framework_comparison`
 
+`compare_framework_evidence` exposes text matching through flat scalar fields
+`matchMode` (`tokens` or `exact_phrase`) and `matchOperator` (`all` or `any`).
+Do not send a nested `match` object to this tool. The adapter constructs the existing
+typed internal text-match policy before calling the ordinary comparison service.
+
 `inferred_progression_hypothesis` accepts `local_grade_labels` and
 `normalized_grades` as typed arrays rather than a combined grade string. At the MCP
 prompt boundary, enter these complex values as JSON arrays, for example

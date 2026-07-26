@@ -2,10 +2,11 @@
 tool.
 
 This module provides the protocol-facing ``compare_framework_evidence`` tool and its
-explicit registration function. The public tool accepts comparison fields directly at
-the top level, constructs the existing typed ordinary comparison request, obtains the
-lifespan-owned ``ComparisonService``, delegates the complete operation to that service,
-and returns both a stable readable summary and the full structured comparison result.
+explicit registration function. The public tool accepts flat comparison fields directly
+at the top level, constructs the existing typed ordinary comparison request and lexical
+match policy internally, obtains the lifespan-owned ``ComparisonService``, delegates
+the complete operation to that service, and returns both a stable readable summary and
+the full structured comparison result.
 
 Each selected framework is represented by an independently retrieved exact-package
 section. Package-local match order, search warnings, hierarchy evidence, result limits,
@@ -37,7 +38,15 @@ from kgfegmcp.mcp.tools import (
     get_app_state,
     result_schema,
 )
-from kgfegmcp.search.models import SearchMode, SearchQueryText, TextMatch
+from kgfegmcp.search.models import (
+    ExactPhraseTextMatch,
+    SearchMode,
+    SearchQueryText,
+    TextMatch,
+    TextMatchMode,
+    TextOperator,
+    TokenTextMatch,
+)
 from kgfegmcp.services.comparison_models import (
     CompareFrameworkEvidenceResult,
     FrameworkComparisonRequest,
@@ -62,6 +71,26 @@ ComparisonGradeFilters = Annotated[tuple[CatalogFilterValue, ...], Field(max_len
 ComparisonSnapshotIds = Annotated[
     tuple[SnapshotId, ...], Field(alias="snapshotIds", max_length=8)
 ]
+ComparisonTextMatchMode = Annotated[
+    TextMatchMode,
+    Field(
+        alias="matchMode",
+        description=(
+            "Lexical matching behavior used only when mode='text'. Choose 'tokens' "
+            "for token matching or 'exact_phrase' for contiguous phrase matching."
+        ),
+    ),
+]
+ComparisonTextOperator = Annotated[
+    TextOperator,
+    Field(
+        alias="matchOperator",
+        description=(
+            "Whether token matching requires all or any distinct query tokens. This "
+            "field is ignored for exact-phrase and code-search modes."
+        ),
+    ),
+]
 
 
 def _build_comparison_request(
@@ -70,7 +99,8 @@ def _build_comparison_request(
     include_context_paths: bool,
     include_groupings: bool,
     local_grade_labels: ComparisonGradeFilters,
-    match: TextMatch | None,
+    match_mode: TextMatchMode,
+    match_operator: TextOperator,
     max_matches_per_framework: int,
     mode: SearchMode,
     normalized_grades: ComparisonGradeFilters,
@@ -89,8 +119,10 @@ def _build_comparison_request(
         Whether grouping nodes are eligible for comparison retrieval.
     local_grade_labels
         Shared exact local grade or stage filters.
-    match
-        Text matching policy, required only for text mode.
+    match_mode
+        Token or exact-phrase lexical behavior used only for text mode.
+    match_operator
+        Any-or-all token semantics used only for token text matching.
     max_matches_per_framework
         Independent package-local candidate quota from one through ten.
     mode
@@ -125,10 +157,36 @@ def _build_comparison_request(
         "snapshot_ids": snapshot_ids,
     }
 
-    if match is not None:
-        request_data["match"] = match
+    if mode is SearchMode.TEXT:
+        request_data["match"] = _build_text_match(
+            match_mode=match_mode, match_operator=match_operator
+        )
 
     return _COMPARISON_REQUEST_ADAPTER.validate_python(request_data)
+
+
+def _build_text_match(
+    *, match_mode: TextMatchMode, match_operator: TextOperator
+) -> TextMatch:
+    """Construct one ordinary text-match policy from flat public fields.
+
+    Parameters
+    ----------
+    match_mode
+        Token or contiguous exact-phrase lexical matching behavior.
+    match_operator
+        Any-or-all token semantics, ignored for exact-phrase matching.
+
+    Returns
+    -------
+    TextMatch
+        Existing typed lexical-match policy used by ordinary search services.
+    """
+
+    if match_mode is TextMatchMode.EXACT_PHRASE:
+        return ExactPhraseTextMatch(match_mode=TextMatchMode.EXACT_PHRASE)
+
+    return TokenTextMatch(match_mode=TextMatchMode.TOKENS, operator=match_operator)
 
 
 def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
@@ -190,7 +248,8 @@ async def compare_framework_evidence(
     local_grade_labels: Annotated[
         ComparisonGradeFilters, Field(alias="localGradeLabels")
     ] = (),
-    match: TextMatch | None = None,
+    match_mode: ComparisonTextMatchMode = TextMatchMode.TOKENS,
+    match_operator: ComparisonTextOperator = TextOperator.ALL,
     max_matches_per_framework: Annotated[
         int, Field(alias="maxMatchesPerFramework", ge=1, le=10)
     ] = 5,
@@ -215,8 +274,10 @@ async def compare_framework_evidence(
         Whether grouping nodes are eligible for comparison retrieval.
     local_grade_labels
         Shared exact local grade or stage filters.
-    match
-        Text matching policy, required only for text mode.
+    match_mode
+        Token or exact-phrase lexical behavior used only for text mode.
+    match_operator
+        Any-or-all token semantics used only for token text matching.
     max_matches_per_framework
         Independent package-local candidate quota from one through ten.
     mode
@@ -239,7 +300,8 @@ async def compare_framework_evidence(
         include_context_paths=include_context_paths,
         include_groupings=include_groupings,
         local_grade_labels=local_grade_labels,
-        match=match,
+        match_mode=match_mode,
+        match_operator=match_operator,
         max_matches_per_framework=max_matches_per_framework,
         mode=mode,
         normalized_grades=normalized_grades,
@@ -271,7 +333,8 @@ def register_comparison_tools(server: "FastMCP[dict[str, AppState]]") -> None:
         description=(
             "Retrieve independently bounded exact-package evidence for two through "
             "eight selected frameworks while preserving each package's search order, "
-            "warnings, hierarchy context, and continuation cursor."
+            "warnings, hierarchy context, and continuation cursor. Text mode uses the "
+            "flat matchMode and matchOperator fields."
         ),
         name="compare_framework_evidence",
         output_schema=result_schema(CompareFrameworkEvidenceResult),
