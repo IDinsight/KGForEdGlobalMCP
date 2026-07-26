@@ -296,7 +296,22 @@ class ProgressionCandidateContextEvidence(FrozenSchema):
         Raises
         ------
         ValueError
-            If completion flags or truncation reasons conflict.
+            If completion flags, truncation reasons, or root paths conflict.
+        """
+
+        self._check_aggregate_completion()
+        self._check_truncation_reasons()
+        self._check_root_path_bounds()
+
+        return self
+
+    def _check_aggregate_completion(self) -> None:
+        """Require the aggregate completion flag to match its component flags.
+
+        Raises
+        ------
+        ValueError
+            If ``is_complete`` disagrees with the ancestor and root-path flags.
         """
 
         expected_complete = (
@@ -308,23 +323,15 @@ class ProgressionCandidateContextEvidence(FrozenSchema):
                 "is_complete must match ancestor and root-path completion evidence."
             )
 
-        if self.ancestor_traversal_complete:
-            if self.ancestor_truncation_reason is not None:
-                raise ValueError(
-                    "A complete ancestor traversal may not have a truncation reason."
-                )
-        elif self.ancestor_truncation_reason is None:
-            raise ValueError(
-                "An incomplete ancestor traversal must have a truncation reason."
-            )
+    def _check_root_path_bounds(self) -> None:
+        """Require every root path to span framework_root_id to origin_node_id.
 
-        if self.root_paths_complete:
-            if self.root_paths_truncation_reason is not None:
-                raise ValueError(
-                    "Complete root paths may not have a truncation reason."
-                )
-        elif self.root_paths_truncation_reason is None:
-            raise ValueError("Incomplete root paths must have a truncation reason.")
+        Raises
+        ------
+        ValueError
+            If a path starts or ends at the wrong node, or uses an unexpected
+            relationship type.
+        """
 
         for path in self.root_paths:
             if path.nodes[0].node_id != self.framework_root_id:
@@ -343,7 +350,66 @@ class ProgressionCandidateContextEvidence(FrozenSchema):
                     "Compact root paths must use the selected relationship type."
                 )
 
-        return self
+    def _check_truncation_reasons(self) -> None:
+        """Require each completion flag to match its recorded truncation reason.
+
+        Raises
+        ------
+        ValueError
+            If a complete traversal records a reason, or an incomplete one omits
+            it.
+        """
+
+        self._require_truncation_consistency(
+            complete_message=(
+                "A complete ancestor traversal may not have a truncation reason."
+            ),
+            incomplete_message=(
+                "An incomplete ancestor traversal must have a truncation reason."
+            ),
+            is_complete=self.ancestor_traversal_complete,
+            truncation_reason=self.ancestor_truncation_reason,
+        )
+        self._require_truncation_consistency(
+            complete_message="Complete root paths may not have a truncation reason.",
+            incomplete_message="Incomplete root paths must have a truncation reason.",
+            is_complete=self.root_paths_complete,
+            truncation_reason=self.root_paths_truncation_reason,
+        )
+
+    @staticmethod
+    def _require_truncation_consistency(
+        *,
+        complete_message: str,
+        incomplete_message: str,
+        is_complete: bool,
+        truncation_reason: TraversalTruncationReason | None,
+    ) -> None:
+        """Require one completion flag to match its recorded truncation reason.
+
+        Parameters
+        ----------
+        complete_message
+            Error text raised when a completed traversal records a reason.
+        incomplete_message
+            Error text raised when an incomplete traversal omits a reason.
+        is_complete
+            Whether the traversal the flag describes ran to completion.
+        truncation_reason
+            The recorded truncation reason, or ``None`` when the traversal
+            completed.
+
+        Raises
+        ------
+        ValueError
+            If a complete traversal records a reason, or an incomplete one omits it.
+        """
+
+        if is_complete:
+            if truncation_reason is not None:
+                raise ValueError(complete_message)
+        elif truncation_reason is None:
+            raise ValueError(incomplete_message)
 
 
 class ProgressionCandidateEvidence(FrozenSchema):
@@ -422,6 +488,24 @@ class CollectProgressionEvidenceResult(FrozenSchema):
             If counts, identities, ranks, exclusions, or limit status disagree.
         """
 
+        self._check_package_identity()
+        self._check_candidate_counts()
+        self._check_candidate_node_ids()
+        self._check_candidate_scopes()
+        self._check_scope_coverage()
+        self._check_selection_ranks()
+
+        return self
+
+    def _check_package_identity(self) -> None:
+        """Require the request identities to match the resolved package identity.
+
+        Raises
+        ------
+        ValueError
+            If the graph package, framework, or snapshot identities disagree.
+        """
+
         identity = self.package.package_identity
 
         if self.request.graph_package_id != identity.graph_package_id:
@@ -432,6 +516,16 @@ class CollectProgressionEvidenceResult(FrozenSchema):
 
         if self.request.snapshot_id != identity.snapshot_id:
             raise ValueError("Request and package snapshot identities must agree.")
+
+    def _check_candidate_counts(self) -> None:
+        """Require the recorded candidate counts and limit flag to be consistent.
+
+        Raises
+        ------
+        ValueError
+            If any count disagrees with its collection, the totals fail to add up, the
+            retained count exceeds the limit, or the limit flag is wrong.
+        """
 
         if self.retained_candidate_count != len(self.retained_candidates):
             raise ValueError(
@@ -462,6 +556,15 @@ class CollectProgressionEvidenceResult(FrozenSchema):
                 "candidate_limit_applied must reflect whether candidates were excluded."
             )
 
+    def _check_candidate_node_ids(self) -> None:
+        """Require retained and excluded candidate node IDs to be unique and disjoint.
+
+        Raises
+        ------
+        ValueError
+            If retained IDs repeat, excluded IDs repeat, or the two sets overlap.
+        """
+
         retained_node_ids = tuple(
             candidate.node.node_id for candidate in self.retained_candidates
         )
@@ -479,40 +582,94 @@ class CollectProgressionEvidenceResult(FrozenSchema):
         ):
             raise ValueError("Excluded candidate node IDs must be unique.")
 
+    def _check_candidate_scopes(self) -> None:
+        """Require every retained candidate to match the resolved request scopes.
+
+        Raises
+        ------
+        ValueError
+            If any retained candidate's search-hit identity or matched grades disagree
+            with the resolved request.
+        """
+
         requested_local = set(self.request.local_grade_labels)
         requested_normalized = set(self.request.normalized_grades)
 
         for candidate in self.retained_candidates:
-            if (
-                candidate.search_hit is not None
-                and candidate.search_hit.package_identity != identity
-            ):
-                raise ValueError(
-                    "Candidate search-hit and result package identities must agree."
-                )
+            self._check_candidate_scope(
+                candidate=candidate,
+                requested_local=requested_local,
+                requested_normalized=requested_normalized,
+            )
 
-            matched_local = set(candidate.matched_local_grade_labels)
-            matched_normalized = set(candidate.matched_normalized_grades)
+    def _check_candidate_scope(
+        self,
+        *,
+        candidate: ProgressionCandidateEvidence,
+        requested_local: set[str],
+        requested_normalized: set[str],
+    ) -> None:
+        """Require one retained candidate to match the resolved request scopes.
 
-            if not matched_local.issubset(requested_local):
-                raise ValueError(
-                    "Matched local grades must be drawn from the resolved request."
-                )
+        Parameters
+        ----------
+        candidate
+            The retained candidate whose search-hit identity and matched grades
+            are validated against the resolved request.
+        requested_local
+            The local grade labels the resolved request scopes to.
+        requested_normalized
+            The normalized grades the resolved request scopes to.
 
-            if not matched_normalized.issubset(requested_normalized):
-                raise ValueError(
-                    "Matched normalized grades must be drawn from the resolved request."
-                )
+        Raises
+        ------
+        ValueError
+            If the candidate's search-hit identity disagrees, a matched grade falls
+            outside the request, or a populated scope is left unmatched.
+        """
 
-            if requested_local and not matched_local:
-                raise ValueError(
-                    "Every retained candidate must match the populated local scope."
-                )
+        identity = self.package.package_identity
 
-            if requested_normalized and not matched_normalized:
-                raise ValueError(
-                    "Every retained candidate must match the populated normalized scope."
-                )
+        if (
+            candidate.search_hit is not None
+            and candidate.search_hit.package_identity != identity
+        ):
+            raise ValueError(
+                "Candidate search-hit and result package identities must agree."
+            )
+
+        matched_local = set(candidate.matched_local_grade_labels)
+        matched_normalized = set(candidate.matched_normalized_grades)
+
+        if not matched_local.issubset(requested_local):
+            raise ValueError(
+                "Matched local grades must be drawn from the resolved request."
+            )
+
+        if not matched_normalized.issubset(requested_normalized):
+            raise ValueError(
+                "Matched normalized grades must be drawn from the resolved request."
+            )
+
+        if requested_local and not matched_local:
+            raise ValueError(
+                "Every retained candidate must match the populated local scope."
+            )
+
+        if requested_normalized and not matched_normalized:
+            raise ValueError(
+                "Every retained candidate must match the populated normalized scope."
+            )
+
+    def _check_scope_coverage(self) -> None:
+        """Require scope coverage to list the resolved request scopes in order.
+
+        Raises
+        ------
+        ValueError
+            If the scope coverage entries differ from the resolved request
+            scopes or appear in a different order.
+        """
 
         expected_scope = tuple(
             (ProgressionScopeKind.LOCAL_GRADE_LABEL, value)
@@ -531,6 +688,16 @@ class CollectProgressionEvidenceResult(FrozenSchema):
                 "scope_coverage must match resolved request scopes in canonical order."
             )
 
+    def _check_selection_ranks(self) -> None:
+        """Require retained candidate ranks to be contiguous starting from one.
+
+        Raises
+        ------
+        ValueError
+            If the retained candidate ranks are not the contiguous sequence from one to
+            ``retained_candidate_count``.
+        """
+
         expected_ranks = tuple(range(1, self.retained_candidate_count + 1))
         actual_ranks = tuple(
             candidate.selection_rank for candidate in self.retained_candidates
@@ -538,5 +705,3 @@ class CollectProgressionEvidenceResult(FrozenSchema):
 
         if actual_ranks != expected_ranks:
             raise ValueError("Retained candidate ranks must be contiguous from one.")
-
-        return self
