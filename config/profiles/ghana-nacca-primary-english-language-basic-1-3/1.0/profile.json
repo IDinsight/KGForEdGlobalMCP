@@ -1,0 +1,689 @@
+{
+	"codeSearchPolicy": {
+		"allowPrefixSearch": true,
+		"availability": "partial",
+		"canonicalizationNotes": [
+			"Normalize formatting whitespace around code delimiters without changing alphanumeric components.",
+			"Preserve the exact printed code surface in source evidence and provenance.",
+			"Treat same-code records as retrieval candidates rather than guaranteed identity."
+		],
+		"caseSensitive": false,
+		"codeParentRules": [
+			{
+				"childCodeType": "indicator",
+				"method": "regex_substitution",
+				"parentCodeType": "content_standard",
+				"regex": "^\\s*(B\\s*[123]\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+)\\s*\\.\\s*\\d+\\s*\\.?\\s*$",
+				"replacement": "\\1"
+			}
+		],
+		"codeTypes": [
+			{
+				"codeType": "content_standard",
+				"patterns": [
+					"\\bB\\s*[123]\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+(?!\\s*\\.\\s*\\d)"
+				],
+				"scopeStatementTypes": [],
+				"statementTypes": [
+					"Content Standard"
+				]
+			},
+			{
+				"codeType": "indicator",
+				"patterns": [
+					"\\bB\\s*[123]\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+\\s*\\.\\s*\\d+(?!\\s*\\.\\s*\\d)"
+				],
+				"scopeStatementTypes": [],
+				"statementTypes": [
+					"Indicator"
+				]
+			}
+		],
+		"codesAreUniqueIdentifiers": false,
+		"prefixDelimiters": [
+			"."
+		],
+		"punctuationNormalization": true,
+		"whitespaceNormalization": true
+	},
+	"comparisonDimensions": [
+		"wording",
+		"scope",
+		"cognitive_demand",
+		"granularity",
+		"hierarchy_placement",
+		"grade_context"
+	],
+	"educationStageMappings": [],
+	"frameworkIds": [
+		"ghana-nacca-primary-english-language-basic-1-3"
+	],
+	"gradeLevelStatementTypes": [
+		"Grade"
+	],
+	"gradeMappings": [
+		{
+			"aliases": [
+				"Basic 1",
+				"basic 1",
+				"B1",
+				"Primary 1",
+				"Grade 1",
+				"Class 1"
+			],
+			"localLabel": "BASIC 1",
+			"normalizedGrades": [
+				"1"
+			]
+		},
+		{
+			"aliases": [
+				"Basic 2",
+				"basic 2",
+				"B2",
+				"Primary 2",
+				"Grade 2",
+				"Class 2"
+			],
+			"localLabel": "BASIC 2",
+			"normalizedGrades": [
+				"2"
+			]
+		},
+		{
+			"aliases": [
+				"Basic 3",
+				"basic 3",
+				"B3",
+				"Primary 3",
+				"Grade 3",
+				"Class 3"
+			],
+			"localLabel": "BASIC 3",
+			"normalizedGrades": [
+				"3"
+			]
+		}
+	],
+	"hierarchy": {
+		"allowMultiParent": false,
+		"relationshipType": "hasChild",
+		"rootStatementTypes": [
+			"Grade"
+		],
+		"statementTypeOrder": [
+			"Grade",
+			"Strand",
+			"Sub-Strand",
+			"Content Standard",
+			"Indicator"
+		]
+	},
+	"knownSourceAnomalies": [
+		{
+			"anomalyId": "source_code_and_missing_parent_anomalies",
+			"description": "The accepted source graph preserves printed code anomalies and explicit unresolved-root fallback relationships. Query-time code must not repair or replace those accepted source decisions.",
+			"requiredDisclosure": "Some source relationships remain explicitly unresolved because the visible curriculum did not provide a defensible direct parent."
+		}
+	],
+	"languagePolicy": {
+		"allowBilingualPairing": false,
+		"languages": [
+			"en"
+		],
+		"notes": [
+			"This Ghana English Language curriculum is English-only for KG extraction. Do not create bilingual pairs, translations, or cross-language equivalents. Preserve the visible English wording exactly. References in the front matter to Ghanaian languages or first-language instruction are explanatory context, not parallel official English standards. If incidental non-English text is visible, preserve it only as source evidence and do not translate or pair it."
+		],
+		"preserveSourceTerminology": true
+	},
+	"localSubject": "English Language",
+	"normalizedSubjects": [
+		"English Language Arts"
+	],
+	"profileId": "ghana-nacca-primary-english-language-basic-1-3",
+	"profileSchemaVersion": "1.0",
+	"profileVersion": "1.0",
+	"progressionHeuristics": [],
+	"requiredDisclosures": [
+		"Normalized grades are retrieval facets and do not establish international grade equivalence.",
+		"A hasChild hierarchy is not a source-authored instructional progression unless the source explicitly says so.",
+		"An Academic Standard alone does not establish learner mastery.",
+		"Identifier, code, or text retrieval matches do not establish official equivalence."
+	],
+	"rights": {
+		"allowBulkResource": false,
+		"allowFullText": true,
+		"allowGeneratedDerivatives": "allowed",
+		"allowStandardResources": true,
+		"attributionStatement": "Source curriculum published by the National Council for Curriculum and Assessment (NaCCA), Ministry of Education, Republic of Ghana, September 2019.",
+		"reviewStatus": "provisional_operator_approved",
+		"sourceLicense": "Unknown"
+	},
+	"sourceRoleCapabilities": {
+		"hasOfficialActivities": false,
+		"hasOfficialAssessmentGuidance": false,
+		"hasOfficialResources": false,
+		"roleNotes": [
+			"The Academic Standards graph excludes activities, assessment guidance, and resources as node types; detailed source artifacts may retain contextual evidence."
+		]
+	},
+	"statementTypes": [
+		{
+			"aliases": [
+				"Basic",
+				"BASIC",
+				"basic",
+				"Grade",
+				"Class/Year",
+				"Year/Class"
+			],
+			"allowedParents": [],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Basic 1",
+						"basic 1",
+						"B1",
+						"Primary 1",
+						"Grade 1",
+						"Class 1"
+					],
+					"canonicalValue": "BASIC 1"
+				},
+				{
+					"aliases": [
+						"Basic 2",
+						"basic 2",
+						"B2",
+						"Primary 2",
+						"Grade 2",
+						"Class 2"
+					],
+					"canonicalValue": "BASIC 2"
+				},
+				{
+					"aliases": [
+						"Basic 3",
+						"basic 3",
+						"B3",
+						"Primary 3",
+						"Grade 3",
+						"Class 3"
+					],
+					"canonicalValue": "BASIC 3"
+				}
+			],
+			"description": "Visible BASIC 1, BASIC 2, or BASIC 3 organizer in the detailed Ghana English curriculum; a root-level Standard Grouping under the framework.",
+			"identityScope": [],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Grade"
+		},
+		{
+			"aliases": [
+				"STRAND",
+				"strand"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Grade"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"ORAL LANGUAGE",
+						"Oral Language: Listening and Speaking",
+						"ORAL LANGUAGE: LISTENING AND SPEAKING",
+						"Strand 1: Oral Language",
+						"STRAND 1: ORAL LANGUAGE"
+					],
+					"canonicalValue": "Oral Language"
+				},
+				{
+					"aliases": [
+						"READING",
+						"Strand 2: Reading",
+						"STRAND 2: READING"
+					],
+					"canonicalValue": "Reading"
+				},
+				{
+					"aliases": [
+						"WRITING",
+						"Strand 4: Writing",
+						"STRAND 4: WRITING"
+					],
+					"canonicalValue": "Writing"
+				},
+				{
+					"aliases": [
+						"Using Writing Convention/Grammar Usage",
+						"USING WRITING CONVENTION/GRAMMAR USAGE",
+						"USING WRITING CONVENTIONS/GRAMMAR USAGE",
+						"Strand 5: Using Writing Convention/Grammar Usage",
+						"Strand 5: Using Writing Conventions/Grammar Usage",
+						"STRAND 5: USING WRITING CONVENTION/GRAMMAR USAGE",
+						"STRAND 5: USING WRITING CONVENTIONS/GRAMMAR USAGE"
+					],
+					"canonicalValue": "Using Writing Conventions/Grammar Usage"
+				},
+				{
+					"aliases": [
+						"EXTENSIVE READING",
+						"Strand 6: Extensive Reading",
+						"Strand 6:  Extensive Reading",
+						"STRAND 6: EXTENSIVE READING"
+					],
+					"canonicalValue": "Extensive Reading"
+				}
+			],
+			"description": "Visible Ghana English strand heading in the detailed Basic 1-3 curriculum, scoped under the active Grade.",
+			"identityScope": [
+				"Grade"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Strand"
+		},
+		{
+			"aliases": [
+				"Sub-Strand",
+				"Sub-strand",
+				"Substrand",
+				"sub-strand",
+				"substrand"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Strand"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Sub-Strand 1: Songs",
+						"Sub-Strand 1:  Songs",
+						"Songs"
+					],
+					"canonicalValue": "Songs"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 2: Rhymes",
+						"Rhymes"
+					],
+					"canonicalValue": "Rhymes"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 3: Story Telling",
+						"Sub-Strand 4: Story Telling",
+						"Story Telling",
+						"Storytelling"
+					],
+					"canonicalValue": "Story Telling"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 4: Dramatisation and Role-Play",
+						"Sub-Strand 5: Dramatisation and Role Play",
+						"Dramatisation and Role-Play",
+						"Dramatisation and Role Play"
+					],
+					"canonicalValue": "Dramatisation and Role Play"
+				},
+				{
+					"aliases": [
+						"Conversation",
+						"Sub-Strand 6: Conversation – Talking about Oneself, Family, People, Places, Greetings, Customs, Events, Social/Cultural Values, Manners and other Themes",
+						"Sub-Strand 6: Conversation - Talking about Oneself, Family, People, Places, Greetings, Customs, Events, Social/ Cultural Values, Manners and other Themes",
+						"Sub-Strand 6: Conversation and Talking about Oneself, Family, People, Places, Customs, Events, Social/Cultural Values and Manners and other Themes"
+					],
+					"canonicalValue": "Conversation"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 7: Listening Comprehension",
+						"Listening Comprehension"
+					],
+					"canonicalValue": "Listening Comprehension"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 8: Asking and Answering Questions",
+						"Sub-Strand 8:  Asking and Answering Questions",
+						"Asking and Answering Questions"
+					],
+					"canonicalValue": "Asking and Answering Questions"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 9: Giving and Responding to Commands/Instructions and Making Requests",
+						"Sub-Strand 9: Giving and Responding to Commands/Instructions/Directions and Making Requests",
+						"Sub-Strand 9: Giving and Responding to Commands, Instructions, Directions and Making Requests",
+						"Giving and Responding to Commands/Instructions and Making Requests",
+						"Giving and Responding to Commands/Instructions/Directions and Making Requests"
+					],
+					"canonicalValue": "Giving and Responding to Commands, Instructions, Directions and Making Requests"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 10: Presentation",
+						"Sub-Strand 10:  Presentation",
+						"Presentation"
+					],
+					"canonicalValue": "Presentation"
+				},
+				{
+					"aliases": [
+						"Sub-Strand1: Pre-Reading Activities",
+						"Sub-Strand 1: Pre-Reading Activities",
+						"Pre-Reading Activities"
+					],
+					"canonicalValue": "Pre-Reading Activities"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 2: Phonics",
+						"Phonics"
+					],
+					"canonicalValue": "Phonics"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 3: Word Families, Rhyming Endings and Common Digraphs",
+						"Sub-Strand 3: Word Families-Rhyming Endings and Common Digraphs",
+						"Word Families, Rhyming Endings and Common Digraphs",
+						"Word Families-Rhyming Endings and Common Digraphs"
+					],
+					"canonicalValue": "Word Families, Rhyming Endings and Common Digraphs"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 4: Diphthongs",
+						"Diphthongs"
+					],
+					"canonicalValue": "Diphthongs"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 5: Blends and Consonant Clusters",
+						"Blends and Consonant Clusters"
+					],
+					"canonicalValue": "Blends and Consonant Clusters"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 6: Vocabulary",
+						"Sub-Strand 6:  Vocabulary",
+						"Vocabulary"
+					],
+					"canonicalValue": "Vocabulary"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 7: Comprehension",
+						"Comprehension"
+					],
+					"canonicalValue": "Comprehension"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 9: Fluency",
+						"Fluency"
+					],
+					"canonicalValue": "Fluency"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 1: Pre-Writing",
+						"Pre-Writing",
+						"Pre-Writing Activities"
+					],
+					"canonicalValue": "Pre-Writing"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 2: Penmanship",
+						"Sub-Strand 2: Penmanship/Handwriting",
+						"Penmanship",
+						"Penmanship/Handwriting"
+					],
+					"canonicalValue": "Penmanship/Handwriting"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 3: Writing Letters – Small and Capital",
+						"Sub-Strand 3: Writing /Copying Letters – Small and Capital",
+						"Writing Letters – Small and Capital",
+						"Writing/Copying Letters-Small and Capital Letters"
+					],
+					"canonicalValue": "Writing/Copying Letters - Small and Capital Letters"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 4: Labelling Items",
+						"Sub-Strand 4: Labelling items",
+						"Sub-Strand 4:  Labelling Items",
+						"Labelling Items",
+						"Labeling Items"
+					],
+					"canonicalValue": "Labelling Items"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 5: Writing Simple Words and Sentences",
+						"Writing Simple Words and Sentences"
+					],
+					"canonicalValue": "Writing Simple Words and Sentences"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 7: Controlled Writing",
+						"Sub-Strand 7:  Controlled Writing",
+						"Controlled Writing"
+					],
+					"canonicalValue": "Controlled Writing"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 8: Guided Composition",
+						"Guided Composition"
+					],
+					"canonicalValue": "Guided Composition"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 9: Writing as a Process",
+						"Writing as a Process"
+					],
+					"canonicalValue": "Writing as a Process"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 10: Narrative Writing",
+						"Sub-Strand 10:  Narrative Writing",
+						"Narrative Writing"
+					],
+					"canonicalValue": "Narrative Writing"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 12: Descriptive Writing",
+						"Descriptive Writing"
+					],
+					"canonicalValue": "Descriptive Writing"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 13: Persuasive/Argumentative Writing",
+						"Persuasive/Argumentative Writing"
+					],
+					"canonicalValue": "Persuasive/Argumentative Writing"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 14: Informative/ Academic Writing",
+						"Informative/Academic Writing",
+						"Informative/ Academic Writing"
+					],
+					"canonicalValue": "Informative/Academic Writing"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 1: Using Capitalisation",
+						"Using Capitalisation",
+						"Using Capitalization"
+					],
+					"canonicalValue": "Using Capitalisation"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 2: Using Punctuation",
+						"Using Punctuation"
+					],
+					"canonicalValue": "Using Punctuation"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 4: Using Action Words",
+						"Using Action Words"
+					],
+					"canonicalValue": "Using Action Words"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 5: Using Adjectives",
+						"Sub-Strand 5: Using Qualifying Words – Adjectives",
+						"Sub-Strand 5: Using Qualifying Words –Adjectives",
+						"Using Qualifying Words: Adjectives",
+						"Using Adjectives"
+					],
+					"canonicalValue": "Using Qualifying Words - Adjectives"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 6: Using Qualifying Words – Adverbs",
+						"Using Qualifying Words: Adverbs",
+						"Using Adverbs"
+					],
+					"canonicalValue": "Using Qualifying Words - Adverbs"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 7: Using Simple Preposition",
+						"Sub-Strand 7: Using Simple Prepositions",
+						"Sub-Strand 7: Using SimplePrepositions",
+						"Using Simple Preposition",
+						"Using Simple Prepositions"
+					],
+					"canonicalValue": "Using Simple Prepositions"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 9: Using Simple and Compound Sentences",
+						"Using Simple and Compound Sentences"
+					],
+					"canonicalValue": "Using Simple and Compound Sentences"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 10: Spelling",
+						"Spelling"
+					],
+					"canonicalValue": "Spelling"
+				},
+				{
+					"aliases": [
+						"Sub-Strand 1: Building the Love and Culture of Reading",
+						"Sub-Strand 1: Building The Love And Culture Of Reading",
+						"Building the Love and Culture of Reading"
+					],
+					"canonicalValue": "Building the Love and Culture of Reading"
+				}
+			],
+			"description": "Visible Ghana English sub-strand heading in the detailed curriculum, scoped under the active Grade and Strand. Preserve the printed ordinal even when the source contains a known numbering error.",
+			"identityScope": [
+				"Grade",
+				"Strand"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Sub-Strand"
+		},
+		{
+			"aliases": [
+				"CONTENT STANDARD",
+				"CONTENT STANDARDS",
+				"content standard",
+				"content standards",
+				"content_standard"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Sub-Strand"
+				}
+			],
+			"codeType": "content_standard",
+			"controlledValues": [],
+			"description": "Official coded Ghana English Content Standard for Basic 1-3, copied from the left column of a detailed curriculum table.",
+			"identityScope": [
+				"Grade",
+				"Strand",
+				"Sub-Strand"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Content Standard"
+		},
+		{
+			"aliases": [
+				"INDICATOR",
+				"INDICATORS",
+				"indicator",
+				"learning indicator",
+				"performance indicator"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Content Standard"
+				}
+			],
+			"codeType": "indicator",
+			"controlledValues": [],
+			"description": "Official coded Ghana English Indicator for Basic 1-3, copied from the bold normative statement in the Indicators and Exemplars column.",
+			"identityScope": [
+				"Grade",
+				"Strand",
+				"Sub-Strand"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Indicator"
+		}
+	],
+	"subjectAliases": [],
+	"subjectMappingNote": "English Language is mapped to the Learning Commons English Language Arts subject for discovery.",
+	"subjectMappingStatus": "mapped",
+	"subjectVocabulary": {
+		"unmatchedValue": "Other",
+		"values": [
+			"English Language Arts",
+			"Mathematics",
+			"Science",
+			"Social Studies",
+			"Other"
+		],
+		"vocabularyId": "learning-commons-academic-subject",
+		"vocabularyVersion": "2026-07-21"
+	}
+}

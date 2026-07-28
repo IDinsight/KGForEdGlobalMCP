@@ -1,0 +1,640 @@
+{
+	"codeSearchPolicy": {
+		"allowPrefixSearch": false,
+		"availability": "none",
+		"canonicalizationNotes": [],
+		"caseSensitive": false,
+		"codeParentRules": [],
+		"codeTypes": [],
+		"codesAreUniqueIdentifiers": false,
+		"prefixDelimiters": [],
+		"punctuationNormalization": false,
+		"whitespaceNormalization": false
+	},
+	"comparisonDimensions": [
+		"wording",
+		"scope",
+		"cognitive_demand",
+		"granularity",
+		"hierarchy_placement",
+		"grade_context"
+	],
+	"educationStageMappings": [],
+	"frameworkIds": [
+		"nigeria-nerdc-mathematics-primary-1-3"
+	],
+	"gradeLevelStatementTypes": [
+		"Grade"
+	],
+	"gradeMappings": [
+		{
+			"aliases": [
+				"Primary One",
+				"Primary: One",
+				"PRIMARY: ONE",
+				"PRIMARY 1",
+				"Primary 1"
+			],
+			"localLabel": "PRIMARY ONE",
+			"normalizedGrades": [
+				"1"
+			]
+		},
+		{
+			"aliases": [
+				"Primary Two",
+				"Primary: Two",
+				"PRIMARY: TWO",
+				"PRIMARY 2",
+				"Primary 2"
+			],
+			"localLabel": "PRIMARY TWO",
+			"normalizedGrades": [
+				"2"
+			]
+		},
+		{
+			"aliases": [
+				"Primary Three",
+				"Primary: Three",
+				"PRIMARY: THREE",
+				"PRIMARY 3",
+				"Primary 3"
+			],
+			"localLabel": "PRIMARY THREE",
+			"normalizedGrades": [
+				"3"
+			]
+		}
+	],
+	"hierarchy": {
+		"allowMultiParent": false,
+		"relationshipType": "hasChild",
+		"rootStatementTypes": [
+			"Grade"
+		],
+		"statementTypeOrder": [
+			"Grade",
+			"Theme",
+			"Sub-Theme",
+			"Topic",
+			"Performance Objective"
+		]
+	},
+	"knownSourceAnomalies": [
+		{
+			"anomalyId": "uncoded_repeated_local_labels",
+			"description": "The framework has no stable statement codes. Repeated local labels and visible topic ordinals remain source-scoped and must not be treated as global identifiers.",
+			"requiredDisclosure": "Code search is unavailable; text and hierarchy context are used for retrieval."
+		}
+	],
+	"languagePolicy": {
+		"allowBilingualPairing": false,
+		"languages": [
+			"en"
+		],
+		"notes": [
+			"This Nigeria Primary 1-3 Mathematics curriculum is English-only. Do not create bilingual pairs, translations, or cross-language duplicate candidates. Preserve visible English source text exactly. If non-English text appears incidentally, keep it only as source-visible text and do not translate it or pair it with an English candidate unless the document itself explicitly presents both versions as equivalent official curriculum text."
+		],
+		"preserveSourceTerminology": true
+	},
+	"localSubject": "Mathematics",
+	"normalizedSubjects": [
+		"Mathematics"
+	],
+	"profileId": "nigeria-nerdc-mathematics-primary-1-3",
+	"profileSchemaVersion": "1.0",
+	"profileVersion": "1.0",
+	"progressionHeuristics": [],
+	"requiredDisclosures": [
+		"Normalized grades are retrieval facets and do not establish international grade equivalence.",
+		"A hasChild hierarchy is not a source-authored instructional progression unless the source explicitly says so.",
+		"An Academic Standard alone does not establish learner mastery.",
+		"Identifier, code, or text retrieval matches do not establish official equivalence."
+	],
+	"rights": {
+		"allowBulkResource": false,
+		"allowFullText": true,
+		"allowGeneratedDerivatives": "allowed",
+		"allowStandardResources": true,
+		"attributionStatement": "Source curriculum published by the Nigerian Educational Research and Development Council (NERDC) as part of the revised 9-Year Basic Education Mathematics Curriculum.",
+		"reviewStatus": "provisional_operator_approved",
+		"sourceLicense": "Unknown"
+	},
+	"sourceRoleCapabilities": {
+		"hasOfficialActivities": false,
+		"hasOfficialAssessmentGuidance": false,
+		"hasOfficialResources": false,
+		"roleNotes": [
+			"The Academic Standards graph excludes activities, assessment guidance, and resources as node types; detailed source artifacts may retain contextual evidence."
+		]
+	},
+	"statementTypes": [
+		{
+			"aliases": [
+				"Primary One",
+				"Primary Two",
+				"Primary Three",
+				"PRIMARY ONE",
+				"PRIMARY TWO",
+				"PRIMARY THREE",
+				"Class",
+				"Grade",
+				"grade",
+				"Primary: Three",
+				"PRIMARY: THREE"
+			],
+			"allowedParents": [],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Primary One",
+						"PRIMARY ONE",
+						"Primary: One",
+						"PRIMARY: ONE",
+						"PRIMARY 1",
+						"Primary 1"
+					],
+					"canonicalValue": "PRIMARY ONE"
+				},
+				{
+					"aliases": [
+						"Primary Two",
+						"PRIMARY TWO",
+						"Primary: Two",
+						"PRIMARY: TWO",
+						"PRIMARY 2",
+						"Primary 2"
+					],
+					"canonicalValue": "PRIMARY TWO"
+				},
+				{
+					"aliases": [
+						"Primary Three",
+						"PRIMARY THREE",
+						"Primary: Three",
+						"PRIMARY: THREE",
+						"PRIMARY 3",
+						"Primary 3"
+					],
+					"canonicalValue": "PRIMARY THREE"
+				}
+			],
+			"description": "Visible Primary One, Primary Two, or Primary Three curriculum organizer.",
+			"identityScope": [],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Grade"
+		},
+		{
+			"aliases": [
+				"THEME",
+				"Theme",
+				"theme"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Grade"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"NUMBER AND NUMERATION",
+						"THEME: NUMBER AND NUMERATION",
+						"THEME : NUMBER AND NUMERATION",
+						"THEME :NUMBER AND NUMERATION"
+					],
+					"canonicalValue": "NUMBER AND NUMERATION"
+				},
+				{
+					"aliases": [
+						"BASIC OPERATIONS",
+						"BASIC   OPERATIONS",
+						"THEME: BASIC OPERATIONS",
+						"THEME:  BASIC OPERATIONS",
+						"THEME:  BASIC   OPERATIONS",
+						"THEME : BASIC OPERATIONS",
+						"THEME :BASIC OPERATIONS"
+					],
+					"canonicalValue": "BASIC OPERATIONS"
+				},
+				{
+					"aliases": [
+						"ALGEBRAIC PROCESSES",
+						"THEME: ALGEBRAIC PROCESSES",
+						"THEME : ALGEBRAIC PROCESSES",
+						"THEME :ALGEBRAIC PROCESSES"
+					],
+					"canonicalValue": "ALGEBRAIC PROCESSES"
+				},
+				{
+					"aliases": [
+						"MENSURATION AND GEOMETRY",
+						"THEME: MENSURATION AND GEOMETRY",
+						"THEME:   MENSURATION AND GEOMETRY",
+						"THEME : MENSURATION AND GEOMETRY",
+						"THEME :MENSURATION AND GEOMETRY"
+					],
+					"canonicalValue": "MENSURATION AND GEOMETRY"
+				},
+				{
+					"aliases": [
+						"EVERY DAY STATISTICS",
+						"THEME: EVERY DAY STATISTICS",
+						"THEME : EVERY DAY STATISTICS",
+						"THEME :EVERY DAY STATISTICS"
+					],
+					"canonicalValue": "EVERY DAY STATISTICS"
+				}
+			],
+			"description": "Visible Nigeria Mathematics theme heading or organizer.",
+			"identityScope": [
+				"Grade"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Theme"
+		},
+		{
+			"aliases": [
+				"SUB-THEME",
+				"SUBTHEME",
+				"Sub-Theme",
+				"Subtheme",
+				"Sub-theme",
+				"sub-theme",
+				"subtheme",
+				"SUB THEME",
+				"Sub Theme",
+				"sub theme"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Theme"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Whole Number",
+						"SUB-THEME: Whole Number",
+						"SUBTHEME: Whole Number",
+						"SUB-THEME Whole Number",
+						"SUBTHEME Whole Number"
+					],
+					"canonicalValue": "Whole Number"
+				},
+				{
+					"aliases": [
+						"Fraction",
+						"SUB-THEME: Fraction",
+						"SUBTHEME: Fraction",
+						"SUB-THEME Fraction",
+						"SUBTHEME Fraction"
+					],
+					"canonicalValue": "Fraction"
+				},
+				{
+					"aliases": [
+						"Basic Operations",
+						"Basic   Operations",
+						"SUB-THEME: Basic Operations",
+						"SUB-THEME: Basic   Operations",
+						"SUBTHEME: Basic Operations"
+					],
+					"canonicalValue": "Basic Operations"
+				},
+				{
+					"aliases": [
+						"Algebraic Operations",
+						"SUB-THEME: Algebraic Operations",
+						"SUBTHEME: Algebraic Operations"
+					],
+					"canonicalValue": "Algebraic Operations"
+				},
+				{
+					"aliases": [
+						"Open Sentences",
+						"SUB-THEME: Open Sentences",
+						"SUBTHEME: Open Sentences"
+					],
+					"canonicalValue": "Open Sentences"
+				},
+				{
+					"aliases": [
+						"Primary Measures",
+						"SUB-THEME: Primary Measures",
+						"SUBTHEME: Primary Measures",
+						"Primary Measure",
+						"SUB-THEME: Primary Measure",
+						"SUBTHEME: Primary Measure",
+						"SUB-THEME Primary Measure",
+						"SUBTHEME Primary Measure"
+					],
+					"canonicalValue": "Primary Measures"
+				},
+				{
+					"aliases": [
+						"Secondary Measures",
+						"SUB-THEME: Secondary Measures",
+						"SUBTHEME: Secondary Measures",
+						"Secondary Measure",
+						"SUB-THEME: Secondary Measure",
+						"SUBTHEME: Secondary Measure",
+						"SUB-THEME Secondary Measure",
+						"SUBTHEME Secondary Measure"
+					],
+					"canonicalValue": "Secondary Measures"
+				},
+				{
+					"aliases": [
+						"Shapes",
+						"SUB-THEME: Shapes",
+						"SUBTHEME: Shapes"
+					],
+					"canonicalValue": "Shapes"
+				},
+				{
+					"aliases": [
+						"Data Collection and Presentation",
+						"SUB-THEME: Data Collection and Presentation",
+						"SUBTHEME: Data Collection and Presentation"
+					],
+					"canonicalValue": "Data Collection and Presentation"
+				}
+			],
+			"description": "Visible Nigeria Mathematics sub-theme heading or organizer.",
+			"identityScope": [
+				"Grade",
+				"Theme"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Sub-Theme"
+		},
+		{
+			"aliases": [
+				"TOPIC",
+				"Topic",
+				"topic"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Sub-Theme"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"1.  Whole numbers 1-5"
+					],
+					"canonicalValue": "1. Whole numbers 1-5"
+				},
+				{
+					"aliases": [
+						"2.  Whole number  0 (Zero)"
+					],
+					"canonicalValue": "2. Whole number 0 (Zero)"
+				},
+				{
+					"aliases": [
+						"3.  Whole numbers 6-9"
+					],
+					"canonicalValue": "3. Whole numbers 6-9"
+				},
+				{
+					"aliases": [
+						"4.  Whole  number 10"
+					],
+					"canonicalValue": "4. Whole number 10"
+				},
+				{
+					"aliases": [
+						"5. Whole Numbers 1-99"
+					],
+					"canonicalValue": "5. Whole Numbers 1-99"
+				},
+				{
+					"aliases": [
+						"6. Fractions"
+					],
+					"canonicalValue": "6. Fractions"
+				},
+				{
+					"aliases": [
+						"1. Addition",
+						"1.  Addition"
+					],
+					"canonicalValue": "1. Addition"
+				},
+				{
+					"aliases": [
+						"2. Subtraction"
+					],
+					"canonicalValue": "2. Subtraction"
+				},
+				{
+					"aliases": [
+						"3.  Addition"
+					],
+					"canonicalValue": "3. Addition"
+				},
+				{
+					"aliases": [
+						"4.Subtraction"
+					],
+					"canonicalValue": "4. Subtraction"
+				},
+				{
+					"aliases": [
+						"1.  Open Sentences"
+					],
+					"canonicalValue": "1. Open Sentences"
+				},
+				{
+					"aliases": [
+						"1.  Money",
+						"1. Money"
+					],
+					"canonicalValue": "1. Money"
+				},
+				{
+					"aliases": [
+						"2.  Length",
+						"2. Length"
+					],
+					"canonicalValue": "2. Length"
+				},
+				{
+					"aliases": [
+						"3. Time"
+					],
+					"canonicalValue": "3. Time"
+				},
+				{
+					"aliases": [
+						"4. Weight"
+					],
+					"canonicalValue": "4. Weight"
+				},
+				{
+					"aliases": [
+						"1.  Three dimensional shapes",
+						"1. Three Dimensional shapes."
+					],
+					"canonicalValue": "1. Three dimensional shapes"
+				},
+				{
+					"aliases": [
+						"2.  Two dimensional shapes",
+						"2.  Two dimensional shapes."
+					],
+					"canonicalValue": "2. Two dimensional shapes"
+				},
+				{
+					"aliases": [
+						"1.  Data Collection"
+					],
+					"canonicalValue": "1. Data Collection"
+				},
+				{
+					"aliases": [
+						"1.  Whole numbers 1-200"
+					],
+					"canonicalValue": "1. Whole numbers 1-200"
+				},
+				{
+					"aliases": [
+						"2. Fractions"
+					],
+					"canonicalValue": "2. Fractions"
+				},
+				{
+					"aliases": [
+						"3. Multiplication"
+					],
+					"canonicalValue": "3. Multiplication"
+				},
+				{
+					"aliases": [
+						"1. Capacity"
+					],
+					"canonicalValue": "1. Capacity"
+				},
+				{
+					"aliases": [
+						"2. Area"
+					],
+					"canonicalValue": "2. Area"
+				},
+				{
+					"aliases": [
+						"1. Whole numbers up to 999"
+					],
+					"canonicalValue": "1. Whole numbers up to 999"
+				},
+				{
+					"aliases": [
+						"4. Division"
+					],
+					"canonicalValue": "4. Division"
+				},
+				{
+					"aliases": [
+						"3. Length II"
+					],
+					"canonicalValue": "3. Length II"
+				},
+				{
+					"aliases": [
+						"4. Time"
+					],
+					"canonicalValue": "4. Time"
+				},
+				{
+					"aliases": [
+						"5. Weight"
+					],
+					"canonicalValue": "5. Weight"
+				},
+				{
+					"aliases": [
+						"1.  Symmetry"
+					],
+					"canonicalValue": "1. Symmetry"
+				},
+				{
+					"aliases": [
+						"1.   Pictograms"
+					],
+					"canonicalValue": "1. Pictograms"
+				}
+			],
+			"description": "Visible Topic-column curriculum organizer. Preserve the complete visible topic cell, including its local leading ordinal and punctuation, as source-facing occurrence material; the ordinal is not an official code.",
+			"identityScope": [
+				"Grade",
+				"Theme",
+				"Sub-Theme"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Topic"
+		},
+		{
+			"aliases": [
+				"PERFORMANCE OBJECTIVES",
+				"Performance Objectives",
+				"Performance Objective",
+				"performance objective",
+				"expected learning outcome",
+				"learning outcome",
+				"Pupils should be able to",
+				"The pupils should be able to",
+				"Pupil should be able to",
+				"Pupil should be able to:",
+				"The pupil should be able to",
+				"The pupil should be able to:"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Topic"
+				}
+			],
+			"controlledValues": [],
+			"description": "Official expected learning outcome listed under the Performance Objectives column.",
+			"identityScope": [
+				"Grade",
+				"Theme",
+				"Sub-Theme",
+				"Topic"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Performance Objective"
+		}
+	],
+	"subjectAliases": [],
+	"subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+	"subjectMappingStatus": "mapped",
+	"subjectVocabulary": {
+		"unmatchedValue": "Other",
+		"values": [
+			"English Language Arts",
+			"Mathematics",
+			"Science",
+			"Social Studies",
+			"Other"
+		],
+		"vocabularyId": "learning-commons-academic-subject",
+		"vocabularyVersion": "2026-07-21"
+	}
+}

@@ -1,0 +1,440 @@
+{
+	"codeSearchPolicy": {
+		"allowPrefixSearch": true,
+		"availability": "partial",
+		"canonicalizationNotes": [
+			"Permit configured dash and whitespace variants for deterministic code lookup.",
+			"Preserve the authored code surface separately from canonical configured values."
+		],
+		"caseSensitive": false,
+		"codeParentRules": [
+			{
+				"childCodeType": "competency",
+				"method": "regex_substitution",
+				"parentCodeType": "curricular_goal",
+				"regex": "^C(?:\\s*[-–—]\\s*|\\s+)(\\d+)\\.\\d+$",
+				"replacement": "CG-\\1"
+			}
+		],
+		"codeTypes": [
+			{
+				"codeType": "curricular_goal",
+				"patterns": [
+					"\\bCG(?:\\s*[-–—]\\s*|\\s+)\\d+\\b"
+				],
+				"scopeStatementTypes": [],
+				"statementTypes": [
+					"Curricular Goal"
+				]
+			},
+			{
+				"codeType": "competency",
+				"patterns": [
+					"\\bC(?:\\s*[-–—]\\s*|\\s+)\\d+\\.\\d+\\b"
+				],
+				"scopeStatementTypes": [],
+				"statementTypes": [
+					"Competency"
+				]
+			}
+		],
+		"codesAreUniqueIdentifiers": false,
+		"prefixDelimiters": [
+			"."
+		],
+		"punctuationNormalization": true,
+		"whitespaceNormalization": true
+	},
+	"comparisonDimensions": [
+		"wording",
+		"scope",
+		"cognitive_demand",
+		"granularity",
+		"hierarchy_placement",
+		"grade_context"
+	],
+	"educationStageMappings": [],
+	"frameworkIds": [
+		"india-tamil-nadu-tnscert-mathematics-classes-1-5"
+	],
+	"gradeLevelStatementTypes": [
+		"Class"
+	],
+	"gradeMappings": [
+		{
+			"aliases": [
+				"Class 1",
+				"Grade 1"
+			],
+			"localLabel": "Class-1",
+			"normalizedGrades": [
+				"1"
+			]
+		},
+		{
+			"aliases": [
+				"Class 2",
+				"Grade 2"
+			],
+			"localLabel": "Class-2",
+			"normalizedGrades": [
+				"2"
+			]
+		},
+		{
+			"aliases": [
+				"Class 3",
+				"Grade 3"
+			],
+			"localLabel": "Class-3",
+			"normalizedGrades": [
+				"3"
+			]
+		},
+		{
+			"aliases": [
+				"Class 4",
+				"Grade 4"
+			],
+			"localLabel": "Class-4",
+			"normalizedGrades": [
+				"4"
+			]
+		},
+		{
+			"aliases": [
+				"Class 5",
+				"Grade 5"
+			],
+			"localLabel": "Class-5",
+			"normalizedGrades": [
+				"5"
+			]
+		}
+	],
+	"hierarchy": {
+		"allowMultiParent": false,
+		"relationshipType": "hasChild",
+		"rootStatementTypes": [
+			"Curricular Goal"
+		],
+		"statementTypeOrder": [
+			"Curricular Goal",
+			"Competency",
+			"Content"
+		]
+	},
+	"knownSourceAnomalies": [
+		{
+			"anomalyId": "scope_only_class_and_authored_code_format",
+			"description": "Class is a scope dimension rather than a graph node, and the authored competency code surface C 1.5 remains source-faithful even when a canonical value is used for configured scope.",
+			"requiredDisclosure": "Class applicability is metadata on Content items and is not an additional hierarchy level."
+		}
+	],
+	"languagePolicy": {
+		"allowBilingualPairing": false,
+		"languages": [
+			"en"
+		],
+		"notes": [],
+		"preserveSourceTerminology": true
+	},
+	"localSubject": "Mathematics",
+	"normalizedSubjects": [
+		"Mathematics"
+	],
+	"profileId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
+	"profileSchemaVersion": "1.0",
+	"profileVersion": "1.0",
+	"progressionHeuristics": [],
+	"requiredDisclosures": [
+		"Normalized grades are retrieval facets and do not establish international grade equivalence.",
+		"A hasChild hierarchy is not a source-authored instructional progression unless the source explicitly says so.",
+		"An Academic Standard alone does not establish learner mastery.",
+		"Identifier, code, or text retrieval matches do not establish official equivalence."
+	],
+	"rights": {
+		"allowBulkResource": false,
+		"allowFullText": true,
+		"allowGeneratedDerivatives": "allowed",
+		"allowStandardResources": true,
+		"attributionStatement": "Tamil Nadu Curriculum Framework 2025, Proposed Draft Syllabus, Pedagogical Approaches and Assessment Strategies, Mathematics - Classes 1-5, TNSCERT.",
+		"reviewStatus": "provisional_operator_approved",
+		"sourceLicense": "Not specified in source PDF"
+	},
+	"sourceRoleCapabilities": {
+		"hasOfficialActivities": false,
+		"hasOfficialAssessmentGuidance": false,
+		"hasOfficialResources": false,
+		"roleNotes": [
+			"The Academic Standards graph excludes activities, assessment guidance, and resources as node types; detailed source artifacts may retain contextual evidence."
+		]
+	},
+	"statementTypes": [
+		{
+			"aliases": [
+				"Curriculum Goal",
+				"CG"
+			],
+			"allowedParents": [],
+			"codeType": "curricular_goal",
+			"controlledValues": [
+				{
+					"aliases": [],
+					"canonicalValue": "CG-1"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "CG-2"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "CG-3"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "CG-4"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "CG-5"
+				}
+			],
+			"description": "Use only for a source-visible CG-coded goal in the first spanning header row of one syllabus table. The five authored goals CG-1 through CG-5 are top-level Standard Grouping items directly under the StandardsFramework root.",
+			"identityScope": [],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Curricular Goal"
+		},
+		{
+			"aliases": [
+				"Competency Statement"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Curricular Goal"
+				}
+			],
+			"codeType": "competency",
+			"controlledValues": [
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.1"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.2"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.3"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.4"
+				},
+				{
+					"aliases": [
+						"C 1.5"
+					],
+					"canonicalValue": "C-1.5"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.6"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.7"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.8"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.9"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.10"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.11"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.12"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-1.13"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-2.1"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-2.2"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-2.3"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-2.4"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-2.5"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-3.1"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-3.2"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-3.3"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-3.4"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-4.1"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-4.2"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-4.3"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-4.4"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-4.5"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-5.1"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-5.2"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "C-5.3"
+				}
+			],
+			"description": "Use only for a source-visible C-coded competency in the first table column. A competency is shared across the class columns in its row, is a Standard Grouping under exactly one Curricular Goal, and parents the uncoded class-scoped Content items in that competency row and any stitched continuation rows.",
+			"identityScope": [
+				"Curricular Goal"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Competency"
+		},
+		{
+			"aliases": [
+				"Syllabus Content",
+				"Learning Content"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Competency"
+				}
+			],
+			"controlledValues": [],
+			"description": "Use for an official source-visible bullet or coherent bullet item in a Class-1 through Class-5 content column. Content is an uncoded leaf Standard. Its identity_scope_values must identify the exact Curricular Goal, Competency, and Class column. Do not use this type for the word Content, for a class header, for narrative introduction, pedagogy, assessment text, or helper-only filldown text.",
+			"identityScope": [
+				"Curricular Goal",
+				"Competency",
+				"Class"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Content"
+		},
+		{
+			"aliases": [
+				"Grade"
+			],
+			"allowedParents": [],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Class 1",
+						"Grade 1"
+					],
+					"canonicalValue": "Class-1"
+				},
+				{
+					"aliases": [
+						"Class 2",
+						"Grade 2"
+					],
+					"canonicalValue": "Class-2"
+				},
+				{
+					"aliases": [
+						"Class 3",
+						"Grade 3"
+					],
+					"canonicalValue": "Class-3"
+				},
+				{
+					"aliases": [
+						"Class 4",
+						"Grade 4"
+					],
+					"canonicalValue": "Class-4"
+				},
+				{
+					"aliases": [
+						"Class 5",
+						"Grade 5"
+					],
+					"canonicalValue": "Class-5"
+				}
+			],
+			"description": "Scope-only Standard Grouping vocabulary for the authored Class-1 through Class-5 table columns. Never emit a Class SFI candidate: use these controlled values only in Content.identity_scope_values and for StandardsFrameworkItem.grade_level export.",
+			"identityScope": [],
+			"isGraphNode": false,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Class"
+		}
+	],
+	"subjectAliases": [],
+	"subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+	"subjectMappingStatus": "mapped",
+	"subjectVocabulary": {
+		"unmatchedValue": "Other",
+		"values": [
+			"English Language Arts",
+			"Mathematics",
+			"Science",
+			"Social Studies",
+			"Other"
+		],
+		"vocabularyId": "learning-commons-academic-subject",
+		"vocabularyVersion": "2026-07-21"
+	}
+}

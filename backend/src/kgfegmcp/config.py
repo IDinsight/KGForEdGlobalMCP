@@ -1,0 +1,413 @@
+"""This module contains environment-backed application settings and repository path
+resolution.
+"""
+
+# Standard Library
+from pathlib import Path
+from typing import Literal, Self
+
+# Third Party Library
+from pydantic import Field, field_validator, model_validator
+from pydantic_settings import (
+    BaseSettings,
+    PydanticBaseSettingsSource,
+    SettingsConfigDict,
+)
+
+# Package Library
+from kgfegmcp.domain.enums import InvalidPackagePolicy
+
+LogLevel = Literal["CRITICAL", "DEBUG", "ERROR", "INFO", "WARNING"]
+RuntimeEnvironment = Literal["dev", "local", "prod", "testing"]
+
+
+def _default_project_dir() -> Path:
+    """Resolve the repository root from the installed source layout.
+
+    Returns
+    -------
+    Path
+        Repository root containing ``backend``, ``config``, ``data``, etc.
+    """
+
+    return Path(__file__).resolve().parents[3]
+
+
+def _resolve_project_path(
+    *, configured_path: Path | None, default_relative_path: Path, project_dir: Path
+) -> Path:
+    """Resolve an optional configured path against the project root.
+
+    Parameters
+    ----------
+    configured_path
+        Explicit absolute path or project-relative override.
+    default_relative_path
+        Project-relative path used when no override is configured.
+    project_dir
+        Absolute repository root.
+
+    Returns
+    -------
+    Path
+        Canonical absolute path.
+    """
+
+    candidate = configured_path or default_relative_path
+
+    if not candidate.is_absolute():
+        candidate = project_dir / candidate
+
+    return candidate.expanduser().resolve(strict=False)
+
+
+class BackendSettings(BaseSettings):
+    """Validated settings for catalog, profile, prompt, data, and runtime paths."""
+
+    cache_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_CACHE_ROOT"
+    )
+    catalog_path_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_CATALOG"
+    )
+    config_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_CONFIG_ROOT"
+    )
+    data_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_DATA_ROOT"
+    )
+    environment: RuntimeEnvironment = Field(
+        default="local", validation_alias="KGFEGMCP_ENV"
+    )
+    graph_packages_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_GRAPH_PACKAGES_ROOT"
+    )
+    invalid_package_policy: InvalidPackagePolicy = Field(
+        default=InvalidPackagePolicy.FAIL,
+        validation_alias="KGFEGMCP_INVALID_PACKAGE_POLICY",
+    )
+    log_level: LogLevel = Field(default="INFO", validation_alias="KGFEGMCP_LOG_LEVEL")
+    log_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_LOG_ROOT"
+    )
+    max_resource_bytes: int = Field(
+        default=8 * 1_024 * 1_024, ge=1, validation_alias="KGFEGMCP_MAX_RESOURCE_BYTES"
+    )
+    max_resource_source_bytes: int = Field(
+        default=32 * 1_024 * 1_024,
+        ge=1,
+        validation_alias="KGFEGMCP_MAX_RESOURCE_SOURCE_BYTES",
+    )
+    profile_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_PROFILE_ROOT"
+    )
+    project_dir: Path = Field(
+        default_factory=_default_project_dir, validation_alias="PATHS_PROJECT_DIR"
+    )
+    prompt_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_PROMPT_ROOT"
+    )
+    results_root_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_RESULTS_ROOT"
+    )
+    server_config_path_override: Path | None = Field(
+        default=None, validation_alias="KGFEGMCP_CONFIG"
+    )
+
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+        env_file=None,
+        env_ignore_empty=True,
+        extra="ignore",
+        frozen=True,
+        populate_by_name=True,
+        validate_default=True,
+    )
+
+    @classmethod
+    def settings_customise_sources(  # pylint: disable=R0917
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        """Exclude dotenv and file-secret parsing from the settings source chain.
+
+        Parameters
+        ----------
+        settings_cls
+            Concrete settings class for which Pydantic assembled the sources.
+        init_settings
+            Explicit constructor values supplied by application code.
+        env_settings
+            Existing process-environment source populated externally by direnv.
+        dotenv_settings
+            Pydantic dotenv source, intentionally excluded from the returned chain.
+        file_secret_settings
+            Pydantic file-secret source, intentionally excluded from the returned chain.
+
+        Returns
+        -------
+        tuple[PydanticBaseSettingsSource, ...]
+            Constructor and process-environment sources in deterministic precedence
+            order.
+        """
+
+        del cls, dotenv_settings, file_secret_settings, settings_cls
+        return init_settings, env_settings
+
+    @model_validator(mode="after")
+    def validate_resource_limits(self) -> Self:
+        """Require source reads to be at least as large as returned resources.
+
+        Returns
+        -------
+        Self
+            Validated immutable backend settings.
+
+        Raises
+        ------
+        ValueError
+            If the source-read limit is smaller than the returned-resource limit.
+        """
+
+        if self.max_resource_source_bytes < self.max_resource_bytes:
+            raise ValueError(
+                "max_resource_source_bytes must be at least max_resource_bytes."
+            )
+
+        return self
+
+    @field_validator(
+        "cache_root_override",
+        "catalog_path_override",
+        "config_root_override",
+        "data_root_override",
+        "graph_packages_root_override",
+        "log_root_override",
+        "profile_root_override",
+        "project_dir",
+        "prompt_root_override",
+        "results_root_override",
+        "server_config_path_override",
+        mode="before",
+    )
+    @classmethod
+    def expand_user_paths(cls, value: object) -> object:
+        """Expand user-home markers before Pydantic converts values to paths.
+
+        Parameters
+        ----------
+        value
+            Environment or constructor value supplied for a path field.
+
+        Returns
+        -------
+        object
+            Expanded path string, original non-path value, or ``None``.
+        """
+
+        if isinstance(value, (Path, str)):
+            return str(Path(value).expanduser())
+
+        return value
+
+    @field_validator("project_dir")
+    @classmethod
+    def require_absolute_project_dir(cls, value: Path) -> Path:
+        """Validate and canonicalize the configured project root.
+
+        Parameters
+        ----------
+        value
+            Expanded project-root path.
+
+        Returns
+        -------
+        Path
+            Canonical absolute project-root path.
+
+        Raises
+        ------
+        ValueError
+            If the project root is relative.
+        """
+
+        if not value.is_absolute():
+            raise ValueError("project_dir must be an absolute path.")
+
+        return value.resolve(strict=False)
+
+    @property
+    def cache_root(self) -> Path:
+        """Return the repository cache directory.
+
+        Returns
+        -------
+        Path
+            The resolved repository cache directory.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.cache_root_override,
+            default_relative_path=Path("caches"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def catalog_path(self) -> Path:
+        """Return the catalog configuration path.
+
+        Returns
+        -------
+        Path
+            The resolved catalog configuration path.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.catalog_path_override,
+            default_relative_path=Path("config/catalog.json"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def config_root(self) -> Path:
+        """Return the repository configuration root.
+
+        Returns
+        -------
+        Path
+            The resolved repository configuration root.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.config_root_override,
+            default_relative_path=Path("config"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def data_root(self) -> Path:
+        """Return the repository data root.
+
+        Returns
+        -------
+        Path
+            The resolved repository data root.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.data_root_override,
+            default_relative_path=Path("data"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def derived_root(self) -> Path:
+        """Return the derived-overlay data root.
+
+        Returns
+        -------
+        Path
+            The resolved derived-overlay data root.
+        """
+
+        return self.data_root / "derived"
+
+    @property
+    def graph_packages_root(self) -> Path:
+        """Return the immutable graph-package data root.
+
+        Returns
+        -------
+        Path
+            The resolved immutable graph-package data root.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.graph_packages_root_override,
+            default_relative_path=self.data_root / "graph_packages",
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def log_root(self) -> Path:
+        """Return the repository log directory.
+
+        Returns
+        -------
+        Path
+            The resolved repository log directory.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.log_root_override,
+            default_relative_path=Path("logs"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def profile_root(self) -> Path:
+        """Return the central versioned curriculum-profile root.
+
+        Returns
+        -------
+        Path
+            The resolved central versioned curriculum-profile root.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.profile_root_override,
+            default_relative_path=Path("config/profiles"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def prompt_root(self) -> Path:
+        """Return the optional framework-local prompt-configuration root.
+
+        Returns
+        -------
+        Path
+            The resolved versioned prompt-configuration root.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.prompt_root_override,
+            default_relative_path=Path("config/prompts"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def results_root(self) -> Path:
+        """Return the repository result directory.
+
+        Returns
+        -------
+        Path
+            The resolved repository result directory.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.results_root_override,
+            default_relative_path=Path("results"),
+            project_dir=self.project_dir,
+        )
+
+    @property
+    def server_config_path(self) -> Path:
+        """Return the server configuration path.
+
+        Returns
+        -------
+        Path
+            The resolved server configuration path.
+        """
+
+        return _resolve_project_path(
+            configured_path=self.server_config_path_override,
+            default_relative_path=Path("config/server.json"),
+            project_dir=self.project_dir,
+        )

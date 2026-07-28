@@ -1,0 +1,86 @@
+{
+	"schemaVersion": "1.0",
+	"cases": [
+		{
+			"caseId": "fractions-four-mathematics-frameworks",
+			"purpose": "Verify independent package-local lexical quotas, ordering, warnings, and cursors across four mathematics frameworks.",
+			"request": {
+				"frameworkIds": [
+					"ghana-nacca-primary-mathematics-basic-4-6",
+					"india-tamil-nadu-tnscert-mathematics-classes-1-5",
+					"nigeria-nerdc-mathematics-primary-1-3",
+					"rwanda-reb-mathematics-lower-primary-1-3"
+				],
+				"includeContextPaths": true,
+				"includeGroupings": false,
+				"localGradeLabels": [],
+				"match": {
+					"matchMode": "tokens",
+					"operator": "any"
+				},
+				"maxMatchesPerFramework": 5,
+				"mode": "text",
+				"normalizedGrades": [],
+				"query": "fraction fractions",
+				"snapshotIds": []
+			},
+			"verify": [
+				"one exact-package search is executed independently for every framework",
+				"each section retains its own hasMore and nextCursor values",
+				"matches retain existing package-local search order",
+				"no official equivalence is asserted"
+			]
+		},
+		{
+			"caseId": "mixed-code-capability",
+			"purpose": "Verify coded-record retrieval, partial code-coverage evidence, and local unsupported-code behavior for an uncoded framework.",
+			"request": {
+				"frameworkIds": [
+					"ghana-nacca-primary-mathematics-basic-4-6",
+					"india-cbse-science-learning-framework-classes-9-10",
+					"nigeria-nerdc-mathematics-primary-1-3"
+				],
+				"includeContextPaths": false,
+				"includeGroupings": false,
+				"localGradeLabels": [],
+				"maxMatchesPerFramework": 5,
+				"mode": "code_exact",
+				"normalizedGrades": [],
+				"query": "CLO9",
+				"snapshotIds": []
+			},
+			"verify": [
+				"the exact coded India record remains package-local",
+				"partial code-coverage search warnings remain visible",
+				"the uncoded Nigeria section is empty with code_search_unsupported",
+				"other selected frameworks continue independently"
+			]
+		},
+		{
+			"caseId": "india-science-multiple-root-paths",
+			"purpose": "Verify that comparison context preserves multiple direct parents and every returned root path.",
+			"frameworkId": "india-cbse-science-learning-framework-classes-9-10",
+			"nodeId": "66c3c88d-3760-594a-8f7a-2c31e367018d",
+			"statementCode": "CLO9",
+			"verify": [
+				"two direct parents remain present",
+				"all returned root paths remain present",
+				"no preferred parent is selected",
+				"context completion evidence remains explicit"
+			]
+		},
+		{
+			"caseId": "ghana-unresolved-relationship",
+			"purpose": "Verify that unresolved relationship evidence remains exact and produces a deterministic comparison warning.",
+			"frameworkId": "ghana-nacca-primary-mathematics-basic-4-6",
+			"nodeId": "0f5ae1db-96ef-55d3-ac0a-ba97792bd30e",
+			"relationshipId": "dd72ad38-9854-5a03-9178-63b8538a4f95",
+			"resolutionStatus": "unresolvedRootFallback",
+			"verify": [
+				"the exact relationship status remains unresolvedRootFallback",
+				"unresolved_evidence_present is returned",
+				"the relationship is not silently repaired or promoted"
+			]
+		}
+	]
+}

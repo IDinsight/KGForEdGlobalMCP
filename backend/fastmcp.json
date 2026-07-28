@@ -1,0 +1,12 @@
+{
+	"$schema": "https://gofastmcp.com/public/schemas/fastmcp.json/v1.json",
+	"deployment": {
+		"cwd": ".",
+		"transport": "stdio"
+	},
+	"source": {
+		"entrypoint": "create_mcp",
+		"path": "src/kgfegmcp/app.py",
+		"type": "filesystem"
+	}
+}

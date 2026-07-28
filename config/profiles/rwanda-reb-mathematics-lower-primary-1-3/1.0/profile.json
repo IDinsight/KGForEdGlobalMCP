@@ -1,0 +1,723 @@
+{
+	"codeSearchPolicy": {
+		"allowPrefixSearch": false,
+		"availability": "none",
+		"canonicalizationNotes": [],
+		"caseSensitive": false,
+		"codeParentRules": [],
+		"codeTypes": [],
+		"codesAreUniqueIdentifiers": false,
+		"prefixDelimiters": [],
+		"punctuationNormalization": false,
+		"whitespaceNormalization": false
+	},
+	"comparisonDimensions": [
+		"wording",
+		"scope",
+		"cognitive_demand",
+		"granularity",
+		"hierarchy_placement",
+		"grade_context"
+	],
+	"educationStageMappings": [],
+	"frameworkIds": [
+		"rwanda-reb-mathematics-lower-primary-1-3"
+	],
+	"gradeLevelStatementTypes": [
+		"Grade"
+	],
+	"gradeMappings": [
+		{
+			"aliases": [
+				"P1 MATHEMATICS",
+				"P1 Mathematics"
+			],
+			"localLabel": "P1",
+			"normalizedGrades": [
+				"1"
+			]
+		},
+		{
+			"aliases": [
+				"P2 Mathematics",
+				"P2  Mathematics"
+			],
+			"localLabel": "P2",
+			"normalizedGrades": [
+				"2"
+			]
+		},
+		{
+			"aliases": [
+				"P3 Mathematics"
+			],
+			"localLabel": "P3",
+			"normalizedGrades": [
+				"3"
+			]
+		}
+	],
+	"hierarchy": {
+		"allowMultiParent": false,
+		"relationshipType": "hasChild",
+		"rootStatementTypes": [
+			"Grade"
+		],
+		"statementTypeOrder": [
+			"Grade",
+			"Topic Area",
+			"Sub-Topic Area",
+			"Unit",
+			"Key Unit Competence"
+		]
+	},
+	"knownSourceAnomalies": [
+		{
+			"anomalyId": "p3_unit_5_missing_topic_area",
+			"description": "The accepted upstream configuration records an identity-scope repair for a visible P3 Unit 5 Sub-Topic Area whose Topic Area heading is absent from the source. The MCP layer must not synthesize a missing source node.",
+			"requiredDisclosure": "Configured scope repairs are deterministic derivations and are not source-visible statements."
+		}
+	],
+	"languagePolicy": {
+		"allowBilingualPairing": false,
+		"languages": [
+			"en"
+		],
+		"notes": [],
+		"preserveSourceTerminology": true
+	},
+	"localSubject": "Mathematics",
+	"normalizedSubjects": [
+		"Mathematics"
+	],
+	"profileId": "rwanda-reb-mathematics-lower-primary-1-3",
+	"profileSchemaVersion": "1.0",
+	"profileVersion": "1.0",
+	"progressionHeuristics": [],
+	"requiredDisclosures": [
+		"Normalized grades are retrieval facets and do not establish international grade equivalence.",
+		"A hasChild hierarchy is not a source-authored instructional progression unless the source explicitly says so.",
+		"An Academic Standard alone does not establish learner mastery.",
+		"Identifier, code, or text retrieval matches do not establish official equivalence."
+	],
+	"rights": {
+		"allowBulkResource": false,
+		"allowFullText": true,
+		"allowGeneratedDerivatives": "allowed",
+		"allowStandardResources": true,
+		"attributionStatement": "© 2025 Rwanda Basic Education Board, Kigali. Credit must be provided to REB when the content is quoted.",
+		"reviewStatus": "provisional_operator_approved",
+		"sourceLicense": "© 2025 Rwanda Basic Education Board, Kigali. All rights reserved."
+	},
+	"sourceRoleCapabilities": {
+		"hasOfficialActivities": false,
+		"hasOfficialAssessmentGuidance": false,
+		"hasOfficialResources": false,
+		"roleNotes": [
+			"The Academic Standards graph excludes activities, assessment guidance, and resources as node types; detailed source artifacts may retain contextual evidence."
+		]
+	},
+	"statementTypes": [
+		{
+			"aliases": [
+				"P1 MATHEMATICS",
+				"P1 Mathematics",
+				"P2 Mathematics",
+				"P2  Mathematics",
+				"P3 Mathematics"
+			],
+			"allowedParents": [],
+			"controlledValues": [
+				{
+					"aliases": [
+						"P1",
+						"P1 MATHEMATICS",
+						"P1 Mathematics"
+					],
+					"canonicalValue": "P1"
+				},
+				{
+					"aliases": [
+						"P2",
+						"P2 Mathematics",
+						"P2  Mathematics"
+					],
+					"canonicalValue": "P2"
+				},
+				{
+					"aliases": [
+						"P3",
+						"P3 Mathematics"
+					],
+					"canonicalValue": "P3"
+				}
+			],
+			"description": "Use only for source-visible unit-table grade header cells such as 'P1 MATHEMATICS', 'P2 Mathematics', or 'P3 Mathematics'. Do not use for numbered section headings such as '6.2 SYLLABUS UNITS FOR GRADE ONE/P1', '6.3 Mathematics Syllabus for Primary (P2)', '6.4 Mathematics Syllabus for P3', or 'Mathematics units for Primary One/Two/Three'; those headings are context only.",
+			"identityScope": [],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Grade"
+		},
+		{
+			"aliases": [
+				"TOPIC AREA"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Grade"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"NUMBERS AND OPERATIONS",
+						"TOPIC AREA: NUMBERS AND OPERATIONS",
+						"TOPIC AREA:NUMBERS AND OPERATIONS"
+					],
+					"canonicalValue": "Numbers and Operations"
+				},
+				{
+					"aliases": [
+						"ALGEBRA",
+						"TOPIC AREA: ALGEBRA",
+						"TOPIC AREA:ALGEBRA"
+					],
+					"canonicalValue": "Algebra"
+				},
+				{
+					"aliases": [
+						"MEASUREMENT",
+						"TOPIC AREA: MEASUREMENT",
+						"TOPIC AREA:MEASUREMENT",
+						"MEASUREMENTS",
+						"TOPIC AREA: MEASUREMENTS",
+						"TOPIC AREA:MEASUREMENTS"
+					],
+					"canonicalValue": "Measurement"
+				},
+				{
+					"aliases": [
+						"GEOMETRY",
+						"TOPIC AREA: GEOMETRY",
+						"TOPIC AREA:GEOMETRY"
+					],
+					"canonicalValue": "Geometry"
+				},
+				{
+					"aliases": [
+						"STATISTICS",
+						"TOPIC AREA: STATISTICS",
+						"TOPIC AREA:STATISTICS"
+					],
+					"canonicalValue": "Statistics"
+				}
+			],
+			"description": "Use for source-visible TOPIC AREA labels that organize units within a grade. Topic Area is a parent of Unit; repeated matching Topic Area labels within the same Grade should canonicalize to the same value and be eligible to merge across multiple unit tables.",
+			"identityScope": [
+				"Grade"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Topic Area"
+		},
+		{
+			"aliases": [
+				"SUB-TOPIC AREA",
+				"SUB-TOPIC"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Topic Area"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"WHOLE NUMBERS",
+						"SUB-TOPIC AREA: WHOLE NUMBERS",
+						"SUB-TOPIC AREA:WHOLE NUMBERS",
+						"SUB-TOPIC: WHOLE NUMBERS",
+						"SUB-TOPIC:WHOLE NUMBERS",
+						"WHOLE NUMBERS FROM 0 TO 10000",
+						"SUB-TOPIC AREA: WHOLE NUMBERS FROM 0 TO 10000",
+						"SUB-TOPIC AREA:WHOLE NUMBERS FROM 0 TO 10000",
+						"SUB-TOPIC: WHOLE NUMBERS FROM 0 TO 10000",
+						"SUB-TOPIC:WHOLE NUMBERS FROM 0 TO 10000"
+					],
+					"canonicalValue": "Whole Numbers"
+				},
+				{
+					"aliases": [
+						"FRACTIONS",
+						"SUB-TOPIC AREA: FRACTIONS",
+						"SUB-TOPIC AREA:FRACTIONS",
+						"SUB-TOPIC: FRACTIONS",
+						"SUB-TOPIC:FRACTIONS"
+					],
+					"canonicalValue": "Fractions"
+				},
+				{
+					"aliases": [
+						"NUMBER PATTERN",
+						"SUB-TOPIC AREA: NUMBER PATTERN",
+						"SUB-TOPIC AREA:NUMBER PATTERN",
+						"SUB-TOPIC: NUMBER PATTERN",
+						"SUB-TOPIC:NUMBER PATTERN",
+						"NUMBER PATTERNS",
+						"SUB-TOPIC AREA: NUMBER PATTERNS",
+						"SUB-TOPIC AREA:NUMBER PATTERNS",
+						"SUB-TOPIC: NUMBER PATTERNS",
+						"SUB-TOPIC:NUMBER PATTERNS"
+					],
+					"canonicalValue": "Number Pattern"
+				},
+				{
+					"aliases": [
+						"LENGTH MEASUREMENTS",
+						"SUB-TOPIC AREA: LENGTH MEASUREMENTS",
+						"SUB-TOPIC AREA:LENGTH MEASUREMENTS",
+						"SUB-TOPIC: LENGTH MEASUREMENTS",
+						"SUB-TOPIC:LENGTH MEASUREMENTS"
+					],
+					"canonicalValue": "Length Measurements"
+				},
+				{
+					"aliases": [
+						"RWANDAN CURRENCY",
+						"SUB-TOPIC AREA: RWANDAN CURRENCY",
+						"SUB-TOPIC AREA:RWANDAN CURRENCY",
+						"SUB-TOPIC: RWANDAN CURRENCY",
+						"SUB-TOPIC:RWANDAN CURRENCY",
+						"CURRENCY",
+						"SUB-TOPIC AREA: CURRENCY",
+						"SUB-TOPIC AREA:CURRENCY",
+						"SUB-TOPIC: CURRENCY",
+						"SUB-TOPIC:CURRENCY",
+						"RWANDAN MONEY",
+						"SUB-TOPIC AREA: RWANDAN MONEY",
+						"SUB-TOPIC AREA:RWANDAN MONEY",
+						"SUB-TOPIC: RWANDAN MONEY",
+						"SUB-TOPIC:RWANDAN MONEY"
+					],
+					"canonicalValue": "Rwandan Currency"
+				},
+				{
+					"aliases": [
+						"CAPACITY MEASUREMENTS",
+						"SUB-TOPIC AREA: CAPACITY MEASUREMENTS",
+						"SUB-TOPIC AREA:CAPACITY MEASUREMENTS",
+						"SUB-TOPIC: CAPACITY MEASUREMENTS",
+						"SUB-TOPIC:CAPACITY MEASUREMENTS"
+					],
+					"canonicalValue": "Capacity Measurements"
+				},
+				{
+					"aliases": [
+						"MASS MEASUREMENTS",
+						"SUB-TOPIC AREA: MASS MEASUREMENTS",
+						"SUB-TOPIC AREA:MASS MEASUREMENTS",
+						"SUB-TOPIC: MASS MEASUREMENTS",
+						"SUB-TOPIC:MASS MEASUREMENTS"
+					],
+					"canonicalValue": "Mass Measurements"
+				},
+				{
+					"aliases": [
+						"TIME MEASUREMENTS",
+						"SUB-TOPIC AREA: TIME MEASUREMENTS",
+						"SUB-TOPIC AREA:TIME MEASUREMENTS",
+						"SUB-TOPIC: TIME MEASUREMENTS",
+						"SUB-TOPIC:TIME MEASUREMENTS"
+					],
+					"canonicalValue": "Time Measurements"
+				},
+				{
+					"aliases": [
+						"DIRECTIONS AND LINES",
+						"SUB-TOPIC AREA: DIRECTIONS AND LINES",
+						"SUB-TOPIC AREA:DIRECTIONS AND LINES",
+						"SUB-TOPIC: DIRECTIONS AND LINES",
+						"SUB-TOPIC:DIRECTIONS AND LINES"
+					],
+					"canonicalValue": "Directions and Lines"
+				},
+				{
+					"aliases": [
+						"DIRECTIONS AND SHAPES",
+						"SUB-TOPIC AREA: DIRECTIONS AND SHAPES",
+						"SUB-TOPIC AREA:DIRECTIONS AND SHAPES",
+						"SUB-TOPIC: DIRECTIONS AND SHAPES",
+						"SUB-TOPIC:DIRECTIONS AND SHAPES"
+					],
+					"canonicalValue": "Directions and Shapes"
+				},
+				{
+					"aliases": [
+						"ANGLES AND SHAPES",
+						"SUB-TOPIC AREA: ANGLES AND SHAPES",
+						"SUB-TOPIC AREA:ANGLES AND SHAPES",
+						"SUB-TOPIC: ANGLES AND SHAPES",
+						"SUB-TOPIC:ANGLES AND SHAPES"
+					],
+					"canonicalValue": "Angles and Shapes"
+				},
+				{
+					"aliases": [
+						"SHAPES",
+						"SUB-TOPIC AREA: SHAPES",
+						"SUB-TOPIC AREA:SHAPES",
+						"SUB-TOPIC: SHAPES",
+						"SUB-TOPIC:SHAPES"
+					],
+					"canonicalValue": "Shapes"
+				},
+				{
+					"aliases": [
+						"TYPES OF LINES AND ANGLES",
+						"SUB-TOPIC AREA: TYPES OF LINES AND ANGLES",
+						"SUB-TOPIC AREA:TYPES OF LINES AND ANGLES",
+						"SUB-TOPIC: TYPES OF LINES AND ANGLES",
+						"SUB-TOPIC:TYPES OF LINES AND ANGLES"
+					],
+					"canonicalValue": "Types of Lines and Angles"
+				},
+				{
+					"aliases": [
+						"GEOMETRICAL FIGURES AND A CIRCLE",
+						"SUB-TOPIC AREA: GEOMETRICAL FIGURES AND A CIRCLE",
+						"SUB-TOPIC AREA:GEOMETRICAL FIGURES AND A CIRCLE",
+						"SUB-TOPIC: GEOMETRICAL FIGURES AND A CIRCLE",
+						"SUB-TOPIC:GEOMETRICAL FIGURES AND A CIRCLE"
+					],
+					"canonicalValue": "Geometrical Figures and a Circle"
+				},
+				{
+					"aliases": [
+						"DIRECTIONS",
+						"SUB-TOPIC AREA: DIRECTIONS",
+						"SUB-TOPIC AREA:DIRECTIONS",
+						"SUB-TOPIC: DIRECTIONS",
+						"SUB-TOPIC:DIRECTIONS"
+					],
+					"canonicalValue": "Directions"
+				},
+				{
+					"aliases": [
+						"EQUATION",
+						"SUB-TOPIC AREA: EQUATION",
+						"SUB-TOPIC AREA:EQUATION",
+						"SUB-TOPIC: EQUATION",
+						"SUB-TOPIC:EQUATION",
+						"EQUATIONS",
+						"SUB-TOPIC AREA: EQUATIONS",
+						"SUB-TOPIC AREA:EQUATIONS",
+						"SUB-TOPIC: EQUATIONS",
+						"SUB-TOPIC:EQUATIONS"
+					],
+					"canonicalValue": "Equation"
+				},
+				{
+					"aliases": [
+						"READING A PICTOGRAPH",
+						"SUB-TOPIC AREA: READING A PICTOGRAPH",
+						"SUB-TOPIC AREA:READING A PICTOGRAPH",
+						"SUB-TOPIC: READING A PICTOGRAPH",
+						"SUB-TOPIC:READING A PICTOGRAPH"
+					],
+					"canonicalValue": "Reading a Pictograph"
+				},
+				{
+					"aliases": [
+						"DRAWINGS AND GEOMETRICAL FIGURES",
+						"SUB-TOPIC AREA: DRAWINGS AND GEOMETRICAL FIGURES",
+						"SUB-TOPIC AREA:DRAWINGS AND GEOMETRICAL FIGURES",
+						"SUB-TOPIC: DRAWINGS AND GEOMETRICAL FIGURES",
+						"SUB-TOPIC:DRAWINGS AND GEOMETRICAL FIGURES"
+					],
+					"canonicalValue": "Drawings and Geometrical Figures"
+				}
+			],
+			"description": "Use for source-visible SUB-TOPIC AREA or SUB-TOPIC labels that organize units below a topic area. Sub-Topic Area is a parent of Unit; repeated matching Sub-Topic Area labels within the same Grade and Topic Area should canonicalize to the same value and be eligible to merge across multiple unit tables. Do not use source-order carryforward to infer a missing Topic Area. Authorized source repair for P3 Unit 5 only: keep 'Length Measurements' as the source-visible Sub-Topic Area candidate, emit no absent Topic Area candidate, and use Grade='P3' plus Topic Area='Measurement' in that candidate's semantic identity scope.",
+			"identityScope": [
+				"Grade",
+				"Topic Area"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Sub-Topic Area"
+		},
+		{
+			"aliases": [
+				"Unit",
+				"UNIT"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Sub-Topic Area"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"Unit1",
+						"Unit 1: Numbers from 1 to 5",
+						"Unit 1: Numbers from 0 to 200.",
+						"UNIT 1: Numbers from 0 to 2000"
+					],
+					"canonicalValue": "Unit 1"
+				},
+				{
+					"aliases": [
+						"Unit2",
+						"Unit 2: Numbers from 1 to 9.",
+						"Unit 2: Numbers from 0 to 500",
+						"Unit 2: Numbers from 0 to 5000"
+					],
+					"canonicalValue": "Unit 2"
+				},
+				{
+					"aliases": [
+						"Unit3",
+						"Unit 3: Numbers from 0 up to 10",
+						"Unit 3: Numbers from 0 to 1000",
+						"UNIT 3: Numbers from 0 to 10000"
+					],
+					"canonicalValue": "Unit 3"
+				},
+				{
+					"aliases": [
+						"Unit4",
+						"Unit 4: Numbers from 0 up to 20",
+						"Unit 4: Fractions 1/2, 1/4 and 1/8.",
+						"Unit4: Fractions having a numerator less than or equal to 10."
+					],
+					"canonicalValue": "Unit 4"
+				},
+				{
+					"aliases": [
+						"Unit5",
+						"Unit 5:Numbers from 0 to 50.",
+						"Unit 5: Length measurements: m, dm, and cm.",
+						"UNIT 5: Relationship between length measurements."
+					],
+					"canonicalValue": "Unit 5"
+				},
+				{
+					"aliases": [
+						"Unit6",
+						"Unit 6: Numbers from 0 to 100.",
+						"Unit 6: Standard unit of capacity measurements “litre”.",
+						"Unit 6: Mass measurements from kilogram (Kg) to gram (g)."
+					],
+					"canonicalValue": "Unit 6"
+				},
+				{
+					"aliases": [
+						"Unit7",
+						"Unit 7: Number patterns",
+						"Unit 7: Mass measurements “Kg”.",
+						"Unit 7: Capacity Measurements."
+					],
+					"canonicalValue": "Unit 7"
+				},
+				{
+					"aliases": [
+						"Unit8",
+						"Unit 8: Measuring the length less than or equal to 10 m.",
+						"Unit 8: Rwandan currency from 1Frw to 1000 Frw.",
+						"UNIT 8: Rwandan money from 1Frw to 5000 Frw."
+					],
+					"canonicalValue": "Unit 8"
+				},
+				{
+					"aliases": [
+						"Unit9",
+						"Unit 9: Rwandan currency from 1Frw to 100 Frw",
+						"Unit 9: Hours, Months of the Year, and Days in Each Month.",
+						"Unit 9: Time measurement."
+					],
+					"canonicalValue": "Unit 9"
+				},
+				{
+					"aliases": [
+						"Unit10",
+						"Unit 10: Location of objects and lines",
+						"Unit 10: Types of lines and angles."
+					],
+					"canonicalValue": "Unit 10"
+				},
+				{
+					"aliases": [
+						"Unit11",
+						"Unit 11: Right angle, Square, and Rectangle",
+						"Unit 11: Square, rectangle, and triangle.",
+						"Unit 11: Square, rectangle, triangle, and circle."
+					],
+					"canonicalValue": "Unit 11"
+				},
+				{
+					"aliases": [
+						"Unit12",
+						"Unit 12: Missing numbers in addition, subtraction, multiplication, and division.",
+						"Unit 12: Grid."
+					],
+					"canonicalValue": "Unit 12"
+				},
+				{
+					"aliases": [
+						"Unit13",
+						"Unit 13: Pictographs / Simple graphs",
+						"Unit 13: Missing numbers in addition, subtraction, multiplication, and division."
+					],
+					"canonicalValue": "Unit 13"
+				},
+				{
+					"aliases": [
+						"Unit14",
+						"Unit 14: Pictograph used in counting."
+					],
+					"canonicalValue": "Unit 14"
+				}
+			],
+			"description": "Use for source-visible unit headings, including the unit number and title. Preserve the complete visible title in the candidate description, for example 'Unit 1: Numbers from 1 to 5'. For controlled identity scope, map the active source-visible unit number to the canonical value 'Unit N' (Unit 1 through Unit 14). Grade is a separate scope dimension, so the same unit number in different grades remains distinct. Select Unit scope only from the active unit table; do not carry a Unit value across unrelated tables. Do not treat the unit number as an official statement_code.",
+			"identityScope": [
+				"Grade"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Unit"
+		},
+		{
+			"aliases": [
+				"Key competences at the end of Grade",
+				"Key competences at the end of P2",
+				"Key competences"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Grade"
+				}
+			],
+			"controlledValues": [],
+			"description": "Use only for numbered key competences listed at the end of each grade-level introduction, not for generic broad competences in the front matter.",
+			"identityScope": [
+				"Grade"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Grade Key Competence"
+		},
+		{
+			"aliases": [
+				"Key Unit Competence",
+				"Key unit competence",
+				"Unit Key Competence"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Unit"
+				}
+			],
+			"controlledValues": [],
+			"description": "Use for the source-visible Key Unit Competence statement inside each unit table.",
+			"identityScope": [
+				"Grade",
+				"Unit"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Key Unit Competence"
+		},
+		{
+			"aliases": [
+				"Knowledge and Understanding",
+				"Knowledge and understanding",
+				"Knowledge"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Key Unit Competence"
+				}
+			],
+			"controlledValues": [],
+			"description": "Use for each distinct learning-objective bullet or separately expressed statement in the Knowledge and Understanding column. Do not use for Content column bullets, and do not combine the objective with horizontally aligned Skills, Attitudes and Values, Content, or Learning Activities text.",
+			"identityScope": [
+				"Grade",
+				"Unit"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Knowledge Objective"
+		},
+		{
+			"aliases": [
+				"Skills"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Key Unit Competence"
+				}
+			],
+			"controlledValues": [],
+			"description": "Use for each distinct learning-objective bullet or separately expressed statement in the Skills column. Do not use for Learning Activities column bullets, and do not combine the objective with horizontally aligned Knowledge and Understanding, Attitudes and Values, Content, or Learning Activities text.",
+			"identityScope": [
+				"Grade",
+				"Unit"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Skills Objective"
+		},
+		{
+			"aliases": [
+				"Attitudes and Values",
+				"Attitudes and values"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Key Unit Competence"
+				}
+			],
+			"controlledValues": [],
+			"description": "Use for each distinct learning-objective bullet or separately expressed statement in the Attitudes and Values column. Do not use for general pedagogy or front-matter values discussion, and do not combine the objective with horizontally aligned Knowledge and Understanding, Skills, Content, or Learning Activities text.",
+			"identityScope": [
+				"Grade",
+				"Unit"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Attitudes and Values Objective"
+		}
+	],
+	"subjectAliases": [],
+	"subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+	"subjectMappingStatus": "mapped",
+	"subjectVocabulary": {
+		"unmatchedValue": "Other",
+		"values": [
+			"English Language Arts",
+			"Mathematics",
+			"Science",
+			"Social Studies",
+			"Other"
+		],
+		"vocabularyId": "learning-commons-academic-subject",
+		"vocabularyVersion": "2026-07-21"
+	}
+}

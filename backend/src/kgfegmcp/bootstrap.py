@@ -1,0 +1,323 @@
+"""This module constructs the immutable application state for one server lifespan.
+
+This module is the composition root for the application's existing configuration,
+profile, graph-package, validation, catalog, prompt, resource, and search components.
+It creates those dependencies in their approved order, builds the complete accepted
+catalog through the existing validation gate, and constructs independent package-local
+search indexes from that catalog result.
+
+The resulting ``AppState`` retains the settings, catalog result, catalog service,
+comparison service, progression-evidence service, prompt service, resource service, and
+search service that MCP components use during one server lifespan. Importing this
+module defines the construction process but does not execute it or access runtime files.
+"""
+
+# Future Library
+from __future__ import annotations
+
+# Standard Library
+import logging
+
+from dataclasses import dataclass
+from time import perf_counter
+
+# Package Library
+from kgfegmcp.catalog.models import CatalogLoadResult
+from kgfegmcp.catalog.repository import CatalogRepository
+from kgfegmcp.catalog.service import CatalogService
+from kgfegmcp.config import BackendSettings
+from kgfegmcp.packages.loader import GraphPackageLoader
+from kgfegmcp.packages.repository import GraphPackageRepository
+from kgfegmcp.packages.validator import GraphPackageValidator
+from kgfegmcp.profiles.repository import ProfileRepository
+from kgfegmcp.prompts.repository import PromptConfigRepository
+from kgfegmcp.prompts.service import PromptService
+from kgfegmcp.resources.policy import ResourcePolicy
+from kgfegmcp.resources.repository import ResourceRepository
+from kgfegmcp.resources.service import ResourceService
+from kgfegmcp.search.service import SearchService
+from kgfegmcp.services.comparison import ComparisonService
+from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.services.progression import ProgressionEvidenceService
+from kgfegmcp.services.standards import StandardsService
+
+_LOGGER = logging.getLogger("fastmcp.kgfegmcp.bootstrap")
+
+
+@dataclass(frozen=True, slots=True)
+class AppState:
+    """Retain one complete accepted catalog and its package-scoped services.
+
+    Attributes
+    ----------
+    catalog_load_result
+        Complete all-or-nothing catalog result and read-only validation evidence.
+    catalog_service
+        Exact and unique-current in-memory catalog routing service.
+    comparison_service
+        Deterministic exact-package comparison service over the accepted runtime.
+    progression_evidence_service
+        Deterministic bounded progression-evidence service over the accepted runtime.
+    prompt_service
+        Generic, profile-aware prompt service over the same accepted runtime.
+    resource_service
+        Rights-aware read-only resource service over the same accepted runtime.
+    search_service
+        Deterministic search service with independent package-local indexes.
+    settings
+        Immutable settings used to construct this application state.
+    """
+
+    catalog_load_result: CatalogLoadResult
+    catalog_service: CatalogService
+    comparison_service: ComparisonService
+    progression_evidence_service: ProgressionEvidenceService
+    prompt_service: PromptService
+    resource_service: ResourceService
+    search_service: SearchService
+    settings: BackendSettings
+
+    def __post_init__(self) -> None:
+        """Require every retained service to share the same runtime objects.
+
+        Each invariant is delegated to a focused validator so that no single method
+        exceeds the project complexity budget and each remains independently testable.
+        The validators run in a fixed order, so the first violated invariant raises
+        exactly as an inline sequence of checks would.
+
+        Raises
+        ------
+        ValueError
+            If the application state mixes independently constructed catalog,
+            standards, or search objects across its retained services.
+        """
+
+        self._validate_catalog_consistency()
+        self._validate_comparison_service()
+        self._validate_progression_evidence_service()
+        self._validate_prompt_service()
+        self._validate_resource_service()
+
+    def _validate_catalog_consistency(self) -> None:
+        """Require the retained catalog service and load result to be shared.
+
+        Raises
+        ------
+        ValueError
+            If the search service owns a different catalog service, or the catalog
+            service retains a different load result.
+        """
+
+        if self.catalog_service is not self.search_service.catalog_service:
+            raise ValueError(
+                "AppState must retain the CatalogService owned by SearchService."
+            )
+
+        if self.catalog_service.load_result is not self.catalog_load_result:
+            raise ValueError(
+                "AppState services must share the retained CatalogLoadResult."
+            )
+
+    def _validate_comparison_service(self) -> None:
+        """Require the comparison service to share the retained runtime objects.
+
+        Raises
+        ------
+        ValueError
+            If the comparison service owns a different catalog service, or its
+            standards service references a different search service.
+        """
+
+        if self.comparison_service.catalog_service is not self.catalog_service:
+            raise ValueError(
+                "AppState must retain the CatalogService owned by ComparisonService."
+            )
+
+        if (
+            self.comparison_service.standards_service.search_service
+            is not self.search_service
+        ):
+            raise ValueError(
+                "AppState comparison and search services must share SearchService."
+            )
+
+    def _validate_progression_evidence_service(self) -> None:
+        """Require the progression-evidence service to share retained objects.
+
+        Raises
+        ------
+        ValueError
+            If the progression-evidence service owns a different catalog service, or a
+            different standards service than the comparison service.
+        """
+
+        if (
+            self.progression_evidence_service.catalog_service
+            is not self.catalog_service
+        ):
+            raise ValueError(
+                "AppState must retain the CatalogService owned by ProgressionEvidenceService."
+            )
+
+        if (
+            self.progression_evidence_service.standards_service
+            is not self.comparison_service.standards_service
+        ):
+            raise ValueError(
+                "AppState comparison and progression services must share StandardsService."
+            )
+
+    def _validate_prompt_service(self) -> None:
+        """Require the prompt service to share the retained catalog service.
+
+        Raises
+        ------
+        ValueError
+            If the prompt service owns a different catalog service.
+        """
+
+        if self.prompt_service.catalog_service is not self.catalog_service:
+            raise ValueError(
+                "AppState must retain the CatalogService owned by PromptService."
+            )
+
+    def _validate_resource_service(self) -> None:
+        """Require the resource service to share the retained runtime objects.
+
+        Raises
+        ------
+        ValueError
+            If the resource service owns a different catalog service, references a
+            different standards service than the comparison service, or its standards
+            service references a different search service.
+        """
+
+        if self.resource_service.catalog_service is not self.catalog_service:
+            raise ValueError(
+                "AppState must retain the CatalogService owned by ResourceService."
+            )
+
+        if (
+            self.resource_service.standards_service
+            is not self.comparison_service.standards_service
+        ):
+            raise ValueError(
+                "AppState comparison and resource services must share StandardsService."
+            )
+
+        if (
+            self.resource_service.standards_service.search_service
+            is not self.search_service
+        ):
+            raise ValueError(
+                "AppState resource and search services must share SearchService."
+            )
+
+
+def bootstrap_application() -> AppState:
+    """Construct one immutable application state from the process environment.
+
+    Settings are instantiated exactly once for this application lifespan. Catalog
+    construction retains the existing package validation gate, and search construction
+    begins only from the complete accepted catalog result.
+
+    Returns
+    -------
+    AppState
+        Complete immutable state for one FastMCP lifespan.
+
+    Raises
+    ------
+    Exception
+        Re-raises any settings, repository, validation, catalog, prompt, graph-store,
+        resource, or search construction failure after recording an internal startup
+        diagnostic.
+    """
+
+    started_at = perf_counter()
+
+    try:
+        settings = BackendSettings()
+        profile_repository = ProfileRepository(profile_root=settings.profile_root)
+        package_repository = GraphPackageRepository(
+            graph_packages_root=settings.graph_packages_root
+        )
+        package_loader = GraphPackageLoader(
+            profile_repository=profile_repository, repository=package_repository
+        )
+        package_validator = GraphPackageValidator(
+            loader=package_loader, repository=package_repository
+        )
+        catalog_repository = CatalogRepository(
+            invalid_package_policy=settings.invalid_package_policy,
+            package_repository=package_repository,
+            validator=package_validator,
+        )
+        catalog_load_result = catalog_repository.load()
+        prompt_config_repository = PromptConfigRepository(
+            prompt_root=settings.prompt_root
+        )
+        prompt_config_registry = prompt_config_repository.load_registry(
+            catalog_load_result
+        )
+        search_service = SearchService.from_catalog_load_result(catalog_load_result)
+        catalog_service = search_service.catalog_service
+        framework_service = FrameworkService(catalog_service=catalog_service)
+        prompt_service = PromptService(
+            catalog_service=catalog_service, config_registry=prompt_config_registry
+        )
+        standards_service = StandardsService(
+            catalog_service=catalog_service,
+            framework_service=framework_service,
+            search_service=search_service,
+        )
+        comparison_service = ComparisonService(
+            catalog_service=catalog_service, standards_service=standards_service
+        )
+        progression_evidence_service = ProgressionEvidenceService(
+            catalog_service=catalog_service, standards_service=standards_service
+        )
+        resource_policy = ResourcePolicy(
+            max_resource_bytes=settings.max_resource_bytes,
+            max_resource_source_bytes=settings.max_resource_source_bytes,
+        )
+        resource_repository = ResourceRepository(policy=resource_policy)
+        resource_service = ResourceService(
+            catalog_service=catalog_service,
+            policy=resource_policy,
+            repository=resource_repository,
+            standards_service=standards_service,
+        )
+        state = AppState(
+            catalog_load_result=catalog_load_result,
+            catalog_service=catalog_service,
+            comparison_service=comparison_service,
+            progression_evidence_service=progression_evidence_service,
+            prompt_service=prompt_service,
+            resource_service=resource_service,
+            search_service=search_service,
+            settings=settings,
+        )
+    except Exception:
+        _LOGGER.exception(
+            msg=(
+                "Application state construction failed: operation=application_bootstrap."
+            )
+        )
+        raise
+
+    accepted_package_count = len(state.catalog_load_result.package_runtimes)
+    elapsed_milliseconds = round((perf_counter() - started_at) * 1_000)
+    _LOGGER.info(
+        msg=(
+            f"Application state construction completed: "
+            f"accepted_package_count={accepted_package_count}, "
+            f"discovered_package_count="
+            f"{state.catalog_load_result.discovered_package_count}, "
+            f"elapsed_milliseconds={elapsed_milliseconds}, "
+            f"excluded_package_count="
+            f"{state.catalog_load_result.excluded_package_count}, "
+            f"operation=application_bootstrap."
+        )
+    )
+    return state

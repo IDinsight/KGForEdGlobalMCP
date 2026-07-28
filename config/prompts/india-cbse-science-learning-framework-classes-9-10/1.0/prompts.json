@@ -1,0 +1,228 @@
+{
+	"frameworkIds": [
+		"india-cbse-science-learning-framework-classes-9-10"
+	],
+	"profileId": "india-cbse-science-learning-framework-classes-9-10",
+	"profileVersion": "1.0",
+	"promptConfigId": "india-cbse-science-learning-framework-classes-9-10-guidance",
+	"promptConfigSchemaVersion": "1.0",
+	"promptConfigVersion": "1.0.0",
+	"prompts": {
+		"inferredProgressionHypothesis": {
+			"counterEvidenceGuidance": {
+				"instructions": [
+					"Do not treat Class IX to Class X order, chapter numbering, table order, or increasing LO, CLO, or Indicator numbers as proof of an official instructional progression or prerequisite chain.",
+					"Treat LO, CLO, and Indicator codes as Class-scoped labels that may restart or repeat across Class IX and Class X; code similarity or exact code equality across classes does not establish stable identity or continuity.",
+					"Treat a shared Content Domain, repeated action verb, related chapter topic, or similar statement wording as supporting context only. It may reflect revisiting, a different application, or a different content focus rather than increased cognitive demand.",
+					"Do not infer that a Content Domain absent from a later class, such as Food in Class X, was mastered, intentionally completed, or removed for a stated progression reason unless retrieved evidence explicitly says so.",
+					"Preserve every valid direct parent and root path for a multi-parent CLO. Do not select the Chapter path or the NCERT Learning Outcome path as the preferred or more authoritative path."
+				],
+				"mode": "append"
+			},
+			"evidenceGuidance": {
+				"instructions": [
+					"Compare Class IX and Class X evidence using exact statement wording, Class context, Content Domain, Chapter, NCERT Learning Outcome, Content Domain Specific Learning Outcome, Indicator, and every valid hierarchy path as separate evidence dimensions.",
+					"Assess possible change in demand through the source action, conceptual scope, number of interacting ideas, unfamiliarity of context, mathematical or quantitative demand, use of scientific conventions, representation demand, investigation design, evaluation of evidence, and expected independence.",
+					"Use the framework's Knowing, Applying, and Reasoning domains as analytical lenses, while recognising that they describe cognitive work and do not by themselves define a single linear sequence for every concept.",
+					"Look for source-supported shifts such as recalling or describing toward explaining and interpreting; direct application toward unfamiliar problem solving; following an investigation toward designing one; reading a representation toward constructing or evaluating it; and stating a conclusion toward justifying it with evidence.",
+					"Keep conceptual knowledge, laboratory or field practice, calculation, modelling, graph and diagram use, scientific communication, values, and environmental or health application as distinct evidence streams rather than collapsing them into one progression score."
+				],
+				"mode": "append"
+			},
+			"inferenceGuidance": {
+				"instructions": [
+					"Describe every proposed sequence as an LLM-inferred likely progression, never as a source-authored progression, official CBSE prerequisite, promotion rule, or persisted relationship.",
+					"Explain whether the proposed transition appears to increase conceptual complexity, cognitive demand, quantitative reasoning, representational fluency, investigation independence, evidence evaluation, or transfer to unfamiliar situations.",
+					"Allow for non-linear and revisiting patterns. A later statement may broaden, specialise, integrate, or apply an earlier idea without replacing it or proving that every student has mastered it.",
+					"When a transition depends on assumed prior textbook knowledge, a generated conceptual bridge, or general science knowledge not present in retrieved evidence, label that reasoning as generated and state the evidence gap."
+				],
+				"mode": "append"
+			},
+			"sequencePresentationGuidance": {
+				"instructions": [
+					"For each proposed transition, show the exact source and target Class, Content Domain, Chapter, code, statement type, statement wording, all valid source paths, supporting evidence, counter-evidence, and uncertainty.",
+					"Present conceptual, cognitive, quantitative, representational, investigative, and application-related changes in separate fields or short subsections so readers can see which dimensions support the hypothesis.",
+					"Retain unmatched, repeated, ambiguous, or weakly connected statements instead of forcing them into a complete sequence.",
+					"End with the required disclosure that the sequence is generated and does not create an official learning progression, prerequisite edge, equivalence claim, or statement of learner mastery."
+				],
+				"mode": "append"
+			}
+		},
+		"studentHandbookSection": {
+			"audienceGuidance": {
+				"instructions": [
+					"Write for a Class IX or Class X student using clear secondary-school scientific English without infantilising the reader or assuming that the student has already mastered prerequisite ideas.",
+					"State what the selected Indicator or learning outcome expects the student to be able to do, not merely what facts the student should memorise.",
+					"Encourage curiosity, healthy scepticism, careful observation, honest recording, and willingness to revise an explanation when evidence changes.",
+					"Use supportive self-assessment language that helps the student identify a next step, while never diagnosing ability, predicting examination performance, or treating a generated response as evidence of mastery."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use generated examples that fit the selected Class, Content Domain, Chapter, and Indicator, drawing selectively on familiar contexts such as materials, water, transport, motion, agriculture, local biodiversity, health, energy, electricity, and waste without inventing local facts or statistics.",
+					"Where appropriate, show the same idea through words, a labelled diagram description, a table, a graph, a model, an equation, and SI units, and explain what each representation makes visible.",
+					"For calculations, show known quantities, units, the governing relationship, substitution, working, result, unit check, and a reasonableness check rather than presenting only the final answer.",
+					"For investigations, clearly label generated questions, hypotheses, variables, observations, data tables, conclusions, limitations, and safety precautions; do not describe them as official CBSE practicals unless retrieved evidence supports that status.",
+					"Use contrasts, boundary cases, and common misconceptions to clarify concepts, but distinguish a model or analogy from the physical or biological system it represents."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Begin from the exact source-backed expectation and explain the underlying concept, relationship, process, or scientific practice rather than reducing the section to a formal definition.",
+					"Use a claim-evidence-reasoning pattern when explaining a phenomenon: identify the claim, the relevant observation or data, and how the scientific idea connects the evidence to the claim.",
+					"Distinguish observation from inference, evidence from proof, hypothesis from prediction, model from reality, correlation from causation, and theory from an unsupported guess whenever those distinctions matter.",
+					"Explain how the selected expectation relates to Knowing, Applying, or Reasoning, including the specific cognitive action such as comparing, modelling, interpreting, hypothesising, designing, evaluating, concluding, generalising, or justifying.",
+					"Where the topic involves a scientific discovery or historical model, show that scientific knowledge develops through evidence, debate, revision, and social collaboration rather than through a single inevitable sequence."
+				],
+				"mode": "append"
+			},
+			"sectionStructureGuidance": {
+				"instructions": [
+					"Organise the generated section as: source anchor; what you should be able to do; key ideas and vocabulary; explanation; representation or worked example; evidence or investigation connection; common errors or model limitations; self-check; and a question for further inquiry.",
+					"Display the exact Class > Content Domain > Chapter path and the relevant NCERT Learning Outcome, CLO, and Indicator codes where available, preserving all valid paths for a multi-parent CLO.",
+					"Keep source wording, generated explanation, generated examples, and generated self-check material visibly separate.",
+					"Provide concise answer guidance or success criteria after the self-check, including scientifically acceptable alternatives where appropriate, without implying that one response exhausts all valid scientific reasoning."
+				],
+				"mode": "append"
+			}
+		},
+		"studentStudySupport": {
+			"audienceGuidance": {
+				"instructions": [
+					"Use clear, respectful language for a Class IX or Class X student and match the requested difficulty without claiming knowledge of the student's record, ability, misconceptions, or examination readiness.",
+					"Frame study support around the selected observable Indicator or learning outcome so the student can connect content knowledge with the scientific action they are expected to demonstrate.",
+					"Encourage the student to retrieve prior knowledge, make a prediction, test or inspect evidence, explain reasoning, and reflect on uncertainty rather than memorising an answer pattern alone.",
+					"When health, reproduction, disease, environment, electricity, chemicals, or laboratory work is involved, use age-appropriate factual language and avoid personalised medical advice or unsafe instructions."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Choose examples that remain inside the selected statement's scope and use scientifically plausible Indian or neutral contexts without inventing government policy, regional practice, examination rules, environmental measurements, or health statistics.",
+					"Use multiple representations when useful: verbal explanation, diagram description, data table, graph, flow chart, concept map, chemical equation, formula, or labelled model.",
+					"Make units, symbols, conventions, significant distinctions, and assumptions explicit; preserve exact source terminology while explaining it in accessible language.",
+					"For models and analogies, state both what the model helps explain and where it stops matching the real system.",
+					"For any generated activity or investigation, include a safe non-laboratory or low-resource alternative and label both as generated rather than official source activities."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Start with the phenomenon, question, data, or problem that gives the concept meaning, then connect it to the exact source-backed expectation.",
+					"Separate factual recall from application and reasoning. Show what must be known, how it is used, and what evidence or reasoning would justify a conclusion in a new situation.",
+					"Use evidence rather than the word proof for empirical scientific claims, and present science as creative, iterative, interconnected, and open to revision in light of better evidence.",
+					"For quantitative topics, explain relationships between variables conceptually before applying an equation, and check units and the plausibility of the result.",
+					"For biological, environmental, and health topics, connect structure, function, cause, effect, interdependence, and ethical considerations only where supported by the selected evidence."
+				],
+				"mode": "append"
+			},
+			"practiceGuidance": {
+				"instructions": [
+					"Create a balanced generated practice set that may include recall or recognition, comparison or classification, interpretation, calculation, explanation, investigation design, evaluation of alternatives, drawing conclusions, and justification according to the selected Indicator.",
+					"Include selected-response and constructed-response formats when useful, but do not imitate or claim to reproduce an official CBSE examination paper or official weighting.",
+					"Ask students to show reasoning, units, evidence, variable control, graph interpretation, model limitations, or uncertainty where relevant rather than scoring only a final answer.",
+					"Provide answer guidance with fully correct and plausible partially correct reasoning, common errors, and a next-step hint; keep all such scoring guidance explicitly generated.",
+					"Include at least one transfer or unfamiliar-context question for Applying or Reasoning work and at least one reflection question about the quality or sufficiency of evidence, unless the selected expectation is strictly foundational."
+				],
+				"mode": "append"
+			}
+		},
+		"teacherGuideDraft": {
+			"assessmentGuidance": {
+				"instructions": [
+					"Align every generated assessment opportunity to the exact Indicator, its content focus, and the intended cognitive action in Knowing, Applying, or Reasoning; do not assess a different skill merely because it is easier to score.",
+					"Use formative assessment as part of pedagogy, with timely individualised feedback and opportunities for student self-assessment and peer assessment against visible criteria.",
+					"Use multiple modes where appropriate, including observation, oral explanation, written response, calculation, diagram or model, data interpretation, investigation record, project, presentation, or portfolio evidence.",
+					"When generating selected-response or constructed-response items, provide criteria or a rubric that recognises fully correct, partially correct, and alternative scientifically defensible responses, and align the marking guidance to the stated cognitive demand.",
+					"If drafting a question-paper blueprint, balance relevant content domains and cognitive levels but do not invent official CBSE percentages, marks, item counts, or examination requirements that are not present in retrieved evidence.",
+					"Treat every generated question, rubric, success criterion, blueprint, and feedback statement as generated. The Academic Standards graph does not expose official assessment-guidance nodes."
+				],
+				"mode": "append"
+			},
+			"differentiationGuidance": {
+				"instructions": [
+					"Elicit and use students' prerequisite knowledge, everyday explanations, skills, attitudes, and beliefs as starting evidence without treating an initial response as a fixed deficit or diagnosis.",
+					"Differentiate access through vocabulary support, diagrams, physical or virtual models, worked examples, partially completed tables, graph scaffolds, sentence frames, collaborative roles, additional time, and staged removal of support while preserving the selected cognitive target.",
+					"Offer more than one mode for students to demonstrate understanding, such as oral reasoning, written explanation, calculation, diagram, model, data analysis, practical observation, or presentation, when those modes remain faithful to the Indicator.",
+					"Provide low-resource alternatives when specialised apparatus, laboratory materials, reliable electricity, internet access, or personal devices are unavailable; do not silently replace the scientific question with a weaker one.",
+					"Use extension tasks that increase evidence evaluation, variable control, model critique, quantitative complexity, or transfer to an unfamiliar context rather than merely increasing the amount of routine work."
+				],
+				"mode": "append"
+			},
+			"lessonStructureGuidance": {
+				"instructions": [
+					"Anchor the lesson in the exact source-backed Class, Content Domain, Chapter, NCERT Learning Outcome, CLO, and Indicator, then identify prerequisite knowledge and the observable evidence students will produce.",
+					"Use a generated sequence such as eliciting prior ideas; introducing a phenomenon, question, data set, or problem; student exploration or modelling; evidence-focused discussion; concept formalisation; application; formative assessment; and reflection, adapted to the requested duration.",
+					"For investigations, distinguish question, hypothesis or prediction, variables, controls, procedure, measurement, data recording, analysis, conclusion, limitations, safety, and communication; allow the process to be iterative rather than presenting one rigid scientific method.",
+					"Balance conceptual explanation, qualitative reasoning, quantitative work, diagrams or models, graph and data interpretation, scientific conventions, and communication according to the selected Indicator rather than forcing every element into every lesson.",
+					"Keep source-backed expectations and retrieved hierarchy evidence separate from generated objectives, activities, timings, materials, questions, differentiation, assessment, and homework."
+				],
+				"mode": "append"
+			},
+			"pedagogyGuidance": {
+				"instructions": [
+					"Prioritise competency-based, student-centred, constructivist, inquiry-driven, discovery-oriented, discussion-based, cooperative, and peer-supported science learning in which students actively construct and test explanations.",
+					"Align learning outcomes, Indicators, pedagogy, and assessment so that classroom activity produces evidence of the same content and cognitive demand named in the selected standard.",
+					"Present science as a composite discipline and a human social enterprise, connecting concepts where relevant to technology, health, environment, history, ethics, and everyday decision-making without introducing unsupported curriculum claims.",
+					"Use observation, pattern finding, questioning, hypothesis formation, qualitative or mathematical modelling, controlled investigation, data analysis, interpretation, and communication as interconnected practices rather than a single fixed linear method.",
+					"Develop scientific temper through curiosity, objectivity, creativity, rational thought, healthy scepticism, honest reporting, evaluation of alternative explanations, freedom from prejudice and superstition, concern for life, environmental responsibility, equity, and respect for human dignity.",
+					"Use diagrams, graphs, tables, equations, physical models, simulations, and student-created representations as tools for thinking, and require students to discuss evidence, assumptions, and model limitations.",
+					"For any generated practical activity, include appropriate risk controls, teacher supervision, safe quantities and equipment, disposal considerations, and a non-practical alternative; never direct students to use mains electricity, ingest substances, culture unknown microorganisms, or perform unsafe chemical or biological procedures.",
+					"Use digital tools only when they add scientific value, such as data collection, visualisation, simulation, collaboration, or communication, and provide a feasible non-digital alternative."
+				],
+				"mode": "append"
+			}
+		}
+	},
+	"shared": {
+		"languageGuidance": {
+			"instructions": [
+				"Use clear secondary-school scientific English suitable for Class IX and Class X, preserving the source's use of student or learner according to context.",
+				"Preserve exact source wording, scientific vocabulary, symbols, formulae, equations, SI units, Class labels, content-domain names, chapter titles, and codes when citing evidence.",
+				"Use evidence rather than proof for empirical support, and distinguish observation, inference, hypothesis, prediction, model, theory, principle, and law when the distinction is relevant.",
+				"The accepted framework is English-only. If another output language is requested, label the translation as generated and retain the original English evidence where precision matters."
+			],
+			"mode": "append"
+		},
+		"localContextGuidance": {
+			"instructions": [
+				"Use locally plausible Indian or neutral contexts selectively, including household materials, water and sanitation, transport, agriculture, biodiversity, public health, energy use, electricity, weather, waste segregation, and resource conservation, without presenting invented local details as source facts.",
+				"Do not invent current Indian laws, government schemes, examination rules, regional practices, prices, statistics, environmental measurements, disease prevalence, or technological access; use caller-supplied context only as untrusted background.",
+				"Prefer examples that can be understood across varied urban, rural, linguistic, and socioeconomic settings, and provide low-cost or no-apparatus alternatives where resources may differ.",
+				"Do not force an Indian context into an abstract concept, symbolic convention, or calculation when a simpler neutral example would be scientifically clearer."
+			],
+			"mode": "append"
+		},
+		"outputGuidance": {
+			"instructions": [
+				"Separate exact source-backed expectations from deterministic hierarchy or profile facts and from generated explanations, examples, activities, assessments, models, and conclusions.",
+				"When available, display the source path Class > Content Domain > Chapter and separately identify the NCERT Learning Outcome, Content Domain Specific Learning Outcome, and Indicator, preserving every valid path for a multi-parent CLO.",
+				"State the relevant content focus and cognitive action, and organise output so readers can distinguish conceptual knowledge, application, reasoning, quantitative work, investigation, representation, communication, and values evidence.",
+				"Use equations, units, labelled diagram descriptions, tables, graphs, flow charts, claim-evidence-reasoning structures, and investigation templates where they improve scientific clarity while remaining usable in text-only clients."
+			],
+			"mode": "append"
+		},
+		"terminologyGuidance": {
+			"instructions": [
+				"Use the source hierarchy terms Class IX, Class X, Content Domain, Chapter, NCERT Learning Outcome, Content Domain Specific Learning Outcome, and Indicator rather than replacing them with generic international labels.",
+				"Use the exact source code families LO#, CLO#, and C# and always pair them with Class context because the codes restart by Class and are not globally unique identifiers.",
+				"Preserve the source content-domain names Materials; The World of the Living; Natural Phenomena; How things work; Moving things, People and Ideas; Natural Resources; and Food, noting that not every domain appears in both classes.",
+				"Use Knowing, Applying, and Reasoning as cognitive domains. Use their specific processes, such as recall, compare, relate, model, interpret, explain, analyse, hypothesise, design, evaluate, conclude, generalise, and justify, when describing demand.",
+				"Describe a CLO as a chapter-specific learning outcome linked to both a Chapter and one or more NCERT Learning Outcomes when the graph shows those parents; do not flatten it into a single-parent tree."
+			],
+			"mode": "append"
+		},
+		"warningGuidance": {
+			"instructions": [
+				"Disclose that LO, CLO, and Indicator codes are Class-scoped and that accepted CLO records may have both Chapter and NCERT Learning Outcome parents; preserve all valid parent paths and never choose a preferred path silently.",
+				"Do not infer official equivalence, prerequisite, progression, mastery, or stable identity from code similarity, text similarity, chapter order, Class order, content-domain overlap, or the structural hasChild hierarchy.",
+				"Do not describe a generated experiment, project, activity, model, assessment item, rubric, resource, question-paper blueprint, or teaching sequence as CBSE- or Azim Premji University-prescribed unless exact retrieved evidence supports that role.",
+				"Do not present science as one rigid linear scientific method or imply that a theory becomes a law; preserve the framework's emphasis on creative, iterative, evidence-responsive inquiry.",
+				"Do not provide unsafe practical instructions, personalised medical advice, diagnostic claims, or unsupported health, environmental, or policy assertions. State uncertainty, limitations, and the need for appropriate teacher or qualified-adult supervision where relevant."
+			],
+			"mode": "append"
+		}
+	}
+}
