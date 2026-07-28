@@ -24,34 +24,36 @@ from fastmcp import Context
 from fastmcp.prompts import PromptResult
 
 # Package Library
-from kgfegmcp.domain.identifiers import LanguageTag
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_multi_context_prompt_result
-from kgfegmcp.mcp.tools import get_app_state
-from kgfegmcp.prompts.models import (
-    ComparisonFrameworkIds,
-    ComparisonGradeFilters,
-    ComparisonMatchLimit,
-    ComparisonSearchMode,
-    ComparisonSnapshotIds,
-    PromptFocusText,
-    PromptLocalContext,
+from kgfegmcp.mcp.prompts.arguments import (
+    ComparisonFrameworkIdsArgument,
+    ComparisonGradeFiltersArgument,
+    ComparisonMatchLimitArgument,
+    ComparisonSearchModeArgument,
+    ComparisonSnapshotIdsArgument,
+    IncludeContextPathsArgument,
+    OptionalLanguageTagArgument,
+    OptionalPromptLocalContextArgument,
+    PromptFocusTextArgument,
 )
+from kgfegmcp.mcp.tools import get_app_state
+from kgfegmcp.prompts.models import ComparisonSearchMode
 
 
 async def cross_framework_comparison(
     *,
     context: Context,
-    framework_ids: ComparisonFrameworkIds,
-    include_context_paths: bool = True,
-    local_context: PromptLocalContext | None = None,
-    local_grade_labels: ComparisonGradeFilters = (),
-    matches_per_framework: ComparisonMatchLimit = 5,
-    normalized_grades: ComparisonGradeFilters = (),
-    output_language: LanguageTag | None = None,
-    search_mode: ComparisonSearchMode = ComparisonSearchMode.TEXT,
-    snapshot_ids: ComparisonSnapshotIds = (),
-    topic_or_query: PromptFocusText,
+    framework_ids: ComparisonFrameworkIdsArgument,
+    include_context_paths: IncludeContextPathsArgument = True,
+    local_context: OptionalPromptLocalContextArgument = None,
+    local_grade_labels: ComparisonGradeFiltersArgument = (),
+    matches_per_framework: ComparisonMatchLimitArgument = 5,
+    normalized_grades: ComparisonGradeFiltersArgument = (),
+    output_language: OptionalLanguageTagArgument = None,
+    search_mode: ComparisonSearchModeArgument = ComparisonSearchMode.TEXT,
+    snapshot_ids: ComparisonSnapshotIdsArgument = (),
+    topic_or_query: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return an exploratory evidence-grounded cross-framework workflow.
 

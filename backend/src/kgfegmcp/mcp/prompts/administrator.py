@@ -23,34 +23,38 @@ from fastmcp import Context
 from fastmcp.prompts import PromptResult
 
 # Package Library
-from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
+from kgfegmcp.domain.identifiers import FrameworkId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_multi_context_prompt_result
-from kgfegmcp.mcp.tools import get_app_state
-from kgfegmcp.prompts.models import (
-    ComparisonMatchLimit,
-    ComparisonSearchMode,
-    PromptFocusText,
-    PromptGradeOrStage,
-    PromptLocalContext,
+from kgfegmcp.mcp.prompts.arguments import (
+    ComparisonMatchLimitArgument,
+    ComparisonSearchModeArgument,
+    IncludeContextPathsArgument,
+    OptionalLanguageTagArgument,
+    OptionalPromptGradeOrStageArgument,
+    OptionalPromptLocalContextArgument,
+    OptionalSnapshotIdArgument,
+    PromptFocusTextArgument,
 )
+from kgfegmcp.mcp.tools import get_app_state
+from kgfegmcp.prompts.models import ComparisonSearchMode
 
 
 async def administrator_alignment_review(
     *,
     context: Context,
-    include_context_paths: bool = True,
-    local_context: PromptLocalContext | None = None,
-    matches_per_framework: ComparisonMatchLimit = 5,
-    output_language: LanguageTag | None = None,
-    search_mode: ComparisonSearchMode = ComparisonSearchMode.TEXT,
+    include_context_paths: IncludeContextPathsArgument = True,
+    local_context: OptionalPromptLocalContextArgument = None,
+    matches_per_framework: ComparisonMatchLimitArgument = 5,
+    output_language: OptionalLanguageTagArgument = None,
+    search_mode: ComparisonSearchModeArgument = ComparisonSearchMode.TEXT,
     source_framework_id: FrameworkId,
-    source_grade_or_stage: PromptGradeOrStage | None = None,
-    source_snapshot_id: SnapshotId | None = None,
+    source_grade_or_stage: OptionalPromptGradeOrStageArgument = None,
+    source_snapshot_id: OptionalSnapshotIdArgument = None,
     target_framework_id: FrameworkId,
-    target_grade_or_stage: PromptGradeOrStage | None = None,
-    target_snapshot_id: SnapshotId | None = None,
-    topic_or_query: PromptFocusText,
+    target_grade_or_stage: OptionalPromptGradeOrStageArgument = None,
+    target_snapshot_id: OptionalSnapshotIdArgument = None,
+    topic_or_query: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return an evidence-grounded administrative comparison workflow.
 

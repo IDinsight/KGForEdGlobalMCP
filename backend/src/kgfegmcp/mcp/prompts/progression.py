@@ -18,36 +18,36 @@ from fastmcp import Context
 from fastmcp.prompts import PromptResult
 
 # Package Library
-from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
+from kgfegmcp.domain.identifiers import FrameworkId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_prompt_result
 from kgfegmcp.mcp.prompts.arguments import (
+    OptionalLanguageTagArgument,
+    OptionalPromptLocalContextArgument,
+    OptionalSnapshotIdArgument,
+    ProgressionCandidateLimitArgument,
+    ProgressionDirectionArgument,
     ProgressionLocalGradeLabelsArgument,
     ProgressionNormalizedGradesArgument,
     PromptFocusModeArgument,
     PromptFocusTextArgument,
 )
 from kgfegmcp.mcp.tools import get_app_state
-from kgfegmcp.prompts.models import (
-    ProgressionCandidateLimit,
-    ProgressionDirection,
-    PromptFocusMode,
-    PromptLocalContext,
-)
+from kgfegmcp.prompts.models import ProgressionDirection, PromptFocusMode
 
 
 async def inferred_progression_hypothesis(
     *,
-    candidate_limit: ProgressionCandidateLimit = 8,
+    candidate_limit: ProgressionCandidateLimitArgument = 8,
     context: Context,
-    direction: ProgressionDirection = ProgressionDirection.BOTH,
+    direction: ProgressionDirectionArgument = ProgressionDirection.BOTH,
     focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
-    local_context: PromptLocalContext | None = None,
+    local_context: OptionalPromptLocalContextArgument = None,
     local_grade_labels: ProgressionLocalGradeLabelsArgument = (),
     normalized_grades: ProgressionNormalizedGradesArgument = (),
-    output_language: LanguageTag | None = None,
-    snapshot_id: SnapshotId | None = None,
+    output_language: OptionalLanguageTagArgument = None,
+    snapshot_id: OptionalSnapshotIdArgument = None,
     topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for an evidence-linked inferred progression hypothesis.
