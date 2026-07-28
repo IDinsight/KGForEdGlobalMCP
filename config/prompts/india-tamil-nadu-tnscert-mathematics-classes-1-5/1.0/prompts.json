@@ -192,7 +192,7 @@
 		"outputGuidance": {
 			"instructions": [
 				"Separate exact source-backed Curricular Goal, Competency, and Content evidence from generated explanation, pedagogy, examples, practice, assessment, and synthesis.",
-				"When available, display the source path Curricular Goal > Competency > Content together with the Class-1 through Class-5 scope; do not display Class as an invented hierarchy node.",
+				"Show Curricular Goal > Competency > Content and each selected Content item's exact Class scope. Class is metadata, not a hierarchy node; never use the framework-wide Class range as item scope.",
 				"Use concise tables, labelled steps, diagrams described in words, arrays, number lines, grids, maps, pictographs, bar graphs, or worked examples when they improve clarity and remain accessible in text-only clients.",
 				"Preserve the document's Proposed Draft status and avoid language implying final adoption, mandatory textbook sequencing, or official learner attainment."
 			],

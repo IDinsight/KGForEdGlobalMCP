@@ -518,6 +518,7 @@ def _render_focus_workflow(
     elif focus_mode is PromptFocusMode.STATEMENT_CODE:
         search_call = {
             "frameworkIds": [str(identity.framework_id)],
+            "includeGroupings": True,
             "limit": 25,
             "mode": "code_exact",
             "query": str(topic_or_standard),
