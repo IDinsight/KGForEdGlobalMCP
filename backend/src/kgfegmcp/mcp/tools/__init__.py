@@ -8,13 +8,15 @@ structured results. Optional resource links are derived from approved URI constr
 and never affect tool correctness.
 
 This package does not implement catalog routing, package selection, search, filtering,
-ranking, code normalization, cursor handling, graph traversal, statistics, package
-loading, validation, rights policy, or resource reads.
+ranking, code normalization, cursor construction or validation, graph traversal,
+statistics, package loading, validation, rights policy, or resource reads.
 """
 
 # Standard Library
+import json
 import logging
 
+from collections.abc import Mapping
 from typing import Any
 
 # Third Party Library
@@ -66,6 +68,33 @@ def _log_optional_link_failure(*, error: Exception, operation: str) -> None:
     )
 
 
+def build_continuation_text(payload: Mapping[str, object]) -> str:
+    """Serialize model-visible continuation data as deterministic compact JSON.
+
+    Cursor values remain opaque transport tokens. Callers must copy validated cursor
+    strings into ``payload`` without truncation or transformation so MCP clients can
+    pass them back unchanged.
+
+    Parameters
+    ----------
+    payload
+        JSON-serializable continuation state for one tool result.
+
+    Returns
+    -------
+    str
+        Stable model-visible continuation instructions and compact JSON data.
+    """
+
+    serialized = json.dumps(
+        ensure_ascii=True, obj=payload, separators=(",", ":"), sort_keys=True
+    )
+    return (
+        f"MCP continuation data. Cursor values are opaque; pass them back "
+        f"unchanged:\n{serialized}"
+    )
+
+
 def build_resource_link(
     *, description: str, mime_type: str, name: str, title: str, uri: str
 ) -> ResourceLink:
@@ -101,12 +130,18 @@ def build_resource_link(
 
 
 def build_tool_result(
-    *, content: str, resource_links: tuple[ResourceLink, ...] = (), result: FrozenSchema
+    *,
+    additional_text: tuple[str, ...] = (),
+    content: str,
+    resource_links: tuple[ResourceLink, ...] = (),
+    result: FrozenSchema,
 ) -> ToolResult:
     """Build one deterministic FastMCP result with text and structured evidence.
 
     Parameters
     ----------
+    additional_text
+        Optional model-visible text blocks containing protocol compatibility data.
     content
         Deterministic human-readable summary of the complete structured result.
     resource_links
@@ -117,13 +152,17 @@ def build_tool_result(
     Returns
     -------
     ToolResult
-        Text, optional resource links, and complete structured JSON content.
+        Text, optional compatibility text, resource links, and structured JSON content.
     """
 
     ordered_resource_links = tuple(
         sorted(resource_links, key=lambda link: str(link.uri))
     )
-    content_blocks = [TextContent(text=content, type="text"), *ordered_resource_links]
+    content_blocks = [
+        TextContent(text=content, type="text"),
+        *(TextContent(text=text, type="text") for text in additional_text),
+        *ordered_resource_links,
+    ]
     return ToolResult(
         content=content_blocks,
         structured_content=result.model_dump(by_alias=True, mode="json"),

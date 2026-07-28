@@ -25,6 +25,7 @@ from fastmcp.tools.base import ToolResult
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
+    build_continuation_text,
     build_tool_result,
     catalog_resource_links,
     framework_resource_links,
@@ -139,7 +140,8 @@ def _format_framework_list(result: ListFrameworksResult) -> str:
     lines.extend(
         (
             "",
-            f"Next cursor: {'present' if result.next_cursor is not None else 'none'}",
+            f"Has more: {_format_boolean(result.has_more)}",
+            "Continuation data: see the following MCP continuation block.",
         )
     )
     return "\n".join(lines)
@@ -376,7 +378,18 @@ async def list_frameworks(
         state = get_app_state(context)
         service = FrameworkService(catalog_service=state.catalog_service)
         result = service.list_frameworks(request)
+        continuation_text = build_continuation_text(
+            {
+                "continuationTool": "list_frameworks",
+                "cursorField": "cursor",
+                "hasMore": result.has_more,
+                "nextCursor": (
+                    result.next_cursor.root if result.next_cursor is not None else None
+                ),
+            }
+        )
         return build_tool_result(
+            additional_text=(continuation_text,),
             content=_format_framework_list(result),
             resource_links=catalog_resource_links(),
             result=result,
