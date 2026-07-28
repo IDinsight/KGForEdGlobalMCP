@@ -200,7 +200,8 @@
 				"Disclose that the source contains reused codes, same-code/different-content records, and editorial duplicates, so a code match may retrieve more than one distinct source-visible statement.",
 				"Do not infer an official prerequisite or learning progression solely from BASIC grade order, curriculum code order, or the structural hasChild hierarchy.",
 				"Do not describe a generated activity, worksheet, assessment, resource, or teaching method as NaCCA-prescribed unless retrieved source evidence explicitly supports that role.",
-				"Do not treat a generated Ghanaian context, example value, learner response, or local statistic as source-authored curriculum evidence."
+				"Do not treat a generated Ghanaian context, example value, learner response, or local statistic as source-authored curriculum evidence.",
+				"Do not interpret material unavailable through the current Academic Standards graph package as proof that it is absent from the underlying source document."
 			],
 			"mode": "append"
 		}
