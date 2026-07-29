@@ -32,10 +32,9 @@ from __future__ import annotations
 # Standard Library
 import asyncio
 import base64
-import binascii
 import json
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Annotated, Final, cast
 
@@ -111,6 +110,91 @@ _SMOKE_UNRESOLVED_NODE_ID: Final[NodeId] = cast(
 )
 
 
+def _base64_payload(*, blob: str, uri: str) -> bytes:
+    """Decode one strictly validated base64 resource blob.
+
+    Parameters
+    ----------
+    blob
+        Base64-encoded payload carried by a resource content item.
+    uri
+        Canonical resource URI used for error reporting.
+
+    Returns
+    -------
+    bytes
+        Exact decoded binary payload.
+
+    Raises
+    ------
+    RuntimeError
+        If the blob is not strictly valid base64.
+    """
+
+    try:
+        return base64.b64decode(blob, validate=True)
+    except ValueError as error:
+        raise RuntimeError(
+            f"Resource {uri!r} returned an invalid base64 blob."
+        ) from error
+
+
+def _binary_payload(value: object) -> bytes | None:
+    """Return exact bytes for one bytes-like resource content value.
+
+    Parameters
+    ----------
+    value
+        Candidate ``bytes`` or ``bytearray`` payload from a content item.
+
+    Returns
+    -------
+    bytes | None
+        Exact bytes, or ``None`` when the value is not bytes-like.
+    """
+
+    if isinstance(value, bytes):
+        return value
+
+    if isinstance(value, bytearray):
+        return bytes(value)
+
+    return None
+
+
+def _blob_payload(*, item: object, uri: str) -> bytes | None:
+    """Return the payload carried by one content item ``blob`` attribute.
+
+    Parameters
+    ----------
+    item
+        Single content item returned by ``Client.read_resource``.
+    uri
+        Canonical resource URI used for error reporting.
+
+    Returns
+    -------
+    bytes | None
+        Decoded blob payload, or ``None`` when the item carries no supported blob.
+
+    Raises
+    ------
+    RuntimeError
+        If the item carries a string blob that is not strictly valid base64.
+    """
+
+    blob = getattr(item, "blob", None)
+    binary = _binary_payload(blob)
+
+    if binary is not None:
+        return binary
+
+    if isinstance(blob, str):
+        return _base64_payload(blob=blob, uri=uri)
+
+    return None
+
+
 def _component_field(*, names: tuple[str, ...], value: object) -> str:
     """Return one string field from an MCP model or mapping.
 
@@ -155,6 +239,123 @@ def _component_field(*, names: tuple[str, ...], value: object) -> str:
     )
 
 
+def _content_item_payload(*, item: object, uri: str) -> bytes:
+    """Return the single payload carried by one MCP resource content item.
+
+    Attributes are consulted in strict precedence order: ``text`` first, then a binary
+    or base64 ``blob``, then a generic ``content`` attribute. An empty but supported
+    payload is returned as-is; the caller reports emptiness.
+
+    Parameters
+    ----------
+    item
+        Single content item returned by ``Client.read_resource``.
+    uri
+        Canonical resource URI used for error reporting.
+
+    Returns
+    -------
+    bytes
+        Exact text bytes or decoded binary bytes returned by the resource.
+
+    Raises
+    ------
+    RuntimeError
+        If the item carries no supported payload attribute, or carries a string blob
+        that is not strictly valid base64.
+    """
+
+    text_payload = _text_payload(item)
+
+    if text_payload is not None:
+        return text_payload
+
+    blob_payload = _blob_payload(item=item, uri=uri)
+
+    if blob_payload is not None:
+        return blob_payload
+
+    content_payload = _content_payload(item)
+
+    if content_payload is None:
+        raise RuntimeError(f"Resource {uri!r} returned an unsupported content item.")
+
+    return content_payload
+
+
+def _content_payload(item: object) -> bytes | None:
+    """Return the payload carried by one content item ``content`` attribute.
+
+    Parameters
+    ----------
+    item
+        Single content item returned by ``Client.read_resource``.
+
+    Returns
+    -------
+    bytes | None
+        UTF-8 encoded text or exact bytes, or ``None`` when the attribute is absent
+        or carries an unsupported type.
+    """
+
+    content = getattr(item, "content", None)
+
+    if isinstance(content, str):
+        return content.encode("utf-8")
+
+    return _binary_payload(content)
+
+
+async def _listed_inventory(client: Client) -> dict[str, tuple[str, ...]]:
+    """Return the sorted component inventory published by the subprocess server.
+
+    Parameters
+    ----------
+    client
+        Connected MCP client that has completed the protocol handshake.
+
+    Returns
+    -------
+    dict[str, tuple[str, ...]]
+        Sorted component identities keyed by the human-readable family label used in
+        inventory mismatch reporting.
+
+    Raises
+    ------
+    RuntimeError
+        If any listed component is missing its expected identity field.
+    """
+
+    prompts = await client.list_prompts()
+    resource_templates = await client.list_resource_templates()
+    resources = await client.list_resources()
+    tools = await client.list_tools()
+    return {
+        "fixed-resource": tuple(
+            sorted(
+                _component_field(names=("uri",), value=resource)
+                for resource in resources
+            )
+        ),
+        "prompt": tuple(
+            sorted(
+                _component_field(names=("name",), value=prompt) for prompt in prompts
+            )
+        ),
+        "resource-template": tuple(
+            sorted(
+                _component_field(
+                    names=("uriTemplate", "uri_template"), value=resource_template
+                )
+                for resource_template in resource_templates
+            )
+        ),
+        "tool": tuple(
+            sorted(_component_field(names=("name",), value=tool) for tool in tools)
+        ),
+    }
+
+
 def _project_root() -> Path:
     """Return the repository root containing ``backend``, ``config``, and ``data``.
 
@@ -165,6 +366,39 @@ def _project_root() -> Path:
     """
 
     return Path(__file__).resolve().parents[4]
+
+
+def _require_approved_inventory(inventory: Mapping[str, tuple[str, ...]]) -> None:
+    """Require every listed component family to match the approved server surface.
+
+    Families are checked in a fixed order - prompt, resource template, fixed resource,
+    then tool - so that a failing run reports the same first mismatch it reported
+    before this check was extracted into its own function.
+
+    Parameters
+    ----------
+    inventory
+        Sorted component identities keyed by family label, as returned by
+        ``_listed_inventory``.
+
+    Raises
+    ------
+    RuntimeError
+        If any component family differs from its approved identities. A family that is
+        absent from the mapping is reported as an empty actual inventory.
+    """
+
+    expected_inventory = (
+        ("prompt", tuple(sorted(_EXPECTED_PROMPT_NAMES))),
+        ("resource-template", tuple(sorted(RESOURCE_URI_TEMPLATES))),
+        ("fixed-resource", (CATALOG_URI,)),
+        ("tool", tuple(sorted(_EXPECTED_TOOL_NAMES))),
+    )
+
+    for label, expected in expected_inventory:
+        _require_inventory(
+            actual=inventory.get(label, ()), expected=expected, label=label
+        )
 
 
 def _require_bundle_root(bundle_root: Path) -> Path:
@@ -264,37 +498,7 @@ def _resource_payload(*, contents: Sequence[object], uri: str) -> bytes:
             f"expected 'application/json'."
         )
 
-    text = getattr(item, "text", None)
-
-    if isinstance(text, str):
-        payload = text.encode("utf-8")
-    else:
-        blob = getattr(item, "blob", None)
-
-        if isinstance(blob, bytes):
-            payload = blob
-        elif isinstance(blob, bytearray):
-            payload = bytes(blob)
-        elif isinstance(blob, str):
-            try:
-                payload = base64.b64decode(blob, validate=True)
-            except (binascii.Error, ValueError) as error:
-                raise RuntimeError(
-                    f"Resource {uri!r} returned an invalid base64 blob."
-                ) from error
-        else:
-            content = getattr(item, "content", None)
-
-            if isinstance(content, str):
-                payload = content.encode("utf-8")
-            elif isinstance(content, bytes):
-                payload = content
-            elif isinstance(content, bytearray):
-                payload = bytes(content)
-            else:
-                raise RuntimeError(
-                    f"Resource {uri!r} returned an unsupported content item."
-                )
+    payload = _content_item_payload(item=item, uri=uri)
 
     if not payload:
         raise RuntimeError(f"Resource {uri!r} returned empty content.")
@@ -381,6 +585,38 @@ def _resource_read_targets() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
     )
 
 
+async def _resource_reads(client: Client) -> list[dict[str, object]]:
+    """Read and verify one known-good resource from every approved family.
+
+    Parameters
+    ----------
+    client
+        Connected MCP client that has completed the protocol handshake.
+
+    Returns
+    -------
+    list[dict[str, object]]
+        Deterministic per-resource read summaries in approved target order.
+
+    Raises
+    ------
+    RuntimeError
+        If any representative resource read fails decoding, JSON parsing, or
+        expected-token validation.
+    """
+
+    reads: list[dict[str, object]] = []
+
+    for label, uri, expected_tokens in _resource_read_targets():
+        contents = await client.read_resource(uri)
+        byte_count = _verify_json_resource(
+            contents=contents, expected_tokens=expected_tokens, uri=uri
+        )
+        reads.append({"byteCount": byte_count, "label": label, "uri": uri})
+
+    return reads
+
+
 async def _run_smoke(bundle_root: Path | None) -> dict[str, object]:
     """Launch the server over STDIO and verify every fixed component family.
 
@@ -422,72 +658,24 @@ async def _run_smoke(bundle_root: Path | None) -> dict[str, object]:
         keep_alive=False,
     )
 
+    # The summary is built only after the client context closes, so a successful run
+    # also proves the subprocess shut down cleanly.
     async with Client(transport) as client:
-        prompts = await client.list_prompts()
-        resource_templates = await client.list_resource_templates()
-        resources = await client.list_resources()
-        tools = await client.list_tools()
+        inventory = await _listed_inventory(client)
+        _require_approved_inventory(inventory)
+        resource_reads = await _resource_reads(client)
 
-        prompt_names = tuple(
-            sorted(
-                _component_field(names=("name",), value=prompt) for prompt in prompts
-            )
-        )
-        resource_template_uris = tuple(
-            sorted(
-                _component_field(
-                    names=("uriTemplate", "uri_template"), value=resource_template
-                )
-                for resource_template in resource_templates
-            )
-        )
-        resource_uris = tuple(
-            sorted(
-                _component_field(names=("uri",), value=resource)
-                for resource in resources
-            )
-        )
-        tool_names = tuple(
-            sorted(_component_field(names=("name",), value=tool) for tool in tools)
-        )
-
-        _require_inventory(
-            actual=prompt_names,
-            expected=tuple(sorted(_EXPECTED_PROMPT_NAMES)),
-            label="prompt",
-        )
-        _require_inventory(
-            actual=resource_template_uris,
-            expected=tuple(sorted(RESOURCE_URI_TEMPLATES)),
-            label="resource-template",
-        )
-        _require_inventory(
-            actual=resource_uris, expected=(CATALOG_URI,), label="fixed-resource"
-        )
-        _require_inventory(
-            actual=tool_names,
-            expected=tuple(sorted(_EXPECTED_TOOL_NAMES)),
-            label="tool",
-        )
-
-        resource_reads: list[dict[str, object]] = []
-
-        for label, uri, expected_tokens in _resource_read_targets():
-            contents = await client.read_resource(uri)
-            byte_count = _verify_json_resource(
-                contents=contents, expected_tokens=expected_tokens, uri=uri
-            )
-            resource_reads.append({"byteCount": byte_count, "label": label, "uri": uri})
-
+    # Every family key is guaranteed present: _require_approved_inventory has already
+    # matched all four labels against the approved surface.
     return {
         "bundleRoot": str(project_root) if bundle_root is not None else None,
-        "fixedResourceCount": len(resource_uris),
-        "promptCount": len(prompt_names),
+        "fixedResourceCount": len(inventory["fixed-resource"]),
+        "promptCount": len(inventory["prompt"]),
         "resourceReadCount": len(resource_reads),
         "resourceReads": resource_reads,
-        "resourceTemplateCount": len(resource_template_uris),
+        "resourceTemplateCount": len(inventory["resource-template"]),
         "status": "passed",
-        "toolCount": len(tool_names),
+        "toolCount": len(inventory["tool"]),
     }
 
 
@@ -542,6 +730,28 @@ def _stdio_environment(project_root: Path) -> dict[str, str]:
         "KGFEGMCP_PROMPT_ROOT": str(project_root / "config" / "prompts"),
         "PATHS_PROJECT_DIR": str(project_root),
     }
+
+
+def _text_payload(item: object) -> bytes | None:
+    """Return the UTF-8 payload carried by one content item ``text`` attribute.
+
+    Parameters
+    ----------
+    item
+        Single content item returned by ``Client.read_resource``.
+
+    Returns
+    -------
+    bytes | None
+        UTF-8 encoded text, or ``None`` when the item carries no string text.
+    """
+
+    text = getattr(item, "text", None)
+
+    if isinstance(text, str):
+        return text.encode("utf-8")
+
+    return None
 
 
 def _verify_json_resource(
