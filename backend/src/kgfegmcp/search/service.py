@@ -1725,8 +1725,16 @@ def _paginate_hits(
             raise InvalidCursorError(
                 details={"reason": "cursor_context_mismatch"},
                 message=(
-                    "The search cursor does not match the current query or package "
+                    "The search cursor does not match the current request or package "
                     "index set."
+                ),
+                recovery_hint=(
+                    "Retry with the exact previous search_standards request. "
+                    "Replace only the cursor field. Keep the query, mode, match settings, "
+                    "framework and snapshot scope, filters, includeGroupings value, "
+                    "and limit unchanged. If the mismatch persists, restart pagination "
+                    "without a cursor because the accepted package indexes may have "
+                    "changed."
                 ),
             )
 
@@ -1742,6 +1750,9 @@ def _paginate_hits(
                 message=(
                     "The search cursor position is unavailable in the current result "
                     "ordering."
+                ),
+                recovery_hint=(
+                    "Restart the search_standards pagination sequence without a cursor."
                 ),
             ) from error
 

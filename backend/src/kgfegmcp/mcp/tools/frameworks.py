@@ -25,7 +25,7 @@ from fastmcp.tools.base import ToolResult
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
-    build_continuation_text,
+    build_request_continuation_text,
     build_tool_result,
     catalog_resource_links,
     framework_resource_links,
@@ -378,15 +378,14 @@ async def list_frameworks(
         state = get_app_state(context)
         service = FrameworkService(catalog_service=state.catalog_service)
         result = service.list_frameworks(request)
-        continuation_text = build_continuation_text(
-            {
-                "continuationTool": "list_frameworks",
-                "cursorField": "cursor",
-                "hasMore": result.has_more,
-                "nextCursor": (
-                    result.next_cursor.root if result.next_cursor is not None else None
-                ),
-            }
+        continuation_text = build_request_continuation_text(
+            cursor_field="cursor",
+            has_more=result.has_more,
+            next_cursor=(
+                result.next_cursor.root if result.next_cursor is not None else None
+            ),
+            request=request,
+            tool_name="list_frameworks",
         )
         return build_tool_result(
             additional_text=(continuation_text,),
@@ -409,7 +408,9 @@ def register_framework_tools(server: FastMCP[dict[str, AppState]]) -> None:
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
             "List accepted immutable framework snapshots with exact source metadata, "
-            "package capabilities, validation status, and checksum-protected pagination."
+            "package capabilities, validation status, and checksum-protected pagination. "
+            "For continuation, submit the provided nextRequest unchanged; only its "
+            "opaque cursor differs from the previous request."
         ),
         name="list_frameworks",
         output_schema=result_schema(ListFrameworksResult),

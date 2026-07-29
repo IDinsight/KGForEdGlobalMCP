@@ -65,6 +65,23 @@ from kgfegmcp.search.models import (
 CatalogFilterValue = Annotated[str, StringConstraints(max_length=128, min_length=1)]
 CatalogQueryText = Annotated[str, StringConstraints(max_length=256, min_length=1)]
 
+_CURSOR_BOUND_LIMIT_DESCRIPTION = (
+    "Maximum results returned on one page. This value is cursor-bound and must "
+    "remain unchanged when continuing a paginated request."
+)
+_FRAMEWORK_CURSOR_DESCRIPTION = (
+    "Opaque continuation cursor. When supplied, submit the exact previous "
+    "list_frameworks request and replace only this cursor field. Every other "
+    "field, including limit and all filters, is cursor-bound and must remain "
+    "unchanged."
+)
+_SEARCH_CURSOR_DESCRIPTION = (
+    "Opaque continuation cursor. When supplied, submit the exact previous "
+    "search_standards request and replace only this cursor field. Every other "
+    "field, including limit, scope, filters, mode, query, and match settings, "
+    "is cursor-bound and must remain unchanged."
+)
+
 
 def _require_exact_uniqueness(*, field_name: str, values: tuple[str, ...]) -> None:
     """Require one exact string tuple to contain no duplicate values.
@@ -199,7 +216,9 @@ class UnresolvedRelationshipStatistics(FrozenSchema):
 class ListFrameworksRequest(FrozenSchema):
     """Request filtered deterministic discovery of accepted framework snapshots."""
 
-    cursor: FrameworkCursor | None = None
+    cursor: FrameworkCursor | None = Field(
+        default=None, description=_FRAMEWORK_CURSOR_DESCRIPTION
+    )
     graph_types: tuple[GraphType, ...] = Field(default=(), max_length=16)
     is_current: bool | None = None
     issuing_authorities: tuple[CatalogFilterValue, ...] = Field(
@@ -210,7 +229,9 @@ class ListFrameworksRequest(FrozenSchema):
     )
     jurisdictions: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
     languages: tuple[LanguageTag, ...] = Field(default=(), max_length=64)
-    limit: int = Field(default=25, ge=1, le=100)
+    limit: int = Field(
+        default=25, description=_CURSOR_BOUND_LIMIT_DESCRIPTION, ge=1, le=100
+    )
     local_grades: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
     normalized_grades: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
     query: CatalogQueryText | None = None
@@ -309,12 +330,16 @@ class GetFrameworkResult(FrozenSchema):
 class StandardsSearchRequestBase(FrozenSchema):
     """Define fields shared by canonical text and code standards searches."""
 
-    cursor: SearchCursor | None = None
+    cursor: SearchCursor | None = Field(
+        default=None, description=_SEARCH_CURSOR_DESCRIPTION
+    )
     framework_ids: tuple[FrameworkId, ...] = Field(default=(), max_length=64)
     include_groupings: bool = False
     jurisdictions: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
     languages: tuple[LanguageTag, ...] = Field(default=(), max_length=64)
-    limit: int = Field(default=25, ge=1, le=100)
+    limit: int = Field(
+        default=25, description=_CURSOR_BOUND_LIMIT_DESCRIPTION, ge=1, le=100
+    )
     local_grade_labels: tuple[CatalogFilterValue, ...] = Field(
         default=(), max_length=64
     )

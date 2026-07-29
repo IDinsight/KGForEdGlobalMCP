@@ -26,7 +26,7 @@ from fastmcp.tools.base import ToolResult
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
-    build_continuation_text,
+    build_request_continuation_text,
     build_tool_result,
     get_app_state,
     result_schema,
@@ -499,8 +499,10 @@ def register_standard_tools(server: FastMCP[dict[str, AppState]]) -> None:
             "separate conservative variant calls with the same filters. Return exact "
             "source nodes, package provenance, local and normalized facets, matched "
             "fields and terms, warnings, epistemic status, and established cursor "
-            "evidence without progression inference. A zero-match page does not "
-            "establish curriculum absence."
+            "evidence without progression inference. For continuation, submit the "
+            "provided nextRequest unchanged; only its opaque cursor differs from the "
+            "previous request. A zero-match page does not establish curriculum "
+            "absence."
         ),
         name="search_standards",
         output_schema=result_schema(SearchStandardsResult),
@@ -540,17 +542,16 @@ async def search_standards(
     with tool_error_boundary("search_standards"):
         state = get_app_state(context)
         result = _standards_service(state).search_standards(request)
-        continuation_text = build_continuation_text(
-            {
-                "continuationTool": "search_standards",
-                "cursorField": "cursor",
-                "hasMore": result.page.has_more,
-                "nextCursor": (
-                    result.page.next_cursor.root
-                    if result.page.next_cursor is not None
-                    else None
-                ),
-            }
+        continuation_text = build_request_continuation_text(
+            cursor_field="cursor",
+            has_more=result.page.has_more,
+            next_cursor=(
+                result.page.next_cursor.root
+                if result.page.next_cursor is not None
+                else None
+            ),
+            request=request,
+            tool_name="search_standards",
         )
         return build_tool_result(
             additional_text=(continuation_text,),
