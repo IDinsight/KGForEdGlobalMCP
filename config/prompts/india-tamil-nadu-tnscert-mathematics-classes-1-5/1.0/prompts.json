@@ -201,7 +201,6 @@
 		"terminologyGuidance": {
 			"instructions": [
 				"Use the source terms Tamil Nadu Curriculum Framework 2025, Proposed Draft Syllabus, Curricular Goal, Competency, Content, Class-1, Class-2, Class-3, Class-4, and Class-5 rather than replacing them with generic international labels.",
-				"For this deployment, Madhi Mathematics and Madhi Math are operator-approved working names for this exact TNSCERT Tamil Nadu Mathematics Classes 1-5 package. Preserve and foreground the official TNSCERT title, issuer, and Proposed Draft status; do not treat either working name as a separate framework or as source-authored terminology.",
 				"Treat CG-1 through CG-5 and C-coded Competencies as source-visible grouping references. Preserve the authored surface C 1.5 when quoting it, while recognising C-1.5 as its configured canonical lookup form.",
 				"Describe Content as an uncoded, Class-scoped leaf expectation beneath one Competency. Class applicability is metadata on Content and is not an additional hierarchy level.",
 				"Preserve source-specific mathematical terminology and conventions including Indo-Arabic numerals, ₹ and Rs, railway time or 24-hour clock, metre and centimetre spellings, hand span, cubit, pace, cups, containers, and simple balance when relevant."
