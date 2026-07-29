@@ -16,20 +16,23 @@ from fastmcp import Context
 from fastmcp.prompts import PromptResult
 
 # Package Library
-from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
+from kgfegmcp.domain.identifiers import FrameworkId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_prompt_result
 from kgfegmcp.mcp.prompts.arguments import (
+    HandbookWordCountArgument,
+    OptionalLanguageTagArgument,
+    OptionalPromptLocalContextArgument,
+    OptionalSnapshotIdArgument,
+    PracticeCountArgument,
     PromptFocusModeArgument,
     PromptFocusTextArgument,
+    StudyDifficultyArgument,
 )
 from kgfegmcp.mcp.tools import get_app_state
 from kgfegmcp.prompts.models import (
-    HandbookWordCount,
-    PracticeCount,
     PromptFocusMode,
     PromptGradeOrStage,
-    PromptLocalContext,
     StudyDifficulty,
 )
 
@@ -40,10 +43,10 @@ async def student_handbook_section(
     focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
     grade_or_stage: PromptGradeOrStage,
-    local_context: PromptLocalContext | None = None,
-    output_language: LanguageTag | None = None,
-    snapshot_id: SnapshotId | None = None,
-    target_word_count: HandbookWordCount = 500,
+    local_context: OptionalPromptLocalContextArgument = None,
+    output_language: OptionalLanguageTagArgument = None,
+    snapshot_id: OptionalSnapshotIdArgument = None,
+    target_word_count: HandbookWordCountArgument = 500,
     topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for an evidence-grounded generated handbook section.
@@ -96,14 +99,14 @@ async def student_handbook_section(
 async def student_study_support(
     *,
     context: Context,
-    difficulty: StudyDifficulty = StudyDifficulty.ON_LEVEL,
+    difficulty: StudyDifficultyArgument = StudyDifficulty.ON_LEVEL,
     focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
     grade_or_stage: PromptGradeOrStage,
-    local_context: PromptLocalContext | None = None,
-    output_language: LanguageTag | None = None,
-    practice_count: PracticeCount = 5,
-    snapshot_id: SnapshotId | None = None,
+    local_context: OptionalPromptLocalContextArgument = None,
+    output_language: OptionalLanguageTagArgument = None,
+    practice_count: PracticeCountArgument = 5,
+    snapshot_id: OptionalSnapshotIdArgument = None,
     topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for evidence-grounded generated student study support.

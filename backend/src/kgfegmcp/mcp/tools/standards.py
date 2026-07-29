@@ -6,10 +6,10 @@ framework and standards services, delegate the requested operation, and return
 deterministic human-readable evidence alongside the complete structured result.
 
 The module may format or truncate text for display, but it does not select packages,
-normalize codes, tokenize text, apply filters, rank results, handle search cursors,
-resolve identifier namespaces, inspect graph stores, or calculate facet evidence. Those
-responsibilities remain in the existing framework, standards, search, catalog, and
-graph services.
+normalize codes, tokenize text, apply filters, rank results, construct, decode, or
+validate search cursors, resolve identifier namespaces, inspect graph stores, or
+calculate facet evidence. Those responsibilities remain in the existing framework,
+standards, search, catalog, and graph services.
 """
 
 # Future Library
@@ -26,6 +26,7 @@ from fastmcp.tools.base import ToolResult
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
+    build_continuation_text,
     build_tool_result,
     get_app_state,
     result_schema,
@@ -296,9 +297,7 @@ def _format_search_result(result: SearchStandardsResult) -> str:
     else:
         lines.append("- none")
 
-    lines.append(
-        f"Next cursor: {'present' if result.page.next_cursor is not None else 'none'}"
-    )
+    lines.append("Continuation data: see the following MCP continuation block.")
     return "\n".join(lines)
 
 
@@ -517,4 +516,20 @@ async def search_standards(
     with tool_error_boundary("search_standards"):
         state = get_app_state(context)
         result = _standards_service(state).search_standards(request)
-        return build_tool_result(content=_format_search_result(result), result=result)
+        continuation_text = build_continuation_text(
+            {
+                "continuationTool": "search_standards",
+                "cursorField": "cursor",
+                "hasMore": result.page.has_more,
+                "nextCursor": (
+                    result.page.next_cursor.root
+                    if result.page.next_cursor is not None
+                    else None
+                ),
+            }
+        )
+        return build_tool_result(
+            additional_text=(continuation_text,),
+            content=_format_search_result(result),
+            result=result,
+        )

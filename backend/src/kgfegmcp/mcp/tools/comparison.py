@@ -33,6 +33,7 @@ from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
+    build_continuation_text,
     build_tool_result,
     catalog_resource_links,
     get_app_state,
@@ -222,10 +223,7 @@ def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
                 f"Matches: {len(section.matches)}",
                 f"Search warnings: {len(section.package_search_warnings)}",
                 f"Comparison warnings: {len(section.warnings)}",
-                (
-                    "Next cursor: "
-                    f"{'present' if section.next_cursor is not None else 'none'}"
-                ),
+                f"Has more: {str(section.has_more).lower()}",
             )
         )
 
@@ -235,7 +233,17 @@ def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
                 f"  {index}. {node.statement_code or '[uncoded]'} | {node.node_id}"
             )
 
-    lines.extend(("", f"Fixed disclosures: {len(result.disclosures)}"))
+    lines.extend(
+        (
+            "",
+            f"Fixed disclosures: {len(result.disclosures)}",
+            (
+                "Use each non-null section cursor with the equivalent exact-package "
+                "search_standards request."
+            ),
+            "Continuation data: see the following MCP continuation block.",
+        )
+    )
     return "\n".join(lines)
 
 
@@ -312,7 +320,29 @@ async def compare_framework_evidence(
     with tool_error_boundary("compare_framework_evidence"):
         state = get_app_state(context)
         result = state.comparison_service.compare_framework_evidence(request)
+        continuation_text = build_continuation_text(
+            {
+                "sectionCursors": [
+                    {
+                        "continuationTool": "search_standards",
+                        "cursorField": "cursor",
+                        "frameworkId": str(section.framework_id),
+                        "graphPackageId": str(section.graph_package_id),
+                        "graphType": section.graph_type.value,
+                        "hasMore": section.has_more,
+                        "nextCursor": (
+                            section.next_cursor.root
+                            if section.next_cursor is not None
+                            else None
+                        ),
+                        "snapshotId": str(section.snapshot_id),
+                    }
+                    for section in result.sections
+                ]
+            }
+        )
         return build_tool_result(
+            additional_text=(continuation_text,),
             content=_format_comparison_result(result),
             resource_links=catalog_resource_links(),
             result=result,

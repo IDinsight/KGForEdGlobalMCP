@@ -15,36 +15,35 @@ from fastmcp import Context
 from fastmcp.prompts import PromptResult
 
 # Package Library
-from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
+from kgfegmcp.domain.identifiers import FrameworkId
 from kgfegmcp.mcp.errors import prompt_error_boundary
 from kgfegmcp.mcp.prompts import build_prompt_result
 from kgfegmcp.mcp.prompts.arguments import (
+    LessonDurationMinutesArgument,
+    OptionalLanguageTagArgument,
+    OptionalPromptLearnerContextArgument,
+    OptionalPromptLocalContextArgument,
+    OptionalPromptMaterialsArgument,
+    OptionalSnapshotIdArgument,
     PromptFocusModeArgument,
     PromptFocusTextArgument,
 )
 from kgfegmcp.mcp.tools import get_app_state
-from kgfegmcp.prompts.models import (
-    LessonDurationMinutes,
-    PromptFocusMode,
-    PromptGradeOrStage,
-    PromptLearnerContext,
-    PromptLocalContext,
-    PromptMaterials,
-)
+from kgfegmcp.prompts.models import PromptFocusMode, PromptGradeOrStage
 
 
 async def teacher_guide_draft(
     *,
-    available_materials: PromptMaterials | None = None,
+    available_materials: OptionalPromptMaterialsArgument = None,
     context: Context,
     focus_mode: PromptFocusModeArgument = PromptFocusMode.TOPIC,
     framework_id: FrameworkId,
     grade_or_stage: PromptGradeOrStage,
-    learner_context: PromptLearnerContext | None = None,
-    lesson_duration_minutes: LessonDurationMinutes = 45,
-    local_context: PromptLocalContext | None = None,
-    output_language: LanguageTag | None = None,
-    snapshot_id: SnapshotId | None = None,
+    learner_context: OptionalPromptLearnerContextArgument = None,
+    lesson_duration_minutes: LessonDurationMinutesArgument = 45,
+    local_context: OptionalPromptLocalContextArgument = None,
+    output_language: OptionalLanguageTagArgument = None,
+    snapshot_id: OptionalSnapshotIdArgument = None,
     topic_or_standard: PromptFocusTextArgument,
 ) -> PromptResult:
     """Return a workflow for an evidence-grounded generated teacher guide.

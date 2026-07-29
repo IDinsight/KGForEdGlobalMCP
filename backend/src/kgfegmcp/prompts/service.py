@@ -518,6 +518,7 @@ def _render_focus_workflow(
     elif focus_mode is PromptFocusMode.STATEMENT_CODE:
         search_call = {
             "frameworkIds": [str(identity.framework_id)],
+            "includeGroupings": True,
             "limit": 25,
             "mode": "code_exact",
             "query": str(topic_or_standard),
@@ -1011,11 +1012,16 @@ class PromptService:
             "3. Preserve each framework section's package-local match order, search "
             "warnings, comparison warnings, context completion evidence, unresolved "
             "statuses, has_more value, and independent next_cursor.\n"
-            "4. Cite exact standards, direct parents, and root paths when material. "
-            "Do not describe bounded paths as complete.\n"
-            "5. Use follow-up exact-package search_standards calls only when later "
-            "results are needed, using that framework section's unchanged equivalent "
-            "request and next_cursor.",
+            "4. Use only standards in each returned matches collection as comparison "
+            "candidates. Each match already includes its exact standard and requested "
+            "ancestor/root-path context; ancestors are placement context only.\n"
+            "5. Do not add ancestors, children, descendants, or siblings unless they "
+            "independently appear in that framework section's matches collection.\n"
+            "6. Do not follow next_cursor or broaden the candidate set unless the "
+            "caller explicitly requests more results.\n"
+            "7. A false sourceRoleCapabilities value means that role is not represented "
+            "or exposed through the current graph package. It does not prove absence "
+            "from the underlying source document.",
             _render_list(
                 title="EVIDENCE STATUS RULES", values=COMMON_EVIDENCE_STATUS_RULES
             ),
@@ -1517,6 +1523,9 @@ class PromptService:
             "facets, source statements, and generated synthesis as distinct fields.",
             "Cite exact framework, snapshot, graph-package, standard, direct-parent, "
             "and root-path identities for substantive source-backed observations.",
+            "Every standard used in substantive comparison or synthesis must have a "
+            "node ID in the initial matches collection; cite ancestors only as "
+            "hierarchy-placement context.",
             "Label every match [RETRIEVAL-CANDIDATE] and every cross-framework "
             "interpretation [LLM-INFERRED / GENERATED].",
             "Describe source-backed commonalities and differences without claiming "
