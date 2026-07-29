@@ -65,6 +65,18 @@ if TYPE_CHECKING:
 _COMPARISON_REQUEST_ADAPTER: Final[TypeAdapter[FrameworkComparisonRequest]] = (
     TypeAdapter(FrameworkComparisonRequest)
 )
+_LEXICAL_COMPARISON_SEMANTICS: Final[str] = (
+    "Lexical semantics: text mode matches exact normalized description tokens or "
+    "a contiguous normalized phrase. It performs no stemming, lemmatization, "
+    "fuzzy matching, or synonym expansion. Every section count is bounded to the "
+    "exact query, filters, and per-framework limit."
+)
+_LEXICAL_NO_MATCH_GUIDANCE: Final[str] = (
+    "No-match interpretation: no retained description matched this exact query and "
+    "filters in this framework section. This does not establish curriculum "
+    "absence; use a separate conservative variant call when concept-discovery "
+    "recall is visibly narrow."
+)
 ComparisonFrameworkIds = Annotated[
     tuple[FrameworkId, ...], Field(alias="frameworkIds", max_length=8, min_length=2)
 ]
@@ -78,7 +90,9 @@ ComparisonTextMatchMode = Annotated[
         alias="matchMode",
         description=(
             "Lexical matching behavior used only when mode='text'. Choose 'tokens' "
-            "for token matching or 'exact_phrase' for contiguous phrase matching."
+            "for exact normalized-token matching or 'exact_phrase' for contiguous "
+            "normalized-phrase matching. Neither mode performs stemming, fuzzy "
+            "matching, or synonym expansion."
         ),
     ),
 ]
@@ -87,8 +101,10 @@ ComparisonTextOperator = Annotated[
     Field(
         alias="matchOperator",
         description=(
-            "Whether token matching requires all or any distinct query tokens. This "
-            "field is ignored for exact-phrase and code-search modes."
+            "Whether exact normalized-token matching requires all or any distinct "
+            "query tokens. Singular, plural, and other morphological forms remain "
+            "different tokens. This field is ignored for exact-phrase and code-search "
+            "modes."
         ),
     ),
 ]
@@ -211,6 +227,9 @@ def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
         f"Query: {result.request.query}",
     ]
 
+    if result.request.mode is SearchMode.TEXT:
+        lines.append(_LEXICAL_COMPARISON_SEMANTICS)
+
     for section in result.sections:
         lines.extend(
             (
@@ -226,6 +245,9 @@ def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
                 f"Has more: {str(section.has_more).lower()}",
             )
         )
+
+        if result.request.mode is SearchMode.TEXT and not section.matches:
+            lines.append(_LEXICAL_NO_MATCH_GUIDANCE)
 
         for index, match in enumerate(section.matches, start=1):
             node = match.standard.node
@@ -364,7 +386,13 @@ def register_comparison_tools(server: "FastMCP[dict[str, AppState]]") -> None:
             "Retrieve independently bounded exact-package evidence for two through "
             "eight selected frameworks while preserving each package's search order, "
             "warnings, hierarchy context, and continuation cursor. Text mode uses the "
-            "flat matchMode and matchOperator fields."
+            "flat matchMode and matchOperator fields and exact normalized description "
+            "tokens without stemming or synonym expansion. For concept discovery, use "
+            "the caller's original wording first, then make only a small number of "
+            "separate conservative variant calls when needed. Apply each shared "
+            "variant and the same filters symmetrically to every framework. Per-query "
+            "counts and zero-match sections do not establish curriculum-wide coverage "
+            "or absence."
         ),
         name="compare_framework_evidence",
         output_schema=result_schema(CompareFrameworkEvidenceResult),

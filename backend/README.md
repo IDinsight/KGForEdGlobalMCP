@@ -168,7 +168,7 @@ The command:
 1. launches `python -m kgfegmcp.mcpb_server`;
 2. completes the MCP initialization handshake;
 3. lists tools, prompts, fixed resources, and resource templates;
-4. verifies the exact 8/1/9/6 inventory; and
+4. verifies the exact 9/1/9/6 inventory; and
 5. requires a clean subprocess shutdown.
 
 A successful run prints deterministic JSON containing:
@@ -180,7 +180,7 @@ A successful run prints deterministic JSON containing:
   "promptCount": 6,
   "resourceTemplateCount": 9,
   "status": "passed",
-  "toolCount": 8
+  "toolCount": 9
 }
 ```
 
@@ -366,6 +366,31 @@ cross_framework_comparison
 The public `compare_framework_evidence` tool uses flat `matchMode` and
 `matchOperator` fields for text retrieval. It no longer accepts a public nested `match`
 object; the MCP adapter constructs the ordinary typed text-match model internally.
+
+### Lexical query expansion
+
+A single text-search call matches exact normalized description tokens or one contiguous
+normalized phrase. It performs no stemming, lemmatization, fuzzy matching, or synonym
+expansion. Therefore, these are separate deterministic calls:
+
+```text
+fraction
+fractions
+```
+
+For topic or concept discovery, the client model must execute the caller's original
+wording first. If recall is zero or visibly narrow, it may issue at most three separate
+conservative alternatives, prioritizing inflectional, orthographic, abbreviation,
+operator-approved alias, or retrieved local-terminology variants. Every alternative must
+preserve the same framework, snapshot, graph type, grade, subject, statement-type,
+grouping, match, and limit settings. Shared cross-framework alternatives must be applied
+symmetrically.
+
+Do not merge lexical scores or cursors across calls. Presentation may deduplicate by
+`graphPackageId` plus `nodeId`, but it must record every query that retrieved the node.
+A zero-match page means only that the exact query did not match retained descriptions
+under the supplied filters. After identifying a relevant grouping, use bounded graph
+context to recover related items that do not contain any query token.
 
 The progression prompt accepts `local_grade_labels` and `normalized_grades` as
 typed arrays. MCP prompt clients serialize these complex values as JSON strings, so

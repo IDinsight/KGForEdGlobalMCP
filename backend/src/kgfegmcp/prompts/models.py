@@ -237,7 +237,7 @@ PromptInstruction = Annotated[
     AfterValidator(_require_non_whitespace),
 ]
 PROMPT_CONFIG_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
-PROMPT_VERSION: Final[str] = "1.0.0"
+PROMPT_VERSION: Final[str] = "1.1.0"
 MAX_PROMPT_CONFIG_BYTES: Final[int] = 64 * 1_024
 MAX_RENDERED_PROMPT_BYTES: Final[int] = 64 * 1_024
 
