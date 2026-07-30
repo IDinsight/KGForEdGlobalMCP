@@ -491,18 +491,19 @@ def register_standard_tools(server: FastMCP[dict[str, AppState]]) -> None:
     server.tool(
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
-            "Search accepted standards using deterministic lexical, exact-code, or "
-            "prefix-code indexes. Text mode matches exact normalized description "
-            "tokens or contiguous normalized phrases and performs no stemming or "
-            "synonym expansion. For concept discovery, search the caller's original "
-            "wording first; when recall is visibly narrow, make a small number of "
-            "separate conservative variant calls with the same filters. Return exact "
-            "source nodes, package provenance, local and normalized facets, matched "
-            "fields and terms, warnings, epistemic status, and established cursor "
+            "Search accepted standards with package-governed modes. A request variant "
+            "present in this generic schema may be unavailable for the selected "
+            "package; inspect get_capabilities packages[].implementedSearchModes "
+            "before using code_exact or code_prefix. Text mode matches exact "
+            "normalized description tokens or contiguous normalized phrases and "
+            "performs no stemming or synonym expansion. For concept discovery, search "
+            "the caller's original wording first; when recall is visibly narrow, make "
+            "a small number of separate conservative variant calls with the same filters. "
+            "Return exact source nodes, package provenance, local and normalized facets, "
+            "matched fields and terms, warnings, epistemic status, and established cursor "
             "evidence without progression inference. For continuation, submit the "
             "provided nextRequest unchanged; only its opaque cursor differs from the "
-            "previous request. A zero-match page does not establish curriculum "
-            "absence."
+            "previous request. A zero-match page does not establish curriculum absence."
         ),
         name="search_standards",
         output_schema=result_schema(SearchStandardsResult),
@@ -529,7 +530,9 @@ async def search_standards(
     Parameters
     ----------
     request
-        Discriminated text, exact-code, or prefix-code search request.
+        Discriminated server-level text, exact-code, or prefix-code request shape.
+        Package-specific mode availability remains governed by the selected profile and
+        is reported by ``get_capabilities``.
     context
         Injected FastMCP request context containing immutable application state.
 

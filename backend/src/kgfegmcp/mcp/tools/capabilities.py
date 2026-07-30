@@ -31,7 +31,7 @@ from kgfegmcp.mcp.tools import (
     result_schema,
 )
 from kgfegmcp.services.capabilities import CapabilitiesService
-from kgfegmcp.services.models import GetCapabilitiesResult
+from kgfegmcp.services.models import GetCapabilitiesResult, PackageCapabilityResult
 
 if TYPE_CHECKING:
     # Third Party Library
@@ -52,29 +52,67 @@ def _format_capabilities(result: GetCapabilitiesResult) -> str:
     Returns
     -------
     str
-        Stable summary of tools, prompts, graph types, package count, and unavailable
-        features.
+        Stable summary of tools, prompts, graph types, exact package search modes, and
+        unavailable features.
     """
 
     graph_types = ", ".join(value.value for value in result.available_graph_types)
-    return "\n".join(
+    lines = [
+        f"Server: {result.server_name}",
+        f"Tools: {', '.join(result.tool_names)}",
+        f"Prompts: {', '.join(result.prompt_names)}",
+        f"Graph types: {graph_types}",
+        f"Accepted packages: {len(result.packages)}",
         (
-            f"Server: {result.server_name}",
-            f"Tools: {', '.join(result.tool_names)}",
-            f"Prompts: {', '.join(result.prompt_names)}",
-            f"Graph types: {graph_types}",
-            f"Accepted packages: {len(result.packages)}",
-            (
-                f"Resources: "
-                f"{len(result.resource_uris)} fixed, "
-                f"{len(result.resource_uri_templates)} templates"
-            ),
-            (
-                f"Framework prompt overlays: optional, schema "
-                f"{result.prompt_config_schema_version}"
-            ),
-            f"Unavailable features: {', '.join(result.unavailable_features)}",
-        )
+            f"Resources: "
+            f"{len(result.resource_uris)} fixed, "
+            f"{len(result.resource_uri_templates)} templates"
+        ),
+        (
+            f"Framework prompt overlays: optional, schema "
+            f"{result.prompt_config_schema_version}"
+        ),
+        (
+            "Package search modes are authoritative per package; generic tool schemas "
+            "describe possible request variants, not package authorization."
+        ),
+        "Package search capabilities:",
+    ]
+
+    for package in result.packages:
+        lines.extend(_format_package_capability(package))
+
+    lines.append(f"Unavailable features: {', '.join(result.unavailable_features)}")
+    return "\n".join(lines)
+
+
+def _format_package_capability(
+    package: PackageCapabilityResult,
+) -> tuple[str, ...]:
+    """Format exact search capability evidence for one accepted package.
+
+    Parameters
+    ----------
+    package
+        Complete accepted-package capability evidence.
+
+    Returns
+    -------
+    tuple[str, ...]
+        Stable readable package identity, implemented modes, and code coverage.
+    """
+
+    identity = package.package.package_identity
+    implemented_modes = (
+        ", ".join(mode.value for mode in package.implemented_search_modes) or "none"
+    )
+    return (
+        f"- Graph package ID: {identity.graph_package_id}",
+        f"  Framework ID: {identity.framework_id}",
+        f"  Snapshot ID: {identity.snapshot_id}",
+        f"  implementedSearchModes: {implemented_modes}",
+        f"  codeCoverage: {package.package.capabilities.code_search.value}",
+        f"  codedNodes: {package.search_index.coded_node_count}",
     )
 
 
@@ -119,9 +157,12 @@ def register_capability_tools(server: FastMCP[dict[str, AppState]]) -> None:
     server.tool(
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
-            "Report only tools, prompts, resources, graph types, search modes, "
-            "traversal behavior, and package capabilities implemented by the accepted "
-            "runtime."
+            "Report exact server-wide and per-package capabilities. Generic tool "
+            "schemas describe possible request variants, not package authorization; "
+            "inspect packages[].implementedSearchModes for the selected package before "
+            "choosing code_exact or code_prefix. Also report tools, prompts, "
+            "resources, graph types, traversal behavior, and unavailable features "
+            "implemented by the accepted runtime."
         ),
         name="get_capabilities",
         output_schema=result_schema(GetCapabilitiesResult),

@@ -383,16 +383,18 @@ def register_comparison_tools(server: "FastMCP[dict[str, AppState]]") -> None:
     server.tool(
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
-            "Retrieve independently bounded exact-package evidence for two through "
-            "eight selected frameworks while preserving each package's search order, "
-            "warnings, hierarchy context, and continuation cursor. Text mode uses the "
-            "flat matchMode and matchOperator fields and exact normalized description "
-            "tokens without stemming or synonym expansion. For concept discovery, use "
-            "the caller's original wording first, then make only a small number of "
-            "separate conservative variant calls when needed. Apply each shared "
-            "variant and the same filters symmetrically to every framework. Per-query "
-            "counts and zero-match sections do not establish curriculum-wide coverage "
-            "or absence."
+            "Retrieve independently bounded exact-package evidence using "
+            "package-governed search modes. A request variant present in this generic "
+            "schema may be unavailable for one or more selected packages; inspect "
+            "get_capabilities packages[].implementedSearchModes before using "
+            "code_exact or code_prefix. Preserve each package's search order, warnings, "
+            "hierarchy context, and continuation cursor. Text mode uses the flat "
+            "matchMode and matchOperator fields and exact normalized description tokens "
+            "without stemming or synonym expansion. For concept discovery, use the caller's "
+            "original wording first, then make only a small number of separate "
+            "conservative variant calls when needed. Apply each shared variant and the "
+            "same filters symmetrically to every framework. Per-query counts and "
+            "zero-match sections do not establish curriculum-wide coverage or absence."
         ),
         name="compare_framework_evidence",
         output_schema=result_schema(CompareFrameworkEvidenceResult),

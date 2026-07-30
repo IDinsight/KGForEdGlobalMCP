@@ -743,11 +743,24 @@ class SearchService:
             identity = package.catalog_runtime.catalog_package.package_identity
             graph_package_id = str(identity.graph_package_id)
             availability = package.code_index.availability
+            implemented_modes = implemented_search_modes(
+                code_availability=availability,
+                prefix_available=package.code_index.allow_prefix_search,
+                text_available=(
+                    package.catalog_runtime.catalog_package.capabilities.text_search
+                ),
+            )
+            implemented_mode_text = (
+                ", ".join(mode.value for mode in implemented_modes) or "none"
+            )
 
             if availability is CodeAvailability.NONE:
                 if is_exact_scope:
                     _raise_code_capability_unavailable(
-                        identity=identity, mode=query.mode
+                        code_availability=availability,
+                        identity=identity,
+                        implemented_modes=implemented_modes,
+                        mode=query.mode,
                     )
 
                 warnings.append(
@@ -755,8 +768,9 @@ class SearchService:
                         code=SearchWarningCode.CODE_SEARCH_UNAVAILABLE,
                         identity=identity,
                         message=(
-                            "The selected package has no source statement-code "
-                            "coverage and was skipped for code search."
+                            f"The selected package has no source statement-code "
+                            f"coverage and was skipped for code search. Available "
+                            f"package search modes: {implemented_mode_text}."
                         ),
                     )
                 )
@@ -769,7 +783,10 @@ class SearchService:
             ):
                 if is_exact_scope:
                     _raise_code_capability_unavailable(
-                        identity=identity, mode=query.mode
+                        code_availability=availability,
+                        identity=identity,
+                        implemented_modes=implemented_modes,
+                        mode=query.mode,
                     )
 
                 warnings.append(
@@ -777,8 +794,9 @@ class SearchService:
                         code=SearchWarningCode.CODE_PREFIX_UNAVAILABLE,
                         identity=identity,
                         message=(
-                            "The selected package disables profile-governed "
-                            "code-prefix search and was skipped."
+                            f"The selected package does not implement code_prefix "
+                            f"search and was skipped. Available package search modes: "
+                            f"{implemented_mode_text}."
                         ),
                     )
                 )
@@ -1775,14 +1793,22 @@ def _paginate_hits(
 
 
 def _raise_code_capability_unavailable(
-    *, identity: GraphPackageIdentity, mode: SearchMode
+    *,
+    code_availability: CodeAvailability,
+    identity: GraphPackageIdentity,
+    implemented_modes: tuple[SearchMode, ...],
+    mode: SearchMode,
 ) -> None:
     """Raise a stable exact-package code capability error.
 
     Parameters
     ----------
+    code_availability
+        Profile-governed statement-code coverage for the selected package.
     identity
         Exact selected package identity.
+    implemented_modes
+        Exact search modes enabled for the selected package.
     mode
         Exact-code or code-prefix search mode.
 
@@ -1792,12 +1818,26 @@ def _raise_code_capability_unavailable(
         Always raised for the unavailable exact-package capability.
     """
 
+    implemented_mode_values = tuple(
+        implemented_mode.value for implemented_mode in implemented_modes
+    )
+    implemented_mode_text = ", ".join(implemented_mode_values) or "none"
     raise CapabilityUnavailableError(
         details={
+            "code_availability": code_availability.value,
             "graph_package_id": str(identity.graph_package_id),
-            "mode": mode.value,
+            "implemented_search_modes": implemented_mode_values,
+            "requested_mode": mode.value,
         },
-        message="The selected package does not provide the requested code-search mode.",
+        message=(
+            f"The selected package does not implement {mode.value} search. "
+            f"Available package search modes: {implemented_mode_text}. A mode present "
+            f"in the generic tool schema is not necessarily enabled for every package."
+        ),
+        recovery_hint=(
+            "Inspect get_capabilities packages[].implementedSearchModes for the "
+            "selected package and retry with one of the listed modes."
+        ),
     )
 
 
@@ -1874,3 +1914,37 @@ def _selected_index_sha256(packages: tuple[_PackageSearchRuntime, ...]) -> Sha25
         )
     }
     return _canonical_sha256(payload)
+
+
+def implemented_search_modes(
+    *, code_availability: CodeAvailability, prefix_available: bool, text_available: bool
+) -> tuple[SearchMode, ...]:
+    """Return exact search modes implemented for one accepted package.
+
+    Parameters
+    ----------
+    code_availability
+        Profile-governed statement-code coverage.
+    prefix_available
+        Whether the selected profile enables delimiter-boundary prefix search.
+    text_available
+        Whether deterministic lexical search is enabled for the package.
+
+    Returns
+    -------
+    tuple[SearchMode, ...]
+        Implemented modes in stable public order.
+    """
+
+    modes: list[SearchMode] = []
+
+    if text_available:
+        modes.append(SearchMode.TEXT)
+
+    if code_availability is not CodeAvailability.NONE:
+        modes.append(SearchMode.CODE_EXACT)
+
+        if prefix_available:
+            modes.append(SearchMode.CODE_PREFIX)
+
+    return tuple(modes)

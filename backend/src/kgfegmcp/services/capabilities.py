@@ -21,12 +21,12 @@ from typing import TYPE_CHECKING, Final
 
 # Package Library
 from kgfegmcp.catalog.models import CatalogLoadResult
-from kgfegmcp.domain.enums import CodeAvailability, GraphType
+from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.errors import CatalogError
 from kgfegmcp.prompts.models import PROMPT_CONFIG_SCHEMA_VERSION, PROMPT_NAMES
 from kgfegmcp.resources.uri import CATALOG_URI, RESOURCE_URI_TEMPLATES
-from kgfegmcp.search.models import PackageSearchIndexMetadata, SearchMode
-from kgfegmcp.search.service import SearchService
+from kgfegmcp.search.models import PackageSearchIndexMetadata
+from kgfegmcp.search.service import SearchService, implemented_search_modes
 from kgfegmcp.services.models import GetCapabilitiesResult, PackageCapabilityResult
 
 if TYPE_CHECKING:
@@ -81,40 +81,6 @@ _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
     "snapshot_alignment_candidate_retrieval",
     "snapshot_diff",
 )
-
-
-def _implemented_search_modes(
-    *, code_availability: CodeAvailability, prefix_available: bool, text_available: bool
-) -> tuple[SearchMode, ...]:
-    """Return exact search modes implemented for one accepted package.
-
-    Parameters
-    ----------
-    code_availability
-        Profile-governed statement-code coverage.
-    prefix_available
-        Whether the selected profile enables delimiter-boundary prefix search.
-    text_available
-        Whether deterministic lexical search is enabled for the package.
-
-    Returns
-    -------
-    tuple[SearchMode, ...]
-        Implemented modes in stable public order.
-    """
-
-    modes: list[SearchMode] = []
-
-    if text_available:
-        modes.append(SearchMode.TEXT)
-
-    if code_availability is not CodeAvailability.NONE:
-        modes.append(SearchMode.CODE_EXACT)
-
-        if prefix_available:
-            modes.append(SearchMode.CODE_PREFIX)
-
-    return tuple(modes)
 
 
 @dataclass(frozen=True, slots=True)
@@ -204,7 +170,7 @@ class CapabilitiesService:
                     available_resource_kinds=tuple(
                         resource_kind.value for resource_kind in resource_kinds
                     ),
-                    implemented_search_modes=_implemented_search_modes(
+                    implemented_search_modes=implemented_search_modes(
                         code_availability=profile.code_search_policy.availability,
                         prefix_available=(
                             profile.code_search_policy.allow_prefix_search
