@@ -25,7 +25,7 @@ from fastmcp.tools.base import ToolResult
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
-    build_continuation_text,
+    build_request_continuation_text,
     build_tool_result,
     catalog_resource_links,
     framework_resource_links,
@@ -170,7 +170,8 @@ def _format_graph_package(package: CatalogGraphPackage) -> list[str]:
         f"  Graph type: {identity.graph_type.value}",
         f"  Package revision: {identity.package_revision}",
         f"  Profile: {identity.profile_id}@{identity.profile_version}",
-        f"  Code search: {capabilities.code_search.value}",
+        f"  Code coverage: {capabilities.code_search.value}",
+        ("  Search modes: see get_capabilities packages[].implementedSearchModes"),
         f"  Text search: {_format_boolean(capabilities.text_search)}",
         (
             "  Detailed provenance: "
@@ -266,7 +267,7 @@ def _format_package_summary(package: CatalogGraphPackage) -> str:
     return (
         f"{identity.graph_package_id} | graph_type={identity.graph_type.value} | "
         f"profile={identity.profile_id}@{identity.profile_version} | "
-        f"code_search={capabilities.code_search.value} | "
+        f"code_coverage={capabilities.code_search.value} | "
         f"text_search={_format_boolean(capabilities.text_search)} | "
         f"validation={package.validation.status.value}"
     )
@@ -378,15 +379,14 @@ async def list_frameworks(
         state = get_app_state(context)
         service = FrameworkService(catalog_service=state.catalog_service)
         result = service.list_frameworks(request)
-        continuation_text = build_continuation_text(
-            {
-                "continuationTool": "list_frameworks",
-                "cursorField": "cursor",
-                "hasMore": result.has_more,
-                "nextCursor": (
-                    result.next_cursor.root if result.next_cursor is not None else None
-                ),
-            }
+        continuation_text = build_request_continuation_text(
+            cursor_field="cursor",
+            has_more=result.has_more,
+            next_cursor=(
+                result.next_cursor.root if result.next_cursor is not None else None
+            ),
+            request=request,
+            tool_name="list_frameworks",
         )
         return build_tool_result(
             additional_text=(continuation_text,),
@@ -409,7 +409,11 @@ def register_framework_tools(server: FastMCP[dict[str, AppState]]) -> None:
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
             "List accepted immutable framework snapshots with exact source metadata, "
-            "package capabilities, validation status, and checksum-protected pagination."
+            "package capabilities, validation status, and checksum-protected pagination. "
+            "Code coverage does not imply code-mode availability; inspect "
+            "get_capabilities packages[].implementedSearchModes for the selected package. "
+            "For continuation, submit the provided nextRequest unchanged; only its "
+            "opaque cursor differs from the previous request."
         ),
         name="list_frameworks",
         output_schema=result_schema(ListFrameworksResult),
@@ -419,7 +423,10 @@ def register_framework_tools(server: FastMCP[dict[str, AppState]]) -> None:
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
             "Return one exact or uniquely current framework snapshot with complete "
-            "source metadata, package capabilities, counts, validation, and rights."
+            "source metadata, package capabilities, counts, validation, and rights. "
+            "Code coverage does not imply code-mode availability; inspect "
+            "get_capabilities packages[].implementedSearchModes for the selected "
+            "package."
         ),
         name="get_framework",
         output_schema=result_schema(GetFrameworkResult),

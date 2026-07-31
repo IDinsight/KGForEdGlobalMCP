@@ -95,6 +95,83 @@ def build_continuation_text(payload: Mapping[str, object]) -> str:
     )
 
 
+def build_request_continuation_text(
+    *,
+    cursor_field: str,
+    has_more: bool,
+    next_cursor: str | None,
+    request: FrozenSchema,
+    tool_name: str,
+) -> str:
+    """Build exact-request continuation guidance for one paginated MCP tool.
+
+    The returned ``nextRequest`` is a complete model-visible replay request with only
+    the opaque cursor replaced. All other request fields are identified as immutable so
+    a client does not reconstruct or alter cursor-bound pagination semantics.
+
+    Parameters
+    ----------
+    cursor_field
+        Public request-field alias that carries the opaque continuation cursor.
+    has_more
+        Whether another deterministic page is available.
+    next_cursor
+        Opaque cursor for the next page, or ``None`` when pagination is complete.
+    request
+        Complete validated request that produced the current page.
+    tool_name
+        Public MCP tool name that accepts the replay request.
+
+    Returns
+    -------
+    str
+        Stable instructions and compact JSON containing an exact ``nextRequest``.
+
+    Raises
+    ------
+    ValueError
+        If continuation state is inconsistent or the request lacks ``cursor_field``.
+    """
+
+    if has_more != (next_cursor is not None):
+        raise ValueError("has_more and next_cursor must agree.")
+
+    current_request = request.model_dump(by_alias=True, mode="json")
+
+    if cursor_field not in current_request:
+        raise ValueError(
+            f"The continuation request does not define cursor field {cursor_field!r}."
+        )
+
+    immutable_fields = sorted(
+        field_name for field_name in current_request if field_name != cursor_field
+    )
+    next_request: dict[str, Any] | None = None
+
+    if next_cursor is not None:
+        next_request = dict(current_request)
+        next_request[cursor_field] = next_cursor
+
+    payload: dict[str, object] = {
+        "continuationPolicy": "repeat_exact_request",
+        "continuationTool": tool_name,
+        "cursorField": cursor_field,
+        "hasMore": has_more,
+        "immutableFields": immutable_fields,
+        "mutableFields": [cursor_field],
+        "nextCursor": next_cursor,
+        "nextRequest": next_request,
+    }
+    serialized = json.dumps(
+        ensure_ascii=True, obj=payload, separators=(",", ":"), sort_keys=True
+    )
+    return (
+        f"MCP continuation data. When hasMore is true, submit nextRequest "
+        f"unchanged. Do not alter any immutable field; cursor values are opaque:\n"
+        f"{serialized}"
+    )
+
+
 def build_resource_link(
     *, description: str, mime_type: str, name: str, title: str, uri: str
 ) -> ResourceLink:

@@ -26,13 +26,13 @@ from fastmcp.tools.base import ToolResult
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
-    build_continuation_text,
+    build_request_continuation_text,
     build_tool_result,
     get_app_state,
     result_schema,
     standard_resource_links,
 )
-from kgfegmcp.search.models import ExactPackageSearchScope
+from kgfegmcp.search.models import ExactPackageSearchScope, SearchMode
 from kgfegmcp.services.frameworks import FrameworkService
 from kgfegmcp.services.models import (
     GetStandardRequest,
@@ -56,6 +56,18 @@ if TYPE_CHECKING:
     )
 
 
+_LEXICAL_SEARCH_SEMANTICS = (
+    "Lexical semantics: text mode matches exact normalized description tokens or "
+    "a contiguous normalized phrase. It performs no stemming, lemmatization, "
+    "fuzzy matching, or synonym expansion."
+)
+_LEXICAL_ZERO_RESULT_GUIDANCE = (
+    "Recovery hint: preserve the original query, then consider a small number of "
+    "conservative inflectional, orthographic, or retrieved local-terminology "
+    "variants under the same filters. Zero matches establish only that this exact "
+    "query did not match the retained descriptions; they do not establish "
+    "curriculum absence."
+)
 _SEARCH_INTERPRETATION = (
     "Search hits are deterministic retrieval candidates. Lexical or code matches, "
     "normalized grades, grade order, and hierarchy placement do not by themselves "
@@ -281,9 +293,15 @@ def _format_search_result(result: SearchStandardsResult) -> str:
         f"Selected packages: {_format_values(package_ids)}",
         f"Returned hits: {result.page.returned_count}",
         f"Has more: {_format_boolean(result.page.has_more)}",
-        "",
-        f"Interpretation: {_SEARCH_INTERPRETATION}",
     ]
+
+    if result.page.mode is SearchMode.TEXT:
+        lines.append(_LEXICAL_SEARCH_SEMANTICS)
+
+        if result.page.returned_count == 0:
+            lines.append(_LEXICAL_ZERO_RESULT_GUIDANCE)
+
+    lines.extend(("", f"Interpretation: {_SEARCH_INTERPRETATION}"))
 
     for index, hit in enumerate(result.page.hits, start=1):
         lines.extend(("", *_format_search_hit(hit=hit, index=index)))
@@ -473,10 +491,19 @@ def register_standard_tools(server: FastMCP[dict[str, AppState]]) -> None:
     server.tool(
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
-            "Search accepted standards using deterministic lexical, exact-code, or "
-            "prefix-code indexes. Return exact source nodes, package provenance, local "
-            "and normalized facets, matched fields and terms, warnings, epistemic "
-            "status, and established cursor evidence without progression inference."
+            "Search accepted standards with package-governed modes. A request variant "
+            "present in this generic schema may be unavailable for the selected "
+            "package; inspect get_capabilities packages[].implementedSearchModes "
+            "before using code_exact or code_prefix. Text mode matches exact "
+            "normalized description tokens or contiguous normalized phrases and "
+            "performs no stemming or synonym expansion. For concept discovery, search "
+            "the caller's original wording first; when recall is visibly narrow, make "
+            "a small number of separate conservative variant calls with the same filters. "
+            "Return exact source nodes, package provenance, local and normalized facets, "
+            "matched fields and terms, warnings, epistemic status, and established cursor "
+            "evidence without progression inference. For continuation, submit the "
+            "provided nextRequest unchanged; only its opaque cursor differs from the "
+            "previous request. A zero-match page does not establish curriculum absence."
         ),
         name="search_standards",
         output_schema=result_schema(SearchStandardsResult),
@@ -503,7 +530,9 @@ async def search_standards(
     Parameters
     ----------
     request
-        Discriminated text, exact-code, or prefix-code search request.
+        Discriminated server-level text, exact-code, or prefix-code request shape.
+        Package-specific mode availability remains governed by the selected profile and
+        is reported by ``get_capabilities``.
     context
         Injected FastMCP request context containing immutable application state.
 
@@ -516,17 +545,16 @@ async def search_standards(
     with tool_error_boundary("search_standards"):
         state = get_app_state(context)
         result = _standards_service(state).search_standards(request)
-        continuation_text = build_continuation_text(
-            {
-                "continuationTool": "search_standards",
-                "cursorField": "cursor",
-                "hasMore": result.page.has_more,
-                "nextCursor": (
-                    result.page.next_cursor.root
-                    if result.page.next_cursor is not None
-                    else None
-                ),
-            }
+        continuation_text = build_request_continuation_text(
+            cursor_field="cursor",
+            has_more=result.page.has_more,
+            next_cursor=(
+                result.page.next_cursor.root
+                if result.page.next_cursor is not None
+                else None
+            ),
+            request=request,
+            tool_name="search_standards",
         )
         return build_tool_result(
             additional_text=(continuation_text,),

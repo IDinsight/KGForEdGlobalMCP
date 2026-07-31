@@ -41,6 +41,7 @@ from kgfegmcp.prompts.definitions import (
     COMMON_EVIDENCE_STATUS_RULES,
     COMMON_UNSUPPORTED_CLAIMS,
     COMPARISON_DISCLOSURES,
+    LEXICAL_QUERY_EXPANSION_RULES,
     PROGRESSION_DISCLOSURE,
     PROMPT_DESCRIPTIONS,
     PROMPT_SPECIFIC_DEFAULTS,
@@ -513,6 +514,9 @@ def _render_focus_workflow(
                 "normalized grade as an equivalence claim.",
                 "If several results are plausible, retain them as retrieval candidates "
                 "and make the selection basis explicit.",
+                "Apply the following query-expansion rules only to topic-mode concept "
+                "discovery:",
+                *(f"- {rule}" for rule in LEXICAL_QUERY_EXPANSION_RULES),
             )
         )
     elif focus_mode is PromptFocusMode.STATEMENT_CODE:
@@ -984,6 +988,52 @@ class PromptService:
                 )
             )
 
+        mandatory_retrieval_lines = [
+            "1. Call compare_framework_evidence with this exact protocol-facing "
+            "top-level input:",
+            _canonical_json(comparison_call),
+            "Do not wrap this input inside an additional request object.",
+            "2. Verify that every returned framework, snapshot, graph-package, and "
+            "profile identity matches the exact context above.",
+            "3. Preserve each framework section's package-local match order, search "
+            "warnings, comparison warnings, context completion evidence, unresolved "
+            "statuses, has_more value, and independent next_cursor.",
+            "4. Use only standards in each returned matches collection as comparison "
+            "candidates. Each match already includes its exact standard and requested "
+            "ancestor/root-path context; ancestors are placement context only.",
+            "5. Do not add ancestors, children, descendants, or siblings unless they "
+            "independently appear in that framework section's matches collection.",
+            "6. Do not follow next_cursor unless the caller explicitly requests more "
+            "results. Conservative text-query alternatives are separate deterministic "
+            "calls, not pagination; preserve their bounds, scores, and cursors "
+            "independently.",
+        ]
+
+        if comparison_call["mode"] == ComparisonSearchMode.TEXT.value:
+            mandatory_retrieval_lines.extend(
+                (
+                    "7. Apply the following query-expansion rules to text-mode concept "
+                    "discovery:",
+                    *(f"- {rule}" for rule in LEXICAL_QUERY_EXPANSION_RULES),
+                    "8. If several text-query calls return the same standard, present "
+                    "it once while recording every query that retrieved it. Do not "
+                    "combine "
+                    "or compare lexical scores across calls.",
+                    "9. Framework-specific terminology calls, when materially useful, "
+                    "must be reported separately and must not be presented as a shared-"
+                    "query comparison.",
+                    "10. A false sourceRoleCapabilities value means that role is not "
+                    "represented or exposed through the current graph package. It does "
+                    "not prove absence from the underlying source document.",
+                )
+            )
+        else:
+            mandatory_retrieval_lines.append(
+                "7. A false sourceRoleCapabilities value means that role is not "
+                "represented or exposed through the current graph package. It does not "
+                "prove absence from the underlying source document."
+            )
+
         sections = (
             "KGFEGMCP CROSS-FRAMEWORK WORKFLOW\n"
             "Follow this reusable client-invoked workflow. Do not use server-side LLM "
@@ -1002,26 +1052,7 @@ class PromptService:
             + "\nRepeat every applicable attribution statement in the eventual answer. "
             "Rights, attribution, provenance, and access constraints remain "
             "package-specific.",
-            "MANDATORY EVIDENCE RETRIEVAL\n"
-            "1. Call compare_framework_evidence with this exact protocol-facing "
-            "top-level input:\n"
-            f"{_canonical_json(comparison_call)}\n"
-            "Do not wrap this input inside an additional request object.\n"
-            "2. Verify that every returned framework, snapshot, graph-package, and "
-            "profile identity matches the exact context above.\n"
-            "3. Preserve each framework section's package-local match order, search "
-            "warnings, comparison warnings, context completion evidence, unresolved "
-            "statuses, has_more value, and independent next_cursor.\n"
-            "4. Use only standards in each returned matches collection as comparison "
-            "candidates. Each match already includes its exact standard and requested "
-            "ancestor/root-path context; ancestors are placement context only.\n"
-            "5. Do not add ancestors, children, descendants, or siblings unless they "
-            "independently appear in that framework section's matches collection.\n"
-            "6. Do not follow next_cursor or broaden the candidate set unless the "
-            "caller explicitly requests more results.\n"
-            "7. A false sourceRoleCapabilities value means that role is not represented "
-            "or exposed through the current graph package. It does not prove absence "
-            "from the underlying source document.",
+            "MANDATORY EVIDENCE RETRIEVAL\n" + "\n".join(mandatory_retrieval_lines),
             _render_list(
                 title="EVIDENCE STATUS RULES", values=COMMON_EVIDENCE_STATUS_RULES
             ),

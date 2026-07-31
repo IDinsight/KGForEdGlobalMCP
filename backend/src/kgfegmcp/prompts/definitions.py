@@ -132,6 +132,31 @@ CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE: Final[
     ),
 )
 
+LEXICAL_QUERY_EXPANSION_RULES: Final[tuple[str, ...]] = (
+    "Text search uses exact normalized description tokens and performs no stemming, "
+    "lemmatization, fuzzy matching, or synonym expansion.",
+    "For topic or concept discovery, execute the caller's original wording first and "
+    "never silently replace it with a rewritten query.",
+    "When literal retrieval has zero results or visibly narrow recall, generate no "
+    "more than three conservative alternative queries.",
+    "Prefer high-confidence inflectional, orthographic, abbreviation, operator-approved "
+    "alias, or retrieved local-terminology variants. Do not introduce a materially "
+    "different curriculum concept.",
+    "Do not expand exact quoted wording, statement codes, node IDs, CASE UUIDs, or CASE URIs.",
+    "Run every alternative as a separate deterministic call with the same framework, "
+    "snapshot, graph type, grade, subject, statement-type, grouping, match, and limit settings.",
+    "For cross-framework retrieval, apply each shared alternative and the same filters "
+    "symmetrically to every selected framework.",
+    "Preserve every executed query, result bound, has_more value, and cursor separately. "
+    "Deduplicate presentation by graph-package ID and node ID, but do not merge lexical "
+    "scores or cursors across calls.",
+    "After a relevant grouping or item is verified, prefer bounded hierarchy-context "
+    "retrieval over continuing to generate broader terminology alternatives.",
+    "A no-match result establishes only that the exact query did not match retained "
+    "descriptions under the supplied filters; it does not establish curriculum or "
+    "source-document absence.",
+)
+
 PROGRESSION_DEFAULT_GUIDANCE: Final[tuple[tuple[str, str, tuple[str, ...]], ...]] = (
     (
         "counter_evidence_guidance",
@@ -372,6 +397,7 @@ __all__ = [
     "COMMON_UNSUPPORTED_CLAIMS",
     "COMPARISON_DISCLOSURES",
     "CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE",
+    "LEXICAL_QUERY_EXPANSION_RULES",
     "PROGRESSION_DISCLOSURE",
     "PROMPT_DESCRIPTIONS",
     "PROMPT_SPECIFIC_DEFAULTS",

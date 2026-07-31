@@ -73,6 +73,19 @@ The server exposes:
 Do not send a nested `match` object to this tool. The adapter constructs the existing
 typed internal text-match policy before calling the ordinary comparison service.
 
+### Lexical topic discovery
+
+Text search uses exact normalized description tokens or contiguous normalized phrases.
+It does not stem words or expand synonyms, so `fraction` and `fractions` are different
+queries. For concept discovery, Claude should search the user's original wording first
+and may then issue at most three separate conservative alternatives, such as a clear
+singular/plural or retrieved local-terminology variant. Every alternative must preserve
+the same framework, snapshot, grade, subject, statement-type, grouping, match, and limit
+settings. Cross-framework alternatives must be applied symmetrically. Each call retains
+its own bounds, scores, `has_more` value, and cursor; a zero-match result does not prove
+curriculum absence. Once a relevant branch is found, bounded hierarchy context is
+preferred over unlimited synonym generation.
+
 `inferred_progression_hypothesis` accepts `local_grade_labels` and
 `normalized_grades` as typed arrays rather than a combined grade string. At the MCP
 prompt boundary, enter these complex values as JSON arrays, for example
@@ -138,7 +151,7 @@ The smoke command:
 
 1. starts `python -m kgfegmcp.mcpb_server`;
 2. completes an MCP handshake;
-3. verifies the exact 8-tool, 1-resource, 9-template, and 6-prompt inventory; and
+3. verifies the exact 9-tool, 1-resource, 9-template, and 6-prompt inventory; and
 4. confirms that the subprocess exits cleanly.
 
 A successful run returns a JSON result with `"status": "passed"`.

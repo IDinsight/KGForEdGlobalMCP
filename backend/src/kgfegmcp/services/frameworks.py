@@ -608,6 +608,9 @@ class FrameworkService:
                         "The framework pagination cursor belongs to a different "
                         "catalog state."
                     ),
+                    recovery_hint=(
+                        "Restart the list_frameworks pagination sequence without a cursor."
+                    ),
                 )
 
             if state.effective_query_sha256 != effective_query_sha256:
@@ -615,6 +618,11 @@ class FrameworkService:
                     details={"cursor_kind": state.cursor_kind},
                     message=(
                         "The framework pagination cursor does not match this request."
+                    ),
+                    recovery_hint=(
+                        "Retry with the exact previous list_frameworks request. "
+                        "Replace only the cursor field. Keep every filter and "
+                        "limit unchanged."
                     ),
                 )
 
@@ -632,6 +640,9 @@ class FrameworkService:
                     message=(
                         "The framework pagination cursor references an unavailable "
                         "continuation position."
+                    ),
+                    recovery_hint=(
+                        "Restart the list_frameworks pagination sequence without a cursor."
                     ),
                 ) from error
 
