@@ -1,0 +1,141 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+site_name: "Knowledge Graph for Education Global MCP"
+site_description: "Official documentation for the KGForEdGlobalMCP curriculum knowledge graph MCP server."
+site_url: https://idinsight.github.io/KGForEdGlobalMCP/
+repo_url: https://github.com/IDinsight/KGForEdGlobalMCP/
+repo_name: KGForEdGlobalMCP
+use_directory_urls: false
+copyright: "© 2026 IDinsight"
+
+extra:
+  analytics:
+    provider: google
+    property: G-K07FFTMFTN
+  generator: false
+  social:
+    - icon: material/shield-lock
+      link: https://www.idinsight.org/about/privacy-policy/
+      name: Privacy Policy
+
+nav:
+  - Home:
+      - Overview: index.md
+      - Architecture: architecture.md
+      - Concepts and boundaries: concepts.md
+
+  - Getting started:
+      - Quickstart: getting-started/index.md
+      - Local installation: getting-started/local-installation.md
+      - Connect an MCP client: getting-started/mcp-clients.md
+      - First queries: getting-started/first-queries.md
+
+  - Using the server:
+      - Discover frameworks: guides/framework-discovery.md
+      - Search and retrieve standards: guides/standards-search.md
+      - Navigate hierarchies: guides/hierarchy-context.md
+      - Compare framework evidence: guides/comparison.md
+      - Collect progression evidence: guides/progression.md
+      - Use prompt workflows: guides/prompts.md
+      - Read resources and provenance: guides/resources.md
+
+  - MCP reference:
+      - Surface overview: reference/index.md
+      - Framework and capability tools: reference/framework-tools.md
+      - Standards tools: reference/standards-tools.md
+      - Comparison tool: reference/comparison-tool.md
+      - Progression tool: reference/progression-tool.md
+      - Resources and URI templates: reference/resources.md
+      - Prompts: reference/prompts.md
+      - Errors, cursors, and limits: reference/protocol-behavior.md
+
+  - Data and configuration:
+      - Runtime inputs: data/index.md
+      - Interpretation profiles: data/profiles.md
+      - Prompt configurations: data/prompt-configs.md
+      - Graph package format: data/graph-packages.md
+      - Manifest contract: data/manifest.md
+      - Validation and lifecycle: data/validation.md
+      - Rights and provenance: data/rights-and-provenance.md
+      - Available frameworks: data/framework-catalog.md
+
+  - Operations:
+      - Environment variables: operations/configuration.md
+      - CLI commands: operations/cli.md
+      - MCPB packaging: operations/mcpb.md
+      - Troubleshooting: operations/troubleshooting.md
+
+  - Development:
+      - Backend structure: development/index.md
+      - Local development: development/local-setup.md
+      - Add or update a framework: development/framework-package.md
+      - Testing and acceptance: development/testing.md
+
+  - Contribute:
+      - Contributing: contributing.md
+
+  - Contact:
+      - Team: contact_us.md
+
+# Theme and navigation behavior
+theme:
+  name: material
+  font:
+    text: "Inter"
+    code: "Roboto Mono"
+  palette:
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.instant
+    - navigation.top
+    - content.code.annotate
+    - content.code.copy
+  icon:
+    admonition:
+      note: material/alert-circle
+    annotation: material/help-circle
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - tables
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      title: On this page
+
+plugins:
+  - search
+  - glightbox
+  - open-in-new-tab
