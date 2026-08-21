@@ -112,6 +112,9 @@ theme:
 extra_css:
   - stylesheets/extra.css
 
+extra_javascript:
+  - javascripts/mermaid-fullscreen.js
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -142,3 +145,6 @@ plugins:
   - search
   - glightbox
   - open-in-new-tab
+  - panzoom:
+      key: "alt"
+      hint_location: bottom
