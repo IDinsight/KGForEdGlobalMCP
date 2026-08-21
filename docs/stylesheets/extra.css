@@ -1,0 +1,35 @@
+/* Diagram sizing --------------------------------------------------------- */
+
+/*
+ * Mermaid emits an SVG with an intrinsic size based on its graph. Force diagrams
+ * to use the available documentation width, while preserving a readable minimum
+ * canvas for dense architecture and sequence diagrams. Narrow viewports can scroll
+ * horizontally rather than shrinking labels until they are difficult to read.
+ */
+.md-typeset .mermaid {
+  width: 100%;
+  margin: 1.5rem auto;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.md-typeset .mermaid svg {
+  display: block;
+  width: 100% !important;
+  min-width: 52rem;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 76.25em) {
+  .md-typeset .mermaid svg {
+    min-width: 46rem;
+  }
+}
+
+@media screen and (max-width: 44.984375em) {
+  .md-typeset .mermaid svg {
+    min-width: 42rem;
+  }
+}

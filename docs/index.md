@@ -10,47 +10,47 @@ resources, and assembling bounded evidence for cross-framework comparison and
 progression analysis.
 
 !!! note "Deterministic server, client-side reasoning"
-The server loads, validates, indexes, and retrieves source-grounded curriculum evidence.
-It does **not** call a server-side LLM. Reasoning and generated outputs are performed by
-the connected MCP client or host model, such as Claude Desktop.
+    The server loads, validates, indexes, and retrieves source-grounded curriculum evidence.
+    It does **not** call a server-side LLM. Reasoning and generated outputs are performed by
+    the connected MCP client or host model, such as Claude Desktop.
 
 <div class="grid cards" markdown>
 
 - :material-magnify:{ .lg .middle } **Search curriculum standards**
 
-  ---
+    ---
 
-  Discover frameworks and search package-local curriculum content using lexical text
-  search or profile-governed code search.
+    Discover frameworks and search package-local curriculum content using lexical text
+    search or profile-governed code search.
 
-  [Search and retrieve standards](guides/standards-search.md)
+    [Search and retrieve standards](guides/standards-search.md)
 
 - :material-file-tree:{ .lg .middle } **Navigate source hierarchies**
 
-  ---
+    ---
 
-  Retrieve direct relationships, bounded ancestors and descendants, and complete bounded
-  paths to framework roots.
+    Retrieve direct relationships, bounded ancestors and descendants, and complete bounded
+    paths to framework roots.
 
-  [Navigate hierarchies](guides/hierarchy-context.md)
+    [Navigate hierarchies](guides/hierarchy-context.md)
 
 - :material-compare-horizontal:{ .lg .middle } **Compare bounded evidence**
 
-  ---
+    ---
 
-  Retrieve independently scoped evidence across frameworks without treating retrieval
-  results as official alignment or equivalence.
+    Retrieve independently scoped evidence across frameworks without treating retrieval
+    results as official alignment or equivalence.
 
-  [Compare framework evidence](guides/comparison.md)
+    [Compare framework evidence](guides/comparison.md)
 
 - :material-school:{ .lg .middle } **Use role-oriented workflows**
 
-  ---
+    ---
 
-  Use deterministic prompt workflows for student support, teacher materials, progression
-  hypotheses, and administrator review.
+    Use deterministic prompt workflows for student support, teacher materials, progression
+    hypotheses, and administrator review.
 
-  [Use prompt workflows](guides/prompts.md)
+    [Use prompt workflows](guides/prompts.md)
 
 </div>
 
@@ -115,6 +115,7 @@ make those packages discoverable through one server without merging their source
 structures into a single curriculum graph.
 
 ```mermaid
+%%{init: {"themeVariables": {"fontSize": "18px"}}}%%
 flowchart LR
     A[Interpretation profiles] --> D[Validated application runtime]
     B[Prompt configurations] --> D
@@ -149,20 +150,20 @@ guarantees.
 silently infer educational claims.
 
 !!! warning "Graph hierarchy is not learning progression"
-A structural `hasChild` relationship records retained source hierarchy. It does not, by
-itself, assert prerequisite knowledge, instructional sequence, conceptual dependency, or
-learner mastery.
+    A structural `hasChild` relationship records retained source hierarchy. It does not, by
+    itself, assert prerequisite knowledge, instructional sequence, conceptual dependency, or
+    learner mastery.
 
 !!! warning "Framework comparison is not curriculum alignment"
-Cross-framework retrieval returns candidate evidence from independently bounded
-searches. It does not establish official alignment, equivalence, grade equivalence, or
-endorsement between frameworks.
+    Cross-framework retrieval returns candidate evidence from independently bounded
+    searches. It does not establish official alignment, equivalence, grade equivalence, or
+    endorsement between frameworks.
 
 !!! warning "Text search is lexical"
-Text search uses normalized tokens or contiguous normalized phrases. It does not perform
-semantic search, stemming, lemmatization, or automatic synonym expansion. A zero-result
-query means the supplied lexical expression did not match under the requested bounds; it
-does not necessarily mean that the curriculum lacks the concept.
+    Text search uses normalized tokens or contiguous normalized phrases. It does not perform
+    semantic search, stemming, lemmatization, or automatic synonym expansion. A zero-result
+    query means the supplied lexical expression did not match under the requested bounds; it
+    does not necessarily mean that the curriculum lacks the concept.
 
 The current server also does not provide persisted alignments, accepted mapping
 overlays, embeddings, semantic retrieval, snapshot diffs, server-side LLM calls, or
@@ -174,23 +175,23 @@ first-class learning-component or learning-progression graphs.
 
 - **New to the repository?**
 
-  Start with [Architecture](architecture.md),
-  then [Concepts and boundaries](concepts.md).
+    Start with [Architecture](architecture.md),
+    then [Concepts and boundaries](concepts.md).
 
 - **Ready to run the server?**
 
-  Follow the [Quickstart](getting-started/index.md)
-  and [Local installation](getting-started/local-installation.md).
+    Follow the [Quickstart](getting-started/index.md)
+    and [Local installation](getting-started/local-installation.md).
 
 - **Building an MCP client integration?**
 
-  Read [Connect an MCP client](getting-started/mcp-clients.md) and
-  the [MCP reference](reference/index.md).
+    Read [Connect an MCP client](getting-started/mcp-clients.md) and
+    the [MCP reference](reference/index.md).
 
 - **Adding or reviewing curriculum data?**
 
-  Read [Runtime inputs](data/index.md), [Interpretation profiles](data/profiles.md),
-  and [Graph package format](data/graph-packages.md).
+    Read [Runtime inputs](data/index.md), [Interpretation profiles](data/profiles.md),
+    and [Graph package format](data/graph-packages.md).
 
 </div>
 

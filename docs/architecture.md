@@ -29,6 +29,7 @@ The implementation is organized around five goals:
 ## System overview
 
 ```mermaid
+%%{init: {"themeVariables": {"fontSize": "18px"}}}%%
 flowchart TB
     subgraph Inputs[Repository and runtime inputs]
         ENV[Process environment]
@@ -116,6 +117,7 @@ begins when the FastMCP lifespan starts.
 The composition root is `backend/src/kgfegmcp/bootstrap.py`. Its bootstrap sequence is:
 
 ```mermaid
+%%{init: {"themeVariables": {"fontSize": "18px"}}}%%
 sequenceDiagram
     participant MCP as FastMCP lifespan
     participant Settings as BackendSettings
