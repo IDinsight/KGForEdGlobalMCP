@@ -165,13 +165,13 @@ set of accepted snapshots.
 
 Framework and snapshot selectors include:
 
-| Field | Meaning |
-|---|---|
-| `frameworkIds` | Exact framework families to include |
-| `snapshotIds` | Exact immutable snapshots to include |
-| `jurisdictions` | Source-jurisdiction filter |
-| `languages` | Source-language filter |
-| `subjects` | Source-authored subject filter |
+| Field           | Meaning                              |
+|-----------------|--------------------------------------|
+| `frameworkIds`  | Exact framework families to include  |
+| `snapshotIds`   | Exact immutable snapshots to include |
+| `jurisdictions` | Source-jurisdiction filter           |
+| `languages`     | Source-language filter               |
+| `subjects`      | Source-authored subject filter       |
 
 When no framework or snapshot identifiers are supplied, search resolves the unique
 current snapshot from each eligible framework family before applying catalog-level
@@ -184,14 +184,14 @@ rather than relying on broad federation.
 
 The same request can filter source and normalized facets:
 
-| Field | Meaning |
-|---|---|
-| `includeGroupings` | Allow normalized `Standard Grouping` nodes to appear |
-| `localGradeLabels` | Source-facing grade or stage labels |
-| `normalizedGrades` | Normalized grade retrieval facets |
-| `normalizedStatementTypes` | `Standard` or `Standard Grouping` |
-| `normalizedSubjects` | Normalized subject facets |
-| `statementTypes` | Framework-local statement-type labels |
+| Field                      | Meaning                                              |
+|----------------------------|------------------------------------------------------|
+| `includeGroupings`         | Allow normalized `Standard Grouping` nodes to appear |
+| `localGradeLabels`         | Source-facing grade or stage labels                  |
+| `normalizedGrades`         | Normalized grade retrieval facets                    |
+| `normalizedStatementTypes` | `Standard` or `Standard Grouping`                    |
+| `normalizedSubjects`       | Normalized subject facets                            |
+| `statementTypes`           | Framework-local statement-type labels                |
 
 Within one filter dimension, values use OR semantics. Across populated dimensions,
 filters use AND semantics.
@@ -209,17 +209,17 @@ labels in the result.
 Every returned hit is a `retrieval_candidate`, not a new curriculum claim. A hit
 contains:
 
-| Evidence | Why it matters |
-|---|---|
-| `node` | Exact retained source item |
+| Evidence          | Why it matters                                      |
+|-------------------|-----------------------------------------------------|
+| `node`            | Exact retained source item                          |
 | `packageIdentity` | Framework, snapshot, package, profile, and revision |
-| `facets` | Local and normalized grade/subject/type evidence |
-| `matchedFields` | Exact field values that matched |
-| `matchedTerms` | Normalized terms responsible for the hit |
-| `score` | Deterministic algorithm and integer score |
-| `retrievalMethod` | `text`, `code_exact`, or `code_prefix` |
-| `warnings` | Capability or source-data caveats |
-| `codeMatch` | Code evidence for code modes only |
+| `facets`          | Local and normalized grade/subject/type evidence    |
+| `matchedFields`   | Exact field values that matched                     |
+| `matchedTerms`    | Normalized terms responsible for the hit            |
+| `score`           | Deterministic algorithm and integer score           |
+| `retrievalMethod` | `text`, `code_exact`, or `code_prefix`              |
+| `warnings`        | Capability or source-data caveats                   |
+| `codeMatch`       | Code evidence for code modes only                   |
 
 Search ranking is deterministic. It is not an LLM relevance score.
 
@@ -228,15 +228,15 @@ Search ranking is deterministic. It is not an LLM relevance score.
 Warnings should remain attached to the package or node they describe. Current warning
 codes include:
 
-| Warning | Meaning |
-|---|---|
-| `text_search_unavailable` | Selected package does not implement text search |
-| `code_search_unavailable` | Requested code mode is unavailable |
-| `code_prefix_unavailable` | Prefix mode is unavailable |
-| `partial_code_coverage` | Only part of the package is coded |
-| `multiple_code_matches` | Exact code maps to more than one record |
-| `derived_parent_code_not_found` | Configured derived parent code has no retained match |
-| `derived_parent_code_multiple` | Configured derived parent code maps to multiple nodes |
+| Warning                         | Meaning                                               |
+|---------------------------------|-------------------------------------------------------|
+| `text_search_unavailable`       | Selected package does not implement text search       |
+| `code_search_unavailable`       | Requested code mode is unavailable                    |
+| `code_prefix_unavailable`       | Prefix mode is unavailable                            |
+| `partial_code_coverage`         | Only part of the package is coded                     |
+| `multiple_code_matches`         | Exact code maps to more than one record               |
+| `derived_parent_code_not_found` | Configured derived parent code has no retained match  |
+| `derived_parent_code_multiple`  | Configured derived parent code maps to multiple nodes |
 
 Warnings are evidence, not errors to hide. In particular, partial code coverage should
 remain visible when interpreting a code-search result set.

@@ -34,17 +34,17 @@ one document rather than a paginated `list_frameworks` tool result.
 
 ## Resource URI templates
 
-| Resource | URI |
-|---|---|
-| Framework family | `kgfegmcp://framework/{framework_id}` |
-| Package manifest | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/manifest` |
-| Validation report | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/validation` |
-| Unresolved-items report | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/unresolved` |
-| Interpretation profile | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/interpretation-profile` |
-| Manifest-declared artifact | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/artifact/{artifact_name}` |
-| Standard | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}` |
-| Standard provenance | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/provenance` |
-| Relationship | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/relationship/{relationship_id}` |
+| Resource                   | URI                                                                                         |
+|----------------------------|---------------------------------------------------------------------------------------------|
+| Framework family           | `kgfegmcp://framework/{framework_id}`                                                       |
+| Package manifest           | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/manifest`                       |
+| Validation report          | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/validation`                     |
+| Unresolved-items report    | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/unresolved`                     |
+| Interpretation profile     | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/interpretation-profile`         |
+| Manifest-declared artifact | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/artifact/{artifact_name}`       |
+| Standard                   | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}`             |
+| Standard provenance        | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/provenance`  |
+| Relationship               | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/relationship/{relationship_id}` |
 
 Identifier values are percent-encoded as individual URI path segments when links are
 constructed by the server.
@@ -173,17 +173,17 @@ class.
 
 ### Current built-in artifact exposure classes
 
-| Logical artifact | MIME type | Access class |
-|---|---|---|
-| `validationReport` | `application/json` | Public metadata |
-| `unresolvedItems` | `application/json` | Full text |
-| `academicStandardsBundle` | `application/json` | Bulk content |
-| `entityProvenance` | `application/json` | Bulk content |
-| `nodes` | `application/x-ndjson` | Bulk content |
-| `relationships` | `application/x-ndjson` | Bulk content |
-| `relationshipsHasChild` | `application/x-ndjson` | Bulk content |
-| `standardsFramework` | `application/json` | Bulk content |
-| `standardsFrameworkItems` | `application/x-ndjson` | Bulk content |
+| Logical artifact          | MIME type              | Access class    |
+|---------------------------|------------------------|-----------------|
+| `validationReport`        | `application/json`     | Public metadata |
+| `unresolvedItems`         | `application/json`     | Full text       |
+| `academicStandardsBundle` | `application/json`     | Bulk content    |
+| `entityProvenance`        | `application/json`     | Bulk content    |
+| `nodes`                   | `application/x-ndjson` | Bulk content    |
+| `relationships`           | `application/x-ndjson` | Bulk content    |
+| `relationshipsHasChild`   | `application/x-ndjson` | Bulk content    |
+| `standardsFramework`      | `application/json`     | Bulk content    |
+| `standardsFrameworkItems` | `application/x-ndjson` | Bulk content    |
 
 An additional artifact can exist in a manifest and still fail closed if no explicit
 resource exposure contract exists for its logical name.
@@ -197,12 +197,12 @@ resource exposure contract exists for its logical name.
 
 Resource authorization depends on the requested family.
 
-| Resource class | Main requirements |
-|---|---|
-| Catalog, framework, manifest, validation, interpretation profile | Available as public metadata |
-| Unresolved report | Approved/provisionally approved review + `allowFullText` |
-| Standard, standard provenance, relationship | Approved/provisionally approved review + `allowFullText` + `allowStandardResources` |
-| Bulk artifact | Approved/provisionally approved review + `allowFullText` + `allowStandardResources` + `allowBulkResource` |
+| Resource class                                                   | Main requirements                                                                                         |
+|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| Catalog, framework, manifest, validation, interpretation profile | Available as public metadata                                                                              |
+| Unresolved report                                                | Approved/provisionally approved review + `allowFullText`                                                  |
+| Standard, standard provenance, relationship                      | Approved/provisionally approved review + `allowFullText` + `allowStandardResources`                       |
+| Bulk artifact                                                    | Approved/provisionally approved review + `allowFullText` + `allowStandardResources` + `allowBulkResource` |
 
 The resource layer evaluates these permissions independently from prompt derivative-
 generation policy.
@@ -212,10 +212,10 @@ generation policy.
 The runtime enforces separate limits for source reads and returned resource content.
 Defaults are:
 
-| Setting | Default |
-|---|---:|
-| `KGFEGMCP_MAX_RESOURCE_BYTES` | 8 MiB |
-| `KGFEGMCP_MAX_RESOURCE_SOURCE_BYTES` | 32 MiB |
+| Setting                              | Default |
+|--------------------------------------|---------|
+| `KGFEGMCP_MAX_RESOURCE_BYTES`        | 8 MiB   |
+| `KGFEGMCP_MAX_RESOURCE_SOURCE_BYTES` | 32 MiB  |
 
 The source-read limit must be greater than or equal to the returned-resource limit.
 Requests that exceed the applicable bound fail instead of silently truncating source
@@ -226,9 +226,9 @@ bytes.
 Returned resource metadata distinguishes exact retained bytes from deterministic server-
 derived documents. Resource representations are:
 
-| Representation | Meaning |
-|---|---|
-| `raw_source` | Exact retained source bytes for the addressed package artifact |
+| Representation          | Meaning                                                                       |
+|-------------------------|-------------------------------------------------------------------------------|
+| `raw_source`            | Exact retained source bytes for the addressed package artifact                |
 | `deterministic_derived` | Canonical server-generated representation derived from accepted runtime state |
 
 Resource metadata also includes canonical URI, content SHA-256, byte length, MIME type,

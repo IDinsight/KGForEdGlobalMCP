@@ -57,22 +57,22 @@ bounded root paths. Descendants beyond direct children are not included unless
 
 ## Request fields and bounds
 
-| Field | Default | Purpose |
-|---|---:|---|
-| `frameworkId` | — | Framework family selector; required unless `snapshotId` is supplied |
-| `snapshotId` | `null` | Optional exact immutable snapshot |
-| `graphType` | `academic_standards` | Selected graph domain |
-| `nodeId` | — | Exact package-local standard node |
-| `ancestorDepth` | `16` | Maximum ancestor traversal depth, 0–64 |
-| `childDepth` | `1` | Maximum descendant traversal depth, 0–64 |
-| `includeDirectChildren` | `true` | Return immediate children |
-| `includeDescendants` | `false` | Return bounded descendants |
-| `includeAllRootPaths` | `true` | Enumerate bounded complete paths to the framework root |
-| `includeUnresolved` | `true` | Preserve accepted unresolved relationship statuses |
-| `maxNodes` | `250` | Maximum nodes in each bounded traversal, 1–2000 |
-| `maxPaths` | `128` | Maximum root paths, 1–1000 |
-| `maxPathNodeOccurrences` | `8192` | Aggregate node-occurrence bound across root paths |
-| `relationshipTypes` | `[]` | Optional explicit package hierarchy label; at most one value |
+| Field                    | Default              | Purpose                                                             |
+|--------------------------|----------------------|---------------------------------------------------------------------|
+| `frameworkId`            | —                    | Framework family selector; required unless `snapshotId` is supplied |
+| `snapshotId`             | `null`               | Optional exact immutable snapshot                                   |
+| `graphType`              | `academic_standards` | Selected graph domain                                               |
+| `nodeId`                 | —                    | Exact package-local standard node                                   |
+| `ancestorDepth`          | `16`                 | Maximum ancestor traversal depth, 0–64                              |
+| `childDepth`             | `1`                  | Maximum descendant traversal depth, 0–64                            |
+| `includeDirectChildren`  | `true`               | Return immediate children                                           |
+| `includeDescendants`     | `false`              | Return bounded descendants                                          |
+| `includeAllRootPaths`    | `true`               | Enumerate bounded complete paths to the framework root              |
+| `includeUnresolved`      | `true`               | Preserve accepted unresolved relationship statuses                  |
+| `maxNodes`               | `250`                | Maximum nodes in each bounded traversal, 1–2000                     |
+| `maxPaths`               | `128`                | Maximum root paths, 1–1000                                          |
+| `maxPathNodeOccurrences` | `8192`               | Aggregate node-occurrence bound across root paths                   |
+| `relationshipTypes`      | `[]`                 | Optional explicit package hierarchy label; at most one value        |
 
 The canonical context tool operates only on the selected package's configured hierarchy
 relationship type. Supplying a different relationship label is rejected rather than
@@ -172,10 +172,10 @@ bounds allow them.
 Bounded traversal results explicitly report whether they are complete. Possible
 truncation reasons are:
 
-| Reason | Meaning |
-|---|---|
-| `max_nodes` | Traversal reached the configured node bound |
-| `max_paths` | Root-path enumeration reached the path-count bound |
+| Reason                      | Meaning                                                           |
+|-----------------------------|-------------------------------------------------------------------|
+| `max_nodes`                 | Traversal reached the configured node bound                       |
+| `max_paths`                 | Root-path enumeration reached the path-count bound                |
 | `max_path_node_occurrences` | Aggregate root-path node occurrences reached the configured bound |
 
 If `isComplete` is `false`, describe the returned graph evidence as bounded or partial.

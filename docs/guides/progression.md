@@ -58,15 +58,15 @@ ignored.
 
 ## Request fields
 
-| Field | Default | Meaning |
-|---|---:|---|
-| `frameworkId` | — | Exact conceptual framework family |
-| `snapshotId` | `null` | Optional exact immutable snapshot |
-| `focusMode` | `topic` | How `topicOrStandard` is interpreted |
-| `topicOrStandard` | — | Topic text, statement code, node ID, CASE UUID, or CASE URI |
-| `localGradeLabels` | `[]` | Exact source-facing grade or stage scopes |
-| `normalizedGrades` | `[]` | Normalized grade retrieval scopes |
-| `candidateLimit` | `8` | Hard maximum retained standard candidates, 2–20 |
+| Field              | Default | Meaning                                                     |
+|--------------------|---------|-------------------------------------------------------------|
+| `frameworkId`      | —       | Exact conceptual framework family                           |
+| `snapshotId`       | `null`  | Optional exact immutable snapshot                           |
+| `focusMode`        | `topic` | How `topicOrStandard` is interpreted                        |
+| `topicOrStandard`  | —       | Topic text, statement code, node ID, CASE UUID, or CASE URI |
+| `localGradeLabels` | `[]`    | Exact source-facing grade or stage scopes                   |
+| `normalizedGrades` | `[]`    | Normalized grade retrieval scopes                           |
+| `candidateLimit`   | `8`     | Hard maximum retained standard candidates, 2–20             |
 
 The combined grade scope cannot be empty, and duplicate scope values are rejected.
 
@@ -74,13 +74,13 @@ The combined grade scope cannot be empty, and duplicate scope values are rejecte
 
 `focusMode` controls the interpretation of `topicOrStandard`.
 
-| Mode | Use |
-|---|---|
-| `topic` | Lexical topic discovery |
-| `statement_code` | Exact statement-code anchor |
-| `node_id` | Exact package-local graph node |
-| `case_identifier_uuid` | Exact CASE UUID anchor |
-| `case_identifier_uri` | Exact CASE URI anchor |
+| Mode                   | Use                            |
+|------------------------|--------------------------------|
+| `topic`                | Lexical topic discovery        |
+| `statement_code`       | Exact statement-code anchor    |
+| `node_id`              | Exact package-local graph node |
+| `case_identifier_uuid` | Exact CASE UUID anchor         |
+| `case_identifier_uri`  | Exact CASE URI anchor          |
 
 Use `statement_code` only when the selected package implements exact code search.
 
@@ -152,12 +152,12 @@ that the descendant is a later learning step.
 
 Candidates can enter the pool through several deterministic routes:
 
-| Discovery method | Meaning |
-|---|---|
-| `exact_anchor` | The exact selected standard itself |
-| `grouping_descendant` | Eligible standard found beneath a matching grouping |
-| `direct_search_hit` | Direct lexical topic match |
-| `anchor_term_search` | Match from terms derived from an exact anchor context |
+| Discovery method      | Meaning                                               |
+|-----------------------|-------------------------------------------------------|
+| `exact_anchor`        | The exact selected standard itself                    |
+| `grouping_descendant` | Eligible standard found beneath a matching grouping   |
+| `direct_search_hit`   | Direct lexical topic match                            |
+| `anchor_term_search`  | Match from terms derived from an exact anchor context |
 
 The service deduplicates by exact node identity. A node discovered by several routes is
 still one candidate, while its discovery-method evidence can record the contributing
@@ -218,15 +218,15 @@ without repeating every raw property from the ordinary context tool.
 
 For each candidate, inspect:
 
-| Evidence | Meaning |
-|---|---|
-| `context.isComplete` | Aggregate context completion state |
-| `context.rootPaths` | Bounded framework-root-to-candidate paths |
-| `context.relationshipStatuses` | Non-empty retained resolution statuses |
-| `matchedLocalGradeLabels` | Requested local scopes matched by the candidate |
-| `matchedNormalizedGrades` | Requested normalized scopes matched by the candidate |
-| `selectionRank` | Position after the deterministic selection policy |
-| `searchHit` | Direct search evidence when the candidate came from search |
+| Evidence                       | Meaning                                                    |
+|--------------------------------|------------------------------------------------------------|
+| `context.isComplete`           | Aggregate context completion state                         |
+| `context.rootPaths`            | Bounded framework-root-to-candidate paths                  |
+| `context.relationshipStatuses` | Non-empty retained resolution statuses                     |
+| `matchedLocalGradeLabels`      | Requested local scopes matched by the candidate            |
+| `matchedNormalizedGrades`      | Requested normalized scopes matched by the candidate       |
+| `selectionRank`                | Position after the deterministic selection policy          |
+| `searchHit`                    | Direct search evidence when the candidate came from search |
 
 If context is incomplete, the tool records `context_incomplete` rather than presenting a
 partial branch as complete.
@@ -235,14 +235,14 @@ partial branch as complete.
 
 Progression evidence can report:
 
-| Warning | Meaning |
-|---|---|
-| `no_candidates` | No eligible standard-item candidates matched focus and scope |
-| `discovery_incomplete` | Discovery hit an established bounded search or traversal limit |
-| `context_incomplete` | Retained candidate hierarchy context hit a bound |
-| `scope_not_retained` | Requested grade scope had discovered evidence but no retained candidate |
-| `scope_without_candidates` | Requested grade scope had no discovered candidate |
-| `search_warning` | Underlying package-local search emitted a warning |
+| Warning                    | Meaning                                                                 |
+|----------------------------|-------------------------------------------------------------------------|
+| `no_candidates`            | No eligible standard-item candidates matched focus and scope            |
+| `discovery_incomplete`     | Discovery hit an established bounded search or traversal limit          |
+| `context_incomplete`       | Retained candidate hierarchy context hit a bound                        |
+| `scope_not_retained`       | Requested grade scope had discovered evidence but no retained candidate |
+| `scope_without_candidates` | Requested grade scope had no discovered candidate                       |
+| `search_warning`           | Underlying package-local search emitted a warning                       |
 
 Keep the warnings associated with any later progression hypothesis.
 

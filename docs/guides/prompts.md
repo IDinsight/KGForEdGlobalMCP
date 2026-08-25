@@ -30,14 +30,14 @@ evidence-status, package-isolation, or generated-content rules.
 
 ## Available prompts
 
-| Prompt | Primary use |
-|---|---|
-| `student_study_support` | Evidence-grounded study support and practice |
-| `teacher_guide_draft` | Evidence-grounded teacher lesson-guide draft |
-| `student_handbook_section` | Evidence-grounded student-facing handbook section |
+| Prompt                            | Primary use                                                                                            |
+|-----------------------------------|--------------------------------------------------------------------------------------------------------|
+| `student_study_support`           | Evidence-grounded study support and practice                                                           |
+| `teacher_guide_draft`             | Evidence-grounded teacher lesson-guide draft                                                           |
+| `student_handbook_section`        | Evidence-grounded student-facing handbook section                                                      |
 | `inferred_progression_hypothesis` | Review a bounded multi-grade candidate set and formulate an explicitly inferred progression hypothesis |
-| `administrator_alignment_review` | Structured review between one source and one target framework |
-| `cross_framework_comparison` | Exploratory evidence-grounded comparison across two to eight frameworks |
+| `administrator_alignment_review`  | Structured review between one source and one target framework                                          |
+| `cross_framework_comparison`      | Exploratory evidence-grounded comparison across two to eight frameworks                                |
 
 All six prompts are registered as generated-content workflows. The current prompt
 version is `1.1.0`.
@@ -60,13 +60,13 @@ the host to repeat it in the eventual answer.
 
 The role-oriented prompts use `focus_mode` to interpret `topic_or_standard`:
 
-| `focus_mode` | `topic_or_standard` value |
-|---|---|
-| `topic` | Source-visible topic or label text |
-| `statement_code` | Stable framework statement code |
-| `node_id` | Exact package-local node UUID |
-| `case_identifier_uuid` | Exact CASE UUID |
-| `case_identifier_uri` | Exact CASE URI |
+| `focus_mode`           | `topic_or_standard` value          |
+|------------------------|------------------------------------|
+| `topic`                | Source-visible topic or label text |
+| `statement_code`       | Stable framework statement code    |
+| `node_id`              | Exact package-local node UUID      |
+| `case_identifier_uuid` | Exact CASE UUID                    |
+| `case_identifier_uri`  | Exact CASE URI                     |
 
 `statement_code` is rejected when the selected framework does not provide stable code
 support. Use `topic` or an exact identifier instead.
@@ -76,17 +76,17 @@ support. Use `topic` or an exact identifier instead.
 Use this workflow to generate bounded student support tied to retrieved curriculum
 evidence.
 
-| Parameter | Required | Default / bounds |
-|---|---|---|
-| `framework_id` | yes | Exact framework ID |
-| `grade_or_stage` | yes | Local or normalized grade/stage context |
-| `topic_or_standard` | yes | Interpreted by `focus_mode` |
-| `focus_mode` | no | `topic` |
-| `difficulty` | no | `on_level`; also `foundational`, `extension` |
-| `practice_count` | no | `5`, from 1 through 10 |
-| `local_context` | no | Anonymous local nuance |
-| `output_language` | no | Optional BCP 47-style language tag |
-| `snapshot_id` | no | Unique-current routing when omitted |
+| Parameter           | Required | Default / bounds                             |
+|---------------------|----------|----------------------------------------------|
+| `framework_id`      | yes      | Exact framework ID                           |
+| `grade_or_stage`    | yes      | Local or normalized grade/stage context      |
+| `topic_or_standard` | yes      | Interpreted by `focus_mode`                  |
+| `focus_mode`        | no       | `topic`                                      |
+| `difficulty`        | no       | `on_level`; also `foundational`, `extension` |
+| `practice_count`    | no       | `5`, from 1 through 10                       |
+| `local_context`     | no       | Anonymous local nuance                       |
+| `output_language`   | no       | Optional BCP 47-style language tag           |
+| `snapshot_id`       | no       | Unique-current routing when omitted          |
 
 Example manual prompt inputs:
 
@@ -108,18 +108,18 @@ study explanations or practice items from official curriculum text.
 
 Use this workflow when the desired output is a teacher-facing lesson or activity guide.
 
-| Parameter | Required | Default / bounds |
-|---|---|---|
-| `framework_id` | yes | Exact framework ID |
-| `grade_or_stage` | yes | Local or normalized grade/stage context |
-| `topic_or_standard` | yes | Interpreted by `focus_mode` |
-| `focus_mode` | no | `topic` |
-| `lesson_duration_minutes` | no | `45`, from 10 through 240 |
-| `available_materials` | no | Untrusted material constraints |
-| `learner_context` | no | Anonymous learner context; no sensitive education records |
-| `local_context` | no | Untrusted local nuance |
-| `output_language` | no | Optional language tag |
-| `snapshot_id` | no | Unique-current routing when omitted |
+| Parameter                 | Required | Default / bounds                                          |
+|---------------------------|----------|-----------------------------------------------------------|
+| `framework_id`            | yes      | Exact framework ID                                        |
+| `grade_or_stage`          | yes      | Local or normalized grade/stage context                   |
+| `topic_or_standard`       | yes      | Interpreted by `focus_mode`                               |
+| `focus_mode`              | no       | `topic`                                                   |
+| `lesson_duration_minutes` | no       | `45`, from 10 through 240                                 |
+| `available_materials`     | no       | Untrusted material constraints                            |
+| `learner_context`         | no       | Anonymous learner context; no sensitive education records |
+| `local_context`           | no       | Untrusted local nuance                                    |
+| `output_language`         | no       | Optional language tag                                     |
+| `snapshot_id`             | no       | Unique-current routing when omitted                       |
 
 Example:
 
@@ -141,16 +141,16 @@ not source curriculum evidence and should not be represented as such.
 This workflow generates a student-facing explanatory section grounded in bounded source
 evidence.
 
-| Parameter | Required | Default / bounds |
-|---|---|---|
-| `framework_id` | yes | Exact framework ID |
-| `grade_or_stage` | yes | Local or normalized grade/stage context |
-| `topic_or_standard` | yes | Interpreted by `focus_mode` |
-| `focus_mode` | no | `topic` |
-| `target_word_count` | no | `500`, from 150 through 1500 |
-| `local_context` | no | Anonymous local nuance |
-| `output_language` | no | Optional language tag |
-| `snapshot_id` | no | Unique-current routing when omitted |
+| Parameter           | Required | Default / bounds                        |
+|---------------------|----------|-----------------------------------------|
+| `framework_id`      | yes      | Exact framework ID                      |
+| `grade_or_stage`    | yes      | Local or normalized grade/stage context |
+| `topic_or_standard` | yes      | Interpreted by `focus_mode`             |
+| `focus_mode`        | no       | `topic`                                 |
+| `target_word_count` | no       | `500`, from 150 through 1500            |
+| `local_context`     | no       | Anonymous local nuance                  |
+| `output_language`   | no       | Optional language tag                   |
+| `snapshot_id`       | no       | Unique-current routing when omitted     |
 
 Example:
 
@@ -169,18 +169,18 @@ This workflow is intentionally different from ordinary generation prompts. It di
 the host to call `collect_progression_evidence` once, using the server-enforced grade
 scope and hard candidate limit, before formulating any hypothesis.
 
-| Parameter | Required | Default / bounds |
-|---|---|---|
-| `framework_id` | yes | Exact framework ID |
-| `topic_or_standard` | yes | Interpreted by `focus_mode` |
-| `focus_mode` | no | `topic` |
-| `local_grade_labels` | conditional | JSON array of exact source-facing scopes |
-| `normalized_grades` | conditional | JSON array of normalized retrieval scopes |
-| `candidate_limit` | no | `8`, from 2 through 20 |
-| `direction` | no | `both`; also `earlier_to_later`, `later_to_earlier` |
-| `local_context` | no | Untrusted local nuance |
-| `output_language` | no | Optional language tag |
-| `snapshot_id` | no | Unique-current routing when omitted |
+| Parameter            | Required    | Default / bounds                                    |
+|----------------------|-------------|-----------------------------------------------------|
+| `framework_id`       | yes         | Exact framework ID                                  |
+| `topic_or_standard`  | yes         | Interpreted by `focus_mode`                         |
+| `focus_mode`         | no          | `topic`                                             |
+| `local_grade_labels` | conditional | JSON array of exact source-facing scopes            |
+| `normalized_grades`  | conditional | JSON array of normalized retrieval scopes           |
+| `candidate_limit`    | no          | `8`, from 2 through 20                              |
+| `direction`          | no          | `both`; also `earlier_to_later`, `later_to_earlier` |
+| `local_context`      | no          | Untrusted local nuance                              |
+| `output_language`    | no          | Optional language tag                               |
+| `snapshot_id`        | no          | Unique-current routing when omitted                 |
 
 At least one of the two grade arrays must be populated by the evidence tool.
 
@@ -210,20 +210,20 @@ This prompt renders a controlled comparison workflow for one source framework an
 target framework. The prompt itself does not retrieve standards; it instructs the host
 to use `compare_framework_evidence` and preserve both packages' evidence boundaries.
 
-| Parameter | Required | Default / bounds |
-|---|---|---|
-| `source_framework_id` | yes | Exact source framework ID |
-| `target_framework_id` | yes | Exact target framework ID |
-| `topic_or_query` | yes | Shared text or code query |
-| `search_mode` | no | `text`; also `code_exact`, `code_prefix` |
-| `source_grade_or_stage` | no | Framework-local review scope |
-| `target_grade_or_stage` | no | Framework-local review scope |
-| `source_snapshot_id` | no | Exact source snapshot |
-| `target_snapshot_id` | no | Exact target snapshot |
-| `matches_per_framework` | no | `5`, from 1 through 10 |
-| `include_context_paths` | no | `true` |
-| `local_context` | no | Untrusted administrative context |
-| `output_language` | no | Optional language tag |
+| Parameter               | Required | Default / bounds                         |
+|-------------------------|----------|------------------------------------------|
+| `source_framework_id`   | yes      | Exact source framework ID                |
+| `target_framework_id`   | yes      | Exact target framework ID                |
+| `topic_or_query`        | yes      | Shared text or code query                |
+| `search_mode`           | no       | `text`; also `code_exact`, `code_prefix` |
+| `source_grade_or_stage` | no       | Framework-local review scope             |
+| `target_grade_or_stage` | no       | Framework-local review scope             |
+| `source_snapshot_id`    | no       | Exact source snapshot                    |
+| `target_snapshot_id`    | no       | Exact target snapshot                    |
+| `matches_per_framework` | no       | `5`, from 1 through 10                   |
+| `include_context_paths` | no       | `true`                                   |
+| `local_context`         | no       | Untrusted administrative context         |
+| `output_language`       | no       | Optional language tag                    |
 
 Example:
 
@@ -249,18 +249,18 @@ adoption, or alignment decision is made.
 
 Use this prompt for exploratory synthesis across two to eight frameworks.
 
-| Parameter | Required | Default / bounds |
-|---|---|---|
-| `framework_ids` | yes | JSON array of 2–8 distinct framework IDs |
-| `topic_or_query` | yes | Shared text or code query |
-| `search_mode` | no | `text`; also `code_exact`, `code_prefix` |
-| `snapshot_ids` | no | JSON array, at most one snapshot per framework |
-| `local_grade_labels` | no | Shared JSON-array local-grade filter |
-| `normalized_grades` | no | Shared JSON-array normalized-grade filter |
-| `matches_per_framework` | no | `5`, from 1 through 10 |
-| `include_context_paths` | no | `true` |
-| `local_context` | no | Untrusted local nuance |
-| `output_language` | no | Optional language tag |
+| Parameter               | Required | Default / bounds                               |
+|-------------------------|----------|------------------------------------------------|
+| `framework_ids`         | yes      | JSON array of 2–8 distinct framework IDs       |
+| `topic_or_query`        | yes      | Shared text or code query                      |
+| `search_mode`           | no       | `text`; also `code_exact`, `code_prefix`       |
+| `snapshot_ids`          | no       | JSON array, at most one snapshot per framework |
+| `local_grade_labels`    | no       | Shared JSON-array local-grade filter           |
+| `normalized_grades`     | no       | Shared JSON-array normalized-grade filter      |
+| `matches_per_framework` | no       | `5`, from 1 through 10                         |
+| `include_context_paths` | no       | `true`                                         |
+| `local_context`         | no       | Untrusted local nuance                         |
+| `output_language`       | no       | Optional language tag                          |
 
 Example:
 
@@ -323,13 +323,13 @@ the host must use.
 When a prompt workflow produces educational prose, keep these categories visibly
 separate:
 
-| Category | Treatment |
-|---|---|
-| Exact source wording | Quote or reproduce only within applicable rights and attribution requirements |
-| Retrieved source evidence | Preserve exact identifiers, package identity, and warnings |
-| Deterministic server guidance | Describe as server-generated workflow instructions |
-| Model explanation or draft | Label as generated content, not official curriculum wording |
-| Comparison/progression interpretation | Label as inferred unless the source explicitly asserts it |
+| Category                              | Treatment                                                                     |
+|---------------------------------------|-------------------------------------------------------------------------------|
+| Exact source wording                  | Quote or reproduce only within applicable rights and attribution requirements |
+| Retrieved source evidence             | Preserve exact identifiers, package identity, and warnings                    |
+| Deterministic server guidance         | Describe as server-generated workflow instructions                            |
+| Model explanation or draft            | Label as generated content, not official curriculum wording                   |
+| Comparison/progression interpretation | Label as inferred unless the source explicitly asserts it                     |
 
 ---
 

@@ -60,19 +60,19 @@ send a nested `match` object.
 
 ### Flat comparison fields
 
-| Field | Default | Meaning |
-|---|---:|---|
-| `frameworkIds` | — | Two through eight distinct framework IDs |
-| `snapshotIds` | `[]` | Optional exact snapshots; at most one per selected framework |
-| `query` | — | Shared topic text or code query |
-| `mode` | — | `text`, `code_exact`, or `code_prefix` |
-| `matchMode` | `tokens` | `tokens` or `exact_phrase` for text mode |
-| `matchOperator` | `all` | `all` or `any` for token mode |
-| `includeContextPaths` | `true` | Add bounded hierarchy context to each match |
-| `includeGroupings` | `false` | Allow grouping nodes to match |
-| `localGradeLabels` | `[]` | Shared source-facing grade filters |
-| `normalizedGrades` | `[]` | Shared normalized grade filters |
-| `maxMatchesPerFramework` | `5` | Independent per-framework quota, 1–10 |
+| Field                    | Default  | Meaning                                                      |
+|--------------------------|----------|--------------------------------------------------------------|
+| `frameworkIds`           | —        | Two through eight distinct framework IDs                     |
+| `snapshotIds`            | `[]`     | Optional exact snapshots; at most one per selected framework |
+| `query`                  | —        | Shared topic text or code query                              |
+| `mode`                   | —        | `text`, `code_exact`, or `code_prefix`                       |
+| `matchMode`              | `tokens` | `tokens` or `exact_phrase` for text mode                     |
+| `matchOperator`          | `all`    | `all` or `any` for token mode                                |
+| `includeContextPaths`    | `true`   | Add bounded hierarchy context to each match                  |
+| `includeGroupings`       | `false`  | Allow grouping nodes to match                                |
+| `localGradeLabels`       | `[]`     | Shared source-facing grade filters                           |
+| `normalizedGrades`       | `[]`     | Shared normalized grade filters                              |
+| `maxMatchesPerFramework` | `5`      | Independent per-framework quota, 1–10                        |
 
 `matchOperator` has no effect for exact-phrase or code modes.
 
@@ -177,11 +177,11 @@ Do not treat a first page as full curriculum coverage when `hasMore` is `true`.
 
 A defensible client-side synthesis should keep three layers separate:
 
-| Layer | Example |
-|---|---|
-| Source evidence | Exact standard wording and local hierarchy from each package |
-| Deterministic retrieval | Why those nodes matched the shared query and filters |
-| Model inference | Similarities, differences, possible relationships, or review notes |
+| Layer                   | Example                                                            |
+|-------------------------|--------------------------------------------------------------------|
+| Source evidence         | Exact standard wording and local hierarchy from each package       |
+| Deterministic retrieval | Why those nodes matched the shared query and filters               |
+| Model inference         | Similarities, differences, possible relationships, or review notes |
 
 Any claim of conceptual similarity or possible correspondence is a host interpretation
 unless a source package explicitly asserts it.

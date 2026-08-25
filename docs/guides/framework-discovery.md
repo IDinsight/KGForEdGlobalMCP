@@ -55,21 +55,21 @@ A filtered discovery request can look like:
 
 ### Available discovery filters
 
-| Field | Purpose |
-|---|---|
-| `query` | Free-text discovery across selected framework metadata |
-| `graphTypes` | Require at least one requested graph type |
-| `isCurrent` | Restrict to current or non-current snapshots |
-| `issuingAuthorities` | Filter by source issuing authority |
-| `jurisdictionTypes` | Filter by source jurisdiction type |
-| `jurisdictions` | Filter by jurisdiction |
-| `languages` | Filter by source language tags |
-| `localGrades` | Filter by exact source-facing grades or stages |
-| `normalizedGrades` | Filter by normalized retrieval facets |
-| `subjects` | Filter by source-authored local subject |
-| `validationStatus` | Filter by accepted package validation status |
-| `limit` | Maximum snapshots returned on the page, from 1 through 100 |
-| `cursor` | Opaque continuation cursor from the preceding page |
+| Field                | Purpose                                                    |
+|----------------------|------------------------------------------------------------|
+| `query`              | Free-text discovery across selected framework metadata     |
+| `graphTypes`         | Require at least one requested graph type                  |
+| `isCurrent`          | Restrict to current or non-current snapshots               |
+| `issuingAuthorities` | Filter by source issuing authority                         |
+| `jurisdictionTypes`  | Filter by source jurisdiction type                         |
+| `jurisdictions`      | Filter by jurisdiction                                     |
+| `languages`          | Filter by source language tags                             |
+| `localGrades`        | Filter by exact source-facing grades or stages             |
+| `normalizedGrades`   | Filter by normalized retrieval facets                      |
+| `subjects`           | Filter by source-authored local subject                    |
+| `validationStatus`   | Filter by accepted package validation status               |
+| `limit`              | Maximum snapshots returned on the page, from 1 through 100 |
+| `cursor`             | Opaque continuation cursor from the preceding page         |
 
 Filter values are normalized for matching without replacing the retained source values.
 Within one populated filter, any requested value may match. Across different populated
@@ -102,11 +102,11 @@ For standards content, use `search_standards` instead.
 Each returned item represents one immutable snapshot and includes source metadata plus
 its accepted graph packages. Keep these identities distinct:
 
-| Identity | Meaning |
-|---|---|
-| `frameworkId` | Stable conceptual framework family |
-| `snapshotId` | Immutable version of that framework |
-| `graphPackageId` | Validated runtime delivery unit |
+| Identity                       | Meaning                                      |
+|--------------------------------|----------------------------------------------|
+| `frameworkId`                  | Stable conceptual framework family           |
+| `snapshotId`                   | Immutable version of that framework          |
+| `graphPackageId`               | Validated runtime delivery unit              |
 | `profileId` + `profileVersion` | Interpretation contract bound to the package |
 
 A framework may eventually have more than one accepted snapshot. Omitting `snapshotId`
