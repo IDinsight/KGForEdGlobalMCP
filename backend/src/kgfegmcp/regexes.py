@@ -13,11 +13,14 @@ ARTIFACT_NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 # Matches ASCII control characters that are unsafe in identifiers and paths.
 CONTROL_CHARACTER_RE = re.compile(r"[\x00-\x1f\x7f]")
 
+# Delivery artifacts carry standards and learning components together, so their names
+# take the ``as_lc_`` prefix. These patterns gate package construction only; already
+# built packages resolve their artifacts through the paths recorded in their manifest.
 DELIVERY_NODES_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
-    r"^as_nodes_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
+    r"^as_lc_nodes_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
 )
 DELIVERY_RELATIONSHIPS_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
-    r"^as_relationships_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
+    r"^as_lc_relationships_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
 )
 
 # Matches graph package IDs based on a snapshot, with an optional future package suffix.
