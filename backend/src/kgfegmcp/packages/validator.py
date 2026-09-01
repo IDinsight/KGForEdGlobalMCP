@@ -35,6 +35,7 @@ from __future__ import annotations
 import re
 
 from collections import defaultdict, deque
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Final
 
@@ -48,6 +49,7 @@ from kgfegmcp.graph.models import (
     FrameworkNode,
     GraphNode,
     GraphRelationship,
+    LearningComponentNode,
     StandardNode,
 )
 from kgfegmcp.packages.loader import GraphPackageLoader, GraphPackageLoadResult
@@ -71,6 +73,9 @@ from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE,
     DELIVERY_SCHEMA_1_0_ITEM_LABEL,
     DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY,
+    DELIVERY_SCHEMA_1_1_COMPONENT_ENDPOINT_ENTITY_KEY,
+    DELIVERY_SCHEMA_1_1_COMPONENT_LABEL,
+    DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE,
     DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS,
 )
 from kgfegmcp.profiles.models import (
@@ -507,18 +512,77 @@ def _node_kind_label(node: GraphNode) -> str:
     Parameters
     ----------
     node
-        Decoded framework or framework-item node.
+        Decoded framework, framework-item, or learning-component node.
 
     Returns
     -------
     str
         Supported delivery-schema node label.
+
+    Raises
+    ------
+    TypeError
+        If the decoded node is not a supported delivery-schema node kind. A silent
+        fallback would relabel an unrecognized node as a standards framework item.
     """
 
     if isinstance(node, FrameworkNode):
         return DELIVERY_SCHEMA_1_0_FRAMEWORK_LABEL
 
-    return DELIVERY_SCHEMA_1_0_ITEM_LABEL
+    if isinstance(node, LearningComponentNode):
+        return DELIVERY_SCHEMA_1_1_COMPONENT_LABEL
+
+    if isinstance(node, StandardNode):
+        return DELIVERY_SCHEMA_1_0_ITEM_LABEL
+
+    raise TypeError(f"Unsupported decoded node kind: {type(node).__name__}.")
+
+
+def _node_endpoint_entity_key(node: GraphNode) -> str:
+    """Return the property name a relationship uses to reference one endpoint node.
+
+    Standards framework and framework-item endpoints are referenced by their CASE
+    identifier. Learning components carry no CASE identity, so they are referenced by
+    their own ``identifier`` instead.
+
+    Parameters
+    ----------
+    node
+        Decoded endpoint node.
+
+    Returns
+    -------
+    str
+        Delivery-schema property name used to reference the endpoint.
+    """
+
+    if isinstance(node, LearningComponentNode):
+        return DELIVERY_SCHEMA_1_1_COMPONENT_ENDPOINT_ENTITY_KEY
+
+    return DELIVERY_SCHEMA_1_0_ENDPOINT_ENTITY_KEY
+
+
+def _node_endpoint_entity_value(node: GraphNode) -> str | None:
+    """Return the value a relationship carries to reference one endpoint node.
+
+    Parameters
+    ----------
+    node
+        Decoded endpoint node.
+
+    Returns
+    -------
+    str | None
+        Endpoint reference value, or ``None`` when the node declares no CASE identity.
+    """
+
+    if isinstance(node, LearningComponentNode):
+        return str(node.node_id)
+
+    if node.case_identifier_uuid is None:
+        return None
+
+    return str(node.case_identifier_uuid)
 
 
 def _ordered_unique(values: tuple[str, ...]) -> tuple[str, ...]:
@@ -1576,7 +1640,11 @@ def _validate_node_identifiers_and_labels(
         First node observed for each outer node identifier.
     """
 
-    nodes: tuple[GraphNode, ...] = (package.framework_root, *package.item_nodes)
+    nodes: tuple[GraphNode, ...] = (
+        package.framework_root,
+        *package.item_nodes,
+        *package.learning_component_nodes,
+    )
     nodes_by_id: dict[str, GraphNode] = {}
     case_identifiers: dict[str, GraphNode] = {}
     case_identifier_uris: dict[str, GraphNode] = {}
@@ -1634,6 +1702,11 @@ def _validate_node_identifiers_and_labels(
             )
         else:
             nodes_by_id[node_id] = node
+
+        if isinstance(node, LearningComponentNode):
+            # A learning component is build-relative generated content and carries no
+            # CASE identity by design; its endpoints are keyed by ``identifier``.
+            continue
 
         if node.case_identifier_uuid is None:
             findings.append(
@@ -1997,33 +2070,25 @@ def _validate_relationship_endpoints(
         ),
         (
             relationship.source_entity_key,
-            DELIVERY_SCHEMA_1_0_ENDPOINT_ENTITY_KEY,
+            _node_endpoint_entity_key(source_node),
             "relationship source entity key",
             "relationship_source_entity_key_mismatch",
         ),
         (
             relationship.target_entity_key,
-            DELIVERY_SCHEMA_1_0_ENDPOINT_ENTITY_KEY,
+            _node_endpoint_entity_key(target_node),
             "relationship target entity key",
             "relationship_target_entity_key_mismatch",
         ),
         (
             relationship.source_entity_value,
-            (
-                str(source_node.case_identifier_uuid)
-                if source_node.case_identifier_uuid is not None
-                else None
-            ),
+            _node_endpoint_entity_value(source_node),
             "relationship source entity value",
             "relationship_source_entity_value_mismatch",
         ),
         (
             relationship.target_entity_value,
-            (
-                str(target_node.case_identifier_uuid)
-                if target_node.case_identifier_uuid is not None
-                else None
-            ),
+            _node_endpoint_entity_value(target_node),
             "relationship target entity value",
             "relationship_target_entity_value_mismatch",
         ),
@@ -2040,16 +2105,23 @@ def _validate_relationship_endpoints(
             source_export_order=relationship.source_export_order,
         )
 
-    metadata_comparisons = (
+    metadata_comparisons = [
         (
             relationship.attribution_statement,
             root.attribution_statement,
             "relationship attribution statement",
         ),
-        (relationship.author, root.author, "relationship author"),
         (relationship.license, root.license, "relationship source license"),
         (relationship.provider, root.provider, "relationship provider"),
-    )
+    ]
+
+    # ``author`` states who wrote the content. A supports relationship is derived by the
+    # generation pipeline rather than authored by the publishing body, so it declares its
+    # own author. Credit, licence, and provider still follow the source curriculum.
+    if relationship.label != DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
+        metadata_comparisons.append(
+            (relationship.author, root.author, "relationship author")
+        )
 
     for actual, expected, field_name in metadata_comparisons:
         _add_mismatch(
@@ -2292,6 +2364,13 @@ def _validate_relationship_representation(
         if target_node is None:
             continue
 
+        _validate_learning_component_topology(
+            findings=findings,
+            nodes_by_id=nodes_by_id,
+            relationship=relationship,
+            target_node=target_node,
+        )
+
         if (
             label_type_agree
             and relationship.label == DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE
@@ -2301,6 +2380,96 @@ def _validate_relationship_representation(
             incoming_relationships[target_id].append(relationship)
 
     return tuple(resolved_hierarchy_relationships), dict(incoming_relationships)
+
+
+def _validate_learning_component_topology(
+    *,
+    findings: list[PackageValidationFinding],
+    nodes_by_id: Mapping[str, GraphNode],
+    relationship: GraphRelationship,
+    target_node: GraphNode,
+) -> None:
+    """Require learning-component edges to keep generated content out of the hierarchy.
+
+    A ``supports`` edge must run from a learning component to a standards framework
+    item, and a learning component must never appear inside the ``hasChild`` hierarchy
+    in either direction. Mixing the two would let generated content be returned as
+    source-asserted curriculum structure.
+
+    Parameters
+    ----------
+    findings
+        Accumulating validation findings.
+    nodes_by_id
+        Decoded package nodes keyed by node identifier.
+    relationship
+        Decoded relationship under validation.
+    target_node
+        Already-resolved relationship target node.
+    """
+
+    relationship_id = str(relationship.relationship_id)
+    source_node = nodes_by_id.get(str(relationship.source_node_id))
+
+    if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
+        if not isinstance(source_node, LearningComponentNode):
+            findings.append(
+                _finding(
+                    code="supports_source_not_learning_component",
+                    details={"source_node_id": str(relationship.source_node_id)},
+                    message="A supports relationship source is not a learning component.",
+                    record_id=relationship_id,
+                    source_export_order=relationship.source_export_order,
+                )
+            )
+
+        if not isinstance(target_node, StandardNode):
+            findings.append(
+                _finding(
+                    code="supports_target_not_standards_item",
+                    details={"target_node_id": str(relationship.target_node_id)},
+                    message=(
+                        "A supports relationship target is not a standards framework item."
+                    ),
+                    record_id=relationship_id,
+                    source_export_order=relationship.source_export_order,
+                )
+            )
+
+        if relationship.support_confidence is None:
+            findings.append(
+                _finding(
+                    code="supports_confidence_absent",
+                    details={"relationship_id": relationship_id},
+                    message="A supports relationship does not declare supportConfidence.",
+                    record_id=relationship_id,
+                    source_export_order=relationship.source_export_order,
+                )
+            )
+
+        return
+
+    if relationship.label != DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE:
+        return
+
+    if isinstance(source_node, LearningComponentNode) or isinstance(
+        target_node, LearningComponentNode
+    ):
+        findings.append(
+            _finding(
+                code="learning_component_in_hierarchy",
+                details={
+                    "source_node_id": str(relationship.source_node_id),
+                    "target_node_id": str(relationship.target_node_id),
+                },
+                message=(
+                    "A learning component appears in the hasChild hierarchy. Generated "
+                    "content must not be reachable as source-asserted structure."
+                ),
+                record_id=relationship_id,
+                source_export_order=relationship.source_export_order,
+            )
+        )
 
 
 def _validate_root_reachability(
@@ -2445,4 +2614,79 @@ def validate_loaded_package(
         package=package,
         text_items=text_items,
     )
+    _validate_learning_component_package(findings=findings, package=package)
     return tuple(findings)
+
+
+def _validate_learning_component_package(
+    *, findings: list[PackageValidationFinding], package: LoadedGraphPackage
+) -> None:
+    """Validate package-level learning-component invariants.
+
+    Requires every learning component to be reachable by at least one ``supports``
+    edge, and the manifest counts to agree with the decoded content.
+
+    Parameters
+    ----------
+    findings
+        Validation-local finding accumulator.
+    package
+        Loaded package aggregate.
+    """
+
+    components = package.learning_component_nodes
+    counts = package.manifest.counts
+    supports_relationships = tuple(
+        relationship
+        for relationship in package.relationships
+        if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
+    )
+
+    supported_component_ids = {
+        str(relationship.source_node_id) for relationship in supports_relationships
+    }
+
+    for component in components:
+        if str(component.node_id) not in supported_component_ids:
+            findings.append(
+                _finding(
+                    code="learning_component_without_supports_edge",
+                    details={"node_id": str(component.node_id)},
+                    message=(
+                        "A learning component declares no supports relationship and is "
+                        "unreachable from any standard."
+                    ),
+                    record_id=str(component.node_id),
+                    source_export_order=component.source_export_order,
+                )
+            )
+
+    count_comparisons = (
+        (
+            "learning_component_nodes",
+            len(components),
+            counts.learning_component_nodes,
+        ),
+        (
+            "supports_relationships",
+            len(supports_relationships),
+            counts.supports_relationships,
+        ),
+    )
+
+    for count_name, observed_count, declared_count in count_comparisons:
+        if observed_count != declared_count:
+            findings.append(
+                _finding(
+                    code="learning_component_count_mismatch",
+                    details={
+                        "count_name": count_name,
+                        "declared_count": declared_count,
+                        "observed_count": observed_count,
+                    },
+                    message=(
+                        "Declared learning-component counts do not agree with decoded "
+                        "package content."
+                    ),
+                )
+            )
