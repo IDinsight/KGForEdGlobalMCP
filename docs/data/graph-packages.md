@@ -115,14 +115,58 @@ StandardsFramework
 StandardsFrameworkItem
 ```
 
+Delivery schema `1.1` adds one more:
+
+```text
+LearningComponent
+```
+
+Every node must carry exactly one of these labels. A record matching none of them, or
+more than one, is rejected at decode.
+
 The package must contain the expected framework root and item records required by the
 manifest counts and semantic validators.
 
+## Learning components
+
+A learning component is model-generated content decomposed from a standards framework
+item. It is kept separate from standards at every level: its own node type, its own
+package collection, and its own manifest counts. Standards results, hierarchy traversal,
+search indexes, and framework statistics are all built from item nodes and therefore
+never include generated content.
+
+A learning component carries no CASE identifier, no grade level, and no statement
+taxonomy. Those belong to published standards and are recovered by following the
+component's `supports` relationships to the standards items it was decomposed from.
+
+Delivery artifacts that carry learning components take the `as_lc_` filename prefix:
+
+```text
+delivery/as_lc_nodes_<subject>.jsonl
+delivery/as_lc_relationships_<subject>.jsonl
+detailed/as_lc_validation_report.json
+```
+
 ## Relationship representation
 
-The current hierarchy relationship type is `hasChild`. Relationships retain both outer
-node identifiers and source-facing endpoint metadata. The validator checks that these
-representations agree and that endpoints resolve correctly.
+The current hierarchy relationship type is `hasChild`. Delivery schema `1.1` adds
+`supports`, which runs from a learning component to the standards framework item it was
+decomposed from, and carries a `supportConfidence` between zero and one.
+
+Relationships retain both outer node identifiers and source-facing endpoint metadata.
+The validator checks that these representations agree and that endpoints resolve
+correctly.
+
+Endpoints are referenced by different properties depending on the node they point at. A
+standards framework or framework item endpoint is referenced by `caseIdentifierUUID`; a
+learning component endpoint is referenced by `identifier`, because a learning component
+has no CASE identity to cite. A `supports` relationship is therefore asymmetric,
+referencing its source by `identifier` and its target by `caseIdentifierUUID`.
+
+Two rules keep generated content out of source-asserted structure: a `supports`
+relationship must run from a learning component to a standards framework item, and a
+learning component must never appear in the `hasChild` hierarchy in either direction.
+Every learning component must be reachable by at least one `supports` relationship.
 
 A relationship can also carry a supported unresolved status such as
 `unresolvedRootFallback`. Such evidence remains explicitly unresolved rather than being

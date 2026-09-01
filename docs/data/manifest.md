@@ -17,7 +17,7 @@ The current manifest version, delivery schema version, and source schema version
 | `graphType`             | Primary graph domain                                              |
 | `includedGraphTypes`    | Graph domains included in the package                             |
 | `packageRevision`       | Package-format revision, currently `1`                            |
-| `deliverySchemaVersion` | Delivery JSONL schema version                                     |
+| `deliverySchemaVersion` | Delivery JSONL schema version: `1.0`, or `1.1` with learning components |
 | `sourceSchemaVersion`   | Detailed-source schema version                                    |
 | `createdAt`             | Timezone-aware package creation timestamp                         |
 | `framework`             | Source-faithful and normalized framework metadata                 |
@@ -134,7 +134,9 @@ The version-1 count contract contains:
   "counts": {
     "frameworkNodes": 1,
     "itemNodes": 430,
+    "learningComponentNodes": 0,
     "relationships": 430,
+    "supportsRelationships": 0,
     "additionalCounts": {
       "codedItems": 319,
       "multiParentTargets": 0,
@@ -143,6 +145,13 @@ The version-1 count contract contains:
   }
 }
 ```
+
+`itemNodes` counts standards framework items only and `learningComponentNodes` counts
+generated learning components; the two are never combined. `relationships` counts every
+relationship in the package, of which `supportsRelationships` are learning-component
+edges. `learningComponentNodes` and `supportsRelationships` both default to `0`, so a
+package built before delivery schema `1.1` remains valid. Both are checked against the
+decoded package content.
 
 `frameworkNodes` is exactly `1`. Version 1 requires `additionalCounts` to contain
 exactly these three names:
