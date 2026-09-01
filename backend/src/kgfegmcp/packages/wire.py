@@ -23,6 +23,9 @@ DELIVERY_SCHEMA_1_0_ENDPOINT_ENTITY_KEY: Final[str] = "caseIdentifierUUID"
 DELIVERY_SCHEMA_1_0_FRAMEWORK_LABEL: Final[str] = "StandardsFramework"
 DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE: Final[str] = "hasChild"
 DELIVERY_SCHEMA_1_0_ITEM_LABEL: Final[str] = "StandardsFrameworkItem"
+DELIVERY_SCHEMA_1_1_COMPONENT_LABEL: Final[str] = "LearningComponent"
+DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE: Final[str] = "supports"
+DELIVERY_SCHEMA_1_1_COMPONENT_ENDPOINT_ENTITY_KEY: Final[str] = "identifier"
 DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS: Final[str] = (
     "unresolvedRootFallback"
 )
@@ -108,6 +111,7 @@ class NodeWireProperties(WireProperties):
     description: StrictStr | None = None
     grade_level: StrictStr | None = None
     identifier: StrictStr | None = None
+    identity_key: StrictStr | None = None
     in_language: StrictStr | None = None
     is_current: StrictStr | None = None
     jurisdiction: StrictStr | None = None
@@ -117,6 +121,7 @@ class NodeWireProperties(WireProperties):
     provider: StrictStr | None = None
     statement_code: StrictStr | None = None
     statement_type: StrictStr | None = None
+    tags: StrictStr | None = None
 
 
 class RelationshipWireProperties(WireProperties):
@@ -133,6 +138,7 @@ class RelationshipWireProperties(WireProperties):
     source_entity: StrictStr | None = None
     source_entity_key: StrictStr | None = None
     source_entity_value: StrictStr | None = None
+    support_confidence: StrictStr | None = None
     target_entity: StrictStr | None = None
     target_entity_key: StrictStr | None = None
     target_entity_value: StrictStr | None = None

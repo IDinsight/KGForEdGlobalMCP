@@ -11,6 +11,8 @@ endpoints, validate topology, repair records, or establish graph-wide invariants
 # Standard Library
 import json
 
+from math import isfinite
+
 from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from io import BytesIO
@@ -22,15 +24,21 @@ from pydantic import BaseModel, ValidationError
 
 # Package Library
 from kgfegmcp.errors import DeliveryPropertyDecodingError, JSONLParsingError
-from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
+from kgfegmcp.graph.models import (
+    FrameworkNode,
+    GraphRelationship,
+    LearningComponentNode,
+    StandardNode,
+)
 from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_0_FRAMEWORK_LABEL,
     DELIVERY_SCHEMA_1_0_ITEM_LABEL,
+    DELIVERY_SCHEMA_1_1_COMPONENT_LABEL,
     NodeWireEnvelope,
     RelationshipWireEnvelope,
 )
 
-GraphNodeT: TypeAlias = FrameworkNode | StandardNode
+GraphNodeT: TypeAlias = FrameworkNode | LearningComponentNode | StandardNode
 JSONLSource: TypeAlias = Path | bytes
 WireEnvelopeT = TypeVar("WireEnvelopeT", bound=BaseModel)
 
@@ -99,6 +107,57 @@ def _decode_optional_boolean(
         property_name=property_name,
         reason='expected the exact string "true" or "false".',
     )
+
+
+def _decode_optional_confidence(
+    *, line_number: int, path: Path, property_name: str, value: str | None
+) -> float | None:
+    """Decode an optional confidence encoded as a delivery-property string.
+
+    Parameters
+    ----------
+    line_number
+        One-based physical JSONL line number.
+    path
+        Internal path to the JSONL artifact.
+    property_name
+        Original delivery property name.
+    value
+        Raw optional string value.
+
+    Returns
+    -------
+    float | None
+        Decoded confidence, or ``None`` when the property was omitted.
+
+    Raises
+    ------
+    DeliveryPropertyDecodingError
+        If the value is not a finite decimal between zero and one inclusive.
+    """
+
+    if value is None:
+        return None
+
+    try:
+        decoded_value = float(value)
+    except ValueError:
+        _raise_property_decoding_error(
+            line_number=line_number,
+            path=path,
+            property_name=property_name,
+            reason="expected a decimal number encoded as a string.",
+        )
+
+    if not isfinite(decoded_value) or not 0.0 <= decoded_value <= 1.0:
+        _raise_property_decoding_error(
+            line_number=line_number,
+            path=path,
+            property_name=property_name,
+            reason="expected a finite value between 0 and 1 inclusive.",
+        )
+
+    return decoded_value
 
 
 def _decode_optional_string_array(
@@ -407,7 +466,7 @@ def decode_node_record(
 
     Returns
     -------
-    FrameworkNode | StandardNode
+    FrameworkNode | LearningComponentNode | StandardNode
         Immutable semantic node retaining all raw property strings.
 
     Raises
@@ -420,6 +479,7 @@ def decode_node_record(
     envelope = located_record.record
     properties = envelope.properties
     labels = tuple(envelope.labels)
+    is_component = DELIVERY_SCHEMA_1_1_COMPONENT_LABEL in labels
     is_framework = DELIVERY_SCHEMA_1_0_FRAMEWORK_LABEL in labels
     is_standard = DELIVERY_SCHEMA_1_0_ITEM_LABEL in labels
     is_current = _decode_optional_boolean(
@@ -430,13 +490,13 @@ def decode_node_record(
     )
     raw_properties = properties.raw_values()
 
-    if is_framework == is_standard:
+    if (is_component + is_framework + is_standard) != 1:
         _raise_record_decoding_error(
             line_number=located_record.line_number,
             path=located_record.source_path,
             reason=(
-                "node labels must identify exactly one standards framework or "
-                "standards framework item."
+                "node labels must identify exactly one standards framework, standards "
+                "framework item, or learning component."
             ),
         )
 
@@ -460,6 +520,34 @@ def decode_node_record(
                 provider=properties.provider,
                 raw_properties=raw_properties,
                 source_export_order=located_record.source_export_order,
+            )
+
+        if is_component:
+            return LearningComponentNode(
+                academic_subject=properties.academic_subject,
+                adoption_status=properties.adoption_status,
+                attribution_statement=properties.attribution_statement,
+                author=properties.author,
+                case_identifier_uri=properties.case_identifier_uri,
+                case_identifier_uuid=properties.case_identifier_uuid,
+                description=properties.description,
+                identity_key=properties.identity_key,
+                in_language=properties.in_language,
+                is_current=is_current,
+                jurisdiction=properties.jurisdiction,
+                labels=labels,
+                license=properties.license,
+                node_id=envelope.identifier,
+                property_identifier=properties.identifier,
+                provider=properties.provider,
+                raw_properties=raw_properties,
+                source_export_order=located_record.source_export_order,
+                tags=_decode_optional_string_array(
+                    line_number=located_record.line_number,
+                    path=located_record.source_path,
+                    property_name="tags",
+                    value=properties.tags,
+                ),
             )
 
         grade_level = _decode_optional_string_array(
@@ -543,6 +631,12 @@ def decode_relationship_record(
             source_export_order=located_record.source_export_order,
             source_labels=tuple(envelope.source_labels),
             source_node_id=envelope.source_identifier,
+            support_confidence=_decode_optional_confidence(
+                line_number=located_record.line_number,
+                path=located_record.source_path,
+                property_name="supportConfidence",
+                value=properties.support_confidence,
+            ),
             target_entity=properties.target_entity,
             target_entity_key=properties.target_entity_key,
             target_entity_value=properties.target_entity_value,
@@ -572,7 +666,7 @@ def iter_decoded_nodes(
 
     Yields
     ------
-    FrameworkNode | StandardNode
+    FrameworkNode | LearningComponentNode | StandardNode
         One semantic node per physical source line.
     """
 

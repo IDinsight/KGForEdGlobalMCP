@@ -81,6 +81,7 @@ class GraphRelationship(FrozenSchema):
     source_labels: tuple[str, ...]
     source_node_id: NodeId
     source_export_order: SourceExportOrder
+    support_confidence: float | None = None
     target_entity: str | None = None
     target_entity_key: str | None = None
     target_entity_value: str | None = None
@@ -104,7 +105,21 @@ class StandardNode(GraphNode):
     statement_type: str | None = None
 
 
-GraphNodeRecord: TypeAlias = FrameworkNode | StandardNode
+class LearningComponentNode(GraphNode):
+    """Represent one decoded generated learning-component node.
+
+    A learning component is model-generated content decomposed from a standards
+    framework item. It carries no CASE identity, no grade level, and no statement
+    taxonomy: those belong to published standards and are reachable by following the
+    node's ``supports`` relationships.
+    """
+
+    description: str
+    identity_key: str | None = None
+    tags: tuple[str, ...] | None = None
+
+
+GraphNodeRecord: TypeAlias = FrameworkNode | LearningComponentNode | StandardNode
 
 
 class DirectRelationshipDirection(StrEnum):
