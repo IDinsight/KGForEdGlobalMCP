@@ -71,7 +71,6 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_relationships,
 )
 from kgfegmcp.packages.models import (
-    SUPPORTED_PACKAGE_REVISION,
     ArtifactIntegrityObservation,
     DeclaredArtifactReference,
     DetailedValidationReport,
@@ -79,6 +78,8 @@ from kgfegmcp.packages.models import (
     LoadedGraphPackage,
     PackageIntegritySnapshot,
     PackageValidationFinding,
+    SUPPORTED_INCLUDED_GRAPH_TYPES,
+    SUPPORTED_PACKAGE_REVISION,
 )
 from kgfegmcp.packages.repository import (
     PACKAGE_MANIFEST_FILENAME,
@@ -1330,7 +1331,7 @@ def _manifest_semantic_findings(
             )
         )
 
-    if manifest.included_graph_types != (GraphType.ACADEMIC_STANDARDS,):
+    if manifest.included_graph_types != SUPPORTED_INCLUDED_GRAPH_TYPES:
         findings.append(
             _finding(
                 code="included_graph_types_unsupported",
@@ -1339,7 +1340,7 @@ def _manifest_semantic_findings(
                         graph_type.value for graph_type in manifest.included_graph_types
                     )
                 },
-                message="The package includes graph types unsupported by PR 4 validation.",
+                message="The package includes an unsupported graph-type combination.",
             )
         )
 
