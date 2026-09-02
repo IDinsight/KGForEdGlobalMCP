@@ -76,6 +76,7 @@ from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_1_COMPONENT_ENDPOINT_ENTITY_KEY,
     DELIVERY_SCHEMA_1_1_COMPONENT_LABEL,
     DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE,
+    SUPPORTED_RELATIONSHIP_TYPES,
     DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS,
 )
 from kgfegmcp.profiles.models import (
@@ -559,7 +560,10 @@ def _node_endpoint_entity_key(node: GraphNode) -> str:
     if isinstance(node, LearningComponentNode):
         return DELIVERY_SCHEMA_1_1_COMPONENT_ENDPOINT_ENTITY_KEY
 
-    return DELIVERY_SCHEMA_1_0_ENDPOINT_ENTITY_KEY
+    if isinstance(node, FrameworkNode | StandardNode):
+        return DELIVERY_SCHEMA_1_0_ENDPOINT_ENTITY_KEY
+
+    raise TypeError(f"Unsupported decoded node kind: {type(node).__name__}.")
 
 
 def _node_endpoint_entity_value(node: GraphNode) -> str | None:
@@ -1704,8 +1708,7 @@ def _validate_node_identifiers_and_labels(
             nodes_by_id[node_id] = node
 
         if isinstance(node, LearningComponentNode):
-            # A learning component is build-relative generated content and carries no
-            # CASE identity by design; its endpoints are keyed by ``identifier``.
+            # Learning components carry no CASE identity; endpoints key on identifier.
             continue
 
         if node.case_identifier_uuid is None:
@@ -2115,9 +2118,8 @@ def _validate_relationship_endpoints(
         (relationship.provider, root.provider, "relationship provider"),
     ]
 
-    # ``author`` states who wrote the content. A supports relationship is derived by the
-    # generation pipeline rather than authored by the publishing body, so it declares its
-    # own author. Credit, licence, and provider still follow the source curriculum.
+    # A supports relationship declares its own author; the pipeline wrote it, not the
+    # publishing body. Credit, licence, and provider still follow the source.
     if relationship.label != DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
         metadata_comparisons.append(
             (relationship.author, root.author, "relationship author")
@@ -2243,17 +2245,20 @@ def _validate_relationship_identity(
                 source_export_order=relationship.source_export_order,
             )
         )
-    elif relationship.label != DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE:
+    elif relationship.label not in SUPPORTED_RELATIONSHIP_TYPES:
         findings.append(
             _finding(
                 code="relationship_type_unsupported",
                 details={"relationship_type": relationship.label},
-                message="A relationship type is unsupported by delivery schema 1.0.",
+                message="A relationship type is unsupported by the delivery schema.",
                 record_id=relationship_id,
                 source_export_order=relationship.source_export_order,
             )
         )
-    elif relationship.label != profile.hierarchy.relationship_type:
+    elif (
+        relationship.label == DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE
+        and relationship.label != profile.hierarchy.relationship_type
+    ):
         findings.append(
             _finding(
                 code="relationship_profile_type_mismatch",
@@ -2389,12 +2394,7 @@ def _validate_learning_component_topology(
     relationship: GraphRelationship,
     target_node: GraphNode,
 ) -> None:
-    """Require learning-component edges to keep generated content out of the hierarchy.
-
-    A ``supports`` edge must run from a learning component to a standards framework
-    item, and a learning component must never appear inside the ``hasChild`` hierarchy
-    in either direction. Mixing the two would let generated content be returned as
-    source-asserted curriculum structure.
+    """Require supports edges to run learning component to item, and never hasChild.
 
     Parameters
     ----------
@@ -2409,7 +2409,7 @@ def _validate_learning_component_topology(
     """
 
     relationship_id = str(relationship.relationship_id)
-    source_node = nodes_by_id.get(str(relationship.source_node_id))
+    source_node = nodes_by_id[str(relationship.source_node_id)]
 
     if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
         if not isinstance(source_node, LearningComponentNode):
@@ -2615,7 +2615,104 @@ def validate_loaded_package(
         text_items=text_items,
     )
     _validate_learning_component_package(findings=findings, package=package)
+    _validate_learning_component_semantics(findings=findings, package=package)
     return tuple(findings)
+
+
+def _validate_learning_component_semantics(
+    *, findings: list[PackageValidationFinding], package: LoadedGraphPackage
+) -> None:
+    """Validate learning-component node properties against the framework root.
+
+    Parameters
+    ----------
+    findings
+        Validation-local finding accumulator.
+    package
+        Loaded package aggregate.
+    """
+
+    root = package.framework_root
+
+    for node in package.learning_component_nodes:
+        node_id = str(node.node_id)
+        inherited_comparisons = (
+            (
+                node.academic_subject,
+                root.academic_subject,
+                "learning component academic subject",
+            ),
+            (
+                node.attribution_statement,
+                root.attribution_statement,
+                "learning component attribution statement",
+            ),
+            (node.license, root.license, "learning component source license"),
+            (node.provider, root.provider, "learning component provider"),
+        )
+
+        for actual, expected, field_name in inherited_comparisons:
+            _add_mismatch(
+                actual=actual,
+                code="learning_component_framework_metadata_mismatch",
+                expected=expected,
+                field_name=field_name,
+                findings=findings,
+                record_id=node_id,
+                source_export_order=node.source_export_order,
+            )
+
+        published_standard_properties = (
+            ("caseIdentifierURI", node.case_identifier_uri),
+            ("caseIdentifierUUID", node.case_identifier_uuid),
+            ("adoptionStatus", node.adoption_status),
+            ("isCurrent", node.is_current),
+            ("jurisdiction", node.jurisdiction),
+        )
+
+        for property_name, value in published_standard_properties:
+            if value is None:
+                continue
+
+            findings.append(
+                _finding(
+                    code="learning_component_published_property_present",
+                    details={"property_name": property_name},
+                    message=(
+                        "A learning component declares a property reserved for "
+                        "published standards."
+                    ),
+                    record_id=node_id,
+                    source_export_order=node.source_export_order,
+                )
+            )
+
+        required_properties = (
+            ("academicSubject", node.academic_subject),
+            ("attributionStatement", node.attribution_statement),
+            ("author", node.author),
+            ("identifier", node.property_identifier),
+            ("inLanguage", node.in_language),
+            ("license", node.license),
+            ("provider", node.provider),
+        )
+
+        for property_name, value in required_properties:
+            if value is not None and str(value).strip():
+                continue
+
+            findings.append(
+                _finding(
+                    code="learning_component_required_property_absent",
+                    details={"property_name": property_name},
+                    message=(
+                        "A learning component omits a property required by the "
+                        "Learning Commons contract."
+                    ),
+                    record_id=node_id,
+                    source_export_order=node.source_export_order,
+                )
+            )
 
 
 def _validate_learning_component_package(

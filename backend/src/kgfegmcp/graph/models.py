@@ -106,13 +106,7 @@ class StandardNode(GraphNode):
 
 
 class LearningComponentNode(GraphNode):
-    """Represent one decoded generated learning-component node.
-
-    A learning component is model-generated content decomposed from a standards
-    framework item. It carries no CASE identity, no grade level, and no statement
-    taxonomy: those belong to published standards and are reachable by following the
-    node's ``supports`` relationships.
-    """
+    """Represent one decoded learning-component node."""
 
     description: str
     identity_key: str | None = None
