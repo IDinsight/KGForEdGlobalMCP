@@ -42,6 +42,7 @@ from typing import Final
 # Package Library
 from kgfegmcp.domain.enums import (
     CodeAvailability,
+    DerivativeGenerationPolicy,
     InvalidPackagePolicy,
     ValidationStatus,
 )
@@ -2738,6 +2739,27 @@ def _validate_learning_component_package(
         for relationship in package.relationships
         if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
     )
+
+    rights = package.manifest.rights
+
+    if components and rights.allow_generated_derivatives is not (
+        DerivativeGenerationPolicy.ALLOWED
+    ):
+        findings.append(
+            _finding(
+                code="learning_components_derivatives_not_allowed",
+                details={
+                    "allow_generated_derivatives": (
+                        rights.allow_generated_derivatives.value
+                    ),
+                    "learning_component_nodes": len(components),
+                },
+                message=(
+                    "A package containing learning components requires rights allowing "
+                    "generated derivatives."
+                ),
+            )
+        )
 
     supported_component_ids = {
         str(relationship.source_node_id) for relationship in supports_relationships
