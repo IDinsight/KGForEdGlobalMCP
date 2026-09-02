@@ -54,7 +54,7 @@ from kgfegmcp.domain.identifiers import (
     GraphPackageId,
     Sha256Digest,
     SnapshotId,
-    build_initial_graph_package_id,
+    build_versioned_graph_package_id,
     build_snapshot_id,
 )
 from kgfegmcp.domain.models import RightsPolicy
@@ -74,8 +74,6 @@ from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
     ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
     DELIVERY_SCHEMA_VERSION,
-    DELIVERY_SCHEMA_VERSION_LEARNING_COMPONENTS,
-    SOURCE_SCHEMA_VERSION,
     FrameworkCapabilities,
     FrameworkMetadata,
     GraphPackageManifest,
@@ -85,6 +83,8 @@ from kgfegmcp.packages.models import (
     PackageCounts,
     PackageValidation,
     ProfileReference,
+    SOURCE_SCHEMA_VERSION,
+    SUPPORTED_INCLUDED_GRAPH_TYPES,
     SnapshotRelation,
 )
 from kgfegmcp.packages.wire import (
@@ -137,6 +137,10 @@ _RESERVED_ADDITIONAL_LOGICAL_NAMES: Final[frozenset[str]] = frozenset(
     {
         "academicstandardsbundle",
         "entityprovenance",
+        "learningcomponentdedupgroups",
+        "learningcomponentprovenance",
+        "learningcomponentsummary",
+        "learningcomponentsbundle",
         "nodes",
         "relationships",
         "relationshipshaschild",
@@ -570,8 +574,6 @@ def _create_manifest(
         If the established manifest contract rejects the derived values.
     """
 
-    has_learning_components = plan.counts.learning_component_nodes > 0
-
     try:
         return GraphPackageManifest(
             artifacts=plan.artifacts,
@@ -579,20 +581,12 @@ def _create_manifest(
             checksums=plan.checksums,
             counts=plan.counts,
             created_at=created_at,
-            delivery_schema_version=(
-                DELIVERY_SCHEMA_VERSION_LEARNING_COMPONENTS
-                if has_learning_components
-                else DELIVERY_SCHEMA_VERSION
-            ),
+            delivery_schema_version=DELIVERY_SCHEMA_VERSION,
             framework=plan.framework,
             framework_id=plan.framework_id,
             graph_package_id=plan.graph_package_id,
             graph_type=GraphType.ACADEMIC_STANDARDS,
-            included_graph_types=(
-                (GraphType.ACADEMIC_STANDARDS, GraphType.LEARNING_COMPONENTS)
-                if has_learning_components
-                else (GraphType.ACADEMIC_STANDARDS,)
-            ),
+            included_graph_types=SUPPORTED_INCLUDED_GRAPH_TYPES,
             package_revision=1,
             profile=plan.profile_reference,
             rights=plan.rights,
@@ -1568,7 +1562,11 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
         framework_id=framework_id,
         version_token=spec.version_token,
     )
-    graph_package_id = build_initial_graph_package_id(snapshot_id)
+    graph_package_id = build_versioned_graph_package_id(
+        graph_type=GraphType.ACADEMIC_STANDARDS,
+        package_revision=1,
+        snapshot_id=snapshot_id,
+    )
     output_root = _resolve_output_root(
         output_root=spec.output_root, project_dir=settings.project_dir
     )
