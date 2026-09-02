@@ -602,8 +602,14 @@ class CatalogPackageRuntime:
                 self.graph_store.items_in_deterministic_source_order
                 != self.loaded_package.item_nodes
             )
+            or (
+                self.graph_store.learning_components_in_deterministic_source_order
+                != self.loaded_package.learning_component_nodes
+            )
             or len(self.graph_store.nodes_by_id)
-            != len(self.loaded_package.item_nodes) + 1
+            != len(self.loaded_package.item_nodes)
+            + len(self.loaded_package.learning_component_nodes)
+            + 1
             or len(self.graph_store.relationships_by_id)
             != len(self.loaded_package.relationships)
         ):
@@ -617,6 +623,10 @@ class CatalogPackageRuntime:
             or any(
                 self.graph_store.nodes_by_id.get(node.node_id) is not node
                 for node in self.loaded_package.item_nodes
+            )
+            or any(
+                self.graph_store.nodes_by_id.get(component.node_id) is not component
+                for component in self.loaded_package.learning_component_nodes
             )
             or any(
                 self.graph_store.relationships_by_id.get(relationship.relationship_id)
