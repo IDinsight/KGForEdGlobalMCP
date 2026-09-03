@@ -26,11 +26,16 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass
 from types import MappingProxyType
+from typing import Generic, TypeVar
 
 # Package Library
 from kgfegmcp.catalog.models import CatalogPackageRuntime
 from kgfegmcp.domain.identifiers import NodeId
-from kgfegmcp.graph.models import GraphPackageIdentity, StandardNode
+from kgfegmcp.graph.models import (
+    GraphPackageIdentity,
+    LearningComponentNode,
+    StandardNode,
+)
 from kgfegmcp.search.models import (
     TextMatch,
     TextMatchMode,
@@ -40,20 +45,23 @@ from kgfegmcp.search.models import (
 from kgfegmcp.search.normalizers import normalize_lexical_text
 
 
+LexicalNodeT = TypeVar("LexicalNodeT", StandardNode, LearningComponentNode)
+
+
 @dataclass(frozen=True, slots=True)
-class LexicalDocument:
+class LexicalDocument(Generic[LexicalNodeT]):
     """Retain one exact source node and its normalized description tokens."""
 
-    node: StandardNode
+    node: LexicalNodeT
     tokens: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
-class LexicalCandidate:
+class LexicalCandidate(Generic[LexicalNodeT]):
     """Return deterministic package-local lexical candidate evidence."""
 
     matched_terms: tuple[str, ...]
-    node: StandardNode
+    node: LexicalNodeT
     phrase_matched: bool
     query_term_count: int
     score_value: int
@@ -61,17 +69,17 @@ class LexicalCandidate:
 
 
 @dataclass(frozen=True, slots=True)
-class LexicalIndex:
+class LexicalIndex(Generic[LexicalNodeT]):
     """Own one immutable lexical index for exactly one accepted graph package."""
 
-    documents_by_id: Mapping[NodeId, LexicalDocument]
+    documents_by_id: Mapping[NodeId, LexicalDocument[LexicalNodeT]]
     package_identity: GraphPackageIdentity
     posting_count: int
-    postings_by_token: Mapping[str, tuple[LexicalDocument, ...]]
+    postings_by_token: Mapping[str, tuple[LexicalDocument[LexicalNodeT], ...]]
 
     @classmethod
-    def from_runtime(cls, runtime: CatalogPackageRuntime) -> LexicalIndex:
-        """Build a package-local description index from an accepted catalog runtime.
+    def from_runtime(cls, runtime: CatalogPackageRuntime) -> LexicalIndex[StandardNode]:
+        """Build a package-local standards description index from a catalog runtime.
 
         Parameters
         ----------
@@ -80,42 +88,35 @@ class LexicalIndex:
 
         Returns
         -------
-        LexicalIndex
-            Immutable package-local lexical index.
+        LexicalIndex[StandardNode]
+            Immutable package-local lexical index over standards framework items.
         """
 
-        documents_by_id: dict[NodeId, LexicalDocument] = {}
-        mutable_postings: dict[str, list[LexicalDocument]] = {}
-
-        for node in runtime.loaded_package.item_nodes:
-            if node.description is None:
-                continue
-
-            tokens = normalize_lexical_text(node.description)
-
-            if not tokens:
-                continue
-
-            document = LexicalDocument(node=node, tokens=tokens)
-            documents_by_id[node.node_id] = document
-
-            for token in dict.fromkeys(tokens):
-                if token not in mutable_postings:
-                    mutable_postings[token] = []
-
-                mutable_postings[token].append(document)
-
-        postings_by_token = {
-            token: tuple(documents)
-            for token, documents in sorted(mutable_postings.items())
-        }
-        posting_count = sum(len(documents) for documents in postings_by_token.values())
-
-        return cls(
-            documents_by_id=MappingProxyType(documents_by_id),
+        return _build_lexical_index(
+            nodes=runtime.loaded_package.item_nodes,
             package_identity=runtime.catalog_package.package_identity,
-            posting_count=posting_count,
-            postings_by_token=MappingProxyType(postings_by_token),
+        )
+
+    @classmethod
+    def from_runtime_learning_components(
+        cls, runtime: CatalogPackageRuntime
+    ) -> LexicalIndex[LearningComponentNode]:
+        """Build a package-local learning-component description index.
+
+        Parameters
+        ----------
+        runtime
+            Exact accepted package runtime whose source node instances are retained.
+
+        Returns
+        -------
+        LexicalIndex[LearningComponentNode]
+            Immutable package-local lexical index over learning components.
+        """
+
+        return _build_lexical_index(
+            nodes=runtime.loaded_package.learning_component_nodes,
+            package_identity=runtime.catalog_package.package_identity,
         )
 
     @property
@@ -144,7 +145,7 @@ class LexicalIndex:
 
     def candidates(
         self, *, match: TextMatch, query: str
-    ) -> tuple[LexicalCandidate, ...]:
+    ) -> tuple[LexicalCandidate[LexicalNodeT], ...]:
         """Return deterministic lexical candidates for one package-local query.
 
         Parameters
@@ -156,7 +157,7 @@ class LexicalIndex:
 
         Returns
         -------
-        tuple[LexicalCandidate, ...]
+        tuple[LexicalCandidate[LexicalNodeT], ...]
             Candidates in exact source tuple order before service-level ranking.
         """
 
@@ -217,7 +218,7 @@ class LexicalIndex:
 
     def _phrase_candidates(
         self, query_tokens: tuple[str, ...]
-    ) -> tuple[LexicalCandidate, ...]:
+    ) -> tuple[LexicalCandidate[LexicalNodeT], ...]:
         """Return documents containing the complete normalized token sequence.
 
         Parameters
@@ -227,7 +228,7 @@ class LexicalIndex:
 
         Returns
         -------
-        tuple[LexicalCandidate, ...]
+        tuple[LexicalCandidate[LexicalNodeT], ...]
             Exact phrase candidates in source tuple order.
         """
 
@@ -235,7 +236,7 @@ class LexicalIndex:
         candidate_ids = self._candidate_node_ids(
             operator=TextOperator.ALL, query_terms=distinct_terms
         )
-        candidates: list[LexicalCandidate] = []
+        candidates: list[LexicalCandidate[LexicalNodeT]] = []
 
         for document in self.documents_by_id.values():
             if document.node.node_id not in candidate_ids:
@@ -266,7 +267,7 @@ class LexicalIndex:
 
     def _token_candidates(
         self, *, match: TokenTextMatch, query_tokens: tuple[str, ...]
-    ) -> tuple[LexicalCandidate, ...]:
+    ) -> tuple[LexicalCandidate[LexicalNodeT], ...]:
         """Return any-or-all token candidates with integer coverage scores.
 
         Parameters
@@ -278,7 +279,7 @@ class LexicalIndex:
 
         Returns
         -------
-        tuple[LexicalCandidate, ...]
+        tuple[LexicalCandidate[LexicalNodeT], ...]
             Token candidates in source tuple order before ranking.
         """
 
@@ -286,7 +287,7 @@ class LexicalIndex:
         candidate_ids = self._candidate_node_ids(
             operator=match.operator, query_terms=query_terms
         )
-        candidates: list[LexicalCandidate] = []
+        candidates: list[LexicalCandidate[LexicalNodeT]] = []
 
         for document in self.documents_by_id.values():
             if document.node.node_id not in candidate_ids:
@@ -352,3 +353,51 @@ def _contains_contiguous_tokens(
             return True
 
     return False
+
+
+def _build_lexical_index(
+    *, nodes: tuple[LexicalNodeT, ...], package_identity: GraphPackageIdentity
+) -> LexicalIndex[LexicalNodeT]:
+    """Build one immutable lexical index over the supplied source nodes.
+
+    Parameters
+    ----------
+    nodes
+        Exact source nodes retained by the index.
+    package_identity
+        Immutable identity of the package the nodes belong to.
+
+    Returns
+    -------
+    LexicalIndex[LexicalNodeT]
+        Immutable package-local lexical index.
+    """
+
+    documents_by_id: dict[NodeId, LexicalDocument[LexicalNodeT]] = {}
+    mutable_postings: dict[str, list[LexicalDocument[LexicalNodeT]]] = {}
+
+    for node in nodes:
+        if node.description is None:
+            continue
+
+        document = LexicalDocument(
+            node=node, tokens=normalize_lexical_text(node.description)
+        )
+        documents_by_id[node.node_id] = document
+
+        for token in dict.fromkeys(document.tokens):
+            if token not in mutable_postings:
+                mutable_postings[token] = []
+
+            mutable_postings[token].append(document)
+
+    postings_by_token = {
+        token: tuple(documents) for token, documents in sorted(mutable_postings.items())
+    }
+
+    return LexicalIndex(
+        documents_by_id=MappingProxyType(documents_by_id),
+        package_identity=package_identity,
+        posting_count=sum(len(documents) for documents in postings_by_token.values()),
+        postings_by_token=MappingProxyType(postings_by_token),
+    )
