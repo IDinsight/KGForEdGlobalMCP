@@ -45,6 +45,8 @@ from kgfegmcp.domain.identifiers import (
 )
 from kgfegmcp.graph.models import (
     DirectNodeRelationshipsResult,
+    GraphRelationship,
+    LearningComponentNode,
     RootPathsResult,
     StandardNode,
     TraversalResult,
@@ -472,6 +474,148 @@ class GetStandardResult(FrozenSchema):
     node: StandardNode
     package: CatalogGraphPackage
     source_metadata: CatalogSourceMetadata
+
+
+class SupportedStandardPlacement(FrozenSchema):
+    """Locate one supported standard without repeating its ancestor records."""
+
+    grade_levels: tuple[str, ...]
+    hierarchy_path: tuple[str, ...]
+    node_id: NodeId
+    statement_code: str | None = None
+    support_confidence: float | None = None
+
+
+class SupportedStandard(FrozenSchema):
+    """Associate one supported standard with the relationship that declares it."""
+
+    relationship: GraphRelationship
+    standard: StandardNode
+
+
+class GetLearningComponentRequest(FrozenSchema):
+    """Request one exact learning component in one selected package."""
+
+    ancestor_depth: int = Field(default=16, ge=0, le=64)
+    framework_id: FrameworkId | None = None
+    graph_type: GraphType = GraphType.ACADEMIC_STANDARDS
+    node_id: NodeId
+    snapshot_id: SnapshotId | None = None
+
+    @model_validator(mode="after")
+    def validate_framework_selection(self) -> GetLearningComponentRequest:
+        """Require a framework family or exact snapshot selector.
+
+        Returns
+        -------
+        GetLearningComponentRequest
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If neither framework nor snapshot identity is supplied.
+        """
+
+        if self.framework_id is None and self.snapshot_id is None:
+            raise ValueError("framework_id or snapshot_id is required.")
+
+        return self
+
+
+class GetLearningComponentResult(FrozenSchema):
+    """Return one exact learning component with the standards it is placed against."""
+
+    node: LearningComponentNode
+    package: CatalogGraphPackage
+    placements: tuple[SupportedStandardPlacement, ...]
+    source_metadata: CatalogSourceMetadata
+
+
+class GetLearningComponentContextRequest(FrozenSchema):
+    """Request the standards one learning component supports and their placement."""
+
+    ancestor_depth: int = Field(default=16, ge=0, le=64)
+    framework_id: FrameworkId | None = None
+    graph_type: GraphType = GraphType.ACADEMIC_STANDARDS
+    node_id: NodeId
+    snapshot_id: SnapshotId | None = None
+
+    @model_validator(mode="after")
+    def validate_framework_selection(self) -> GetLearningComponentContextRequest:
+        """Require a framework family or exact snapshot selector.
+
+        Returns
+        -------
+        GetLearningComponentContextRequest
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If neither framework nor snapshot identity is supplied.
+        """
+
+        if self.framework_id is None and self.snapshot_id is None:
+            raise ValueError("framework_id or snapshot_id is required.")
+
+        return self
+
+
+class GetLearningComponentContextResult(FrozenSchema):
+    """Return the standards one learning component supports and where they sit."""
+
+    node: LearningComponentNode
+    package: CatalogGraphPackage
+    placements: tuple[SupportedStandardPlacement, ...]
+    source_metadata: CatalogSourceMetadata
+    supported_standards: tuple[SupportedStandard, ...]
+
+
+class GetLearningComponentsForStandardRequest(FrozenSchema):
+    """Request every learning component supporting one exact standard."""
+
+    framework_id: FrameworkId | None = None
+    graph_type: GraphType = GraphType.ACADEMIC_STANDARDS
+    identifier: StandardIdentifier
+    snapshot_id: SnapshotId | None = None
+
+    @model_validator(mode="after")
+    def validate_framework_selection(self) -> GetLearningComponentsForStandardRequest:
+        """Require a framework family or exact snapshot selector.
+
+        Returns
+        -------
+        GetLearningComponentsForStandardRequest
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If neither framework nor snapshot identity is supplied.
+        """
+
+        if self.framework_id is None and self.snapshot_id is None:
+            raise ValueError("framework_id or snapshot_id is required.")
+
+        return self
+
+
+class SupportingLearningComponent(FrozenSchema):
+    """Associate one supporting component with the relationship that declares it."""
+
+    node: LearningComponentNode
+    relationship: GraphRelationship
+    supported_codes: tuple[str, ...]
+
+
+class GetLearningComponentsForStandardResult(FrozenSchema):
+    """Return every learning component supporting one exact standard."""
+
+    components: tuple[SupportingLearningComponent, ...]
+    package: CatalogGraphPackage
+    source_metadata: CatalogSourceMetadata
+    standard: StandardNode
 
 
 class GetStandardContextRequest(FrozenSchema):

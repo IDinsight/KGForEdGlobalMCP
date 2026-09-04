@@ -170,6 +170,12 @@ class JSONLParsingError(KGFEGMCPError):
     error_code = "jsonl_parsing_error"
 
 
+class LearningComponentNotFoundError(KGFEGMCPError):
+    """Raised when a requested learning-component identifier cannot be resolved."""
+
+    error_code = "learning_component_not_found"
+
+
 class ManifestBuildError(KGFEGMCPError):
     """Raised when a pending graph-package manifest cannot be built safely."""
 
