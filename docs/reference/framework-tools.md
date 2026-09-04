@@ -187,14 +187,24 @@ The result contains `package`, `sourceMetadata`, and `statistics`.
 
 `statistics` includes:
 
-- `totalFrameworkNodes`, `totalItemNodes`, `totalNodes`, and `totalRelationships`;
+- `totalFrameworkNodes`, `totalItemNodes`, `totalNodes`, and `totalRelationships`.
+  `totalNodes` counts every node in the package, including learning components;
+  `totalItemNodes` counts standards framework items only;
 - local grade, node grade-level, normalized grade, statement-type, normalized
   statement-type, and relationship-type counts;
 - `codePresence` counts;
 - `maximumStructuralDepth` and `minimumStructuralDepthCounts`;
 - `multiParent` cardinality statistics;
 - `unresolvedRelationships` counts; and
-- `unreachableNodeCount`.
+- `unreachableNodeCount`, counting nodes with no path to the framework root by any
+  declared relationship; and
+- `learningComponents`, a separate block reporting `totalLearningComponents`,
+  `totalSupportsRelationships`, `multiStandardComponentCount`,
+  `standardsWithoutComponents`, `tagVocabularySize`, the support-confidence range, and
+  the components-per-standard and bridge-span distributions.
+
+Standards counts and learning-component counts are never combined. A learning component
+is generated content and is excluded from every standards count.
 
 These values describe graph structure. They do not establish curriculum quality,
 coverage quality, instructional sequence, or difficulty.

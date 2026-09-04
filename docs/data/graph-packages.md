@@ -23,16 +23,20 @@ A supplied package has this shape:
 <snapshot-id>/
 ├── package_manifest.json
 ├── delivery/
-│   ├── as_nodes_*.jsonl
-│   └── as_relationships_*.jsonl
+│   ├── as_lc_nodes_*.jsonl
+│   └── as_lc_relationships_*.jsonl
 └── detailed/
     ├── as_entity_provenance.json
     ├── as_kg_bundle.json
+    ├── as_lc_kg_bundle.json
     ├── as_relationships_has_child.jsonl
     ├── as_standards_framework.json
     ├── as_standards_framework_items.jsonl
     ├── as_unresolved_items.json
-    └── as_validation_report.json
+    ├── as_validation_report.json
+    ├── lc_dedup_groups.json
+    ├── lc_entity_provenance.json
+    └── lc_generation_summary.json
 ```
 
 Artifact basenames differ by framework, but logical roles are declared by the manifest.
@@ -108,16 +112,11 @@ those are later validation stages.
 
 ## Node labels
 
-Delivery schema `1.0` recognizes the Learning Commons-shaped labels:
+Delivery schema `1.1` recognizes these Learning Commons-shaped labels:
 
 ```text
 StandardsFramework
 StandardsFrameworkItem
-```
-
-Delivery schema `1.1` adds one more:
-
-```text
 LearningComponent
 ```
 
@@ -139,7 +138,8 @@ A learning component carries no CASE identifier, no grade level, and no statemen
 taxonomy. Those belong to published standards and are recovered by following the
 component's `supports` relationships to the standards items it was decomposed from.
 
-Delivery artifacts that carry learning components take the `as_lc_` filename prefix:
+Delivery artifacts carry standards and learning components together, and take the
+`as_lc_` filename prefix:
 
 ```text
 delivery/as_lc_nodes_<subject>.jsonl
