@@ -17,13 +17,18 @@ instructional ordering signal.
 """
 
 # Standard Library
-from collections import Counter
+from collections import Counter, defaultdict, deque
 from dataclasses import dataclass
 
 # Package Library
 from kgfegmcp.catalog.service import CatalogService
+from kgfegmcp.domain.identifiers import NodeId
 from kgfegmcp.errors import CatalogError, PackageValidationError
+from kgfegmcp.graph.store import GraphStore
 from kgfegmcp.graph.traversal import GraphTraversal
+from kgfegmcp.packages.models import LoadedGraphPackage
+from kgfegmcp.packages.wire import DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
+from kgfegmcp.search.normalizers import normalize_facet_value
 from kgfegmcp.search.service import SearchService
 from kgfegmcp.services.models import (
     CodePresenceStatistics,
@@ -31,11 +36,132 @@ from kgfegmcp.services.models import (
     FrameworkStatistics,
     GetFrameworkStatisticsRequest,
     GetFrameworkStatisticsResult,
+    IntegerValueCount,
+    LearningComponentStatistics,
     MultiParentStatistics,
     NullableValueCount,
     ParentCountBucket,
     UnresolvedRelationshipStatistics,
 )
+
+
+def _connected_node_count(
+    *, loaded_package: LoadedGraphPackage, root_node_id: NodeId
+) -> int:
+    """Count nodes connected to the framework root by any declared relationship.
+
+    Relationships are followed in both directions, so a learning component reached
+    through one standard also reaches every other standard it supports.
+
+    Parameters
+    ----------
+    loaded_package
+        Accepted package aggregate retaining decoded nodes and relationships.
+    root_node_id
+        Outer identifier of the single framework root.
+
+    Returns
+    -------
+    int
+        Number of distinct nodes connected to the framework root.
+    """
+
+    neighbors: dict[NodeId, list[NodeId]] = defaultdict(list)
+
+    for relationship in loaded_package.relationships:
+        neighbors[relationship.source_node_id].append(relationship.target_node_id)
+        neighbors[relationship.target_node_id].append(relationship.source_node_id)
+
+    connected: set[NodeId] = {root_node_id}
+    pending: deque[NodeId] = deque([root_node_id])
+
+    while pending:
+        for neighbor_id in neighbors[pending.popleft()]:
+            if neighbor_id in connected:
+                continue
+
+            connected.add(neighbor_id)
+            pending.append(neighbor_id)
+
+    return len(connected)
+
+
+def _learning_component_statistics(
+    *, loaded_package: LoadedGraphPackage, store: GraphStore
+) -> LearningComponentStatistics:
+    """Derive deterministic learning-component counts from one accepted package.
+
+    Parameters
+    ----------
+    loaded_package
+        Accepted package aggregate retaining decoded learning components.
+    store
+        Read-only graph store indexing the package's supports relationships.
+
+    Returns
+    -------
+    LearningComponentStatistics
+        Deterministic counts describing the package's generated components.
+    """
+
+    components = loaded_package.learning_component_nodes
+    supports = tuple(
+        relationship
+        for relationship in loaded_package.relationships
+        if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
+    )
+    components_per_standard: Counter[NodeId] = Counter(
+        relationship.target_node_id for relationship in supports
+    )
+    standards_per_component: Counter[NodeId] = Counter(
+        relationship.source_node_id for relationship in supports
+    )
+    confidences = tuple(
+        relationship.support_confidence
+        for relationship in supports
+        if relationship.support_confidence is not None
+    )
+    per_standard_distribution: Counter[int] = Counter(
+        components_per_standard[node.node_id] for node in loaded_package.item_nodes
+    )
+    bridge_span_distribution: Counter[int] = Counter(
+        span for span in standards_per_component.values() if span > 1
+    )
+    tag_keys = {
+        normalize_facet_value(tag) for node in components for tag in node.tags or ()
+    }
+
+    return LearningComponentStatistics(
+        bridge_span_counts=_to_integer_counts(bridge_span_distribution),
+        components_per_standard_counts=_to_integer_counts(per_standard_distribution),
+        multi_standard_component_count=sum(bridge_span_distribution.values()),
+        standards_without_components=per_standard_distribution.get(0, 0),
+        support_confidence_maximum=max(confidences, default=None),
+        support_confidence_minimum=min(confidences, default=None),
+        tag_vocabulary_size=len(tag_keys - {""}),
+        total_learning_components=len(components),
+        total_supports_relationships=len(supports),
+    )
+
+
+def _to_integer_counts(counter: Counter[int]) -> tuple[IntegerValueCount, ...]:
+    """Return one deterministic ascending integer distribution.
+
+    Parameters
+    ----------
+    counter
+        Counted integer distribution values.
+
+    Returns
+    -------
+    tuple[IntegerValueCount, ...]
+        Distribution entries ordered by ascending value.
+    """
+
+    return tuple(
+        IntegerValueCount(count=count, value=value)
+        for value, count in sorted(counter.items())
+    )
 
 
 def _nullable_value_order_key(value: str | None) -> tuple[int, str]:
@@ -125,11 +251,15 @@ class FrameworkStatisticsService:
         )
         total_framework_nodes = package.counts.framework_nodes
         total_item_nodes = len(loaded_package.item_nodes)
-        total_nodes = total_framework_nodes + total_item_nodes
+        total_learning_component_nodes = len(loaded_package.learning_component_nodes)
+        total_hierarchy_nodes = total_framework_nodes + total_item_nodes
+        total_nodes = total_hierarchy_nodes + total_learning_component_nodes
         total_relationships = len(loaded_package.relationships)
 
         if (
             package.counts.item_nodes != total_item_nodes
+            or package.counts.learning_component_nodes
+            != total_learning_component_nodes
             or package.counts.relationships != total_relationships
             or len(store.nodes_by_id) != total_nodes
             or len(store.relationships_by_id) != total_relationships
@@ -210,8 +340,8 @@ class FrameworkStatisticsService:
         )
         maximum_parent_count = max(parent_count_counts, default=0)
         traversal = GraphTraversal(store=store).descendants(
-            max_depth=max(total_nodes - 1, 0),
-            max_nodes=max(total_nodes, 1),
+            max_depth=max(total_hierarchy_nodes - 1, 0),
+            max_nodes=max(total_hierarchy_nodes, 1),
             node_id=store.framework_root_id,
             relationship_type=relationship_type,
         )
@@ -235,7 +365,9 @@ class FrameworkStatisticsService:
             traversal_node.depth for traversal_node in traversal.nodes
         )
         maximum_structural_depth = max(depth_counts, default=0)
-        unreachable_node_count = total_nodes - len(traversal.nodes)
+        unreachable_node_count = total_nodes - _connected_node_count(
+            loaded_package=loaded_package, root_node_id=store.framework_root_id
+        )
         unresolved_count = sum(
             count
             for status, count in resolution_status_counts.items()
@@ -243,6 +375,9 @@ class FrameworkStatisticsService:
         )
         resolved_count = resolution_status_counts.get(None, 0)
         statistics = FrameworkStatistics(
+            learning_components=_learning_component_statistics(
+                loaded_package=loaded_package, store=store
+            ),
             canonical_relationship_label_counts=_to_nullable_counts(
                 canonical_relationship_label_counts
             ),

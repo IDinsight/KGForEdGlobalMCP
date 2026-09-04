@@ -176,6 +176,13 @@ class NullableValueCount(FrozenSchema):
     value: str | None
 
 
+class IntegerValueCount(FrozenSchema):
+    """Associate one integer distribution value with the number of times it occurs."""
+
+    count: int = Field(ge=0)
+    value: int = Field(ge=0)
+
+
 class DepthCount(FrozenSchema):
     """Associate one minimum hierarchy depth with a node count."""
 
@@ -528,6 +535,20 @@ class GetStandardContextResult(FrozenSchema):
     standard: GetStandardResult
 
 
+class LearningComponentStatistics(FrozenSchema):
+    """Describe deterministic counts for one package's generated learning components."""
+
+    bridge_span_counts: tuple[IntegerValueCount, ...]
+    components_per_standard_counts: tuple[IntegerValueCount, ...]
+    multi_standard_component_count: int = Field(ge=0)
+    standards_without_components: int = Field(ge=0)
+    support_confidence_maximum: float | None = None
+    support_confidence_minimum: float | None = None
+    tag_vocabulary_size: int = Field(ge=0)
+    total_learning_components: int = Field(ge=0)
+    total_supports_relationships: int = Field(ge=0)
+
+
 class GetFrameworkStatisticsRequest(FrozenSchema):
     """Request structural statistics for one exact or unique-current package."""
 
@@ -551,6 +572,7 @@ class FrameworkStatistics(FrozenSchema):
     source_relationship_type_counts: tuple[NullableValueCount, ...]
     statement_type_counts: tuple[NullableValueCount, ...]
     total_framework_nodes: int = Field(ge=0)
+    learning_components: LearningComponentStatistics
     total_item_nodes: int = Field(ge=0)
     total_nodes: int = Field(ge=0)
     total_relationships: int = Field(ge=0)
