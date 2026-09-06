@@ -49,6 +49,18 @@ _ARTIFACT_POLICIES: Final[dict[str, ArtifactPolicyDecision]] = {
     "entityProvenance": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
     ),
+    "learningComponentDedupGroups": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.FULL_TEXT, mime_type="application/json"
+    ),
+    "learningComponentProvenance": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
+    ),
+    "learningComponentSummary": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
+    ),
+    "learningComponentsBundle": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
+    ),
     "nodes": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
     ),
