@@ -106,13 +106,23 @@ def _format_package_capability(
     implemented_modes = (
         ", ".join(mode.value for mode in package.implemented_search_modes) or "none"
     )
+    implemented_component_modes = (
+        ", ".join(
+            mode.value for mode in package.implemented_learning_component_search_modes
+        )
+        or "none"
+    )
+    learning_component_count = package.search_index.learning_component_document_count
     return (
         f"- Graph package ID: {identity.graph_package_id}",
         f"  Framework ID: {identity.framework_id}",
         f"  Snapshot ID: {identity.snapshot_id}",
         f"  implementedSearchModes: {implemented_modes}",
+        f"  implementedLearningComponentSearchModes: {implemented_component_modes}",
         f"  codeCoverage: {package.package.capabilities.code_search.value}",
         f"  codedNodes: {package.search_index.coded_node_count}",
+        f"  learningComponents: {learning_component_count}",
+        f"  tagVocabulary: {package.search_index.tag_vocabulary_size}",
     )
 
 

@@ -54,6 +54,7 @@ from kgfegmcp.graph.models import (
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.models import (
     CodeQueryText,
+    LearningComponentSearchMode,
     PackageSearchIndexMetadata,
     PackageSearchScope,
     SearchCursor,
@@ -738,6 +739,7 @@ class PackageCapabilityResult(FrozenSchema):
 
     available_resource_artifacts: tuple[ArtifactName, ...]
     available_resource_kinds: tuple[str, ...]
+    implemented_learning_component_search_modes: tuple[LearningComponentSearchMode, ...]
     implemented_search_modes: tuple[SearchMode, ...]
     package: CatalogGraphPackage
     search_index: PackageSearchIndexMetadata
