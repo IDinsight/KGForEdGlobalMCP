@@ -2116,14 +2116,17 @@ def _validate_relationship_endpoints(
             "relationship attribution statement",
         ),
         (relationship.license, root.license, "relationship source license"),
-        (relationship.provider, root.provider, "relationship provider"),
     ]
 
-    # A supports relationship declares its own author; the pipeline wrote it, not the
-    # publishing body. Credit, licence, and provider still follow the source.
+    # A supports relationship names the pipeline that wrote it, not the publishing body,
+    # so author and provider are generator facts rather than inherited source metadata.
+    # Credit and licence still follow the source, because the derivative inherits them.
     if relationship.label != DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
-        metadata_comparisons.append(
-            (relationship.author, root.author, "relationship author")
+        metadata_comparisons.extend(
+            (
+                (relationship.author, root.author, "relationship author"),
+                (relationship.provider, root.provider, "relationship provider"),
+            )
         )
 
     for actual, expected, field_name in metadata_comparisons:
@@ -2649,7 +2652,6 @@ def _validate_learning_component_semantics(
                 "learning component attribution statement",
             ),
             (node.license, root.license, "learning component source license"),
-            (node.provider, root.provider, "learning component provider"),
         )
 
         for actual, expected, field_name in inherited_comparisons:
