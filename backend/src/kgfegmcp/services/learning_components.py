@@ -182,9 +182,6 @@ class LearningComponentService:
     ) -> SearchLearningComponentsResult:
         """Execute learning-component search through the existing search service.
 
-        Package selection reuses the standards snapshot resolver and scope builder, so
-        the two search tools can never disagree about which packages a query reaches.
-
         Parameters
         ----------
         request
@@ -369,8 +366,7 @@ class LearningComponentService:
     ) -> GetLearningComponentsForStandardResult:
         """Return every learning component supporting one exact standard.
 
-        Each component reports every standard it supports, not only the requested one,
-        so a component bridging several standards is visible as such.
+        Each component reports every standard it supports, not only the requested one.
 
         Parameters
         ----------

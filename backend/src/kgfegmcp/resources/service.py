@@ -1012,9 +1012,7 @@ class ResourceService:
     ) -> ResourceDocument:
         """Return one learning component's exact detailed provenance entry.
 
-        The entry records the source pages, segments, and standards the component was
-        decomposed from. It is the audit trail for generated content, and it is keyed
-        by outer node identifier because a component carries no CASE identity.
+        Keyed by outer node identifier because a component carries no CASE identity.
 
         Parameters
         ----------

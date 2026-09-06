@@ -937,9 +937,8 @@ class SearchService:
     ]:
         """Return components supporting standards whose codes satisfy one query.
 
-        The standards code index performs the match; the supports relationships
-        select the components. No separate supported-code index exists, so the
-        profile-governed code normalizer cannot drift between the two tools.
+        The standards code index performs the match; the supports relationships select
+        the components. There is no separate supported-code index.
 
         Parameters
         ----------
@@ -1626,9 +1625,8 @@ def _build_supported_code_ranked_hits(
 ) -> tuple[_RankedHit[LearningComponentSearchHit], ...]:
     """Build one hit per component supporting any standard whose code matched.
 
-    A component supporting several matching standards produces one hit carrying
-    every matched code, so a cross-grade bridge is reported once rather than
-    duplicated per standard.
+    A component matching several standards produces one hit carrying every matched
+    code, rather than one hit per standard.
 
     Parameters
     ----------

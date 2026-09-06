@@ -2118,9 +2118,8 @@ def _validate_relationship_endpoints(
         (relationship.license, root.license, "relationship source license"),
     ]
 
-    # A supports relationship names the pipeline that wrote it, not the publishing body,
-    # so author and provider are generator facts rather than inherited source metadata.
-    # Credit and licence still follow the source, because the derivative inherits them.
+    # On a supports relationship author and provider are generator facts, not inherited
+    # source metadata. Credit and licence still follow the source.
     if relationship.label != DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
         metadata_comparisons.extend(
             (

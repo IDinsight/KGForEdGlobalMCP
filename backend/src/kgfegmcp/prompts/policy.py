@@ -196,9 +196,7 @@ class PromptPolicy:
     ) -> None:
         """Require the routed package to contain learning components.
 
-        A workflow built on learning components has no source-only fallback. Rendering
-        it against a package without them would silently produce a mono-grade plan
-        under a multi-grade heading.
+        A learning-component workflow has no source-only fallback.
 
         Parameters
         ----------

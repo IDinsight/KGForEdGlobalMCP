@@ -720,14 +720,9 @@ class SearchPage(FrozenSchema):
 class SupportedStandardReference(FrozenSchema):
     """Report one standards item a learning component supports.
 
-    A supported standard is reported whether or not it carries a statement code,
-    so a component bridging a coded and an uncoded standard is never reported as
-    supporting only one of them.
-
-    Grade levels are projected from the supported standard at serialization time, the
-    same way the statement code is. A learning component has no grade of its own; a
-    component supporting standards in several grades reports each grade against the
-    standard that declares it.
+    Reported whether or not the standard carries a statement code, so a component
+    bridging a coded and an uncoded standard is never flattened to one. Grade levels
+    are projected from the standard; a component has no grade of its own.
     """
 
     grade_levels: tuple[str, ...] = ()
