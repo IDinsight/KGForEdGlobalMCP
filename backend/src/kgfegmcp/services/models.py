@@ -55,6 +55,7 @@ from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.models import (
     CodeQueryText,
     LearningComponentSearchMode,
+    LearningComponentSearchPage,
     PackageSearchIndexMetadata,
     PackageSearchScope,
     SearchCursor,
@@ -63,6 +64,7 @@ from kgfegmcp.search.models import (
     SearchPage,
     SearchQueryText,
     SupportedStandardReference,
+    TagQueryText,
     TextMatch,
 )
 
@@ -437,6 +439,107 @@ class SearchStandardsResult(FrozenSchema):
 
     effective_scope: PackageSearchScope
     page: SearchPage
+    selected_snapshots: tuple[CatalogFrameworkSnapshot, ...] = Field(min_length=1)
+
+
+class LearningComponentsSearchRequestBase(FrozenSchema):
+    """Define package selection shared by every learning-component search mode.
+
+    These fields select which accepted packages a search touches. They describe the
+    package, not the node, so they are identical to standards search. Node facet
+    filters are deliberately absent: a learning component carries no grade, subject,
+    or statement taxonomy of its own.
+    """
+
+    cursor: SearchCursor | None = Field(
+        default=None, description=_SEARCH_CURSOR_DESCRIPTION
+    )
+    framework_ids: tuple[FrameworkId, ...] = Field(default=(), max_length=64)
+    jurisdictions: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
+    languages: tuple[LanguageTag, ...] = Field(default=(), max_length=64)
+    limit: int = Field(
+        default=25, description=_CURSOR_BOUND_LIMIT_DESCRIPTION, ge=1, le=100
+    )
+    snapshot_ids: tuple[SnapshotId, ...] = Field(default=(), max_length=64)
+    subjects: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
+
+    @model_validator(mode="after")
+    def validate_package_selection(self) -> Self:
+        """Require duplicate-free framework-selection and catalog-filter tuples.
+
+        Returns
+        -------
+        Self
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If any selection tuple repeats a value.
+        """
+
+        collections = (
+            ("framework_ids", tuple(str(value) for value in self.framework_ids)),
+            ("jurisdictions", self.jurisdictions),
+            ("languages", tuple(str(value) for value in self.languages)),
+            ("snapshot_ids", tuple(str(value) for value in self.snapshot_ids)),
+            ("subjects", self.subjects),
+        )
+
+        for field_name, values in collections:
+            if len(values) != len(set(values)):
+                raise ValueError(f"{field_name} must not contain duplicates.")
+
+        return self
+
+
+class TextLearningComponentsSearchRequest(LearningComponentsSearchRequestBase):
+    """Request deterministic lexical search over learning-component descriptions."""
+
+    match: TextMatch
+    mode: Literal["learning_component_text"]
+    query: SearchQueryText
+
+
+class TagLearningComponentsSearchRequest(LearningComponentsSearchRequestBase):
+    """Request exact controlled-tag lookup over learning-component tags."""
+
+    mode: Literal["learning_component_tag"]
+    query: TagQueryText
+
+
+class SupportedCodeExactLearningComponentsSearchRequest(
+    LearningComponentsSearchRequestBase
+):
+    """Request components supporting one exact standards statement code."""
+
+    mode: Literal["learning_component_supported_code_exact"]
+    query: CodeQueryText
+
+
+class SupportedCodePrefixLearningComponentsSearchRequest(
+    LearningComponentsSearchRequestBase
+):
+    """Request components supporting a standards statement-code prefix."""
+
+    mode: Literal["learning_component_supported_code_prefix"]
+    query: CodeQueryText
+
+
+LearningComponentsSearchRequest: TypeAlias = Annotated[
+    SupportedCodeExactLearningComponentsSearchRequest
+    | SupportedCodePrefixLearningComponentsSearchRequest
+    | TagLearningComponentsSearchRequest
+    | TextLearningComponentsSearchRequest,
+    Field(discriminator="mode"),
+]
+
+
+class SearchLearningComponentsResult(FrozenSchema):
+    """Return one learning-component search page with exact snapshot evidence."""
+
+    effective_scope: PackageSearchScope
+    page: LearningComponentSearchPage
     selected_snapshots: tuple[CatalogFrameworkSnapshot, ...] = Field(min_length=1)
 
 

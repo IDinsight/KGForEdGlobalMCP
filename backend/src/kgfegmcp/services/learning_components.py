@@ -11,6 +11,7 @@ from dataclasses import dataclass
 
 # Package Library
 from kgfegmcp.catalog.service import CatalogService
+from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import GraphPackageId, NodeId
 from kgfegmcp.errors import GraphNodeNotFoundError, LearningComponentNotFoundError
 from kgfegmcp.graph.models import (
@@ -23,9 +24,18 @@ from kgfegmcp.graph.models import (
 from kgfegmcp.graph.store import GraphStore
 from kgfegmcp.graph.traversal import GraphTraversal
 from kgfegmcp.packages.wire import DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
-from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.search.models import (
+    LearningComponentSearchMode,
+    LearningComponentSupportedCodeExactSearchQuery,
+    LearningComponentSupportedCodePrefixSearchQuery,
+    LearningComponentTagSearchQuery,
+    LearningComponentTextSearchQuery,
+)
+from kgfegmcp.search.service import SearchService
+from kgfegmcp.services.frameworks import FrameworkService, build_search_scope
 from kgfegmcp.services.models import (
     CaseUuidStandardIdentifier,
+    LearningComponentsSearchRequest,
     GetLearningComponentContextRequest,
     GetLearningComponentContextResult,
     GetLearningComponentRequest,
@@ -33,10 +43,14 @@ from kgfegmcp.services.models import (
     GetLearningComponentsForStandardRequest,
     GetLearningComponentsForStandardResult,
     NodeIdStandardIdentifier,
+    SearchLearningComponentsResult,
+    SupportedCodeExactLearningComponentsSearchRequest,
     SupportedStandard,
     SupportedStandardPlacement,
     SupportedStandardReference,
     SupportingLearningComponent,
+    TagLearningComponentsSearchRequest,
+    TextLearningComponentsSearchRequest,
 )
 
 
@@ -46,6 +60,7 @@ class LearningComponentService:
 
     catalog_service: CatalogService
     framework_service: FrameworkService
+    search_service: SearchService
 
     @staticmethod
     def _supported_standards(
@@ -160,6 +175,72 @@ class LearningComponentService:
             message=(
                 "The requested identifier does not select a learning component node."
             ),
+        )
+
+    def search_learning_components(
+        self, request: LearningComponentsSearchRequest
+    ) -> SearchLearningComponentsResult:
+        """Execute learning-component search through the existing search service.
+
+        Package selection reuses the standards snapshot resolver and scope builder, so
+        the two search tools can never disagree about which packages a query reaches.
+
+        Parameters
+        ----------
+        request
+            Validated public text, tag, or supported-code request.
+
+        Returns
+        -------
+        SearchLearningComponentsResult
+            Search page, exact effective scope, and selected snapshots.
+        """
+
+        selected_snapshots = self.framework_service.resolve_search_snapshots(
+            framework_ids=request.framework_ids,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            jurisdictions=request.jurisdictions,
+            languages=request.languages,
+            snapshot_ids=request.snapshot_ids,
+            subjects=request.subjects,
+        )
+        scope = build_search_scope(selected_snapshots)
+        common = {"cursor": request.cursor, "limit": request.limit, "scope": scope}
+        query: (
+            LearningComponentSupportedCodeExactSearchQuery
+            | LearningComponentSupportedCodePrefixSearchQuery
+            | LearningComponentTagSearchQuery
+            | LearningComponentTextSearchQuery
+        )
+
+        if isinstance(request, TextLearningComponentsSearchRequest):
+            query = LearningComponentTextSearchQuery(
+                match=request.match,
+                mode=LearningComponentSearchMode.TEXT,
+                query=request.query,
+                **common,
+            )
+        elif isinstance(request, TagLearningComponentsSearchRequest):
+            query = LearningComponentTagSearchQuery(
+                mode=LearningComponentSearchMode.TAG, query=request.query, **common
+            )
+        elif isinstance(request, SupportedCodeExactLearningComponentsSearchRequest):
+            query = LearningComponentSupportedCodeExactSearchQuery(
+                mode=LearningComponentSearchMode.SUPPORTED_CODE_EXACT,
+                query=request.query,
+                **common,
+            )
+        else:
+            query = LearningComponentSupportedCodePrefixSearchQuery(
+                mode=LearningComponentSearchMode.SUPPORTED_CODE_PREFIX,
+                query=request.query,
+                **common,
+            )
+
+        return SearchLearningComponentsResult(
+            effective_scope=scope,
+            page=self.search_service.search_learning_components(query),
+            selected_snapshots=selected_snapshots,
         )
 
     def get_learning_component(
@@ -369,6 +450,7 @@ class LearningComponentService:
                     relationship=relationship,
                     supported_standards=tuple(
                         SupportedStandardReference(
+                            grade_levels=supported.standard.grade_level or (),
                             node_id=supported.standard.node_id,
                             statement_code=supported.standard.statement_code,
                             support_confidence=supported.relationship.support_confidence,
