@@ -39,10 +39,30 @@ This tool has no caller-supplied arguments.
 Each `packages[]` entry includes the accepted package and source metadata plus:
 
 - `implementedSearchModes`;
-- package-local search index metadata;
+- `implementedLearningComponentSearchModes`;
+- package-local search index metadata, including `learningComponentDocumentCount` and
+  `tagVocabularySize`;
 - `availableResourceKinds`;
 - `availableResourceArtifacts`; and
 - `traversalRelationshipType`.
+
+Standards and learning-component modes are reported separately because they are
+governed differently. Learning-component modes carry a `learning_component_` prefix so
+a mode value is never ambiguous between the two surfaces:
+
+```text
+learning_component_text
+learning_component_tag
+learning_component_supported_code_exact
+learning_component_supported_code_prefix
+```
+
+`learning_component_text` follows the package's `textSearch` capability, and the two
+supported-code modes follow the same profile code coverage that governs
+`code_exact` and `code_prefix`, because they match against the codes of the standards a
+component supports. `learning_component_tag` needs neither, so it is always implemented;
+a package whose components carry no tags returns no hits rather than reporting the mode
+unavailable.
 
 !!! warning "Generic schemas do not authorize package-specific modes"
     The `search_standards` schema contains `text`, `code_exact`, and `code_prefix`
