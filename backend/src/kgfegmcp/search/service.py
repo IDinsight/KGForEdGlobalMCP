@@ -1680,6 +1680,7 @@ def _build_supported_code_ranked_hits(
             ) not in already_matched:
                 matched_codes.append(
                     SupportedStandardReference(
+                        grade_levels=posting.node.grade_level or (),
                         node_id=posting.node.node_id,
                         statement_code=posting.authored_code,
                         support_confidence=relationship.support_confidence,
@@ -2583,6 +2584,7 @@ def _supported_standards(
         if isinstance(standard, StandardNode):
             supported.append(
                 SupportedStandardReference(
+                    grade_levels=standard.grade_level or (),
                     node_id=standard.node_id,
                     statement_code=standard.statement_code,
                     support_confidence=relationship.support_confidence,

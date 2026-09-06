@@ -723,8 +723,14 @@ class SupportedStandardReference(FrozenSchema):
     A supported standard is reported whether or not it carries a statement code,
     so a component bridging a coded and an uncoded standard is never reported as
     supporting only one of them.
+
+    Grade levels are projected from the supported standard at serialization time, the
+    same way the statement code is. A learning component has no grade of its own; a
+    component supporting standards in several grades reports each grade against the
+    standard that declares it.
     """
 
+    grade_levels: tuple[str, ...] = ()
     node_id: NodeId
     statement_code: str | None = Field(default=None, min_length=1)
     support_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
