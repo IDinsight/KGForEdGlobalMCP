@@ -71,6 +71,8 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_relationships,
 )
 from kgfegmcp.packages.models import (
+    SUPPORTED_INCLUDED_GRAPH_TYPES,
+    SUPPORTED_PACKAGE_REVISION,
     ArtifactIntegrityObservation,
     DeclaredArtifactReference,
     DetailedValidationReport,
@@ -78,8 +80,6 @@ from kgfegmcp.packages.models import (
     LoadedGraphPackage,
     PackageIntegritySnapshot,
     PackageValidationFinding,
-    SUPPORTED_INCLUDED_GRAPH_TYPES,
-    SUPPORTED_PACKAGE_REVISION,
 )
 from kgfegmcp.packages.repository import (
     PACKAGE_MANIFEST_FILENAME,

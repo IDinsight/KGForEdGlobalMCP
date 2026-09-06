@@ -54,8 +54,8 @@ from kgfegmcp.domain.identifiers import (
     GraphPackageId,
     Sha256Digest,
     SnapshotId,
-    build_versioned_graph_package_id,
     build_snapshot_id,
+    build_versioned_graph_package_id,
 )
 from kgfegmcp.domain.models import RightsPolicy
 from kgfegmcp.errors import ManifestBuildError
@@ -74,6 +74,8 @@ from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
     ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
     DELIVERY_SCHEMA_VERSION,
+    SOURCE_SCHEMA_VERSION,
+    SUPPORTED_INCLUDED_GRAPH_TYPES,
     FrameworkCapabilities,
     FrameworkMetadata,
     GraphPackageManifest,
@@ -83,8 +85,6 @@ from kgfegmcp.packages.models import (
     PackageCounts,
     PackageValidation,
     ProfileReference,
-    SOURCE_SCHEMA_VERSION,
-    SUPPORTED_INCLUDED_GRAPH_TYPES,
     SnapshotRelation,
 )
 from kgfegmcp.packages.wire import (
@@ -109,7 +109,10 @@ _RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
         "learning_components_bundle",
         "learningComponentsBundle",
     ),
-    "lc_dedup_groups.json": ("learning_component_dedup_groups", "learningComponentDedupGroups"),
+    "lc_dedup_groups.json": (
+        "learning_component_dedup_groups",
+        "learningComponentDedupGroups",
+    ),
     "lc_entity_provenance.json": (
         "learning_component_provenance",
         "learningComponentProvenance",

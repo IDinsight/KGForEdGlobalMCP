@@ -11,11 +11,10 @@ endpoints, validate topology, repair records, or establish graph-wide invariants
 # Standard Library
 import json
 
-from math import isfinite
-
 from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from io import BytesIO
+from math import isfinite
 from pathlib import Path
 from typing import BinaryIO, Generic, NoReturn, TypeAlias, TypeVar
 

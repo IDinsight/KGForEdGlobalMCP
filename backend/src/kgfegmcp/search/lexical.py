@@ -44,7 +44,6 @@ from kgfegmcp.search.models import (
 )
 from kgfegmcp.search.normalizers import normalize_lexical_text
 
-
 LexicalNodeT = TypeVar("LexicalNodeT", StandardNode, LearningComponentNode)
 
 

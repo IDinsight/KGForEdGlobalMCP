@@ -46,7 +46,6 @@ from kgfegmcp.errors import (
     PackageValidationError,
 )
 from kgfegmcp.graph.models import (
-    LearningComponentNode,
     DirectNodeRelationshipsResult,
     DirectRelationshipDirection,
     GraphNeighbor,
@@ -54,6 +53,7 @@ from kgfegmcp.graph.models import (
     GraphNodeResult,
     GraphPackageIdentity,
     GraphRelationship,
+    LearningComponentNode,
     StandardNode,
     graph_relationship_order_key,
 )

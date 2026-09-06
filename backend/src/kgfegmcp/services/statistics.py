@@ -24,7 +24,6 @@ from dataclasses import dataclass
 from kgfegmcp.catalog.service import CatalogService
 from kgfegmcp.domain.identifiers import NodeId
 from kgfegmcp.errors import CatalogError, PackageValidationError
-from kgfegmcp.graph.store import GraphStore
 from kgfegmcp.graph.traversal import GraphTraversal
 from kgfegmcp.packages.models import LoadedGraphPackage
 from kgfegmcp.packages.wire import DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
@@ -87,7 +86,7 @@ def _connected_node_count(
 
 
 def _learning_component_statistics(
-    *, loaded_package: LoadedGraphPackage, store: GraphStore
+    *, loaded_package: LoadedGraphPackage
 ) -> LearningComponentStatistics:
     """Derive deterministic learning-component counts from one accepted package.
 
@@ -95,8 +94,6 @@ def _learning_component_statistics(
     ----------
     loaded_package
         Accepted package aggregate retaining decoded learning components.
-    store
-        Read-only graph store indexing the package's supports relationships.
 
     Returns
     -------
@@ -258,8 +255,7 @@ class FrameworkStatisticsService:
 
         if (
             package.counts.item_nodes != total_item_nodes
-            or package.counts.learning_component_nodes
-            != total_learning_component_nodes
+            or package.counts.learning_component_nodes != total_learning_component_nodes
             or package.counts.relationships != total_relationships
             or len(store.nodes_by_id) != total_nodes
             or len(store.relationships_by_id) != total_relationships
@@ -376,7 +372,7 @@ class FrameworkStatisticsService:
         resolved_count = resolution_status_counts.get(None, 0)
         statistics = FrameworkStatistics(
             learning_components=_learning_component_statistics(
-                loaded_package=loaded_package, store=store
+                loaded_package=loaded_package
             ),
             canonical_relationship_label_counts=_to_nullable_counts(
                 canonical_relationship_label_counts

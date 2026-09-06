@@ -74,11 +74,11 @@ from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_0_HIERARCHY_RELATIONSHIP_TYPE,
     DELIVERY_SCHEMA_1_0_ITEM_LABEL,
     DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY,
+    DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS,
     DELIVERY_SCHEMA_1_1_COMPONENT_ENDPOINT_ENTITY_KEY,
     DELIVERY_SCHEMA_1_1_COMPONENT_LABEL,
     DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE,
     SUPPORTED_RELATIONSHIP_TYPES,
-    DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS,
 )
 from kgfegmcp.profiles.models import (
     CodeTypePolicy,
@@ -1627,6 +1627,80 @@ def _validate_item_statement_type(
     return policy
 
 
+def _validate_node_case_identity(
+    *,
+    case_identifier_uris: dict[str, GraphNode],
+    case_identifiers: dict[str, GraphNode],
+    findings: list[PackageValidationFinding],
+    node: GraphNode,
+) -> None:
+    """Validate one node's CASE identifier and URI uniqueness across the package.
+
+    Parameters
+    ----------
+    case_identifier_uris
+        First node observed for each CASE URI.
+    case_identifiers
+        First node observed for each CASE identifier.
+    findings
+        Validation-local finding accumulator.
+    node
+        Decoded node carrying CASE identity.
+    """
+
+    node_id = str(node.node_id)
+    if node.case_identifier_uuid is None:
+        findings.append(
+            _finding(
+                code="node_case_identifier_missing",
+                message="A node does not declare the CASE identifier required by endpoints.",
+                record_id=node_id,
+                source_export_order=node.source_export_order,
+            )
+        )
+    else:
+        case_identifier = str(node.case_identifier_uuid)
+
+        if case_identifier in case_identifiers:
+            findings.append(
+                _finding(
+                    code="node_case_identifier_duplicate",
+                    details={
+                        "first_node_id": str(case_identifiers[case_identifier].node_id),
+                        "second_node_id": node_id,
+                    },
+                    message="A CASE node identifier occurs more than once in the package.",
+                    record_id=node_id,
+                    source_export_order=node.source_export_order,
+                )
+            )
+        else:
+            case_identifiers[case_identifier] = node
+
+    if node.case_identifier_uri is None:
+        return
+
+    case_identifier_uri = str(node.case_identifier_uri)
+
+    if case_identifier_uri in case_identifier_uris:
+        findings.append(
+            _finding(
+                code="node_case_identifier_uri_duplicate",
+                details={
+                    "first_node_id": str(
+                        case_identifier_uris[case_identifier_uri].node_id
+                    ),
+                    "second_node_id": node_id,
+                },
+                message="A CASE node URI occurs more than once in the package.",
+                record_id=node_id,
+                source_export_order=node.source_export_order,
+            )
+        )
+    else:
+        case_identifier_uris[case_identifier_uri] = node
+
+
 def _validate_node_identifiers_and_labels(
     *, package: LoadedGraphPackage, findings: list[PackageValidationFinding]
 ) -> dict[str, GraphNode]:
@@ -1712,58 +1786,12 @@ def _validate_node_identifiers_and_labels(
             # Learning components carry no CASE identity; endpoints key on identifier.
             continue
 
-        if node.case_identifier_uuid is None:
-            findings.append(
-                _finding(
-                    code="node_case_identifier_missing",
-                    message="A node does not declare the CASE identifier required by endpoints.",
-                    record_id=node_id,
-                    source_export_order=node.source_export_order,
-                )
-            )
-        else:
-            case_identifier = str(node.case_identifier_uuid)
-
-            if case_identifier in case_identifiers:
-                findings.append(
-                    _finding(
-                        code="node_case_identifier_duplicate",
-                        details={
-                            "first_node_id": str(
-                                case_identifiers[case_identifier].node_id
-                            ),
-                            "second_node_id": node_id,
-                        },
-                        message="A CASE node identifier occurs more than once in the package.",
-                        record_id=node_id,
-                        source_export_order=node.source_export_order,
-                    )
-                )
-            else:
-                case_identifiers[case_identifier] = node
-
-        if node.case_identifier_uri is None:
-            continue
-
-        case_identifier_uri = str(node.case_identifier_uri)
-
-        if case_identifier_uri in case_identifier_uris:
-            findings.append(
-                _finding(
-                    code="node_case_identifier_uri_duplicate",
-                    details={
-                        "first_node_id": str(
-                            case_identifier_uris[case_identifier_uri].node_id
-                        ),
-                        "second_node_id": node_id,
-                    },
-                    message="A CASE node URI occurs more than once in the package.",
-                    record_id=node_id,
-                    source_export_order=node.source_export_order,
-                )
-            )
-        else:
-            case_identifier_uris[case_identifier_uri] = node
+        _validate_node_case_identity(
+            case_identifier_uris=case_identifier_uris,
+            case_identifiers=case_identifiers,
+            findings=findings,
+            node=node,
+        )
 
     return nodes_by_id
 

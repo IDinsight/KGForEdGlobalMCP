@@ -68,7 +68,6 @@ from kgfegmcp.profiles.models import (
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.code import CodeCandidate, CodeIndex
 from kgfegmcp.search.lexical import LexicalCandidate, LexicalIndex
-from kgfegmcp.search.tags import TagIndex
 from kgfegmcp.search.models import (
     CodeMatchEvidence,
     CodeParentDerivationEvidence,
@@ -112,6 +111,7 @@ from kgfegmcp.search.normalizers import (
     normalize_facet_value,
     normalize_lexical_text,
 )
+from kgfegmcp.search.tags import TagIndex
 
 _SHA256_ADAPTER: Final[TypeAdapter[Sha256Digest]] = TypeAdapter(Sha256Digest)
 CURSOR_VERSION: Final[Literal[1]] = 1

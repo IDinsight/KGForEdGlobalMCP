@@ -35,13 +35,13 @@ from kgfegmcp.search.service import SearchService
 from kgfegmcp.services.frameworks import FrameworkService, build_search_scope
 from kgfegmcp.services.models import (
     CaseUuidStandardIdentifier,
-    LearningComponentsSearchRequest,
     GetLearningComponentContextRequest,
     GetLearningComponentContextResult,
     GetLearningComponentRequest,
     GetLearningComponentResult,
     GetLearningComponentsForStandardRequest,
     GetLearningComponentsForStandardResult,
+    LearningComponentsSearchRequest,
     NodeIdStandardIdentifier,
     SearchLearningComponentsResult,
     SupportedCodeExactLearningComponentsSearchRequest,
