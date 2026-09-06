@@ -10,7 +10,7 @@ raw wire models.
 
 # Standard Library
 from collections.abc import Mapping
-from typing import Final, Literal, cast
+from typing import Final, Literal
 
 # Third Party Library
 from pydantic import ConfigDict, Field, StrictStr, model_validator
@@ -87,18 +87,6 @@ class WireProperties(FrozenSchema):
             raise ValueError("Delivery property keys and values must be strings.")
 
         return value
-
-    def raw_values(self) -> dict[str, str]:
-        """Return all known and unknown properties using original wire names.
-
-        Returns
-        -------
-        dict[str, str]
-            A new dictionary containing every source property string.
-        """
-
-        values = self.model_dump(by_alias=True, exclude_none=True)
-        return cast(dict[str, str], values)
 
 
 class NodeWireProperties(WireProperties):

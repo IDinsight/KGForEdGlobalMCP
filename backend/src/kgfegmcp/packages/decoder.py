@@ -488,7 +488,6 @@ def decode_node_record(
         property_name="isCurrent",
         value=properties.is_current,
     )
-    raw_properties = properties.raw_values()
 
     if (is_component + is_framework + is_standard) != 1:
         _raise_record_decoding_error(
@@ -518,7 +517,6 @@ def decode_node_record(
                 node_id=envelope.identifier,
                 property_identifier=properties.identifier,
                 provider=properties.provider,
-                raw_properties=raw_properties,
                 source_export_order=located_record.source_export_order,
             )
 
@@ -540,7 +538,6 @@ def decode_node_record(
                 node_id=envelope.identifier,
                 property_identifier=properties.identifier,
                 provider=properties.provider,
-                raw_properties=raw_properties,
                 source_export_order=located_record.source_export_order,
                 tags=_decode_optional_string_array(
                     line_number=located_record.line_number,
@@ -574,7 +571,6 @@ def decode_node_record(
             normalized_statement_type=properties.normalized_statement_type,
             property_identifier=properties.identifier,
             provider=properties.provider,
-            raw_properties=raw_properties,
             source_export_order=located_record.source_export_order,
             statement_code=properties.statement_code,
             statement_type=properties.statement_type,
@@ -621,7 +617,6 @@ def decode_relationship_record(
             license=properties.license,
             property_identifier=properties.identifier,
             provider=properties.provider,
-            raw_properties=properties.raw_values(),
             relationship_id=envelope.identifier,
             relationship_type=properties.relationship_type,
             resolution_status=properties.resolution_status,

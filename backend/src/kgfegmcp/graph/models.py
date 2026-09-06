@@ -57,7 +57,6 @@ class GraphNode(FrozenSchema):
     node_id: NodeId
     property_identifier: NodeId | None = None
     provider: str | None = None
-    raw_properties: dict[str, str]
     source_export_order: SourceExportOrder
 
 
@@ -71,7 +70,6 @@ class GraphRelationship(FrozenSchema):
     license: str | None = None
     property_identifier: RelationshipId | None = None
     provider: str | None = None
-    raw_properties: dict[str, str]
     relationship_id: RelationshipId
     relationship_type: str | None = None
     resolution_status: str | None = None

@@ -54,7 +54,7 @@ The server's primary graph runtime is built from the manifest-declared `nodes` a
 
 ## Delivery JSONL envelope
 
-Delivery schema version `1.0` uses one JSON object per physical line.
+Delivery schema version `1.1` uses one JSON object per physical line.
 
 A node record has this outer shape:
 
@@ -99,13 +99,20 @@ relationship properties:
 The external delivery `properties` object deliberately preserves source values as
 strings. The decoder is the boundary that interprets a small set of known encodings.
 
-For schema `1.0`:
+For schema `1.1`:
 
 - booleans are decoded only from the exact strings `"true"` and `"false"`;
-- array-valued properties such as `gradeLevel` are JSON arrays encoded inside a string;
-- unknown string properties are retained rather than discarded; and
+- array-valued properties such as `gradeLevel` and `tags` are JSON arrays encoded inside
+  a string;
+- properties the schema does not define are dropped; a decoded node carries typed fields
+  only, and the delivery artifact remains available byte-exact as a `raw_source`
+  resource with its own checksum; and
 - malformed encodings fail with typed parsing/decoding findings instead of being
   coerced loosely.
+
+Decoded records do not carry a copy of their source property strings. Every value a
+consumer needs is exposed as a typed field, and the source bytes are served by the
+resource layer rather than duplicated onto every node and relationship.
 
 The decoder does not repair identifiers, resolve endpoints, or validate graph topology;
 those are later validation stages.
