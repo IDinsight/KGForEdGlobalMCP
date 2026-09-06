@@ -1,0 +1,3813 @@
+{
+  "doc_key": "09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a",
+  "learning_components": {
+    "013153aa-29ae-5b67-9a77-96f7c0f1063a": {
+      "description": "Divide a collection of concrete objects into four equal parts",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:43d5989464287f771c197f405ae1b19d",
+      "in_language": "en",
+      "source_context_keys": [
+        "b942158fddaec9fc7f32778e0afb8074"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "1eed2e61-ce25-5262-84fd-74b95e75b5cf"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "02ca68bd-8ad9-58ab-a3cc-ce2de5998751": {
+      "description": "Subtract 3 numbers taking two at a time",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:83c8d273f50fded76c93fec1b2ffa2c1",
+      "in_language": "en",
+      "source_context_keys": [
+        "f958d4c79bc9e2ea5b2f13da3d73b91a"
+      ],
+      "source_page_indexes": [
+        26
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "591e54b7-02d9-557f-b46f-58e449fe19fa"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "038a6a22-7f7a-5b7c-93e9-07e147d99028": {
+      "description": "Write numbers up to 200",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3858a463201951f1c44fdbfdb50dea87",
+      "in_language": "en",
+      "source_context_keys": [
+        "425d9fe37d63cd055e530cf014af476f"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "c5aecc45-3444-5469-b323-2b8f97ff417b"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "03b6ce67-8f8d-54e8-b845-bcf836aedf59": {
+      "description": "Recognize that the symbol 0 stands for nothingness",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:cd27cb5fdaf0607637027d5e3be98596",
+      "in_language": "en",
+      "source_context_keys": [
+        "fd32dd8be150a83b9e0b99d1d819bcea"
+      ],
+      "source_page_indexes": [
+        0
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "9f6db581-43d7-50c4-8753-8ff8363e86b3"
+      ],
+      "source_window_ids": [
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "0519c52f-249d-5c21-b0aa-d262439f8a8d": {
+      "description": "Add 2-digit numbers without exchanging or renaming",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:7b3b7a6fe7ea1f8b4c97e634b70f75f3",
+      "in_language": "en",
+      "source_context_keys": [
+        "bba858fd55b1fd7845d7f97215ee42a9"
+      ],
+      "source_page_indexes": [
+        13
+      ],
+      "source_segment_ids": [
+        "22019fbf-f8e9-5be7-bdec-9c75309687e2"
+      ],
+      "source_sfi_uuids": [
+        "ba07c429-3b9a-5a7a-98cf-06185902b990"
+      ],
+      "source_window_ids": [
+        "cd2911b9-46bb-5c39-b916-30becf9c88b8"
+      ]
+    },
+    "05b49872-ebe3-554e-8104-683d369b774c": {
+      "description": "Subtract 2-digit numbers with exchanging or renaming",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:8aaaa2d26cb75f4937f2f32888e4860f",
+      "in_language": "en",
+      "source_context_keys": [
+        "4c58719d86c54b7e2af709fc6955d535",
+        "f958d4c79bc9e2ea5b2f13da3d73b91a"
+      ],
+      "source_page_indexes": [
+        14,
+        26
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc",
+        "f7e9d36b-c500-522f-8323-588c623cc48e"
+      ],
+      "source_sfi_uuids": [
+        "1be992b1-872b-5220-b90b-efd98851bbc4",
+        "9e2a171a-c477-5df7-b93b-eaa4695b899d"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d",
+        "f0dd6823-cf23-535c-9425-f576013418c9"
+      ]
+    },
+    "0aac181a-ad39-5e94-ac5b-e24eedfffa69": {
+      "description": "Identify the curved surfaces of a cylinder",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:cf218633a3aadf9b243493d56ce2ba64",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "0f14db5e-caf8-573d-b22d-db3482f5fbc3"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "0b656e90-8bce-504a-b1e6-5681320dfb59": {
+      "description": "Mention when certain things are done at home",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:985a1fbd482912c0201deef651d98ffe",
+      "in_language": "en",
+      "source_context_keys": [
+        "63e9fe78e9d6ca058a79842ae975b93b"
+      ],
+      "source_page_indexes": [
+        9
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "19abe70a-30d5-5308-9903-ff69257a29b4"
+      ],
+      "source_window_ids": [
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "0c36bb7f-4080-58b8-91ac-3aee0f280f55": {
+      "description": "Recognize 10 as a group",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:0bf067186cb38bd3f48ebac5dd2b5187",
+      "in_language": "en",
+      "source_context_keys": [
+        "52481cf22ac1798a822e370da6aceed2"
+      ],
+      "source_page_indexes": [
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "39c411fd-8743-5fd5-b363-8dc17a63c0c8"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6"
+      ]
+    },
+    "0cb8e9d0-015e-5e75-bfc8-743e6a3fc64d": {
+      "description": "Add 3 numbers taking two at a time",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f3bb9140c11435cc0f0caf5a1161414f",
+      "in_language": "en",
+      "source_context_keys": [
+        "bba858fd55b1fd7845d7f97215ee42a9",
+        "d1939bf9bcac7f2a0fd7073017288c61"
+      ],
+      "source_page_indexes": [
+        13,
+        25
+      ],
+      "source_segment_ids": [
+        "22019fbf-f8e9-5be7-bdec-9c75309687e2",
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "5b266aa8-434f-5de9-b697-18a45a5e2529",
+        "9175b31a-3a33-5a72-aaa2-27f013572c99"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d",
+        "cd2911b9-46bb-5c39-b916-30becf9c88b8"
+      ]
+    },
+    "0d488942-362c-5879-8cf8-6200b1fdacf8": {
+      "description": "Arrange whole numbers 1-5 in order of their magnitudes (quantities)",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a70d6684b518ed9ce9378d13bb5229b5",
+      "in_language": "en",
+      "source_context_keys": [
+        "05ee4bd0a0876f024fc7e13c79624362"
+      ],
+      "source_page_indexes": [
+        0
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "84d41c15-eef7-5bcc-881d-4da2b0327892"
+      ],
+      "source_window_ids": [
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "0dd36465-0dd9-513c-b3bb-7a282b374730": {
+      "description": "Collect data",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5fb8609a6426c856241d775a4996d3bd",
+      "in_language": "en",
+      "source_context_keys": [
+        "dae8af7e47de7a5bc6e218e3f6f3a167"
+      ],
+      "source_page_indexes": [
+        22
+      ],
+      "source_segment_ids": [
+        "e2a1f154-b90e-5b7b-92c7-b80a67184ee2"
+      ],
+      "source_sfi_uuids": [
+        "73c4c0c7-168f-59b5-8142-01b5fa0cdde3",
+        "ca648ebf-7da0-5846-a26b-93c9b5f4a56c"
+      ],
+      "source_window_ids": [
+        "b35c8eff-b805-5947-836e-16a0808f760b"
+      ]
+    },
+    "0e20306a-6644-5b07-98c2-30538fca3fc8": {
+      "description": "Represent information in pictograms using vertical and horizontal arrangements",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:b4d776b7fc24f42cead49026c5a3b889",
+      "in_language": "en",
+      "source_context_keys": [
+        "2132ee3c9207d2680f4495230e4c87ba"
+      ],
+      "source_page_indexes": [
+        36
+      ],
+      "source_segment_ids": [
+        "b81d30f8-4de7-58a4-b0fb-2d3a585a28f8"
+      ],
+      "source_sfi_uuids": [
+        "f211a58a-faf5-5aa9-b862-54a387de13eb"
+      ],
+      "source_window_ids": [
+        "07791ad4-ed69-5098-90fb-7641efa046ca"
+      ]
+    },
+    "0fa8e928-4e06-5d23-94b6-258888f8bcfa": {
+      "description": "Identify the perimeter of regular shapes in their environment",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1b9413b362c83fc24fafa8dbca28ec9f",
+      "in_language": "en",
+      "source_context_keys": [
+        "500d4c8518ab2e9a24018ad88df288d9"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "1a148f11-0ddf-55c8-abe2-1480f0d80292"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "0fe018ac-e7b0-5aac-9683-08bcd3a6bb0d": {
+      "description": "Collect data on ages at home and school",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:fd628b3fb1ea3421671d1e5d412e732d",
+      "in_language": "en",
+      "source_context_keys": [
+        "685f695af5800b64e9748575beb4f07a"
+      ],
+      "source_page_indexes": [
+        11
+      ],
+      "source_segment_ids": [
+        "c0988f13-51e9-56a4-a985-a03fcef7a8dc"
+      ],
+      "source_sfi_uuids": [
+        "d46b0a2a-e620-5605-8912-09a3f7c065c3"
+      ],
+      "source_window_ids": [
+        "a8abcf94-a8e6-5e49-8abb-650a43690436"
+      ]
+    },
+    "1102e558-54cb-5f1c-b7e5-bc94ab91e542": {
+      "description": "Use centimetres as a standard measuring unit for length",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:76291977cb366d7f18aa4ee56b3cb73f",
+      "in_language": "en",
+      "source_context_keys": [
+        "309fcfcfd7357953f07fbc7cd173dc2c",
+        "a365c96796628fa2e7bc8324d03ab8c2"
+      ],
+      "source_page_indexes": [
+        17,
+        32
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b",
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "1e15584c-97cd-5415-98a4-b6e135434358",
+        "cfa12ca8-cf0a-5e29-957a-1aff5ef4bf43"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27",
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "16a55375-8d6e-5086-b47b-234cefb9d1f7": {
+      "description": "Represent information on a pictogram",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:53275230e5851026b75798bcf5e8f9a4",
+      "in_language": "en",
+      "source_context_keys": [
+        "2132ee3c9207d2680f4495230e4c87ba"
+      ],
+      "source_page_indexes": [
+        36
+      ],
+      "source_segment_ids": [
+        "b81d30f8-4de7-58a4-b0fb-2d3a585a28f8"
+      ],
+      "source_sfi_uuids": [
+        "6690ffac-48a6-51c7-aef9-c236a366e175"
+      ],
+      "source_window_ids": [
+        "07791ad4-ed69-5098-90fb-7641efa046ca"
+      ]
+    },
+    "170cbf41-a2d8-59be-9f7e-4f8f7c6a493e": {
+      "description": "Count the corners of a cube and a cuboid",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d20e0af6bdae254981145079f9a8563b",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "a9a331d8-d5a5-52da-8bc4-7ecc9a9b0f85"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "189c6db6-f1af-5a4a-8914-6b6ed1efde81": {
+      "description": "Match a square, a rectangle and a circle",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1cc106e36e23a8b061ca25edaf7f6044",
+      "in_language": "en",
+      "source_context_keys": [
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "c51a279b-7a3a-5d31-a8be-18e6309c9846"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "1bb9d265-77ba-5c0c-af74-5b829813f46d": {
+      "description": "Give time to the half hour",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5f6b4fe97451d282794c39895774e0a6",
+      "in_language": "en",
+      "source_context_keys": [
+        "016eec50f6deec21604805070d24f281"
+      ],
+      "source_page_indexes": [
+        18
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "fa0603d7-bff2-5f11-9823-e7612f79cb1b"
+      ],
+      "source_window_ids": [
+        "bc841f41-1752-5c5c-bd6c-018dbe6978a5"
+      ]
+    },
+    "1d9aea35-4721-5bff-bf44-91c479592a9f": {
+      "description": "Perform simple multiplication involving money with product not exceeding \u20a620",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:2efa6306164eeaca64290f3dee2cf371",
+      "in_language": "en",
+      "source_context_keys": [
+        "caa71e5dabe414d8739c52d5cca64a83"
+      ],
+      "source_page_indexes": [
+        30
+      ],
+      "source_segment_ids": [
+        "c31be424-c4ba-5f63-8fca-2c896cf440b1"
+      ],
+      "source_sfi_uuids": [
+        "9fb4e65d-b528-5c01-916d-601f6f524068"
+      ],
+      "source_window_ids": [
+        "66e93c2f-45dd-5826-a8eb-4c0030dd78a5"
+      ]
+    },
+    "20507dfe-4d56-575c-b7ea-33b1f9072300": {
+      "description": "Write correctly the numbers 6 to 9",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:42d69b965732d66bbd12d5421007f24f",
+      "in_language": "en",
+      "source_context_keys": [
+        "b81cb575c5894ba9a18b55525cea675b"
+      ],
+      "source_page_indexes": [
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "e399b510-48bb-58ee-abda-61460a5a853b"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6"
+      ]
+    },
+    "21d33380-68ac-591a-a1f2-c8b8c2fc3029": {
+      "description": "Indicate which corner of a 2-dimensional shape is a square corner",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:e43d1b4fdc1b95d6cdc44bc6704edaef",
+      "in_language": "en",
+      "source_context_keys": [
+        "1f612d482ad214d25be9d184c2125490"
+      ],
+      "source_page_indexes": [
+        21
+      ],
+      "source_segment_ids": [
+        "832c2d14-b5fd-5910-9b4a-552899136ff0"
+      ],
+      "source_sfi_uuids": [
+        "666b1aae-8928-55ff-a09c-1e05d41046b4"
+      ],
+      "source_window_ids": [
+        "25b66b0b-744a-5877-8b49-196081403d9d"
+      ]
+    },
+    "22b41a28-cabe-5a7b-a202-54e440cbfb4b": {
+      "description": "Arrange collected data in arrays",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:873126c1ae307aeb06a76e9121291c51",
+      "in_language": "en",
+      "source_context_keys": [
+        "dae8af7e47de7a5bc6e218e3f6f3a167"
+      ],
+      "source_page_indexes": [
+        22
+      ],
+      "source_segment_ids": [
+        "e2a1f154-b90e-5b7b-92c7-b80a67184ee2"
+      ],
+      "source_sfi_uuids": [
+        "ca648ebf-7da0-5846-a26b-93c9b5f4a56c"
+      ],
+      "source_window_ids": [
+        "b35c8eff-b805-5947-836e-16a0808f760b"
+      ]
+    },
+    "22e372a9-7f21-55d6-a535-ee67d5a972cc": {
+      "description": "Develop the idea of length",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:804af0d762eedd5612e08be490a2cf83",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a6a2e950f0cda076173e9af636fbf5c"
+      ],
+      "source_page_indexes": [
+        8
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "4c2f183d-44c4-5cba-bc7c-c010557e01b1"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c",
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "2418966e-1df0-5982-8b63-76603da99f21": {
+      "description": "Order objects according to their weights",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:64c7db6301e5800f9c81f544ba73ae73",
+      "in_language": "en",
+      "source_context_keys": [
+        "3d95ff28f379a1254d4066e5028b0ec9"
+      ],
+      "source_page_indexes": [
+        18
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "241ce7a1-ea3d-53c1-bde4-9838108c81f5"
+      ],
+      "source_window_ids": [
+        "bc841f41-1752-5c5c-bd6c-018dbe6978a5"
+      ]
+    },
+    "24922263-efec-5ca1-b2c3-6f89c54f8f4c": {
+      "description": "Sort out cubes, cuboids, cylinders and spheres",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1d1a935595b339bac350f1b59556a755",
+      "in_language": "en",
+      "source_context_keys": [
+        "e760897de1349447dd71d5b030fb23bd"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "0bafebed-c286-5695-b112-6e71268dddf1"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "24fc32d3-46af-59a8-a504-50d17d6b50f8": {
+      "description": "Write the numeral 0 (zero)",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c184dc3a6211b1fb4e874b678635eebf",
+      "in_language": "en",
+      "source_context_keys": [
+        "fd32dd8be150a83b9e0b99d1d819bcea"
+      ],
+      "source_page_indexes": [
+        0
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "6d6eb49a-016f-5037-b14e-50c2ae453729"
+      ],
+      "source_window_ids": [
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "2764c8b3-2e40-541b-99cc-41e840d8d133": {
+      "description": "Measure length in natural units",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:46ce2f434da82170bcd70d144a59d07c",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a6a2e950f0cda076173e9af636fbf5c"
+      ],
+      "source_page_indexes": [
+        8
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "17c0e114-242d-5c77-9062-4ff8a85a4c7b"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c",
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "279e7606-4f5f-5c45-8904-b45ae80cc67c": {
+      "description": "Draw squares",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d40f08e4520019edd2cc4650e479b7c4",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "edaad706-a372-5277-b288-118c3ed53b11"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "2a099450-6f7d-55bb-a3f3-4bc0a584d7ff": {
+      "description": "Say time accurately in hours and minutes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:ff4c644c0991b087d8958fff59344daa",
+      "in_language": "en",
+      "source_context_keys": [
+        "48eb0fedcdeb7a3eb7d0c0ae9884c40e"
+      ],
+      "source_page_indexes": [
+        32
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "afc27d2c-2cf4-5f15-b674-c32e1e3eedd6"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "2afcda1f-dc81-53a1-a3ef-a818a0117c1f": {
+      "description": "Recognize all types of Nigerian coins",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f59e1d6284ef15481d7fb16dd18be864",
+      "in_language": "en",
+      "source_context_keys": [
+        "bfc73b7e846c85a5ef7e9ba88ecc1979"
+      ],
+      "source_page_indexes": [
+        17
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "8a2ca00b-e002-54d3-8862-d0a919165898"
+      ],
+      "source_window_ids": [
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "2b0be14f-1359-5f74-9410-9428343d19d5": {
+      "description": "Identify circular shapes in everyday life",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:55f7c8b14a3fa348085e26235d060d36",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "0adaa43d-babe-572c-80e4-6bc95189c679"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "2dadef28-8ef9-562c-b927-bc7e9fbb4d5f": {
+      "description": "Mention solid shapes found in homes and the environment",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:356c24fc0774ae0761cba392c7fab944",
+      "in_language": "en",
+      "source_context_keys": [
+        "e760897de1349447dd71d5b030fb23bd"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "585b7d53-de3d-5e07-a3d6-3d415d74a4a4"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "318ce66a-7c52-5c08-bc86-0d68b8858cda": {
+      "description": "Identify a rectangle",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5a4a501c60cb3113260c0449ccea8308",
+      "in_language": "en",
+      "source_context_keys": [
+        "1f612d482ad214d25be9d184c2125490",
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10,
+        21
+      ],
+      "source_segment_ids": [
+        "832c2d14-b5fd-5910-9b4a-552899136ff0",
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "0a31b8f7-ec0b-5b70-8424-a7611b9aece8",
+        "25f29d93-332b-5c2d-9083-a4476182f04e"
+      ],
+      "source_window_ids": [
+        "25b66b0b-744a-5877-8b49-196081403d9d",
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "35f920ff-8533-511d-ae62-175e8931195e": {
+      "description": "Identify rectangular shapes in everyday life",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a1697e580ddaf7a58c9d7cb0cfe923e0",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "0adaa43d-babe-572c-80e4-6bc95189c679"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "367883e0-63fd-581e-80b1-5fe02c8b83f1": {
+      "description": "Mention the importance and benefits of standard units of measurement of length",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:30221b68d11a8dfa4cef493222925653",
+      "in_language": "en",
+      "source_context_keys": [
+        "500d4c8518ab2e9a24018ad88df288d9"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "054c97f6-5165-5245-8dfb-d6f344e3aff0"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "38853bd6-d765-5c20-b3df-282152f13fbf": {
+      "description": "State properties of squares",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:80baf14b0c49bc423750780d7e21e04e",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "11eb74f6-7682-53cf-aab5-10b124b7ec34"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "39bdb9ff-06f4-528d-a0bc-9ff3a8532a28": {
+      "description": "Mention square shapes found in homes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:b85cd729309ded94aae1cfad9ea3ed27",
+      "in_language": "en",
+      "source_context_keys": [
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "a61e1ae6-d35a-5c97-8c61-45a0d97040d0"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "3a41b537-a731-5a72-8ac7-591e0b507411": {
+      "description": "Appreciate the need for grams and kilograms as standard units of measure for transactions",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:b536e3ee151fa0b0baf4d295e817f7e8",
+      "in_language": "en",
+      "source_context_keys": [
+        "6668069af81c15f68c4a22a839417106"
+      ],
+      "source_page_indexes": [
+        33
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "b1aefee6-11c9-54d6-8ba6-53a4a3036d85"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "3a76ab2a-bb43-5ed2-8f69-33abb3846023": {
+      "description": "Obtain \u00be of a concrete object",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a44806af7d00734727d0643e61923f94",
+      "in_language": "en",
+      "source_context_keys": [
+        "b942158fddaec9fc7f32778e0afb8074"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "a9da30c2-f304-5008-adfe-67d56d2194e0"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "3c8159d7-eee8-5a57-9ac6-54dca8609932": {
+      "description": "Cross-check the correctness of addition in everyday life",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:31fc10eaa01e3fd806a8ab7b4ef6e58a",
+      "in_language": "en",
+      "source_context_keys": [
+        "475ae0e8c73651bebecdf28e9859aa30"
+      ],
+      "source_page_indexes": [
+        5
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "dc402838-a2f8-5167-953d-875425e2eaf3"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "3dab5f38-9d61-5c0d-8ed8-e1f5a9eb58e2": {
+      "description": "Count correctly numbers up to 999",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:8269a6266271dec6a426222853e16b77",
+      "in_language": "en",
+      "source_context_keys": [
+        "2a04379f533c84b2b4e54bc8680abacf"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "27924a6b-f2ed-5f47-b2f7-b71d68191959"
+      ],
+      "source_sfi_uuids": [
+        "96b7fcd3-64cd-5092-a9a7-05acf3aa2733"
+      ],
+      "source_window_ids": [
+        "e20b0134-30d1-5eb6-a69e-7b36cf84dfaf"
+      ]
+    },
+    "4065a8c2-0f12-54c2-b557-18c3b2c35e4f": {
+      "description": "Compare the length of two or three objects",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:dfa9001c6380accb68fc042525164019",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a6a2e950f0cda076173e9af636fbf5c"
+      ],
+      "source_page_indexes": [
+        8
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "2e64e348-4ba1-5839-8903-636a95836e02"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c",
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "40714556-410f-509c-a00c-e937c7d7ab14": {
+      "description": "Identify the presence of curves in real life situations",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f0f2cb2c7696f1121a50458ccdd07de4",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "091695f9-e18c-5196-8746-9ce124316c8e"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "43916ddd-765c-5dc1-97ed-68f87a388a48": {
+      "description": "Give time to the hour",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a798d78b5845461bb3eba0e8084c7047",
+      "in_language": "en",
+      "source_context_keys": [
+        "016eec50f6deec21604805070d24f281"
+      ],
+      "source_page_indexes": [
+        18
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "fa0603d7-bff2-5f11-9823-e7612f79cb1b"
+      ],
+      "source_window_ids": [
+        "bc841f41-1752-5c5c-bd6c-018dbe6978a5"
+      ]
+    },
+    "4397e5fe-e5c5-5b35-aa43-3ea4cba6e9f8": {
+      "description": "Draw triangles",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:670579543f1d40b59ae152536d063b9f",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "edaad706-a372-5277-b288-118c3ed53b11"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "45414497-e12e-51e0-944e-87a5fc8b0c64": {
+      "description": "Use the idea of place value limited to tens and units",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:4016384e5d8cb979a86b81414f3bea49",
+      "in_language": "en",
+      "source_context_keys": [
+        "52481cf22ac1798a822e370da6aceed2"
+      ],
+      "source_page_indexes": [
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "1fd4cd60-eace-503d-a8a6-f402ec210697"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6"
+      ]
+    },
+    "474ea25d-f134-5533-87bc-7133936b803b": {
+      "description": "Shop effectively with money not greater than \u20a620 using the idea of subtraction",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d3e1b98058386f322e2e97ae3e960a5b",
+      "in_language": "en",
+      "source_context_keys": [
+        "caa71e5dabe414d8739c52d5cca64a83"
+      ],
+      "source_page_indexes": [
+        30
+      ],
+      "source_segment_ids": [
+        "c31be424-c4ba-5f63-8fca-2c896cf440b1"
+      ],
+      "source_sfi_uuids": [
+        "27231d9a-c146-5080-acff-1ec180587507"
+      ],
+      "source_window_ids": [
+        "66e93c2f-45dd-5826-a8eb-4c0030dd78a5"
+      ]
+    },
+    "48ebeda9-20bb-5e9e-86b6-4f40b7af0dba": {
+      "description": "Count correctly from 1 to 9",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:dbdb9181f1e3106988c0c6b29510d88d",
+      "in_language": "en",
+      "source_context_keys": [
+        "b81cb575c5894ba9a18b55525cea675b"
+      ],
+      "source_page_indexes": [
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "c4885674-8c8f-5206-97d8-0071c8d7a70e"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6"
+      ]
+    },
+    "4c0ff542-8fa2-5311-8c55-bb847b8262c5": {
+      "description": "Identify a triangle",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c7248329505d57fa35daeaac1e34e9b0",
+      "in_language": "en",
+      "source_context_keys": [
+        "1f612d482ad214d25be9d184c2125490"
+      ],
+      "source_page_indexes": [
+        21
+      ],
+      "source_segment_ids": [
+        "832c2d14-b5fd-5910-9b4a-552899136ff0"
+      ],
+      "source_sfi_uuids": [
+        "25f29d93-332b-5c2d-9083-a4476182f04e"
+      ],
+      "source_window_ids": [
+        "25b66b0b-744a-5877-8b49-196081403d9d"
+      ]
+    },
+    "4c5a09e8-edc1-59ce-9346-9683cf4e4dc8": {
+      "description": "Distinguish between squares and rectangles",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:8a4fb491b4a41345d3dea2e923c7b635",
+      "in_language": "en",
+      "source_context_keys": [
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "42518de6-05a9-54b9-94dc-0f5c063a66de"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "4e17a7a6-4a04-5e27-a963-8e782b9d6120": {
+      "description": "Mention the importance of time in daily life activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:e168b5d7e4807af3fc5e81f9a21a818b",
+      "in_language": "en",
+      "source_context_keys": [
+        "48eb0fedcdeb7a3eb7d0c0ae9884c40e"
+      ],
+      "source_page_indexes": [
+        32
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "a71c0aa6-79f4-50f6-b309-d4160b8e5a71"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "4ea42f8e-aa85-57cb-8e79-2a62de22bf42": {
+      "description": "Identify triangular shapes in everyday life",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:97b977a330d01ebd3fbf8132ffad6863",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "0adaa43d-babe-572c-80e4-6bc95189c679"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "526bef30-e0b9-5a56-b88c-9deee675754c": {
+      "description": "Divide a collection of concrete objects into two equal parts",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c98607d4ca75e159bd8e8e567d195d8d",
+      "in_language": "en",
+      "source_context_keys": [
+        "b942158fddaec9fc7f32778e0afb8074"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "1eed2e61-ce25-5262-84fd-74b95e75b5cf"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "527750a3-542c-51e9-a018-a143ec4d1bb8": {
+      "description": "Add two or three whole numbers from 1 to 8 with sum not up to 10",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:fcdc1e35cf040bb58ae45a7803e88380",
+      "in_language": "en",
+      "source_context_keys": [
+        "80a1e68ee8d6c7df6caf9126f38a85ad"
+      ],
+      "source_page_indexes": [
+        3
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "70feec33-b2ab-5672-858b-c355d63c32a1"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "53378a3a-5034-5d66-9155-387d17d0d5a6": {
+      "description": "Identify square shapes in everyday life",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c01ed08930a7a9a569ad00fee98480c8",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "0adaa43d-babe-572c-80e4-6bc95189c679"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "538553e6-3cae-5352-902f-c3d7d6f99c3c": {
+      "description": "Divide shapes into fractions such as \u00bd, 1/3 and \u00bc",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:89d49723d439d5ca14f1ebb54010bf27",
+      "in_language": "en",
+      "source_context_keys": [
+        "519c7d6be57542299343a235e589e0d4"
+      ],
+      "source_page_indexes": [
+        24
+      ],
+      "source_segment_ids": [
+        "91f1b437-ca1e-5e8b-88be-5b2e654f8355"
+      ],
+      "source_sfi_uuids": [
+        "6e9b2c0e-c8ba-50dd-8734-30667ae7cb2a"
+      ],
+      "source_window_ids": [
+        "aa04b6fc-51f4-5a8d-aa57-714dbf8690cf"
+      ]
+    },
+    "546cc0f9-aced-5efc-ae79-be556e03bdb3": {
+      "description": "Recognize different denominations of Nigerian coins",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:71d0118d388e126bed3bf7877911b5fd",
+      "in_language": "en",
+      "source_context_keys": [
+        "d860ec3c167b12b6066efc7f56e4353d"
+      ],
+      "source_page_indexes": [
+        7
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "50e67f19-db22-5e8d-b535-4d1257fa2d18"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c"
+      ]
+    },
+    "548bd3a6-db10-5645-a863-3590fa85bc5c": {
+      "description": "Trace coins onto paper",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:e3b4b3c241aae8d5e86cade3854f8ba6",
+      "in_language": "en",
+      "source_context_keys": [
+        "d860ec3c167b12b6066efc7f56e4353d"
+      ],
+      "source_page_indexes": [
+        7
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "b7bd6b9b-9366-5c85-98ee-4fc91ff855ad"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c"
+      ]
+    },
+    "549e2ca2-6f0a-5c6d-969e-325e0a8b8d77": {
+      "description": "Identify the corners of a cube and a cuboid",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5894721b7369affdcb9e8b5bc29c72e5",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "a9a331d8-d5a5-52da-8bc4-7ecc9a9b0f85"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "559a947e-8a30-5ad8-9c17-9d8e7dc0ec37": {
+      "description": "Mention when certain things are done at school",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:10396254e2e7a9d8393eabfa1a73cffa",
+      "in_language": "en",
+      "source_context_keys": [
+        "63e9fe78e9d6ca058a79842ae975b93b"
+      ],
+      "source_page_indexes": [
+        9
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "19abe70a-30d5-5308-9903-ff69257a29b4"
+      ],
+      "source_window_ids": [
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "56f8ed75-4050-5a54-8208-fb46cd5b95c3": {
+      "description": "Subtract from whole numbers not greater than 9",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:caa7341f5acd93ea0ff3d0ab1d217143",
+      "in_language": "en",
+      "source_context_keys": [
+        "65746a58346d5d7d924a16aeafbf6b0b"
+      ],
+      "source_page_indexes": [
+        4
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "b215ca1f-5bbc-5ef6-a697-008f31783f77"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "5a05e4e8-4ead-56ac-bc80-3d2fae27c216": {
+      "description": "Name a square, a rectangle and a circle",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:9db411ea0de7d6e80aaf33122d265fdc",
+      "in_language": "en",
+      "source_context_keys": [
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "c51a279b-7a3a-5d31-a8be-18e6309c9846"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "5a19a0d2-7316-574e-ab3a-b49e49fb967c": {
+      "description": "Mention three dimensional objects in the home that are cylinders",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d070d5eec1984fb0237a5b41400a452d",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "049001ef-5109-5626-96bb-30caa3097350"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "5b25c44a-d8c9-567e-96a1-ee87c3bc63b0": {
+      "description": "Find missing numbers in a subtraction statement",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:2668ff745e748ef0b94dfd36b430c929",
+      "in_language": "en",
+      "source_context_keys": [
+        "a871f51477397d36371193b638e2ad34"
+      ],
+      "source_page_indexes": [
+        5
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "c3a14115-e371-57cd-992a-cc701e321012"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "5bf020a8-a376-5c2a-9cf7-e41eb0cbca08": {
+      "description": "Mention circular shapes found in homes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:850d6150b0241111444ac4e705657096",
+      "in_language": "en",
+      "source_context_keys": [
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "a61e1ae6-d35a-5c97-8c61-45a0d97040d0"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "5c8974b0-fc72-5c8d-9475-5b71ebcf6000": {
+      "description": "State properties of triangles",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c60e0da256b2693be929da2855a5f322",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "11eb74f6-7682-53cf-aab5-10b124b7ec34"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "5cb2f2b5-ddab-51c0-8474-4a5d50b44aef": {
+      "description": "Subtract 2-digit numbers without exchanging or renaming",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:628a164644b66d9fa926844a40d6fcb4",
+      "in_language": "en",
+      "source_context_keys": [
+        "4c58719d86c54b7e2af709fc6955d535"
+      ],
+      "source_page_indexes": [
+        14
+      ],
+      "source_segment_ids": [
+        "f7e9d36b-c500-522f-8323-588c623cc48e"
+      ],
+      "source_sfi_uuids": [
+        "955cdf45-9fb3-5bc5-8abd-b2be67854f3f"
+      ],
+      "source_window_ids": [
+        "f0dd6823-cf23-535c-9425-f576013418c9"
+      ]
+    },
+    "5d3e160c-b7a2-51ff-8d10-834851056582": {
+      "description": "Count correctly up to 5",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a04c1df77c0bf1c0da845cea51e68216",
+      "in_language": "en",
+      "source_context_keys": [
+        "05ee4bd0a0876f024fc7e13c79624362"
+      ],
+      "source_page_indexes": [
+        0
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "ec0c6a6d-0a48-5aa8-bdfe-72260dd3b559"
+      ],
+      "source_window_ids": [
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "5d81673e-c22f-52fd-9b2c-f2efb526eed9": {
+      "description": "Compare non-standard measures of length, such as arm's length",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c511180a475cf94b9023d94fc6cdcb66",
+      "in_language": "en",
+      "source_context_keys": [
+        "a365c96796628fa2e7bc8324d03ab8c2"
+      ],
+      "source_page_indexes": [
+        32
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "db737afb-35d2-5f1d-85e3-401c65a0b6ac"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "633dbcd9-52a5-5b4b-b963-d131b8aa6ca8": {
+      "description": "Cross check that numeracy in addition is readable",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3bb9bec504d6faf47caf8d0c11a2fb96",
+      "in_language": "en",
+      "source_context_keys": [
+        "80a1e68ee8d6c7df6caf9126f38a85ad"
+      ],
+      "source_page_indexes": [
+        3
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "fca6e588-331f-533f-866a-b8b5b2c79c6b"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "63800178-71a1-5a1b-9e87-4b04b52dfb71": {
+      "description": "Order containers based on their capacities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:044396babaeb4befb5632eabbbeed7e0",
+      "in_language": "en",
+      "source_context_keys": [
+        "d52531135ba720f3e91f60d1ca59af1e"
+      ],
+      "source_page_indexes": [
+        19
+      ],
+      "source_segment_ids": [
+        "93efd68a-9ffa-50cf-af64-bbf83e8f2ab4"
+      ],
+      "source_sfi_uuids": [
+        "ea2d9e9d-95c4-5900-b2ad-fdc6130cbb78"
+      ],
+      "source_window_ids": [
+        "dffd7862-dd50-5402-8eab-7e88429bf743"
+      ]
+    },
+    "64ed4cae-0faf-568c-9939-8c1db11763fa": {
+      "description": "Identify the edges of a cube and cuboid",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:9ed515d204f649b14ef7a9b57f9d3f28",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "ba5bb727-7194-5ad1-a833-314d624b28ae"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "6534899c-68a4-5176-9a4e-b0235c2be0bf": {
+      "description": "Shop with money not greater than \u20a620",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3377f62b9cb9d5837ad594ead999f130",
+      "in_language": "en",
+      "source_context_keys": [
+        "bfc73b7e846c85a5ef7e9ba88ecc1979"
+      ],
+      "source_page_indexes": [
+        17
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "ed9117ec-6381-5a9c-a73c-cc0bf011fa95"
+      ],
+      "source_window_ids": [
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "66323a70-58de-5c0c-893c-cebaf5b37919": {
+      "description": "Multiply three 1-digit numbers taking two at a time",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3717c0c78c2814f6cb350d0505d0a779",
+      "in_language": "en",
+      "source_context_keys": [
+        "8fad02eb5b171663b85718e00e968e49"
+      ],
+      "source_page_indexes": [
+        27
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "72706954-a9c9-5f75-aafa-156437a57108"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "664f76dd-a337-5bc6-961b-afa664d90644": {
+      "description": "Identify the most common feature (the mode) of a pictogram",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:ffea1208746af2925e84d0ceec27b562",
+      "in_language": "en",
+      "source_context_keys": [
+        "2132ee3c9207d2680f4495230e4c87ba"
+      ],
+      "source_page_indexes": [
+        36
+      ],
+      "source_segment_ids": [
+        "b81d30f8-4de7-58a4-b0fb-2d3a585a28f8"
+      ],
+      "source_sfi_uuids": [
+        "2d29c961-d8fa-537a-b976-73d3dd231ba8"
+      ],
+      "source_window_ids": [
+        "07791ad4-ed69-5098-90fb-7641efa046ca"
+      ]
+    },
+    "6684402b-f3e7-5708-a7c0-983889094374": {
+      "description": "Identify the presence of straight lines in real life situations",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:afb058b32a140d1272d83afc527460e5",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "091695f9-e18c-5196-8746-9ce124316c8e"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "66d57067-de67-5ca2-bbd1-5d468227430e": {
+      "description": "Draw rectangles",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a829f18e1e89f509b1091c1304126e07",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "edaad706-a372-5277-b288-118c3ed53b11"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "67407634-703b-5dea-9359-33b16798f873": {
+      "description": "Identify \u00bc using concrete objects and shapes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:56ab6acb40d8d4ed17bee9bd153187fa",
+      "in_language": "en",
+      "source_context_keys": [
+        "e590efdd1d00ff39a0c7b6c629699052"
+      ],
+      "source_page_indexes": [
+        2
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "b501e2f2-7a45-5c4f-bb17-baa6f1cfbef6"
+      ],
+      "source_window_ids": [
+        "03bcf89e-2df0-5574-9f06-2df4b74341af"
+      ]
+    },
+    "67ae353c-4cc0-58ec-802d-6a973c805caa": {
+      "description": "Solve quantitative aptitude problems related to open sentences",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:95268115479bb5680624de89aa956d1d",
+      "in_language": "en",
+      "source_context_keys": [
+        "9a357d14aea07ae33eda5d6d2da2501f",
+        "b40873ae310908d017c8e62f0a89eb0e"
+      ],
+      "source_page_indexes": [
+        16,
+        29
+      ],
+      "source_segment_ids": [
+        "339ecc99-b35a-5f11-9bbf-9270aae23855",
+        "a771aa96-5c34-5894-a206-4e406f9750c2"
+      ],
+      "source_sfi_uuids": [
+        "2f7e8aa2-4696-5a94-8226-92503fcdb2a2",
+        "956407d4-5165-5c5c-958c-f5c0d4ab8d57"
+      ],
+      "source_window_ids": [
+        "3a5eff4c-50e2-5b94-8eec-a3b90cf81d2f",
+        "b9318741-0ed3-5039-881f-d1f5f5fa034f"
+      ]
+    },
+    "699f79da-05fd-5953-aa86-69e4cf598265": {
+      "description": "Use metres as a standard measuring unit for length",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:dbf95e2772826a279418c0488d051cbd",
+      "in_language": "en",
+      "source_context_keys": [
+        "309fcfcfd7357953f07fbc7cd173dc2c",
+        "a365c96796628fa2e7bc8324d03ab8c2"
+      ],
+      "source_page_indexes": [
+        17,
+        32
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b",
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "1e15584c-97cd-5415-98a4-b6e135434358",
+        "cfa12ca8-cf0a-5e29-957a-1aff5ef4bf43"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27",
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "6a4841fd-6937-5097-b22b-65540dd7e5d0": {
+      "description": "Carry out correct division in everyday activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:96eceeb3ab57a8876e7596cde563189a",
+      "in_language": "en",
+      "source_context_keys": [
+        "1474049a09d4a5f522bfc2cee68b66d9"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "cdc37d08-e528-5543-9389-e79f337fda9a"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "6b94262a-9bb2-57a1-9471-f90669409362": {
+      "description": "Find perimeters of regular figures in metres and centimetres by measurement",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5505c8e979d1f2e8c8cec5ae727488b1",
+      "in_language": "en",
+      "source_context_keys": [
+        "500d4c8518ab2e9a24018ad88df288d9"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "ae391f1c-8bf2-513d-9f73-e9d6e3861e0f"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "6c1822da-8073-50db-8c36-8e0766547ce4": {
+      "description": "Draw circles",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:05a2511c7285e527859d5ab67db7b388",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "edaad706-a372-5277-b288-118c3ed53b11"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "6d0181c8-34a4-57cc-9001-c7e66d058e20": {
+      "description": "Measure a liquid such as water using a graduated cylinder up to any stated number of litres",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:6034bd97363f9ba12c76b99fe4982be7",
+      "in_language": "en",
+      "source_context_keys": [
+        "692b94db7b4714bde1ea8d33152dbdd7"
+      ],
+      "source_page_indexes": [
+        34
+      ],
+      "source_segment_ids": [
+        "de526a93-c693-5a9e-9922-7dc016371313"
+      ],
+      "source_sfi_uuids": [
+        "4d918d49-26ee-5929-9c92-45b115596731"
+      ],
+      "source_window_ids": [
+        "a6d0f373-40e1-5aa0-831c-50bc926256f0"
+      ]
+    },
+    "6e1fad85-4a6e-5918-9442-1fe30f7c8936": {
+      "description": "Name cuboids, cubes, cylinders and spheres",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:7c09fd188c2837f35e147ac930175c4b",
+      "in_language": "en",
+      "source_context_keys": [
+        "e760897de1349447dd71d5b030fb23bd"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "a131f4ab-dc4e-5381-bd1c-17ae789d10d5"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "6e675206-59bc-50ce-b6b1-1ad548e9f71b": {
+      "description": "Crosscheck accuracy in subtraction",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:6c07f342d9abe980dbd217dc2ef39bed",
+      "in_language": "en",
+      "source_context_keys": [
+        "65746a58346d5d7d924a16aeafbf6b0b"
+      ],
+      "source_page_indexes": [
+        4
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "d1bfdfe0-e8f6-5a06-b6a6-c08ef7206957"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "6eaace05-8bf1-5c7c-9d06-865012265ae5": {
+      "description": "Identify a square",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:40691d1ca634755509768ce99f49c5f3",
+      "in_language": "en",
+      "source_context_keys": [
+        "1f612d482ad214d25be9d184c2125490",
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10,
+        21
+      ],
+      "source_segment_ids": [
+        "832c2d14-b5fd-5910-9b4a-552899136ff0",
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "0a31b8f7-ec0b-5b70-8424-a7611b9aece8",
+        "25f29d93-332b-5c2d-9083-a4476182f04e"
+      ],
+      "source_window_ids": [
+        "25b66b0b-744a-5877-8b49-196081403d9d",
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "6ec8ab80-901e-5345-8b56-a47d91e25526": {
+      "description": "Identify the numbers 1-99",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:84ddb262844f858c6dd5ee659350eb4a",
+      "in_language": "en",
+      "source_context_keys": [
+        "e2c080995780e1320e4f4f90a5165484"
+      ],
+      "source_page_indexes": [
+        2
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "2bb1227e-9cd9-527c-a988-1f3aa4d741a9"
+      ],
+      "source_window_ids": [
+        "03bcf89e-2df0-5574-9f06-2df4b74341af"
+      ]
+    },
+    "6f6fa5dc-6582-5e30-801a-2e2d77a66613": {
+      "description": "Identify the differences in arm's length and other body parts used for measurement",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:eb3ca962a6485e8cc6e1db99f4f09a35",
+      "in_language": "en",
+      "source_context_keys": [
+        "309fcfcfd7357953f07fbc7cd173dc2c"
+      ],
+      "source_page_indexes": [
+        17
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "6b7e6dbf-16c7-566c-a079-da811ac9c697"
+      ],
+      "source_window_ids": [
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "6fe2257a-e673-5e38-9b70-3c7ee161ee70": {
+      "description": "Give dates in day and month",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:7bff1da299a99d52d2f2a810c44b963a",
+      "in_language": "en",
+      "source_context_keys": [
+        "48eb0fedcdeb7a3eb7d0c0ae9884c40e"
+      ],
+      "source_page_indexes": [
+        32
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "38fae15d-1546-5684-803e-6f8e21276267"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "70b1a4e8-0e6d-5aa8-92bd-3c912a97474d": {
+      "description": "Subtract from whole numbers not greater than 18",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:6b9d834a731af2eb781c6497558367f1",
+      "in_language": "en",
+      "source_context_keys": [
+        "65746a58346d5d7d924a16aeafbf6b0b"
+      ],
+      "source_page_indexes": [
+        4
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "1e0ba891-4fd4-5ddb-b7da-c75b91c0a185"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "72a4270b-53ba-539f-ad20-4bcfa8bf5311": {
+      "description": "Add 3-digit numbers without exchanging or renaming",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f2c37bc4ade9eb1a55237909dac5d6ee",
+      "in_language": "en",
+      "source_context_keys": [
+        "bba858fd55b1fd7845d7f97215ee42a9"
+      ],
+      "source_page_indexes": [
+        13
+      ],
+      "source_segment_ids": [
+        "22019fbf-f8e9-5be7-bdec-9c75309687e2"
+      ],
+      "source_sfi_uuids": [
+        "86af3382-8511-5ea1-90fd-9dc08730eaae"
+      ],
+      "source_window_ids": [
+        "cd2911b9-46bb-5c39-b916-30becf9c88b8"
+      ]
+    },
+    "778d5fc3-ef73-5a4f-a019-3d5ae6bf2631": {
+      "description": "Demonstrate knowledge of the idea of time",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d6855e78d31576d24194737bf00f2efc",
+      "in_language": "en",
+      "source_context_keys": [
+        "63e9fe78e9d6ca058a79842ae975b93b"
+      ],
+      "source_page_indexes": [
+        9
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "2645b6cc-7017-59c9-a10b-d3551b6d3719"
+      ],
+      "source_window_ids": [
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "78fe4e43-fe78-5fcb-a8df-34922b18ef9f": {
+      "description": "Solve simple related open sentences",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a1c856911644d9a3e0c58cd238181d6d",
+      "in_language": "en",
+      "source_context_keys": [
+        "b509e01d1d6e9c2864d283a472b65cdd"
+      ],
+      "source_page_indexes": [
+        6
+      ],
+      "source_segment_ids": [
+        "a7e964dd-ad07-5b00-b923-7aeb7cb209cf"
+      ],
+      "source_sfi_uuids": [
+        "d4a583ea-3be5-507b-a4c2-0ec73d57b490"
+      ],
+      "source_window_ids": [
+        "5f9f2039-96d6-5f6f-b590-763cb7c8a09d"
+      ]
+    },
+    "7972144e-3979-52b1-8cef-1dccfbe34d46": {
+      "description": "Name the days of the week",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:99ed41dbaae1f4f60637649c6e87ae8f",
+      "in_language": "en",
+      "source_context_keys": [
+        "016eec50f6deec21604805070d24f281"
+      ],
+      "source_page_indexes": [
+        18
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "006f63e9-6817-5de0-a1e1-d6dc38205f39"
+      ],
+      "source_window_ids": [
+        "bc841f41-1752-5c5c-bd6c-018dbe6978a5"
+      ]
+    },
+    "7ae2fd3c-84c0-5629-8ae0-e2bbca90e8fa": {
+      "description": "Identify the need for accuracy in measuring liquids such as kerosine, water and petrol",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:eab93eeeece87462665c7a5cfc4e5ef0",
+      "in_language": "en",
+      "source_context_keys": [
+        "692b94db7b4714bde1ea8d33152dbdd7"
+      ],
+      "source_page_indexes": [
+        34
+      ],
+      "source_segment_ids": [
+        "de526a93-c693-5a9e-9922-7dc016371313"
+      ],
+      "source_sfi_uuids": [
+        "940c903a-1927-5945-afd2-af59a85ea0d4"
+      ],
+      "source_window_ids": [
+        "a6d0f373-40e1-5aa0-831c-50bc926256f0"
+      ]
+    },
+    "7bd09b6d-c875-52fb-ac45-48decb9fc066": {
+      "description": "Order whole numbers",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:0a750a32ba1daf0caa61ef78ed611ae9",
+      "in_language": "en",
+      "source_context_keys": [
+        "2a04379f533c84b2b4e54bc8680abacf"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "27924a6b-f2ed-5f47-b2f7-b71d68191959"
+      ],
+      "source_sfi_uuids": [
+        "3ba970a0-4308-592b-b4ad-8ae7d39872c8"
+      ],
+      "source_window_ids": [
+        "e20b0134-30d1-5eb6-a69e-7b36cf84dfaf"
+      ]
+    },
+    "7e810307-ae9b-554a-a8c2-246a4595c5db": {
+      "description": "Express whole numbers not exceeding 48 as products of factors",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:12bcf238b4d69f27cdafd900a6bb7a90",
+      "in_language": "en",
+      "source_context_keys": [
+        "1474049a09d4a5f522bfc2cee68b66d9"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "fa55352b-2f7d-54f0-9d49-3da4cad3cfb2"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "7f80bd42-8dcd-5ddb-b8cd-a851d8ef087f": {
+      "description": "Write fractions which have the same value as a given fraction",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:7f68e63edf64ae48a1be6c3ac23d32a6",
+      "in_language": "en",
+      "source_context_keys": [
+        "519c7d6be57542299343a235e589e0d4"
+      ],
+      "source_page_indexes": [
+        24
+      ],
+      "source_segment_ids": [
+        "91f1b437-ca1e-5e8b-88be-5b2e654f8355"
+      ],
+      "source_sfi_uuids": [
+        "356541a3-2224-5733-8e92-d0493a9b25de"
+      ],
+      "source_window_ids": [
+        "aa04b6fc-51f4-5a8d-aa57-714dbf8690cf"
+      ]
+    },
+    "81879441-0683-51c3-92c6-13a0954d0869": {
+      "description": "Recognise the presence of mathematics in everyday life through shapes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:b61937a999e47e22579a891199f50af8",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "0adaa43d-babe-572c-80e4-6bc95189c679"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "84a3dd76-0489-5daa-9cda-731e4b1699f1": {
+      "description": "Identify lines of symmetry in everyday life",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d53acc53eaad07cd9f3aa58847e215c4",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "bc453af1-f269-5a44-aa6f-3ceb04076aa3"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "84f9f663-a950-5985-a9e8-f837e3b65480": {
+      "description": "Mention the need for ordering",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3a1c31f1400763fc887fb0f95aab0298",
+      "in_language": "en",
+      "source_context_keys": [
+        "2a04379f533c84b2b4e54bc8680abacf"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "27924a6b-f2ed-5f47-b2f7-b71d68191959"
+      ],
+      "source_sfi_uuids": [
+        "5cb7cd27-cc43-590b-9a36-4d1de8cf9616"
+      ],
+      "source_window_ids": [
+        "e20b0134-30d1-5eb6-a69e-7b36cf84dfaf"
+      ]
+    },
+    "8591c39d-bc24-5cba-81aa-fb0d6d8e4bb1": {
+      "description": "Add fractions with the same denominator",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:4c39137cc36d06d4ca70e1804e6d1a61",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1939bf9bcac7f2a0fd7073017288c61"
+      ],
+      "source_page_indexes": [
+        25
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "b67e6fbe-22d8-51bf-a076-5e814e59d32d"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "86c35b08-5e5b-56c5-a6fa-1c177018bf7e": {
+      "description": "Measure the length of a room, table, building and straight-edged materials",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:27bdcc9526ad9b2d8e624d19f97b5707",
+      "in_language": "en",
+      "source_context_keys": [
+        "500d4c8518ab2e9a24018ad88df288d9"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "037c5471-4937-511a-9399-12584a9e2054"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "871d6dc4-092a-5849-b3c7-f413a865049d": {
+      "description": "Mention the need for counting",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:b45f53ede8b3851c90149f63d5ac7bcc",
+      "in_language": "en",
+      "source_context_keys": [
+        "2a04379f533c84b2b4e54bc8680abacf"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "27924a6b-f2ed-5f47-b2f7-b71d68191959"
+      ],
+      "source_sfi_uuids": [
+        "5cb7cd27-cc43-590b-9a36-4d1de8cf9616"
+      ],
+      "source_window_ids": [
+        "e20b0134-30d1-5eb6-a69e-7b36cf84dfaf"
+      ]
+    },
+    "88fc3e80-8e22-5fe2-99c0-502fed477856": {
+      "description": "Count the flat faces of a cube and a cuboid",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d4fc12e4b0002d27fedae21a75de5006",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "c5ac504d-41da-5545-8963-8a54106ecd5b"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "894a3099-42b6-59f4-aded-cb477d59897e": {
+      "description": "Sort number of objects in a group or collection",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:777d5f8a02bdc665135cfa3f8cb6bd02",
+      "in_language": "en",
+      "source_context_keys": [
+        "05ee4bd0a0876f024fc7e13c79624362",
+        "b81cb575c5894ba9a18b55525cea675b"
+      ],
+      "source_page_indexes": [
+        0,
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "b193d5b5-5a40-585d-9e88-5407b9f7f80b",
+        "eb4805bb-c9ec-5ed3-8812-d6b0a16bff57"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6",
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "894a4ca7-04bf-56e3-b52c-da9a27f83ea4": {
+      "description": "Name objects that could be used for measuring capacity such as cups, empty containers and buckets",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:866bf1db7cfcacde4786ef37252704fb",
+      "in_language": "en",
+      "source_context_keys": [
+        "d52531135ba720f3e91f60d1ca59af1e"
+      ],
+      "source_page_indexes": [
+        19
+      ],
+      "source_segment_ids": [
+        "93efd68a-9ffa-50cf-af64-bbf83e8f2ab4"
+      ],
+      "source_sfi_uuids": [
+        "38975fa8-1e6d-5fd6-ab3e-cc1aed508a03"
+      ],
+      "source_window_ids": [
+        "dffd7862-dd50-5402-8eab-7e88429bf743"
+      ]
+    },
+    "8bd20684-ab87-5bb7-9444-c1bf4d423fe3": {
+      "description": "Identify the number of objects in a group or collection",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5fcf5063746bf9304df334b48de798bd",
+      "in_language": "en",
+      "source_context_keys": [
+        "05ee4bd0a0876f024fc7e13c79624362",
+        "b81cb575c5894ba9a18b55525cea675b"
+      ],
+      "source_page_indexes": [
+        0,
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "04980fe0-d03a-58b2-ba6f-5187ca5061a5",
+        "61dea106-3a86-5752-9766-791ac3a1d119"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6",
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "8c31d3d2-3c2d-5f8c-a42a-9500ba3a0502": {
+      "description": "Measure weights of objects in grams and kilograms",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5d6194da6f7e8f096168494852c6fd3d",
+      "in_language": "en",
+      "source_context_keys": [
+        "6668069af81c15f68c4a22a839417106"
+      ],
+      "source_page_indexes": [
+        33
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "d67f17cd-b23f-5580-b722-925be8a6f057"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "8ca39ab8-53d8-5c0e-adac-e7bb7d23cef1": {
+      "description": "Identify shapes with line(s) of symmetry",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:474a75214709326956823d9aaec7b8b0",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "b4151e27-503d-5d47-b41e-dda33b5f0033"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "8cc21ca2-4b79-5fe1-a3b1-b4c8c615bfb6": {
+      "description": "Read correctly numbers from 1 to 9",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:68f13a0c501c0d3f5b16e586adb51c55",
+      "in_language": "en",
+      "source_context_keys": [
+        "b81cb575c5894ba9a18b55525cea675b"
+      ],
+      "source_page_indexes": [
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "c4885674-8c8f-5206-97d8-0071c8d7a70e"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6"
+      ]
+    },
+    "93169d02-6e3d-533d-914d-9e504c6b509a": {
+      "description": "Recognize all types of Nigerian bank notes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:8c6d7cd78ac9c5c904e8d288c9b9038e",
+      "in_language": "en",
+      "source_context_keys": [
+        "bfc73b7e846c85a5ef7e9ba88ecc1979"
+      ],
+      "source_page_indexes": [
+        17
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "8a2ca00b-e002-54d3-8862-d0a919165898"
+      ],
+      "source_window_ids": [
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "946adb26-b4d1-5688-afdc-7a06c53ce6d4": {
+      "description": "Find a missing factor in a given number sentence",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:9ab1aa5145b005a4e4debd938a02ca5a",
+      "in_language": "en",
+      "source_context_keys": [
+        "1474049a09d4a5f522bfc2cee68b66d9"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "b37cab48-c353-55f4-9117-f0a18cebf9b5"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "956d1ec6-cfea-5858-8bd8-65fe42c6deba": {
+      "description": "Multiply a 2-digit number by a 1-digit number",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:454cd76a5d753dc4050807d380cc123c",
+      "in_language": "en",
+      "source_context_keys": [
+        "8fad02eb5b171663b85718e00e968e49"
+      ],
+      "source_page_indexes": [
+        27
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "93602d09-a9f3-5544-95fc-c542f09a379d"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "95feaaf0-3b0d-574d-bb7f-f17a603107a3": {
+      "description": "Read correctly the numbers 1-99",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:aa38e00c19c1f4d1dfd9149843bb79ee",
+      "in_language": "en",
+      "source_context_keys": [
+        "e2c080995780e1320e4f4f90a5165484"
+      ],
+      "source_page_indexes": [
+        2
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "2bb1227e-9cd9-527c-a988-1f3aa4d741a9"
+      ],
+      "source_window_ids": [
+        "03bcf89e-2df0-5574-9f06-2df4b74341af"
+      ]
+    },
+    "975cb618-6442-509a-b4c2-2de3a6ce309b": {
+      "description": "Order similar objects according to their lengths",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3980844d10a0bd0f53595b48a91aeebc",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a6a2e950f0cda076173e9af636fbf5c"
+      ],
+      "source_page_indexes": [
+        8
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "33dbb4e0-4afc-5552-a8f5-af41b0630118"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c",
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "99032535-5d26-52d2-852d-ff6fa71a6eb7": {
+      "description": "Subtract fractions with the same denominator",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:492df571968182f94acd8987ff3aa051",
+      "in_language": "en",
+      "source_context_keys": [
+        "f958d4c79bc9e2ea5b2f13da3d73b91a"
+      ],
+      "source_page_indexes": [
+        26
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "39d999f0-de42-5f33-b736-300f0b0ff75c"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "9dcd3cea-8f7c-515d-94a5-4832c14999b4": {
+      "description": "Identify cuboids, cubes, cylinders and spheres",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:daa5ecae023a479b68d9e29eeba0cc19",
+      "in_language": "en",
+      "source_context_keys": [
+        "e760897de1349447dd71d5b030fb23bd"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "a131f4ab-dc4e-5381-bd1c-17ae789d10d5"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "9fc064be-6cf3-542d-b4c9-7f4f8227c861": {
+      "description": "Add 3-digit numbers",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f2361c981a2601c6e761d37b5673a2f5",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1939bf9bcac7f2a0fd7073017288c61"
+      ],
+      "source_page_indexes": [
+        25
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "573ebc3d-6276-597f-b6c0-179a9007361c"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "a2166011-412a-507b-86ea-83085d1c44e1": {
+      "description": "Make meaningful comparison of weight of objects like rocks and minerals",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:fcf9465ce7b99f2fbd2b1d41e3ae851d",
+      "in_language": "en",
+      "source_context_keys": [
+        "6668069af81c15f68c4a22a839417106"
+      ],
+      "source_page_indexes": [
+        33
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "374cc972-2e90-5b4e-9c58-0a14eac46dd3"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "a30be7ba-8886-5192-8d00-aa0681a26019": {
+      "description": "Compare the weights of common objects using the terms light and heavy",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:dab2c6c0343b86dfaaa93a14c2f164f2",
+      "in_language": "en",
+      "source_context_keys": [
+        "1127a78d4d68455a96475886bdfd285c"
+      ],
+      "source_page_indexes": [
+        9
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "7a06e376-aa1e-563e-afdb-ad9e6f0648ae"
+      ],
+      "source_window_ids": [
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "a4084d9a-b4d6-5191-b1e6-f3cbb05d03b3": {
+      "description": "Collect data on their heights",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:49ffad1b9535ae8f2c950bfb04709cac",
+      "in_language": "en",
+      "source_context_keys": [
+        "685f695af5800b64e9748575beb4f07a"
+      ],
+      "source_page_indexes": [
+        11
+      ],
+      "source_segment_ids": [
+        "c0988f13-51e9-56a4-a985-a03fcef7a8dc"
+      ],
+      "source_sfi_uuids": [
+        "b37deaad-db4e-5e8d-ad00-90991d14d575"
+      ],
+      "source_window_ids": [
+        "a8abcf94-a8e6-5e49-8abb-650a43690436"
+      ]
+    },
+    "a5bba558-82ec-5e66-9016-f5811be5da9a": {
+      "description": "Count numbers correctly from 1 to 200",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:6c967f4533f150169873dc658b30968c",
+      "in_language": "en",
+      "source_context_keys": [
+        "425d9fe37d63cd055e530cf014af476f"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "a100bb99-ed36-586a-a4cf-2bd3d0890b72"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "a61364d9-d6ba-51ea-8af1-54c55bc1ec2d": {
+      "description": "Arrange the days of the week in order",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:34be08323baa11844bfb6cad7b2f28df",
+      "in_language": "en",
+      "source_context_keys": [
+        "016eec50f6deec21604805070d24f281"
+      ],
+      "source_page_indexes": [
+        18
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "006f63e9-6817-5de0-a1e1-d6dc38205f39"
+      ],
+      "source_window_ids": [
+        "bc841f41-1752-5c5c-bd6c-018dbe6978a5"
+      ]
+    },
+    "aa6f6dcb-0673-5841-867a-ad8a0a27feeb": {
+      "description": "Arrange data in groups such as group of boys and group of girls",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f143df3b1b1d04e5df9407eb45efe3cd",
+      "in_language": "en",
+      "source_context_keys": [
+        "dae8af7e47de7a5bc6e218e3f6f3a167"
+      ],
+      "source_page_indexes": [
+        22
+      ],
+      "source_segment_ids": [
+        "e2a1f154-b90e-5b7b-92c7-b80a67184ee2"
+      ],
+      "source_sfi_uuids": [
+        "73c4c0c7-168f-59b5-8142-01b5fa0cdde3"
+      ],
+      "source_window_ids": [
+        "b35c8eff-b805-5947-836e-16a0808f760b"
+      ]
+    },
+    "ab9cc644-169c-5cc5-8ff4-309688ad55ad": {
+      "description": "State the place value of a digit in a 3-digit number",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:62f6f20207ae7d137d37e9c6b3b22d35",
+      "in_language": "en",
+      "source_context_keys": [
+        "2a04379f533c84b2b4e54bc8680abacf"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "27924a6b-f2ed-5f47-b2f7-b71d68191959"
+      ],
+      "source_sfi_uuids": [
+        "c46d38ef-321b-50bf-a571-c29e06b9f4eb"
+      ],
+      "source_window_ids": [
+        "e20b0134-30d1-5eb6-a69e-7b36cf84dfaf"
+      ]
+    },
+    "ae9e6b9f-7118-5efa-b24a-26f993bb3b33": {
+      "description": "Compare areas of surfaces",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:306086d7e1525327eb6b16bdd27e3ac8",
+      "in_language": "en",
+      "source_context_keys": [
+        "0793509b9f4b2f78afd498b414e89621"
+      ],
+      "source_page_indexes": [
+        19
+      ],
+      "source_segment_ids": [
+        "93efd68a-9ffa-50cf-af64-bbf83e8f2ab4"
+      ],
+      "source_sfi_uuids": [
+        "2457c3d7-91b1-5821-a3c5-67357c721738"
+      ],
+      "source_window_ids": [
+        "dffd7862-dd50-5402-8eab-7e88429bf743"
+      ]
+    },
+    "b3aa63ee-57ef-5d75-badf-5ef39be2366f": {
+      "description": "Arrange the numbers 6-9 in order of their magnitudes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1eed69adca5c1f8369a6672a09ce0ce8",
+      "in_language": "en",
+      "source_context_keys": [
+        "b81cb575c5894ba9a18b55525cea675b"
+      ],
+      "source_page_indexes": [
+        1
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "0ee7c3ae-68a6-5733-8ae2-670ef25f6cfc"
+      ],
+      "source_window_ids": [
+        "7d836887-ea61-5a0d-b338-8d4b78fcd6d6"
+      ]
+    },
+    "b68583fb-0ee1-550a-9f38-6a42969a3b32": {
+      "description": "Write correctly the numbers 1-99",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:22ae0f88472ee911812dd05f2da4c746",
+      "in_language": "en",
+      "source_context_keys": [
+        "e2c080995780e1320e4f4f90a5165484"
+      ],
+      "source_page_indexes": [
+        2
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "50c118dd-e758-50d6-b08b-ec19a4f0e033"
+      ],
+      "source_window_ids": [
+        "03bcf89e-2df0-5574-9f06-2df4b74341af"
+      ]
+    },
+    "b6fdc5b8-c0e0-5d16-9eab-5d23e6eb6feb": {
+      "description": "Identify numbers up to 200",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c3d22d424726300a68d3f21c5049a207",
+      "in_language": "en",
+      "source_context_keys": [
+        "425d9fe37d63cd055e530cf014af476f"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "7f80b92c-0cd7-588c-a7e3-1508222a199c",
+        "c5aecc45-3444-5469-b323-2b8f97ff417b"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "b7db206f-587b-515f-a50c-f9fc42240122": {
+      "description": "Add 2-digit numbers with exchanging or renaming",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:69ac972d0c9ca6db870ad60d7c32e546",
+      "in_language": "en",
+      "source_context_keys": [
+        "bba858fd55b1fd7845d7f97215ee42a9",
+        "d1939bf9bcac7f2a0fd7073017288c61"
+      ],
+      "source_page_indexes": [
+        13,
+        25
+      ],
+      "source_segment_ids": [
+        "22019fbf-f8e9-5be7-bdec-9c75309687e2",
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "d239fab2-57cc-57d5-9a41-0fa7ba46268d",
+        "e139d0b0-84c1-5ba3-9130-6219e9a87b33"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d",
+        "cd2911b9-46bb-5c39-b916-30becf9c88b8"
+      ]
+    },
+    "b95a8f68-8d2d-501e-aacd-3d7f4e483ab8": {
+      "description": "Enumerate the uses of money",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1c222cb263d15ee29e1a7e4b00ad5c88",
+      "in_language": "en",
+      "source_context_keys": [
+        "bfc73b7e846c85a5ef7e9ba88ecc1979"
+      ],
+      "source_page_indexes": [
+        17
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "5be57d2c-863d-5a74-8389-5aa7efc10739"
+      ],
+      "source_window_ids": [
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "b97b3dea-eb13-5ea5-9f8c-933025fdc232": {
+      "description": "Shop effectively with money not greater than \u20a620 using the idea of addition",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:678ceb1df9f2958166a8e6a56c886334",
+      "in_language": "en",
+      "source_context_keys": [
+        "caa71e5dabe414d8739c52d5cca64a83"
+      ],
+      "source_page_indexes": [
+        30
+      ],
+      "source_segment_ids": [
+        "c31be424-c4ba-5f63-8fca-2c896cf440b1"
+      ],
+      "source_sfi_uuids": [
+        "27231d9a-c146-5080-acff-1ec180587507"
+      ],
+      "source_window_ids": [
+        "66e93c2f-45dd-5826-a8eb-4c0030dd78a5"
+      ]
+    },
+    "ba2f8a1e-429f-51fe-bce0-f6eab841a369": {
+      "description": "Mention the need for correct addition of numbers and fractions in everyday activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d1b80e939ea44d84908a158b603471f0",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1939bf9bcac7f2a0fd7073017288c61"
+      ],
+      "source_page_indexes": [
+        25
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "382841a4-98d2-5574-b044-3387eacd1726"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "ba63685b-804a-5497-b8db-63d854924337": {
+      "description": "State the fraction of a group of concrete objects",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:99917823f9f4166d221c4e0102ea805c",
+      "in_language": "en",
+      "source_context_keys": [
+        "519c7d6be57542299343a235e589e0d4"
+      ],
+      "source_page_indexes": [
+        24
+      ],
+      "source_segment_ids": [
+        "91f1b437-ca1e-5e8b-88be-5b2e654f8355"
+      ],
+      "source_sfi_uuids": [
+        "9465670a-c2bd-5b4d-a9f3-3e9e46705439"
+      ],
+      "source_window_ids": [
+        "aa04b6fc-51f4-5a8d-aa57-714dbf8690cf"
+      ]
+    },
+    "ba7065fa-36d3-514c-8610-ebfacfd396c4": {
+      "description": "Identify \u00bd using concrete objects and shapes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:473f20038c6544cba1ae3f854aa69ee1",
+      "in_language": "en",
+      "source_context_keys": [
+        "e590efdd1d00ff39a0c7b6c629699052"
+      ],
+      "source_page_indexes": [
+        2
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "b501e2f2-7a45-5c4f-bb17-baa6f1cfbef6"
+      ],
+      "source_window_ids": [
+        "03bcf89e-2df0-5574-9f06-2df4b74341af"
+      ]
+    },
+    "ba9c4fe6-abd6-5bfe-9dbf-a0ef500ed058": {
+      "description": "Read the number 0",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:de4f7d188856a850dc4779d020dd6479",
+      "in_language": "en",
+      "source_context_keys": [
+        "fd32dd8be150a83b9e0b99d1d819bcea"
+      ],
+      "source_page_indexes": [
+        0
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "fa7558f2-471a-5c93-933a-20ba831b659b"
+      ],
+      "source_window_ids": [
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "bb2eea01-9fc0-5db0-a174-541a113e8153": {
+      "description": "Calculate change obtainable from 10k or less",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:eb5793607599ab23fbed0baadc052358",
+      "in_language": "en",
+      "source_context_keys": [
+        "d860ec3c167b12b6066efc7f56e4353d"
+      ],
+      "source_page_indexes": [
+        7
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "2f4bfcbc-d5a6-500a-b11b-b77fa83a54a4"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c"
+      ]
+    },
+    "bbd25bb3-3472-57f1-8b9c-9ffa394efc1e": {
+      "description": "Add two or three numbers from 0 to 9 with sum not greater than 18",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f3cf4dc15e85f474b786e8bcb1da5ebe",
+      "in_language": "en",
+      "source_context_keys": [
+        "80a1e68ee8d6c7df6caf9126f38a85ad"
+      ],
+      "source_page_indexes": [
+        3
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "b05f3a9a-b03b-55b0-813c-d20599668878"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "bbe82eeb-4077-5415-b4ad-7d805c156f4b": {
+      "description": "Identify the differences in the non-standard measures",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:45d9dc9bdb5570f62e2b23394447097f",
+      "in_language": "en",
+      "source_context_keys": [
+        "a365c96796628fa2e7bc8324d03ab8c2"
+      ],
+      "source_page_indexes": [
+        32
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "edea3872-c296-5825-a38d-95e6bb138343"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "c0f60518-e906-5e00-ad4e-00b15c205f7c": {
+      "description": "Mention three dimensional objects in the home that are spheres",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d1d49d4dcecf93083e04e734bdd79481",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "049001ef-5109-5626-96bb-30caa3097350"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "c0ff442b-c47e-5e78-ab7c-40438d42faac": {
+      "description": "Add two whole numbers from 1 to 3 with sum less than 5",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:4e0d375e81cd857e887c60ca1d07da13",
+      "in_language": "en",
+      "source_context_keys": [
+        "80a1e68ee8d6c7df6caf9126f38a85ad"
+      ],
+      "source_page_indexes": [
+        3
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "8523c2b1-b5a6-5a6e-8189-a12c6931f6f7"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "c335c954-64f6-5d83-bb23-5479eb938c06": {
+      "description": "Add coins to obtain sums not exceeding 25k",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:0eba8aa64cf8e0370652b48016cdc6d1",
+      "in_language": "en",
+      "source_context_keys": [
+        "d860ec3c167b12b6066efc7f56e4353d"
+      ],
+      "source_page_indexes": [
+        7
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "5ce7ac26-7558-5280-9773-220773a70434"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c"
+      ]
+    },
+    "c6ff6aba-f187-52eb-8970-ccf6c7be46b4": {
+      "description": "State properties of rectangles",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:bb434f2f95936f14b08bba8cb8e5125c",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "11eb74f6-7682-53cf-aab5-10b124b7ec34"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "c8b405a9-eb5c-51e6-8c3e-41d3525a79e4": {
+      "description": "Identify objects at home that are cubes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:68c9cbdcd715ee0db0740d1be12aa127",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "349372d1-f8c3-5aa9-b56e-ccae138baaf4"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "c8f8d9a9-16b6-50bd-9cfa-924f210d6f08": {
+      "description": "Distinguish between cuboids and cubes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1b9153176c8cfb09a1468d2c6547ef1d",
+      "in_language": "en",
+      "source_context_keys": [
+        "e760897de1349447dd71d5b030fb23bd"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "5493868a-f037-5ee4-a2cc-6ed46f9675cb"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "c98b0c8d-e4f4-5f1d-b6df-f0ca2f9aa92e": {
+      "description": "Mention the need for correct subtraction of fractions in everyday activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:fc855c2b741e60366ecdcb3dd82d5b39",
+      "in_language": "en",
+      "source_context_keys": [
+        "f958d4c79bc9e2ea5b2f13da3d73b91a"
+      ],
+      "source_page_indexes": [
+        26
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "c0ae5d53-679c-5624-b61d-e124df35ebfe"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "ca8c0c84-06ca-5e96-8280-a221886f4310": {
+      "description": "Read information in pictograms using vertical and horizontal arrangements",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:ee44a23f9c0977500d10bf8d367ed23c",
+      "in_language": "en",
+      "source_context_keys": [
+        "2132ee3c9207d2680f4495230e4c87ba"
+      ],
+      "source_page_indexes": [
+        36
+      ],
+      "source_segment_ids": [
+        "b81d30f8-4de7-58a4-b0fb-2d3a585a28f8"
+      ],
+      "source_sfi_uuids": [
+        "f211a58a-faf5-5aa9-b862-54a387de13eb"
+      ],
+      "source_window_ids": [
+        "07791ad4-ed69-5098-90fb-7641efa046ca"
+      ]
+    },
+    "cc5fa298-0943-5b4f-8004-451d8be63cde": {
+      "description": "Multiply numbers using repeated addition",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:09ed2845e6b12bf29feb5982527ad209",
+      "in_language": "en",
+      "source_context_keys": [
+        "452bcfce6893c93f7a35b0527f6866f1"
+      ],
+      "source_page_indexes": [
+        15
+      ],
+      "source_segment_ids": [
+        "cb9a743f-d166-586d-a72e-77a20b0b84ca"
+      ],
+      "source_sfi_uuids": [
+        "d0cd9a59-89d9-5e69-9935-02a4237050a2"
+      ],
+      "source_window_ids": [
+        "d699c886-ff01-569f-bd52-8258cbca40d4"
+      ]
+    },
+    "ccce03e5-3a30-5180-b5e6-28f1805f6539": {
+      "description": "Find missing numbers in an addition statement",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5b40e54e493d2b4745440fa4078fe717",
+      "in_language": "en",
+      "source_context_keys": [
+        "475ae0e8c73651bebecdf28e9859aa30"
+      ],
+      "source_page_indexes": [
+        5
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "d95e965c-f737-5867-b5c8-4a3e0e989546"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "ce20b2f8-b054-5f0b-a86c-bfae9c2e4731": {
+      "description": "Apply addition in everyday activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:900aa5e4d686dead0d32a051bdd060e0",
+      "in_language": "en",
+      "source_context_keys": [
+        "4c58719d86c54b7e2af709fc6955d535"
+      ],
+      "source_page_indexes": [
+        14
+      ],
+      "source_segment_ids": [
+        "f7e9d36b-c500-522f-8323-588c623cc48e"
+      ],
+      "source_sfi_uuids": [
+        "727f6f38-9313-590a-95b8-7246a42a1af3"
+      ],
+      "source_window_ids": [
+        "f0dd6823-cf23-535c-9425-f576013418c9"
+      ]
+    },
+    "d04edc74-1176-5ea0-8310-548d781514d1": {
+      "description": "Mention rectangular shapes found in homes",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:08d83b2c26b9dc2f7c41b729f105d80b",
+      "in_language": "en",
+      "source_context_keys": [
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10
+      ],
+      "source_segment_ids": [
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "a61e1ae6-d35a-5c97-8c61-45a0d97040d0"
+      ],
+      "source_window_ids": [
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "d49c2d9f-54be-584c-ae22-88665119ab6d": {
+      "description": "Compare their natural units of length with another, e.g. arm's length",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:19fbf87efda7f485ffa4621de8b928d8",
+      "in_language": "en",
+      "source_context_keys": [
+        "309fcfcfd7357953f07fbc7cd173dc2c"
+      ],
+      "source_page_indexes": [
+        17
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b"
+      ],
+      "source_sfi_uuids": [
+        "385b944a-7821-5317-8168-0e66b917dc4a"
+      ],
+      "source_window_ids": [
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "d6073bb8-97a2-550c-9eaf-028327f84ead": {
+      "description": "Subtract 3-digit numbers",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:2b523ca3c4c22211f52cee5490b7e486",
+      "in_language": "en",
+      "source_context_keys": [
+        "f958d4c79bc9e2ea5b2f13da3d73b91a"
+      ],
+      "source_page_indexes": [
+        26
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "22c8789a-2f08-5239-83be-9c2696e810eb"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "d930c940-547c-5484-bced-f802019d481f": {
+      "description": "Mention the need for correct subtraction of numbers in everyday activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1590196a81344786d065d1a7bd336d95",
+      "in_language": "en",
+      "source_context_keys": [
+        "f958d4c79bc9e2ea5b2f13da3d73b91a"
+      ],
+      "source_page_indexes": [
+        26
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "c0ae5d53-679c-5624-b61d-e124df35ebfe"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "d9da6fdd-fdd9-58b9-aa4a-d9bd06b24685": {
+      "description": "Cross-check the correctness of subtraction in everyday life",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:6c6f6a40b65e9f73079678b63fb5d91d",
+      "in_language": "en",
+      "source_context_keys": [
+        "a871f51477397d36371193b638e2ad34"
+      ],
+      "source_page_indexes": [
+        5
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "157e2915-9ded-55b0-8f84-836b416ff1e2"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "da988572-9b81-539a-bb49-bed6058b7940": {
+      "description": "Identify a circle",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:7373e09e4ad5273e6af21e7f927867cb",
+      "in_language": "en",
+      "source_context_keys": [
+        "1f612d482ad214d25be9d184c2125490",
+        "ce43eee963448734f8b6a7301a0d285e"
+      ],
+      "source_page_indexes": [
+        10,
+        21
+      ],
+      "source_segment_ids": [
+        "832c2d14-b5fd-5910-9b4a-552899136ff0",
+        "849174ce-4ceb-504d-8c8a-7da19192b60c"
+      ],
+      "source_sfi_uuids": [
+        "0a31b8f7-ec0b-5b70-8424-a7611b9aece8",
+        "25f29d93-332b-5c2d-9083-a4476182f04e"
+      ],
+      "source_window_ids": [
+        "25b66b0b-744a-5877-8b49-196081403d9d",
+        "aaf52f95-6564-5bd0-b9cb-0218c533ba82"
+      ]
+    },
+    "dadf78b6-cb5d-5153-b471-faee1ed513a8": {
+      "description": "Identify the need for measuring lengths using standardized units",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:84696d3d9027d58be63eea5ceb98e669",
+      "in_language": "en",
+      "source_context_keys": [
+        "309fcfcfd7357953f07fbc7cd173dc2c",
+        "a365c96796628fa2e7bc8324d03ab8c2"
+      ],
+      "source_page_indexes": [
+        17,
+        32
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b",
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "2b59f282-6886-5f05-bed3-947a29befcc0",
+        "4276e7dd-8bad-5d6e-bf2e-7f6070c5c3f4"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27",
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "df3c7406-de7f-5396-9f76-350d2aba5e7f": {
+      "description": "Mention the usefulness of a pictogram, including finding the mode",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:6eb0297ea78895b5c17f4703b5530f2a",
+      "in_language": "en",
+      "source_context_keys": [
+        "2132ee3c9207d2680f4495230e4c87ba"
+      ],
+      "source_page_indexes": [
+        36
+      ],
+      "source_segment_ids": [
+        "b81d30f8-4de7-58a4-b0fb-2d3a585a28f8"
+      ],
+      "source_sfi_uuids": [
+        "cadd4877-30e2-5088-b3bf-7f0ee65edaac"
+      ],
+      "source_window_ids": [
+        "07791ad4-ed69-5098-90fb-7641efa046ca"
+      ]
+    },
+    "e018e520-9a5e-5865-9b5b-fc2daed6484b": {
+      "description": "Use the symbol < or > to order fractions",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3f2847574a27ced8a4998cd3c8f74cae",
+      "in_language": "en",
+      "source_context_keys": [
+        "519c7d6be57542299343a235e589e0d4"
+      ],
+      "source_page_indexes": [
+        24
+      ],
+      "source_segment_ids": [
+        "91f1b437-ca1e-5e8b-88be-5b2e654f8355"
+      ],
+      "source_sfi_uuids": [
+        "9c642b07-fc4e-5e03-97e4-7cc3e5000d6d"
+      ],
+      "source_window_ids": [
+        "aa04b6fc-51f4-5a8d-aa57-714dbf8690cf"
+      ]
+    },
+    "e2b4be86-c3c0-5abf-8627-23ffffd823d9": {
+      "description": "Write correctly numbers 1-5",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1926b9d21f4a5c16b7c88ca62b68ff46",
+      "in_language": "en",
+      "source_context_keys": [
+        "05ee4bd0a0876f024fc7e13c79624362"
+      ],
+      "source_page_indexes": [
+        0
+      ],
+      "source_segment_ids": [
+        "00d1fdc1-ac31-56f0-9f51-b50e4474f867"
+      ],
+      "source_sfi_uuids": [
+        "12b603df-b6f0-50b3-914d-5d655a2dbaf1"
+      ],
+      "source_window_ids": [
+        "f78b6c76-7972-590f-b304-f576126bc2e9"
+      ]
+    },
+    "e389d91b-e8e1-50c2-b705-e4a2d4e32967": {
+      "description": "Count the edges of a cube and cuboid",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c73bf36edf064a92c5590dbccd9cf489",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "ba5bb727-7194-5ad1-a833-314d624b28ae"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "e481b7a2-ad97-5894-81a2-fe0a213c9b4a": {
+      "description": "Measure distance in natural units",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:3af90afaa55c92f9cfd161efd5ab9cb3",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a6a2e950f0cda076173e9af636fbf5c"
+      ],
+      "source_page_indexes": [
+        8
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "17c0e114-242d-5c77-9062-4ff8a85a4c7b"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c",
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "e5548829-0839-5223-933c-6dbfce71461e": {
+      "description": "Use the symbols < and > to compare whole numbers",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:a0761279c8ac5eeb294048f5121eedc7",
+      "in_language": "en",
+      "source_context_keys": [
+        "2a04379f533c84b2b4e54bc8680abacf"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "27924a6b-f2ed-5f47-b2f7-b71d68191959"
+      ],
+      "source_sfi_uuids": [
+        "3ba970a0-4308-592b-b4ad-8ae7d39872c8"
+      ],
+      "source_window_ids": [
+        "e20b0134-30d1-5eb6-a69e-7b36cf84dfaf"
+      ]
+    },
+    "e55c6674-6c2d-5171-8abc-848bd82213e0": {
+      "description": "Change money up to \u20a620 into small units",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:2b801d5c36cdf1028d1ebf4c872f7b19",
+      "in_language": "en",
+      "source_context_keys": [
+        "bfc73b7e846c85a5ef7e9ba88ecc1979",
+        "caa71e5dabe414d8739c52d5cca64a83"
+      ],
+      "source_page_indexes": [
+        17,
+        30
+      ],
+      "source_segment_ids": [
+        "79ecaeb2-4f2a-5b5c-bdd5-a92c5375102b",
+        "c31be424-c4ba-5f63-8fca-2c896cf440b1"
+      ],
+      "source_sfi_uuids": [
+        "4b1e3b08-3e80-5486-aff7-607f738ee4af",
+        "ed9117ec-6381-5a9c-a73c-cc0bf011fa95"
+      ],
+      "source_window_ids": [
+        "66e93c2f-45dd-5826-a8eb-4c0030dd78a5",
+        "de385a46-eb40-59bd-bbf6-1e4806d06551"
+      ]
+    },
+    "e6e14b9e-62f2-53bf-8b92-e58976ef4393": {
+      "description": "Read numbers from 1 to 200",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:1abf1c4ede098a59fc7be1eae4527ab8",
+      "in_language": "en",
+      "source_context_keys": [
+        "425d9fe37d63cd055e530cf014af476f"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "7f80b92c-0cd7-588c-a7e3-1508222a199c"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "e6faa79e-1700-5754-af5d-6ef8107b3547": {
+      "description": "Apply ordering of lengths to objects in our environment",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:ef5db01a8ddd3b07cb48dc36064e58f9",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a6a2e950f0cda076173e9af636fbf5c"
+      ],
+      "source_page_indexes": [
+        8
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "f8b392aa-dc2b-5167-b5bb-9b4088ecd3ff"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c",
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "e8e17c63-fac6-580f-9628-0fd559371893": {
+      "description": "Distinguish between factors and multiples",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c245254142b1d0cfc16097a5d9c282bd",
+      "in_language": "en",
+      "source_context_keys": [
+        "1474049a09d4a5f522bfc2cee68b66d9"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "75b95e82-a20c-576f-b481-e72ff3c43ed7"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "eb836898-8552-5432-b0d5-5b27939cd581": {
+      "description": "Order numbers up to 200",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5a4f0324c86a5e82cdf642f13b1f4d80",
+      "in_language": "en",
+      "source_context_keys": [
+        "425d9fe37d63cd055e530cf014af476f"
+      ],
+      "source_page_indexes": [
+        12
+      ],
+      "source_segment_ids": [
+        "3a5ec751-e38f-54bb-b3c7-a2f5c63bb2c6"
+      ],
+      "source_sfi_uuids": [
+        "c5aecc45-3444-5469-b323-2b8f97ff417b"
+      ],
+      "source_window_ids": [
+        "ce372b49-99bf-5c49-9a4b-81dc4a549fc1"
+      ]
+    },
+    "ec2850db-5ba7-5acf-8c37-ccb874a2bac3": {
+      "description": "Find missing numbers in an open sentence",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:0d301da9601e372afe7e6097c705c546",
+      "in_language": "en",
+      "source_context_keys": [
+        "9a357d14aea07ae33eda5d6d2da2501f",
+        "b40873ae310908d017c8e62f0a89eb0e",
+        "b509e01d1d6e9c2864d283a472b65cdd"
+      ],
+      "source_page_indexes": [
+        6,
+        16,
+        29
+      ],
+      "source_segment_ids": [
+        "339ecc99-b35a-5f11-9bbf-9270aae23855",
+        "a771aa96-5c34-5894-a206-4e406f9750c2",
+        "a7e964dd-ad07-5b00-b923-7aeb7cb209cf"
+      ],
+      "source_sfi_uuids": [
+        "3b304aa1-3a66-5365-9ed4-6413a7eac5b3",
+        "7908c975-65d7-5d4f-9702-9e10679ec8c7",
+        "91bac0a2-4a8d-58cf-8e21-4598f628d49a"
+      ],
+      "source_window_ids": [
+        "3a5eff4c-50e2-5b94-8eec-a3b90cf81d2f",
+        "5f9f2039-96d6-5f6f-b590-763cb7c8a09d",
+        "b9318741-0ed3-5039-881f-d1f5f5fa034f"
+      ]
+    },
+    "ec96c84b-72c5-5fc8-a156-9cd8385a1e27": {
+      "description": "Identify objects at home that are cuboids",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f1a6e9db0252b9f2784b0f570689c415",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "349372d1-f8c3-5aa9-b56e-ccae138baaf4"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "ed51214a-3dd3-5f43-89c9-3bd15fabef67": {
+      "description": "Measure the width of a room, table, building and straight-edged materials",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:5da46ef87230475b78af15a6a6eb72dc",
+      "in_language": "en",
+      "source_context_keys": [
+        "500d4c8518ab2e9a24018ad88df288d9"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "d0fbb942-0046-5db4-b453-39094aa9474a"
+      ],
+      "source_sfi_uuids": [
+        "037c5471-4937-511a-9399-12584a9e2054"
+      ],
+      "source_window_ids": [
+        "c97ba9ec-27b0-5fbc-a859-42ea7b949c27"
+      ]
+    },
+    "f430c3b4-4716-5bdd-b0be-78ff3b833e40": {
+      "description": "Apply subtraction in everyday activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f2988842f38ed4ce828369a665f2455f",
+      "in_language": "en",
+      "source_context_keys": [
+        "4c58719d86c54b7e2af709fc6955d535"
+      ],
+      "source_page_indexes": [
+        14
+      ],
+      "source_segment_ids": [
+        "f7e9d36b-c500-522f-8323-588c623cc48e"
+      ],
+      "source_sfi_uuids": [
+        "727f6f38-9313-590a-95b8-7246a42a1af3"
+      ],
+      "source_window_ids": [
+        "f0dd6823-cf23-535c-9425-f576013418c9"
+      ]
+    },
+    "f5afe3fd-6b31-5beb-a011-44c9ed3fc5dd": {
+      "description": "Apply length to objects in our environment",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:2f1e28ac6f71c1bdbefdecff62f7cfab",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a6a2e950f0cda076173e9af636fbf5c"
+      ],
+      "source_page_indexes": [
+        8
+      ],
+      "source_segment_ids": [
+        "c77f431f-8393-5edb-83a9-9300c2d67c92"
+      ],
+      "source_sfi_uuids": [
+        "f8b392aa-dc2b-5167-b5bb-9b4088ecd3ff"
+      ],
+      "source_window_ids": [
+        "c7f92796-f0e9-508e-b846-27ed6f029c0c",
+        "ea09e4e0-f3f3-5707-bee7-66ec104ead70"
+      ]
+    },
+    "f6e1c04c-0be7-5d1b-8de0-9a1ea8b74926": {
+      "description": "Apply correct multiplication in everyday activities",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c52ae6d4cf87a07f048147825ee812ee",
+      "in_language": "en",
+      "source_context_keys": [
+        "452bcfce6893c93f7a35b0527f6866f1",
+        "8fad02eb5b171663b85718e00e968e49"
+      ],
+      "source_page_indexes": [
+        15,
+        27
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc",
+        "cb9a743f-d166-586d-a72e-77a20b0b84ca"
+      ],
+      "source_sfi_uuids": [
+        "7ca4cb97-a0f9-5d89-8f28-211dba347e53",
+        "89cc295a-50e6-54dd-bb41-96991be41f7d"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d",
+        "d699c886-ff01-569f-bd52-8258cbca40d4"
+      ]
+    },
+    "f748e47f-8854-5f88-ae45-7553dec941c6": {
+      "description": "Add 2-digit whole numbers with sum not greater than 40 without exchanging or renaming",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:d0be508f605f652b74a71b96133bb391",
+      "in_language": "en",
+      "source_context_keys": [
+        "80a1e68ee8d6c7df6caf9126f38a85ad"
+      ],
+      "source_page_indexes": [
+        3
+      ],
+      "source_segment_ids": [
+        "6f605c0a-3276-5435-86d0-cf9dfa8e7c95"
+      ],
+      "source_sfi_uuids": [
+        "10b5577c-411b-5592-a927-068ceae9f53a"
+      ],
+      "source_window_ids": [
+        "6d0d7391-1dcd-528c-a07c-56faf21d8b2c"
+      ]
+    },
+    "fa4c6a7f-c570-57e5-a10e-d0f7b61672e2": {
+      "description": "Identify the litre as a unit of measuring capacity",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:680546bc3f8c5786f99139bd2a1992a6",
+      "in_language": "en",
+      "source_context_keys": [
+        "692b94db7b4714bde1ea8d33152dbdd7"
+      ],
+      "source_page_indexes": [
+        34
+      ],
+      "source_segment_ids": [
+        "de526a93-c693-5a9e-9922-7dc016371313"
+      ],
+      "source_sfi_uuids": [
+        "9145f6a6-1bf5-5b43-a4bf-91b276eb7c43"
+      ],
+      "source_window_ids": [
+        "a6d0f373-40e1-5aa0-831c-50bc926256f0"
+      ]
+    },
+    "fa6e7afe-333b-5bb9-8457-a641cb8080c9": {
+      "description": "Distinguish between curves and straight lines",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:36befc14bad3925e3ec6982dadcff9a8",
+      "in_language": "en",
+      "source_context_keys": [
+        "7f89517bb6b09ac1d6a7e2dbe74372af"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "0f5865b5-126c-50b9-acc6-4b70f2f02465"
+      ],
+      "source_sfi_uuids": [
+        "59ab25a4-c33f-5394-a72b-0bd79761f861"
+      ],
+      "source_window_ids": [
+        "47282298-7763-5521-b085-cd63db4d5bfe"
+      ]
+    },
+    "fb7069a1-7bdf-5121-9904-d38866d06ae8": {
+      "description": "Identify the relationship between addition and subtraction",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:c9a27166f101497f8390182b091eb8ac",
+      "in_language": "en",
+      "source_context_keys": [
+        "9a357d14aea07ae33eda5d6d2da2501f"
+      ],
+      "source_page_indexes": [
+        29
+      ],
+      "source_segment_ids": [
+        "339ecc99-b35a-5f11-9bbf-9270aae23855"
+      ],
+      "source_sfi_uuids": [
+        "03ef085a-677c-5ea4-a10a-7217a053147b"
+      ],
+      "source_window_ids": [
+        "b9318741-0ed3-5039-881f-d1f5f5fa034f"
+      ]
+    },
+    "fd3df096-da72-565a-8ae7-137c87fdfd7b": {
+      "description": "Divide whole numbers not exceeding 48 by 2, 3, 4, 5 and 6 without remainder",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:20620133d79308e0845068c42ce5349f",
+      "in_language": "en",
+      "source_context_keys": [
+        "1474049a09d4a5f522bfc2cee68b66d9"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "b395819b-60d1-59b0-aab3-a217ecb538a6"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    },
+    "fe2c1e0c-99be-5245-8aeb-26a0f38c167c": {
+      "description": "Identify the use of standard measuring units for area",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:f30bc2747addcc197d31b1f59635202e",
+      "in_language": "en",
+      "source_context_keys": [
+        "0793509b9f4b2f78afd498b414e89621"
+      ],
+      "source_page_indexes": [
+        19
+      ],
+      "source_segment_ids": [
+        "93efd68a-9ffa-50cf-af64-bbf83e8f2ab4"
+      ],
+      "source_sfi_uuids": [
+        "bc60844c-c588-5f80-b07c-2fd9690951fb"
+      ],
+      "source_window_ids": [
+        "dffd7862-dd50-5402-8eab-7e88429bf743"
+      ]
+    },
+    "feaf366f-397f-5327-aa58-cf6f3a0e73b9": {
+      "description": "Identify the flat faces of a cube and a cuboid",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:78f3139cda8952b6a51b19f33148e9f5",
+      "in_language": "en",
+      "source_context_keys": [
+        "3b54610e77525dd6bcf36901dbfee1c9"
+      ],
+      "source_page_indexes": [
+        20
+      ],
+      "source_segment_ids": [
+        "482c37b1-0786-542d-9405-826308996620"
+      ],
+      "source_sfi_uuids": [
+        "c5ac504d-41da-5545-8963-8a54106ecd5b"
+      ],
+      "source_window_ids": [
+        "cd83f181-6d79-561d-801b-3f223757c815"
+      ]
+    },
+    "fffd690d-4f0c-5de2-a73c-fbdcdeea481d": {
+      "description": "Multiply whole numbers from 1 x 1 to 9 x 9",
+      "identity_key": "lc:curriculum:09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a:framework:0bbbffdd9801c7a255a62b2b68cf4ffd",
+      "in_language": "en",
+      "source_context_keys": [
+        "8fad02eb5b171663b85718e00e968e49"
+      ],
+      "source_page_indexes": [
+        27
+      ],
+      "source_segment_ids": [
+        "2e1080fd-5d5d-53cb-9eb3-455ff28c05cc"
+      ],
+      "source_sfi_uuids": [
+        "3ed30ca3-c467-51d5-94ab-3d2f89ce72cb"
+      ],
+      "source_window_ids": [
+        "35acf661-2c16-5dd2-8fca-fff165e4de0d"
+      ]
+    }
+  },
+  "pdf_name": "nigeria_maths_1_3.pdf"
+}

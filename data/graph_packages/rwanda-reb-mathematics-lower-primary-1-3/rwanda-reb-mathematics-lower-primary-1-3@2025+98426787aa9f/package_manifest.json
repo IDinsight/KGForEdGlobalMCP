@@ -1,0 +1,118 @@
+{
+  "artifacts": {
+    "academicStandardsBundle": "detailed/as_kg_bundle.json",
+    "additionalArtifacts": {},
+    "entityProvenance": "detailed/as_entity_provenance.json",
+    "learningComponentDedupGroups": "detailed/lc_dedup_groups.json",
+    "learningComponentProvenance": "detailed/lc_entity_provenance.json",
+    "learningComponentSummary": "detailed/lc_generation_summary.json",
+    "learningComponentsBundle": "detailed/as_lc_kg_bundle.json",
+    "nodes": "delivery/as_lc_nodes_rwanda_math.jsonl",
+    "relationships": "delivery/as_lc_relationships_rwanda_math.jsonl",
+    "relationshipsHasChild": "detailed/as_relationships_has_child.jsonl",
+    "standardsFramework": "detailed/as_standards_framework.json",
+    "standardsFrameworkItems": "detailed/as_standards_framework_items.jsonl",
+    "unresolvedItems": "detailed/as_unresolved_items.json",
+    "validationReport": "detailed/as_lc_validation_report.json"
+  },
+  "capabilities": {
+    "codeSearch": "none",
+    "hasDetailedProvenance": true,
+    "hasOfficialActivities": false,
+    "hasOfficialAssessmentGuidance": false,
+    "hasUnresolvedRelationships": false,
+    "multiParent": false,
+    "textSearch": true
+  },
+  "checksums": {
+    "delivery/as_lc_nodes_rwanda_math.jsonl": "sha256:5baa25285b2ff926a168d6d2736c209713b2041c46b0be348aec98bb0761f00f",
+    "delivery/as_lc_relationships_rwanda_math.jsonl": "sha256:6414f565f8ad02fd9dabf8e50f68998d7f644bde4525255f501b6858a0fdf23c",
+    "detailed/as_entity_provenance.json": "sha256:dc5aec02f362911db6247bf2f988e7459375b3307cad61a5c12a9f9474af3204",
+    "detailed/as_kg_bundle.json": "sha256:5d1de549e30510e98deefeda3824b75dfd7507b2f13a2ac1432ff2a5a00e03b0",
+    "detailed/as_lc_kg_bundle.json": "sha256:7035a17b275b9a4e5a30cdceac39283f066e054d82448c791e49df9ef4141e8b",
+    "detailed/as_lc_validation_report.json": "sha256:3c91451775a3bd9b31fd80aa7ea42761a497ca5d75ab1d50b2ea72952efb83a0",
+    "detailed/as_relationships_has_child.jsonl": "sha256:0946da8ef7066060be44e3edd99f9ed4b60a869acb81e25db3b579cd0ac7cadc",
+    "detailed/as_standards_framework.json": "sha256:92cae4032f2beb28870b3b7a235ca6df2a83fff8b92b964c143225147bc3c9a6",
+    "detailed/as_standards_framework_items.jsonl": "sha256:29e1cc87c00654d56b7269ac229e66ea47055bc7244151bd12ec5c9e6a248027",
+    "detailed/as_unresolved_items.json": "sha256:f6ffdd6b47267163ddd83fc9b3fa2207a03d603dfd20e9bbef66fb219c479fe2",
+    "detailed/lc_dedup_groups.json": "sha256:ede5bf144e72fe3f5d83ba13d66d8f66c95ee2f52923edb8222c72a9fa473014",
+    "detailed/lc_entity_provenance.json": "sha256:34a5b3563f61d25aa4f37ea13379db157d3376faa2a77f3b05a641342a6444a5",
+    "detailed/lc_generation_summary.json": "sha256:4fc934cff97c7f07fb6afbbf555f5eb770f8fe6a3eacab2dd9af4bd2e51b49fe"
+  },
+  "counts": {
+    "additionalCounts": {
+      "codedItems": 0,
+      "multiParentTargets": 0,
+      "unresolvedRelationships": 0
+    },
+    "frameworkNodes": 1,
+    "itemNodes": 626,
+    "learningComponentNodes": 716,
+    "relationships": 1423,
+    "supportsRelationships": 797
+  },
+  "createdAt": "2026-09-06T18:52:42Z",
+  "deliverySchemaVersion": "1.1",
+  "framework": {
+    "adoptionStatus": "Adopted",
+    "isCurrent": true,
+    "issuingAuthority": "Rwanda Basic Education Board (REB)",
+    "jurisdiction": "Rwanda",
+    "jurisdictionType": "country",
+    "languages": [
+      "en"
+    ],
+    "localGradesOrStages": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "localSubject": "Mathematics",
+    "name": "Mathematics Syllabus for Lower Primary | Primary 1 - 3",
+    "normalizedGrades": [
+      "1",
+      "2",
+      "3"
+    ],
+    "normalizedSubjects": [
+      "Mathematics"
+    ],
+    "provider": "Rwanda Basic Education Board (REB)",
+    "sourceDocumentSha256": null,
+    "sourcePublicationDate": null,
+    "sourceVersion": "2025",
+    "subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+    "subjectMappingStatus": "mapped"
+  },
+  "frameworkId": "rwanda-reb-mathematics-lower-primary-1-3",
+  "graphPackageId": "rwanda-reb-mathematics-lower-primary-1-3@2025+98426787aa9f--academic-standards--p1",
+  "graphType": "academic_standards",
+  "includedGraphTypes": [
+    "academic_standards",
+    "learning_components"
+  ],
+  "manifestVersion": "1.0",
+  "packageRevision": 1,
+  "profile": {
+    "profileId": "rwanda-reb-mathematics-lower-primary-1-3",
+    "profileVersion": "1.0",
+    "sha256": "sha256:4f7c42ea05002c80e7ff7dd7e21ad1c0b2e3899ee1010d68c91dc8022e016e1d"
+  },
+  "rights": {
+    "allowBulkResource": false,
+    "allowFullText": true,
+    "allowGeneratedDerivatives": "allowed",
+    "allowStandardResources": true,
+    "attributionStatement": "© 2025 Rwanda Basic Education Board, Kigali. Credit must be provided to REB when the content is quoted.",
+    "licenseUri": null,
+    "reviewStatus": "provisional_operator_approved",
+    "sourceLicense": "© 2025 Rwanda Basic Education Board, Kigali. All rights reserved."
+  },
+  "snapshotId": "rwanda-reb-mathematics-lower-primary-1-3@2025+98426787aa9f",
+  "snapshotRelations": [],
+  "sourceSchemaVersion": "1.0",
+  "validation": {
+    "status": "passed",
+    "validatedAt": "2026-09-06T18:52:53Z"
+  }
+}

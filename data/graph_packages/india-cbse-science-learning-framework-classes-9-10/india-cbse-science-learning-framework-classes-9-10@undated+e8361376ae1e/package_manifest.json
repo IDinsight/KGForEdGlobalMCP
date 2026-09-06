@@ -1,0 +1,116 @@
+{
+  "artifacts": {
+    "academicStandardsBundle": "detailed/as_kg_bundle.json",
+    "additionalArtifacts": {},
+    "entityProvenance": "detailed/as_entity_provenance.json",
+    "learningComponentDedupGroups": "detailed/lc_dedup_groups.json",
+    "learningComponentProvenance": "detailed/lc_entity_provenance.json",
+    "learningComponentSummary": "detailed/lc_generation_summary.json",
+    "learningComponentsBundle": "detailed/as_lc_kg_bundle.json",
+    "nodes": "delivery/as_lc_nodes_pratham_science.jsonl",
+    "relationships": "delivery/as_lc_relationships_pratham_science.jsonl",
+    "relationshipsHasChild": "detailed/as_relationships_has_child.jsonl",
+    "standardsFramework": "detailed/as_standards_framework.json",
+    "standardsFrameworkItems": "detailed/as_standards_framework_items.jsonl",
+    "unresolvedItems": "detailed/as_unresolved_items.json",
+    "validationReport": "detailed/as_lc_validation_report.json"
+  },
+  "capabilities": {
+    "codeSearch": "partial",
+    "hasDetailedProvenance": true,
+    "hasOfficialActivities": false,
+    "hasOfficialAssessmentGuidance": false,
+    "hasUnresolvedRelationships": false,
+    "multiParent": true,
+    "textSearch": true
+  },
+  "checksums": {
+    "delivery/as_lc_nodes_pratham_science.jsonl": "sha256:aa523e7642a63b29b301f9396e98c365849796ef1d68a87b8afdb19a5c8b1132",
+    "delivery/as_lc_relationships_pratham_science.jsonl": "sha256:490671e915dc261929d903b4bb211a0d5dc1fed3b3666398c25abf957eb09e72",
+    "detailed/as_entity_provenance.json": "sha256:e02f791c5ad5dd09d17c83fa9f8b5ca232c4ce9cead5cfe717e017d954a4df25",
+    "detailed/as_kg_bundle.json": "sha256:874f8ff5a4a333f9d45d8eb072adb7512bbcb3e29debb10d02f92f08e8b622ce",
+    "detailed/as_lc_kg_bundle.json": "sha256:b61539326e140a706e137e7ebe7cf4a2d00aaf6b2db17c0600c34a173be3a154",
+    "detailed/as_lc_validation_report.json": "sha256:77c2b49d174fee1027bdfe29bad18318bec4f59ca8acbf10d1d5f548be47fca9",
+    "detailed/as_relationships_has_child.jsonl": "sha256:675d2fe29c973ec15b41e01b29014490e0558df7da07582a06af39be141ac17e",
+    "detailed/as_standards_framework.json": "sha256:905e9c25c45b9538fce1fcc5f73455ef66cd14626eaddf2244d4b956e3987780",
+    "detailed/as_standards_framework_items.jsonl": "sha256:70bb484c3143472b53f69535995d5db18af583eac8849108a32cba75ea4333da",
+    "detailed/as_unresolved_items.json": "sha256:f6ffdd6b47267163ddd83fc9b3fa2207a03d603dfd20e9bbef66fb219c479fe2",
+    "detailed/lc_dedup_groups.json": "sha256:4ede1ade7eba9281dfedea51425a93a9e021e5702b67f5a4b8b7c0a9b6eb7a1a",
+    "detailed/lc_entity_provenance.json": "sha256:7a61125cc5ef46889e60ae03659797317ea7cbb3c1510812d9cb442ec984a0ce",
+    "detailed/lc_generation_summary.json": "sha256:ebc7365657ff5641dad05b8e3270a9f2dc4ffd0c17cad69414cd49867e4444a5"
+  },
+  "counts": {
+    "additionalCounts": {
+      "codedItems": 831,
+      "multiParentTargets": 235,
+      "unresolvedRelationships": 0
+    },
+    "frameworkNodes": 1,
+    "itemNodes": 874,
+    "learningComponentNodes": 853,
+    "relationships": 1967,
+    "supportsRelationships": 858
+  },
+  "createdAt": "2026-09-06T18:52:40Z",
+  "deliverySchemaVersion": "1.1",
+  "framework": {
+    "adoptionStatus": "Unknown",
+    "isCurrent": true,
+    "issuingAuthority": "Central Board of Secondary Education (CBSE) and Azim Premji University",
+    "jurisdiction": "India",
+    "jurisdictionType": "country",
+    "languages": [
+      "en"
+    ],
+    "localGradesOrStages": [
+      "Class IX",
+      "Class X"
+    ],
+    "localSubject": "Science",
+    "name": "Learning Framework - Science",
+    "normalizedGrades": [
+      "9",
+      "10"
+    ],
+    "normalizedSubjects": [
+      "Science"
+    ],
+    "provider": "Central Board of Secondary Education (CBSE)",
+    "sourceDocumentSha256": null,
+    "sourcePublicationDate": null,
+    "sourceVersion": "undated",
+    "subjectMappingNote": "Science is mapped directly to the Learning Commons Science subject.",
+    "subjectMappingStatus": "mapped"
+  },
+  "frameworkId": "india-cbse-science-learning-framework-classes-9-10",
+  "graphPackageId": "india-cbse-science-learning-framework-classes-9-10@undated+e8361376ae1e--academic-standards--p1",
+  "graphType": "academic_standards",
+  "includedGraphTypes": [
+    "academic_standards",
+    "learning_components"
+  ],
+  "manifestVersion": "1.0",
+  "packageRevision": 1,
+  "profile": {
+    "profileId": "india-cbse-science-learning-framework-classes-9-10",
+    "profileVersion": "1.0",
+    "sha256": "sha256:b303a4a66483a0da8d9d4fd3cc2426e2d8acd29425adfe96411460b285b440b8"
+  },
+  "rights": {
+    "allowBulkResource": false,
+    "allowFullText": true,
+    "allowGeneratedDerivatives": "allowed",
+    "allowStandardResources": true,
+    "attributionStatement": "Learning Framework - Science, Central Board of Secondary Education (CBSE), developed in collaboration with Azim Premji University.",
+    "licenseUri": null,
+    "reviewStatus": "provisional_operator_approved",
+    "sourceLicense": "Not specified in source PDF"
+  },
+  "snapshotId": "india-cbse-science-learning-framework-classes-9-10@undated+e8361376ae1e",
+  "snapshotRelations": [],
+  "sourceSchemaVersion": "1.0",
+  "validation": {
+    "status": "passed",
+    "validatedAt": "2026-09-06T18:52:52Z"
+  }
+}

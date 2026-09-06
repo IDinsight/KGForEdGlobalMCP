@@ -1,0 +1,44 @@
+{
+  "lc_confidence_distribution": {
+    "0.8": 8,
+    "0.9": 301
+  },
+  "lc_count_by_language": {
+    "en": 272
+  },
+  "lc_count_by_source_statement_type": {
+    "Indicator": 272
+  },
+  "lc_dedup_candidate_pair_count": 713,
+  "lc_dedup_conflict_count": 0,
+  "lc_dedup_judged_same_count": 26,
+  "lc_generation_failed_sfis_count": 0,
+  "lc_max_splits_observed": 6,
+  "lc_multi_claim_lc_count": 33,
+  "lc_multi_parent_lc_count": 33,
+  "lc_selection_mode": "leaf_default",
+  "lc_source_exclusion_reason_counts": {
+    "not_a_leaf": 213,
+    "unresolved_ancestor_path": 2
+  },
+  "lc_splits_distribution": {
+    "1": 134,
+    "2": 71,
+    "3": 9,
+    "6": 1
+  },
+  "llm_request_count": 215,
+  "llm_response_count": 215,
+  "manual_review_overrides": null,
+  "total_lc_claims": 309,
+  "total_lc_source_sfis_considered": 430,
+  "total_lc_source_sfis_eligible": 215,
+  "total_lc_source_sfis_empty_text": 0,
+  "total_lc_source_sfis_excluded": 215,
+  "total_lcs": 272,
+  "total_supports_edges": 307,
+  "warnings": [
+    "Academic Standards bundle has finalization exclusions {} and 2 unresolved root-fallback edges; LC generation proceeds over the resolved subgraph (seeds with unresolved ancestor paths are excluded)",
+    "no lc_source_statement_types configured; used leaf default (leaf SFIs with normalized_statement_type == 'Standard')"
+  ]
+}

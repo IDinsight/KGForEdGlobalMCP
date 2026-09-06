@@ -1,0 +1,35 @@
+{
+  "errors": [],
+  "input_fingerprints": {
+    "academic_standards_kg_bundle": "b6b9d42935d4e2fa6bd83fbc9b0c0ee2ffe57ddae4ef1a5489548eb5d066e9bf",
+    "lc_entity_provenance": "6aad1fb42af47bbe33238d0aa3372ea4c662921763f305aac461e8b563f4faa5",
+    "lc_generation_failures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "lc_generation_summary": "61cbf5ccb61e84906eb6eed1abc0819a2639becc652099e29b2ba22efeaa5e9e",
+    "lc_supports_edges": "68d3359d1f1549281a13a0abc1b9907618cdf7a4adc63ef3b33a5653f8c61cc9",
+    "learning_components": "f26d62d314cde29f17d26eff4990366a413acc3577b1f0c820c6cfc6a7675dc6"
+  },
+  "learning_commons_export_schema_version": "2026-07-09",
+  "object_counts": {
+    "frameworks": 1,
+    "learning_components": 399,
+    "relationships_has_child": 255,
+    "relationships_supports": 419,
+    "standards_framework_items": 255,
+    "learning_commons_framework_nodes": 1,
+    "learning_commons_item_nodes": 255,
+    "learning_commons_nodes": 655,
+    "learning_commons_relationships": 674,
+    "learning_commons_unresolved_fallback_relationships": 0
+  },
+  "passed": true,
+  "validation_checks": [
+    "as_bundle_validation_gate",
+    "supports_source_existence",
+    "supports_target_existence",
+    "every_lc_has_primary_edge",
+    "supports_count_matches_claiming_sfis",
+    "identifier_collision_absence",
+    "lc_provenance_presence",
+    "summary_count_alignment"
+  ]
+}

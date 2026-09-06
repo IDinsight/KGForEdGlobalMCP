@@ -1,13 +1,13 @@
 {
-	"detailedArtifactsDirectory": "data/input_artifacts/madhi_math/detailed",
-	"jurisdictionType": "state",
-	"nodes": "data/input_artifacts/madhi_math/delivery/as_nodes_india_madhi_math.jsonl",
-	"outputRoot": "data/graph_packages",
-	"packageRevision": 1,
+  "detailedArtifactsDirectory": "data/input_artifacts/madhi_math/detailed",
+  "jurisdictionType": "state",
+  "nodes": "data/input_artifacts/madhi_math/delivery/as_lc_nodes_madhi_math.jsonl",
+  "outputRoot": "data/graph_packages",
+  "packageRevision": 1,
   "profileId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
-	"profileVersion": "1.0",
-	"relationships": "data/input_artifacts/madhi_math/delivery/as_relationships_india_madhi_math.jsonl",
-	"snapshotRelations": [],
-	"sourcePublicationDate": null,
-	"versionToken": "2025-proposed-draft"
+  "profileVersion": "1.0",
+  "relationships": "data/input_artifacts/madhi_math/delivery/as_lc_relationships_madhi_math.jsonl",
+  "snapshotRelations": [],
+  "sourcePublicationDate": null,
+  "versionToken": "2025-proposed-draft"
 }
