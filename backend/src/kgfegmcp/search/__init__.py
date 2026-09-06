@@ -3,7 +3,12 @@
 The search package provides immutable request, result, evidence, warning, cursor, and
 index-metadata models together with the `SearchService` entry point. It supports
 lexical description search and profile-governed statement-code search over graph
-packages that have already been accepted by the catalog.
+packages that have already been accepted by the catalog, and the separate
+learning-component surface of description, controlled-tag, and supported-code search.
+
+Standards and learning-component results never share a result type. A standards hit
+carries a `StandardNode` and facet evidence; a learning-component hit carries a
+`LearningComponentNode` and the standards it supports.
 
 Search indexes remain independently owned by their exact graph packages. The package
 does not merge node, relationship, identifier, code, or lexical namespaces across
@@ -26,6 +31,14 @@ from kgfegmcp.search.models import (
     ExactPackageSearchScope,
     ExactPhraseTextMatch,
     FederatedPackageSearchScope,
+    LearningComponentSearchHit,
+    LearningComponentSearchMode,
+    LearningComponentSearchPage,
+    LearningComponentSearchQuery,
+    LearningComponentSupportedCodeExactSearchQuery,
+    LearningComponentSupportedCodePrefixSearchQuery,
+    LearningComponentTagSearchQuery,
+    LearningComponentTextSearchQuery,
     PackageSearchIndexMetadata,
     PackageSearchScope,
     PrefixCodeSearchQuery,
@@ -44,6 +57,7 @@ from kgfegmcp.search.models import (
     SearchSelectionMode,
     SearchWarning,
     SearchWarningCode,
+    SupportedStandardReference,
     TextMatch,
     TextMatchMode,
     TextOperator,
@@ -61,6 +75,14 @@ __all__ = [
     "ExactPackageSearchScope",
     "ExactPhraseTextMatch",
     "FederatedPackageSearchScope",
+    "LearningComponentSearchHit",
+    "LearningComponentSearchMode",
+    "LearningComponentSearchPage",
+    "LearningComponentSearchQuery",
+    "LearningComponentSupportedCodeExactSearchQuery",
+    "LearningComponentSupportedCodePrefixSearchQuery",
+    "LearningComponentTagSearchQuery",
+    "LearningComponentTextSearchQuery",
     "PackageSearchIndexMetadata",
     "PackageSearchScope",
     "PrefixCodeSearchQuery",
@@ -80,6 +102,7 @@ __all__ = [
     "SearchService",
     "SearchWarning",
     "SearchWarningCode",
+    "SupportedStandardReference",
     "TextMatch",
     "TextMatchMode",
     "TextOperator",

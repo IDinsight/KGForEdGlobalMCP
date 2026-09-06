@@ -34,7 +34,11 @@ from pydantic import ConfigDict, Field, RootModel, StringConstraints, model_vali
 # Package Library
 from kgfegmcp.domain.enums import EpistemicStatus, GraphType, NormalizedStatementType
 from kgfegmcp.domain.identifiers import FrameworkId, NodeId, Sha256Digest, SnapshotId
-from kgfegmcp.graph.models import GraphPackageIdentity, StandardNode
+from kgfegmcp.graph.models import (
+    GraphPackageIdentity,
+    LearningComponentNode,
+    StandardNode,
+)
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.normalizers import (
     normalize_facet_value,
@@ -44,6 +48,7 @@ from kgfegmcp.search.normalizers import (
 
 CodeQueryText = Annotated[str, StringConstraints(max_length=256, min_length=1)]
 FilterValue = Annotated[str, StringConstraints(max_length=128, min_length=1)]
+TagQueryText = Annotated[str, StringConstraints(max_length=128, min_length=1)]
 SearchQueryText = Annotated[str, StringConstraints(max_length=512, min_length=1)]
 
 
@@ -53,6 +58,15 @@ class SearchMode(StrEnum):
     CODE_EXACT = "code_exact"
     CODE_PREFIX = "code_prefix"
     TEXT = "text"
+
+
+class LearningComponentSearchMode(StrEnum):
+    """Identify one deterministic learning-component search mode."""
+
+    SUPPORTED_CODE_EXACT = "learning_component_supported_code_exact"
+    SUPPORTED_CODE_PREFIX = "learning_component_supported_code_prefix"
+    TAG = "learning_component_tag"
+    TEXT = "learning_component_text"
 
 
 class SearchSelectionMode(StrEnum):
@@ -81,6 +95,8 @@ class SearchField(StrEnum):
 
     DESCRIPTION = "description"
     STATEMENT_CODE = "statement_code"
+    SUPPORTED_STATEMENT_CODE = "supported_statement_code"
+    TAG = "tag"
 
 
 class SearchScoreAlgorithm(StrEnum):
@@ -89,6 +105,9 @@ class SearchScoreAlgorithm(StrEnum):
     CODE_EXACT_V1 = "code_exact_v1"
     CODE_PREFIX_V1 = "code_prefix_v1"
     LEXICAL_TOKEN_COVERAGE_V1 = "lexical_token_coverage_v1"
+    SUPPORTED_CODE_EXACT_V1 = "supported_code_exact_v1"
+    SUPPORTED_CODE_PREFIX_V1 = "supported_code_prefix_v1"
+    TAG_EXACT_V1 = "tag_exact_v1"
 
 
 class SearchWarningCode(StrEnum):
@@ -393,6 +412,136 @@ SearchQuery: TypeAlias = Annotated[
 ]
 
 
+class LearningComponentTextSearchQuery(FrozenSchema):
+    """Request deterministic lexical search over learning-component descriptions."""
+
+    cursor: SearchCursor | None = None
+    limit: int = Field(default=25, ge=1, le=100)
+    match: TextMatch
+    mode: Literal[LearningComponentSearchMode.TEXT]
+    query: SearchQueryText
+    scope: PackageSearchScope
+
+    @model_validator(mode="after")
+    def validate_query(self) -> LearningComponentTextSearchQuery:
+        """Require one safe lexical query that normalizes to at least one token.
+
+        Returns
+        -------
+        LearningComponentTextSearchQuery
+            The unchanged validated lexical request.
+
+        Raises
+        ------
+        ValueError
+            If the query contains controls or normalizes to no tokens.
+        """
+
+        _require_no_control_characters(self.query)
+
+        if not normalize_lexical_text(self.query):
+            raise ValueError("Text search queries must contain searchable characters.")
+
+        return self
+
+
+class LearningComponentTagSearchQuery(FrozenSchema):
+    """Request exact controlled-tag lookup over learning-component tags."""
+
+    cursor: SearchCursor | None = None
+    limit: int = Field(default=25, ge=1, le=100)
+    mode: Literal[LearningComponentSearchMode.TAG]
+    query: TagQueryText
+    scope: PackageSearchScope
+
+    @model_validator(mode="after")
+    def validate_query(self) -> LearningComponentTagSearchQuery:
+        """Require one safe tag query that normalizes to a non-blank facet key.
+
+        Returns
+        -------
+        LearningComponentTagSearchQuery
+            The unchanged validated tag request.
+
+        Raises
+        ------
+        ValueError
+            If the query contains controls or normalizes to a blank facet key.
+        """
+
+        _require_no_control_characters(self.query)
+
+        if not normalize_facet_value(self.query):
+            raise ValueError("Tag search queries must contain searchable characters.")
+
+        return self
+
+
+class LearningComponentSupportedCodeExactSearchQuery(FrozenSchema):
+    """Request learning components supporting one exact standards statement code."""
+
+    cursor: SearchCursor | None = None
+    limit: int = Field(default=25, ge=1, le=100)
+    mode: Literal[LearningComponentSearchMode.SUPPORTED_CODE_EXACT]
+    query: CodeQueryText
+    scope: PackageSearchScope
+
+    @model_validator(mode="after")
+    def validate_query(self) -> LearningComponentSupportedCodeExactSearchQuery:
+        """Require one safe exact supported-code query.
+
+        Returns
+        -------
+        LearningComponentSupportedCodeExactSearchQuery
+            The unchanged validated exact supported-code request.
+
+        Raises
+        ------
+        ValueError
+            If the query contains controls or only whitespace and punctuation.
+        """
+
+        _require_code_query(self.query)
+        return self
+
+
+class LearningComponentSupportedCodePrefixSearchQuery(FrozenSchema):
+    """Request learning components supporting a standards statement-code prefix."""
+
+    cursor: SearchCursor | None = None
+    limit: int = Field(default=25, ge=1, le=100)
+    mode: Literal[LearningComponentSearchMode.SUPPORTED_CODE_PREFIX]
+    query: CodeQueryText
+    scope: PackageSearchScope
+
+    @model_validator(mode="after")
+    def validate_query(self) -> LearningComponentSupportedCodePrefixSearchQuery:
+        """Require one safe supported-code prefix query.
+
+        Returns
+        -------
+        LearningComponentSupportedCodePrefixSearchQuery
+            The unchanged validated supported-code prefix request.
+
+        Raises
+        ------
+        ValueError
+            If the query contains controls or only whitespace and punctuation.
+        """
+
+        _require_code_query(self.query)
+        return self
+
+
+LearningComponentSearchQuery: TypeAlias = Annotated[
+    LearningComponentSupportedCodeExactSearchQuery
+    | LearningComponentSupportedCodePrefixSearchQuery
+    | LearningComponentTagSearchQuery
+    | LearningComponentTextSearchQuery,
+    Field(discriminator="mode"),
+]
+
+
 class SearchMatchedField(FrozenSchema):
     """Record exact source-field evidence for one deterministic match."""
 
@@ -568,12 +717,119 @@ class SearchPage(FrozenSchema):
         return self
 
 
+class SupportedStandardReference(FrozenSchema):
+    """Report one standards item a learning component supports.
+
+    A supported standard is reported whether or not it carries a statement code,
+    so a component bridging a coded and an uncoded standard is never reported as
+    supporting only one of them.
+    """
+
+    node_id: NodeId
+    statement_code: str | None = Field(default=None, min_length=1)
+    support_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+
+
+class LearningComponentSearchHit(FrozenSchema):
+    """Return one learning component with package identity and search evidence."""
+
+    epistemic_status: Literal[EpistemicStatus.RETRIEVAL_CANDIDATE]  # type: ignore[valid-type]
+    matched_codes: tuple[SupportedStandardReference, ...] = ()
+    matched_fields: tuple[SearchMatchedField, ...] = Field(min_length=1)
+    matched_terms: tuple[str, ...] = Field(min_length=1)
+    node: LearningComponentNode
+    package_identity: GraphPackageIdentity
+    retrieval_method: LearningComponentSearchMode
+    score: SearchScore
+    supported_standards: tuple[SupportedStandardReference, ...]
+    warnings: tuple[SearchWarning, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_hit_mode(self) -> LearningComponentSearchHit:
+        """Require matched-field and matched-code evidence to match retrieval mode.
+
+        Returns
+        -------
+        LearningComponentSearchHit
+            The unchanged internally consistent hit.
+
+        Raises
+        ------
+        ValueError
+            If retrieval mode and evidence fields disagree.
+        """
+
+        expected_fields = {
+            LearningComponentSearchMode.SUPPORTED_CODE_EXACT: (
+                SearchField.SUPPORTED_STATEMENT_CODE
+            ),
+            LearningComponentSearchMode.SUPPORTED_CODE_PREFIX: (
+                SearchField.SUPPORTED_STATEMENT_CODE
+            ),
+            LearningComponentSearchMode.TAG: SearchField.TAG,
+            LearningComponentSearchMode.TEXT: SearchField.DESCRIPTION,
+        }
+        expected_field = expected_fields[self.retrieval_method]
+
+        if any(field.field is not expected_field for field in self.matched_fields):
+            raise ValueError(
+                "Learning component hit matched fields do not match retrieval mode."
+            )
+
+        is_supported_code = expected_field is SearchField.SUPPORTED_STATEMENT_CODE
+
+        if is_supported_code != bool(self.matched_codes):
+            raise ValueError(
+                "Learning component hit matched codes do not match retrieval mode."
+            )
+
+        return self
+
+
+class LearningComponentSearchPage(FrozenSchema):
+    """Return one immutable deterministic page of learning-component search hits."""
+
+    has_more: bool
+    hits: tuple[LearningComponentSearchHit, ...]
+    mode: LearningComponentSearchMode
+    next_cursor: SearchCursor | None
+    returned_count: int = Field(ge=0)
+    warnings: tuple[SearchWarning, ...]
+
+    @model_validator(mode="after")
+    def validate_page(self) -> LearningComponentSearchPage:
+        """Require page counts, modes, and continuation state to agree.
+
+        Returns
+        -------
+        LearningComponentSearchPage
+            The unchanged internally consistent search page.
+
+        Raises
+        ------
+        ValueError
+            If counts, hit modes, or cursor state disagree.
+        """
+
+        if self.returned_count != len(self.hits):
+            raise ValueError("returned_count must equal the number of hits.")
+
+        if any(hit.retrieval_method is not self.mode for hit in self.hits):
+            raise ValueError("Every hit must use the page search mode.")
+
+        if self.has_more != (self.next_cursor is not None):
+            raise ValueError("has_more and next_cursor must agree.")
+
+        return self
+
+
 class PackageSearchIndexMetadata(FrozenSchema):
     """Describe one immutable package-local lexical and code index."""
 
     code_normalizer_version: str = Field(min_length=1)
     coded_node_count: int = Field(ge=0)
     cursor_version: int = Field(ge=1)
+    learning_component_document_count: int = Field(ge=0)
     index_sha256: Sha256Digest
     lexical_document_count: int = Field(ge=0)
     lexical_normalizer_version: str = Field(min_length=1)
@@ -582,6 +838,7 @@ class PackageSearchIndexMetadata(FrozenSchema):
     normalized_code_key_count: int = Field(ge=0)
     package_identity: GraphPackageIdentity
     ranking_version: str = Field(min_length=1)
+    tag_vocabulary_size: int = Field(ge=0)
 
 
 class SearchIndexMetadata(FrozenSchema):
