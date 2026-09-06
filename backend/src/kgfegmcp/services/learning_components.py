@@ -35,6 +35,7 @@ from kgfegmcp.services.models import (
     NodeIdStandardIdentifier,
     SupportedStandard,
     SupportedStandardPlacement,
+    SupportedStandardReference,
     SupportingLearningComponent,
 )
 
@@ -118,9 +119,7 @@ class LearningComponentService:
             placements.append(
                 SupportedStandardPlacement(
                     grade_levels=entry.standard.grade_level or (),
-                    hierarchy_path=tuple(
-                        _node_label(item.node) for item in ordered
-                    ),
+                    hierarchy_path=tuple(_node_label(item.node) for item in ordered),
                     node_id=entry.standard.node_id,
                     statement_code=entry.standard.statement_code,
                     support_confidence=entry.relationship.support_confidence,
@@ -289,8 +288,8 @@ class LearningComponentService:
     ) -> GetLearningComponentsForStandardResult:
         """Return every learning component supporting one exact standard.
 
-        Each component reports every statement code it supports, not only the requested
-        standard's.
+        Each component reports every standard it supports, not only the requested one,
+        so a component bridging several standards is visible as such.
 
         Parameters
         ----------
@@ -368,12 +367,15 @@ class LearningComponentService:
                 SupportingLearningComponent(
                     node=component,
                     relationship=relationship,
-                    supported_codes=tuple(
-                        supported.standard.statement_code
+                    supported_standards=tuple(
+                        SupportedStandardReference(
+                            node_id=supported.standard.node_id,
+                            statement_code=supported.standard.statement_code,
+                            support_confidence=supported.relationship.support_confidence,
+                        )
                         for supported in self._supported_standards(
                             component_id=component.node_id, store=store
                         )
-                        if supported.standard.statement_code is not None
                     ),
                 )
             )

@@ -61,6 +61,7 @@ from kgfegmcp.search.models import (
     SearchMode,
     SearchPage,
     SearchQueryText,
+    SupportedStandardReference,
     TextMatch,
 )
 
@@ -606,7 +607,7 @@ class SupportingLearningComponent(FrozenSchema):
 
     node: LearningComponentNode
     relationship: GraphRelationship
-    supported_codes: tuple[str, ...]
+    supported_standards: tuple[SupportedStandardReference, ...]
 
 
 class GetLearningComponentsForStandardResult(FrozenSchema):
