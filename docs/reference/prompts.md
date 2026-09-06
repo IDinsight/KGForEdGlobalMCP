@@ -1,6 +1,6 @@
 # Prompts
 
-The server registers six deterministic prompt workflows. A prompt resolves accepted
+The server registers seven deterministic prompt workflows. A prompt resolves accepted
 package/profile context, applies rights and attribution rules, merges optional
 framework-local guidance, and returns instructions for the connected MCP host model.
 
@@ -125,6 +125,42 @@ Optional:
 | `output_language`   | null                |
 | `snapshot_id`       | null                |
 | `target_word_count` | 500; range 150-1500 |
+
+## `multigrade_lesson_plan`
+
+!!! warning "Experimental, and it requires learning components"
+    This workflow has no source-only fallback. A package containing no learning
+    components is refused with `capability_unavailable` rather than degraded into
+    parallel mono-grade plans under a multi-grade heading.
+
+Plans one lesson for a classroom holding several grades at once. It separates the shared
+teach-together core from grade-specific work by reading which learning components the
+standards of each grade decompose to: a component supporting standards in more than one
+of the requested grades is the candidate shared core; a component supporting only one is
+that grade's differentiated work.
+
+Required:
+
+- `framework_id`
+- `grades_in_room` — 2 to 8 distinct grades, as a JSON array such as `["4", "5", "6"]`
+- `topic_or_standard`
+
+Optional:
+
+| Argument                  | Default / bound           |
+|---------------------------|---------------------------|
+| `focus_mode`              | `topic`                   |
+| `learner_context`         | null; max 2000 characters |
+| `lesson_duration_minutes` | 45; range 10-240          |
+| `local_context`           | null                      |
+| `output_language`         | null                      |
+| `snapshot_id`             | null                      |
+
+The rendered workflow instructs the host to resolve each grade's standards, call
+`get_learning_components_for_standard` for each, and compare `supportedStandards` across
+grades. It requires the result to state that a shared core rests on a model's judgement
+that two standards decompose to the same component, **not** on a curriculum-authored
+equivalence between those grades.
 
 ## `inferred_progression_hypothesis`
 

@@ -16,15 +16,15 @@ The server registers its components explicitly and exposes a fixed read-only sur
 |--------------------|-------|----------------------------------------------------------------------------------------------------------|
 | Tools              | 13    | Deterministic discovery, retrieval, traversal, statistics, learning-component retrieval, comparison evidence, and progression evidence |
 | Fixed resources    | 1     | Complete accepted package catalog                                                                        |
-| Resource templates | 9     | Framework, package, standard, relationship, provenance, and approved artifact reads                      |
-| Prompts            | 6     | Deterministic client-side reasoning and generation workflows                                             |
+| Resource templates | 12    | Framework, package, standard, learning-component, relationship, provenance, and approved artifact reads  |
+| Prompts            | 7     | Deterministic client-side reasoning and generation workflows                                             |
 
 ```mermaid
 %%{init: {"themeVariables": {"fontSize": "18px"}}}%%
 flowchart LR
     CLIENT[MCP client / host] --> TOOLS[13 read-only tools]
-    CLIENT --> RES[1 fixed resource + 9 templates]
-    CLIENT --> PROMPTS[6 prompt workflows]
+    CLIENT --> RES[1 fixed resource + 12 templates]
+    CLIENT --> PROMPTS[7 prompt workflows]
     TOOLS --> STATE[Immutable accepted AppState]
     RES --> STATE
     PROMPTS --> STATE
@@ -117,11 +117,12 @@ See [Resources and URI templates](resources.md) for the complete list and rights
 
 ## Prompts
 
-The six registered prompts are:
+The seven registered prompts are:
 
 - `student_study_support`
 - `teacher_guide_draft`
 - `student_handbook_section`
+- `multigrade_lesson_plan`
 - `inferred_progression_hypothesis`
 - `administrator_alignment_review`
 - `cross_framework_comparison`

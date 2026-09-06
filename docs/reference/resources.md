@@ -25,7 +25,16 @@ The catalog resource returns the complete accepted package catalog.
 | `manifest_artifact`      | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/artifact/{artifact_name}`       | `application/octet-stream` at registration; actual approved MIME comes from artifact policy |
 | `standard`               | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}`             | `application/json`                                                                          |
 | `standard_provenance`    | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/provenance`  | `application/json`                                                                          |
+| `standard_learning_components` | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/learning-components` | `application/json`                                                                    |
+| `learning_component`     | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/learning-component/{node_id}`   | `application/json`                                                                          |
+| `learning_component_provenance` | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/learning-component/{node_id}/provenance` | `application/json`                                                          |
 | `relationship`           | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/relationship/{relationship_id}` | `application/json`                                                                          |
+
+The three learning-component templates mirror the standards pair. They duplicate
+`get_learning_component` and `get_learning_components_for_standard` deliberately: a
+resource serves clients driven by a resource browser, while the tool works everywhere.
+`learning_component_provenance` is keyed by outer node identifier rather than CASE UUID,
+because a learning component carries no CASE identity.
 
 Identifier values constructed by the server are percent-encoded as individual URI path
 segments.
@@ -79,7 +88,9 @@ The server uses a closed logical-name policy.
 | Logical name              | MIME type              | Access class      |
 |---------------------------|------------------------|-------------------|
 | `validationReport`        | `application/json`     | `public_metadata` |
+| `learningComponentSummary` | `application/json`    | `public_metadata` |
 | `unresolvedItems`         | `application/json`     | `full_text`       |
+| `learningComponentDedupGroups` | `application/json` | `full_text`       |
 | `academicStandardsBundle` | `application/json`     | `bulk_content`    |
 | `entityProvenance`        | `application/json`     | `bulk_content`    |
 | `nodes`                   | `application/x-ndjson` | `bulk_content`    |
@@ -87,6 +98,8 @@ The server uses a closed logical-name policy.
 | `relationshipsHasChild`   | `application/x-ndjson` | `bulk_content`    |
 | `standardsFramework`      | `application/json`     | `bulk_content`    |
 | `standardsFrameworkItems` | `application/x-ndjson` | `bulk_content`    |
+| `learningComponentsBundle` | `application/json`    | `bulk_content`    |
+| `learningComponentProvenance` | `application/json` | `bulk_content`    |
 
 `full_text` requires reviewed rights plus `allowFullText`.
 
