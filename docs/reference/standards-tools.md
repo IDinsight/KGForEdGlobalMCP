@@ -296,4 +296,4 @@ can truncate at `max_nodes`; root-path enumeration can truncate at `max_paths` o
 
 ---
 
-**Next:** [Comparison tool](comparison-tool.md)
+**Next:** [Learning component tools](learning-component-tools.md)
