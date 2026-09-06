@@ -29,6 +29,7 @@ from fastmcp.prompts import Prompt
 # Package Library
 from kgfegmcp.mcp.prompts.administrator import administrator_alignment_review
 from kgfegmcp.mcp.prompts.comparison import cross_framework_comparison
+from kgfegmcp.mcp.prompts.multigrade import multigrade_lesson_plan
 from kgfegmcp.mcp.prompts.progression import inferred_progression_hypothesis
 from kgfegmcp.mcp.prompts.student import (
     student_handbook_section,
@@ -116,6 +117,14 @@ def register_prompt_components(server: FastMCP[dict[str, AppState]]) -> None:
         name="student_handbook_section",
         server=server,
         title="Student Handbook Section",
+        workflow_kind="role_oriented",
+    )
+    _register_prompt(
+        description=PROMPT_DESCRIPTIONS[PromptName.MULTIGRADE_LESSON_PLAN],
+        function=multigrade_lesson_plan,
+        name="multigrade_lesson_plan",
+        server=server,
+        title="Multigrade Lesson Plan",
         workflow_kind="role_oriented",
     )
     _register_prompt(

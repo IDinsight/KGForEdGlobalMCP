@@ -58,6 +58,7 @@ from kgfegmcp.prompts.models import (
     CrossFrameworkComparisonGuidance,
     FrameworkPromptConfig,
     InferredProgressionHypothesisGuidance,
+    MultigradeLessonPlanGuidance,
     LoadedPromptConfig,
     MultiContextPromptRenderResult,
     ProgressionDirection,
@@ -311,6 +312,7 @@ def _prompt_overlay(  # pylint: disable=R0911
     AdministratorAlignmentReviewGuidance
     | CrossFrameworkComparisonGuidance
     | InferredProgressionHypothesisGuidance
+    | MultigradeLessonPlanGuidance
     | StudentHandbookSectionGuidance
     | StudentStudySupportGuidance
     | TeacherGuideDraftGuidance
@@ -328,8 +330,9 @@ def _prompt_overlay(  # pylint: disable=R0911
     Returns
     -------
     AdministratorAlignmentReviewGuidance | CrossFrameworkComparisonGuidance |
-    InferredProgressionHypothesisGuidance | StudentHandbookSectionGuidance |
-    StudentStudySupportGuidance | TeacherGuideDraftGuidance | None
+    InferredProgressionHypothesisGuidance | MultigradeLessonPlanGuidance |
+    StudentHandbookSectionGuidance | StudentStudySupportGuidance |
+    TeacherGuideDraftGuidance | None
         Matching immutable prompt-specific guidance aggregate, or ``None``.
     """
 
@@ -344,6 +347,9 @@ def _prompt_overlay(  # pylint: disable=R0911
 
     if prompt_name is PromptName.INFERRED_PROGRESSION_HYPOTHESIS:
         return config.prompts.inferred_progression_hypothesis
+
+    if prompt_name is PromptName.MULTIGRADE_LESSON_PLAN:
+        return config.prompts.multigrade_lesson_plan
 
     if prompt_name is PromptName.STUDENT_HANDBOOK_SECTION:
         return config.prompts.student_handbook_section
@@ -1692,6 +1698,131 @@ class PromptService:
                 "3. Treat excluded candidates only as deterministic exclusion "
                 "evidence; do not reintroduce them into the progression hypothesis.",
             )
+        )
+        return self._render(
+            context=context,
+            evidence_workflow=evidence_workflow,
+            output_contract=output_contract,
+            prompt_name=prompt_name,
+            request_data=request_data,
+        )
+
+    def multigrade_lesson_plan(
+        self,
+        *,
+        focus_mode: PromptFocusMode,
+        framework_id: FrameworkId,
+        grades_in_room: tuple[PromptGradeOrStage, ...],
+        learner_context: str | None,
+        lesson_duration_minutes: int,
+        local_context: str | None,
+        output_language: LanguageTag | None,
+        snapshot_id: SnapshotId | None,
+        topic_or_standard: PromptFocusText,
+    ) -> PromptRenderResult:
+        """Render the experimental multi-grade classroom planning workflow.
+
+        The workflow separates the shared teach-together core from grade-specific work
+        by reading which learning components support standards in more than one of the
+        requested grades. It has no source-only fallback, so a package without learning
+        components is refused rather than degraded to a mono-grade plan.
+
+        Parameters
+        ----------
+        focus_mode
+            Topic, code, or exact identifier namespace selected by the caller.
+        framework_id
+            Exact conceptual framework identifier.
+        grades_in_room
+            Local or normalized grades sharing the classroom.
+        learner_context
+            Optional untrusted description of the learners.
+        lesson_duration_minutes
+            Planned lesson length.
+        local_context
+            Optional untrusted description of the setting.
+        output_language
+            Optional requested output language tag.
+        snapshot_id
+            Optional exact snapshot; omission uses unique-current routing.
+        topic_or_standard
+            Topic text, statement code, or exact identifier value.
+
+        Returns
+        -------
+        PromptRenderResult
+            Complete deterministic client-side workflow.
+        """
+
+        prompt_name = PromptName.MULTIGRADE_LESSON_PLAN
+        context = self._select_context(
+            focus_mode=focus_mode,
+            framework_id=framework_id,
+            prompt_name=prompt_name,
+            snapshot_id=snapshot_id,
+        )
+        loaded_package = self.catalog_service.get_loaded_package(
+            framework_id=context.package.package_identity.framework_id,
+            graph_type=context.package.package_identity.graph_type,
+            snapshot_id=context.package.package_identity.snapshot_id,
+        )
+        self.policy.require_learning_components(
+            graph_package_id=context.package.package_identity.graph_package_id,
+            learning_component_count=len(loaded_package.learning_component_nodes),
+            prompt_name=prompt_name,
+        )
+        grades = tuple(str(grade) for grade in grades_in_room)
+        request_data = {
+            "focusMode": focus_mode.value,
+            "frameworkId": str(framework_id),
+            "gradesInRoom": list(grades),
+            "learnerContext": learner_context,
+            "lessonDurationMinutes": lesson_duration_minutes,
+            "localContext": local_context,
+            "outputLanguage": str(output_language) if output_language else None,
+            "requestedSnapshotId": str(snapshot_id) if snapshot_id else None,
+            "topicOrStandard": str(topic_or_standard),
+        }
+        grade_list = ", ".join(grades)
+        evidence_workflow = "\n".join(
+            (
+                _render_focus_workflow(
+                    context=context,
+                    focus_mode=focus_mode,
+                    grade_or_stage=grades[0],
+                    topic_or_standard=topic_or_standard,
+                ),
+                "",
+                f"Repeat the resolution above for each remaining grade in the room "
+                f"({grade_list}), keeping the same framework and snapshot.",
+                "For every standard you resolved, call "
+                "get_learning_components_for_standard to obtain the learning components "
+                "it decomposes to. Each component reports supportedStandards, listing "
+                "every standard it supports together with that standard's grade levels.",
+                "A component whose supportedStandards span more than one grade in the "
+                "room is a candidate shared core. A component supporting only one of "
+                "those grades is that grade's differentiated work.",
+                "Call get_learning_component for any component you intend to build on, "
+                "to read its hierarchy placement and support confidence before using it.",
+            )
+        )
+        output_contract = (
+            "Cite the exact framework, snapshot, graph-package, standard, and learning-"
+            "component identifiers used.",
+            f"Report the shared teach-together core across grades {grade_list}, naming "
+            "the learning components it rests on and the standards each supports.",
+            "Report grade-specific differentiated work separately for each grade, and "
+            "state explicitly when a grade has no shared core with the others.",
+            "Label every learning component [GENERATED-EVIDENCE / llm_inferred] and "
+            "state its support confidence. Label the plan itself "
+            "[LLM-INFERRED / GENERATED].",
+            f"Draft a {lesson_duration_minutes}-minute sequence that teaches the shared "
+            "core once to the whole room before grade-specific work begins.",
+            "State that a shared core rests on a model's judgement that two standards "
+            "decompose to the same component, not on a curriculum-authored equivalence "
+            "between those grades.",
+            "End with attribution, profile identity, required disclosures, generated-"
+            "content labels, and any uncertainty or unavailable evidence.",
         )
         return self._render(
             context=context,

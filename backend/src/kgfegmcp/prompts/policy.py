@@ -28,6 +28,7 @@ from kgfegmcp.domain.enums import (
     DerivativeGenerationPolicy,
     RightsReviewStatus,
 )
+from kgfegmcp.domain.identifiers import GraphPackageId
 from kgfegmcp.domain.models import RightsPolicy
 from kgfegmcp.errors import (
     CapabilityUnavailableError,
@@ -185,6 +186,53 @@ class PromptPolicy:
                     "unchanged."
                 ),
             )
+
+    @staticmethod
+    def require_learning_components(
+        *,
+        graph_package_id: GraphPackageId,
+        learning_component_count: int,
+        prompt_name: PromptName,
+    ) -> None:
+        """Require the routed package to contain learning components.
+
+        A workflow built on learning components has no source-only fallback. Rendering
+        it against a package without them would silently produce a mono-grade plan
+        under a multi-grade heading.
+
+        Parameters
+        ----------
+        graph_package_id
+            Exact accepted graph-package identifier.
+        learning_component_count
+            Number of learning components in the routed package.
+        prompt_name
+            Exact prompt workflow being rendered.
+
+        Raises
+        ------
+        CapabilityUnavailableError
+            If the routed package contains no learning components.
+        """
+
+        if learning_component_count > 0:
+            return
+
+        raise CapabilityUnavailableError(
+            details={
+                "graph_package_id": str(graph_package_id),
+                "learning_components": learning_component_count,
+                "prompt_name": prompt_name.value,
+            },
+            message=(
+                f"Prompt '{prompt_name.value}' requires learning components, and the "
+                f"selected package contains none."
+            ),
+            recovery_hint=(
+                "Reopen the prompt against a framework whose package provides learning "
+                "components. get_capabilities reports the count for every package."
+            ),
+        )
 
     def require_rendered_size(self, message: str) -> None:
         """Require the final deterministic prompt to fit the approved byte limit.
