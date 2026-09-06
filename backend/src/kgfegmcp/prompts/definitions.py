@@ -67,6 +67,10 @@ COMMON_EVIDENCE_STATUS_RULES: Final[tuple[str, ...]] = (
     "normalization results.",
     "Use [RETRIEVAL-CANDIDATE] for search hits or possible correspondences that have "
     "not been established as official.",
+    "Use [GENERATED-EVIDENCE / llm_inferred] for learning components and any other "
+    "content the server supplies that a model produced. It carries provenance, source "
+    "page references, and a confidence score, but the curriculum's publisher did not "
+    "author it.",
     "Use [LLM-INFERRED / GENERATED] for explanations, examples, activities, questions, "
     "rubrics, hypotheses, and other client-model composition.",
 )
@@ -81,6 +85,15 @@ COMMON_UNSUPPORTED_CLAIMS: Final[tuple[str, ...]] = (
     "Normalized grades and subjects are retrieval aids; they are not equivalence claims.",
     "A standards statement does not by itself establish learner mastery.",
     "Preserve unresolved and ambiguous evidence as unresolved or ambiguous.",
+    "A learning component is a model's decomposition of a standard, not an official "
+    "sub-objective. The curriculum's publisher did not author it.",
+    "A supports edge is a derivation link, not a curriculum-authored relationship.",
+    "The absence of a learning component does not mean the standard lacks that "
+    "content; decomposition failures are recorded, not filled in.",
+    "Learning component identity is pipeline-relative and may change if the generation "
+    "configuration changes.",
+    "Components appearing under standards in different grades were merged by a model's "
+    "same-component judgement, not by a curriculum-authored equivalence.",
 )
 
 COMPARISON_DISCLOSURES: Final[tuple[str, ...]] = (
@@ -198,6 +211,40 @@ PROGRESSION_DISCLOSURE: Final[str] = (
     "progression edge."
 )
 
+MULTIGRADE_LESSON_PLAN_DEFAULT_GUIDANCE: Final[
+    tuple[tuple[str, str, tuple[str, ...]], ...]
+] = (
+    (
+        "classroom_management_guidance",
+        "Classroom management guidance",
+        (
+            "Sequence the lesson so the shared core is taught once to the whole room "
+            "before grade-specific work begins.",
+            "State what each grade group does while the teacher is with another group.",
+        ),
+    ),
+    (
+        "differentiation_guidance",
+        "Differentiation guidance",
+        (
+            "Treat learning components supporting a single grade as that grade's "
+            "differentiated work.",
+            "Do not raise or lower a grade's expectation to make the lesson simpler to "
+            "run; keep each grade's own standards intact.",
+        ),
+    ),
+    (
+        "shared_core_guidance",
+        "Shared core guidance",
+        (
+            "Treat a learning component supporting standards in several of the "
+            "requested grades as the candidate teach-together core.",
+            "State that the shared core rests on a model's judgement that two standards "
+            "decompose to the same component, not on a curriculum-authored equivalence.",
+        ),
+    ),
+)
+
 PROMPT_DESCRIPTIONS: Final[dict[PromptName, str]] = {
     PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW: (
         "Guide an evidence-grounded cross-framework administrative review without "
@@ -210,6 +257,11 @@ PROMPT_DESCRIPTIONS: Final[dict[PromptName, str]] = {
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS: (
         "Guide an evidence-linked, explicitly LLM-inferred likely progression review "
         "within one accepted framework."
+    ),
+    PromptName.MULTIGRADE_LESSON_PLAN: (
+        "Guide an evidence-grounded lesson plan for a classroom holding several grades "
+        "at once, separating the shared teach-together core from grade-specific work "
+        "using the learning components each grade's standards decompose to."
     ),
     PromptName.STUDENT_HANDBOOK_SECTION: (
         "Guide a student-facing handbook section grounded in one accepted framework "
@@ -386,6 +438,7 @@ PROMPT_SPECIFIC_DEFAULTS: Final[
         CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE
     ),
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS: PROGRESSION_DEFAULT_GUIDANCE,
+    PromptName.MULTIGRADE_LESSON_PLAN: MULTIGRADE_LESSON_PLAN_DEFAULT_GUIDANCE,
     PromptName.STUDENT_HANDBOOK_SECTION: STUDENT_HANDBOOK_DEFAULT_GUIDANCE,
     PromptName.STUDENT_STUDY_SUPPORT: STUDENT_STUDY_DEFAULT_GUIDANCE,
     PromptName.TEACHER_GUIDE_DRAFT: TEACHER_GUIDE_DEFAULT_GUIDANCE,
