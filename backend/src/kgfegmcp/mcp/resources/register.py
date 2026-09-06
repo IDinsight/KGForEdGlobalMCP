@@ -37,7 +37,10 @@ from kgfegmcp.resources.uri import (
     FRAMEWORK_URI_TEMPLATE,
     INTERPRETATION_PROFILE_URI_TEMPLATE,
     MANIFEST_URI_TEMPLATE,
+    LEARNING_COMPONENT_PROVENANCE_URI_TEMPLATE,
+    LEARNING_COMPONENT_URI_TEMPLATE,
     RELATIONSHIP_URI_TEMPLATE,
+    STANDARD_LEARNING_COMPONENTS_URI_TEMPLATE,
     STANDARD_PROVENANCE_URI_TEMPLATE,
     STANDARD_URI_TEMPLATE,
     UNRESOLVED_URI_TEMPLATE,
@@ -346,6 +349,105 @@ async def read_validation(
         return build_resource_result(document)
 
 
+async def read_learning_component(
+    framework_id: FrameworkId,
+    snapshot_id: SnapshotId,
+    node_id: NodeId,
+    context: Context,
+) -> ResourceResult:
+    """Return one exact learning component addressed by outer node ID.
+
+    Parameters
+    ----------
+    framework_id
+        Framework family identifier segment.
+    snapshot_id
+        Snapshot identifier segment.
+    node_id
+        Exact outer node identifier segment.
+    context
+        Injected FastMCP request context containing immutable application state.
+
+    Returns
+    -------
+    ResourceResult
+        Deterministic component content and source identity evidence.
+    """
+
+    with resource_error_boundary("read_learning_component_resource"):
+        state = get_resource_state(context)
+        document = state.resource_service.learning_component(
+            framework_id=framework_id, node_id=node_id, snapshot_id=snapshot_id
+        )
+        return build_resource_result(document)
+
+
+async def read_learning_component_provenance(
+    framework_id: FrameworkId,
+    snapshot_id: SnapshotId,
+    node_id: NodeId,
+    context: Context,
+) -> ResourceResult:
+    """Return one learning component's detailed provenance entry.
+
+    Parameters
+    ----------
+    framework_id
+        Framework family identifier segment.
+    snapshot_id
+        Snapshot identifier segment.
+    node_id
+        Exact outer node identifier segment.
+    context
+        Injected FastMCP request context containing immutable application state.
+
+    Returns
+    -------
+    ResourceResult
+        Deterministic provenance content and source identity evidence.
+    """
+
+    with resource_error_boundary("read_learning_component_provenance_resource"):
+        state = get_resource_state(context)
+        document = state.resource_service.learning_component_provenance(
+            framework_id=framework_id, node_id=node_id, snapshot_id=snapshot_id
+        )
+        return build_resource_result(document)
+
+
+async def read_standard_learning_components(
+    framework_id: FrameworkId,
+    snapshot_id: SnapshotId,
+    node_id: NodeId,
+    context: Context,
+) -> ResourceResult:
+    """Return every learning component supporting one exact standard.
+
+    Parameters
+    ----------
+    framework_id
+        Framework family identifier segment.
+    snapshot_id
+        Snapshot identifier segment.
+    node_id
+        Exact outer node identifier segment of the standard.
+    context
+        Injected FastMCP request context containing immutable application state.
+
+    Returns
+    -------
+    ResourceResult
+        Deterministic supporting-component content and source identity evidence.
+    """
+
+    with resource_error_boundary("read_standard_learning_components_resource"):
+        state = get_resource_state(context)
+        document = state.resource_service.standard_learning_components(
+            framework_id=framework_id, node_id=node_id, snapshot_id=snapshot_id
+        )
+        return build_resource_result(document)
+
+
 def register_resource_components(server: FastMCP[dict[str, AppState]]) -> None:
     """Register the complete approved fixed-resource and template surface.
 
@@ -414,6 +516,29 @@ def register_resource_components(server: FastMCP[dict[str, AppState]]) -> None:
         title="Standard",
         uri=STANDARD_URI_TEMPLATE,
     )(read_standard)
+    server.resource(
+        description="Return one exact learning component with its supported-standard "
+        "placements.",
+        mime_type="application/json",
+        name="learning_component",
+        title="Learning Component",
+        uri=LEARNING_COMPONENT_URI_TEMPLATE,
+    )(read_learning_component)
+    server.resource(
+        description="Return one learning component's source pages, segments, and "
+        "originating standards.",
+        mime_type="application/json",
+        name="learning_component_provenance",
+        title="Learning Component Provenance",
+        uri=LEARNING_COMPONENT_PROVENANCE_URI_TEMPLATE,
+    )(read_learning_component_provenance)
+    server.resource(
+        description="Return every learning component supporting one exact standard.",
+        mime_type="application/json",
+        name="standard_learning_components",
+        title="Standard Learning Components",
+        uri=STANDARD_LEARNING_COMPONENTS_URI_TEMPLATE,
+    )(read_standard_learning_components)
     server.resource(
         description="Return one exact standard's selected detailed provenance entry.",
         mime_type="application/json",

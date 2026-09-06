@@ -49,6 +49,7 @@ from kgfegmcp.errors import (
 from kgfegmcp.packages.checksums import calculate_bytes_sha256
 from kgfegmcp.packages.models import DeclaredArtifactReference, LoadedGraphPackage
 from kgfegmcp.resources.models import (
+    LearningComponentProvenanceResult,
     ResourceDocument,
     ResourceKind,
     ResourceMetadata,
@@ -63,14 +64,23 @@ from kgfegmcp.resources.uri import (
     artifact_uri,
     framework_uri,
     interpretation_profile_uri,
+    learning_component_provenance_uri,
+    learning_component_uri,
     manifest_uri,
     relationship_uri,
+    standard_learning_components_uri,
     standard_provenance_uri,
     standard_uri,
     unresolved_uri,
     validation_uri,
 )
-from kgfegmcp.services.models import GetStandardRequest, NodeIdStandardIdentifier
+from kgfegmcp.services.learning_components import LearningComponentService
+from kgfegmcp.services.models import (
+    GetLearningComponentRequest,
+    GetLearningComponentsForStandardRequest,
+    GetStandardRequest,
+    NodeIdStandardIdentifier,
+)
 from kgfegmcp.services.standards import StandardsService
 
 
@@ -195,6 +205,7 @@ class ResourceService:
     """Resolve and assemble approved resources from one accepted catalog runtime."""
 
     catalog_service: CatalogService
+    learning_component_service: LearningComponentService
     policy: ResourcePolicy
     repository: ResourceRepository
     standards_service: StandardsService
@@ -220,6 +231,9 @@ class ResourceService:
             self.standards_service.framework_service.catalog_service
             is not self.catalog_service
         ):
+            raise ValueError("ResourceService dependencies must share CatalogService.")
+
+        if self.learning_component_service.catalog_service is not self.catalog_service:
             raise ValueError("ResourceService dependencies must share CatalogService.")
 
     def _available_artifact_names(
@@ -936,6 +950,207 @@ class ResourceService:
                 ),
             ),
             value=relationship,
+        )
+
+    def learning_component(
+        self, *, framework_id: FrameworkId, node_id: NodeId, snapshot_id: SnapshotId
+    ) -> ResourceDocument:
+        """Return one exact outer-node-ID learning component as deterministic JSON.
+
+        Parameters
+        ----------
+        framework_id
+            Framework identifier.
+        node_id
+            Exact outer node identifier.
+        snapshot_id
+            Snapshot identifier.
+
+        Returns
+        -------
+        ResourceDocument
+            Complete learning-component document with content and metadata.
+        """
+
+        runtime = self._package_runtime(
+            framework_id=framework_id,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            snapshot_id=snapshot_id,
+        )
+        self.policy.require_resource_access(
+            resource_kind=ResourceKind.LEARNING_COMPONENT,
+            rights=runtime.catalog_package.rights,
+        )
+        result = self.learning_component_service.get_learning_component(
+            GetLearningComponentRequest(
+                framework_id=framework_id,
+                graph_type=GraphType.ACADEMIC_STANDARDS,
+                node_id=node_id,
+                snapshot_id=snapshot_id,
+            )
+        )
+        reference = self.repository.artifact_reference(
+            loaded_package=runtime.loaded_package, logical_name="nodes"
+        )
+        graph_package_id = runtime.catalog_package.package_identity.graph_package_id
+        return self._build_derived_document(
+            canonical_uri=learning_component_uri(
+                framework_id=framework_id, node_id=node_id, snapshot_id=snapshot_id
+            ),
+            package=runtime.catalog_package,
+            resource_kind=ResourceKind.LEARNING_COMPONENT,
+            source_artifacts=(
+                _source_evidence(
+                    graph_package_id=graph_package_id, reference=reference
+                ),
+            ),
+            value=result,
+        )
+
+    def learning_component_provenance(
+        self, *, framework_id: FrameworkId, node_id: NodeId, snapshot_id: SnapshotId
+    ) -> ResourceDocument:
+        """Return one learning component's exact detailed provenance entry.
+
+        The entry records the source pages, segments, and standards the component was
+        decomposed from. It is the audit trail for generated content, and it is keyed
+        by outer node identifier because a component carries no CASE identity.
+
+        Parameters
+        ----------
+        framework_id
+            Framework identifier.
+        node_id
+            Exact outer node identifier of the learning component.
+        snapshot_id
+            Snapshot identifier.
+
+        Returns
+        -------
+        ResourceDocument
+            Complete provenance document with content and metadata.
+
+        Raises
+        ------
+        ResourceNotFoundError
+            If the accepted provenance artifact has no entry for the component.
+        """
+
+        runtime = self._package_runtime(
+            framework_id=framework_id,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            snapshot_id=snapshot_id,
+        )
+        self.policy.require_resource_access(
+            resource_kind=ResourceKind.LEARNING_COMPONENT_PROVENANCE,
+            rights=runtime.catalog_package.rights,
+        )
+        self.learning_component_service.get_learning_component(
+            GetLearningComponentRequest(
+                framework_id=framework_id,
+                graph_type=GraphType.ACADEMIC_STANDARDS,
+                node_id=node_id,
+                snapshot_id=snapshot_id,
+            )
+        )
+        content, reference = self.repository.read_artifact(
+            loaded_package=runtime.loaded_package,
+            logical_name="learningComponentProvenance",
+        )
+        document = _parse_json_object(content)
+        components = document.get("learning_components")
+
+        if not isinstance(components, dict):
+            raise ResourceNotFoundError(
+                message=(
+                    "The accepted learning component provenance artifact has no "
+                    "component index."
+                )
+            )
+
+        provenance = components.get(str(node_id))
+
+        if not isinstance(provenance, dict):
+            raise ResourceNotFoundError(
+                details={"node_id": str(node_id)},
+                message=(
+                    "The requested learning component provenance entry is unavailable."
+                ),
+            )
+
+        result = LearningComponentProvenanceResult(
+            node_id=node_id, provenance=provenance
+        )
+        graph_package_id = runtime.catalog_package.package_identity.graph_package_id
+        return self._build_derived_document(
+            canonical_uri=learning_component_provenance_uri(
+                framework_id=framework_id, node_id=node_id, snapshot_id=snapshot_id
+            ),
+            package=runtime.catalog_package,
+            resource_kind=ResourceKind.LEARNING_COMPONENT_PROVENANCE,
+            source_artifacts=(
+                _source_evidence(
+                    graph_package_id=graph_package_id, reference=reference
+                ),
+            ),
+            value=result,
+        )
+
+    def standard_learning_components(
+        self, *, framework_id: FrameworkId, node_id: NodeId, snapshot_id: SnapshotId
+    ) -> ResourceDocument:
+        """Return every learning component supporting one exact standard.
+
+        Parameters
+        ----------
+        framework_id
+            Framework identifier.
+        node_id
+            Exact outer node identifier of the standard.
+        snapshot_id
+            Snapshot identifier.
+
+        Returns
+        -------
+        ResourceDocument
+            Complete supporting-component document with content and metadata.
+        """
+
+        runtime = self._package_runtime(
+            framework_id=framework_id,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            snapshot_id=snapshot_id,
+        )
+        self.policy.require_resource_access(
+            resource_kind=ResourceKind.STANDARD_LEARNING_COMPONENTS,
+            rights=runtime.catalog_package.rights,
+        )
+        result = self.learning_component_service.get_learning_components_for_standard(
+            GetLearningComponentsForStandardRequest(
+                framework_id=framework_id,
+                graph_type=GraphType.ACADEMIC_STANDARDS,
+                identifier=NodeIdStandardIdentifier(
+                    identifier_type="node_id", node_id=node_id
+                ),
+                snapshot_id=snapshot_id,
+            )
+        )
+        reference = self.repository.artifact_reference(
+            loaded_package=runtime.loaded_package, logical_name="relationships"
+        )
+        graph_package_id = runtime.catalog_package.package_identity.graph_package_id
+        return self._build_derived_document(
+            canonical_uri=standard_learning_components_uri(
+                framework_id=framework_id, node_id=node_id, snapshot_id=snapshot_id
+            ),
+            package=runtime.catalog_package,
+            resource_kind=ResourceKind.STANDARD_LEARNING_COMPONENTS,
+            source_artifacts=(
+                _source_evidence(
+                    graph_package_id=graph_package_id, reference=reference
+                ),
+            ),
+            value=result,
         )
 
     def standard(

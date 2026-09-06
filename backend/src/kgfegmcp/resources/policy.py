@@ -263,8 +263,11 @@ class ResourcePolicy:
         self._require_full_text(rights)
 
         if resource_kind in {
+            ResourceKind.LEARNING_COMPONENT,
+            ResourceKind.LEARNING_COMPONENT_PROVENANCE,
             ResourceKind.RELATIONSHIP,
             ResourceKind.STANDARD,
+            ResourceKind.STANDARD_LEARNING_COMPONENTS,
             ResourceKind.STANDARD_PROVENANCE,
         }:
             self._require_standard(rights)
