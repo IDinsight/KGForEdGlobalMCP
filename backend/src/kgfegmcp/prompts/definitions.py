@@ -68,9 +68,11 @@ COMMON_EVIDENCE_STATUS_RULES: Final[tuple[str, ...]] = (
     "Use [RETRIEVAL-CANDIDATE] for search hits or possible correspondences that have "
     "not been established as official.",
     "Use [GENERATED-EVIDENCE / llm_inferred] for learning components and any other "
-    "content the server supplies that a model produced. It carries provenance, source "
-    "page references, and a confidence score, but the curriculum's publisher did not "
-    "author it.",
+    "content the server supplies that a model produced. Its support confidence is "
+    "reported inline; its source page references live in the linked "
+    "learning_component_provenance resource, which a client may need to attach. Do not "
+    "state that pages are unrecorded when that link is present. The curriculum's "
+    "publisher did not author the component.",
     "Use [LLM-INFERRED / GENERATED] for explanations, examples, activities, questions, "
     "rubrics, hypotheses, and other client-model composition.",
 )
@@ -209,6 +211,18 @@ PROGRESSION_DISCLOSURE: Final[str] = (
     "This is an LLM-inferred likely progression based on standards text, grade "
     "context, and curriculum-specific guidance. It is not a source-authored "
     "progression edge."
+)
+
+LEARNING_COMPONENT_GRAIN_DISCLOSURE: Final[str] = (
+    "Learning components from different frameworks were generated independently, "
+    "possibly under different decomposition instructions, dedup scopes, and pipeline "
+    "versions. Similar wording does not indicate comparable grain."
+)
+
+LEARNING_COMPONENT_INFERENCE_DISCLOSURE: Final[str] = (
+    "A conclusion built on learning components is inference on generated content: "
+    "the component is a model's decomposition of a standard, and this reading of it "
+    "is a further model judgement."
 )
 
 MULTIGRADE_LESSON_PLAN_DEFAULT_GUIDANCE: Final[
@@ -450,6 +464,8 @@ __all__ = [
     "COMMON_UNSUPPORTED_CLAIMS",
     "COMPARISON_DISCLOSURES",
     "CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE",
+    "LEARNING_COMPONENT_GRAIN_DISCLOSURE",
+    "LEARNING_COMPONENT_INFERENCE_DISCLOSURE",
     "LEXICAL_QUERY_EXPANSION_RULES",
     "PROGRESSION_DISCLOSURE",
     "PROMPT_DESCRIPTIONS",

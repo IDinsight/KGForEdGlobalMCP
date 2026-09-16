@@ -56,6 +56,18 @@ case_identifier_uri
 
 `output_language`, when supplied, uses the server's validated language-tag type.
 
+### Learning components in the single-framework prompts
+
+`student_study_support`, `teacher_guide_draft`, and `student_handbook_section` end their
+evidence workflow with a step that calls `get_learning_components_for_standard` for the
+resolved standard. The host uses the returned components as the package's generated
+decomposition of the standard instead of inferring sub-skills of its own, labels each
+`[GENERATED-EVIDENCE / llm_inferred]` with its support confidence, and reports where a
+component also supports a standard in another grade. A package with no learning
+components gets a stop line instead of the call, and the prompt still renders.
+
+`multigrade_lesson_plan` requires components and is described below.
+
 ## `student_study_support`
 
 Required:
@@ -193,6 +205,12 @@ for example:
 
 Do not enter comma-separated prose in place of the JSON array.
 
+The workflow does not retrieve learning components itself. When the host uses them as
+progression atoms, the output contract requires them to be labelled
+`[GENERATED-EVIDENCE / llm_inferred]` and carries a disclosure, repeated where they are
+used and again at the end, that a conclusion built on components is inference on
+generated content.
+
 ## `administrator_alignment_review`
 
 Required:
@@ -216,7 +234,10 @@ Optional:
 | `target_snapshot_id`    | null                                     |
 
 The rendered workflow directs the host to use `compare_framework_evidence`. Retrieved
-similarity remains candidate evidence, not an accepted alignment.
+similarity remains candidate evidence, not an accepted alignment. Learning components
+may appear in the comparison matrix as `[GENERATED-EVIDENCE / llm_inferred]` rows beside
+source-asserted rows, under the same inference disclosure as the progression prompt, so
+the human reviewer sees the tier next to each claim.
 
 ## `cross_framework_comparison`
 
@@ -247,6 +268,12 @@ For example:
 
 Snapshot IDs are optional, with at most one selected snapshot per framework. Omission
 uses unique-current routing.
+
+Learning components may be compared across frameworks through
+`search_learning_components`. The output contract requires a grain disclosure: components
+from different frameworks were generated independently, possibly under different
+decomposition instructions, dedup scopes, and pipeline versions, so similar wording does
+not indicate comparable grain.
 
 ## Framework-local prompt overlays
 

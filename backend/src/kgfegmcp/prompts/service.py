@@ -41,6 +41,8 @@ from kgfegmcp.prompts.definitions import (
     COMMON_EVIDENCE_STATUS_RULES,
     COMMON_UNSUPPORTED_CLAIMS,
     COMPARISON_DISCLOSURES,
+    LEARNING_COMPONENT_GRAIN_DISCLOSURE,
+    LEARNING_COMPONENT_INFERENCE_DISCLOSURE,
     LEXICAL_QUERY_EXPANSION_RULES,
     PROGRESSION_DISCLOSURE,
     PROMPT_DESCRIPTIONS,
@@ -612,6 +614,57 @@ def _render_focus_workflow(
     return "\n".join(lines)
 
 
+def _render_learning_component_step(
+    *, context: _SelectedPromptContext, learning_component_count: int, purpose: str
+) -> str:
+    """Render the step that reads a resolved standard's learning components.
+
+    Parameters
+    ----------
+    context
+        Exact selected package and profile evidence.
+    learning_component_count
+        Number of learning components the selected package carries.
+    purpose
+        Prompt-specific sentence saying how the components are to be used.
+
+    Returns
+    -------
+    str
+        Deterministic step text; a package without components gets a stop line instead.
+    """
+
+    if learning_component_count == 0:
+        return (
+            "7. This package carries no learning components. Work from the standard "
+            "alone and label any decomposition you write [LLM-INFERRED / GENERATED]."
+        )
+
+    identity = context.package.package_identity
+    components_call = {
+        "frameworkId": str(identity.framework_id),
+        "graphType": GraphType.ACADEMIC_STANDARDS.value,
+        "identifier": {"identifierType": "node_id", "nodeId": "<selected-node-id>"},
+        "snapshotId": str(identity.snapshot_id),
+    }
+    return "\n".join(
+        (
+            "7. Call get_learning_components_for_standard for the resolved standard "
+            "with this top-level shape:",
+            _canonical_json(components_call),
+            "Replace only <selected-node-id>. The returned components are the "
+            "package's generated decomposition of the standard; use them instead of "
+            "inferring sub-skills of your own. Each component reports "
+            "supportedStandards with grade levels, so a component that also supports "
+            "a standard in another grade recurs there.",
+            purpose,
+            "Call get_learning_component only for a component whose full hierarchy "
+            "placement you need. If the standard has no components, say so and "
+            "continue from the standard alone.",
+        )
+    )
+
+
 def _render_guidance(
     *, config: LoadedPromptConfig | None, prompt_name: PromptName
 ) -> str:
@@ -941,6 +994,28 @@ class PromptService:
             prompt_version=PROMPT_VERSION,
             snapshot_id=identity.snapshot_id,
         )
+
+    def _learning_component_count(self, context: _SelectedPromptContext) -> int:
+        """Return how many learning components the selected package carries.
+
+        Parameters
+        ----------
+        context
+            Exact selected package and profile evidence.
+
+        Returns
+        -------
+        int
+            Count of learning-component nodes in the loaded package.
+        """
+
+        identity = context.package.package_identity
+        loaded_package = self.catalog_service.get_loaded_package(
+            framework_id=identity.framework_id,
+            graph_type=identity.graph_type,
+            snapshot_id=identity.snapshot_id,
+        )
+        return len(loaded_package.learning_component_nodes)
 
     def _render_multi_context(
         self,
@@ -1470,6 +1545,10 @@ class PromptService:
             "comparative conclusion [LLM-INFERRED / GENERATED].",
             "Do not create, persist, recommend as official, or assert an alignment, "
             "mapping, equivalence, prerequisite, or progression.",
+            "Learning components may enter the comparison matrix as [GENERATED-EVIDENCE "
+            "/ llm_inferred] rows beside source-asserted rows; repeat this disclosure "
+            "exactly, once in the matrix and once at the end: "
+            f"{LEARNING_COMPONENT_INFERENCE_DISCLOSURE}",
             "End with concrete questions requiring human review before any governance, "
             "procurement, implementation, or mapping decision.",
         )
@@ -1569,6 +1648,10 @@ class PromptService:
             "official equivalence, alignment, mastery, prerequisite, or progression.",
             "State package-local warnings, context bounds, anomalies, unresolved "
             "relationships, rights constraints, and evidence gaps explicitly.",
+            "Learning components may be compared across frameworks through "
+            "search_learning_components; label them [GENERATED-EVIDENCE / "
+            "llm_inferred] and repeat this disclosure exactly: "
+            f"{LEARNING_COMPONENT_GRAIN_DISCLOSURE}",
         )
         return self._render_multi_context(
             comparison_call=comparison_call,
@@ -1682,6 +1765,10 @@ class PromptService:
                 "progression heuristics."
             ),
             f"Repeat this disclosure exactly: {PROGRESSION_DISCLOSURE}",
+            "Learning components may serve as progression atoms through "
+            "get_learning_components_for_standard; label them [GENERATED-EVIDENCE / "
+            "llm_inferred] and repeat this disclosure exactly, once where they are "
+            f"used and once at the end: {LEARNING_COMPONENT_INFERENCE_DISCLOSURE}",
             "Do not persist a progression edge or present hierarchy, grade order, "
             "source table order, recurring terminology, or candidate rank alone as an "
             "official prerequisite relationship.",
@@ -1761,14 +1848,9 @@ class PromptService:
             prompt_name=prompt_name,
             snapshot_id=snapshot_id,
         )
-        loaded_package = self.catalog_service.get_loaded_package(
-            framework_id=context.package.package_identity.framework_id,
-            graph_type=context.package.package_identity.graph_type,
-            snapshot_id=context.package.package_identity.snapshot_id,
-        )
         self.policy.require_learning_components(
             graph_package_id=context.package.package_identity.graph_package_id,
-            learning_component_count=len(loaded_package.learning_component_nodes),
+            learning_component_count=self._learning_component_count(context),
             prompt_name=prompt_name,
         )
         grades = tuple(str(grade) for grade in grades_in_room)
@@ -1897,16 +1979,31 @@ class PromptService:
             f"Aim for approximately {target_word_count} words, but do not add unsupported "
             "claims merely to reach the target.",
             "Do not state or imply that an individual learner has mastered the standard.",
+            "Label every learning component [GENERATED-EVIDENCE / llm_inferred] with "
+            "its support confidence, and keep source wording, components, and "
+            "generated activities visibly separate.",
             "End with attribution, profile identity, required disclosures, and any "
             "uncertainty or unavailable evidence.",
         )
         return self._render(
             context=context,
-            evidence_workflow=_render_focus_workflow(
-                context=context,
-                focus_mode=focus_mode,
-                grade_or_stage=grade_or_stage,
-                topic_or_standard=topic_or_standard,
+            evidence_workflow="\n".join(
+                (
+                    _render_focus_workflow(
+                        context=context,
+                        focus_mode=focus_mode,
+                        grade_or_stage=grade_or_stage,
+                        topic_or_standard=topic_or_standard,
+                    ),
+                    _render_learning_component_step(
+                        context=context,
+                        learning_component_count=self._learning_component_count(
+                            context
+                        ),
+                        purpose="Target activities at components and state which "
+                        "components each activity covers.",
+                    ),
+                )
             ),
             output_contract=output_contract,
             prompt_name=prompt_name,
@@ -1983,16 +2080,33 @@ class PromptService:
             "scope.",
             f"Provide exactly {practice_count} generated practice items and generated "
             "answer guidance.",
+            "Label every learning component [GENERATED-EVIDENCE / llm_inferred] with "
+            "its support confidence, and keep source wording, components, and "
+            "generated practice visibly separate.",
             "End with attribution, profile identity, required disclosures, and any "
             "uncertainty or unavailable evidence.",
         )
         return self._render(
             context=context,
-            evidence_workflow=_render_focus_workflow(
-                context=context,
-                focus_mode=focus_mode,
-                grade_or_stage=grade_or_stage,
-                topic_or_standard=topic_or_standard,
+            evidence_workflow="\n".join(
+                (
+                    _render_focus_workflow(
+                        context=context,
+                        focus_mode=focus_mode,
+                        grade_or_stage=grade_or_stage,
+                        topic_or_standard=topic_or_standard,
+                    ),
+                    _render_learning_component_step(
+                        context=context,
+                        learning_component_count=self._learning_component_count(
+                            context
+                        ),
+                        purpose="Explain each component in turn and organise practice "
+                        "by component. Where a component also supports a standard in "
+                        "another grade, say so, so remediation can point at the "
+                        "earlier occurrence.",
+                    ),
+                )
             ),
             output_contract=output_contract,
             prompt_name=prompt_name,
@@ -2079,16 +2193,33 @@ class PromptService:
             "resource capability as "
             f"{str(source_roles.has_official_resources).lower()}. Never silently invent "
             "a missing source role.",
+            "Label every learning component [GENERATED-EVIDENCE / llm_inferred] with "
+            "its support confidence, and keep source wording, components, and "
+            "generated activities visibly separate.",
             "End with attribution, profile identity, required disclosures, generated-"
             "content labels, and any uncertainty or unavailable evidence.",
         )
         return self._render(
             context=context,
-            evidence_workflow=_render_focus_workflow(
-                context=context,
-                focus_mode=focus_mode,
-                grade_or_stage=grade_or_stage,
-                topic_or_standard=topic_or_standard,
+            evidence_workflow="\n".join(
+                (
+                    _render_focus_workflow(
+                        context=context,
+                        focus_mode=focus_mode,
+                        grade_or_stage=grade_or_stage,
+                        topic_or_standard=topic_or_standard,
+                    ),
+                    _render_learning_component_step(
+                        context=context,
+                        learning_component_count=self._learning_component_count(
+                            context
+                        ),
+                        purpose="Use the components as the lesson's skill steps. State "
+                        "which components also support a standard in an earlier grade, "
+                        "so the teacher knows what is revision, and which support this "
+                        "grade only.",
+                    ),
+                )
             ),
             output_contract=output_contract,
             prompt_name=prompt_name,
