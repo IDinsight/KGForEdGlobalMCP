@@ -963,7 +963,7 @@ class SearchService:
             identity = package.catalog_runtime.catalog_package.package_identity
             graph_package_id = str(identity.graph_package_id)
             availability = package.code_index.availability
-            implemented_modes = implemented_search_modes(
+            implemented_modes = implemented_learning_component_search_modes(
                 code_availability=availability,
                 prefix_available=package.code_index.allow_prefix_search,
                 text_available=(
@@ -1678,6 +1678,7 @@ def _build_supported_code_ranked_hits(
             ) not in already_matched:
                 matched_codes.append(
                     SupportedStandardReference(
+                        description=posting.node.description,
                         grade_levels=posting.node.grade_level or (),
                         node_id=posting.node.node_id,
                         statement_code=posting.authored_code,
@@ -2376,6 +2377,11 @@ def _paginate_hits(
             or state.index_set_sha256 != index_set_sha256
             or state.mode is not mode
         ):
+            groupings_clause = (
+                ""
+                if isinstance(mode, LearningComponentSearchMode)
+                else "includeGroupings value, "
+            )
             raise InvalidCursorError(
                 details={"reason": "cursor_context_mismatch"},
                 message=(
@@ -2385,7 +2391,7 @@ def _paginate_hits(
                 recovery_hint=(
                     f"Retry with the exact previous {tool_name} request. "
                     "Replace only the cursor field. Keep the query, mode, match settings, "
-                    "framework and snapshot scope, filters, includeGroupings value, "
+                    f"framework and snapshot scope, filters, {groupings_clause}"
                     "and limit unchanged. If the mismatch persists, restart pagination "
                     "without a cursor because the accepted package indexes may have "
                     "changed."
@@ -2432,7 +2438,7 @@ def _raise_code_capability_unavailable(
     *,
     code_availability: CodeAvailability,
     identity: GraphPackageIdentity,
-    implemented_modes: tuple[SearchMode, ...],
+    implemented_modes: tuple[AnySearchMode, ...],
     mode: AnySearchMode,
 ) -> None:
     """Raise a stable exact-package code capability error.
@@ -2444,9 +2450,10 @@ def _raise_code_capability_unavailable(
     identity
         Exact selected package identity.
     implemented_modes
-        Exact search modes enabled for the selected package.
+        Exact search modes enabled for the selected package on the same surface as
+        ``mode``.
     mode
-        Exact-code or code-prefix search mode.
+        Exact-code or code-prefix search mode, standards or learning-component.
 
     Raises
     ------
@@ -2458,6 +2465,11 @@ def _raise_code_capability_unavailable(
         implemented_mode.value for implemented_mode in implemented_modes
     )
     implemented_mode_text = ", ".join(implemented_mode_values) or "none"
+    capability_field = (
+        "implementedLearningComponentSearchModes"
+        if isinstance(mode, LearningComponentSearchMode)
+        else "implementedSearchModes"
+    )
     raise CapabilityUnavailableError(
         details={
             "code_availability": code_availability.value,
@@ -2471,8 +2483,8 @@ def _raise_code_capability_unavailable(
             f"in the generic tool schema is not necessarily enabled for every package."
         ),
         recovery_hint=(
-            "Inspect get_capabilities packages[].implementedSearchModes for the "
-            "selected package and retry with one of the listed modes."
+            f"Inspect get_capabilities packages[].{capability_field} for the "
+            f"selected package and retry with one of the listed modes."
         ),
     )
 
@@ -2582,6 +2594,7 @@ def _supported_standards(
         if isinstance(standard, StandardNode):
             supported.append(
                 SupportedStandardReference(
+                    description=standard.description,
                     grade_levels=standard.grade_level or (),
                     node_id=standard.node_id,
                     statement_code=standard.statement_code,

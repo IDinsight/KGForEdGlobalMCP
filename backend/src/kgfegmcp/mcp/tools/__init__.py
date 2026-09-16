@@ -49,7 +49,7 @@ READ_ONLY_TOOL_ANNOTATIONS = ToolAnnotations(
 )
 
 
-def _log_optional_link_failure(*, error: Exception, operation: str) -> None:
+def log_optional_link_failure(*, error: Exception, operation: str) -> None:
     """Log one optional link failure without exposing it through a tool result.
 
     Parameters
@@ -266,7 +266,7 @@ def catalog_resource_links() -> tuple[ResourceLink, ...]:
             ),
         )
     except Exception as error:  # pylint: disable=W0718
-        _log_optional_link_failure(error=error, operation="catalog_resource_links")
+        log_optional_link_failure(error=error, operation="catalog_resource_links")
         return ()
 
 
@@ -338,7 +338,7 @@ def framework_resource_links(
 
         return tuple(sorted(links, key=lambda link: str(link.uri)))
     except Exception as error:  # pylint: disable=W0718
-        _log_optional_link_failure(error=error, operation="framework_resource_links")
+        log_optional_link_failure(error=error, operation="framework_resource_links")
         return ()
 
 
@@ -466,7 +466,7 @@ def standard_resource_links(
     except KGFEGMCPError:
         return ()
     except Exception as error:  # pylint: disable=W0718
-        _log_optional_link_failure(
+        log_optional_link_failure(
             error=error,
             operation="standard_resource_links:" f"{identity.graph_package_id}",
         )

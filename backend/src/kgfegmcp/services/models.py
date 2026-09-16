@@ -584,6 +584,7 @@ class GetStandardResult(FrozenSchema):
 class SupportedStandardPlacement(FrozenSchema):
     """Locate one supported standard without repeating its ancestor records."""
 
+    description: str
     grade_levels: tuple[str, ...]
     hierarchy_path: tuple[str, ...]
     node_id: NodeId
@@ -793,6 +794,7 @@ class LearningComponentStatistics(FrozenSchema):
     standards_without_components: int = Field(ge=0)
     support_confidence_maximum: float | None = None
     support_confidence_minimum: float | None = None
+    supported_statement_types: tuple[str, ...]
     tag_vocabulary_size: int = Field(ge=0)
     total_learning_components: int = Field(ge=0)
     total_supports_relationships: int = Field(ge=0)

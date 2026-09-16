@@ -133,6 +133,7 @@ class LearningComponentService:
             ordered = sorted(ancestors.nodes, key=lambda item: -item.depth)
             placements.append(
                 SupportedStandardPlacement(
+                    description=entry.standard.description,
                     grade_levels=entry.standard.grade_level or (),
                     hierarchy_path=tuple(_node_label(item.node) for item in ordered),
                     node_id=entry.standard.node_id,
@@ -446,6 +447,7 @@ class LearningComponentService:
                     relationship=relationship,
                     supported_standards=tuple(
                         SupportedStandardReference(
+                            description=supported.standard.description,
                             grade_levels=supported.standard.grade_level or (),
                             node_id=supported.standard.node_id,
                             statement_code=supported.standard.statement_code,

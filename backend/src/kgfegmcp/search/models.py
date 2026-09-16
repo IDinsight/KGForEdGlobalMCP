@@ -722,9 +722,11 @@ class SupportedStandardReference(FrozenSchema):
 
     Reported whether or not the standard carries a statement code, so a component
     bridging a coded and an uncoded standard is never flattened to one. Grade levels
-    are projected from the standard; a component has no grade of its own.
+    and description are projected from the standard; a component has no grade of its
+    own, and an uncoded standard is otherwise only a bare identifier.
     """
 
+    description: str
     grade_levels: tuple[str, ...] = ()
     node_id: NodeId
     statement_code: str | None = Field(default=None, min_length=1)

@@ -22,13 +22,23 @@ from fastmcp import Context
 from fastmcp.tools.base import ToolResult
 
 # Package Library
+from kgfegmcp.errors import KGFEGMCPError
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
     build_request_continuation_text,
+    build_resource_link,
     build_tool_result,
     get_app_state,
+    log_optional_link_failure,
     result_schema,
+    standard_resource_links,
+)
+from kgfegmcp.resources.models import ResourceKind
+from kgfegmcp.resources.uri import (
+    learning_component_provenance_uri,
+    learning_component_uri,
+    standard_learning_components_uri,
 )
 from kgfegmcp.search.models import ExactPackageSearchScope, LearningComponentSearchMode
 from kgfegmcp.services.frameworks import FrameworkService
@@ -47,9 +57,12 @@ from kgfegmcp.services.models import (
 if TYPE_CHECKING:
     # Third Party Library
     from fastmcp import FastMCP
+    from mcp.types import ResourceLink
 
     # Package Library
     from kgfegmcp.bootstrap import AppState
+    from kgfegmcp.catalog.models import CatalogGraphPackage
+    from kgfegmcp.domain.identifiers import NodeId
     from kgfegmcp.graph.models import LearningComponentNode
     from kgfegmcp.search.models import (
         LearningComponentSearchHit,
@@ -142,10 +155,7 @@ def _format_component_context(result: GetLearningComponentContextResult) -> str:
 
     for supported in result.supported_standards:
         standard = supported.standard
-        description = _truncate_display_text(
-            limit=240,
-            value=_collapse_whitespace(standard.description or "[no description]"),
-        )
+        description = _collapse_whitespace(standard.description or "[no description]")
         lines.extend(
             (
                 "",
@@ -214,12 +224,20 @@ def _format_components_for_standard(
     lines = [
         f"Standard: {standard.statement_code or '[uncoded]'}",
         f"Node ID: {standard.node_id}",
+        f"Description: {_collapse_whitespace(standard.description)}",
+        f"Statement type: {standard.statement_type or '[none]'}",
+        f"Normalized statement type: {standard.normalized_statement_type or '[none]'}",
         f"Supporting learning components: {len(result.components)}",
     ]
 
     for index, component in enumerate(result.components, start=1):
         lines.extend(
-            ("", *_supporting_component_lines(component=component, index=index))
+            (
+                "",
+                *_supporting_component_lines(
+                    component=component, index=index, standard_id=standard.node_id
+                ),
+            )
         )
 
     lines.extend(
@@ -266,9 +284,7 @@ def _format_search_hit(*, hit: LearningComponentSearchHit, index: int) -> list[s
     """
 
     node = hit.node
-    description = _truncate_display_text(
-        limit=240, value=_collapse_whitespace(node.description)
-    )
+    description = _collapse_whitespace(node.description)
     lines = [
         f"{index}. Learning component: {node.node_id}",
         f"   Package: {hit.package_identity.graph_package_id}",
@@ -288,14 +304,10 @@ def _format_search_hit(*, hit: LearningComponentSearchHit, index: int) -> list[s
     ]
 
     if hit.matched_codes:
-        lines.append(
-            f"   Matched codes: "
-            f"{_format_values(_supported_code_values(hit.matched_codes))}"
-        )
+        lines.append(f"   Matched codes: {_format_references(hit.matched_codes)}")
 
     lines.append(
-        f"   Supported standards: "
-        f"{_format_values(_supported_code_values(hit.supported_standards))}"
+        f"   Supported standards: {_format_references(hit.supported_standards)}"
     )
 
     if len(hit.supported_standards) > len(hit.matched_codes) and hit.matched_codes:
@@ -448,6 +460,7 @@ def _component_lines(
         lines.extend(
             (
                 f"- {placement.statement_code or '[uncoded]'} ({placement.node_id})",
+                f"  Description: {_collapse_whitespace(placement.description)}",
                 f"  Grade levels: {_format_values(placement.grade_levels)}",
                 f"  Hierarchy path: {' > '.join(placement.hierarchy_path) or '[none]'}",
                 f"  Support confidence: "
@@ -481,6 +494,8 @@ def _learning_component_service(state: AppState) -> LearningComponentService:
 
 def _supported_code_values(
     references: tuple[SupportedStandardReference, ...],
+    *,
+    already_shown: NodeId | None = None,
 ) -> tuple[str, ...]:
     """Render supported-standard references as display values.
 
@@ -488,23 +503,73 @@ def _supported_code_values(
     ----------
     references
         Supported standards in deterministic relationship order.
+    already_shown
+        Standard whose wording the caller has already printed once, so it is not
+        repeated on every reference to it.
 
     Returns
     -------
     tuple[str, ...]
-        Statement codes with their grade levels, or node identifiers for standards
-        carrying no code.
+        Statement codes or node identifiers with grade levels, support confidence, and
+        the standard's own wording, so a hit is readable without a second call.
     """
 
-    return tuple(
-        f"{reference.statement_code or f'[uncoded {reference.node_id}]'}"
-        f"{' (grade ' + ', '.join(reference.grade_levels) + ')' if reference.grade_levels else ''}"
-        for reference in references
-    )
+    values: list[str] = []
+
+    for reference in references:
+        value = f"{reference.statement_code or f'[uncoded {reference.node_id}]'}"
+        qualifiers: list[str] = []
+
+        if reference.grade_levels:
+            qualifiers.append(f"grade {', '.join(reference.grade_levels)}")
+
+        if (
+            reference.support_confidence is not None
+            and reference.node_id != already_shown
+        ):
+            qualifiers.append(
+                f"confidence {_format_confidence(reference.support_confidence)}"
+            )
+
+        if qualifiers:
+            value = f"{value} ({', '.join(qualifiers)})"
+
+        if reference.node_id != already_shown:
+            description = _collapse_whitespace(reference.description)
+            value = f'{value} "{description}"'
+
+        values.append(value)
+
+    return tuple(values)
+
+
+def _format_references(
+    references: tuple[SupportedStandardReference, ...],
+    *,
+    already_shown: NodeId | None = None,
+) -> str:
+    """Join rendered supported-standard references with semicolons.
+
+    Parameters
+    ----------
+    references
+        Supported standards in deterministic relationship order.
+    already_shown
+        Standard whose wording is already printed once in the surrounding output.
+
+    Returns
+    -------
+    str
+        Semicolon-separated references, because descriptions may contain commas, or
+        ``[none]``.
+    """
+
+    values = _supported_code_values(references, already_shown=already_shown)
+    return "; ".join(values) if values else "[none]"
 
 
 def _supporting_component_lines(
-    *, component: SupportingLearningComponent, index: int
+    *, component: SupportingLearningComponent, index: int, standard_id: NodeId
 ) -> list[str]:
     """Format one component supporting the selected standard.
 
@@ -514,6 +579,8 @@ def _supporting_component_lines(
         Component, its supports relationship, and every standard it supports.
     index
         One-based display position.
+    standard_id
+        The requested standard, whose wording the header already shows.
 
     Returns
     -------
@@ -522,17 +589,14 @@ def _supporting_component_lines(
     """
 
     node = component.node
-    description = _truncate_display_text(
-        limit=240, value=_collapse_whitespace(node.description)
-    )
     lines = [
         f"{index}. Learning component: {node.node_id}",
-        f"   Description: {description}",
+        f"   Description: {_collapse_whitespace(node.description)}",
         f"   Tags: {_format_values(node.tags or ())}",
         f"   Support confidence: "
         f"{_format_confidence(component.relationship.support_confidence)}",
         f"   Supports: "
-        f"{_format_values(_supported_code_values(component.supported_standards))}",
+        f"{_format_references(component.supported_standards, already_shown=standard_id)}",
     ]
 
     if len(component.supported_standards) > 1:
@@ -541,23 +605,123 @@ def _supporting_component_lines(
     return lines
 
 
-def _truncate_display_text(*, limit: int, value: str) -> str:
-    """Truncate display-only text deterministically at a Unicode character limit.
+def _component_resource_links(
+    *, node_id: NodeId, package: CatalogGraphPackage, state: AppState
+) -> tuple[ResourceLink, ...]:
+    """Build non-critical links for one exact learning-component result.
 
     Parameters
     ----------
-    limit
-        Maximum retained characters.
-    value
-        Display text.
+    node_id
+        Outer identifier of the learning component.
+    package
+        Exact accepted graph package owning the component.
+    state
+        Immutable application state providing shared policy.
 
     Returns
     -------
-    str
-        Original text, or truncated text with an explicit ellipsis marker.
+    tuple[ResourceLink, ...]
+        Permitted component and provenance links, or nothing when rights forbid them.
     """
 
-    return value if len(value) <= limit else f"{value[:limit]}..."
+    identity = package.package_identity
+
+    try:
+        state.resource_service.policy.require_resource_access(
+            resource_kind=ResourceKind.LEARNING_COMPONENT, rights=package.rights
+        )
+        links = [
+            build_resource_link(
+                description="Read this exact learning component with its placements.",
+                mime_type="application/json",
+                name="learning_component",
+                title="Learning Component",
+                uri=learning_component_uri(
+                    framework_id=identity.framework_id,
+                    node_id=node_id,
+                    snapshot_id=identity.snapshot_id,
+                ),
+            )
+        ]
+
+        if package.capabilities.has_detailed_provenance:
+            links.append(
+                build_resource_link(
+                    description=(
+                        "Read this component's generation provenance: source pages, "
+                        "generator, and confidence."
+                    ),
+                    mime_type="application/json",
+                    name="learning_component_provenance",
+                    title="Learning Component Provenance",
+                    uri=learning_component_provenance_uri(
+                        framework_id=identity.framework_id,
+                        node_id=node_id,
+                        snapshot_id=identity.snapshot_id,
+                    ),
+                )
+            )
+    except KGFEGMCPError:
+        return ()
+    except Exception as error:  # pylint: disable=W0718
+        log_optional_link_failure(
+            error=error,
+            operation=f"component_resource_links:{identity.graph_package_id}",
+        )
+        return ()
+
+    return tuple(sorted(links, key=lambda link: str(link.uri)))
+
+
+def _standard_components_resource_links(
+    *, node_id: NodeId, package: CatalogGraphPackage, state: AppState
+) -> tuple[ResourceLink, ...]:
+    """Build the link to every component supporting one exact standard.
+
+    Parameters
+    ----------
+    node_id
+        Outer identifier of the standard.
+    package
+        Exact accepted graph package owning the standard.
+    state
+        Immutable application state providing shared policy.
+
+    Returns
+    -------
+    tuple[ResourceLink, ...]
+        The permitted supporting-components link, or nothing when rights forbid it.
+    """
+
+    identity = package.package_identity
+
+    try:
+        state.resource_service.policy.require_resource_access(
+            resource_kind=ResourceKind.STANDARD_LEARNING_COMPONENTS,
+            rights=package.rights,
+        )
+        link = build_resource_link(
+            description="Read every learning component supporting this standard.",
+            mime_type="application/json",
+            name="standard_learning_components",
+            title="Standard Learning Components",
+            uri=standard_learning_components_uri(
+                framework_id=identity.framework_id,
+                node_id=node_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+        )
+    except KGFEGMCPError:
+        return ()
+    except Exception as error:  # pylint: disable=W0718
+        log_optional_link_failure(
+            error=error,
+            operation=f"standard_components_resource_links:{identity.graph_package_id}",
+        )
+        return ()
+
+    return (link,)
 
 
 async def get_learning_component(
@@ -582,7 +746,11 @@ async def get_learning_component(
         state = get_app_state(context)
         result = _learning_component_service(state).get_learning_component(request)
         return build_tool_result(
-            content=_format_component_result(result), result=result
+            content=_format_component_result(result),
+            resource_links=_component_resource_links(
+                node_id=result.node.node_id, package=result.package, state=state
+            ),
+            result=result,
         )
 
 
@@ -610,7 +778,11 @@ async def get_learning_component_context(
             request
         )
         return build_tool_result(
-            content=_format_component_context(result), result=result
+            content=_format_component_context(result),
+            resource_links=_component_resource_links(
+                node_id=result.node.node_id, package=result.package, state=state
+            ),
+            result=result,
         )
 
 
@@ -638,7 +810,18 @@ async def get_learning_components_for_standard(
             state
         ).get_learning_components_for_standard(request)
         return build_tool_result(
-            content=_format_components_for_standard(result), result=result
+            content=_format_components_for_standard(result),
+            resource_links=(
+                *standard_resource_links(
+                    node=result.standard, package=result.package, state=state
+                ),
+                *_standard_components_resource_links(
+                    node_id=result.standard.node_id,
+                    package=result.package,
+                    state=state,
+                ),
+            ),
+            result=result,
         )
 
 

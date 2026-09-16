@@ -91,14 +91,15 @@ Each hit in `page.hits` reports:
 - `supportedStandards`, **every** standard the component supports.
 
 Each entry in `matchedCodes` and `supportedStandards` carries `nodeId`, `statementCode`,
-`gradeLevels`, and `supportConfidence`. Grade is projected from the supported standard,
-not stored on the component, so a component supporting standards in several grades
-reports each grade against the standard that declares it:
+`description`, `gradeLevels`, and `supportConfidence`. Grade and description are
+projected from the supported standard, not stored on the component, so a component
+supporting standards in several grades reports each grade against the standard that
+declares it, and an uncoded standard is readable without a `get_standard` call:
 
 ```json
 "supportedStandards": [
-  {"nodeId": "76fe...", "statementCode": "B5.2.3.1.3", "gradeLevels": ["5"], "supportConfidence": 0.97},
-  {"nodeId": "53d8...", "statementCode": "B6.2.3.1.3", "gradeLevels": ["6"], "supportConfidence": 0.97}
+  {"nodeId": "76fe...", "statementCode": "B5.2.3.1.3", "description": "...", "gradeLevels": ["5"], "supportConfidence": 0.97},
+  {"nodeId": "53d8...", "statementCode": "B6.2.3.1.3", "description": "...", "gradeLevels": ["6"], "supportConfidence": 0.97}
 ]
 ```
 
@@ -152,7 +153,8 @@ CASE UUID or URI form.
 ### Result
 
 `node`, `package`, `sourceMetadata`, and `placements`. Each placement gives the
-supported standard's `nodeId`, `statementCode`, `gradeLevels`, `supportConfidence`, and
+supported standard's `nodeId`, `statementCode`, `description`, `gradeLevels`,
+`supportConfidence`, and
 a labelled `hierarchyPath` from the framework root down to the standard.
 
 ```text
@@ -205,6 +207,12 @@ CASE identity.
 `standard`, `components`, `package`, and `sourceMetadata`. Each component reports
 `supportedStandards` — every standard it supports, not only the requested one — so a
 component shared across grades is visible as such.
+
+The text result names the standard's statement type and normalized statement type, so
+an empty result can be read correctly: a grouping node, or a statement type the pipeline
+never decomposed (compare `supportedStatementTypes` in `get_framework_statistics`),
+legitimately has no components. Standard wording is printed whole; nothing in the
+learning-component text output is truncated.
 
 ## Traversal directions
 
