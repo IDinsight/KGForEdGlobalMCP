@@ -64,13 +64,16 @@ def _format_statistics(result: GetFrameworkStatisticsResult) -> str:
 
     identity = result.package.package_identity
     statistics = result.statistics
+    components = statistics.learning_components
     return "\n".join(
         (
             f"Framework statistics: {identity.framework_id}",
             f"Snapshot: {identity.snapshot_id}",
             f"Package: {identity.graph_package_id}",
+            "",
+            "Academic standards",
             f"Items: {statistics.total_item_nodes}",
-            f"Relationships: {statistics.total_relationships}",
+            f"Relationships (hasChild): {statistics.total_relationships}",
             f"Coded items: {statistics.code_presence.coded_item_count}",
             f"Uncoded items: {statistics.code_presence.uncoded_item_count}",
             f"Multi-parent targets: {statistics.multi_parent.target_count}",
@@ -79,6 +82,17 @@ def _format_statistics(result: GetFrameworkStatisticsResult) -> str:
                 f"{statistics.unresolved_relationships.unresolved_count}"
             ),
             f"Maximum structural depth: {statistics.maximum_structural_depth}",
+            "",
+            "Learning components",
+            f"Components: {components.total_learning_components}",
+            f"Relationships (supports): {components.total_supports_relationships}",
+            f"Components supporting more than one standard: "
+            f"{components.multi_standard_component_count}",
+            f"Supported statement types: "
+            f"{', '.join(components.supported_statement_types) or 'none'}",
+            f"Items of those types with no component: "
+            f"{components.standards_without_components}",
+            f"Tag vocabulary: {components.tag_vocabulary_size}",
         )
     )
 

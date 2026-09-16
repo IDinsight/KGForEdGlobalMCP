@@ -208,10 +208,12 @@ The result contains `package`, `sourceMetadata`, and `statistics`.
 `statistics` includes:
 
 - `totalFrameworkNodes`, `totalItemNodes`, `totalNodes`, and `totalRelationships`.
-  `totalNodes` counts every node in the package, including learning components;
-  `totalItemNodes` counts standards framework items only;
+  These count the standards hierarchy only: `totalNodes` is the framework root plus
+  the framework items, and `totalRelationships` excludes `supports` edges. Learning
+  components and their edges are counted in the `learningComponents` block below;
 - local grade, node grade-level, normalized grade, statement-type, normalized
-  statement-type, and relationship-type counts;
+  statement-type, and relationship-type counts, all over the standards hierarchy only,
+  so `supports` edges never appear in the relationship-type or resolution counts;
 - `codePresence` counts;
 - `maximumStructuralDepth` and `minimumStructuralDepthCounts`;
 - `multiParent` cardinality statistics;
@@ -220,8 +222,12 @@ The result contains `package`, `sourceMetadata`, and `statistics`.
   declared relationship; and
 - `learningComponents`, a separate block reporting `totalLearningComponents`,
   `totalSupportsRelationships`, `multiStandardComponentCount`,
-  `standardsWithoutComponents`, `tagVocabularySize`, the support-confidence range, and
-  the components-per-standard and bridge-span distributions.
+  `supportedStatementTypes`, `standardsWithoutComponents`, `tagVocabularySize`, the
+  support-confidence range, and the components-per-standard and bridge-span
+  distributions. `supportedStatementTypes` lists the source statement types that
+  `supports` edges land on in this package; `standardsWithoutComponents` and the
+  components-per-standard distribution count only items of those types, so grouping
+  headings and node types the pipeline never decomposed are not reported as gaps.
 
 Standards counts and learning-component counts are never combined. A learning component
 is generated content and is excluded from every standards count.

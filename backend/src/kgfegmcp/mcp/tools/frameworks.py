@@ -236,16 +236,19 @@ def _format_package_counts(package: CatalogGraphPackage) -> str:
         Stable comma-separated count assignments.
     """
 
-    count_parts = [
+    standards_parts = [
         f"framework_nodes={package.counts.framework_nodes}",
         f"item_nodes={package.counts.item_nodes}",
-        f"relationships={package.counts.relationships}",
     ]
-    count_parts.extend(
+    standards_parts.extend(
         f"{name}={value}"
         for name, value in sorted(package.counts.additional_counts.items())
     )
-    return ", ".join(count_parts)
+    return (
+        f"standards[{', '.join(standards_parts)}] "
+        f"learning_components[nodes={package.counts.learning_component_nodes}] "
+        f"relationships_including_supports={package.counts.relationships}"
+    )
 
 
 def _format_package_summary(package: CatalogGraphPackage) -> str:
@@ -269,6 +272,7 @@ def _format_package_summary(package: CatalogGraphPackage) -> str:
         f"profile={identity.profile_id}@{identity.profile_version} | "
         f"code_coverage={capabilities.code_search.value} | "
         f"text_search={_format_boolean(capabilities.text_search)} | "
+        f"learning_components={package.counts.learning_component_nodes} | "
         f"validation={package.validation.status.value}"
     )
 

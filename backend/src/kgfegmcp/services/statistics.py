@@ -85,6 +85,39 @@ def _connected_node_count(
     return len(connected)
 
 
+def _hierarchy_relationship_counts(
+    loaded_package: LoadedGraphPackage,
+) -> tuple[Counter[str | None], Counter[str | None], Counter[str | None]]:
+    """Count labels, source types, and resolution statuses of hierarchy relationships.
+
+    Parameters
+    ----------
+    loaded_package
+        Accepted package aggregate retaining decoded nodes and relationships.
+
+    Returns
+    -------
+    tuple[Counter[str | None], Counter[str | None], Counter[str | None]]
+        Canonical label counts, source relationship-type counts, and resolution-status
+        counts over the standards hierarchy only; ``supports`` edges are excluded and
+        reported in the learning-component block instead.
+    """
+
+    canonical_label_counts: Counter[str | None] = Counter()
+    source_type_counts: Counter[str | None] = Counter()
+    resolution_status_counts: Counter[str | None] = Counter()
+
+    for relationship in loaded_package.relationships:
+        if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
+            continue
+
+        canonical_label_counts[relationship.label] += 1
+        source_type_counts[relationship.relationship_type] += 1
+        resolution_status_counts[relationship.resolution_status] += 1
+
+    return canonical_label_counts, source_type_counts, resolution_status_counts
+
+
 def _learning_component_statistics(
     *, loaded_package: LoadedGraphPackage
 ) -> LearningComponentStatistics:
@@ -118,8 +151,22 @@ def _learning_component_statistics(
         for relationship in supports
         if relationship.support_confidence is not None
     )
+    # Coverage is measured over the statement types the pipeline actually decomposed,
+    # so grouping headings and untargeted node types never count as gaps.
+    item_nodes_by_id = {node.node_id: node for node in loaded_package.item_nodes}
+    supported_statement_types = tuple(
+        sorted(
+            {
+                item_nodes_by_id[node_id].statement_type or ""
+                for node_id in components_per_standard
+                if node_id in item_nodes_by_id
+            }
+        )
+    )
     per_standard_distribution: Counter[int] = Counter(
-        components_per_standard[node.node_id] for node in loaded_package.item_nodes
+        components_per_standard[node.node_id]
+        for node in loaded_package.item_nodes
+        if (node.statement_type or "") in supported_statement_types
     )
     bridge_span_distribution: Counter[int] = Counter(
         span for span in standards_per_component.values() if span > 1
@@ -135,6 +182,7 @@ def _learning_component_statistics(
         standards_without_components=per_standard_distribution.get(0, 0),
         support_confidence_maximum=max(confidences, default=None),
         support_confidence_minimum=min(confidences, default=None),
+        supported_statement_types=supported_statement_types,
         tag_vocabulary_size=len(tag_keys - {""}),
         total_learning_components=len(components),
         total_supports_relationships=len(supports),
@@ -249,16 +297,24 @@ class FrameworkStatisticsService:
         total_framework_nodes = package.counts.framework_nodes
         total_item_nodes = len(loaded_package.item_nodes)
         total_learning_component_nodes = len(loaded_package.learning_component_nodes)
-        total_hierarchy_nodes = total_framework_nodes + total_item_nodes
-        total_nodes = total_hierarchy_nodes + total_learning_component_nodes
-        total_relationships = len(loaded_package.relationships)
+        total_supports_relationships = sum(
+            1
+            for relationship in loaded_package.relationships
+            if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
+        )
+        total_nodes = total_framework_nodes + total_item_nodes
+        total_relationships = (
+            len(loaded_package.relationships) - total_supports_relationships
+        )
+        total_store_nodes = total_nodes + total_learning_component_nodes
+        total_store_relationships = total_relationships + total_supports_relationships
 
         if (
             package.counts.item_nodes != total_item_nodes
             or package.counts.learning_component_nodes != total_learning_component_nodes
-            or package.counts.relationships != total_relationships
-            or len(store.nodes_by_id) != total_nodes
-            or len(store.relationships_by_id) != total_relationships
+            or package.counts.relationships != total_store_relationships
+            or len(store.nodes_by_id) != total_store_nodes
+            or len(store.relationships_by_id) != total_store_relationships
         ):
             raise CatalogError(
                 details={
@@ -309,14 +365,11 @@ class FrameworkStatisticsService:
             else:
                 normalized_grade_counts[None] += 1
 
-        canonical_relationship_label_counts: Counter[str | None] = Counter()
-        source_relationship_type_counts: Counter[str | None] = Counter()
-        resolution_status_counts: Counter[str | None] = Counter()
-
-        for relationship in loaded_package.relationships:
-            canonical_relationship_label_counts[relationship.label] += 1
-            source_relationship_type_counts[relationship.relationship_type] += 1
-            resolution_status_counts[relationship.resolution_status] += 1
+        (
+            canonical_relationship_label_counts,
+            source_relationship_type_counts,
+            resolution_status_counts,
+        ) = _hierarchy_relationship_counts(loaded_package)
 
         relationship_type = store.hierarchy_relationship_type
         parent_count_counts: Counter[int] = Counter()
@@ -336,8 +389,8 @@ class FrameworkStatisticsService:
         )
         maximum_parent_count = max(parent_count_counts, default=0)
         traversal = GraphTraversal(store=store).descendants(
-            max_depth=max(total_hierarchy_nodes - 1, 0),
-            max_nodes=max(total_hierarchy_nodes, 1),
+            max_depth=max(total_nodes - 1, 0),
+            max_nodes=max(total_nodes, 1),
             node_id=store.framework_root_id,
             relationship_type=relationship_type,
         )
@@ -361,7 +414,7 @@ class FrameworkStatisticsService:
             traversal_node.depth for traversal_node in traversal.nodes
         )
         maximum_structural_depth = max(depth_counts, default=0)
-        unreachable_node_count = total_nodes - _connected_node_count(
+        unreachable_node_count = total_store_nodes - _connected_node_count(
             loaded_package=loaded_package, root_node_id=store.framework_root_id
         )
         unresolved_count = sum(
