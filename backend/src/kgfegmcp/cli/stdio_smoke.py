@@ -58,8 +58,11 @@ from kgfegmcp.resources.uri import (
     artifact_uri,
     framework_uri,
     interpretation_profile_uri,
+    learning_component_provenance_uri,
+    learning_component_uri,
     manifest_uri,
     relationship_uri,
+    standard_learning_components_uri,
     standard_provenance_uri,
     standard_uri,
     unresolved_uri,
@@ -77,6 +80,7 @@ _EXPECTED_PROMPT_NAMES = (
     "administrator_alignment_review",
     "cross_framework_comparison",
     "inferred_progression_hypothesis",
+    "multigrade_lesson_plan",
     "student_handbook_section",
     "student_study_support",
     "teacher_guide_draft",
@@ -87,9 +91,13 @@ _EXPECTED_TOOL_NAMES = (
     "get_capabilities",
     "get_framework",
     "get_framework_statistics",
+    "get_learning_component",
+    "get_learning_component_context",
+    "get_learning_components_for_standard",
     "get_standard",
     "get_standard_context",
     "list_frameworks",
+    "search_learning_components",
     "search_standards",
 )
 
@@ -97,13 +105,16 @@ _SMOKE_ARTIFACT_NAME: Final[ArtifactName] = cast(ArtifactName, "validationReport
 _SMOKE_FRAMEWORK_ID: Final[FrameworkId] = cast(
     FrameworkId, "ghana-nacca-primary-english-language-basic-1-3"
 )
+_SMOKE_LEARNING_COMPONENT_ID: Final[NodeId] = cast(
+    NodeId, "29bb3662-7e9c-5d44-83c4-084e4fb57323"
+)
 _SMOKE_NODE_ID: Final[NodeId] = cast(NodeId, "aa4cdccd-e5d9-589c-8094-e10d7ac0c754")
 _SMOKE_RELATIONSHIP_ID: Final[RelationshipId] = cast(
     RelationshipId, "72a98493-9a16-58b6-9a80-e53012bfa4c1"
 )
 _SMOKE_SNAPSHOT_ID: Final[SnapshotId] = cast(
     SnapshotId,
-    "ghana-nacca-primary-english-language-basic-1-3@2019+5ea90021b08d",
+    "ghana-nacca-primary-english-language-basic-1-3@2019+c33ab5a379fb",
 )
 _SMOKE_UNRESOLVED_NODE_ID: Final[NodeId] = cast(
     NodeId, "4f5d76cf-3242-52e4-8c16-7b569f84588a"
@@ -513,10 +524,11 @@ def _resource_read_targets() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
     -------
     tuple[tuple[str, str, tuple[str, ...]], ...]
         Stable label, canonical URI, and expected identity tokens for the fixed catalog
-        and all nine resource templates.
+        and all twelve resource templates.
     """
 
     framework_id = _SMOKE_FRAMEWORK_ID
+    learning_component_id = _SMOKE_LEARNING_COMPONENT_ID
     node_id = _SMOKE_NODE_ID
     relationship_id = _SMOKE_RELATIONSHIP_ID
     snapshot_id = _SMOKE_SNAPSHOT_ID
@@ -581,6 +593,31 @@ def _resource_read_targets() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
                 snapshot_id=snapshot_id,
             ),
             (str(relationship_id), "unresolvedRootFallback"),
+        ),
+        (
+            "standardLearningComponents",
+            standard_learning_components_uri(
+                framework_id=framework_id, node_id=node_id, snapshot_id=snapshot_id
+            ),
+            (str(node_id), str(learning_component_id)),
+        ),
+        (
+            "learningComponent",
+            learning_component_uri(
+                framework_id=framework_id,
+                node_id=learning_component_id,
+                snapshot_id=snapshot_id,
+            ),
+            (str(learning_component_id), "placements"),
+        ),
+        (
+            "learningComponentProvenance",
+            learning_component_provenance_uri(
+                framework_id=framework_id,
+                node_id=learning_component_id,
+                snapshot_id=snapshot_id,
+            ),
+            (str(learning_component_id), "provenance"),
         ),
     )
 
