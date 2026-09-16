@@ -117,12 +117,14 @@ def _format_package_capability(
         f"- Graph package ID: {identity.graph_package_id}",
         f"  Framework ID: {identity.framework_id}",
         f"  Snapshot ID: {identity.snapshot_id}",
-        f"  implementedSearchModes: {implemented_modes}",
-        f"  implementedLearningComponentSearchModes: {implemented_component_modes}",
-        f"  codeCoverage: {package.package.capabilities.code_search.value}",
-        f"  codedNodes: {package.search_index.coded_node_count}",
-        f"  learningComponents: {learning_component_count}",
-        f"  tagVocabulary: {package.search_index.tag_vocabulary_size}",
+        "  Academic standards:",
+        f"    implementedSearchModes: {implemented_modes}",
+        f"    codeCoverage: {package.package.capabilities.code_search.value}",
+        f"    codedNodes: {package.search_index.coded_node_count}",
+        "  Learning components:",
+        f"    implementedLearningComponentSearchModes: {implemented_component_modes}",
+        f"    learningComponents: {learning_component_count}",
+        f"    tagVocabulary: {package.search_index.tag_vocabulary_size}",
     )
 
 

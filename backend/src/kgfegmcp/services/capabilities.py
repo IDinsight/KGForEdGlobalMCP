@@ -66,9 +66,13 @@ _TOOL_NAMES: Final[tuple[str, ...]] = (
     "collect_progression_evidence",
     "get_framework",
     "get_framework_statistics",
+    "get_learning_component",
+    "get_learning_component_context",
+    "get_learning_components_for_standard",
     "get_standard",
     "get_standard_context",
     "list_frameworks",
+    "search_learning_components",
     "search_standards",
 )
 _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
@@ -76,7 +80,6 @@ _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
     "alignment_persistence",
     "alignments",
     "embeddings",
-    "learning_components",
     "learning_progressions",
     "mcp_sampling",
     "semantic_candidate_retrieval",
