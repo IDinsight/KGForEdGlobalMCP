@@ -27,6 +27,14 @@ ARTIFACT_URI_TEMPLATE = (
     "artifact/{artifact_name}"
 )
 CATALOG_URI = "kgfegmcp://catalog"
+LEARNING_COMPONENT_PROVENANCE_URI_TEMPLATE = (
+    "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
+    "learning-component/{node_id}/provenance"
+)
+LEARNING_COMPONENT_URI_TEMPLATE = (
+    "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
+    "learning-component/{node_id}"
+)
 FRAMEWORK_URI_TEMPLATE = "kgfegmcp://framework/{framework_id}"
 INTERPRETATION_PROFILE_URI_TEMPLATE = (
     "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
@@ -42,6 +50,10 @@ RELATIONSHIP_URI_TEMPLATE = (
 STANDARD_PROVENANCE_URI_TEMPLATE = (
     "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
     "standard/{node_id}/provenance"
+)
+STANDARD_LEARNING_COMPONENTS_URI_TEMPLATE = (
+    "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
+    "standard/{node_id}/learning-components"
 )
 STANDARD_URI_TEMPLATE = (
     "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}"
@@ -61,6 +73,9 @@ RESOURCE_URI_TEMPLATES: tuple[str, ...] = (
     ARTIFACT_URI_TEMPLATE,
     STANDARD_URI_TEMPLATE,
     STANDARD_PROVENANCE_URI_TEMPLATE,
+    STANDARD_LEARNING_COMPONENTS_URI_TEMPLATE,
+    LEARNING_COMPONENT_URI_TEMPLATE,
+    LEARNING_COMPONENT_PROVENANCE_URI_TEMPLATE,
     RELATIONSHIP_URI_TEMPLATE,
 )
 
@@ -202,6 +217,87 @@ def relationship_uri(
     return (
         f"kgfegmcp://framework/{_segment(framework_id)}/snapshot/"
         f"{_segment(snapshot_id)}/relationship/{_segment(relationship_id)}"
+    )
+
+
+def learning_component_provenance_uri(
+    *, framework_id: FrameworkId, node_id: NodeId, snapshot_id: SnapshotId
+) -> str:
+    """Build the URI for one learning component's detailed provenance entry.
+
+    Parameters
+    ----------
+    framework_id
+        Validated identifier of the framework family that owns the snapshot.
+    node_id
+        Validated outer node ID selecting the exact learning component.
+    snapshot_id
+        Validated identifier of the snapshot that contains the component.
+
+    Returns
+    -------
+    str
+        Constructed kgfegmcp URI, with each identifier percent-encoded as a single
+        path segment.
+    """
+
+    return (
+        f"kgfegmcp://framework/{_segment(framework_id)}/snapshot/"
+        f"{_segment(snapshot_id)}/learning-component/{_segment(node_id)}/provenance"
+    )
+
+
+def learning_component_uri(
+    *, framework_id: FrameworkId, node_id: NodeId, snapshot_id: SnapshotId
+) -> str:
+    """Build the URI for one exact learning component selected by outer node ID.
+
+    Parameters
+    ----------
+    framework_id
+        Validated identifier of the framework family that owns the snapshot.
+    node_id
+        Validated outer node ID selecting the exact learning component.
+    snapshot_id
+        Validated identifier of the snapshot that contains the component.
+
+    Returns
+    -------
+    str
+        Constructed kgfegmcp URI, with each identifier percent-encoded as a single
+        path segment.
+    """
+
+    return (
+        f"kgfegmcp://framework/{_segment(framework_id)}/snapshot/"
+        f"{_segment(snapshot_id)}/learning-component/{_segment(node_id)}"
+    )
+
+
+def standard_learning_components_uri(
+    *, framework_id: FrameworkId, node_id: NodeId, snapshot_id: SnapshotId
+) -> str:
+    """Build the URI for the learning components supporting one exact standard.
+
+    Parameters
+    ----------
+    framework_id
+        Validated identifier of the framework family that owns the snapshot.
+    node_id
+        Validated outer node ID selecting the exact standard.
+    snapshot_id
+        Validated identifier of the snapshot that contains the standard.
+
+    Returns
+    -------
+    str
+        Constructed kgfegmcp URI, with each identifier percent-encoded as a single
+        path segment.
+    """
+
+    return (
+        f"kgfegmcp://framework/{_segment(framework_id)}/snapshot/"
+        f"{_segment(snapshot_id)}/standard/{_segment(node_id)}/learning-components"
     )
 
 

@@ -1,0 +1,4824 @@
+{
+  "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+  "learning_components": {
+    "015e3603-8dc3-59b6-9871-0330745f02dd": {
+      "description": "Create a problem for a given equation",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:689c7905e0d2ba75369f7ea27e7cfbd8",
+      "in_language": "en",
+      "source_context_keys": [
+        "9a97aff7a53f1e68de87ba1f616ff5e3",
+        "bf67ee7a7897206818828a4d1f5db444"
+      ],
+      "source_page_indexes": [
+        113,
+        163
+      ],
+      "source_segment_ids": [
+        "6b728ffc-3499-5943-83f4-4683d7e92dc1",
+        "7db70430-f18f-5c6a-990a-cfe161b2a19c"
+      ],
+      "source_sfi_uuids": [
+        "53d830d3-3939-5aa1-bc51-b3c8340aa32c",
+        "76fe8656-dd54-5430-804c-b7962414ac59"
+      ],
+      "source_window_ids": [
+        "b2c367ed-8b37-565c-ac5c-1ba6c36b6382",
+        "fa8a20e3-20fb-548a-b2a1-704812c00176"
+      ]
+    },
+    "017be931-99e0-506a-9577-74c4be457f61": {
+      "description": "Conduct an experiment in which the likelihood of a single outcome occurring is impossible, possible (likely or unlikely), certain",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:5a4c342deb90dd11166e4f6cfc329a54",
+      "in_language": "en",
+      "source_context_keys": [
+        "fc52123e21c8e8f66caf5e4432c8bc59"
+      ],
+      "source_page_indexes": [
+        132
+      ],
+      "source_segment_ids": [
+        "d166ff72-a9fc-588c-868d-8168e31f683f"
+      ],
+      "source_sfi_uuids": [
+        "ea7402ef-ad04-5e89-b20b-cb7654f2ae9a"
+      ],
+      "source_window_ids": [
+        "f92cf221-569e-5ff4-81da-614f72762b44"
+      ]
+    },
+    "04b9b9a8-d3fa-5f2d-accd-a2f556d25ec8": {
+      "description": "Identify the patterns in a table or chart to solve a given problem",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8766573dd194d70fff2c05a1fcb7b91d",
+      "in_language": "en",
+      "source_context_keys": [
+        "7b305ab975233c2922393260bd4f26fa"
+      ],
+      "source_page_indexes": [
+        52
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "823ec042-21ee-5870-8ac2-bd1e94faf29a"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "069fc111-0cb4-5104-a985-db98c05c5b4f": {
+      "description": "Draw bar graphs or pictographs complete with title, labelled axes, and key or legend to represent data collected (up to 4 categories of data)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a88edbb9869eb7a74aba3a69452c4d1e",
+      "in_language": "en",
+      "source_context_keys": [
+        "abe6f7302de9ff64a78b6b26784cb0bf"
+      ],
+      "source_page_indexes": [
+        72
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "3fbdaaa7-ef77-5520-966b-a9d3455ae9d7"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "0a3dc26f-c353-5eef-a277-949366e9104b": {
+      "description": "Add unlike and mixed fractions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:5a2d3c2d21b28dcf02ced135da3e5ad3",
+      "in_language": "en",
+      "source_context_keys": [
+        "1e51a38bc3f194c8ce1637ae22f16c07"
+      ],
+      "source_page_indexes": [
+        152
+      ],
+      "source_segment_ids": [
+        "4787650f-da46-5655-899b-47745f0357d2"
+      ],
+      "source_sfi_uuids": [
+        "8876c1a8-92a4-578a-94b3-cd07d1b39ae2"
+      ],
+      "source_window_ids": [
+        "eda81369-7752-58c5-809e-7d3bb1ef87b6"
+      ]
+    },
+    "0e2fa4d9-0c01-5d2d-a44b-8f5e1b2c49d5": {
+      "description": "Determine whether a given number is or is not the next element in a pattern",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f803ac1a84bbfd03c20f9971d28eca2a",
+      "in_language": "en",
+      "source_context_keys": [
+        "4adc5920b9de9390b0c931f0deb120f6"
+      ],
+      "source_page_indexes": [
+        108
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36"
+      ],
+      "source_sfi_uuids": [
+        "058d4e69-ac8e-54c8-b167-6bb78405af98"
+      ],
+      "source_window_ids": [
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "0ec20a28-4f76-5e89-a6fa-3faee35a2fb0": {
+      "description": "Identify the lines of symmetry of regular 2D shapes (triangles and quadrilateral)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9b034bb0a80d95e6b51f183dbed450df",
+      "in_language": "en",
+      "source_context_keys": [
+        "89a1f09b4bdb3da9025dd41cef3a5d77"
+      ],
+      "source_page_indexes": [
+        56
+      ],
+      "source_segment_ids": [
+        "fa666a50-243d-54f4-8a92-5c4c35fb53aa"
+      ],
+      "source_sfi_uuids": [
+        "f065e483-1953-5a01-a8de-f0886d58bdf9"
+      ],
+      "source_window_ids": [
+        "039199b5-c928-5647-b005-5769d9b4ba95"
+      ]
+    },
+    "0efcb78a-38b5-5c00-904b-45364ee6def9": {
+      "description": "Recognise fractions that are greater than one (i.e. improper fractions)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0bbc6598b727e14f9ca0a369fdd55658",
+      "in_language": "en",
+      "source_context_keys": [
+        "aff14e60fc83be77c789a25abecdc9fa"
+      ],
+      "source_page_indexes": [
+        42
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "a01614d3-4629-554f-82ad-43a2e78c487d"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "0efe4cf8-3d7c-5255-a305-a8060c59d3fd": {
+      "description": "Determine the lowest common multiple (LCM) of at least any two given numbers up to 100",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2600b0e4f29f9ebcee7d90da13296409",
+      "in_language": "en",
+      "source_context_keys": [
+        "247d4fae70f51707920a07475f61468e"
+      ],
+      "source_page_indexes": [
+        30
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "2f4594d8-6d5c-5d9e-b93b-8107e5be7a41"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b",
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "104a8327-5123-5545-93ca-f26fad53d4d5": {
+      "description": "Answer questions based on a line graph to interpret it and draw conclusions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2b4ab179b339d4171168e8c5dc0f5277",
+      "in_language": "en",
+      "source_context_keys": [
+        "9d918aecf12566b02b222d1da44d7aa6"
+      ],
+      "source_page_indexes": [
+        173
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "dacda2cf-69f2-58d7-9845-8aed87efc5ac"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "11529c94-5d7e-56dd-9e63-f6082faaa26e": {
+      "description": "Convert Roman numerals to Hindu Arabic numbers up to 100 (C)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c5d1c7e3d53eb81c3ff08904e11dcd33",
+      "in_language": "en",
+      "source_context_keys": [
+        "330ba481c5cb028b9f146c978e1fc89f",
+        "7a27927b66b165d405e7661f47e6ceee"
+      ],
+      "source_page_indexes": [
+        79,
+        140
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "097beb07-4c15-582b-be9f-a50e20fafe8b",
+        "f7c9b5ad-9732-5d69-a5f7-cd5aca2654ec"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "119bf91e-4746-5208-9735-17ebae98eec4": {
+      "description": "Select a method for collecting data to answer a given question",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:10647ef56efbbfdeb312499954c795f6",
+      "in_language": "en",
+      "source_context_keys": [
+        "a10ce070259403b89d5462934e5a70f7"
+      ],
+      "source_page_indexes": [
+        174
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "734b3856-fd76-5412-aa66-207983fe84d4"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "12e1987e-924a-5e07-9b88-a164df0ae6f7": {
+      "description": "Apply the halving and doubling strategy for mental multiplication",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:5fd8b0e8afa63bfbfc3104d655240b3e",
+      "in_language": "en",
+      "source_context_keys": [
+        "48edd2e8edc498da5e599b1a62e7cd32",
+        "709a88006fd43235905ede879791f4f2"
+      ],
+      "source_page_indexes": [
+        36,
+        144
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec",
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "2204fb97-3237-59a5-8725-065c22d2477b",
+        "33819463-9117-5444-a0a4-b26cfc583263"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6",
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "1641f571-8b64-563a-b82c-b60c232c58b7": {
+      "description": "Record the outcomes of a probability experiment",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:df7013a2b7370f59b0d77b67b320ff59",
+      "in_language": "en",
+      "source_context_keys": [
+        "fc52123e21c8e8f66caf5e4432c8bc59"
+      ],
+      "source_page_indexes": [
+        132
+      ],
+      "source_segment_ids": [
+        "d166ff72-a9fc-588c-868d-8168e31f683f"
+      ],
+      "source_sfi_uuids": [
+        "c95735c8-f0e9-59d0-a77c-e252938b7f8b"
+      ],
+      "source_window_ids": [
+        "f92cf221-569e-5ff4-81da-614f72762b44"
+      ]
+    },
+    "176eb13c-8978-5635-8b6b-f38d41ec02b2": {
+      "description": "Subtract unlike and mixed fractions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d5ee31d28310262f9fbb867300d97bd8",
+      "in_language": "en",
+      "source_context_keys": [
+        "1e51a38bc3f194c8ce1637ae22f16c07"
+      ],
+      "source_page_indexes": [
+        152
+      ],
+      "source_segment_ids": [
+        "4787650f-da46-5655-899b-47745f0357d2"
+      ],
+      "source_sfi_uuids": [
+        "8876c1a8-92a4-578a-94b3-cd07d1b39ae2"
+      ],
+      "source_window_ids": [
+        "eda81369-7752-58c5-809e-7d3bb1ef87b6"
+      ]
+    },
+    "191c37d6-002a-5e1b-ad14-dfd8be2ce8aa": {
+      "description": "Model number quantities up to 1,000,000 using graph sheets and multi-base block",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:00e04dd1262602b97dd88d6482831582",
+      "in_language": "en",
+      "source_context_keys": [
+        "7e2b094b835f12c587731634d8363c84",
+        "f1190eb79d3f8ddaab767c86fff2234d"
+      ],
+      "source_page_indexes": [
+        75,
+        134
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "3c5a1e4f-7940-5f51-b17b-6479bf82d5cd",
+        "8ae1e0ad-e820-50e9-9964-a05f55e6c670"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "19ccb8f3-43dc-500e-b461-1467f4dda8e8": {
+      "description": "Measure perimeter for regular and irregular shapes in cm and m",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3ac3cfa5305585c4191ac2171a59b3fe",
+      "in_language": "en",
+      "source_context_keys": [
+        "cce4a9f34cea03a09cde3db3c4e2e42b"
+      ],
+      "source_page_indexes": [
+        59
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "6d8daf6a-21aa-5b97-9529-641069db6029"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "1b74c5a5-9498-5a03-94c1-185e16ad602a": {
+      "description": "Write numbers in figures and in words up to 1,000,000,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:09c9e2a52c1266446d4be3471d610212",
+      "in_language": "en",
+      "source_context_keys": [
+        "a1df6665e5808d25d4a633063ea3d756"
+      ],
+      "source_page_indexes": [
+        135
+      ],
+      "source_segment_ids": [
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "eaf3bd3c-b972-5d51-bab2-d46927c51572"
+      ],
+      "source_window_ids": [
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "1d9788b1-e953-5804-b095-c0b4b8e8332d": {
+      "description": "Measure given angles with a protractor",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:96e410d943261e60baa3963ff030a7cd",
+      "in_language": "en",
+      "source_context_keys": [
+        "c3dd02e86e0ef98fda4a68b7befc917b"
+      ],
+      "source_page_indexes": [
+        124
+      ],
+      "source_segment_ids": [
+        "c913c750-1ffa-55fd-8b3a-fc2b60633fd8"
+      ],
+      "source_sfi_uuids": [
+        "37aecaa3-5db1-5d51-b34d-9b5ab7667dd5"
+      ],
+      "source_window_ids": [
+        "5111822e-6c32-5f80-a173-24040fe691cd"
+      ]
+    },
+    "1e0398da-7e5a-508c-8301-da2f57cf7c66": {
+      "description": "Solve a given problem by using a pattern rule to determine subsequent elements",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d1edb52075588e8a56f3b4c84050fe06",
+      "in_language": "en",
+      "source_context_keys": [
+        "4adc5920b9de9390b0c931f0deb120f6"
+      ],
+      "source_page_indexes": [
+        108
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36"
+      ],
+      "source_sfi_uuids": [
+        "1d4aaf28-44c3-50bd-8db5-2a999a3559e0"
+      ],
+      "source_window_ids": [
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "1e4a03a8-6588-50dd-9893-f7a2fd6b88cd": {
+      "description": "Justify referents for cm3 or m3 units",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:459cf2e50fee7a315b5e9531465c146c",
+      "in_language": "en",
+      "source_context_keys": [
+        "7e270ad1d41092852a276075db5a1b6e"
+      ],
+      "source_page_indexes": [
+        120
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "59fef44d-79f3-5f58-ab95-a5bb07d81b77"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "1f55708f-e428-54f2-bd7a-50968294ed7a": {
+      "description": "Find the simplest form of given fractions by dividing through by the highest common factor (HCF)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:87daba2aa33f8cc61b85e9e872a7af9e",
+      "in_language": "en",
+      "source_context_keys": [
+        "bb3e3d28174bbbfd8a1af29591f49782"
+      ],
+      "source_page_indexes": [
+        41
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "28fac0ea-2ab8-5c63-b1d2-edd3f5edc8c8"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "2652e537-ea5a-5a38-822f-502aa6162f6a": {
+      "description": "Predict subsequent elements in a given pattern",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3f05fdc570aa33f884a96a370701af11",
+      "in_language": "en",
+      "source_context_keys": [
+        "add212cb5c249d3891171ca504ac9b5c"
+      ],
+      "source_page_indexes": [
+        106
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36"
+      ],
+      "source_sfi_uuids": [
+        "32a62ee1-1c4b-59fb-9ed9-ac0e6d822a60"
+      ],
+      "source_window_ids": [
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "295814c1-ed13-59c6-9f89-d73f93ab314c": {
+      "description": "Solve a given addition or subtraction problem involving a part-part-whole or comparison context, using a symbol to represent the unknown",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:849336165a3c16fde383f76ee267c77b",
+      "in_language": "en",
+      "source_context_keys": [
+        "72f692bec1ea552f4867b8a31d79aaeb"
+      ],
+      "source_page_indexes": [
+        55
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "86cbd1e2-a694-5811-aed1-1a1ece02805f"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "2dfd65ec-60a3-5798-aa2a-e1b1765a7b7d": {
+      "description": "Determine the common attributes (title, axes and intervals) of a line graph",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:be17b5528dc5ee1a37653a0a97999dfc",
+      "in_language": "en",
+      "source_context_keys": [
+        "e0724469359636f7dd9a8ada4cede3c9"
+      ],
+      "source_page_indexes": [
+        171
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "a84e9a7b-0d3e-58db-baeb-e3e81bc6f742"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "2f07c9b8-7b69-588f-a5d8-f16cf96dbe2c": {
+      "description": "Investigate the properties of the angles of squares and rectangles",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a0cecfefc282cca51950f9483eb64e2d",
+      "in_language": "en",
+      "source_context_keys": [
+        "8e14c721a18d25f671f494137ed7400d"
+      ],
+      "source_page_indexes": [
+        115
+      ],
+      "source_segment_ids": [
+        "6ee071fb-55f2-56c3-9ac0-19c0c6e3c3ca"
+      ],
+      "source_sfi_uuids": [
+        "085e18c5-4412-58fd-9eb4-619509586042"
+      ],
+      "source_window_ids": [
+        "409e8973-7f52-505e-a48f-8d2638cadb6e"
+      ]
+    },
+    "314fd8ba-d3ae-51a9-9064-513039138ef8": {
+      "description": "Record the data collected from a questionnaire",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:73a171c4b205543aaf3c7913562dd056",
+      "in_language": "en",
+      "source_context_keys": [
+        "870fe426df28c93e146716dd9c0a78fe",
+        "ae45f6bb2f35b8717ee4f11b9f63a22a"
+      ],
+      "source_page_indexes": [
+        175,
+        177
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "5e0e5211-a58c-5274-97cd-032989e527eb",
+        "f92f556c-2565-5a94-b3bf-c164875351c1"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "328d365c-ef55-5077-a0b3-e8a399df046a": {
+      "description": "Solve simple addition problems involving integers",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:77c5518e9e91519b28f6d2458ba63986",
+      "in_language": "en",
+      "source_context_keys": [
+        "0d118613fd35213be7a8dfe916092dff"
+      ],
+      "source_page_indexes": [
+        149
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "85c29378-ce68-519b-938a-87ea2a50d099"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "347ed0fd-6dfc-5ced-b6b7-d8664fd81c56": {
+      "description": "Order whole numbers up to 10,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:10008d76ef80b9730badee1335619feb",
+      "in_language": "en",
+      "source_context_keys": [
+        "607fcca72d5b2aed77f6f5d561b544f4"
+      ],
+      "source_page_indexes": [
+        25
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "873a8beb-fcdb-5926-942d-63287561524a"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "35ecdae9-14d5-536a-ad30-5069cf55039b": {
+      "description": "Compare graphs in which the same data has been displayed",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:58a8a629b5ceb05f2167c4db2b380a7c",
+      "in_language": "en",
+      "source_context_keys": [
+        "ed868384358776c72f8ff84d65769811"
+      ],
+      "source_page_indexes": [
+        70
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "ab7ee1e5-45f3-5366-b56b-5ffd94bd9234"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "35fb9536-ccd3-5b00-88db-4e9db6fc962d": {
+      "description": "Apply mental mathematics strategies and number properties to determine answers for basic multiplication facts to 81",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2c2b545a9a18fad8710a2443573909a7",
+      "in_language": "en",
+      "source_context_keys": [
+        "3057363c85cb4048877601d745833b67"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec"
+      ],
+      "source_sfi_uuids": [
+        "0f38dcc7-e35f-5387-8b28-3a056d412ba2"
+      ],
+      "source_window_ids": [
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "364f1539-d283-5cc6-9d65-7f4ef7cbc712": {
+      "description": "Extend the patterns in a table or chart to solve a given problem",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f8d7e9da58b3ddb66f850e51f44833b7",
+      "in_language": "en",
+      "source_context_keys": [
+        "7b305ab975233c2922393260bd4f26fa"
+      ],
+      "source_page_indexes": [
+        52
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "823ec042-21ee-5870-8ac2-bd1e94faf29a"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "367f7798-0899-5b1b-b208-767a0a821221": {
+      "description": "Identify images of a translation of a 2D shape in a plane",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:056ea9661c3e4668c41da51e3585c2ff",
+      "in_language": "en",
+      "source_context_keys": [
+        "f4b722d2f2e65d9b7153ac678801aeec"
+      ],
+      "source_page_indexes": [
+        170
+      ],
+      "source_segment_ids": [
+        "257ea7c9-5204-526c-80f0-7de396e2f93c"
+      ],
+      "source_sfi_uuids": [
+        "785b600c-80da-5018-98bc-b4009b5fa510"
+      ],
+      "source_window_ids": [
+        "7b31deae-92ff-5da9-b315-3b519d63e498"
+      ]
+    },
+    "36c2b21f-5154-5671-ad41-06c281840051": {
+      "description": "Select referents for cm3 or m3 units",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6d7bb309406df9ee6820924f6892ab19",
+      "in_language": "en",
+      "source_context_keys": [
+        "7e270ad1d41092852a276075db5a1b6e"
+      ],
+      "source_page_indexes": [
+        120
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "59fef44d-79f3-5f58-ab95-a5bb07d81b77"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "396c06cc-7d8e-5be8-8b8d-d8402ca943b6": {
+      "description": "Estimate perimeter using referents for centimetre or metre",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8ca95f121d2f35ed4c7b29e646db0c8e",
+      "in_language": "en",
+      "source_context_keys": [
+        "94289dc1b6e395d0f4b3479e2873ebc2",
+        "cce4a9f34cea03a09cde3db3c4e2e42b"
+      ],
+      "source_page_indexes": [
+        59,
+        117
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda",
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "bc72a4ae-3dc5-5e26-ba1a-64b58f1453d8",
+        "fe6f0f80-1425-55fe-a0a3-2b263cd5446d"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0",
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "39e5a341-b03c-55f1-aa8e-4a73a988937b": {
+      "description": "Model number quantities using graph sheets or multi-base materials up to 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca22786f272cf948116cacfb20b9300f",
+      "in_language": "en",
+      "source_context_keys": [
+        "7e763028099513cafd88b312c4640138"
+      ],
+      "source_page_indexes": [
+        22
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "55a78324-ee02-50ab-b97e-a51584ed73b7"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "3a7f0882-b82e-500d-8759-a02e204e4ee2": {
+      "description": "Draw a line graph for a given table of values",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f1f4e557f4158305fa93befc5ad9a2c0",
+      "in_language": "en",
+      "source_context_keys": [
+        "9d918aecf12566b02b222d1da44d7aa6",
+        "e0724469359636f7dd9a8ada4cede3c9"
+      ],
+      "source_page_indexes": [
+        171,
+        173
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "a84e9a7b-0d3e-58db-baeb-e3e81bc6f742",
+        "dacda2cf-69f2-58d7-9845-8aed87efc5ac"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "3acce83f-8e92-5a7c-9b66-2806c3f8dfe7": {
+      "description": "Round down whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f8f09bd75a6cd052c9f4d244c5ddbb66",
+      "in_language": "en",
+      "source_context_keys": [
+        "564a156bcf957a54e722196be763d1a4",
+        "f9de10d4950c961b10c053d2105cd24a"
+      ],
+      "source_page_indexes": [
+        78,
+        138
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "3ab36927-6f67-5cfe-9f1f-f7e132bbb0a1",
+        "81080f77-c387-5135-b767-00449fa5374c"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "3b0ff690-bb6d-585b-94e5-90b3bb74c905": {
+      "description": "Generate patterns in square numbers",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a5a72f701b0fc7e3639e6a97c56099a1",
+      "in_language": "en",
+      "source_context_keys": [
+        "6c888cabe303bebb8adec740dcadbf7a"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "48de2cac-9683-54b5-8188-f1af5bf4d875"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b"
+      ]
+    },
+    "3c01574b-0e91-507c-b4b4-84dd1759728c": {
+      "description": "Tell the time in hours and minutes on analogue watches",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9ee697c7528cafdd5f2c217a5a5fdf71",
+      "in_language": "en",
+      "source_context_keys": [
+        "ff658bc1099229e6d62b9f84c5220eeb"
+      ],
+      "source_page_indexes": [
+        63
+      ],
+      "source_segment_ids": [
+        "39f979a2-eb9d-5608-baac-19aea65c95b4"
+      ],
+      "source_sfi_uuids": [
+        "291da0d1-65e9-5b72-ac58-35ba1ab49f52"
+      ],
+      "source_window_ids": [
+        "b5cbf0b4-2ba4-50f9-9db3-d8caff8d04e5"
+      ]
+    },
+    "3d29f231-d75e-50aa-b6b0-e32ba7c25b46": {
+      "description": "Compare fractions with like denominators using pictorial representations and equivalent fractions found with the Lowest Common Denominator (LCD)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8c0188fdad39c3fa7853be6da0cb5200",
+      "in_language": "en",
+      "source_context_keys": [
+        "fdbbbdd28898b574c67279f3872ef096"
+      ],
+      "source_page_indexes": [
+        43
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "900d99e4-26de-5f0d-860e-af981e8f909f"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "3d5d4473-93ba-59c3-9c05-cfd7fa6e1f2a": {
+      "description": "Calculate perimeter of given shapes in centimetres and metres",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9a5a3fd2475cafc443dc4052289cc309",
+      "in_language": "en",
+      "source_context_keys": [
+        "fd460c068ace8b95cf1753e4a7718846"
+      ],
+      "source_page_indexes": [
+        118
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "4e46d94f-2aca-5dc5-937f-05fccf1e7e3a"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "3f71adcb-561a-5344-ad04-d7e6ec59b1c8": {
+      "description": "Use an understanding of one-to-one correspondence to read graphs",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f97afc046564b041ca5ecbd9a105c108",
+      "in_language": "en",
+      "source_context_keys": [
+        "ad894fa0b8e24fa239bfa7051f4d6de4"
+      ],
+      "source_page_indexes": [
+        67
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "6760d676-ae48-5d2c-99df-1ad6b514fd82"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "3fe1f01b-f483-5af7-86fb-b7a7037e0212": {
+      "description": "Use a clock to measure the time taken to complete simple events in minutes and seconds",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e7422b9df0b3133a361c26eda924fb4c",
+      "in_language": "en",
+      "source_context_keys": [
+        "b0661f51d62443a58381e946bb5505c0"
+      ],
+      "source_page_indexes": [
+        64
+      ],
+      "source_segment_ids": [
+        "39f979a2-eb9d-5608-baac-19aea65c95b4"
+      ],
+      "source_sfi_uuids": [
+        "8e91e95c-075a-5f3d-848f-074a01d81bdd"
+      ],
+      "source_window_ids": [
+        "b5cbf0b4-2ba4-50f9-9db3-d8caff8d04e5"
+      ]
+    },
+    "408a3239-42ab-52ca-8702-08537a224b4a": {
+      "description": "Determine whether a given set of data can be represented by a line graph (continuous data) or a series of points (discrete data)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ee67f03fae722b0450ef546dcda81074",
+      "in_language": "en",
+      "source_context_keys": [
+        "9ba9cebaa05ab57d65c7d84b74e6a220"
+      ],
+      "source_page_indexes": [
+        172
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "52bd2e61-90fd-5661-8f23-eb9618b4e470"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "4157c799-3cb2-5a80-9c7b-5b6925086726": {
+      "description": "Compare fractions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7e253ed58075d52232a3657b6505b4ca",
+      "in_language": "en",
+      "source_context_keys": [
+        "844b79308532255d6a18b502ba1be31e"
+      ],
+      "source_page_indexes": [
+        92
+      ],
+      "source_segment_ids": [
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "618e0880-7cc4-5f05-a1e1-20aba7b0127a"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9"
+      ]
+    },
+    "4256d11c-bede-5493-aefd-1c366407f2e0": {
+      "description": "Order a mixture of fractions: common, percent and decimal fractions (up to thousandths)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b56b2d014e2dbe51610397715f4776ce",
+      "in_language": "en",
+      "source_context_keys": [
+        "490f08a8996b15dd3157b094ed0cbf99"
+      ],
+      "source_page_indexes": [
+        151
+      ],
+      "source_segment_ids": [
+        "4787650f-da46-5655-899b-47745f0357d2"
+      ],
+      "source_sfi_uuids": [
+        "460bf96f-0516-5753-b536-af795229aed0"
+      ],
+      "source_window_ids": [
+        "eda81369-7752-58c5-809e-7d3bb1ef87b6"
+      ]
+    },
+    "428c1730-ec45-5e83-8cad-a3a3a6b3b7dc": {
+      "description": "Recognise and name equivalent fractions using pictorial representations and number line to determine the Lowest Common Denominator (LCD)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:67fa6d91c13c19c69230201e272da517",
+      "in_language": "en",
+      "source_context_keys": [
+        "59c78a8197beda6b7fbe5eb1fbb7b10a"
+      ],
+      "source_page_indexes": [
+        40
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "070dc45b-6907-5633-a4d3-7562663b2ad0"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "42a33f02-fa58-56fe-8d90-453c8797eab0": {
+      "description": "Solve a given one-step equation using manipulatives",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d2b63663b58089fcc3b62ddb61bfcbac",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1c5b150a72a09e7d2604a5d5b83a803"
+      ],
+      "source_page_indexes": [
+        54
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "5dbb54ce-9f36-5fcd-b28a-0bfd1a613dd9"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "42ec167a-8ebf-5cca-89b4-14006157fece": {
+      "description": "Use doubling or halving to determine basic multiplication facts to 81 and related division facts",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:284e481d3eb71a4430a09d65f3f7329b",
+      "in_language": "en",
+      "source_context_keys": [
+        "8ca6fedc0c68afb976d941410e39328e"
+      ],
+      "source_page_indexes": [
+        143
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "0bb21f51-7132-5d95-8d7c-604889ccd3ef"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "431bdc4f-9eff-5309-ab9b-1e14b7ee1535": {
+      "description": "Represent a given pattern visually to verify predictions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9a3e248702c212ad8730bd9cff0b77d3",
+      "in_language": "en",
+      "source_context_keys": [
+        "b74f25848b151edee2bf9ad4e30945cb",
+        "dde790346944440d5357573589105c58"
+      ],
+      "source_page_indexes": [
+        107,
+        158
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36",
+        "d3af2cfb-1a4d-5193-ac3a-447b7e668147"
+      ],
+      "source_sfi_uuids": [
+        "2e0e1bed-0c4e-54aa-aca6-c60df169e116",
+        "2e8e7e2d-afdb-56a0-9ea1-356819861b7b"
+      ],
+      "source_window_ids": [
+        "a1d6b6fc-19d8-5a07-aa66-5f587b661ea2",
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "4542a815-2fbf-5c35-b860-4b4eed04e411": {
+      "description": "Generate prime numbers and composite numbers between 1 and 100",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e81f65e67ed89e9c5012ff0aae912fbc",
+      "in_language": "en",
+      "source_context_keys": [
+        "5ba8b997689e5dba29a1c71484bdf3b4"
+      ],
+      "source_page_indexes": [
+        81
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "ebd295a4-09ee-5bb8-ad3f-38e984b62890"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "47910564-1407-5fb7-8546-8dd42040710e": {
+      "description": "Explain why a given number is or is not the next element in a pattern",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7fba119e7c517d98e28c8808f5eb02aa",
+      "in_language": "en",
+      "source_context_keys": [
+        "4adc5920b9de9390b0c931f0deb120f6"
+      ],
+      "source_page_indexes": [
+        108
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36"
+      ],
+      "source_sfi_uuids": [
+        "058d4e69-ac8e-54c8-b167-6bb78405af98"
+      ],
+      "source_window_ids": [
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "47963376-fafb-5a10-b3c4-d33c749355fc": {
+      "description": "Order sets of integers using the number line and symbols \"< or >\"",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:017bba7015074731e83fdfd02166249a",
+      "in_language": "en",
+      "source_context_keys": [
+        "dc34da96acf460e34d70edbe28dbc591"
+      ],
+      "source_page_indexes": [
+        148
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "3893d14e-2a98-5bbe-9cff-15c51cf8a5e4"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "47a91a44-9736-5198-a04d-0955e0647c71": {
+      "description": "Use double bar graphs to solve problems",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a44ae6d83f606bfa421c5511774f1ec5",
+      "in_language": "en",
+      "source_context_keys": [
+        "06646b13be1a7c1fb77c652182d64f0a"
+      ],
+      "source_page_indexes": [
+        128
+      ],
+      "source_segment_ids": [
+        "9a2d4c71-9305-521d-9f2e-eee66925c8d1"
+      ],
+      "source_sfi_uuids": [
+        "dd7c17b7-9d12-5ed4-8f05-cb7193176973"
+      ],
+      "source_window_ids": [
+        "d79a55f9-fed2-5f8f-9c5d-48560c7e4277"
+      ]
+    },
+    "4a97a65c-ac4c-5cc3-9bd9-beb55e0f0af8": {
+      "description": "Use various strategies to solve proportional reasoning problems involving rates",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6e3ec7e48dd8e093970adecb16002ff7",
+      "in_language": "en",
+      "source_context_keys": [
+        "8b10636760953fbd1fec2d8101b04dab"
+      ],
+      "source_page_indexes": [
+        157
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "d9949ca2-a6ac-55ed-b540-7d11a1a53e0e"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "4b48a029-6e6b-5459-9736-713583de82e5": {
+      "description": "Order fractions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:633380b8695a481175797fcb45e4ff7f",
+      "in_language": "en",
+      "source_context_keys": [
+        "844b79308532255d6a18b502ba1be31e"
+      ],
+      "source_page_indexes": [
+        92
+      ],
+      "source_segment_ids": [
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "618e0880-7cc4-5f05-a1e1-20aba7b0127a"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9"
+      ]
+    },
+    "4b62ec06-47a8-5044-b571-7af0c138619a": {
+      "description": "Solve take apart problems by interpreting many-to-one bar graphs (up to 4 categories of data)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c4d0a36381f7daf9a44426541c4c4e1a",
+      "in_language": "en",
+      "source_context_keys": [
+        "386793cb00dd8a93a1de8d9c79472650"
+      ],
+      "source_page_indexes": [
+        73
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "3b4f6f44-9fee-5ccd-afe2-272a8b7f81f8"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "4c2366d1-c46d-5b73-9351-9c92b0e683a1": {
+      "description": "Identify the lines of symmetry of irregular 2D shapes (triangles and quadrilateral)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d4d9e63eb5f3ed60c3bce60b8b6548d8",
+      "in_language": "en",
+      "source_context_keys": [
+        "89a1f09b4bdb3da9025dd41cef3a5d77"
+      ],
+      "source_page_indexes": [
+        56
+      ],
+      "source_segment_ids": [
+        "fa666a50-243d-54f4-8a92-5c4c35fb53aa"
+      ],
+      "source_sfi_uuids": [
+        "f065e483-1953-5a01-a8de-f0886d58bdf9"
+      ],
+      "source_window_ids": [
+        "039199b5-c928-5647-b005-5769d9b4ba95"
+      ]
+    },
+    "4ca3aa02-8749-5760-b570-81dcdbc8c164": {
+      "description": "Prove that a polygon is regular by folding and superimposing",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9f1174e9630ef5a4eef06134d3004be2",
+      "in_language": "en",
+      "source_context_keys": [
+        "4d3bee64ecba9b0bb550ed4d1b176c6e"
+      ],
+      "source_page_indexes": [
+        116
+      ],
+      "source_segment_ids": [
+        "6ee071fb-55f2-56c3-9ac0-19c0c6e3c3ca"
+      ],
+      "source_sfi_uuids": [
+        "1196dc8f-0f9b-5f10-a90c-b47832dfed0e"
+      ],
+      "source_window_ids": [
+        "409e8973-7f52-505e-a48f-8d2638cadb6e"
+      ]
+    },
+    "4d3b4053-9578-5556-9bef-3a0f44690c04": {
+      "description": "List the possible outcomes of a probability experiment, such as tossing a coin, rolling a die with a given number of sides, spinning a spinner with a given number of sectors",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e96dba4fd00633f26a8e046691a2053d",
+      "in_language": "en",
+      "source_context_keys": [
+        "3922134768e4dd5bd2be470b484d0e44"
+      ],
+      "source_page_indexes": [
+        178
+      ],
+      "source_segment_ids": [
+        "87174447-a74f-538c-b6a9-f2b1121eb505"
+      ],
+      "source_sfi_uuids": [
+        "ef51ee0d-f382-5bd4-ab74-4d19517b8f98"
+      ],
+      "source_window_ids": [
+        "6d6c4654-4afe-544c-a07d-eb973c824649"
+      ]
+    },
+    "4e3d9edc-2a86-5e95-ae21-a4c9cbcd63e7": {
+      "description": "Round down whole numbers up to 10000 to the nearest thousands, hundreds and tens",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ea03fe70f4c90c987db199f1d96d6dbf",
+      "in_language": "en",
+      "source_context_keys": [
+        "b92ce5dae85a5fe9dea9b17e5b71728f"
+      ],
+      "source_page_indexes": [
+        26
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "1e865899-b1bd-534d-a172-b7290bd48ee4"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "5094a7ce-9e00-5e6d-8902-dce888dfbac4": {
+      "description": "Extend a given pattern with and without concrete materials",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a257527aeb377735734dabfe15e74566",
+      "in_language": "en",
+      "source_context_keys": [
+        "51fe7e598c82183d1206b13809833c19"
+      ],
+      "source_page_indexes": [
+        104
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36"
+      ],
+      "source_sfi_uuids": [
+        "f0b7941a-ba6c-598c-b59e-6c7e6b9d31ef"
+      ],
+      "source_window_ids": [
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "509e24be-df21-588b-b004-c146fd4c081b": {
+      "description": "Use the concept of equivalent fractions to subtract fractions greater than one (improper or mixed fractions)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6cfe32b696b455ec40fe5521106bc4dd",
+      "in_language": "en",
+      "source_context_keys": [
+        "65e501c2113ec55f3f78323c8d84e038"
+      ],
+      "source_page_indexes": [
+        93
+      ],
+      "source_segment_ids": [
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "13e5bd54-56e7-5e7c-9dac-3dead3b42031"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9"
+      ]
+    },
+    "565e32e5-9d58-5f0f-87c2-4aff604e6acd": {
+      "description": "Write a ratio in its simplest form",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7b4137e46fdb64afc92564c354825610",
+      "in_language": "en",
+      "source_context_keys": [
+        "f9cdaccbb7c2ce91476501989cef2196"
+      ],
+      "source_page_indexes": [
+        154
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "416f8657-b560-58d0-a963-615f5a6ab90a"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "576e5650-14cc-5ff4-9c70-b7e9706a1b3c": {
+      "description": "Tell the position of objects in space using the cardinal points north-east, north-west, south-east and south-west",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:47d031b5567746cfa7a65fc2d260b226",
+      "in_language": "en",
+      "source_context_keys": [
+        "ae8d87e03701b6e144bd964bea0b1c59"
+      ],
+      "source_page_indexes": [
+        166
+      ],
+      "source_segment_ids": [
+        "257ea7c9-5204-526c-80f0-7de396e2f93c"
+      ],
+      "source_sfi_uuids": [
+        "8e6fcfbb-4e41-5ace-828f-38dcb22ff1d9"
+      ],
+      "source_window_ids": [
+        "7b31deae-92ff-5da9-b315-3b519d63e498"
+      ]
+    },
+    "5928b616-6622-5788-9dd0-84ab3b46e9e3": {
+      "description": "Recognise the relationship between factors and multiples",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d3859dfdf0b4978b578beeb719c71779",
+      "in_language": "en",
+      "source_context_keys": [
+        "6c888cabe303bebb8adec740dcadbf7a"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "8aaf1628-97bf-5824-b635-f84bfa9c2b5b"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b"
+      ]
+    },
+    "595c6f8c-6ec6-5001-a98f-e386c9a1e340": {
+      "description": "Solve simple subtraction problems involving integers (excluding subtraction of negative numbers)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3decdec71e9daed5e29fbf4ba38156cb",
+      "in_language": "en",
+      "source_context_keys": [
+        "0d118613fd35213be7a8dfe916092dff"
+      ],
+      "source_page_indexes": [
+        149
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "85c29378-ce68-519b-938a-87ea2a50d099"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "59e90116-93c9-52a3-8cd2-5ca11d9f4c75": {
+      "description": "Convert Hindu Arabic numbers to Roman numerals up to 100 (C)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0ee9b6bad9f3109a31ab05aac5cdb7a8",
+      "in_language": "en",
+      "source_context_keys": [
+        "330ba481c5cb028b9f146c978e1fc89f",
+        "7a27927b66b165d405e7661f47e6ceee"
+      ],
+      "source_page_indexes": [
+        79,
+        140
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "097beb07-4c15-582b-be9f-a50e20fafe8b",
+        "f7c9b5ad-9732-5d69-a5f7-cd5aca2654ec"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "5ac8b86c-887c-5711-91cb-c9deaf62ea64": {
+      "description": "Demonstrate understanding of algebraic expressions as mathematical phrases that can contain letters which represent ordinary numbers and operators (like add, subtract, multiply, and divide)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d036e48991a10903515d4221aa66027a",
+      "in_language": "en",
+      "source_context_keys": [
+        "a45b6d5a63ed262ade39ba6388dde721",
+        "ee7469a2d8cf1bd01bf77d9a1c804559"
+      ],
+      "source_page_indexes": [
+        110,
+        161
+      ],
+      "source_segment_ids": [
+        "46ca360c-8468-5cc8-8bd3-cfde771d8dab",
+        "923140e9-bb66-50d8-bd5c-4f724b89de88"
+      ],
+      "source_sfi_uuids": [
+        "dcdae7ba-ffa2-53b2-9bd8-9263a60b1633",
+        "e2c7d94c-56a0-5626-a63e-5d9ec9208490"
+      ],
+      "source_window_ids": [
+        "2eabed50-7a39-572a-80a3-8fb185f14426",
+        "41661f74-3aac-5eb6-bbbb-fb8b4f29d967"
+      ]
+    },
+    "5aeb2653-74c2-5cae-97e5-5b260df15221": {
+      "description": "Write a ratio symbolically",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b2e7688d9a7b7b1b0cb208b1f3a8dc11",
+      "in_language": "en",
+      "source_context_keys": [
+        "f9cdaccbb7c2ce91476501989cef2196"
+      ],
+      "source_page_indexes": [
+        154
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "416f8657-b560-58d0-a963-615f5a6ab90a"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "5b0eace0-892a-5fac-9dba-651241bbd88f": {
+      "description": "Describe the relationship in a given table or chart, using a mathematical expression",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2b2024ccd5356ce9fe11170df6eb63bf",
+      "in_language": "en",
+      "source_context_keys": [
+        "b574034a40a912bacdbc4e0acdf85494",
+        "bf01289e32795eb0a86984a85acd90b2"
+      ],
+      "source_page_indexes": [
+        109,
+        160
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36",
+        "d3af2cfb-1a4d-5193-ac3a-447b7e668147"
+      ],
+      "source_sfi_uuids": [
+        "378e97d1-9e64-50d6-8310-469b71330326",
+        "959a3ec8-47f5-540b-8bda-db48c4395341"
+      ],
+      "source_window_ids": [
+        "a1d6b6fc-19d8-5a07-aa66-5f587b661ea2",
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "5b4500bb-9b78-52af-9e8c-5e8eb0a04d2a": {
+      "description": "Classify the likelihood of a single outcome occurring in a probability experiment as impossible, possible, or certain",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c2dcb82659ffa49d1a905f1df99ecb15",
+      "in_language": "en",
+      "source_context_keys": [
+        "fc52123e21c8e8f66caf5e4432c8bc59"
+      ],
+      "source_page_indexes": [
+        132
+      ],
+      "source_segment_ids": [
+        "d166ff72-a9fc-588c-868d-8168e31f683f"
+      ],
+      "source_sfi_uuids": [
+        "680eba75-b37b-5b6e-abf2-4ef5eb038a78"
+      ],
+      "source_window_ids": [
+        "f92cf221-569e-5ff4-81da-614f72762b44"
+      ]
+    },
+    "5ca4486c-3227-59ae-be1d-b54d22f25d07": {
+      "description": "Investigate the properties of the sides of squares and rectangles",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9518e658ff961dc87f35416e5293c23e",
+      "in_language": "en",
+      "source_context_keys": [
+        "8e14c721a18d25f671f494137ed7400d"
+      ],
+      "source_page_indexes": [
+        115
+      ],
+      "source_segment_ids": [
+        "6ee071fb-55f2-56c3-9ac0-19c0c6e3c3ca"
+      ],
+      "source_sfi_uuids": [
+        "085e18c5-4412-58fd-9eb4-619509586042"
+      ],
+      "source_window_ids": [
+        "409e8973-7f52-505e-a48f-8d2638cadb6e"
+      ]
+    },
+    "5cac2e81-b18e-5621-bed8-c754596699db": {
+      "description": "Identify examples of angles in the environment that are equal to a right angle",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2729ec919d5fcda1eaf6031725346588",
+      "in_language": "en",
+      "source_context_keys": [
+        "05e1f320b7ad1877d0f2092e94fb7e1f"
+      ],
+      "source_page_indexes": [
+        123
+      ],
+      "source_segment_ids": [
+        "c913c750-1ffa-55fd-8b3a-fc2b60633fd8"
+      ],
+      "source_sfi_uuids": [
+        "2d741ead-d111-540e-9ec2-89878949b575"
+      ],
+      "source_window_ids": [
+        "5111822e-6c32-5f80-a173-24040fe691cd"
+      ]
+    },
+    "6036bd26-b217-558f-82fc-e583f947d54e": {
+      "description": "Identify common features of graphs that use many-to-one correspondence",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:106b6203d53c7a50c627b5490946995e",
+      "in_language": "en",
+      "source_context_keys": [
+        "abe6f7302de9ff64a78b6b26784cb0bf"
+      ],
+      "source_page_indexes": [
+        72
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "3fbdaaa7-ef77-5520-966b-a9d3455ae9d7"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "611a9096-877b-5a48-a3b5-94fa49bba805": {
+      "description": "Tell the motion of objects in space using the cardinal points north, south, east and west",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7b4d5925fae9f2389e98d041955bbedc",
+      "in_language": "en",
+      "source_context_keys": [
+        "068c16ede141e48a7d52871971387048",
+        "23aa28d95533fb9e86a47cde6de5abcf",
+        "6823912dbdf6f3e75a633d5b800be67a"
+      ],
+      "source_page_indexes": [
+        58,
+        66,
+        125
+      ],
+      "source_segment_ids": [
+        "45c83867-f587-5074-9c4a-f06d8d733177",
+        "4ee692a0-c824-57ca-ba45-9a7853c1e1d8",
+        "78977999-4e0a-5ea9-96ee-cb912a1229c0"
+      ],
+      "source_sfi_uuids": [
+        "11d864eb-6951-56d3-8d31-271b0a9b3ecb",
+        "fb4b5f82-50b6-5999-b690-1f8352525cb2"
+      ],
+      "source_window_ids": [
+        "1daf8f00-8311-503f-ab4f-8dfea737dd55",
+        "70368afa-e8b7-518c-b68e-917a360e67b2",
+        "fb1cfa87-8588-56e5-a253-3df06f0d6294"
+      ]
+    },
+    "639c5694-24fa-55be-bcdf-80b5af23a6c8": {
+      "description": "Multiply multi-digit numbers by 2 or 3-digit numbers efficiently",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8b5c8e0e2f4143af73d271a3c7af9ced",
+      "in_language": "en",
+      "source_context_keys": [
+        "a32b7ecc9644b9a694b9236494a4f14c"
+      ],
+      "source_page_indexes": [
+        145
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "1c0f69fb-efff-5ba8-b2eb-f2056139f6f1"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "6419dba2-ed7f-5ec0-b94b-f50ba9a2db6b": {
+      "description": "Apply the distributive property for mental multiplication",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b3dcc3a2b5780c55a73d0eb0d9459369",
+      "in_language": "en",
+      "source_context_keys": [
+        "48edd2e8edc498da5e599b1a62e7cd32",
+        "709a88006fd43235905ede879791f4f2"
+      ],
+      "source_page_indexes": [
+        36,
+        144
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec",
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "2204fb97-3237-59a5-8725-065c22d2477b",
+        "33819463-9117-5444-a0a4-b26cfc583263"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6",
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "64a87993-5963-55db-935f-1ce6ae56b9ef": {
+      "description": "Find examples of second-hand data in print and electronic media, such as newspapers, magazines, and the internet",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:43222d65cf42c313f867a4e6f8878605",
+      "in_language": "en",
+      "source_context_keys": [
+        "1a1315cb674f7d10d2eaf47519317826"
+      ],
+      "source_page_indexes": [
+        127
+      ],
+      "source_segment_ids": [
+        "9a2d4c71-9305-521d-9f2e-eee66925c8d1"
+      ],
+      "source_sfi_uuids": [
+        "07c3cdbc-bf92-5e42-86f7-618f4b407167"
+      ],
+      "source_window_ids": [
+        "d79a55f9-fed2-5f8f-9c5d-48560c7e4277"
+      ]
+    },
+    "6553f571-5f80-5da2-a2f8-3e401af22dbb": {
+      "description": "Explain the difference between first-hand and second-hand data",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:538b66db2b3febea67a732a1a7a69ba5",
+      "in_language": "en",
+      "source_context_keys": [
+        "1a1315cb674f7d10d2eaf47519317826"
+      ],
+      "source_page_indexes": [
+        127
+      ],
+      "source_segment_ids": [
+        "9a2d4c71-9305-521d-9f2e-eee66925c8d1"
+      ],
+      "source_sfi_uuids": [
+        "ef319b94-acae-5feb-a56c-6087e5d1092d"
+      ],
+      "source_window_ids": [
+        "d79a55f9-fed2-5f8f-9c5d-48560c7e4277"
+      ]
+    },
+    "658993f4-f415-58d1-bd73-7cf19e8b209e": {
+      "description": "Locate sets of integers on the number line",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9f811ed853daad93f9895b89d92eea63",
+      "in_language": "en",
+      "source_context_keys": [
+        "dc34da96acf460e34d70edbe28dbc591"
+      ],
+      "source_page_indexes": [
+        148
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "3893d14e-2a98-5bbe-9cff-15c51cf8a5e4"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "6a291642-08cb-5482-8c81-e387744ddcd8": {
+      "description": "Apply a formula for determining the area of a rectangle and square",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca43f425e41e0b83d652f36adb21e86f",
+      "in_language": "en",
+      "source_context_keys": [
+        "b49bc8e95b5b55509bf0147085dbc879"
+      ],
+      "source_page_indexes": [
+        62
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "51bfc6cc-890e-5614-b5b5-c3b7dc175cb8"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "6aaf5598-856b-57b9-83a3-a5f62ff10746": {
+      "description": "Classify angles according to their measured sizes \u2013 right, acute, obtuse and reflex",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b0eeb55907f5b364f5766ddb52d11c9e",
+      "in_language": "en",
+      "source_context_keys": [
+        "c3dd02e86e0ef98fda4a68b7befc917b"
+      ],
+      "source_page_indexes": [
+        124
+      ],
+      "source_segment_ids": [
+        "c913c750-1ffa-55fd-8b3a-fc2b60633fd8"
+      ],
+      "source_sfi_uuids": [
+        "37aecaa3-5db1-5d51-b34d-9b5ab7667dd5"
+      ],
+      "source_window_ids": [
+        "5111822e-6c32-5f80-a173-24040fe691cd"
+      ]
+    },
+    "6bb214db-dc68-50e5-ba58-6ac2c34ce837": {
+      "description": "Use the concept of equivalent fractions to change fractions to the same denominator for addition of like fractions (one denominator being a multiple of the other)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2e1df7f62d7f685e53c0acd1620ebe4d",
+      "in_language": "en",
+      "source_context_keys": [
+        "65e501c2113ec55f3f78323c8d84e038"
+      ],
+      "source_page_indexes": [
+        93
+      ],
+      "source_segment_ids": [
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "e2c82eed-73dd-5bab-b8a2-7c65bdee5a4e"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9"
+      ]
+    },
+    "6c76bfe2-39d3-5e49-9cf1-ab653b3138bb": {
+      "description": "Provide examples of where fractions are used",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:bfae365afdc58b696c57e034a416c8ac",
+      "in_language": "en",
+      "source_context_keys": [
+        "3a87a7aa473e2fd71c5a1b170a16d9dd"
+      ],
+      "source_page_indexes": [
+        44
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "0e2f497d-33b0-5567-bf45-8621b59b5d6f"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "6df013c0-72dd-5af4-82c1-d7d2e5b6dd42": {
+      "description": "Analyse patterns in square numbers",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:1f9bf51bc04a533bbe82014e729cc745",
+      "in_language": "en",
+      "source_context_keys": [
+        "6c888cabe303bebb8adec740dcadbf7a"
+      ],
+      "source_page_indexes": [
+        31
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "48de2cac-9683-54b5-8188-f1af5bf4d875"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b"
+      ]
+    },
+    "702a1681-fa67-5897-9c8c-60fe9047f992": {
+      "description": "Create a table from a given concrete representation of a pattern",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:94bc5fab959e7a4d2280c0f3e47c3b1f",
+      "in_language": "en",
+      "source_context_keys": [
+        "c3062e7cac2c0c4a63d744317b16e744"
+      ],
+      "source_page_indexes": [
+        51
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "acf3d563-e41e-5a6a-89d3-d30a27fb264f"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "72edf7b7-23a7-594b-8f65-6ae52cd42005": {
+      "description": "Write a rule in words to represent a given pattern",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8f4865c84ee91d262bb01f4094aad263",
+      "in_language": "en",
+      "source_context_keys": [
+        "4adc5920b9de9390b0c931f0deb120f6",
+        "b574034a40a912bacdbc4e0acdf85494"
+      ],
+      "source_page_indexes": [
+        108,
+        160
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36",
+        "d3af2cfb-1a4d-5193-ac3a-447b7e668147"
+      ],
+      "source_sfi_uuids": [
+        "389331ee-1792-586b-ab36-eaa3ce3574e1",
+        "8aaf822a-0112-5717-84ee-81504a4609f1"
+      ],
+      "source_window_ids": [
+        "a1d6b6fc-19d8-5a07-aa66-5f587b661ea2",
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "7368bd59-bc4e-54e1-afe3-62382a564af2": {
+      "description": "Graph the results of collected data to solve problems",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:701b9aaf1b4fdaaeade15e1d1cbc8a94",
+      "in_language": "en",
+      "source_context_keys": [
+        "870fe426df28c93e146716dd9c0a78fe"
+      ],
+      "source_page_indexes": [
+        177
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "5e0e5211-a58c-5274-97cd-032989e527eb"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "738624a3-6597-5e4b-a4b2-77715bbe9e25": {
+      "description": "Represent the problem with an equation",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:49d7f3dff4b012f004cae76e2aebefec",
+      "in_language": "en",
+      "source_context_keys": [
+        "9a97aff7a53f1e68de87ba1f616ff5e3",
+        "bf67ee7a7897206818828a4d1f5db444",
+        "d1c5b150a72a09e7d2604a5d5b83a803"
+      ],
+      "source_page_indexes": [
+        54,
+        113,
+        163
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1",
+        "6b728ffc-3499-5943-83f4-4683d7e92dc1",
+        "7db70430-f18f-5c6a-990a-cfe161b2a19c"
+      ],
+      "source_sfi_uuids": [
+        "0ef6f5e2-1423-5083-a499-31d6b81ac921",
+        "859b0453-5e5e-5581-a3b8-81b9530cc511",
+        "d3eafd1e-93f9-5368-a3b7-0761912b7c6c"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215",
+        "b2c367ed-8b37-565c-ac5c-1ba6c36b6382",
+        "fa8a20e3-20fb-548a-b2a1-704812c00176"
+      ]
+    },
+    "750981a8-6fc3-5265-a122-36952508d4d2": {
+      "description": "Round off whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f871990e3568a9e2b822f72186e7cfbc",
+      "in_language": "en",
+      "source_context_keys": [
+        "564a156bcf957a54e722196be763d1a4",
+        "f9de10d4950c961b10c053d2105cd24a"
+      ],
+      "source_page_indexes": [
+        78,
+        138
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "3ab36927-6f67-5cfe-9f1f-f7e132bbb0a1",
+        "81080f77-c387-5135-b767-00449fa5374c"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "758ef650-2f80-5180-870c-f3a55a652e1d": {
+      "description": "Compare whole numbers up to 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:78cdd745c811ca3432d9f2648994ee83",
+      "in_language": "en",
+      "source_context_keys": [
+        "326068b73b2bfe56f90be4093f340a0d",
+        "65290e995a229aa4e2380894c6f35665"
+      ],
+      "source_page_indexes": [
+        77,
+        137
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "43ac17b0-3249-5340-9409-4337cbfa1b67",
+        "5774f72f-172e-5005-a919-0c867f028886"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "75eb46b9-62d9-58ff-b32b-13f263603e8c": {
+      "description": "Locate a unit fraction on a number line by defining the interval from 0 to 1 as the whole and partitioning it into equal parts",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8ca1e4a1164d2645329b32ab19d0e2c2",
+      "in_language": "en",
+      "source_context_keys": [
+        "43b05308ab00888fd7de7634b841f7c6"
+      ],
+      "source_page_indexes": [
+        39
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "a7d294a9-b897-557f-aec6-557330b26dbc"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "77254227-e687-50c3-8fab-9ffb9f54b931": {
+      "description": "Conduct a given probability experiment a number of times",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:eb4ee9c9d4bc8fb91ae2b1f20f3b009c",
+      "in_language": "en",
+      "source_context_keys": [
+        "fc52123e21c8e8f66caf5e4432c8bc59"
+      ],
+      "source_page_indexes": [
+        132
+      ],
+      "source_segment_ids": [
+        "d166ff72-a9fc-588c-868d-8168e31f683f"
+      ],
+      "source_sfi_uuids": [
+        "c95735c8-f0e9-59d0-a77c-e252938b7f8b"
+      ],
+      "source_window_ids": [
+        "f92cf221-569e-5ff4-81da-614f72762b44"
+      ]
+    },
+    "78a8591d-0c59-5157-9548-8612e622ced8": {
+      "description": "Compare sets of integers using the symbols \"< or >\"",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d52d7ac28b224e06ed6695c23bfa9a58",
+      "in_language": "en",
+      "source_context_keys": [
+        "dc34da96acf460e34d70edbe28dbc591"
+      ],
+      "source_page_indexes": [
+        148
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "3893d14e-2a98-5bbe-9cff-15c51cf8a5e4"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "7981eb77-3f99-5083-b2bb-3f565cd8ce51": {
+      "description": "Find examples of graphs in which many-to-one correspondence is used in print and electronic media",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:648ec82f2547c7e9f813b105e1774fd2",
+      "in_language": "en",
+      "source_context_keys": [
+        "23ec1b0bd92144e29df140e5034d1f95"
+      ],
+      "source_page_indexes": [
+        71
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "5fc2e40b-471e-5888-a91d-833973bbebf4"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "7c82dc79-e87c-5f85-a258-617fc39db46a": {
+      "description": "Construct different rectangles for a given perimeter (cm, m) to demonstrate that many shapes are possible for a perimeter",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:646ab2bc692fd480a5972616aa1fabf9",
+      "in_language": "en",
+      "source_context_keys": [
+        "55aa0721766c26285be51a24e39c0832"
+      ],
+      "source_page_indexes": [
+        61
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "8464298f-29ff-5408-96b3-ac70f635353a"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "7d8f4117-13fb-5441-911e-69cfadfc9b16": {
+      "description": "Round up whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9b0f0e0d7efb535006c637420ebd3a94",
+      "in_language": "en",
+      "source_context_keys": [
+        "564a156bcf957a54e722196be763d1a4",
+        "f9de10d4950c961b10c053d2105cd24a"
+      ],
+      "source_page_indexes": [
+        78,
+        138
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "3ab36927-6f67-5cfe-9f1f-f7e132bbb0a1",
+        "81080f77-c387-5135-b767-00449fa5374c"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "7e7cf445-af0f-5843-9ff5-3e416ef4017b": {
+      "description": "Investigate the properties of the diagonals of squares and rectangles",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c46880d7f684d854b24f7b05730f256c",
+      "in_language": "en",
+      "source_context_keys": [
+        "8e14c721a18d25f671f494137ed7400d"
+      ],
+      "source_page_indexes": [
+        115
+      ],
+      "source_segment_ids": [
+        "6ee071fb-55f2-56c3-9ac0-19c0c6e3c3ca"
+      ],
+      "source_sfi_uuids": [
+        "085e18c5-4412-58fd-9eb4-619509586042"
+      ],
+      "source_window_ids": [
+        "409e8973-7f52-505e-a48f-8d2638cadb6e"
+      ]
+    },
+    "7ea073d2-17f0-53e7-9c3b-359e3c1b1a14": {
+      "description": "Record calendar dates in a variety of formats",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d6cdaac231e57cd610dcd4a1fc6e9522",
+      "in_language": "en",
+      "source_context_keys": [
+        "b0661f51d62443a58381e946bb5505c0"
+      ],
+      "source_page_indexes": [
+        64
+      ],
+      "source_segment_ids": [
+        "39f979a2-eb9d-5608-baac-19aea65c95b4"
+      ],
+      "source_sfi_uuids": [
+        "6c9a9ee0-9bc1-5926-a8d8-0f1f4e987d97"
+      ],
+      "source_window_ids": [
+        "b5cbf0b4-2ba4-50f9-9db3-d8caff8d04e5"
+      ]
+    },
+    "7f5ddaa0-ca0c-575b-b1dc-3e41b087e958": {
+      "description": "Solve a given equation when the unknown is on the left or right side of the equation",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:387321b392eb45517656624fdc9be9da",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1c5b150a72a09e7d2604a5d5b83a803"
+      ],
+      "source_page_indexes": [
+        54
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "04289851-b797-5394-a995-a7bc512a1b19"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "7f7219af-98b3-5048-8e02-b106eba729c8": {
+      "description": "Read numbers in figures and in words up to 1,000,000,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:17982acda929d5535f4999272fb6ebee",
+      "in_language": "en",
+      "source_context_keys": [
+        "a1df6665e5808d25d4a633063ea3d756"
+      ],
+      "source_page_indexes": [
+        135
+      ],
+      "source_segment_ids": [
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "eaf3bd3c-b972-5d51-bab2-d46927c51572"
+      ],
+      "source_window_ids": [
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "7fdedb4b-5d76-55f2-86f9-bcf24ac9bfeb": {
+      "description": "Explain the results of a probability experiment",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9e56bc7c081e2a8678020cd1228f8ef3",
+      "in_language": "en",
+      "source_context_keys": [
+        "fc52123e21c8e8f66caf5e4432c8bc59"
+      ],
+      "source_page_indexes": [
+        132
+      ],
+      "source_segment_ids": [
+        "d166ff72-a9fc-588c-868d-8168e31f683f"
+      ],
+      "source_sfi_uuids": [
+        "c95735c8-f0e9-59d0-a77c-e252938b7f8b"
+      ],
+      "source_window_ids": [
+        "f92cf221-569e-5ff4-81da-614f72762b44"
+      ]
+    },
+    "80ad3ad2-48f9-5758-8160-165e566ebe6f": {
+      "description": "Determine equivalent fractions of given fractions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c326ae5571ab0171b9e5e670b27b1a9c",
+      "in_language": "en",
+      "source_context_keys": [
+        "59361cf257bc507b9227f10b5c04e0d1"
+      ],
+      "source_page_indexes": [
+        92
+      ],
+      "source_segment_ids": [
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "51f08633-47e5-54f2-ac75-3157dde9a994"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9"
+      ]
+    },
+    "81d04ad4-954e-5a69-9a4b-f9f9d16e2b9f": {
+      "description": "Demonstrate an understanding of the properties (e.g. sides, angles, and diagonals) of rectangles",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:761669de6f74f160ec95a11d47c0a2e3",
+      "in_language": "en",
+      "source_context_keys": [
+        "201456f0987320952ab039c9fa74258e"
+      ],
+      "source_page_indexes": [
+        114
+      ],
+      "source_segment_ids": [
+        "6ee071fb-55f2-56c3-9ac0-19c0c6e3c3ca"
+      ],
+      "source_sfi_uuids": [
+        "e4d2ebab-34b4-5159-9de1-1ffcc8677ee0"
+      ],
+      "source_window_ids": [
+        "409e8973-7f52-505e-a48f-8d2638cadb6e"
+      ]
+    },
+    "8286ec11-1038-5c67-818b-4f4c1b9a7fba": {
+      "description": "Explain that the experimental probability approaches the theoretical probability of a particular outcome as the number of trials in an experiment increases",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9697c63b1808dc8aaace6029a6251172",
+      "in_language": "en",
+      "source_context_keys": [
+        "42c46a29dc94185c8331efca1583c228"
+      ],
+      "source_page_indexes": [
+        181
+      ],
+      "source_segment_ids": [
+        "87174447-a74f-538c-b6a9-f2b1121eb505"
+      ],
+      "source_sfi_uuids": [
+        "6061acd8-d29a-5d84-a66a-d0e107200929"
+      ],
+      "source_window_ids": [
+        "6d6c4654-4afe-544c-a07d-eb973c824649"
+      ]
+    },
+    "8432b73a-d9a8-5ef7-b807-6cde6275084b": {
+      "description": "Express ratios in equivalent forms",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:eec302c27d897420b6bbe8978a2aa217",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a00bdc9dade8024af8e336fb499c42e"
+      ],
+      "source_page_indexes": [
+        155
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "e189c7fd-4aea-51a1-9ab3-8fed9bb9a9f7"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "85c1e6ca-9c8e-57a5-8167-03b31ee03fe1": {
+      "description": "Tell the position of objects in space using the cardinal points north, south, east and west",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c0d6a11cbfe77f8cfa04355e268ae43a",
+      "in_language": "en",
+      "source_context_keys": [
+        "068c16ede141e48a7d52871971387048",
+        "23aa28d95533fb9e86a47cde6de5abcf",
+        "6823912dbdf6f3e75a633d5b800be67a"
+      ],
+      "source_page_indexes": [
+        58,
+        66,
+        125
+      ],
+      "source_segment_ids": [
+        "45c83867-f587-5074-9c4a-f06d8d733177",
+        "4ee692a0-c824-57ca-ba45-9a7853c1e1d8",
+        "78977999-4e0a-5ea9-96ee-cb912a1229c0"
+      ],
+      "source_sfi_uuids": [
+        "11d864eb-6951-56d3-8d31-271b0a9b3ecb",
+        "fb4b5f82-50b6-5999-b690-1f8352525cb2"
+      ],
+      "source_window_ids": [
+        "1daf8f00-8311-503f-ab4f-8dfea737dd55",
+        "70368afa-e8b7-518c-b68e-917a360e67b2",
+        "fb1cfa87-8588-56e5-a253-3df06f0d6294"
+      ]
+    },
+    "8732e6f1-4f3d-50c4-8e0b-f51bfe1094f3": {
+      "description": "Order whole numbers up to 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:352d95854bf575eed78ae184ed8d1206",
+      "in_language": "en",
+      "source_context_keys": [
+        "326068b73b2bfe56f90be4093f340a0d",
+        "65290e995a229aa4e2380894c6f35665"
+      ],
+      "source_page_indexes": [
+        77,
+        137
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "43ac17b0-3249-5340-9409-4337cbfa1b67",
+        "5774f72f-172e-5005-a919-0c867f028886"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "8745834b-b2ae-5f78-8f2d-500eb008184b": {
+      "description": "Describe orally the meaning of a given one-step equation with one unknown",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9d7540411d2b1020c9e8f0c910c6d6d9",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1c5b150a72a09e7d2604a5d5b83a803"
+      ],
+      "source_page_indexes": [
+        54
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "fe0272a7-90d4-5862-b7a5-74159c4ea9ff"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "876a1657-594b-5e89-99bf-9109008f3cce": {
+      "description": "Apply the annexing then adding zero strategy for mental multiplication",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:291225032a433e12db71df9839217a45",
+      "in_language": "en",
+      "source_context_keys": [
+        "48edd2e8edc498da5e599b1a62e7cd32",
+        "709a88006fd43235905ede879791f4f2"
+      ],
+      "source_page_indexes": [
+        36,
+        144
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec",
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "2204fb97-3237-59a5-8725-065c22d2477b",
+        "33819463-9117-5444-a0a4-b26cfc583263"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6",
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "8b9b9642-abc1-5fdb-a907-f3f95a197034": {
+      "description": "Generate unit fractions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f002539c7e537222083f1b9d8ae86c29",
+      "in_language": "en",
+      "source_context_keys": [
+        "43b05308ab00888fd7de7634b841f7c6"
+      ],
+      "source_page_indexes": [
+        39
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "a7d294a9-b897-557f-aec6-557330b26dbc"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "8bc77a55-c0ed-524b-b82d-f17a4630734f": {
+      "description": "Describe the many-to-one correspondence used in graphs",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:70701b2c231fd679067f87e85344f152",
+      "in_language": "en",
+      "source_context_keys": [
+        "23ec1b0bd92144e29df140e5034d1f95"
+      ],
+      "source_page_indexes": [
+        71
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "5fc2e40b-471e-5888-a91d-833973bbebf4"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "8d6774f1-101e-515d-bc23-e3d8f72611b3": {
+      "description": "Determine the highest common factor (HCF) of any two whole numbers between 1 and 50",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a6a558baffd5540b810c5adeb42d329a",
+      "in_language": "en",
+      "source_context_keys": [
+        "247d4fae70f51707920a07475f61468e"
+      ],
+      "source_page_indexes": [
+        30
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "8b40571f-deca-50b1-a101-295e4f31056b"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b",
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "8e662d79-73bc-5648-a957-f0b0d2efb467": {
+      "description": "Describe real life situations using positive and negative values",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3936f1470d85dfba9ab2c00ad94dd2fa",
+      "in_language": "en",
+      "source_context_keys": [
+        "484b57251e24c74221de134ed7d200e8"
+      ],
+      "source_page_indexes": [
+        33
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "5f34018d-c08c-5058-b1f5-c29ec6c1f468"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b"
+      ]
+    },
+    "8ecd60ca-ba18-594c-9a60-351aafc71c77": {
+      "description": "Calculate surface area of given shapes in centimetres and metres",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d8c03b08c0b4bc3b83a3973e3cff45ba",
+      "in_language": "en",
+      "source_context_keys": [
+        "cdabaad4b617a932d9ae6e947293699e"
+      ],
+      "source_page_indexes": [
+        119
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "2918bcb6-e7a5-58de-a7de-424890bcd5b7"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "904b7d28-4401-5e9b-8f5b-193cf8f7d095": {
+      "description": "Recognize the relationship between factors and multiples of whole numbers from 1 to 100",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9e486b4af8069523e006605bd322671a",
+      "in_language": "en",
+      "source_context_keys": [
+        "f5de796bfb6e55c01b4a8173f50d21b6"
+      ],
+      "source_page_indexes": [
+        84
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "386493a1-523e-5e10-9994-f2190a70ea10"
+      ],
+      "source_window_ids": [
+        "b39b6bb4-c10f-5237-9cd1-f08f56cfc749"
+      ]
+    },
+    "904f264e-3967-52d4-a093-793ef24cff02": {
+      "description": "Demonstrate an understanding of the properties (e.g. sides, angles, and diagonals) of squares",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9e0dc49c6f5e00143453a6e5d68a7e75",
+      "in_language": "en",
+      "source_context_keys": [
+        "201456f0987320952ab039c9fa74258e"
+      ],
+      "source_page_indexes": [
+        114
+      ],
+      "source_segment_ids": [
+        "6ee071fb-55f2-56c3-9ac0-19c0c6e3c3ca"
+      ],
+      "source_sfi_uuids": [
+        "e4d2ebab-34b4-5159-9de1-1ffcc8677ee0"
+      ],
+      "source_window_ids": [
+        "409e8973-7f52-505e-a48f-8d2638cadb6e"
+      ]
+    },
+    "90641397-d480-5fa4-a97f-ebd6f5b14fa5": {
+      "description": "Administer a questionnaire to collect data",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:620d884d886bacd85abe3547b776c285",
+      "in_language": "en",
+      "source_context_keys": [
+        "870fe426df28c93e146716dd9c0a78fe"
+      ],
+      "source_page_indexes": [
+        177
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "5e0e5211-a58c-5274-97cd-032989e527eb"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "926c6854-406d-5783-b333-66eea1f1d5f6": {
+      "description": "Divide 2-digit numbers by a 1-digit number efficiently",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:43a719709689b1865acc96247d18d24a",
+      "in_language": "en",
+      "source_context_keys": [
+        "da0ae6170af95d4e0ea82fbc67ffc5c9"
+      ],
+      "source_page_indexes": [
+        37
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec"
+      ],
+      "source_sfi_uuids": [
+        "0fa3caac-a8da-50c4-87a3-8a61fc06f9c4"
+      ],
+      "source_window_ids": [
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "92bac731-1a28-5896-8a98-6bb32faac9c3": {
+      "description": "Divide 3-digit numbers by a 1-digit number efficiently",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:215ca03ff5bcda866d53c9a98c54b44e",
+      "in_language": "en",
+      "source_context_keys": [
+        "3887c65f98c51ba5ace64878551435f3"
+      ],
+      "source_page_indexes": [
+        147
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "ef8fb53d-96cd-518b-8cf5-0bb685915c2e"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "94dba197-3c07-5d9d-bf5d-1ca0b06d67c8": {
+      "description": "Describe the relationship between litre and 10cm3",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:af307252dcf3813794e2395dc57b6985",
+      "in_language": "en",
+      "source_context_keys": [
+        "d8c4b2447ec0e289c85c3c40fb415f9b"
+      ],
+      "source_page_indexes": [
+        122
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "936e51fc-ad86-567f-9448-a44916406ae2"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "954f75b5-df72-5690-bd16-d50f458b2fb1": {
+      "description": "Write numbers in figures and in words up to 1000,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:898ab4024a7b1179f1eb57aadf156c09",
+      "in_language": "en",
+      "source_context_keys": [
+        "28206ccfc633d2d65c7f1cad33a22609"
+      ],
+      "source_page_indexes": [
+        76
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "86cba01c-1bec-5de1-a037-573567900327"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "961fceff-e494-5e6d-b7f3-c37a48b36859": {
+      "description": "Count in Roman numerals up to 30",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:dfd00534c418daf0b20d8d8d0bff4866",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1dc0cc414165b31480042d430bc8f76"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "3e4a091e-fba5-5195-a79d-a23491b6911d"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "96dc2ce7-6a93-5c45-b3e7-686bc6253f83": {
+      "description": "Round up whole numbers up to 10000 to the nearest thousands, hundreds and tens",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9c549c0b5b96bf0b256e225879ccf39b",
+      "in_language": "en",
+      "source_context_keys": [
+        "b92ce5dae85a5fe9dea9b17e5b71728f"
+      ],
+      "source_page_indexes": [
+        26
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "1e865899-b1bd-534d-a172-b7290bd48ee4"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "974a8f1b-982b-5124-8533-cd6a9be31d2e": {
+      "description": "Determine the missing element(s) in a given table or chart",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2065d5f5c4cd6f9984c71725ec4172bf",
+      "in_language": "en",
+      "source_context_keys": [
+        "a5461e6ed5b715c962dade927de87147"
+      ],
+      "source_page_indexes": [
+        50
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "dd36c462-5d5d-5d4e-a4a6-93180c8aa1c3"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "99df8634-2340-55c4-8d4a-a249a4a57951": {
+      "description": "Write numbers in figures and in words up to 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8e9abc02a5cdc2b4a4be93c8d8ad7425",
+      "in_language": "en",
+      "source_context_keys": [
+        "0661f2f8d13cb363e26983828beea2a4"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "d2394ff6-1ebb-5532-a39a-8b60ce37b4c8"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "9b40d1dc-5229-5a5f-9ca3-ffc62a1cc193": {
+      "description": "Read numbers in figures and in words up to 1000,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:75e8d6cce87f5b5e3623ca648b8e1cb1",
+      "in_language": "en",
+      "source_context_keys": [
+        "28206ccfc633d2d65c7f1cad33a22609"
+      ],
+      "source_page_indexes": [
+        76
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "86cba01c-1bec-5de1-a037-573567900327"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "9b5ccdfe-d84e-585c-ac64-faf6f42e309a": {
+      "description": "Create a problem for a given equation with one unknown",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:50f29130fcfb6949baefa09a17ac50b2",
+      "in_language": "en",
+      "source_context_keys": [
+        "72f692bec1ea552f4867b8a31d79aaeb"
+      ],
+      "source_page_indexes": [
+        55
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "dad49dc6-afd8-52f1-9a5f-c7e19e2821b4"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "9b7a2f66-ec4f-557b-a7ba-34fae7e2053d": {
+      "description": "Design a questionnaire for collecting data to answer a given question",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c5873061802f1ebe10e3f30b4e0dc830",
+      "in_language": "en",
+      "source_context_keys": [
+        "870fe426df28c93e146716dd9c0a78fe",
+        "ae45f6bb2f35b8717ee4f11b9f63a22a"
+      ],
+      "source_page_indexes": [
+        175,
+        177
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "5e0e5211-a58c-5274-97cd-032989e527eb",
+        "f92f556c-2565-5a94-b3bf-c164875351c1"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "9c46ce35-a1f3-599a-a444-12e507f60493": {
+      "description": "Administer a questionnaire for collecting data to answer a given question",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:01ef2efa9c204c81e8e696c9c3515f06",
+      "in_language": "en",
+      "source_context_keys": [
+        "ae45f6bb2f35b8717ee4f11b9f63a22a"
+      ],
+      "source_page_indexes": [
+        175
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "f92f556c-2565-5a94-b3bf-c164875351c1"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "9d2e8640-4e37-5b88-a4ae-49f754395e08": {
+      "description": "Skip count forwards in 50s and 100s up to 10000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f730ea283190a89805ce2e909b6d7409",
+      "in_language": "en",
+      "source_context_keys": [
+        "340eff4c4ca27f872ec34bb7641041ff"
+      ],
+      "source_page_indexes": [
+        27
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "b5734785-6b25-506d-95f8-15ec5ed026d9"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "9f497de2-6a30-58c8-99a5-0a77b8ff7625": {
+      "description": "Order fractions with like denominators using pictorial representations and equivalent fractions found with the Lowest Common Denominator (LCD)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4198a5b49638cca89b1025fdf915f480",
+      "in_language": "en",
+      "source_context_keys": [
+        "fdbbbdd28898b574c67279f3872ef096"
+      ],
+      "source_page_indexes": [
+        43
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "900d99e4-26de-5f0d-860e-af981e8f909f"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "9f5ffc7f-81f9-5049-9b39-6ebdff28cefd": {
+      "description": "Use various strategies to solve proportional reasoning problems involving scales",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c9079e8d0758441d8082636cb95d50bf",
+      "in_language": "en",
+      "source_context_keys": [
+        "8b10636760953fbd1fec2d8101b04dab"
+      ],
+      "source_page_indexes": [
+        157
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "d9949ca2-a6ac-55ed-b540-7d11a1a53e0e"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "a320913b-34ec-5c4c-a50b-e4fcbf5f3dc7": {
+      "description": "Perform simple multiplication with integers",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9c622a587908eef7d83c5e8371af15c3",
+      "in_language": "en",
+      "source_context_keys": [
+        "9ca42db7aaa0f493d0022d09b0cc5182"
+      ],
+      "source_page_indexes": [
+        150
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "6a4da382-477f-56f1-8db7-9178d0926bbc"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "a35321d5-55e9-5118-8aa3-90e1ba230a3b": {
+      "description": "Skip count backwards in 50s and 100s from 10000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:417c1c205d92668b176196fe776d71ee",
+      "in_language": "en",
+      "source_context_keys": [
+        "340eff4c4ca27f872ec34bb7641041ff"
+      ],
+      "source_page_indexes": [
+        27
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "b5734785-6b25-506d-95f8-15ec5ed026d9"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "a426161a-6fee-5544-8ab1-11627edbe85f": {
+      "description": "Use models to explain the result of multiplying a fraction by a fraction",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b2189d5bbd3cbb71b3cb4834c8800c76",
+      "in_language": "en",
+      "source_context_keys": [
+        "e7fb5a333756bc37f38750d59db914d5"
+      ],
+      "source_page_indexes": [
+        153
+      ],
+      "source_segment_ids": [
+        "4787650f-da46-5655-899b-47745f0357d2"
+      ],
+      "source_sfi_uuids": [
+        "02f3b422-90e4-5289-9322-d7ed3d78b979"
+      ],
+      "source_window_ids": [
+        "eda81369-7752-58c5-809e-7d3bb1ef87b6"
+      ]
+    },
+    "a580fc71-ae4c-55e1-9b13-bce082d5ff0e": {
+      "description": "Use models to explain the result of multiplying a fraction by a whole number",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9eaa19c7964e018f5ff484b104708a87",
+      "in_language": "en",
+      "source_context_keys": [
+        "bf390011f777cb8901215b855009d003",
+        "e7fb5a333756bc37f38750d59db914d5"
+      ],
+      "source_page_indexes": [
+        94,
+        153
+      ],
+      "source_segment_ids": [
+        "4787650f-da46-5655-899b-47745f0357d2",
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "02f3b422-90e4-5289-9322-d7ed3d78b979",
+        "b6fc10d2-85dd-5388-82d7-da5322813541"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9",
+        "eda81369-7752-58c5-809e-7d3bb1ef87b6"
+      ]
+    },
+    "a5bbaa03-e16b-515d-925b-b6f2cce713ed": {
+      "description": "Skip count forwards in 500s, 1000s etc. up to 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8939727634df39a763ee03db473b087e",
+      "in_language": "en",
+      "source_context_keys": [
+        "d6c7492a1d8436ba97046cf32ed3bc65"
+      ],
+      "source_page_indexes": [
+        79
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "23db0268-0daf-5bff-9ebd-494736c4daec"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "a77288c7-7a92-5d5d-a037-442738318f6b": {
+      "description": "Order ratios",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ac677828cfbaed7df387d9a82ae69e16",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a00bdc9dade8024af8e336fb499c42e"
+      ],
+      "source_page_indexes": [
+        155
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "e189c7fd-4aea-51a1-9ab3-8fed9bb9a9f7"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "a77b7673-3f0f-5f86-9da2-6380f0fe3852": {
+      "description": "Solve multi-step word problems involving the four basic operations",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0ebb7771a43190ff86aa72bfedbe7399",
+      "in_language": "en",
+      "source_context_keys": [
+        "3052288d17c7d60436c412580442c802",
+        "ae08bcf9a0024b37f751783e1077e3fd"
+      ],
+      "source_page_indexes": [
+        38,
+        147
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec",
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "6c083da5-a6dd-52c2-aa3e-c10c588a48b3",
+        "c665c0eb-3fef-57bf-a34c-fe583b498279"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6",
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "a79d4382-92d4-5517-b797-495b861ac388": {
+      "description": "Determine the lowest common multiple (LCM) of two or three numbers using prime factors",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:732340ee525252514bc7562ba9add9c4",
+      "in_language": "en",
+      "source_context_keys": [
+        "32191b4e601abe5e11d53ca6cf71df48"
+      ],
+      "source_page_indexes": [
+        141
+      ],
+      "source_segment_ids": [
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "ee1e91da-2067-5990-a781-79d946865d88"
+      ],
+      "source_window_ids": [
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "a9e0c3a0-e960-5d33-a2fc-a6fe9613bdc1": {
+      "description": "Represent the comparison of whole numbers using \">, <, or =\"",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:bd36e6dde97e27d578cafc488d19881f",
+      "in_language": "en",
+      "source_context_keys": [
+        "326068b73b2bfe56f90be4093f340a0d",
+        "607fcca72d5b2aed77f6f5d561b544f4",
+        "65290e995a229aa4e2380894c6f35665"
+      ],
+      "source_page_indexes": [
+        25,
+        77,
+        137
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "43ac17b0-3249-5340-9409-4337cbfa1b67",
+        "5774f72f-172e-5005-a919-0c867f028886",
+        "873a8beb-fcdb-5926-942d-63287561524a"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756",
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "aa7e4fdb-93d0-59bf-a764-f2bc4cf24d01": {
+      "description": "Solve the problem concretely, pictorially or symbolically",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:119eb75ca09a5497ab8730a6e1b6bc52",
+      "in_language": "en",
+      "source_context_keys": [
+        "9a97aff7a53f1e68de87ba1f616ff5e3",
+        "bf67ee7a7897206818828a4d1f5db444",
+        "d1c5b150a72a09e7d2604a5d5b83a803"
+      ],
+      "source_page_indexes": [
+        54,
+        113,
+        163
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1",
+        "6b728ffc-3499-5943-83f4-4683d7e92dc1",
+        "7db70430-f18f-5c6a-990a-cfe161b2a19c"
+      ],
+      "source_sfi_uuids": [
+        "0ef6f5e2-1423-5083-a499-31d6b81ac921",
+        "859b0453-5e5e-5581-a3b8-81b9530cc511",
+        "d3eafd1e-93f9-5368-a3b7-0761912b7c6c"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215",
+        "b2c367ed-8b37-565c-ac5c-1ba6c36b6382",
+        "fa8a20e3-20fb-548a-b2a1-704812c00176"
+      ]
+    },
+    "ac65055e-1ee3-599c-b852-110eec7f7deb": {
+      "description": "Count backwards with positive and negative whole numbers through zero",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6f0e48fa8862f1bf0c60c51337fc1d3e",
+      "in_language": "en",
+      "source_context_keys": [
+        "484b57251e24c74221de134ed7d200e8"
+      ],
+      "source_page_indexes": [
+        33
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "c8c8cd12-4946-556d-ac6d-3604cf7d999a"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b"
+      ]
+    },
+    "ad8647db-3a78-5525-9eae-92057191ec57": {
+      "description": "Skip count backwards in 5000s, 10,000s etc. from 1,000,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:596cdc0396ae722f44dbf05a13c91ad0",
+      "in_language": "en",
+      "source_context_keys": [
+        "846a7afba4d1ac6f99aee6982b5ff4dd"
+      ],
+      "source_page_indexes": [
+        139
+      ],
+      "source_segment_ids": [
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "8c6b95b9-3b4c-5d22-bf9c-10cfd6ab7d19"
+      ],
+      "source_window_ids": [
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "af19141a-da21-5eff-9049-f080344f20ce": {
+      "description": "Determine the volume of boxes by finding how many cubes of size 1cm\u00b3 each contains",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:47b81c36e16996d73ea5da4cd0fa5348",
+      "in_language": "en",
+      "source_context_keys": [
+        "e06a9dfda70e8623729ccee30aec51f8"
+      ],
+      "source_page_indexes": [
+        121
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "5603c468-e8da-5abd-bde2-6a573b336d1e"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "af2228b2-d184-5a1d-a2c4-7c1f9b09c277": {
+      "description": "Solve comparing problems by interpreting many-to-one bar graphs (up to 4 categories of data)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:03b4533cb905835948134a7a4fccf501",
+      "in_language": "en",
+      "source_context_keys": [
+        "386793cb00dd8a93a1de8d9c79472650"
+      ],
+      "source_page_indexes": [
+        73
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "3b4f6f44-9fee-5ccd-afe2-272a8b7f81f8"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "b01afa3d-6e58-5ae7-9724-73d186c5330a": {
+      "description": "Apply mental mathematics strategies and number properties to determine answers for related division facts",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ac1de26a8af0f1f8a31d184d8ee8dfe3",
+      "in_language": "en",
+      "source_context_keys": [
+        "3057363c85cb4048877601d745833b67"
+      ],
+      "source_page_indexes": [
+        35
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec"
+      ],
+      "source_sfi_uuids": [
+        "0f38dcc7-e35f-5387-8b28-3a056d412ba2"
+      ],
+      "source_window_ids": [
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "b0e49ae3-3f3a-5835-a52d-c56620ee1e87": {
+      "description": "Multiply multi-digit numbers efficiently",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3cd50e761aac956f7ee91f27c334d2c6",
+      "in_language": "en",
+      "source_context_keys": [
+        "709a88006fd43235905ede879791f4f2"
+      ],
+      "source_page_indexes": [
+        36
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec"
+      ],
+      "source_sfi_uuids": [
+        "390000da-b119-5af5-901d-e9f3bf9d042b"
+      ],
+      "source_window_ids": [
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "b11c8ceb-a58d-533e-9794-2c890514fa50": {
+      "description": "Compare ratios",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7f6a5387f9ca51adf02099b9958098e3",
+      "in_language": "en",
+      "source_context_keys": [
+        "6a00bdc9dade8024af8e336fb499c42e"
+      ],
+      "source_page_indexes": [
+        155
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "e189c7fd-4aea-51a1-9ab3-8fed9bb9a9f7"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "b1b4270a-9708-5d6d-833c-b84d6efaad8d": {
+      "description": "Determine the set of factors of a given number up to 50",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca08a2d2af1123b456b3123b03b4173d",
+      "in_language": "en",
+      "source_context_keys": [
+        "20128f368c0a31f61a4925df1f8e7238"
+      ],
+      "source_page_indexes": [
+        29
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "cf47b4d9-efbe-5296-b99f-77437a5a32ff"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "b4557f81-34a2-5ae6-b5c1-b990b72e4db6": {
+      "description": "Compare a mixture of fractions: common, percent and decimal fractions (up to thousandths)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:fa075d98b038f066edf0d82422452354",
+      "in_language": "en",
+      "source_context_keys": [
+        "490f08a8996b15dd3157b094ed0cbf99"
+      ],
+      "source_page_indexes": [
+        151
+      ],
+      "source_segment_ids": [
+        "4787650f-da46-5655-899b-47745f0357d2"
+      ],
+      "source_sfi_uuids": [
+        "460bf96f-0516-5753-b536-af795229aed0"
+      ],
+      "source_window_ids": [
+        "eda81369-7752-58c5-809e-7d3bb1ef87b6"
+      ]
+    },
+    "b4606088-eb0c-53e7-9935-6081238f1a9d": {
+      "description": "Identify examples of angles in the environment that are larger than a right angle",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2679f688a016ddf645e030ed25e5df3d",
+      "in_language": "en",
+      "source_context_keys": [
+        "05e1f320b7ad1877d0f2092e94fb7e1f"
+      ],
+      "source_page_indexes": [
+        123
+      ],
+      "source_segment_ids": [
+        "c913c750-1ffa-55fd-8b3a-fc2b60633fd8"
+      ],
+      "source_sfi_uuids": [
+        "2d741ead-d111-540e-9ec2-89878949b575"
+      ],
+      "source_window_ids": [
+        "5111822e-6c32-5f80-a173-24040fe691cd"
+      ]
+    },
+    "b4eb28cd-da54-5904-a904-eecb502e9ec9": {
+      "description": "Use an understanding of many-to-one correspondence to display or construct graphs",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:63094cedcede75bf6d2e84825afa2f60",
+      "in_language": "en",
+      "source_context_keys": [
+        "8be84966f91a739343db02fe27c9fb14"
+      ],
+      "source_page_indexes": [
+        68
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "7764f5eb-855c-57f8-88b6-0fa7c7f81883"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "b7514555-e71a-5053-853c-3cf8ad8f1a5a": {
+      "description": "Compare whole numbers up to 10,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:64936d2aad014d0ca39a55f6f5527f05",
+      "in_language": "en",
+      "source_context_keys": [
+        "607fcca72d5b2aed77f6f5d561b544f4"
+      ],
+      "source_page_indexes": [
+        25
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "873a8beb-fcdb-5926-942d-63287561524a"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "b80cd6cf-bece-5db4-9abb-8b9f6c2fa642": {
+      "description": "Draw double bar graphs complete with title, labelled axes, key or legend to represent data collected (up to 3 pairs of categories of data)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ac2afe2912a60a49ae70e6c9fc035968",
+      "in_language": "en",
+      "source_context_keys": [
+        "06646b13be1a7c1fb77c652182d64f0a"
+      ],
+      "source_page_indexes": [
+        128
+      ],
+      "source_segment_ids": [
+        "9a2d4c71-9305-521d-9f2e-eee66925c8d1"
+      ],
+      "source_sfi_uuids": [
+        "dd7c17b7-9d12-5ed4-8f05-cb7193176973"
+      ],
+      "source_window_ids": [
+        "d79a55f9-fed2-5f8f-9c5d-48560c7e4277"
+      ]
+    },
+    "b9be98c6-6a1b-57c4-9586-e324f810d63f": {
+      "description": "Recognise that area is measured in square units",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c7b004fd90367c875981792c9ff7a523",
+      "in_language": "en",
+      "source_context_keys": [
+        "35d5bb1ff7b7e9e9272850aec2956349"
+      ],
+      "source_page_indexes": [
+        61
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "cc5fe758-a53b-51db-95bf-57d7aa889275"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "ba1c4bee-cb1a-5a07-aea8-6ef4afe4aae4": {
+      "description": "Use skip counting from a known fact to determine basic multiplication facts to 81 and related division facts",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:736afcc2c293f1e52c1b95e874eff31d",
+      "in_language": "en",
+      "source_context_keys": [
+        "8ca6fedc0c68afb976d941410e39328e"
+      ],
+      "source_page_indexes": [
+        143
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "0bb21f51-7132-5d95-8d7c-604889ccd3ef"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "bc8cb304-e468-5df5-9932-624196839b6f": {
+      "description": "Identify numbers in different positions around a given number in a number chart",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4a6ed6c3fa522585003fa26752d06a45",
+      "in_language": "en",
+      "source_context_keys": [
+        "4251b5445ed2a94ad0a5bdcf4e050606",
+        "607fcca72d5b2aed77f6f5d561b544f4",
+        "65290e995a229aa4e2380894c6f35665"
+      ],
+      "source_page_indexes": [
+        25,
+        77,
+        136
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "5e3a9987-6c38-5c1b-929a-55c8d6229c1c",
+        "b2a7f977-af49-57ec-93aa-e36879c13767",
+        "dcc5bf94-7d91-5d6d-bec8-5824d92be7b7"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756",
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "bde7f9ed-c664-5d1a-91f1-9d56740ca1a3": {
+      "description": "Use patterns in the 9s and 11s facts to determine basic multiplication facts to 81 and related division facts",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:55c1b6b452cfa89d6d32b47de885f531",
+      "in_language": "en",
+      "source_context_keys": [
+        "8ca6fedc0c68afb976d941410e39328e"
+      ],
+      "source_page_indexes": [
+        143
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "0bb21f51-7132-5d95-8d7c-604889ccd3ef"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "bdf578eb-2c12-5613-b9cd-ac65c008c8f0": {
+      "description": "Calculate the actual perimeter of 2-D shapes",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca1d546b193b673ce34f291d98dad5af",
+      "in_language": "en",
+      "source_context_keys": [
+        "94289dc1b6e395d0f4b3479e2873ebc2"
+      ],
+      "source_page_indexes": [
+        117
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "fe6f0f80-1425-55fe-a0a3-2b263cd5446d"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "be5fe1da-ef36-578e-b3f8-b84eb6ed4e25": {
+      "description": "Read numbers in figures and in words up to 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:00a52e5f875bba0074b554f2ac356ede",
+      "in_language": "en",
+      "source_context_keys": [
+        "0661f2f8d13cb363e26983828beea2a4"
+      ],
+      "source_page_indexes": [
+        23
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "d2394ff6-1ebb-5532-a39a-8b60ce37b4c8"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "bf45a8ae-cc11-5f04-bba3-6d520b9c12a9": {
+      "description": "Compare estimated perimeter with actual perimeter",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a5e29202df6dbe763c58bea733df38ce",
+      "in_language": "en",
+      "source_context_keys": [
+        "94289dc1b6e395d0f4b3479e2873ebc2"
+      ],
+      "source_page_indexes": [
+        117
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "fe6f0f80-1425-55fe-a0a3-2b263cd5446d"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "c30e8dac-61bf-543f-976e-0be834bdec4b": {
+      "description": "Use the concept of equivalent fractions to add fractions greater than one (improper or mixed fractions)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8b29ab6f9a800dfd8bb9dc9a5608ea65",
+      "in_language": "en",
+      "source_context_keys": [
+        "65e501c2113ec55f3f78323c8d84e038"
+      ],
+      "source_page_indexes": [
+        93
+      ],
+      "source_segment_ids": [
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "13e5bd54-56e7-5e7c-9dac-3dead3b42031"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9"
+      ]
+    },
+    "c4ba0884-8fb1-5b98-af70-5c56fe045f62": {
+      "description": "Write a rule in algebra to represent a given pattern",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8a5edb7a7f3bb14cfd09a7fc22bb885e",
+      "in_language": "en",
+      "source_context_keys": [
+        "4adc5920b9de9390b0c931f0deb120f6",
+        "b574034a40a912bacdbc4e0acdf85494"
+      ],
+      "source_page_indexes": [
+        108,
+        160
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36",
+        "d3af2cfb-1a4d-5193-ac3a-447b7e668147"
+      ],
+      "source_sfi_uuids": [
+        "389331ee-1792-586b-ab36-eaa3ce3574e1",
+        "8aaf822a-0112-5717-84ee-81504a4609f1"
+      ],
+      "source_window_ids": [
+        "a1d6b6fc-19d8-5a07-aa66-5f587b661ea2",
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "c4ce3934-905b-5ad2-99fe-6428b4dbe3f1": {
+      "description": "Create a concrete representation of a given pattern displayed in a table or chart",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d5d848322b616f282492a6b3bd792eaf",
+      "in_language": "en",
+      "source_context_keys": [
+        "c3062e7cac2c0c4a63d744317b16e744"
+      ],
+      "source_page_indexes": [
+        51
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "0f8fe8c2-dc10-55e2-b237-56e313adb499"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "c50f239b-11d0-520b-9b69-cf7d083bc291": {
+      "description": "Use an understanding of one-to-one correspondence to interpret graphs",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b042196e9f1b079f9f4b44950925b185",
+      "in_language": "en",
+      "source_context_keys": [
+        "ad894fa0b8e24fa239bfa7051f4d6de4"
+      ],
+      "source_page_indexes": [
+        67
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "6760d676-ae48-5d2c-99df-1ad6b514fd82"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "c5585a82-a10d-5e21-b637-df5ae1d9e07b": {
+      "description": "Explain how graphs displaying the same data are the same and different",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f07fe459caf9ae53abcde39c4311e6b4",
+      "in_language": "en",
+      "source_context_keys": [
+        "ed868384358776c72f8ff84d65769811"
+      ],
+      "source_page_indexes": [
+        70
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "ab7ee1e5-45f3-5366-b56b-5ffd94bd9234"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "c5cd336e-0b07-5c9e-addc-7c2d864f0c63": {
+      "description": "Identify the error(s) in a given table or chart",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:1bd88c794f8d7eeb3ed9b7bc233b007d",
+      "in_language": "en",
+      "source_context_keys": [
+        "a5461e6ed5b715c962dade927de87147"
+      ],
+      "source_page_indexes": [
+        50
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "36aa764a-f38e-5c3b-b557-04be619ffc55"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "c8d0f8c3-6b5c-579f-a77f-fff52f02291b": {
+      "description": "Use the concept of equivalent fractions to change fractions to the same denominator for subtraction of like fractions (one denominator being a multiple of the other)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f9f156e9900d02ace1918c3ec4ff1ae0",
+      "in_language": "en",
+      "source_context_keys": [
+        "65e501c2113ec55f3f78323c8d84e038"
+      ],
+      "source_page_indexes": [
+        93
+      ],
+      "source_segment_ids": [
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "e2c82eed-73dd-5bab-b8a2-7c65bdee5a4e"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9"
+      ]
+    },
+    "ca3155cd-d199-5f81-8096-87cc03713803": {
+      "description": "Identify the unknown in a problem",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d163d26126bb509cb59175cb88298d59",
+      "in_language": "en",
+      "source_context_keys": [
+        "9a97aff7a53f1e68de87ba1f616ff5e3",
+        "bf67ee7a7897206818828a4d1f5db444",
+        "d1c5b150a72a09e7d2604a5d5b83a803"
+      ],
+      "source_page_indexes": [
+        54,
+        113,
+        163
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1",
+        "6b728ffc-3499-5943-83f4-4683d7e92dc1",
+        "7db70430-f18f-5c6a-990a-cfe161b2a19c"
+      ],
+      "source_sfi_uuids": [
+        "0ef6f5e2-1423-5083-a499-31d6b81ac921",
+        "859b0453-5e5e-5581-a3b8-81b9530cc511",
+        "d3eafd1e-93f9-5368-a3b7-0761912b7c6c"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215",
+        "b2c367ed-8b37-565c-ac5c-1ba6c36b6382",
+        "fa8a20e3-20fb-548a-b2a1-704812c00176"
+      ]
+    },
+    "cb274ecf-b56e-54aa-899a-06af65eb86ee": {
+      "description": "Perform a single transformation (i.e. reflection) on 2D shapes in a plane",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:215fae9dee61001d1a53e50e8bcbbfc7",
+      "in_language": "en",
+      "source_context_keys": [
+        "e835b2cde0e3ad87e52d1bd38a4e94e7"
+      ],
+      "source_page_indexes": [
+        167
+      ],
+      "source_segment_ids": [
+        "257ea7c9-5204-526c-80f0-7de396e2f93c"
+      ],
+      "source_sfi_uuids": [
+        "c1a42750-37b2-5f2f-8372-116ac62fe4f8"
+      ],
+      "source_window_ids": [
+        "7b31deae-92ff-5da9-b315-3b519d63e498"
+      ]
+    },
+    "cb653b7f-a974-50c5-8da6-bedcf534753a": {
+      "description": "Develop a formula for determining the area of a rectangle and square",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c0bff3cc061b3b6ed33f8c23faf427dc",
+      "in_language": "en",
+      "source_context_keys": [
+        "b49bc8e95b5b55509bf0147085dbc879"
+      ],
+      "source_page_indexes": [
+        62
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "51bfc6cc-890e-5614-b5b5-c3b7dc175cb8"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "cbfd0210-53c2-5939-9688-5e16fa33aa5a": {
+      "description": "Express a given pictorial or concrete representation of an equation in symbolic form",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7d287b3277ccee944b52605b9dfc997b",
+      "in_language": "en",
+      "source_context_keys": [
+        "7c62e25e70809930853c1e8d9832dba5"
+      ],
+      "source_page_indexes": [
+        53
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "4a300cde-caaa-5d58-ab37-57e54147c7a3"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "cdaa5bc4-cd97-5628-894f-527b41ceece7": {
+      "description": "Justify the choice of data collection method",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2cb4ccbcc227a21791358993fe9d2118",
+      "in_language": "en",
+      "source_context_keys": [
+        "a10ce070259403b89d5462934e5a70f7"
+      ],
+      "source_page_indexes": [
+        174
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "734b3856-fd76-5412-aa66-207983fe84d4"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "cf2c7e4b-2e7b-5e52-a6c3-de9d18875603": {
+      "description": "Develop a formula for determining the perimeter of a square and rectangle",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:546806dd35294eabc905126329a2a317",
+      "in_language": "en",
+      "source_context_keys": [
+        "b939f5cc4088801aeabf23d192c937aa"
+      ],
+      "source_page_indexes": [
+        60
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "9d20cbef-b490-507c-8d19-68177a701bd7"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "cf5c70eb-7a87-58cb-b662-b9ec44c20eb5": {
+      "description": "Label improper fractions with their symbols",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:48ea0ee2fd1b2c7307814988394671dd",
+      "in_language": "en",
+      "source_context_keys": [
+        "aff14e60fc83be77c789a25abecdc9fa"
+      ],
+      "source_page_indexes": [
+        42
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "a01614d3-4629-554f-82ad-43a2e78c487d"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "d05184e2-f8bd-5c51-861e-777d3efb98e8": {
+      "description": "Identify prime numbers and composite numbers between 1 and 100",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7941f5bfba56a90011dadf9803acaba9",
+      "in_language": "en",
+      "source_context_keys": [
+        "5ba8b997689e5dba29a1c71484bdf3b4"
+      ],
+      "source_page_indexes": [
+        81
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "ebd295a4-09ee-5bb8-ad3f-38e984b62890"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "d111e48d-04f6-5eb1-93de-30ee53b6ecb7": {
+      "description": "Tell the time in hours and minutes on digital watches including 24-hour clocks",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4be0f86c18cf98bdaaf8871826729fca",
+      "in_language": "en",
+      "source_context_keys": [
+        "ff658bc1099229e6d62b9f84c5220eeb"
+      ],
+      "source_page_indexes": [
+        63
+      ],
+      "source_segment_ids": [
+        "39f979a2-eb9d-5608-baac-19aea65c95b4"
+      ],
+      "source_sfi_uuids": [
+        "291da0d1-65e9-5b72-ac58-35ba1ab49f52"
+      ],
+      "source_window_ids": [
+        "b5cbf0b4-2ba4-50f9-9db3-d8caff8d04e5"
+      ]
+    },
+    "d22745a0-ba7b-56dd-bd62-a69ec40774dc": {
+      "description": "Solve a given one-step equation using \u201cguess and check\u201d",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:83a845a6e17927baaa358fb3209dc7e9",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1c5b150a72a09e7d2604a5d5b83a803"
+      ],
+      "source_page_indexes": [
+        54
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "47ec862f-a578-593c-af1f-dd974687c0b2"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "d43cf651-8c23-5b1e-8fcb-a72796147afa": {
+      "description": "Model place value for multi-digit whole numerals using graph sheets or multi-base materials up to 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3130eb58f9eb676f6573bdf6c9bc6e39",
+      "in_language": "en",
+      "source_context_keys": [
+        "7e763028099513cafd88b312c4640138"
+      ],
+      "source_page_indexes": [
+        22
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "55a78324-ee02-50ab-b97e-a51584ed73b7"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "d8a19ee8-7449-500b-8786-d0bcc48ac7c4": {
+      "description": "Skip count forwards in 5000s, 10,000s etc. up to 1,000,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:1e2d56d0178f0cfa101c20c18e61ffe4",
+      "in_language": "en",
+      "source_context_keys": [
+        "846a7afba4d1ac6f99aee6982b5ff4dd"
+      ],
+      "source_page_indexes": [
+        139
+      ],
+      "source_segment_ids": [
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "8c6b95b9-3b4c-5d22-bf9c-10cfd6ab7d19"
+      ],
+      "source_window_ids": [
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "d958f5c7-2eb0-5d5b-ae86-c460eb2cb531": {
+      "description": "Prove that a polygon is regular by measuring the sides and angles",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ba1e0b4ef04f02567883876db3c9ac83",
+      "in_language": "en",
+      "source_context_keys": [
+        "4d3bee64ecba9b0bb550ed4d1b176c6e"
+      ],
+      "source_page_indexes": [
+        116
+      ],
+      "source_segment_ids": [
+        "6ee071fb-55f2-56c3-9ac0-19c0c6e3c3ca"
+      ],
+      "source_sfi_uuids": [
+        "1196dc8f-0f9b-5f10-a90c-b47832dfed0e"
+      ],
+      "source_window_ids": [
+        "409e8973-7f52-505e-a48f-8d2638cadb6e"
+      ]
+    },
+    "dbda2a00-5ff4-567f-aad1-144df484f4b8": {
+      "description": "Explain why a given set of data is best represented by a line graph or a series of points",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:322c63c44cb72a0a3fe2091c2c42bc4f",
+      "in_language": "en",
+      "source_context_keys": [
+        "9ba9cebaa05ab57d65c7d84b74e6a220"
+      ],
+      "source_page_indexes": [
+        172
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "52bd2e61-90fd-5661-8f23-eb9618b4e470"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "dc1d8e78-892a-5dd5-b537-cf9a1a3472df": {
+      "description": "Predict the probability of a given outcome occurring for a given probability experiment by using theoretical probability",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7bd235d77254ad97cf70ec9b06b8aa59",
+      "in_language": "en",
+      "source_context_keys": [
+        "2de14fd3bb07d6b1109c9c5e2eb54cee"
+      ],
+      "source_page_indexes": [
+        180
+      ],
+      "source_segment_ids": [
+        "87174447-a74f-538c-b6a9-f2b1121eb505"
+      ],
+      "source_sfi_uuids": [
+        "c9b3c85a-8e05-5c1f-ac2d-bbe48e6b0847"
+      ],
+      "source_window_ids": [
+        "6d6c4654-4afe-544c-a07d-eb973c824649"
+      ]
+    },
+    "dc31cd17-2e6c-54f8-a357-0a339403134d": {
+      "description": "Identify examples of angles in the environment that are less than a right angle",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2c3c9d461b0ca2bf9712eb92671692f9",
+      "in_language": "en",
+      "source_context_keys": [
+        "05e1f320b7ad1877d0f2092e94fb7e1f"
+      ],
+      "source_page_indexes": [
+        123
+      ],
+      "source_segment_ids": [
+        "c913c750-1ffa-55fd-8b3a-fc2b60633fd8"
+      ],
+      "source_sfi_uuids": [
+        "2d741ead-d111-540e-9ec2-89878949b575"
+      ],
+      "source_window_ids": [
+        "5111822e-6c32-5f80-a173-24040fe691cd"
+      ]
+    },
+    "dcc57301-5019-51e8-a67a-b380d9974529": {
+      "description": "Complete drawings of shapes to make them symmetrical",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:727f578d7b09fd8282b762a4cad1c5ce",
+      "in_language": "en",
+      "source_context_keys": [
+        "89a1f09b4bdb3da9025dd41cef3a5d77"
+      ],
+      "source_page_indexes": [
+        56
+      ],
+      "source_segment_ids": [
+        "fa666a50-243d-54f4-8a92-5c4c35fb53aa"
+      ],
+      "source_sfi_uuids": [
+        "453eea9d-c384-5a3f-ab62-454219500618"
+      ],
+      "source_window_ids": [
+        "039199b5-c928-5647-b005-5769d9b4ba95"
+      ]
+    },
+    "dcca694a-a5ec-518d-89b0-6a35659eac59": {
+      "description": "Draw improper fractions",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:028259582007b8502369a3165ef0a64f",
+      "in_language": "en",
+      "source_context_keys": [
+        "aff14e60fc83be77c789a25abecdc9fa"
+      ],
+      "source_page_indexes": [
+        42
+      ],
+      "source_segment_ids": [
+        "68258b69-9dc3-5bbc-a94d-5283a167e52f"
+      ],
+      "source_sfi_uuids": [
+        "a01614d3-4629-554f-82ad-43a2e78c487d"
+      ],
+      "source_window_ids": [
+        "cc0268bb-9ce2-5281-a663-f9848d94ebac"
+      ]
+    },
+    "dd082bc3-a189-5798-a43f-8d45192922e8": {
+      "description": "Determine basic multiplication facts up to 12 \u00d7 12",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:59baa22cfe887d84d2a370d44d1a27c0",
+      "in_language": "en",
+      "source_context_keys": [
+        "3feb7d5184ac9feaabf8fb0bff8ce593"
+      ],
+      "source_page_indexes": [
+        34
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec"
+      ],
+      "source_sfi_uuids": [
+        "4d1e32fc-0647-5c1e-bc71-3701db4f5017"
+      ],
+      "source_window_ids": [
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "df4eb819-edac-57c5-bb91-e449883d6bfd": {
+      "description": "Identify even and odd numbers between 1 and 100 as numbers that can or cannot be arranged in a twos array",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:08ceb1f702baeaf674dfd5c06e9b72ad",
+      "in_language": "en",
+      "source_context_keys": [
+        "8b09662d6314263928f59619e6c0fd1c"
+      ],
+      "source_page_indexes": [
+        82
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "1691bd30-ede6-5b17-878c-557eb4c9a435"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "e036990e-91e7-5da9-9b0d-7ee026e1f289": {
+      "description": "Design an experiment in which the likelihood of a single outcome occurring is impossible, possible (likely or unlikely), certain",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2cff51488b8a88c6bfe51a6174eec2f4",
+      "in_language": "en",
+      "source_context_keys": [
+        "fc52123e21c8e8f66caf5e4432c8bc59"
+      ],
+      "source_page_indexes": [
+        132
+      ],
+      "source_segment_ids": [
+        "d166ff72-a9fc-588c-868d-8168e31f683f"
+      ],
+      "source_sfi_uuids": [
+        "ea7402ef-ad04-5e89-b20b-cb7654f2ae9a"
+      ],
+      "source_window_ids": [
+        "f92cf221-569e-5ff4-81da-614f72762b44"
+      ]
+    },
+    "e09a30ff-0cf6-576b-a64a-c9a91cb583fe": {
+      "description": "Explain how each element of a pattern differs from the preceding one",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ddd165ef2a65d02baa56b808f3864e54",
+      "in_language": "en",
+      "source_context_keys": [
+        "51fe7e598c82183d1206b13809833c19"
+      ],
+      "source_page_indexes": [
+        104
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36"
+      ],
+      "source_sfi_uuids": [
+        "f0b7941a-ba6c-598c-b59e-6c7e6b9d31ef"
+      ],
+      "source_window_ids": [
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "e3e76f43-3fc9-596b-8960-9f9ca6e8b599": {
+      "description": "State dates of events",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3a7ee8fa8113de6d90e1f6d8dfe10b45",
+      "in_language": "en",
+      "source_context_keys": [
+        "b0661f51d62443a58381e946bb5505c0"
+      ],
+      "source_page_indexes": [
+        64
+      ],
+      "source_segment_ids": [
+        "39f979a2-eb9d-5608-baac-19aea65c95b4"
+      ],
+      "source_sfi_uuids": [
+        "6c9a9ee0-9bc1-5926-a8d8-0f1f4e987d97"
+      ],
+      "source_window_ids": [
+        "b5cbf0b4-2ba4-50f9-9db3-d8caff8d04e5"
+      ]
+    },
+    "e4cd4a7b-1536-53a3-b90a-9bf80f024e7a": {
+      "description": "Select referents for the units cm\u00b2 or m\u00b2",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:67dfb07594024d51940f03585433cc8a",
+      "in_language": "en",
+      "source_context_keys": [
+        "35d5bb1ff7b7e9e9272850aec2956349"
+      ],
+      "source_page_indexes": [
+        61
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "eb4c91e8-ad6c-5912-a337-6b6941fefd07"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "e739917e-dc80-53f5-90cd-2ade5a92c047": {
+      "description": "Describe the relationship between capacity and volume",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:213f143206b6d860823ca05d8d8d5491",
+      "in_language": "en",
+      "source_context_keys": [
+        "d8c4b2447ec0e289c85c3c40fb415f9b"
+      ],
+      "source_page_indexes": [
+        122
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "936e51fc-ad86-567f-9448-a44916406ae2"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "e8d4181f-082d-5929-8b9f-d9ea4f00f32f": {
+      "description": "Use models to explain proportion as a comparison between quantities with equal ratios",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ccb0ce32ad4e331520cffcf96e2ab3b4",
+      "in_language": "en",
+      "source_context_keys": [
+        "f89703c10cf11c5e0e003e230ba8f061"
+      ],
+      "source_page_indexes": [
+        156
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "f00d5099-f752-5c71-9334-a7aab3572fe4"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "ea11ae21-7ddf-5286-ac81-971a9e5f9ce1": {
+      "description": "Count forwards with positive and negative whole numbers through zero",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:773687e56edc1dc5be35a3dfd3be7ff2",
+      "in_language": "en",
+      "source_context_keys": [
+        "484b57251e24c74221de134ed7d200e8"
+      ],
+      "source_page_indexes": [
+        33
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "c8c8cd12-4946-556d-ac6d-3604cf7d999a"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b"
+      ]
+    },
+    "ea4e6330-cd35-573e-a972-2635aeee30cc": {
+      "description": "Skip count backwards in 500s, 1000s etc. from 100,000",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:43d2bf61cd85fd13db21260c04d7b922",
+      "in_language": "en",
+      "source_context_keys": [
+        "d6c7492a1d8436ba97046cf32ed3bc65"
+      ],
+      "source_page_indexes": [
+        79
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "23db0268-0daf-5bff-9ebd-494736c4daec"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "eadfdcc6-7036-5c30-96db-e0dcca20492a": {
+      "description": "Use models to explain the result of multiplying a whole number by a fraction",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e2523c7765de6c118178011334ecfb45",
+      "in_language": "en",
+      "source_context_keys": [
+        "bf390011f777cb8901215b855009d003",
+        "e7fb5a333756bc37f38750d59db914d5"
+      ],
+      "source_page_indexes": [
+        94,
+        153
+      ],
+      "source_segment_ids": [
+        "4787650f-da46-5655-899b-47745f0357d2",
+        "c3de9e61-0031-5339-a952-b3285669a9da"
+      ],
+      "source_sfi_uuids": [
+        "02f3b422-90e4-5289-9322-d7ed3d78b979",
+        "5efef354-deb9-5076-8be2-24b23da26422"
+      ],
+      "source_window_ids": [
+        "83ff5a5e-3367-516c-b07e-b36be85a80e9",
+        "eda81369-7752-58c5-809e-7d3bb1ef87b6"
+      ]
+    },
+    "eae23c61-59f5-53ee-961d-c41c3a220f79": {
+      "description": "Tell the motion of objects in space using the cardinal points north-east, north-west, south-east and south-west",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:57f1c3a8ab7a103e2ccb728765322a0d",
+      "in_language": "en",
+      "source_context_keys": [
+        "ae8d87e03701b6e144bd964bea0b1c59"
+      ],
+      "source_page_indexes": [
+        166
+      ],
+      "source_segment_ids": [
+        "257ea7c9-5204-526c-80f0-7de396e2f93c"
+      ],
+      "source_sfi_uuids": [
+        "8e6fcfbb-4e41-5ace-828f-38dcb22ff1d9"
+      ],
+      "source_window_ids": [
+        "7b31deae-92ff-5da9-b315-3b519d63e498"
+      ]
+    },
+    "ebaa232f-97d6-5872-b4e0-4477d09bb7cd": {
+      "description": "Determine different sizes of boxes that have the same volume",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c0792a2553b899671b0ed8558a34e165",
+      "in_language": "en",
+      "source_context_keys": [
+        "34d76e3a95c2d7da7cdddd5e623fa683"
+      ],
+      "source_page_indexes": [
+        122
+      ],
+      "source_segment_ids": [
+        "410d95df-6b0b-5a0e-8d75-f2384ef5feda"
+      ],
+      "source_sfi_uuids": [
+        "30af0ab6-f63e-5fbd-8855-d30b777929d6"
+      ],
+      "source_window_ids": [
+        "825bd452-cdeb-50fe-92a6-1dc18710d6d0"
+      ]
+    },
+    "ebcac83f-3ce0-5d2a-bbb3-cf012d37108d": {
+      "description": "Apply a formula for determining the perimeter of a square and rectangle",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:79d458a5b6e390b56db39a5fafe29fd7",
+      "in_language": "en",
+      "source_context_keys": [
+        "b939f5cc4088801aeabf23d192c937aa"
+      ],
+      "source_page_indexes": [
+        60
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "9d20cbef-b490-507c-8d19-68177a701bd7"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "ec1c679f-aa30-5604-b116-9730d1df02cf": {
+      "description": "Recognise Roman Numerals system up to C (i.e. 100)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:540d4f90b324eaefbc33be3e54add976",
+      "in_language": "en",
+      "source_context_keys": [
+        "7a27927b66b165d405e7661f47e6ceee",
+        "cb535c20a86c6409cd094e59c2028a6c"
+      ],
+      "source_page_indexes": [
+        79,
+        139
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "0da27b7b-e242-5a8d-9325-b4bd2082bf7e",
+        "8421f6ea-9584-5c43-8a10-211ed8cecca7"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "ec68d789-25fe-56c9-b30e-5dbdca731f71": {
+      "description": "Identify images of a reflection of a 2D shape in a plane",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7d0da5fc7705d7517461765013ec1fa8",
+      "in_language": "en",
+      "source_context_keys": [
+        "22666fb538c2a0c8ccdf1aff97e11c84",
+        "e835b2cde0e3ad87e52d1bd38a4e94e7",
+        "f4b722d2f2e65d9b7153ac678801aeec"
+      ],
+      "source_page_indexes": [
+        126,
+        167,
+        170
+      ],
+      "source_segment_ids": [
+        "257ea7c9-5204-526c-80f0-7de396e2f93c",
+        "45c83867-f587-5074-9c4a-f06d8d733177"
+      ],
+      "source_sfi_uuids": [
+        "785b600c-80da-5018-98bc-b4009b5fa510",
+        "b865341a-fa6d-54a2-b353-ad80fcfa7fa5",
+        "c1a42750-37b2-5f2f-8372-116ac62fe4f8"
+      ],
+      "source_window_ids": [
+        "70368afa-e8b7-518c-b68e-917a360e67b2",
+        "7b31deae-92ff-5da9-b315-3b519d63e498"
+      ]
+    },
+    "ecf2b2c5-2230-5c55-bbfb-c5994e400703": {
+      "description": "Justify referents for the units cm\u00b2 or m\u00b2",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2f0cef0031cd32686577d7b2a5921a3e",
+      "in_language": "en",
+      "source_context_keys": [
+        "35d5bb1ff7b7e9e9272850aec2956349"
+      ],
+      "source_page_indexes": [
+        61
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "eb4c91e8-ad6c-5912-a337-6b6941fefd07"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "ed5bd314-b288-5062-a418-bcf2c83ee70e": {
+      "description": "Represent square numbers using factors",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2c26fd1f808e867e1a92d1a8440b12a0",
+      "in_language": "en",
+      "source_context_keys": [
+        "5911b9bed2f5f4c3b110d66b8433c71c"
+      ],
+      "source_page_indexes": [
+        32
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "b378fd8a-756b-51fd-9913-83a03e1eb664"
+      ],
+      "source_window_ids": [
+        "63e0be54-ffa5-578e-8263-ac9efd8e259b"
+      ]
+    },
+    "ee16a49d-c614-5755-ae45-5151178c8248": {
+      "description": "Determine the highest common factor (HCF) of two or three numbers using prime factors",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:afbb1c92603ab9d356477a1baa4c1144",
+      "in_language": "en",
+      "source_context_keys": [
+        "1bae506da3699de29f7fa0f17bfbb259",
+        "32191b4e601abe5e11d53ca6cf71df48"
+      ],
+      "source_page_indexes": [
+        83,
+        141
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "7bd137ce-b2bf-5f44-b048-5ff52176dccc",
+        "ee1e91da-2067-5990-a781-79d946865d88"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "b39b6bb4-c10f-5237-9cd1-f08f56cfc749",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "ee65b35a-8f04-579d-898d-85940cb06c37": {
+      "description": "Count Hindu Arabic numbers up to 100 (C)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b14f25cad0b2ac8d590aea18677b49f3",
+      "in_language": "en",
+      "source_context_keys": [
+        "330ba481c5cb028b9f146c978e1fc89f",
+        "7a27927b66b165d405e7661f47e6ceee"
+      ],
+      "source_page_indexes": [
+        79,
+        140
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4",
+        "b1cfa85e-46d3-5682-84cf-25e4f8c36a2a"
+      ],
+      "source_sfi_uuids": [
+        "097beb07-4c15-582b-be9f-a50e20fafe8b",
+        "f7c9b5ad-9732-5d69-a5f7-cd5aca2654ec"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb",
+        "d2dfdbf9-8cea-529e-81c5-6b43bc370756"
+      ]
+    },
+    "ef61ac60-07b0-59e6-b323-5ffb55598840": {
+      "description": "Convert Roman numerals to Hindu Arabic numerals up to 30",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6711d4061bf734bb7bb4c7fb2735d477",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1dc0cc414165b31480042d430bc8f76"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "3e4a091e-fba5-5195-a79d-a23491b6911d"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "f0283985-3137-5d39-aa45-4e20ba161efc": {
+      "description": "Determine basic division fact up to 81",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:22f4d74993494fccfa1fe8860a76255c",
+      "in_language": "en",
+      "source_context_keys": [
+        "0aaa882ca8112699de452b8c3f3911d3",
+        "da0ae6170af95d4e0ea82fbc67ffc5c9"
+      ],
+      "source_page_indexes": [
+        37,
+        146
+      ],
+      "source_segment_ids": [
+        "26894d55-a6a2-5c6d-988c-6329bce7a4ec",
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "3e58af19-6620-5921-a3cc-59ff0ef9eef0",
+        "a528fa70-279e-5a60-98fa-9fb702982560"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6",
+        "6ef7feb7-5c0f-5d8e-99b6-92f9b07c8a03"
+      ]
+    },
+    "f0bd4730-73c7-5fc6-9d1b-39ab0c4729f1": {
+      "description": "Construct different rectangles for a given area (cm2 or m2) to show that many different rectangles may have the same area",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2ea55004edf97c68bcf618ad7a74db1a",
+      "in_language": "en",
+      "source_context_keys": [
+        "b49bc8e95b5b55509bf0147085dbc879"
+      ],
+      "source_page_indexes": [
+        62
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "b410f54b-aac1-5be1-9a1c-5067beaeedbf"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "f0c5aae7-79d0-5de6-a0e5-0213134d4c75": {
+      "description": "Write a given problem as an equation in which a symbol is used to represent an unknown number",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4860b98e9379b7602176ea79d1d84f4c",
+      "in_language": "en",
+      "source_context_keys": [
+        "35eb39826e18dc5712f8a3d45b3fe365",
+        "7c62e25e70809930853c1e8d9832dba5"
+      ],
+      "source_page_indexes": [
+        53,
+        112
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1",
+        "6b728ffc-3499-5943-83f4-4683d7e92dc1"
+      ],
+      "source_sfi_uuids": [
+        "2168162b-6e4e-5e47-86a1-1ce19754dfc4",
+        "6e8304f3-1498-5ed4-8a18-7d5753a66292"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215",
+        "fa8a20e3-20fb-548a-b2a1-704812c00176"
+      ]
+    },
+    "f0cd5fbc-a578-5592-914b-2b4dbc17b412": {
+      "description": "Analyse the results of collected data to solve problems",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ab4c7f6758a0db33574883ee932ae198",
+      "in_language": "en",
+      "source_context_keys": [
+        "870fe426df28c93e146716dd9c0a78fe"
+      ],
+      "source_page_indexes": [
+        177
+      ],
+      "source_segment_ids": [
+        "fb6728cc-b765-5810-abad-f011a55ae5c0"
+      ],
+      "source_sfi_uuids": [
+        "5e0e5211-a58c-5274-97cd-032989e527eb"
+      ],
+      "source_window_ids": [
+        "d08f6aa7-b15d-54bc-a601-bf2dec73ad21"
+      ]
+    },
+    "f165d788-4ba7-57fc-af52-edb06b0ff925": {
+      "description": "Describe the pattern found in a given table or chart",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2a957a5baf0368dbb018731be108cd66",
+      "in_language": "en",
+      "source_context_keys": [
+        "a5461e6ed5b715c962dade927de87147"
+      ],
+      "source_page_indexes": [
+        50
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "0538bd9c-0bec-5ae9-ac5d-b5f569ec34cf"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "f35b5e7c-1b26-588c-924e-886fee1704e6": {
+      "description": "Identify examples of double bar graphs used in a variety of print and electronic media, such as newspapers, magazines, and the internet",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:417d2b157856b0bfb4526bdefdf5ea5e",
+      "in_language": "en",
+      "source_context_keys": [
+        "9466848dbc6f30ce20032dfed7ab3275"
+      ],
+      "source_page_indexes": [
+        131
+      ],
+      "source_segment_ids": [
+        "9a2d4c71-9305-521d-9f2e-eee66925c8d1"
+      ],
+      "source_sfi_uuids": [
+        "9a90f500-c4e0-57ff-bc62-7e86d5e64824"
+      ],
+      "source_window_ids": [
+        "d79a55f9-fed2-5f8f-9c5d-48560c7e4277"
+      ]
+    },
+    "f367f3ee-39a5-5417-9779-b08e2d2d8c57": {
+      "description": "Describe, orally or in writing, a given pattern using mathematical language (e.g. one more, one less, five more, one more than or less than twice)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:44f1b097cbeaadad5e7b5335d0b83aaf",
+      "in_language": "en",
+      "source_context_keys": [
+        "037e737242bdd0ad35a7d4c3ae1cd173"
+      ],
+      "source_page_indexes": [
+        105
+      ],
+      "source_segment_ids": [
+        "d23c2588-dfea-52ef-9aef-753a3396dc36"
+      ],
+      "source_sfi_uuids": [
+        "2ac71faa-72b2-557e-ac0b-836a3ba27ae8"
+      ],
+      "source_window_ids": [
+        "c6930be8-4c8e-527e-8bb6-e5bbd758d1eb"
+      ]
+    },
+    "f3fb13ff-7436-5cca-99d4-9a25081401c0": {
+      "description": "Use concrete models and pictorial representations to explain a ratio as a concept that shows the number of times one quantity can be obtained in another",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:23ca794a86e26c66322ce99df5b0a096",
+      "in_language": "en",
+      "source_context_keys": [
+        "f9cdaccbb7c2ce91476501989cef2196"
+      ],
+      "source_page_indexes": [
+        154
+      ],
+      "source_segment_ids": [
+        "8932c4c4-0cb8-57ab-a85d-1b9b3ebb4de1"
+      ],
+      "source_sfi_uuids": [
+        "416f8657-b560-58d0-a963-615f5a6ab90a"
+      ],
+      "source_window_ids": [
+        "2d7712ca-1f8b-5015-b005-1782e86a7601"
+      ]
+    },
+    "f47cac13-cc23-530c-8f7d-b5dc39052a97": {
+      "description": "Convert Hindu Arabic numerals to Roman numerals up to 30",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a76565b7754b51ad8e103cd667b201fe",
+      "in_language": "en",
+      "source_context_keys": [
+        "d1dc0cc414165b31480042d430bc8f76"
+      ],
+      "source_page_indexes": [
+        28
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "3e4a091e-fba5-5195-a79d-a23491b6911d"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "f570dc7b-858e-5224-ad3f-c3e0ea37cf59": {
+      "description": "Identify the factors of whole numbers 1 - 100",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4b0b6862d510add98a09c000b872844c",
+      "in_language": "en",
+      "source_context_keys": [
+        "b6b0806e808c1b443569d3a9502c3718"
+      ],
+      "source_page_indexes": [
+        80
+      ],
+      "source_segment_ids": [
+        "1d74cefe-acb7-5173-bba2-47fd04fe88f4"
+      ],
+      "source_sfi_uuids": [
+        "58fc078f-f0c7-5905-b54b-8856b8e826e0"
+      ],
+      "source_window_ids": [
+        "63933eb4-e6a2-5227-8043-9efb8710e0bb"
+      ]
+    },
+    "f58bf56d-161d-5e15-a922-f7da22332f96": {
+      "description": "Use repeated doubling or halving to determine basic multiplication facts to 81 and related division facts",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0496968cf250d185d6cb34027ba5f6ee",
+      "in_language": "en",
+      "source_context_keys": [
+        "8ca6fedc0c68afb976d941410e39328e"
+      ],
+      "source_page_indexes": [
+        143
+      ],
+      "source_segment_ids": [
+        "be2ddc81-a10d-5773-9720-6ad85c533572"
+      ],
+      "source_sfi_uuids": [
+        "0bb21f51-7132-5d95-8d7c-604889ccd3ef"
+      ],
+      "source_window_ids": [
+        "60b50aec-12b6-5911-b2f9-d09095c41cc6"
+      ]
+    },
+    "f6eed54b-4074-5c58-83ca-0e262ce16f97": {
+      "description": "Represent a given addition or subtraction problem involving a part-part-whole or comparison context, using a symbol to represent the unknown",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ed8479c053f93d9b8a02c49b129d13fc",
+      "in_language": "en",
+      "source_context_keys": [
+        "72f692bec1ea552f4867b8a31d79aaeb"
+      ],
+      "source_page_indexes": [
+        55
+      ],
+      "source_segment_ids": [
+        "3c8dd6c1-7483-554a-ad33-d5c4675299f1"
+      ],
+      "source_sfi_uuids": [
+        "86cbd1e2-a694-5811-aed1-1a1ece02805f"
+      ],
+      "source_window_ids": [
+        "4b485e1d-3eb2-5df2-8ca9-100e78a18215"
+      ]
+    },
+    "f7b6e9a8-0235-53da-b3bd-aeed1043fd40": {
+      "description": "Develop an understanding of the Roman numeral system up to XXX (30)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9eb92c0a21a54bc66fc7d447c42dfdc3",
+      "in_language": "en",
+      "source_context_keys": [
+        "ba36044abb69897c18ffe4e9386a5ebd"
+      ],
+      "source_page_indexes": [
+        27
+      ],
+      "source_segment_ids": [
+        "4f961c60-892f-55b1-b9b4-1f3a7b53399b"
+      ],
+      "source_sfi_uuids": [
+        "c4b0f82b-31d0-5ebe-864e-312b77188b6f"
+      ],
+      "source_window_ids": [
+        "ecd0a423-60e7-5fda-8f1a-1381eee8eb75"
+      ]
+    },
+    "f876273d-7097-5d66-841a-6b6e902fc0b6": {
+      "description": "Translate the information in a given problem into a table or chart",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:61617b0e8f1f638fa86d9b33db8e7db2",
+      "in_language": "en",
+      "source_context_keys": [
+        "7b305ab975233c2922393260bd4f26fa"
+      ],
+      "source_page_indexes": [
+        52
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "88908ccd-0443-5b63-a695-e849b73fc0ee"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "f94ed825-2d4b-5e04-a6e4-0dcea92a297b": {
+      "description": "Create a chart from a given concrete representation of a pattern",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:49adf4b11a575e73b6c5ab508a1e8015",
+      "in_language": "en",
+      "source_context_keys": [
+        "c3062e7cac2c0c4a63d744317b16e744"
+      ],
+      "source_page_indexes": [
+        51
+      ],
+      "source_segment_ids": [
+        "b3a3b80c-bd69-5331-b2d8-73c6498bb1bc"
+      ],
+      "source_sfi_uuids": [
+        "acf3d563-e41e-5a6a-89d3-d30a27fb264f"
+      ],
+      "source_window_ids": [
+        "354e3904-0524-5cd4-88a6-4f2c2333e10c"
+      ]
+    },
+    "f9bdde84-d82e-5503-ab49-8719b19b8e7b": {
+      "description": "Record perimeter for regular and irregular shapes in cm and m",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:49fc9ebb78617dfdfe5ff9228d368785",
+      "in_language": "en",
+      "source_context_keys": [
+        "cce4a9f34cea03a09cde3db3c4e2e42b"
+      ],
+      "source_page_indexes": [
+        59
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "6d8daf6a-21aa-5b97-9529-641069db6029"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    },
+    "fa6686c3-a92a-528a-ac51-b7e8329f4b84": {
+      "description": "Solve 'how many altogether' problems by interpreting many-to-one bar graphs (up to 4 categories of data)",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ee3d8e459a80ff355b06e4b839795699",
+      "in_language": "en",
+      "source_context_keys": [
+        "386793cb00dd8a93a1de8d9c79472650"
+      ],
+      "source_page_indexes": [
+        73
+      ],
+      "source_segment_ids": [
+        "2daf16c1-91bf-50bf-a29e-5a0b9add4df1"
+      ],
+      "source_sfi_uuids": [
+        "3b4f6f44-9fee-5ccd-afe2-272a8b7f81f8"
+      ],
+      "source_window_ids": [
+        "fb63638f-e876-53e5-a8f5-1ac3257ba312"
+      ]
+    },
+    "fe5f01a1-7170-5872-9d95-382f1d34adad": {
+      "description": "Determine the theoretical probability of an outcome occurring for a given probability experiment",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7c60798b9f69553a89c7cd629c2bfd6b",
+      "in_language": "en",
+      "source_context_keys": [
+        "3922134768e4dd5bd2be470b484d0e44"
+      ],
+      "source_page_indexes": [
+        178
+      ],
+      "source_segment_ids": [
+        "87174447-a74f-538c-b6a9-f2b1121eb505"
+      ],
+      "source_sfi_uuids": [
+        "ef51ee0d-f382-5bd4-ab74-4d19517b8f98"
+      ],
+      "source_window_ids": [
+        "6d6c4654-4afe-544c-a07d-eb973c824649"
+      ]
+    },
+    "ffc1970e-7ee4-5e27-878f-6894da16455a": {
+      "description": "Estimate area by using referents for cm2 or m2",
+      "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3c453bc0889db3c11d7fec0b9c210a17",
+      "in_language": "en",
+      "source_context_keys": [
+        "b49bc8e95b5b55509bf0147085dbc879"
+      ],
+      "source_page_indexes": [
+        62
+      ],
+      "source_segment_ids": [
+        "a67fd3e2-5622-5cdd-b9bf-8d3d540b1d3c"
+      ],
+      "source_sfi_uuids": [
+        "fdcc6d0b-5796-58ec-bbeb-d8d569264e84"
+      ],
+      "source_window_ids": [
+        "9d33c081-c8e1-56e0-86aa-9df192db2874"
+      ]
+    }
+  },
+  "pdf_name": "ghana.pdf"
+}

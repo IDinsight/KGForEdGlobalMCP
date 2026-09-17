@@ -14,17 +14,17 @@ The server registers its components explicitly and exposes a fixed read-only sur
 
 | Component type     | Count | Purpose                                                                                                  |
 |--------------------|-------|----------------------------------------------------------------------------------------------------------|
-| Tools              | 9     | Deterministic discovery, retrieval, traversal, statistics, comparison evidence, and progression evidence |
+| Tools              | 13    | Deterministic discovery, retrieval, traversal, statistics, learning-component retrieval, comparison evidence, and progression evidence |
 | Fixed resources    | 1     | Complete accepted package catalog                                                                        |
-| Resource templates | 9     | Framework, package, standard, relationship, provenance, and approved artifact reads                      |
-| Prompts            | 6     | Deterministic client-side reasoning and generation workflows                                             |
+| Resource templates | 12    | Framework, package, standard, learning-component, relationship, provenance, and approved artifact reads  |
+| Prompts            | 7     | Deterministic client-side reasoning and generation workflows                                             |
 
 ```mermaid
 %%{init: {"themeVariables": {"fontSize": "18px"}}}%%
 flowchart LR
-    CLIENT[MCP client / host] --> TOOLS[9 read-only tools]
-    CLIENT --> RES[1 fixed resource + 9 templates]
-    CLIENT --> PROMPTS[6 prompt workflows]
+    CLIENT[MCP client / host] --> TOOLS[13 read-only tools]
+    CLIENT --> RES[1 fixed resource + 12 templates]
+    CLIENT --> PROMPTS[7 prompt workflows]
     TOOLS --> STATE[Immutable accepted AppState]
     RES --> STATE
     PROMPTS --> STATE
@@ -42,10 +42,14 @@ flowchart LR
 | `search_standards`             | [Standards tools](standards-tools.md)                | Paginated deterministic search hits            |
 | `get_standard`                 | [Standards tools](standards-tools.md)                | One exact standard or grouping                 |
 | `get_standard_context`         | [Standards tools](standards-tools.md)                | Bounded hierarchy context                      |
+| `search_learning_components`   | [Learning component tools](learning-component-tools.md) | Paginated learning-component search hits    |
+| `get_learning_component`       | [Learning component tools](learning-component-tools.md) | One exact component with placements         |
+| `get_learning_component_context` | [Learning component tools](learning-component-tools.md) | Component with supported standards        |
+| `get_learning_components_for_standard` | [Learning component tools](learning-component-tools.md) | Components supporting one standard  |
 | `compare_framework_evidence`   | [Comparison tool](comparison-tool.md)                | Independently bounded cross-framework evidence |
 | `collect_progression_evidence` | [Progression tool](progression-tool.md)              | Bounded grade-scoped progression candidates    |
 
-All nine tools carry read-only, idempotent annotations.
+All thirteen tools carry read-only, idempotent annotations.
 
 ## Input naming
 
@@ -113,11 +117,12 @@ See [Resources and URI templates](resources.md) for the complete list and rights
 
 ## Prompts
 
-The six registered prompts are:
+The seven registered prompts are:
 
 - `student_study_support`
 - `teacher_guide_draft`
 - `student_handbook_section`
+- `multigrade_lesson_plan`
 - `inferred_progression_hypothesis`
 - `administrator_alignment_review`
 - `cross_framework_comparison`

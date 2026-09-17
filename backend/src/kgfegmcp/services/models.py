@@ -45,6 +45,8 @@ from kgfegmcp.domain.identifiers import (
 )
 from kgfegmcp.graph.models import (
     DirectNodeRelationshipsResult,
+    GraphRelationship,
+    LearningComponentNode,
     RootPathsResult,
     StandardNode,
     TraversalResult,
@@ -52,6 +54,8 @@ from kgfegmcp.graph.models import (
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.models import (
     CodeQueryText,
+    LearningComponentSearchMode,
+    LearningComponentSearchPage,
     PackageSearchIndexMetadata,
     PackageSearchScope,
     SearchCursor,
@@ -59,6 +63,8 @@ from kgfegmcp.search.models import (
     SearchMode,
     SearchPage,
     SearchQueryText,
+    SupportedStandardReference,
+    TagQueryText,
     TextMatch,
 )
 
@@ -174,6 +180,13 @@ class NullableValueCount(FrozenSchema):
 
     count: int = Field(ge=0)
     value: str | None
+
+
+class IntegerValueCount(FrozenSchema):
+    """Associate one integer distribution value with the number of times it occurs."""
+
+    count: int = Field(ge=0)
+    value: int = Field(ge=0)
 
 
 class DepthCount(FrozenSchema):
@@ -429,6 +442,107 @@ class SearchStandardsResult(FrozenSchema):
     selected_snapshots: tuple[CatalogFrameworkSnapshot, ...] = Field(min_length=1)
 
 
+class LearningComponentsSearchRequestBase(FrozenSchema):
+    """Define package selection shared by every learning-component search mode.
+
+    These fields select which accepted packages a search touches. They describe the
+    package, not the node, so they are identical to standards search. Node facet
+    filters are deliberately absent: a learning component carries no grade, subject,
+    or statement taxonomy of its own.
+    """
+
+    cursor: SearchCursor | None = Field(
+        default=None, description=_SEARCH_CURSOR_DESCRIPTION
+    )
+    framework_ids: tuple[FrameworkId, ...] = Field(default=(), max_length=64)
+    jurisdictions: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
+    languages: tuple[LanguageTag, ...] = Field(default=(), max_length=64)
+    limit: int = Field(
+        default=25, description=_CURSOR_BOUND_LIMIT_DESCRIPTION, ge=1, le=100
+    )
+    snapshot_ids: tuple[SnapshotId, ...] = Field(default=(), max_length=64)
+    subjects: tuple[CatalogFilterValue, ...] = Field(default=(), max_length=64)
+
+    @model_validator(mode="after")
+    def validate_package_selection(self) -> Self:
+        """Require duplicate-free framework-selection and catalog-filter tuples.
+
+        Returns
+        -------
+        Self
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If any selection tuple repeats a value.
+        """
+
+        collections = (
+            ("framework_ids", tuple(str(value) for value in self.framework_ids)),
+            ("jurisdictions", self.jurisdictions),
+            ("languages", tuple(str(value) for value in self.languages)),
+            ("snapshot_ids", tuple(str(value) for value in self.snapshot_ids)),
+            ("subjects", self.subjects),
+        )
+
+        for field_name, values in collections:
+            if len(values) != len(set(values)):
+                raise ValueError(f"{field_name} must not contain duplicates.")
+
+        return self
+
+
+class TextLearningComponentsSearchRequest(LearningComponentsSearchRequestBase):
+    """Request deterministic lexical search over learning-component descriptions."""
+
+    match: TextMatch
+    mode: Literal["learning_component_text"]
+    query: SearchQueryText
+
+
+class TagLearningComponentsSearchRequest(LearningComponentsSearchRequestBase):
+    """Request exact controlled-tag lookup over learning-component tags."""
+
+    mode: Literal["learning_component_tag"]
+    query: TagQueryText
+
+
+class SupportedCodeExactLearningComponentsSearchRequest(
+    LearningComponentsSearchRequestBase
+):
+    """Request components supporting one exact standards statement code."""
+
+    mode: Literal["learning_component_supported_code_exact"]
+    query: CodeQueryText
+
+
+class SupportedCodePrefixLearningComponentsSearchRequest(
+    LearningComponentsSearchRequestBase
+):
+    """Request components supporting a standards statement-code prefix."""
+
+    mode: Literal["learning_component_supported_code_prefix"]
+    query: CodeQueryText
+
+
+LearningComponentsSearchRequest: TypeAlias = Annotated[
+    SupportedCodeExactLearningComponentsSearchRequest
+    | SupportedCodePrefixLearningComponentsSearchRequest
+    | TagLearningComponentsSearchRequest
+    | TextLearningComponentsSearchRequest,
+    Field(discriminator="mode"),
+]
+
+
+class SearchLearningComponentsResult(FrozenSchema):
+    """Return one learning-component search page with exact snapshot evidence."""
+
+    effective_scope: PackageSearchScope
+    page: LearningComponentSearchPage
+    selected_snapshots: tuple[CatalogFrameworkSnapshot, ...] = Field(min_length=1)
+
+
 class GetStandardRequest(FrozenSchema):
     """Request one exact standard or grouping in one selected package."""
 
@@ -465,6 +579,149 @@ class GetStandardResult(FrozenSchema):
     node: StandardNode
     package: CatalogGraphPackage
     source_metadata: CatalogSourceMetadata
+
+
+class SupportedStandardPlacement(FrozenSchema):
+    """Locate one supported standard without repeating its ancestor records."""
+
+    description: str
+    grade_levels: tuple[str, ...]
+    hierarchy_path: tuple[str, ...]
+    node_id: NodeId
+    statement_code: str | None = None
+    support_confidence: float | None = None
+
+
+class SupportedStandard(FrozenSchema):
+    """Associate one supported standard with the relationship that declares it."""
+
+    relationship: GraphRelationship
+    standard: StandardNode
+
+
+class GetLearningComponentRequest(FrozenSchema):
+    """Request one exact learning component in one selected package."""
+
+    ancestor_depth: int = Field(default=16, ge=0, le=64)
+    framework_id: FrameworkId | None = None
+    graph_type: GraphType = GraphType.ACADEMIC_STANDARDS
+    node_id: NodeId
+    snapshot_id: SnapshotId | None = None
+
+    @model_validator(mode="after")
+    def validate_framework_selection(self) -> GetLearningComponentRequest:
+        """Require a framework family or exact snapshot selector.
+
+        Returns
+        -------
+        GetLearningComponentRequest
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If neither framework nor snapshot identity is supplied.
+        """
+
+        if self.framework_id is None and self.snapshot_id is None:
+            raise ValueError("framework_id or snapshot_id is required.")
+
+        return self
+
+
+class GetLearningComponentResult(FrozenSchema):
+    """Return one exact learning component with the standards it is placed against."""
+
+    node: LearningComponentNode
+    package: CatalogGraphPackage
+    placements: tuple[SupportedStandardPlacement, ...]
+    source_metadata: CatalogSourceMetadata
+
+
+class GetLearningComponentContextRequest(FrozenSchema):
+    """Request the standards one learning component supports and their placement."""
+
+    ancestor_depth: int = Field(default=16, ge=0, le=64)
+    framework_id: FrameworkId | None = None
+    graph_type: GraphType = GraphType.ACADEMIC_STANDARDS
+    node_id: NodeId
+    snapshot_id: SnapshotId | None = None
+
+    @model_validator(mode="after")
+    def validate_framework_selection(self) -> GetLearningComponentContextRequest:
+        """Require a framework family or exact snapshot selector.
+
+        Returns
+        -------
+        GetLearningComponentContextRequest
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If neither framework nor snapshot identity is supplied.
+        """
+
+        if self.framework_id is None and self.snapshot_id is None:
+            raise ValueError("framework_id or snapshot_id is required.")
+
+        return self
+
+
+class GetLearningComponentContextResult(FrozenSchema):
+    """Return the standards one learning component supports and where they sit."""
+
+    node: LearningComponentNode
+    package: CatalogGraphPackage
+    placements: tuple[SupportedStandardPlacement, ...]
+    source_metadata: CatalogSourceMetadata
+    supported_standards: tuple[SupportedStandard, ...]
+
+
+class GetLearningComponentsForStandardRequest(FrozenSchema):
+    """Request every learning component supporting one exact standard."""
+
+    framework_id: FrameworkId | None = None
+    graph_type: GraphType = GraphType.ACADEMIC_STANDARDS
+    identifier: StandardIdentifier
+    snapshot_id: SnapshotId | None = None
+
+    @model_validator(mode="after")
+    def validate_framework_selection(self) -> GetLearningComponentsForStandardRequest:
+        """Require a framework family or exact snapshot selector.
+
+        Returns
+        -------
+        GetLearningComponentsForStandardRequest
+            The unchanged validated request.
+
+        Raises
+        ------
+        ValueError
+            If neither framework nor snapshot identity is supplied.
+        """
+
+        if self.framework_id is None and self.snapshot_id is None:
+            raise ValueError("framework_id or snapshot_id is required.")
+
+        return self
+
+
+class SupportingLearningComponent(FrozenSchema):
+    """Associate one supporting component with the relationship that declares it."""
+
+    node: LearningComponentNode
+    relationship: GraphRelationship
+    supported_standards: tuple[SupportedStandardReference, ...]
+
+
+class GetLearningComponentsForStandardResult(FrozenSchema):
+    """Return every learning component supporting one exact standard."""
+
+    components: tuple[SupportingLearningComponent, ...]
+    package: CatalogGraphPackage
+    source_metadata: CatalogSourceMetadata
+    standard: StandardNode
 
 
 class GetStandardContextRequest(FrozenSchema):
@@ -528,6 +785,21 @@ class GetStandardContextResult(FrozenSchema):
     standard: GetStandardResult
 
 
+class LearningComponentStatistics(FrozenSchema):
+    """Describe deterministic counts for one package's generated learning components."""
+
+    bridge_span_counts: tuple[IntegerValueCount, ...]
+    components_per_standard_counts: tuple[IntegerValueCount, ...]
+    multi_standard_component_count: int = Field(ge=0)
+    standards_without_components: int = Field(ge=0)
+    support_confidence_maximum: float | None = None
+    support_confidence_minimum: float | None = None
+    supported_statement_types: tuple[str, ...]
+    tag_vocabulary_size: int = Field(ge=0)
+    total_learning_components: int = Field(ge=0)
+    total_supports_relationships: int = Field(ge=0)
+
+
 class GetFrameworkStatisticsRequest(FrozenSchema):
     """Request structural statistics for one exact or unique-current package."""
 
@@ -551,6 +823,7 @@ class FrameworkStatistics(FrozenSchema):
     source_relationship_type_counts: tuple[NullableValueCount, ...]
     statement_type_counts: tuple[NullableValueCount, ...]
     total_framework_nodes: int = Field(ge=0)
+    learning_components: LearningComponentStatistics
     total_item_nodes: int = Field(ge=0)
     total_nodes: int = Field(ge=0)
     total_relationships: int = Field(ge=0)
@@ -571,6 +844,7 @@ class PackageCapabilityResult(FrozenSchema):
 
     available_resource_artifacts: tuple[ArtifactName, ...]
     available_resource_kinds: tuple[str, ...]
+    implemented_learning_component_search_modes: tuple[LearningComponentSearchMode, ...]
     implemented_search_modes: tuple[SearchMode, ...]
     package: CatalogGraphPackage
     search_index: PackageSearchIndexMetadata

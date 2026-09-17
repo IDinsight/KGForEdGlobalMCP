@@ -1,6 +1,6 @@
 # Prompts
 
-The server registers six deterministic prompt workflows. A prompt resolves accepted
+The server registers seven deterministic prompt workflows. A prompt resolves accepted
 package/profile context, applies rights and attribution rules, merges optional
 framework-local guidance, and returns instructions for the connected MCP host model.
 
@@ -55,6 +55,18 @@ case_identifier_uri
 | `grade_or_stage`      | 128 characters  |
 
 `output_language`, when supplied, uses the server's validated language-tag type.
+
+### Learning components in the single-framework prompts
+
+`student_study_support`, `teacher_guide_draft`, and `student_handbook_section` end their
+evidence workflow with a step that calls `get_learning_components_for_standard` for the
+resolved standard. The host uses the returned components as the package's generated
+decomposition of the standard instead of inferring sub-skills of its own, labels each
+`[GENERATED-EVIDENCE / llm_inferred]` with its support confidence, and reports where a
+component also supports a standard in another grade. A package with no learning
+components gets a stop line instead of the call, and the prompt still renders.
+
+`multigrade_lesson_plan` requires components and is described below.
 
 ## `student_study_support`
 
@@ -126,6 +138,42 @@ Optional:
 | `snapshot_id`       | null                |
 | `target_word_count` | 500; range 150-1500 |
 
+## `multigrade_lesson_plan`
+
+!!! warning "Experimental, and it requires learning components"
+    This workflow has no source-only fallback. A package containing no learning
+    components is refused with `capability_unavailable` rather than degraded into
+    parallel mono-grade plans under a multi-grade heading.
+
+Plans one lesson for a classroom holding several grades at once. It separates the shared
+teach-together core from grade-specific work by reading which learning components the
+standards of each grade decompose to: a component supporting standards in more than one
+of the requested grades is the candidate shared core; a component supporting only one is
+that grade's differentiated work.
+
+Required:
+
+- `framework_id`
+- `grades_in_room` — 2 to 8 distinct grades, as a JSON array such as `["4", "5", "6"]`
+- `topic_or_standard`
+
+Optional:
+
+| Argument                  | Default / bound           |
+|---------------------------|---------------------------|
+| `focus_mode`              | `topic`                   |
+| `learner_context`         | null; max 2000 characters |
+| `lesson_duration_minutes` | 45; range 10-240          |
+| `local_context`           | null                      |
+| `output_language`         | null                      |
+| `snapshot_id`             | null                      |
+
+The rendered workflow instructs the host to resolve each grade's standards, call
+`get_learning_components_for_standard` for each, and compare `supportedStandards` across
+grades. It requires the result to state that a shared core rests on a model's judgement
+that two standards decompose to the same component, **not** on a curriculum-authored
+equivalence between those grades.
+
 ## `inferred_progression_hypothesis`
 
 Required:
@@ -157,6 +205,12 @@ for example:
 
 Do not enter comma-separated prose in place of the JSON array.
 
+The workflow does not retrieve learning components itself. When the host uses them as
+progression atoms, the output contract requires them to be labelled
+`[GENERATED-EVIDENCE / llm_inferred]` and carries a disclosure, repeated where they are
+used and again at the end, that a conclusion built on components is inference on
+generated content.
+
 ## `administrator_alignment_review`
 
 Required:
@@ -180,7 +234,10 @@ Optional:
 | `target_snapshot_id`    | null                                     |
 
 The rendered workflow directs the host to use `compare_framework_evidence`. Retrieved
-similarity remains candidate evidence, not an accepted alignment.
+similarity remains candidate evidence, not an accepted alignment. Learning components
+may appear in the comparison matrix as `[GENERATED-EVIDENCE / llm_inferred]` rows beside
+source-asserted rows, under the same inference disclosure as the progression prompt, so
+the human reviewer sees the tier next to each claim.
 
 ## `cross_framework_comparison`
 
@@ -211,6 +268,12 @@ For example:
 
 Snapshot IDs are optional, with at most one selected snapshot per framework. Omission
 uses unique-current routing.
+
+Learning components may be compared across frameworks through
+`search_learning_components`. The output contract requires a grain disclosure: components
+from different frameworks were generated independently, possibly under different
+decomposition instructions, dedup scopes, and pipeline versions, so similar wording does
+not indicate comparable grain.
 
 ## Framework-local prompt overlays
 

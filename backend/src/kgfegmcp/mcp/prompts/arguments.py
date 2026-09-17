@@ -29,6 +29,7 @@ from kgfegmcp.prompts.models import (
     ComparisonSnapshotIds,
     HandbookWordCount,
     LessonDurationMinutes,
+    MultigradeGradesInRoom,
     PracticeCount,
     ProgressionCandidateLimit,
     ProgressionDirection,
@@ -92,6 +93,16 @@ ComparisonGradeFiltersArgument = Annotated[
             "Shared exact local or normalized grade/stage filters. Enter a JSON array "
             'such as ["Grade 1", "Grade 2"]. Leave blank to apply no grade filter; '
             "these values are retrieval facets and do not establish equivalence."
+        )
+    ),
+]
+MultigradeGradesInRoomArgument = Annotated[
+    MultigradeGradesInRoom,
+    Field(
+        description=(
+            "Two to eight distinct grades or stages sharing the classroom. MCP prompt "
+            "clients send complex arguments as JSON strings, so enter a JSON array such "
+            'as ["4", "5", "6"]. Do not enter a comma-separated prose string.'
         )
     ),
 ]
@@ -218,6 +229,7 @@ __all__ = [
     "IncludeContextPathsArgument",
     "LessonDurationMinutesArgument",
     "OptionalLanguageTagArgument",
+    "MultigradeGradesInRoomArgument",
     "OptionalPromptGradeOrStageArgument",
     "OptionalPromptLearnerContextArgument",
     "OptionalPromptLocalContextArgument",

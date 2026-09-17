@@ -33,7 +33,7 @@ import json
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
-from typing import Final, Literal
+from typing import Final, Generic, Literal, TypeAlias, TypeVar
 
 # Third Party Library
 from pydantic import TypeAdapter, ValidationError
@@ -53,7 +53,13 @@ from kgfegmcp.errors import (
     InvalidCursorError,
     UnsupportedSearchModeError,
 )
-from kgfegmcp.graph.models import GraphPackageIdentity, StandardNode
+from kgfegmcp.graph.models import (
+    GraphPackageIdentity,
+    LearningComponentNode,
+    StandardNode,
+    graph_relationship_order_key,
+)
+from kgfegmcp.packages.wire import DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
 from kgfegmcp.profiles.models import (
     CurriculumProfile,
     GradeMapping,
@@ -70,6 +76,14 @@ from kgfegmcp.search.models import (
     ExactCodeSearchQuery,
     ExactPackageSearchScope,
     FederatedPackageSearchScope,
+    LearningComponentSearchHit,
+    LearningComponentSearchMode,
+    LearningComponentSearchPage,
+    LearningComponentSearchQuery,
+    LearningComponentSupportedCodeExactSearchQuery,
+    LearningComponentSupportedCodePrefixSearchQuery,
+    LearningComponentTagSearchQuery,
+    LearningComponentTextSearchQuery,
     PackageSearchIndexMetadata,
     PrefixCodeSearchQuery,
     SearchCursor,
@@ -87,6 +101,7 @@ from kgfegmcp.search.models import (
     SearchSelectionMode,
     SearchWarning,
     SearchWarningCode,
+    SupportedStandardReference,
     TextSearchQuery,
 )
 from kgfegmcp.search.normalizers import (
@@ -96,11 +111,14 @@ from kgfegmcp.search.normalizers import (
     normalize_facet_value,
     normalize_lexical_text,
 )
+from kgfegmcp.search.tags import TagIndex
 
 _SHA256_ADAPTER: Final[TypeAdapter[Sha256Digest]] = TypeAdapter(Sha256Digest)
 CURSOR_VERSION: Final[Literal[1]] = 1
 OrderingPosition = tuple[int | str, ...]
 RANKING_VERSION: Final[str] = "deterministic_search_ranking_v1"
+AnySearchMode: TypeAlias = SearchMode | LearningComponentSearchMode
+RankedHitT = TypeVar("RankedHitT", SearchHit, LearningComponentSearchHit)
 
 
 class _UnsignedCursorState(FrozenSchema):
@@ -110,7 +128,7 @@ class _UnsignedCursorState(FrozenSchema):
     effective_query_sha256: Sha256Digest
     index_set_sha256: Sha256Digest
     last_ordering_position: OrderingPosition
-    mode: SearchMode
+    mode: AnySearchMode
 
 
 class _CursorState(_UnsignedCursorState):
@@ -120,10 +138,10 @@ class _CursorState(_UnsignedCursorState):
 
 
 @dataclass(frozen=True, slots=True)
-class _RankedHit:
+class _RankedHit(Generic[RankedHitT]):
     """Associate one public hit with its complete deterministic ordering position."""
 
-    hit: SearchHit
+    hit: RankedHitT
     ordering_position: OrderingPosition
 
 
@@ -482,9 +500,11 @@ class _PackageSearchRuntime:
 
     catalog_runtime: CatalogPackageRuntime
     code_index: CodeIndex
+    component_lexical_index: LexicalIndex[LearningComponentNode]
     facets: _FacetResolver
-    lexical_index: LexicalIndex
+    lexical_index: LexicalIndex[StandardNode]
     metadata: PackageSearchIndexMetadata
+    tag_index: TagIndex
 
     @classmethod
     def from_catalog_runtime(
@@ -504,19 +524,27 @@ class _PackageSearchRuntime:
         """
 
         code_index = CodeIndex.from_runtime(catalog_runtime)
+        component_lexical_index = LexicalIndex.from_runtime_learning_components(
+            catalog_runtime
+        )
         facets = _FacetResolver.from_runtime(catalog_runtime)
         lexical_index = LexicalIndex.from_runtime(catalog_runtime)
+        tag_index = TagIndex.from_runtime(catalog_runtime)
         metadata = _build_package_metadata(
             catalog_runtime=catalog_runtime,
             code_index=code_index,
+            component_lexical_index=component_lexical_index,
             lexical_index=lexical_index,
+            tag_index=tag_index,
         )
         return cls(
             catalog_runtime=catalog_runtime,
             code_index=code_index,
+            component_lexical_index=component_lexical_index,
             facets=facets,
             lexical_index=lexical_index,
             metadata=metadata,
+            tag_index=tag_index,
         )
 
 
@@ -702,6 +730,7 @@ class SearchService:
             limit=query.limit,
             mode=query.mode,
             ranked_hits=tuple(ranked_hits),
+            tool_name="search_standards",
         )
         return SearchPage(
             has_more=next_cursor is not None,
@@ -712,12 +741,322 @@ class SearchService:
             warnings=_ordered_warnings(warnings=tuple(warnings)),
         )
 
+    def search_learning_components(
+        self, query: LearningComponentSearchQuery
+    ) -> LearningComponentSearchPage:
+        """Execute one deterministic learning-component search request.
+
+        Parameters
+        ----------
+        query
+            Validated immutable text, tag, or supported-code request.
+
+        Returns
+        -------
+        LearningComponentSearchPage
+            One immutable page preserving exact package and source-node provenance.
+
+        Raises
+        ------
+        CapabilityUnavailableError
+            If an exact package lacks the requested search capability.
+        InvalidCursorError
+            If a cursor is malformed, mismatched, stale, or no longer locatable.
+        """
+
+        packages = self._select_packages(query.scope)
+
+        if isinstance(query, LearningComponentTextSearchQuery):
+            ranked_hits, warnings, normalized_queries = (
+                self._search_learning_component_text(packages=packages, query=query)
+            )
+        elif isinstance(query, LearningComponentTagSearchQuery):
+            ranked_hits, warnings, normalized_queries = (
+                self._search_learning_component_tags(packages=packages, query=query)
+            )
+        else:
+            ranked_hits, warnings, normalized_queries = self._search_supported_codes(
+                packages=packages, query=query
+            )
+
+        ranked_hits.sort(key=_ranked_hit_order_key)
+        selected_index_sha256 = _selected_index_sha256(packages)
+        effective_query_sha256 = _effective_query_sha256(
+            normalized_queries=normalized_queries, packages=packages, query=query
+        )
+        page_hits, next_cursor = _paginate_hits(
+            cursor=query.cursor,
+            effective_query_sha256=effective_query_sha256,
+            index_set_sha256=selected_index_sha256,
+            limit=query.limit,
+            mode=query.mode,
+            ranked_hits=tuple(ranked_hits),
+            tool_name="search_learning_components",
+        )
+        return LearningComponentSearchPage(
+            has_more=next_cursor is not None,
+            hits=tuple(ranked_hit.hit for ranked_hit in page_hits),
+            mode=query.mode,
+            next_cursor=next_cursor,
+            returned_count=len(page_hits),
+            warnings=_ordered_warnings(warnings=tuple(warnings)),
+        )
+
+    @staticmethod
+    def _search_learning_component_tags(
+        *,
+        packages: tuple[_PackageSearchRuntime, ...],
+        query: LearningComponentTagSearchQuery,
+    ) -> tuple[
+        list[_RankedHit[LearningComponentSearchHit]],
+        list[SearchWarning],
+        Mapping[str, str],
+    ]:
+        """Execute package-local exact tag lookup and aggregate deterministic hits.
+
+        Parameters
+        ----------
+        packages
+            Exact selected package search runtimes in catalog order.
+        query
+            Validated controlled-tag request.
+
+        Returns
+        -------
+        tuple[list[_RankedHit[LearningComponentSearchHit]], list[SearchWarning], Mapping[str, str]]
+            Ranked-hit accumulator, package warnings, and normalized query evidence.
+        """
+
+        ranked_hits: list[_RankedHit[LearningComponentSearchHit]] = []
+        normalized_query = normalize_facet_value(query.query)
+        normalized_queries: dict[str, str] = {}
+
+        for package in packages:
+            identity = package.catalog_runtime.catalog_package.package_identity
+            normalized_queries[str(identity.graph_package_id)] = normalized_query
+
+            for component in package.tag_index.components_for_tag(query.query):
+                ranked_hits.append(
+                    _build_tag_ranked_hit(
+                        component=component,
+                        normalized_query=normalized_query,
+                        package=package,
+                    )
+                )
+
+        return ranked_hits, [], MappingProxyType(normalized_queries)
+
+    @staticmethod
+    def _search_learning_component_text(
+        *,
+        packages: tuple[_PackageSearchRuntime, ...],
+        query: LearningComponentTextSearchQuery,
+    ) -> tuple[
+        list[_RankedHit[LearningComponentSearchHit]],
+        list[SearchWarning],
+        Mapping[str, str],
+    ]:
+        """Execute package-local component lexical search and aggregate hits.
+
+        Parameters
+        ----------
+        packages
+            Exact selected package search runtimes in catalog order.
+        query
+            Validated lexical request.
+
+        Returns
+        -------
+        tuple[list[_RankedHit[LearningComponentSearchHit]], list[SearchWarning], Mapping[str, str]]
+            Ranked-hit accumulator, package warnings, and normalized query evidence.
+        """
+
+        ranked_hits: list[_RankedHit[LearningComponentSearchHit]] = []
+        warnings: list[SearchWarning] = []
+        normalized_query = "\u001f".join(normalize_lexical_text(query.query))
+        normalized_queries: dict[str, str] = {}
+        is_exact_scope = query.scope.selection_mode is SearchSelectionMode.EXACT
+
+        for package in packages:
+            identity = package.catalog_runtime.catalog_package.package_identity
+            graph_package_id = str(identity.graph_package_id)
+            normalized_queries[graph_package_id] = normalized_query
+            text_search_available = (
+                package.catalog_runtime.loaded_package.manifest.capabilities.text_search
+            )
+
+            if not text_search_available:
+                if is_exact_scope:
+                    raise CapabilityUnavailableError(
+                        details={
+                            "graph_package_id": graph_package_id,
+                            "mode": query.mode.value,
+                        },
+                        message=(
+                            "The selected package does not provide deterministic text "
+                            "search."
+                        ),
+                    )
+
+                warnings.append(
+                    _package_warning(
+                        code=SearchWarningCode.TEXT_SEARCH_UNAVAILABLE,
+                        identity=identity,
+                        message=(
+                            "The selected package disables text search and was skipped."
+                        ),
+                    )
+                )
+                continue
+
+            candidates = package.component_lexical_index.candidates(
+                match=query.match, query=query.query
+            )
+
+            for candidate in candidates:
+                ranked_hits.append(
+                    _build_component_text_ranked_hit(
+                        candidate=candidate, package=package
+                    )
+                )
+
+        return ranked_hits, warnings, MappingProxyType(normalized_queries)
+
+    @staticmethod
+    def _search_supported_codes(
+        *,
+        packages: tuple[_PackageSearchRuntime, ...],
+        query: (
+            LearningComponentSupportedCodeExactSearchQuery
+            | LearningComponentSupportedCodePrefixSearchQuery
+        ),
+    ) -> tuple[
+        list[_RankedHit[LearningComponentSearchHit]],
+        list[SearchWarning],
+        Mapping[str, str],
+    ]:
+        """Return components supporting standards whose codes satisfy one query.
+
+        The standards code index performs the match; the supports relationships select
+        the components. There is no separate supported-code index.
+
+        Parameters
+        ----------
+        packages
+            Exact selected package search runtimes in catalog order.
+        query
+            Exact or prefix supported-code request.
+
+        Returns
+        -------
+        tuple[list[_RankedHit[LearningComponentSearchHit]], list[SearchWarning], Mapping[str, str]]
+            Ranked-hit accumulator, package warnings, and normalized query evidence.
+        """
+
+        is_exact = query.mode is LearningComponentSearchMode.SUPPORTED_CODE_EXACT
+        is_exact_scope = query.scope.selection_mode is SearchSelectionMode.EXACT
+        ranked_hits: list[_RankedHit[LearningComponentSearchHit]] = []
+        warnings: list[SearchWarning] = []
+        normalized_queries: dict[str, str] = {}
+
+        for package in packages:
+            identity = package.catalog_runtime.catalog_package.package_identity
+            graph_package_id = str(identity.graph_package_id)
+            availability = package.code_index.availability
+            implemented_modes = implemented_learning_component_search_modes(
+                code_availability=availability,
+                prefix_available=package.code_index.allow_prefix_search,
+                text_available=(
+                    package.catalog_runtime.catalog_package.capabilities.text_search
+                ),
+            )
+            implemented_mode_text = (
+                ", ".join(mode.value for mode in implemented_modes) or "none"
+            )
+
+            if availability is CodeAvailability.NONE:
+                if is_exact_scope:
+                    _raise_code_capability_unavailable(
+                        code_availability=availability,
+                        identity=identity,
+                        implemented_modes=implemented_modes,
+                        mode=query.mode,
+                    )
+
+                warnings.append(
+                    _package_warning(
+                        code=SearchWarningCode.CODE_SEARCH_UNAVAILABLE,
+                        identity=identity,
+                        message=(
+                            f"The selected package has no source statement-code "
+                            f"coverage and was skipped for supported-code search. "
+                            f"Available package search modes: {implemented_mode_text}."
+                        ),
+                    )
+                )
+                normalized_queries[graph_package_id] = "unavailable"
+                continue
+
+            if not is_exact and not package.code_index.allow_prefix_search:
+                if is_exact_scope:
+                    _raise_code_capability_unavailable(
+                        code_availability=availability,
+                        identity=identity,
+                        implemented_modes=implemented_modes,
+                        mode=query.mode,
+                    )
+
+                warnings.append(
+                    _package_warning(
+                        code=SearchWarningCode.CODE_PREFIX_UNAVAILABLE,
+                        identity=identity,
+                        message=(
+                            f"The selected package does not implement code-prefix "
+                            f"search and was skipped. Available package search modes: "
+                            f"{implemented_mode_text}."
+                        ),
+                    )
+                )
+                normalized_queries[graph_package_id] = "prefix_unavailable"
+                continue
+
+            if availability is CodeAvailability.PARTIAL:
+                warnings.append(
+                    _package_warning(
+                        code=SearchWarningCode.PARTIAL_CODE_COVERAGE,
+                        identity=identity,
+                        message=(
+                            "The selected package has partial source statement-code "
+                            "coverage; components supporting uncoded standards remain "
+                            "available to text and tag search."
+                        ),
+                    )
+                )
+
+            if is_exact:
+                candidates = package.code_index.exact_candidates(query.query)
+                normalized_query = package.code_index.normalizer.normalize(query.query)
+            else:
+                candidates = package.code_index.prefix_candidates(query.query)
+                normalized_query = package.code_index.normalizer.normalize_prefix(
+                    query.query
+                )
+
+            normalized_queries[graph_package_id] = normalized_query
+            ranked_hits.extend(
+                _build_supported_code_ranked_hits(
+                    candidates=candidates, package=package, retrieval_method=query.mode
+                )
+            )
+
+        return ranked_hits, warnings, MappingProxyType(normalized_queries)
+
     @staticmethod
     def _search_code(
         *,
         packages: tuple[_PackageSearchRuntime, ...],
         query: ExactCodeSearchQuery | PrefixCodeSearchQuery,
-    ) -> tuple[list[_RankedHit], list[SearchWarning], Mapping[str, str]]:
+    ) -> tuple[list[_RankedHit[SearchHit]], list[SearchWarning], Mapping[str, str]]:
         """Execute package-local exact or prefix code search and aggregate hits.
 
         Parameters
@@ -729,12 +1068,12 @@ class SearchService:
 
         Returns
         -------
-        tuple[list[_RankedHit], list[SearchWarning], Mapping[str, str]]
+        tuple[list[_RankedHit[SearchHit]], list[SearchWarning], Mapping[str, str]]
             Ranked-hit accumulator, package warnings, and per-package normalized query
             values used by cursor binding.
         """
 
-        ranked_hits: list[_RankedHit] = []
+        ranked_hits: list[_RankedHit[SearchHit]] = []
         warnings: list[SearchWarning] = []
         normalized_queries: dict[str, str] = {}
         is_exact_scope = query.scope.selection_mode is SearchSelectionMode.EXACT
@@ -854,7 +1193,7 @@ class SearchService:
     @staticmethod
     def _search_text(
         *, packages: tuple[_PackageSearchRuntime, ...], query: TextSearchQuery
-    ) -> tuple[list[_RankedHit], list[SearchWarning], Mapping[str, str]]:
+    ) -> tuple[list[_RankedHit[SearchHit]], list[SearchWarning], Mapping[str, str]]:
         """Execute package-local lexical search and aggregate deterministic hits.
 
         Parameters
@@ -866,11 +1205,11 @@ class SearchService:
 
         Returns
         -------
-        tuple[list[_RankedHit], list[SearchWarning], Mapping[str, str]]
+        tuple[list[_RankedHit[SearchHit]], list[SearchWarning], Mapping[str, str]]
             Ranked-hit accumulator, package warnings, and normalized query evidence.
         """
 
-        ranked_hits: list[_RankedHit] = []
+        ranked_hits: list[_RankedHit[SearchHit]] = []
         warnings: list[SearchWarning] = []
         normalized_query = "\u001f".join(normalize_lexical_text(query.query))
         normalized_queries: dict[str, str] = {}
@@ -991,7 +1330,7 @@ def _build_code_ranked_hit(
     has_multiple_exact_matches: bool,
     package: _PackageSearchRuntime,
     retrieval_method: SearchMode,
-) -> _RankedHit:
+) -> _RankedHit[SearchHit]:
     """Build one public code hit and complete deterministic ordering position.
 
     Parameters
@@ -1007,7 +1346,7 @@ def _build_code_ranked_hit(
 
     Returns
     -------
-    _RankedHit
+    _RankedHit[SearchHit]
         Public hit and stable ordering position.
     """
 
@@ -1091,11 +1430,66 @@ def _build_code_ranked_hit(
     return _RankedHit(hit=hit, ordering_position=ordering_position)
 
 
+def _build_component_text_ranked_hit(
+    *,
+    candidate: LexicalCandidate[LearningComponentNode],
+    package: _PackageSearchRuntime,
+) -> _RankedHit[LearningComponentSearchHit]:
+    """Build one public component lexical hit and its deterministic position.
+
+    Parameters
+    ----------
+    candidate
+        Exact package-local lexical candidate evidence.
+    package
+        Exact package search runtime that owns the component.
+
+    Returns
+    -------
+    _RankedHit[LearningComponentSearchHit]
+        Public lexical hit and stable ordering position.
+    """
+
+    matched_field = SearchMatchedField(
+        field=SearchField.DESCRIPTION,
+        matched_terms=candidate.matched_terms,
+        phrase_matched=candidate.phrase_matched,
+        source_value=candidate.source_value,
+    )
+    score = SearchScore(
+        algorithm=SearchScoreAlgorithm.LEXICAL_TOKEN_COVERAGE_V1,
+        matched_term_count=len(tuple(dict.fromkeys(candidate.matched_terms))),
+        phrase_matched=candidate.phrase_matched,
+        query_term_count=candidate.query_term_count,
+        value=candidate.score_value,
+    )
+    hit = LearningComponentSearchHit(
+        epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
+        matched_fields=(matched_field,),
+        matched_terms=candidate.matched_terms,
+        node=candidate.node,
+        package_identity=package.catalog_runtime.catalog_package.package_identity,
+        retrieval_method=LearningComponentSearchMode.TEXT,
+        score=score,
+        supported_standards=_supported_standards(
+            component_id=candidate.node.node_id, package=package
+        ),
+    )
+    return _RankedHit(
+        hit=hit,
+        ordering_position=_component_ordering_position(
+            node=candidate.node, package=package, score_value=candidate.score_value
+        ),
+    )
+
+
 def _build_package_metadata(
     *,
     catalog_runtime: CatalogPackageRuntime,
     code_index: CodeIndex,
-    lexical_index: LexicalIndex,
+    component_lexical_index: LexicalIndex[LearningComponentNode],
+    lexical_index: LexicalIndex[StandardNode],
+    tag_index: TagIndex,
 ) -> PackageSearchIndexMetadata:
     """Build deterministic metadata and digest for one package-local index pair.
 
@@ -1105,8 +1499,12 @@ def _build_package_metadata(
         Exact accepted package runtime whose profile and source facets govern search.
     code_index
         Immutable package-local code index.
+    component_lexical_index
+        Immutable package-local learning-component description index.
     lexical_index
         Immutable package-local lexical index.
+    tag_index
+        Immutable package-local learning-component tag index.
 
     Returns
     -------
@@ -1149,6 +1547,16 @@ def _build_package_metadata(
             }
             for posting in code_index.postings
         ),
+        "component_lexical_documents": tuple(
+            {
+                "description": document.node.description,
+                "node_id": str(document.node.node_id),
+                "source_export_order": document.node.source_export_order,
+                "tags": document.node.tags,
+                "tokens": document.tokens,
+            }
+            for document in component_lexical_index.documents_by_id.values()
+        ),
         "cursor_version": CURSOR_VERSION,
         "facet_normalizer_version": FACET_NORMALIZER_VERSION,
         "facet_policy": {
@@ -1189,6 +1597,7 @@ def _build_package_metadata(
             by_alias=True, mode="json"
         ),
         "ranking_version": RANKING_VERSION,
+        "tag_keys": tuple(tag_index.components_by_tag_key),
     }
     index_sha256 = _canonical_sha256(payload)
     return PackageSearchIndexMetadata(
@@ -1196,6 +1605,7 @@ def _build_package_metadata(
         coded_node_count=code_index.coded_node_count,
         cursor_version=CURSOR_VERSION,
         index_sha256=index_sha256,
+        learning_component_document_count=component_lexical_index.document_count,
         lexical_document_count=lexical_index.document_count,
         lexical_normalizer_version=LEXICAL_NORMALIZER_VERSION,
         lexical_posting_count=lexical_index.posting_count,
@@ -1203,15 +1613,203 @@ def _build_package_metadata(
         normalized_code_key_count=code_index.normalized_code_key_count,
         package_identity=code_index.package_identity,
         ranking_version=RANKING_VERSION,
+        tag_vocabulary_size=tag_index.tag_vocabulary_size,
+    )
+
+
+def _build_supported_code_ranked_hits(
+    *,
+    candidates: tuple[CodeCandidate, ...],
+    package: _PackageSearchRuntime,
+    retrieval_method: LearningComponentSearchMode,
+) -> tuple[_RankedHit[LearningComponentSearchHit], ...]:
+    """Build one hit per component supporting any standard whose code matched.
+
+    A component matching several standards produces one hit carrying every matched
+    code, rather than one hit per standard.
+
+    Parameters
+    ----------
+    candidates
+        Exact package-local code candidates already filtered by the code index.
+    package
+        Exact package search runtime that owns the postings.
+    retrieval_method
+        Exact or prefix supported-code mode.
+
+    Returns
+    -------
+    tuple[_RankedHit[LearningComponentSearchHit], ...]
+        Public supported-code hits and stable ordering positions.
+    """
+
+    components_by_id: dict[NodeId, LearningComponentNode] = {}
+    exact_by_id: dict[NodeId, bool] = {}
+    matched_by_id: dict[NodeId, list[SupportedStandardReference]] = {}
+    normalized_queries_by_id: dict[NodeId, list[str]] = {}
+    store = package.catalog_runtime.graph_store
+
+    for candidate in candidates:
+        posting = candidate.posting
+        relationships = store.incoming_by_type_and_node.get(
+            (DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE, posting.node.node_id), ()
+        )
+
+        for relationship in sorted(relationships, key=graph_relationship_order_key):
+            component = store.nodes_by_id[relationship.source_node_id]
+
+            if not isinstance(component, LearningComponentNode):
+                continue
+
+            component_id = component.node_id
+            components_by_id[component_id] = component
+            exact_by_id[component_id] = (
+                exact_by_id.get(component_id, False) or candidate.is_exact_match
+            )
+            matched_codes = matched_by_id.setdefault(component_id, [])
+            already_matched = {
+                (str(matched.node_id), matched.statement_code)
+                for matched in matched_codes
+            }
+
+            if (
+                str(posting.node.node_id),
+                posting.authored_code,
+            ) not in already_matched:
+                matched_codes.append(
+                    SupportedStandardReference(
+                        description=posting.node.description,
+                        grade_levels=posting.node.grade_level or (),
+                        node_id=posting.node.node_id,
+                        statement_code=posting.authored_code,
+                        support_confidence=relationship.support_confidence,
+                    )
+                )
+
+            normalized_queries = normalized_queries_by_id.setdefault(component_id, [])
+
+            if candidate.normalized_query not in normalized_queries:
+                normalized_queries.append(candidate.normalized_query)
+
+    ranked_hits: list[_RankedHit[LearningComponentSearchHit]] = []
+    score_algorithm = (
+        SearchScoreAlgorithm.SUPPORTED_CODE_EXACT_V1
+        if retrieval_method is LearningComponentSearchMode.SUPPORTED_CODE_EXACT
+        else SearchScoreAlgorithm.SUPPORTED_CODE_PREFIX_V1
+    )
+
+    for component_id, component in components_by_id.items():
+        matched_codes = matched_by_id[component_id]
+        matched_terms = tuple(normalized_queries_by_id[component_id])
+        score_value = 1_000_000 if exact_by_id[component_id] else 500_000
+        score = SearchScore(
+            algorithm=score_algorithm,
+            matched_term_count=len(matched_terms),
+            phrase_matched=False,
+            query_term_count=len(matched_terms),
+            value=score_value,
+        )
+        hit = LearningComponentSearchHit(
+            epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
+            matched_codes=tuple(matched_codes),
+            matched_fields=tuple(
+                SearchMatchedField(
+                    field=SearchField.SUPPORTED_STATEMENT_CODE,
+                    matched_terms=matched_terms,
+                    phrase_matched=False,
+                    source_value=matched.statement_code,
+                )
+                for matched in matched_codes
+            ),
+            matched_terms=matched_terms,
+            node=component,
+            package_identity=package.catalog_runtime.catalog_package.package_identity,
+            retrieval_method=retrieval_method,
+            score=score,
+            supported_standards=_supported_standards(
+                component_id=component_id, package=package
+            ),
+        )
+        ranked_hits.append(
+            _RankedHit(
+                hit=hit,
+                ordering_position=_component_ordering_position(
+                    node=component, package=package, score_value=score_value
+                ),
+            )
+        )
+
+    return tuple(ranked_hits)
+
+
+def _build_tag_ranked_hit(
+    *,
+    component: LearningComponentNode,
+    normalized_query: str,
+    package: _PackageSearchRuntime,
+) -> _RankedHit[LearningComponentSearchHit]:
+    """Build one public tag hit and its complete deterministic ordering position.
+
+    Parameters
+    ----------
+    component
+        Exact learning component retained by the package-local tag index.
+    normalized_query
+        Normalized controlled facet key that selected the component.
+    package
+        Exact package search runtime that owns the component.
+
+    Returns
+    -------
+    _RankedHit[LearningComponentSearchHit]
+        Public tag hit and stable ordering position.
+    """
+
+    source_value = next(
+        tag
+        for tag in component.tags or ()
+        if normalize_facet_value(tag) == normalized_query
+    )
+    score = SearchScore(
+        algorithm=SearchScoreAlgorithm.TAG_EXACT_V1,
+        matched_term_count=1,
+        phrase_matched=False,
+        query_term_count=1,
+        value=1_000_000,
+    )
+    hit = LearningComponentSearchHit(
+        epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
+        matched_fields=(
+            SearchMatchedField(
+                field=SearchField.TAG,
+                matched_terms=(normalized_query,),
+                phrase_matched=False,
+                source_value=source_value,
+            ),
+        ),
+        matched_terms=(normalized_query,),
+        node=component,
+        package_identity=package.catalog_runtime.catalog_package.package_identity,
+        retrieval_method=LearningComponentSearchMode.TAG,
+        score=score,
+        supported_standards=_supported_standards(
+            component_id=component.node_id, package=package
+        ),
+    )
+    return _RankedHit(
+        hit=hit,
+        ordering_position=_component_ordering_position(
+            node=component, package=package, score_value=1_000_000
+        ),
     )
 
 
 def _build_text_ranked_hit(
     *,
-    candidate: LexicalCandidate,
+    candidate: LexicalCandidate[StandardNode],
     evidence: SearchFacetEvidence,
     package: _PackageSearchRuntime,
-) -> _RankedHit:
+) -> _RankedHit[SearchHit]:
     """Build one public lexical hit and complete deterministic ordering position.
 
     Parameters
@@ -1225,7 +1823,7 @@ def _build_text_ranked_hit(
 
     Returns
     -------
-    _RankedHit
+    _RankedHit[SearchHit]
         Public lexical hit and stable ordering position.
     """
 
@@ -1359,6 +1957,42 @@ def _code_hit_warnings(
     return _ordered_warnings(tuple(warnings))
 
 
+def _component_ordering_position(
+    *,
+    node: LearningComponentNode,
+    package: _PackageSearchRuntime,
+    score_value: int,
+) -> OrderingPosition:
+    """Return the stable ordering position for one learning-component hit.
+
+    Parameters
+    ----------
+    node
+        Exact learning component owned by the selected package.
+    package
+        Exact package search runtime that owns the component.
+    score_value
+        Deterministic integer score already calculated for the hit.
+
+    Returns
+    -------
+    OrderingPosition
+        Stable sort and cursor continuation key.
+    """
+
+    identity = package.catalog_runtime.catalog_package.package_identity
+    return (
+        -score_value,
+        str(identity.framework_id),
+        str(identity.snapshot_id),
+        identity.graph_type.value,
+        identity.package_revision,
+        str(identity.graph_package_id),
+        str(node.node_id),
+        node.source_export_order,
+    )
+
+
 def _decode_cursor(cursor: SearchCursor) -> _CursorState:
     """Decode and checksum-validate one opaque cursor.
 
@@ -1414,7 +2048,7 @@ def _effective_query_sha256(
     *,
     normalized_queries: Mapping[str, str],
     packages: tuple[_PackageSearchRuntime, ...],
-    query: SearchQuery,
+    query: SearchQuery | LearningComponentSearchQuery,
 ) -> Sha256Digest:
     """Bind pagination to the complete effective request and resolved package set.
 
@@ -1451,7 +2085,7 @@ def _encode_cursor(
     effective_query_sha256: Sha256Digest,
     index_set_sha256: Sha256Digest,
     last_ordering_position: OrderingPosition,
-    mode: SearchMode,
+    mode: AnySearchMode,
 ) -> SearchCursor:
     """Encode one checksum-protected canonical JSON continuation cursor.
 
@@ -1699,9 +2333,10 @@ def _paginate_hits(
     effective_query_sha256: Sha256Digest,
     index_set_sha256: Sha256Digest,
     limit: int,
-    mode: SearchMode,
-    ranked_hits: tuple[_RankedHit, ...],
-) -> tuple[tuple[_RankedHit, ...], SearchCursor | None]:
+    mode: AnySearchMode,
+    ranked_hits: tuple[_RankedHit[RankedHitT], ...],
+    tool_name: str,
+) -> tuple[tuple[_RankedHit[RankedHitT], ...], SearchCursor | None]:
     """Apply immutable cursor continuation to a complete deterministic hit sequence.
 
     Parameters
@@ -1718,6 +2353,8 @@ def _paginate_hits(
         Exact deterministic search mode.
     ranked_hits
         Complete ordered result sequence.
+    tool_name
+        Exact tool whose pagination sequence the recovery hints describe.
 
     Returns
     -------
@@ -1740,6 +2377,11 @@ def _paginate_hits(
             or state.index_set_sha256 != index_set_sha256
             or state.mode is not mode
         ):
+            groupings_clause = (
+                ""
+                if isinstance(mode, LearningComponentSearchMode)
+                else "includeGroupings value, "
+            )
             raise InvalidCursorError(
                 details={"reason": "cursor_context_mismatch"},
                 message=(
@@ -1747,9 +2389,9 @@ def _paginate_hits(
                     "index set."
                 ),
                 recovery_hint=(
-                    "Retry with the exact previous search_standards request. "
+                    f"Retry with the exact previous {tool_name} request. "
                     "Replace only the cursor field. Keep the query, mode, match settings, "
-                    "framework and snapshot scope, filters, includeGroupings value, "
+                    f"framework and snapshot scope, filters, {groupings_clause}"
                     "and limit unchanged. If the mismatch persists, restart pagination "
                     "without a cursor because the accepted package indexes may have "
                     "changed."
@@ -1770,7 +2412,7 @@ def _paginate_hits(
                     "ordering."
                 ),
                 recovery_hint=(
-                    "Restart the search_standards pagination sequence without a cursor."
+                    f"Restart the {tool_name} pagination sequence without a cursor."
                 ),
             ) from error
 
@@ -1796,8 +2438,8 @@ def _raise_code_capability_unavailable(
     *,
     code_availability: CodeAvailability,
     identity: GraphPackageIdentity,
-    implemented_modes: tuple[SearchMode, ...],
-    mode: SearchMode,
+    implemented_modes: tuple[AnySearchMode, ...],
+    mode: AnySearchMode,
 ) -> None:
     """Raise a stable exact-package code capability error.
 
@@ -1808,9 +2450,10 @@ def _raise_code_capability_unavailable(
     identity
         Exact selected package identity.
     implemented_modes
-        Exact search modes enabled for the selected package.
+        Exact search modes enabled for the selected package on the same surface as
+        ``mode``.
     mode
-        Exact-code or code-prefix search mode.
+        Exact-code or code-prefix search mode, standards or learning-component.
 
     Raises
     ------
@@ -1822,6 +2465,11 @@ def _raise_code_capability_unavailable(
         implemented_mode.value for implemented_mode in implemented_modes
     )
     implemented_mode_text = ", ".join(implemented_mode_values) or "none"
+    capability_field = (
+        "implementedLearningComponentSearchModes"
+        if isinstance(mode, LearningComponentSearchMode)
+        else "implementedSearchModes"
+    )
     raise CapabilityUnavailableError(
         details={
             "code_availability": code_availability.value,
@@ -1835,13 +2483,13 @@ def _raise_code_capability_unavailable(
             f"in the generic tool schema is not necessarily enabled for every package."
         ),
         recovery_hint=(
-            "Inspect get_capabilities packages[].implementedSearchModes for the "
-            "selected package and retry with one of the listed modes."
+            f"Inspect get_capabilities packages[].{capability_field} for the "
+            f"selected package and retry with one of the listed modes."
         ),
     )
 
 
-def _ranked_hit_order_key(ranked_hit: _RankedHit) -> OrderingPosition:
+def _ranked_hit_order_key(ranked_hit: _RankedHit[RankedHitT]) -> OrderingPosition:
     """Return the complete deterministic ordering position for list sorting.
 
     Parameters
@@ -1914,6 +2562,87 @@ def _selected_index_sha256(packages: tuple[_PackageSearchRuntime, ...]) -> Sha25
         )
     }
     return _canonical_sha256(payload)
+
+
+def _supported_standards(
+    *, component_id: NodeId, package: _PackageSearchRuntime
+) -> tuple[SupportedStandardReference, ...]:
+    """Return every standards item one learning component supports.
+
+    Parameters
+    ----------
+    component_id
+        Exact outer identifier of the learning component.
+    package
+        Exact package search runtime that owns the component.
+
+    Returns
+    -------
+    tuple[SupportedStandardReference, ...]
+        Supported standards in deterministic relationship order.
+    """
+
+    store = package.catalog_runtime.graph_store
+    relationships = store.outgoing_by_type_and_node.get(
+        (DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE, component_id), ()
+    )
+    supported: list[SupportedStandardReference] = []
+
+    for relationship in sorted(relationships, key=graph_relationship_order_key):
+        standard = store.nodes_by_id[relationship.target_node_id]
+
+        if isinstance(standard, StandardNode):
+            supported.append(
+                SupportedStandardReference(
+                    description=standard.description,
+                    grade_levels=standard.grade_level or (),
+                    node_id=standard.node_id,
+                    statement_code=standard.statement_code,
+                    support_confidence=relationship.support_confidence,
+                )
+            )
+
+    return tuple(supported)
+
+
+def implemented_learning_component_search_modes(
+    *, code_availability: CodeAvailability, prefix_available: bool, text_available: bool
+) -> tuple[LearningComponentSearchMode, ...]:
+    """Return exact learning-component search modes implemented for one package.
+
+    Tag search needs no manifest capability and no profile code coverage, so it is
+    always implemented; a package whose components carry no tags returns no hits
+    rather than reporting the mode unavailable.
+
+    Parameters
+    ----------
+    code_availability
+        Profile-governed statement-code coverage of the supported standards.
+    prefix_available
+        Whether the selected profile enables delimiter-boundary prefix search.
+    text_available
+        Whether deterministic lexical search is enabled for the package.
+
+    Returns
+    -------
+    tuple[LearningComponentSearchMode, ...]
+        Implemented modes in stable public order.
+    """
+
+    modes: list[LearningComponentSearchMode] = []
+
+    if text_available:
+        modes.append(LearningComponentSearchMode.TEXT)
+
+    modes.append(LearningComponentSearchMode.TAG)
+
+    if code_availability is not CodeAvailability.NONE:
+        modes.append(LearningComponentSearchMode.SUPPORTED_CODE_EXACT)
+
+        if prefix_available:
+            modes.append(LearningComponentSearchMode.SUPPORTED_CODE_PREFIX)
+
+    return tuple(modes)
 
 
 def implemented_search_modes(

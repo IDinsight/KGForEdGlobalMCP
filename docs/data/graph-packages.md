@@ -23,16 +23,20 @@ A supplied package has this shape:
 <snapshot-id>/
 ├── package_manifest.json
 ├── delivery/
-│   ├── as_nodes_*.jsonl
-│   └── as_relationships_*.jsonl
+│   ├── as_lc_nodes_*.jsonl
+│   └── as_lc_relationships_*.jsonl
 └── detailed/
     ├── as_entity_provenance.json
     ├── as_kg_bundle.json
+    ├── as_lc_kg_bundle.json
     ├── as_relationships_has_child.jsonl
     ├── as_standards_framework.json
     ├── as_standards_framework_items.jsonl
     ├── as_unresolved_items.json
-    └── as_validation_report.json
+    ├── as_validation_report.json
+    ├── lc_dedup_groups.json
+    ├── lc_entity_provenance.json
+    └── lc_generation_summary.json
 ```
 
 Artifact basenames differ by framework, but logical roles are declared by the manifest.
@@ -50,7 +54,7 @@ The server's primary graph runtime is built from the manifest-declared `nodes` a
 
 ## Delivery JSONL envelope
 
-Delivery schema version `1.0` uses one JSON object per physical line.
+Delivery schema version `1.1` uses one JSON object per physical line.
 
 A node record has this outer shape:
 
@@ -95,34 +99,81 @@ relationship properties:
 The external delivery `properties` object deliberately preserves source values as
 strings. The decoder is the boundary that interprets a small set of known encodings.
 
-For schema `1.0`:
+For schema `1.1`:
 
 - booleans are decoded only from the exact strings `"true"` and `"false"`;
-- array-valued properties such as `gradeLevel` are JSON arrays encoded inside a string;
-- unknown string properties are retained rather than discarded; and
+- array-valued properties such as `gradeLevel` and `tags` are JSON arrays encoded inside
+  a string;
+- properties the schema does not define are dropped; a decoded node carries typed fields
+  only, and the delivery artifact remains available byte-exact as a `raw_source`
+  resource with its own checksum; and
 - malformed encodings fail with typed parsing/decoding findings instead of being
   coerced loosely.
+
+Decoded records do not carry a copy of their source property strings. Every value a
+consumer needs is exposed as a typed field, and the source bytes are served by the
+resource layer rather than duplicated onto every node and relationship.
 
 The decoder does not repair identifiers, resolve endpoints, or validate graph topology;
 those are later validation stages.
 
 ## Node labels
 
-Delivery schema `1.0` recognizes the Learning Commons-shaped labels:
+Delivery schema `1.1` recognizes these Learning Commons-shaped labels:
 
 ```text
 StandardsFramework
 StandardsFrameworkItem
+LearningComponent
 ```
+
+Every node must carry exactly one of these labels. A record matching none of them, or
+more than one, is rejected at decode.
 
 The package must contain the expected framework root and item records required by the
 manifest counts and semantic validators.
 
+## Learning components
+
+A learning component is model-generated content decomposed from a standards framework
+item. It is kept separate from standards at every level: its own node type, its own
+package collection, and its own manifest counts. Standards results, hierarchy traversal,
+search indexes, and framework statistics are all built from item nodes and therefore
+never include generated content.
+
+A learning component carries no CASE identifier, no grade level, and no statement
+taxonomy. Those belong to published standards and are recovered by following the
+component's `supports` relationships to the standards items it was decomposed from.
+
+Delivery artifacts carry standards and learning components together, and take the
+`as_lc_` filename prefix:
+
+```text
+delivery/as_lc_nodes_<subject>.jsonl
+delivery/as_lc_relationships_<subject>.jsonl
+detailed/as_lc_validation_report.json
+```
+
 ## Relationship representation
 
-The current hierarchy relationship type is `hasChild`. Relationships retain both outer
-node identifiers and source-facing endpoint metadata. The validator checks that these
-representations agree and that endpoints resolve correctly.
+The current hierarchy relationship type is `hasChild`. Delivery schema `1.1` adds
+`supports`, which runs from a learning component to the standards framework item it was
+decomposed from, and carries a `supportConfidence` between zero and one.
+
+Relationships retain both outer node identifiers and source-facing endpoint metadata.
+The validator checks that these representations agree and that endpoints resolve
+correctly.
+
+Endpoints are referenced by different properties depending on the node they point at. A
+standards framework or framework item endpoint is referenced by `caseIdentifierUUID`; a
+learning component endpoint is referenced by `identifier`, because a learning component
+has no CASE identity to cite. A `supports` relationship is therefore asymmetric,
+referencing its source by `identifier` and its target by `caseIdentifierUUID`.
+
+Two rules keep generated content out of source-asserted structure: a `supports`
+relationship must run from a learning component to a standards framework item, and a
+learning component must never appear in the `hasChild` hierarchy in either direction.
+Every learning component must be reachable by at least one `supports` relationship.
 
 A relationship can also carry a supported unresolved status such as
 `unresolvedRootFallback`. Such evidence remains explicitly unresolved rather than being

@@ -40,6 +40,11 @@ from kgfegmcp.errors import (
     InvalidCursorError,
 )
 from kgfegmcp.schemas import FrozenSchema
+from kgfegmcp.search.models import (
+    ExactPackageSearchScope,
+    FederatedPackageSearchScope,
+    SearchSelectionMode,
+)
 from kgfegmcp.services.models import (
     FrameworkCursor,
     GetFrameworkRequest,
@@ -456,6 +461,41 @@ def _snapshot_order_key(snapshot: CatalogFrameworkSnapshot) -> tuple[str, str]:
     """
 
     return str(snapshot.framework_id), str(snapshot.snapshot_id)
+
+
+def build_search_scope(
+    snapshots: tuple[CatalogFrameworkSnapshot, ...],
+) -> ExactPackageSearchScope | FederatedPackageSearchScope:
+    """Build an exact or federated search scope from deterministically selected snapshots.
+
+    One implementation decides which packages any search touches, so standards search
+    and learning-component search can never diverge on package selection.
+
+    Parameters
+    ----------
+    snapshots
+        Deterministically selected accepted snapshots.
+
+    Returns
+    -------
+    ExactPackageSearchScope | FederatedPackageSearchScope
+        Existing search-service package-selection contract.
+    """
+
+    if len(snapshots) == 1:
+        snapshot = snapshots[0]
+        return ExactPackageSearchScope(
+            framework_id=snapshot.framework_id,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            selection_mode=SearchSelectionMode.EXACT,
+            snapshot_id=snapshot.snapshot_id,
+        )
+
+    return FederatedPackageSearchScope(
+        graph_types=(GraphType.ACADEMIC_STANDARDS,),
+        selection_mode=SearchSelectionMode.FEDERATED,
+        snapshot_ids=tuple(snapshot.snapshot_id for snapshot in snapshots),
+    )
 
 
 @dataclass(frozen=True, slots=True)

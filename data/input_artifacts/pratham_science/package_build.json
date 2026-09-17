@@ -1,13 +1,13 @@
 {
-	"detailedArtifactsDirectory": "data/input_artifacts/pratham_science/detailed",
-	"jurisdictionType": "country",
-	"nodes": "data/input_artifacts/pratham_science/delivery/as_nodes_india_pratham_science.jsonl",
-	"outputRoot": "data/graph_packages",
-	"packageRevision": 1,
+  "detailedArtifactsDirectory": "data/input_artifacts/pratham_science/detailed",
+  "jurisdictionType": "country",
+  "nodes": "data/input_artifacts/pratham_science/delivery/as_lc_nodes_pratham_science.jsonl",
+  "outputRoot": "data/graph_packages",
+  "packageRevision": 1,
   "profileId": "india-cbse-science-learning-framework-classes-9-10",
-	"profileVersion": "1.0",
-	"relationships": "data/input_artifacts/pratham_science/delivery/as_relationships_india_pratham_science.jsonl",
-	"snapshotRelations": [],
-	"sourcePublicationDate": null,
-	"versionToken": "undated"
+  "profileVersion": "1.0",
+  "relationships": "data/input_artifacts/pratham_science/delivery/as_lc_relationships_pratham_science.jsonl",
+  "snapshotRelations": [],
+  "sourcePublicationDate": null,
+  "versionToken": "undated"
 }

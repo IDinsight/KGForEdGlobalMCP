@@ -17,7 +17,7 @@ The current manifest version, delivery schema version, and source schema version
 | `graphType`             | Primary graph domain                                              |
 | `includedGraphTypes`    | Graph domains included in the package                             |
 | `packageRevision`       | Package-format revision, currently `1`                            |
-| `deliverySchemaVersion` | Delivery JSONL schema version                                     |
+| `deliverySchemaVersion` | Delivery JSONL schema version. The supported version is `1.1` |
 | `sourceSchemaVersion`   | Detailed-source schema version                                    |
 | `createdAt`             | Timezone-aware package creation timestamp                         |
 | `framework`             | Source-faithful and normalized framework metadata                 |
@@ -47,8 +47,12 @@ A valid manifest must satisfy several identity invariants:
 6. A snapshot relation may not target the same snapshot or duplicate the same
    `(relationType, targetSnapshotId)` pair.
 
-The supplied repository packages are initial revision-1 `academic_standards` packages,
-so their `graphPackageId` currently equals their `snapshotId`.
+A package including learning components declares
+`includedGraphTypes: [academic_standards, learning_components]`. Because an initial
+`graphPackageId` may declare only its primary graph type, such a package uses the
+deterministic graph-type/package-revision form instead, and its `graphPackageId` is
+therefore longer than its `snapshotId`. The `snapshotId` is unchanged, so the package
+directory name is unaffected.
 
 ## Framework metadata
 
@@ -105,6 +109,10 @@ It can also declare these built-in artifacts:
 | `standardsFrameworkItems` | Detailed item JSONL                     |
 | `unresolvedItems`         | Unresolved-evidence report JSON         |
 | `validationReport`        | Detailed validation report JSON         |
+| `learningComponentsBundle`   | Detailed learning-component bundle JSON      |
+| `learningComponentSummary`   | Learning-component generation summary JSON   |
+| `learningComponentProvenance`| Learning-component provenance JSON           |
+| `learningComponentDedupGroups`| Learning-component dedup groups JSON        |
 
 `additionalArtifacts` can represent other logical artifacts, but names reserved by the
 built-in fields are forbidden. Every declared artifact path must be unique.
@@ -134,7 +142,9 @@ The version-1 count contract contains:
   "counts": {
     "frameworkNodes": 1,
     "itemNodes": 430,
+    "learningComponentNodes": 0,
     "relationships": 430,
+    "supportsRelationships": 0,
     "additionalCounts": {
       "codedItems": 319,
       "multiParentTargets": 0,
@@ -143,6 +153,13 @@ The version-1 count contract contains:
   }
 }
 ```
+
+`itemNodes` counts standards framework items only and `learningComponentNodes` counts
+generated learning components; the two are never combined. `relationships` counts every
+relationship in the package, of which `supportsRelationships` are learning-component
+edges. `learningComponentNodes` and `supportsRelationships` both default to `0`, so a
+package built before delivery schema `1.1` remains valid. Both are checked against the
+decoded package content.
 
 `frameworkNodes` is exactly `1`. Version 1 requires `additionalCounts` to contain
 exactly these three names:

@@ -57,7 +57,6 @@ class GraphNode(FrozenSchema):
     node_id: NodeId
     property_identifier: NodeId | None = None
     provider: str | None = None
-    raw_properties: dict[str, str]
     source_export_order: SourceExportOrder
 
 
@@ -71,7 +70,6 @@ class GraphRelationship(FrozenSchema):
     license: str | None = None
     property_identifier: RelationshipId | None = None
     provider: str | None = None
-    raw_properties: dict[str, str]
     relationship_id: RelationshipId
     relationship_type: str | None = None
     resolution_status: str | None = None
@@ -81,6 +79,7 @@ class GraphRelationship(FrozenSchema):
     source_labels: tuple[str, ...]
     source_node_id: NodeId
     source_export_order: SourceExportOrder
+    support_confidence: float | None = None
     target_entity: str | None = None
     target_entity_key: str | None = None
     target_entity_value: str | None = None
@@ -104,7 +103,15 @@ class StandardNode(GraphNode):
     statement_type: str | None = None
 
 
-GraphNodeRecord: TypeAlias = FrameworkNode | StandardNode
+class LearningComponentNode(GraphNode):
+    """Represent one decoded learning-component node."""
+
+    description: str
+    identity_key: str | None = None
+    tags: tuple[str, ...] | None = None
+
+
+GraphNodeRecord: TypeAlias = FrameworkNode | LearningComponentNode | StandardNode
 
 
 class DirectRelationshipDirection(StrEnum):

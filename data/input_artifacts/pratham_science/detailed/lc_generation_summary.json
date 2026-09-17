@@ -1,0 +1,45 @@
+{
+  "lc_confidence_distribution": {
+    "0.7": 2,
+    "0.8": 28,
+    "0.9": 828
+  },
+  "lc_count_by_language": {
+    "en": 853
+  },
+  "lc_count_by_source_statement_type": {
+    "Indicator": 853
+  },
+  "lc_dedup_candidate_pair_count": 1919,
+  "lc_dedup_conflict_count": 0,
+  "lc_dedup_judged_same_count": 3,
+  "lc_generation_failed_sfis_count": 0,
+  "lc_max_splits_observed": 10,
+  "lc_multi_claim_lc_count": 5,
+  "lc_multi_parent_lc_count": 5,
+  "lc_selection_mode": "explicit_allowlist",
+  "lc_source_exclusion_reason_counts": {
+    "not_in_allowlist": 320
+  },
+  "lc_splits_distribution": {
+    "1": 355,
+    "2": 135,
+    "3": 43,
+    "4": 13,
+    "5": 4,
+    "6": 1,
+    "8": 2,
+    "10": 1
+  },
+  "llm_request_count": 554,
+  "llm_response_count": 554,
+  "manual_review_overrides": null,
+  "total_lc_claims": 858,
+  "total_lc_source_sfis_considered": 874,
+  "total_lc_source_sfis_eligible": 554,
+  "total_lc_source_sfis_empty_text": 0,
+  "total_lc_source_sfis_excluded": 320,
+  "total_lcs": 853,
+  "total_supports_edges": 858,
+  "warnings": []
+}

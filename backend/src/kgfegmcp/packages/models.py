@@ -61,7 +61,12 @@ from kgfegmcp.domain.identifiers import (
     build_versioned_graph_package_id,
 )
 from kgfegmcp.domain.models import RightsPolicy
-from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
+from kgfegmcp.graph.models import (
+    FrameworkNode,
+    GraphRelationship,
+    LearningComponentNode,
+    StandardNode,
+)
 from kgfegmcp.profiles.models import CurriculumProfile
 from kgfegmcp.schemas import FrozenSchema
 
@@ -70,11 +75,21 @@ ADDITIONAL_COUNT_MULTI_PARENT_TARGETS: Final[str] = "multiParentTargets"
 ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS: Final[str] = "unresolvedRelationships"
 DELIVERY_REPORT_COUNT_FRAMEWORK_NODES: Final[str] = "learning_commons_framework_nodes"
 DELIVERY_REPORT_COUNT_ITEM_NODES: Final[str] = "learning_commons_item_nodes"
+DELIVERY_REPORT_COUNT_LEARNING_COMPONENT_NODES: Final[str] = (
+    "learning_commons_learning_component_nodes"
+)
+DELIVERY_REPORT_COUNT_SUPPORTS_RELATIONSHIPS: Final[str] = (
+    "learning_commons_supports_relationships"
+)
 DELIVERY_REPORT_COUNT_RELATIONSHIPS: Final[str] = "learning_commons_relationships"
 DELIVERY_REPORT_COUNT_UNRESOLVED_RELATIONSHIPS: Final[str] = (
     "learning_commons_unresolved_fallback_relationships"
 )
-DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
+DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.1")
+SUPPORTED_INCLUDED_GRAPH_TYPES: Final[tuple[GraphType, ...]] = (
+    GraphType.ACADEMIC_STANDARDS,
+    GraphType.LEARNING_COMPONENTS,
+)
 MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.0")
 REQUIRED_ADDITIONAL_COUNT_NAMES: Final[frozenset[str]] = frozenset(
     {
@@ -403,6 +418,10 @@ class PackageArtifacts(FrozenSchema):
     academic_standards_bundle: ArtifactPath | None = None
     additional_artifacts: dict[ArtifactName, ArtifactPath] = Field(default_factory=dict)
     entity_provenance: ArtifactPath | None = None
+    learning_component_dedup_groups: ArtifactPath | None = None
+    learning_component_provenance: ArtifactPath | None = None
+    learning_component_summary: ArtifactPath | None = None
+    learning_components_bundle: ArtifactPath | None = None
     nodes: ArtifactPath
     relationships: ArtifactPath
     relationships_has_child: ArtifactPath | None = None
@@ -429,6 +448,10 @@ class PackageArtifacts(FrozenSchema):
         reserved_names = {
             "academicStandardsBundle",
             "entityProvenance",
+            "learningComponentDedupGroups",
+            "learningComponentProvenance",
+            "learningComponentSummary",
+            "learningComponentsBundle",
             "nodes",
             "relationships",
             "relationshipsHasChild",
@@ -467,6 +490,10 @@ class PackageArtifacts(FrozenSchema):
         optional_artifacts = {
             "academicStandardsBundle": self.academic_standards_bundle,
             "entityProvenance": self.entity_provenance,
+            "learningComponentDedupGroups": self.learning_component_dedup_groups,
+            "learningComponentProvenance": self.learning_component_provenance,
+            "learningComponentSummary": self.learning_component_summary,
+            "learningComponentsBundle": self.learning_components_bundle,
             "relationshipsHasChild": self.relationships_has_child,
             "standardsFramework": self.standards_framework,
             "standardsFrameworkItems": self.standards_framework_items,
@@ -498,7 +525,9 @@ class PackageCounts(FrozenSchema):
     additional_counts: dict[str, NonNegativeStrictInt]
     framework_nodes: int = Field(default=1, ge=1, le=1)
     item_nodes: int = Field(ge=0)
+    learning_component_nodes: int = Field(ge=0)
     relationships: int = Field(ge=0)
+    supports_relationships: int = Field(ge=0)
 
     @model_validator(mode="after")
     def validate_additional_counts(self) -> Self:
@@ -874,6 +903,7 @@ class LoadedGraphPackage(FrozenSchema):
     artifacts: tuple[DeclaredArtifactReference, ...]
     framework_root: FrameworkNode
     item_nodes: tuple[StandardNode, ...]
+    learning_component_nodes: tuple[LearningComponentNode, ...]
     manifest: GraphPackageManifest
     manifest_bytes: bytes = Field(exclude=True, repr=False)
     manifest_path: Path = Field(exclude=True, repr=False)

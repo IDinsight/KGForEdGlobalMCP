@@ -53,6 +53,7 @@ from kgfegmcp.graph.models import (
     GraphNodeResult,
     GraphPackageIdentity,
     GraphRelationship,
+    LearningComponentNode,
     StandardNode,
     graph_relationship_order_key,
 )
@@ -108,6 +109,7 @@ class GraphStore:
     framework_root_id: NodeId
     hierarchy_relationship_type: str
     items_in_deterministic_source_order: tuple[StandardNode, ...]
+    learning_components_in_deterministic_source_order: tuple[LearningComponentNode, ...]
     package_identity: GraphPackageIdentity
 
     _incoming_by_type_and_node: Mapping[AdjacencyKey, tuple[GraphRelationship, ...]] = (
@@ -150,6 +152,9 @@ class GraphStore:
 
         for node in loaded_package.item_nodes:
             nodes_by_id[node.node_id] = node
+
+        for component in loaded_package.learning_component_nodes:
+            nodes_by_id[component.node_id] = component
 
         nodes_by_case_identifier_uri: dict[CaseIdentifierUri, GraphNodeRecord] = {}
         nodes_by_case_identifier_uuid: dict[CaseIdentifierUuid, GraphNodeRecord] = {}
@@ -212,6 +217,9 @@ class GraphStore:
                 loaded_package.profile.hierarchy.relationship_type
             ),
             items_in_deterministic_source_order=loaded_package.item_nodes,
+            learning_components_in_deterministic_source_order=(
+                loaded_package.learning_component_nodes
+            ),
             package_identity=package_identity,
         )
 

@@ -200,6 +200,11 @@ ProgressionGradeFilters = Annotated[
     Field(max_length=32),
     AfterValidator(_require_unique_grade_values),
 ]
+MultigradeGradesInRoom = Annotated[
+    tuple[PromptGradeOrStage, ...],
+    Field(max_length=8, min_length=2),
+    AfterValidator(_require_unique_grade_values),
+]
 ComparisonFrameworkIds = Annotated[
     tuple[FrameworkId, ...],
     Field(max_length=8, min_length=2),
@@ -248,6 +253,7 @@ class PromptName(StrEnum):
     ADMINISTRATOR_ALIGNMENT_REVIEW = "administrator_alignment_review"
     CROSS_FRAMEWORK_COMPARISON = "cross_framework_comparison"
     INFERRED_PROGRESSION_HYPOTHESIS = "inferred_progression_hypothesis"
+    MULTIGRADE_LESSON_PLAN = "multigrade_lesson_plan"
     STUDENT_HANDBOOK_SECTION = "student_handbook_section"
     STUDENT_STUDY_SUPPORT = "student_study_support"
     TEACHER_GUIDE_DRAFT = "teacher_guide_draft"
@@ -260,6 +266,7 @@ PROMPT_NAMES: Final[tuple[str, ...]] = (
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS.value,
     PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW.value,
     PromptName.CROSS_FRAMEWORK_COMPARISON.value,
+    PromptName.MULTIGRADE_LESSON_PLAN.value,
 )
 
 
@@ -359,6 +366,14 @@ class TeacherGuideDraftGuidance(FrozenSchema):
     pedagogy_guidance: PromptGuidanceBlock | None = None
 
 
+class MultigradeLessonPlanGuidance(FrozenSchema):
+    """Define optional soft guidance for the experimental multigrade workflow."""
+
+    differentiation_guidance: PromptGuidanceBlock | None = None
+    shared_core_guidance: PromptGuidanceBlock | None = None
+    classroom_management_guidance: PromptGuidanceBlock | None = None
+
+
 class StudentHandbookSectionGuidance(FrozenSchema):
     """Define optional soft guidance for the student-handbook workflow."""
 
@@ -401,6 +416,7 @@ class PromptOverlays(FrozenSchema):
     administrator_alignment_review: AdministratorAlignmentReviewGuidance | None = None
     cross_framework_comparison: CrossFrameworkComparisonGuidance | None = None
     inferred_progression_hypothesis: InferredProgressionHypothesisGuidance | None = None
+    multigrade_lesson_plan: MultigradeLessonPlanGuidance | None = None
     student_handbook_section: StudentHandbookSectionGuidance | None = None
     student_study_support: StudentStudySupportGuidance | None = None
     teacher_guide_draft: TeacherGuideDraftGuidance | None = None

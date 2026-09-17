@@ -26,7 +26,11 @@ from kgfegmcp.errors import CatalogError
 from kgfegmcp.prompts.models import PROMPT_CONFIG_SCHEMA_VERSION, PROMPT_NAMES
 from kgfegmcp.resources.uri import CATALOG_URI, RESOURCE_URI_TEMPLATES
 from kgfegmcp.search.models import PackageSearchIndexMetadata
-from kgfegmcp.search.service import SearchService, implemented_search_modes
+from kgfegmcp.search.service import (
+    SearchService,
+    implemented_learning_component_search_modes,
+    implemented_search_modes,
+)
 from kgfegmcp.services.models import GetCapabilitiesResult, PackageCapabilityResult
 
 if TYPE_CHECKING:
@@ -62,9 +66,13 @@ _TOOL_NAMES: Final[tuple[str, ...]] = (
     "collect_progression_evidence",
     "get_framework",
     "get_framework_statistics",
+    "get_learning_component",
+    "get_learning_component_context",
+    "get_learning_components_for_standard",
     "get_standard",
     "get_standard_context",
     "list_frameworks",
+    "search_learning_components",
     "search_standards",
 )
 _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
@@ -72,7 +80,6 @@ _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
     "alignment_persistence",
     "alignments",
     "embeddings",
-    "learning_components",
     "learning_progressions",
     "mcp_sampling",
     "semantic_candidate_retrieval",
@@ -169,6 +176,15 @@ class CapabilitiesService:
                     available_resource_artifacts=resource_artifacts,
                     available_resource_kinds=tuple(
                         resource_kind.value for resource_kind in resource_kinds
+                    ),
+                    implemented_learning_component_search_modes=(
+                        implemented_learning_component_search_modes(
+                            code_availability=(profile.code_search_policy.availability),
+                            prefix_available=(
+                                profile.code_search_policy.allow_prefix_search
+                            ),
+                            text_available=package.capabilities.text_search,
+                        )
                     ),
                     implemented_search_modes=implemented_search_modes(
                         code_availability=profile.code_search_policy.availability,

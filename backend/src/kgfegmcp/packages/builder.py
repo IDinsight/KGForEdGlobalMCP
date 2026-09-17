@@ -54,12 +54,16 @@ from kgfegmcp.domain.identifiers import (
     GraphPackageId,
     Sha256Digest,
     SnapshotId,
-    build_initial_graph_package_id,
     build_snapshot_id,
+    build_versioned_graph_package_id,
 )
 from kgfegmcp.domain.models import RightsPolicy
 from kgfegmcp.errors import ManifestBuildError
-from kgfegmcp.graph.models import FrameworkNode, StandardNode
+from kgfegmcp.graph.models import (
+    FrameworkNode,
+    LearningComponentNode,
+    StandardNode,
+)
 from kgfegmcp.packages.checksums import (
     calculate_file_sha256,
     calculate_snapshot_artifact_set_sha256,
@@ -71,6 +75,7 @@ from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
     DELIVERY_SCHEMA_VERSION,
     SOURCE_SCHEMA_VERSION,
+    SUPPORTED_INCLUDED_GRAPH_TYPES,
     FrameworkCapabilities,
     FrameworkMetadata,
     GraphPackageManifest,
@@ -85,6 +90,7 @@ from kgfegmcp.packages.models import (
 from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY,
     DELIVERY_SCHEMA_1_0_UNRESOLVED_RELATIONSHIP_STATUSES,
+    DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE,
 )
 from kgfegmcp.profiles.loader import load_curriculum_profile
 from kgfegmcp.profiles.models import CurriculumProfile
@@ -99,6 +105,22 @@ _MANIFEST_FILENAME: Final[str] = "package_manifest.json"
 _RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
     "as_entity_provenance.json": ("entity_provenance", "entityProvenance"),
     "as_kg_bundle.json": ("academic_standards_bundle", "academicStandardsBundle"),
+    "as_lc_kg_bundle.json": (
+        "learning_components_bundle",
+        "learningComponentsBundle",
+    ),
+    "lc_dedup_groups.json": (
+        "learning_component_dedup_groups",
+        "learningComponentDedupGroups",
+    ),
+    "lc_entity_provenance.json": (
+        "learning_component_provenance",
+        "learningComponentProvenance",
+    ),
+    "lc_generation_summary.json": (
+        "learning_component_summary",
+        "learningComponentSummary",
+    ),
     "as_relationships_has_child.jsonl": (
         "relationships_has_child",
         "relationshipsHasChild",
@@ -109,7 +131,7 @@ _RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
         "standardsFrameworkItems",
     ),
     "as_unresolved_items.json": ("unresolved_items", "unresolvedItems"),
-    "as_validation_report.json": ("validation_report", "validationReport"),
+    "as_lc_validation_report.json": ("validation_report", "validationReport"),
 }
 _RECOGNIZED_DETAILED_BASENAMES_CASEFOLDED: Final[frozenset[str]] = frozenset(
     basename.casefold() for basename in _RECOGNIZED_DETAILED_ARTIFACTS
@@ -118,6 +140,10 @@ _RESERVED_ADDITIONAL_LOGICAL_NAMES: Final[frozenset[str]] = frozenset(
     {
         "academicstandardsbundle",
         "entityprovenance",
+        "learningcomponentdedupgroups",
+        "learningcomponentprovenance",
+        "learningcomponentsummary",
+        "learningcomponentsbundle",
         "nodes",
         "relationships",
         "relationshipshaschild",
@@ -161,8 +187,10 @@ class _DecodedFacts:
     framework_nodes: int
     framework_root: FrameworkNode
     item_nodes: int
+    learning_component_nodes: int
     multi_parent_targets: int
     relationships: int
+    supports_relationships: int
     text_items: int
     unresolved_relationships: int
 
@@ -182,6 +210,7 @@ class _NodeFacts:
     coded_items: int
     framework_root: FrameworkNode
     item_nodes: int
+    learning_component_nodes: int
     text_items: int
 
 
@@ -213,6 +242,7 @@ class _RelationshipFacts:
 
     multi_parent_targets: int
     relationships: int
+    supports_relationships: int
     unresolved_relationships: int
 
 
@@ -559,7 +589,7 @@ def _create_manifest(
             framework_id=plan.framework_id,
             graph_package_id=plan.graph_package_id,
             graph_type=GraphType.ACADEMIC_STANDARDS,
-            included_graph_types=(GraphType.ACADEMIC_STANDARDS,),
+            included_graph_types=SUPPORTED_INCLUDED_GRAPH_TYPES,
             package_revision=1,
             profile=plan.profile_reference,
             rights=plan.rights,
@@ -617,8 +647,10 @@ def _decode_facts(
         framework_nodes=1,
         framework_root=node_facts.framework_root,
         item_nodes=node_facts.item_nodes,
+        learning_component_nodes=node_facts.learning_component_nodes,
         multi_parent_targets=relationship_facts.multi_parent_targets,
         relationships=relationship_facts.relationships,
+        supports_relationships=relationship_facts.supports_relationships,
         text_items=node_facts.text_items,
         unresolved_relationships=relationship_facts.unresolved_relationships,
     )
@@ -1533,7 +1565,11 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
         framework_id=framework_id,
         version_token=spec.version_token,
     )
-    graph_package_id = build_initial_graph_package_id(snapshot_id)
+    graph_package_id = build_versioned_graph_package_id(
+        graph_type=GraphType.ACADEMIC_STANDARDS,
+        package_revision=1,
+        snapshot_id=snapshot_id,
+    )
     output_root = _resolve_output_root(
         output_root=spec.output_root, project_dir=settings.project_dir
     )
@@ -1546,7 +1582,9 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
         },
         framework_nodes=facts.framework_nodes,
         item_nodes=facts.item_nodes,
+        learning_component_nodes=facts.learning_component_nodes,
         relationships=facts.relationships,
+        supports_relationships=facts.supports_relationships,
     )
     profile_reference = ProfileReference(
         profile_id=profile.profile_id,
@@ -2022,11 +2060,16 @@ def _scan_node_facts(nodes_path: Path) -> _NodeFacts:
     coded_items = 0
     framework_roots: list[FrameworkNode] = []
     item_nodes = 0
+    learning_component_nodes = 0
     text_items = 0
 
     for node in iter_decoded_nodes(source=nodes_path):
         if isinstance(node, FrameworkNode):
             framework_roots.append(node)
+            continue
+
+        if isinstance(node, LearningComponentNode):
+            learning_component_nodes += 1
             continue
 
         if isinstance(node, StandardNode):
@@ -2054,6 +2097,7 @@ def _scan_node_facts(nodes_path: Path) -> _NodeFacts:
         coded_items=coded_items,
         framework_root=framework_roots[0],
         item_nodes=item_nodes,
+        learning_component_nodes=learning_component_nodes,
         text_items=text_items,
     )
 
@@ -2083,10 +2127,14 @@ def _scan_relationship_facts(
 
     parent_sources: dict[str, set[str]] = {}
     relationship_count = 0
+    supports_relationships = 0
     unresolved_relationships = 0
 
     for relationship in iter_decoded_relationships(source=relationships_path):
         relationship_count += 1
+
+        if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
+            supports_relationships += 1
         resolution_status = relationship.resolution_status
 
         if resolution_status is not None:
@@ -2114,6 +2162,7 @@ def _scan_relationship_facts(
     return _RelationshipFacts(
         multi_parent_targets=multi_parent_targets,
         relationships=relationship_count,
+        supports_relationships=supports_relationships,
         unresolved_relationships=unresolved_relationships,
     )
 

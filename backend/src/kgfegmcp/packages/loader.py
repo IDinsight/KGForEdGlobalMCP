@@ -55,7 +55,12 @@ from kgfegmcp.errors import (
     PackageValidationError,
     ProfileValidationError,
 )
-from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
+from kgfegmcp.graph.models import (
+    FrameworkNode,
+    GraphRelationship,
+    LearningComponentNode,
+    StandardNode,
+)
 from kgfegmcp.packages.checksums import (
     calculate_bytes_sha256,
     calculate_snapshot_artifact_set_sha256,
@@ -66,6 +71,7 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_relationships,
 )
 from kgfegmcp.packages.models import (
+    SUPPORTED_INCLUDED_GRAPH_TYPES,
     SUPPORTED_PACKAGE_REVISION,
     ArtifactIntegrityObservation,
     DeclaredArtifactReference,
@@ -171,6 +177,7 @@ class _DecodedDelivery:
 
     framework_root: FrameworkNode
     item_nodes: tuple[StandardNode, ...]
+    learning_component_nodes: tuple[LearningComponentNode, ...]
     relationships: tuple[GraphRelationship, ...]
 
 
@@ -469,6 +476,7 @@ class GraphPackageLoader:
             artifacts=artifact_references,
             framework_root=delivery.framework_root,
             item_nodes=delivery.item_nodes,
+            learning_component_nodes=delivery.learning_component_nodes,
             manifest=manifest,
             manifest_bytes=manifest_bytes,
             manifest_path=candidate.manifest_path,
@@ -1076,6 +1084,9 @@ def _decode_delivery(
         node for node in decoded_nodes if isinstance(node, FrameworkNode)
     )
     item_nodes = tuple(node for node in decoded_nodes if isinstance(node, StandardNode))
+    learning_component_nodes = tuple(
+        node for node in decoded_nodes if isinstance(node, LearningComponentNode)
+    )
 
     if len(framework_roots) != 1:
         findings.append(
@@ -1092,6 +1103,7 @@ def _decode_delivery(
         _DecodedDelivery(
             framework_root=framework_roots[0],
             item_nodes=item_nodes,
+            learning_component_nodes=learning_component_nodes,
             relationships=relationships,
         ),
         findings,
@@ -1319,7 +1331,7 @@ def _manifest_semantic_findings(
             )
         )
 
-    if manifest.included_graph_types != (GraphType.ACADEMIC_STANDARDS,):
+    if manifest.included_graph_types != SUPPORTED_INCLUDED_GRAPH_TYPES:
         findings.append(
             _finding(
                 code="included_graph_types_unsupported",
@@ -1328,7 +1340,7 @@ def _manifest_semantic_findings(
                         graph_type.value for graph_type in manifest.included_graph_types
                     )
                 },
-                message="The package includes graph types unsupported by PR 4 validation.",
+                message="The package includes an unsupported graph-type combination.",
             )
         )
 

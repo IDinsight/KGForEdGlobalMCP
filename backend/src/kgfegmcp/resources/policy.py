@@ -49,6 +49,18 @@ _ARTIFACT_POLICIES: Final[dict[str, ArtifactPolicyDecision]] = {
     "entityProvenance": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
     ),
+    "learningComponentDedupGroups": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.FULL_TEXT, mime_type="application/json"
+    ),
+    "learningComponentProvenance": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
+    ),
+    "learningComponentSummary": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
+    ),
+    "learningComponentsBundle": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
+    ),
     "nodes": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
     ),
@@ -251,8 +263,11 @@ class ResourcePolicy:
         self._require_full_text(rights)
 
         if resource_kind in {
+            ResourceKind.LEARNING_COMPONENT,
+            ResourceKind.LEARNING_COMPONENT_PROVENANCE,
             ResourceKind.RELATIONSHIP,
             ResourceKind.STANDARD,
+            ResourceKind.STANDARD_LEARNING_COMPONENTS,
             ResourceKind.STANDARD_PROVENANCE,
         }:
             self._require_standard(rights)

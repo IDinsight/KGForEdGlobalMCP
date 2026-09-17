@@ -42,9 +42,12 @@ class ResourceKind(StrEnum):
     CATALOG = "catalog"
     FRAMEWORK = "framework"
     INTERPRETATION_PROFILE = "interpretation_profile"
+    LEARNING_COMPONENT = "learning_component"
+    LEARNING_COMPONENT_PROVENANCE = "learning_component_provenance"
     MANIFEST = "manifest"
     RELATIONSHIP = "relationship"
     STANDARD = "standard"
+    STANDARD_LEARNING_COMPONENTS = "standard_learning_components"
     STANDARD_PROVENANCE = "standard_provenance"
     UNRESOLVED = "unresolved"
     VALIDATION = "validation"
@@ -83,6 +86,13 @@ class ResourceMetadata(FrozenSchema):
     resource_kind: ResourceKind
     snapshot_id: SnapshotId | None = None
     source_artifacts: tuple[ResourceSourceEvidence, ...] = ()
+
+
+class LearningComponentProvenanceResult(FrozenSchema):
+    """Return one learning component's exact detailed provenance entry."""
+
+    node_id: NodeId
+    provenance: dict[str, object]
 
 
 class StandardProvenanceResult(FrozenSchema):

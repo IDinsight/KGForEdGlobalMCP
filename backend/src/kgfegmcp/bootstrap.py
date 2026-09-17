@@ -38,6 +38,7 @@ from kgfegmcp.resources.service import ResourceService
 from kgfegmcp.search.service import SearchService
 from kgfegmcp.services.comparison import ComparisonService
 from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.services.learning_components import LearningComponentService
 from kgfegmcp.services.progression import ProgressionEvidenceService
 from kgfegmcp.services.standards import StandardsService
 
@@ -284,6 +285,11 @@ def bootstrap_application() -> AppState:
         resource_repository = ResourceRepository(policy=resource_policy)
         resource_service = ResourceService(
             catalog_service=catalog_service,
+            learning_component_service=LearningComponentService(
+                catalog_service=catalog_service,
+                framework_service=framework_service,
+                search_service=search_service,
+            ),
             policy=resource_policy,
             repository=resource_repository,
             standards_service=standards_service,

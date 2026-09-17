@@ -1,0 +1,118 @@
+{
+  "artifacts": {
+    "academicStandardsBundle": "detailed/as_kg_bundle.json",
+    "additionalArtifacts": {},
+    "entityProvenance": "detailed/as_entity_provenance.json",
+    "learningComponentDedupGroups": "detailed/lc_dedup_groups.json",
+    "learningComponentProvenance": "detailed/lc_entity_provenance.json",
+    "learningComponentSummary": "detailed/lc_generation_summary.json",
+    "learningComponentsBundle": "detailed/as_lc_kg_bundle.json",
+    "nodes": "delivery/as_lc_nodes_ghana_math.jsonl",
+    "relationships": "delivery/as_lc_relationships_ghana_math.jsonl",
+    "relationshipsHasChild": "detailed/as_relationships_has_child.jsonl",
+    "standardsFramework": "detailed/as_standards_framework.json",
+    "standardsFrameworkItems": "detailed/as_standards_framework_items.jsonl",
+    "unresolvedItems": "detailed/as_unresolved_items.json",
+    "validationReport": "detailed/as_lc_validation_report.json"
+  },
+  "capabilities": {
+    "codeSearch": "partial",
+    "hasDetailedProvenance": true,
+    "hasOfficialActivities": false,
+    "hasOfficialAssessmentGuidance": false,
+    "hasUnresolvedRelationships": true,
+    "multiParent": false,
+    "textSearch": true
+  },
+  "checksums": {
+    "delivery/as_lc_nodes_ghana_math.jsonl": "sha256:24e662c76cca3d2a209615e4e8961f5b008a6857c2d2c1829bd59f1394a396ac",
+    "delivery/as_lc_relationships_ghana_math.jsonl": "sha256:28a904a0c1a496ad9d4065a5719aa7324d9c3e8b0b8e70c4c97ff8891ac5af1b",
+    "detailed/as_entity_provenance.json": "sha256:9ffd4a1495b20d03f2176a9f225b5578c4e37c58e48d1bd01eae9628ece87a37",
+    "detailed/as_kg_bundle.json": "sha256:511c7e2f5435637b90aed96990e31d5c1a1680f2a02ec990490ff33e61600e05",
+    "detailed/as_lc_kg_bundle.json": "sha256:2a77c429f60f7bd84cb89ef270fa253950e2e34e7c17c31e12ac809f1936ab80",
+    "detailed/as_lc_validation_report.json": "sha256:2da754fafdf7386cf3e78eb43897d6e416fb20eb4c6beed9380b1d141f2f3fef",
+    "detailed/as_relationships_has_child.jsonl": "sha256:4e52e4911f23e5c3d6e0e2791dff0f99d1328a802638cc555e36df0beb6d4da8",
+    "detailed/as_standards_framework.json": "sha256:134a03f0f67bb8ff5cdd6a99d76b4994d072e1cd4bb72e6c8e66b9881c42f3a0",
+    "detailed/as_standards_framework_items.jsonl": "sha256:1538a7a1c176da0a9bfe150e523eb25ae468beca011e23d3b528a8687ecc8699",
+    "detailed/as_unresolved_items.json": "sha256:52f1533aab50cb2f2f47f81e01442d30fe875abf45e9c33a5505433bc3c3d40d",
+    "detailed/lc_dedup_groups.json": "sha256:1dfe4389a1ce80a46e1c8439ac1b0cb83c36165cf6051f0d5ae0f2f1cf605cfd",
+    "detailed/lc_entity_provenance.json": "sha256:f1f6eca696b99db9f819a5b167eaa7a05dd5a6dbeb62f1f95c60f16e00718fe1",
+    "detailed/lc_generation_summary.json": "sha256:de37aa1305124567b5fee54bde17c2d95dad23674aaa7e2a8cbffb9a967a8d95"
+  },
+  "counts": {
+    "additionalCounts": {
+      "codedItems": 254,
+      "multiParentTargets": 0,
+      "unresolvedRelationships": 13
+    },
+    "frameworkNodes": 1,
+    "itemNodes": 302,
+    "learningComponentNodes": 230,
+    "relationships": 575,
+    "supportsRelationships": 273
+  },
+  "createdAt": "2026-09-01T21:50:14Z",
+  "deliverySchemaVersion": "1.1",
+  "framework": {
+    "adoptionStatus": "Adopted",
+    "isCurrent": true,
+    "issuingAuthority": "NaCCA, Ministry of Education",
+    "jurisdiction": "Ghana",
+    "jurisdictionType": "country",
+    "languages": [
+      "en"
+    ],
+    "localGradesOrStages": [
+      "BASIC 4",
+      "BASIC 5",
+      "BASIC 6"
+    ],
+    "localSubject": "Mathematics",
+    "name": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
+    "normalizedGrades": [
+      "4",
+      "5",
+      "6"
+    ],
+    "normalizedSubjects": [
+      "Mathematics"
+    ],
+    "provider": "IDinsight",
+    "sourceDocumentSha256": null,
+    "sourcePublicationDate": null,
+    "sourceVersion": "2019",
+    "subjectMappingNote": "Mathematics is mapped directly to the Learning Commons Mathematics subject.",
+    "subjectMappingStatus": "mapped"
+  },
+  "frameworkId": "ghana-nacca-primary-mathematics-basic-4-6",
+  "graphPackageId": "ghana-nacca-primary-mathematics-basic-4-6@2019+7afbd99e7f80--academic-standards--p1",
+  "graphType": "academic_standards",
+  "includedGraphTypes": [
+    "academic_standards",
+    "learning_components"
+  ],
+  "manifestVersion": "1.0",
+  "packageRevision": 1,
+  "profile": {
+    "profileId": "ghana-nacca-primary-mathematics-basic-4-6",
+    "profileVersion": "1.0",
+    "sha256": "sha256:f2c49c54137442f03e101078def1df62866b60fa6a1e00983911e48c697f5d9d"
+  },
+  "rights": {
+    "allowBulkResource": false,
+    "allowFullText": true,
+    "allowGeneratedDerivatives": "allowed",
+    "allowStandardResources": true,
+    "attributionStatement": "Source curriculum published by NaCCA, Ministry of Education, Republic of Ghana, September 2019.",
+    "licenseUri": null,
+    "reviewStatus": "provisional_operator_approved",
+    "sourceLicense": "Unknown"
+  },
+  "snapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+7afbd99e7f80",
+  "snapshotRelations": [],
+  "sourceSchemaVersion": "1.0",
+  "validation": {
+    "status": "passed",
+    "validatedAt": "2026-09-01T21:50:15Z"
+  }
+}

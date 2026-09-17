@@ -248,9 +248,18 @@ beneath the protocol boundary.
 | Progression evidence        | Grade-scoped, deduplicated, balanced candidate collection without asserting a progression          |
 | Resources                   | Deterministic and retained artifact access under rights and size policy                            |
 | Prompts                     | Generic workflows plus optional framework-specific guidance overlays                               |
+| Learning components         | Component search, exact component retrieval, and traversal of the `supports` edge in both directions |
 | Capabilities and statistics | Truthful server/package feature reporting and framework statistics                                 |
 
 This split allows service behavior to be tested independently of MCP transport concerns.
+
+Standards and learning components follow one rule across the surface. Node-level
+operations are separate by node kind: a standards tool, resource, result type, or error
+never returns a component, and the learning-component equivalents never return a
+standard. Package-level operations, `list_frameworks`, `get_framework`,
+`get_capabilities`, and `get_framework_statistics`, are shared because the package is
+one thing that contains both, and each reports the two sides as separately labelled
+blocks rather than combined totals.
 
 ## Resources and rights enforcement
 

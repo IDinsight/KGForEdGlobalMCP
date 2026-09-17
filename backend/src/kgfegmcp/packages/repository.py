@@ -41,6 +41,7 @@ from kgfegmcp.domain.enums import GraphType, ValidationStatus
 from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
 from kgfegmcp.errors import PackageValidationError
 from kgfegmcp.packages.models import (
+    SUPPORTED_INCLUDED_GRAPH_TYPES,
     SUPPORTED_PACKAGE_REVISION,
     GraphPackageManifest,
     PackageValidation,
@@ -639,7 +640,7 @@ class GraphPackageRepository:
 
         if (
             manifest.graph_type is not GraphType.ACADEMIC_STANDARDS
-            or manifest.included_graph_types != (GraphType.ACADEMIC_STANDARDS,)
+            or manifest.included_graph_types != SUPPORTED_INCLUDED_GRAPH_TYPES
         ):
             raise _package_error(
                 details={

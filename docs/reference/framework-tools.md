@@ -39,10 +39,30 @@ This tool has no caller-supplied arguments.
 Each `packages[]` entry includes the accepted package and source metadata plus:
 
 - `implementedSearchModes`;
-- package-local search index metadata;
+- `implementedLearningComponentSearchModes`;
+- package-local search index metadata, including `learningComponentDocumentCount` and
+  `tagVocabularySize`;
 - `availableResourceKinds`;
 - `availableResourceArtifacts`; and
 - `traversalRelationshipType`.
+
+Standards and learning-component modes are reported separately because they are
+governed differently. Learning-component modes carry a `learning_component_` prefix so
+a mode value is never ambiguous between the two surfaces:
+
+```text
+learning_component_text
+learning_component_tag
+learning_component_supported_code_exact
+learning_component_supported_code_prefix
+```
+
+`learning_component_text` follows the package's `textSearch` capability, and the two
+supported-code modes follow the same profile code coverage that governs
+`code_exact` and `code_prefix`, because they match against the codes of the standards a
+component supports. `learning_component_tag` needs neither, so it is always implemented;
+a package whose components carry no tags returns no hits rather than reporting the mode
+unavailable.
 
 !!! warning "Generic schemas do not authorize package-specific modes"
     The `search_standards` schema contains `text`, `code_exact`, and `code_prefix`
@@ -187,14 +207,30 @@ The result contains `package`, `sourceMetadata`, and `statistics`.
 
 `statistics` includes:
 
-- `totalFrameworkNodes`, `totalItemNodes`, `totalNodes`, and `totalRelationships`;
+- `totalFrameworkNodes`, `totalItemNodes`, `totalNodes`, and `totalRelationships`.
+  These count the standards hierarchy only: `totalNodes` is the framework root plus
+  the framework items, and `totalRelationships` excludes `supports` edges. Learning
+  components and their edges are counted in the `learningComponents` block below;
 - local grade, node grade-level, normalized grade, statement-type, normalized
-  statement-type, and relationship-type counts;
+  statement-type, and relationship-type counts, all over the standards hierarchy only,
+  so `supports` edges never appear in the relationship-type or resolution counts;
 - `codePresence` counts;
 - `maximumStructuralDepth` and `minimumStructuralDepthCounts`;
 - `multiParent` cardinality statistics;
 - `unresolvedRelationships` counts; and
-- `unreachableNodeCount`.
+- `unreachableNodeCount`, counting nodes with no path to the framework root by any
+  declared relationship; and
+- `learningComponents`, a separate block reporting `totalLearningComponents`,
+  `totalSupportsRelationships`, `multiStandardComponentCount`,
+  `supportedStatementTypes`, `standardsWithoutComponents`, `tagVocabularySize`, the
+  support-confidence range, and the components-per-standard and bridge-span
+  distributions. `supportedStatementTypes` lists the source statement types that
+  `supports` edges land on in this package; `standardsWithoutComponents` and the
+  components-per-standard distribution count only items of those types, so grouping
+  headings and node types the pipeline never decomposed are not reported as gaps.
+
+Standards counts and learning-component counts are never combined. A learning component
+is generated content and is excluded from every standards count.
 
 These values describe graph structure. They do not establish curriculum quality,
 coverage quality, instructional sequence, or difficulty.
