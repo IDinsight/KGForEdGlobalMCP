@@ -1,0 +1,12 @@
+# Allowlist: ignore everything, then admit only what the hosted server reads.
+*
+
+!backend/pyproject.toml
+!backend/uv.lock
+!backend/README.md
+!backend/src
+!config
+!data/graph_packages
+
+**/__pycache__
+**/.DS_Store
