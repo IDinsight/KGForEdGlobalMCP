@@ -75,4 +75,7 @@ jobs:
       # Run Pytest with coverage for the backend.
       - name: Run Pytest with coverage
         run: |
-          uv run pytest -rsPQ -m "not alembic" --cov-report term-missing --cov-config=./pyproject.toml --cov=. tests; code=$?; if [ $code -eq 5 ]; then echo "✅  Pytest collected no tests – treating as pass"; exit 0; else exit $code; fi
+          code=0
+          uv run pytest -rsPQ -m "not alembic" --cov-report term-missing --cov-config=./pyproject.toml --cov=. tests || code=$?
+          if [ "$code" -eq 5 ]; then echo "✅  Pytest collected no tests – treating as pass"; exit 0; fi
+          exit "$code"
