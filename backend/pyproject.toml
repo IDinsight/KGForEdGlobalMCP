@@ -178,5 +178,6 @@ docs = [
 [project.scripts]
 kgfegmcp-build-manifest = "kgfegmcp.cli.build_manifests:cli"
 kgfegmcp-build-mcpb = "kgfegmcp.cli.build_mcpb:cli"
+kgfegmcp-http-smoke = "kgfegmcp.cli.http_smoke:cli"
 kgfegmcp-stdio-smoke = "kgfegmcp.cli.stdio_smoke:cli"
 kgfegmcp-validate-packages = "kgfegmcp.cli.validate_packages:cli"
