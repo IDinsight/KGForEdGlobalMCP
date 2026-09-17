@@ -170,7 +170,12 @@ def _write_error(error: KGFEGMCPError) -> None:
 def validate_one(
     *,
     framework_id: Annotated[
-        str, typer.Option(help="Stable framework identifier.", metavar="FRAMEWORK_ID")
+        str,
+        typer.Option(
+            "--framework-id",
+            help="Stable framework identifier.",
+            metavar="FRAMEWORK_ID",
+        ),
     ],
     invalid_package_policy: Annotated[
         InvalidPackagePolicy | None,
@@ -182,7 +187,12 @@ def validate_one(
         bool, typer.Option(help="Validate without changing package validation status.")
     ] = False,
     snapshot_id: Annotated[
-        str, typer.Option(help="Immutable snapshot identifier.", metavar="SNAPSHOT_ID")
+        str,
+        typer.Option(
+            "--snapshot-id",
+            help="Immutable snapshot identifier.",
+            metavar="SNAPSHOT_ID",
+        ),
     ],
 ) -> None:
     """Validate one selected package and persist only an allowed pending transition.
