@@ -128,7 +128,7 @@ maintainers = [{name = "IDinsight DSEM", email = "dsem@idinsight.org" }]
 name = "kgfegmcp"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
     "colored>=2.3.1",
     "fastmcp==3.4.4",

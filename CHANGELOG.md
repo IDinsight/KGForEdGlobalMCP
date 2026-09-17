@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v0.2.0...v0.3.0) (2026-09-17)
+
+
+### Features
+
+* host the MCP server over Streamable HTTP ([#9](https://github.com/IDinsight/KGForEdGlobalMCP/issues/9)) ([4326649](https://github.com/IDinsight/KGForEdGlobalMCP/commit/4326649bf2e02a5a890c6fc11fd78435c8f35596))
+
 ## [0.2.0](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v0.1.0...v0.2.0) (2026-09-17)
 
 
