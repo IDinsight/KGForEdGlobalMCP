@@ -1,6 +1,6 @@
 # Prompt configurations
 
-Framework-local prompt configurations add optional soft guidance to the server's six
+Framework-local prompt configurations add optional soft guidance to the server's seven
 generic prompt workflows. They provide terminology, context, warnings, pedagogy, and
 presentation guidance without changing tool behavior or executing an LLM.
 
@@ -76,13 +76,14 @@ schemas, or graph records.
 
 ## Prompt-specific overlays
 
-The schema supports optional overlays for all six generic prompt names.
+The schema supports optional overlays for all seven generic prompt names.
 
 | Prompt                            | Supported local guidance sections                            |
 |-----------------------------------|--------------------------------------------------------------|
 | `student_study_support`           | audience, example, explanation, practice                     |
 | `teacher_guide_draft`             | assessment, differentiation, lesson structure, pedagogy      |
 | `student_handbook_section`        | audience, example, explanation, section structure            |
+| `multigrade_lesson_plan`          | classroom management, differentiation, shared core           |
 | `inferred_progression_hypothesis` | counter-evidence, evidence, inference, sequence presentation |
 | `administrator_alignment_review`  | evidence matrix, governance, risk framing, review questions  |
 | `cross_framework_comparison`      | comparison dimensions, synthesis, terminology, uncertainty   |
@@ -113,7 +114,7 @@ context.
 
 ## Prompt configuration is optional; prompt registration is not
 
-The server always registers the six generic prompts. Missing framework-local config
+The server always registers the seven generic prompts. Missing framework-local config
 means there is no local overlay for that profile; it does not remove the generic prompt
 from the MCP surface.
 

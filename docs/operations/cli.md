@@ -63,7 +63,7 @@ in a separate STDIO process. It then:
 
 1. completes the MCP handshake;
 2. lists and requires the exact approved inventory;
-3. verifies 9 tools, 1 fixed resource, 9 resource templates, and 6 prompts;
+3. verifies 13 tools, 1 fixed resource, 12 resource templates, and 7 prompts;
 4. reads one known-good JSON resource from the fixed catalog and every resource-template
    family; and
 5. closes the client and proves the subprocess exits cleanly.
@@ -73,11 +73,11 @@ A successful result is deterministic JSON containing:
 ```json
 {
   "fixedResourceCount": 1,
-  "promptCount": 6,
-  "resourceReadCount": 10,
-  "resourceTemplateCount": 9,
+  "promptCount": 7,
+  "resourceReadCount": 13,
+  "resourceTemplateCount": 12,
   "status": "passed",
-  "toolCount": 9
+  "toolCount": 13
 }
 ```
 

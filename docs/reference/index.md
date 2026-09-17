@@ -63,7 +63,7 @@ include_groupings   -> includeGroupings
 local_grade_labels  -> localGradeLabels
 ```
 
-The eight tools that accept a typed request model expose that model as the `request`
+The ten tools that accept a typed request model expose that model as the `request`
 argument. For example:
 
 ```json
@@ -109,8 +109,9 @@ The fixed resource is:
 kgfegmcp://catalog
 ```
 
-The nine parameterized families cover framework metadata, manifests, validation,
+The twelve parameterized families cover framework metadata, manifests, validation,
 unresolved items, interpretation profiles, manifest artifacts, standards, standard
+provenance, a standard's learning components, learning components, learning-component
 provenance, and relationships.
 
 See [Resources and URI templates](resources.md) for the complete list and rights policy.

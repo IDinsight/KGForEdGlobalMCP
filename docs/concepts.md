@@ -300,8 +300,26 @@ See [Rights and provenance](data/rights-and-provenance.md).
 
 ## Current graph-domain boundary
 
-The domain model reserves identifiers for several graph types, but the accepted runtime
-currently focuses on `academic_standards` packages.
+The domain model reserves identifiers for several graph types. A graph type names a
+content domain, not a separate graph: each accepted package is **one graph** that holds
+two kinds of node. Published standards and model-generated learning components share one
+node set and one relationship set, and `supports` relationships connect each component
+directly to the standards it decomposes.
+
+Package-level results describe that one graph with two different fields:
+
+- `includedGraphTypes` lists every content domain present in the package's graph,
+  currently `academic_standards` and `learning_components`; and
+- `availableGraphTypes` lists the primary graph type of each package in a snapshot,
+  currently `academic_standards` only. It identifies which kinds of package can be
+  addressed, not which kinds of node the graph contains.
+
+Use `includedGraphTypes` and the `learningComponentNodes` count, not
+`availableGraphTypes`, to decide whether a package offers learning components.
+
+Although the two node kinds live in one graph, node-level tools and resources keep them
+separate: a standards operation never returns a component, and a learning-component
+operation never returns a standard.
 
 `get_capabilities` reports the features actually implemented by the loaded runtime. The
 current server explicitly reports the following as unavailable:
@@ -310,7 +328,6 @@ current server explicitly reports the following as unavailable:
 - alignment persistence;
 - official alignments;
 - embeddings;
-- learning-component graphs;
 - learning-progression graphs;
 - MCP sampling;
 - semantic candidate retrieval;

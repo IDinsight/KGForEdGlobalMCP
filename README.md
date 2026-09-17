@@ -42,10 +42,10 @@ remain configuration-driven rather than curriculum-specific.
 
 The server exposes:
 
-- **9 tools**
+- **13 tools**
 - **1 fixed resource**
-- **9 resource templates**
-- **6 prompts**
+- **12 resource templates**
+- **7 prompts**
 
 ### Tools
 
@@ -54,6 +54,10 @@ The server exposes:
 - `search_standards`
 - `get_standard`
 - `get_standard_context`
+- `search_learning_components`
+- `get_learning_component`
+- `get_learning_component_context`
+- `get_learning_components_for_standard`
 - `get_framework_statistics`
 - `get_capabilities`
 - `compare_framework_evidence`
@@ -64,6 +68,7 @@ The server exposes:
 - `student_study_support`
 - `teacher_guide_draft`
 - `student_handbook_section`
+- `multigrade_lesson_plan`
 - `inferred_progression_hypothesis`
 - `administrator_alignment_review`
 - `cross_framework_comparison`
@@ -154,7 +159,7 @@ The smoke command:
 
 1. starts `python -m kgfegmcp.mcpb_server`;
 2. completes an MCP handshake;
-3. verifies the exact 9-tool, 1-resource, 9-template, and 6-prompt inventory; and
+3. verifies the exact 13-tool, 1-resource, 12-template, and 7-prompt inventory; and
 4. confirms that the subprocess exits cleanly.
 
 A successful run returns a JSON result with `"status": "passed"`.

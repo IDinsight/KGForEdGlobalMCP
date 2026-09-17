@@ -22,10 +22,10 @@ The application uses:
 
 The fixed MCP inventory is:
 
-- **9 tools**
+- **13 tools**
 - **1 fixed resource**
-- **9 resource templates**
-- **6 prompts**
+- **12 resource templates**
+- **7 prompts**
 
 Application state is constructed once inside the FastMCP lifespan. The accepted graph
 packages, catalog service, search service, comparison service, progression-evidence
@@ -179,7 +179,7 @@ The command:
 1. launches `python -m kgfegmcp.mcpb_server`;
 2. completes the MCP initialization handshake;
 3. lists tools, prompts, fixed resources, and resource templates;
-4. verifies the exact 9/1/9/6 inventory; and
+4. verifies the exact 13/1/12/7 inventory; and
 5. requires a clean subprocess shutdown.
 
 A successful run prints deterministic JSON containing:
@@ -188,10 +188,10 @@ A successful run prints deterministic JSON containing:
 {
   "bundleRoot": null,
   "fixedResourceCount": 1,
-  "promptCount": 6,
-  "resourceTemplateCount": 9,
+  "promptCount": 7,
+  "resourceTemplateCount": 12,
   "status": "passed",
-  "toolCount": 9
+  "toolCount": 13
 }
 ```
 
@@ -360,6 +360,10 @@ get_framework
 search_standards
 get_standard
 get_standard_context
+search_learning_components
+get_learning_component
+get_learning_component_context
+get_learning_components_for_standard
 get_framework_statistics
 get_capabilities
 compare_framework_evidence
@@ -372,6 +376,7 @@ collect_progression_evidence
 student_study_support
 teacher_guide_draft
 student_handbook_section
+multigrade_lesson_plan
 inferred_progression_hypothesis
 administrator_alignment_review
 cross_framework_comparison
@@ -421,9 +426,9 @@ selection, reports requested scopes without retained evidence, and returns no mo
 The server registers:
 
 - `kgfegmcp://catalog`; and
-- nine `kgfegmcp://` resource templates for framework, manifest, validation, unresolved
-  evidence, interpretation profile, declared artifacts, standards, provenance, and
-  relationships.
+- twelve `kgfegmcp://` resource templates for framework, manifest, validation,
+  unresolved evidence, interpretation profile, declared artifacts, standards, learning
+  components, provenance, and relationships.
 
 ## Development rules
 

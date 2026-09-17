@@ -232,8 +232,8 @@ Because both commands share one set of checks, the STDIO and HTTP transports can
 accepted against different inventories. See
 [Hosted deployment](../operations/deployment.md).
 
-A successful current server reports nine tools, one fixed resource, nine resource
-templates, and six prompts.
+A successful current server reports thirteen tools, one fixed resource, twelve resource
+templates, and seven prompts.
 
 ## Public-surface change checklist
 

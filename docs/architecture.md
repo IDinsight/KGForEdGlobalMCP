@@ -67,9 +67,9 @@ flowchart TB
     end
 
     subgraph MCP[FastMCP boundary]
-        TOOLS[9 tools]
-        RESOURCES[1 resource + 9 templates]
-        MCPPROMPTS[6 prompts]
+        TOOLS[13 tools]
+        RESOURCES[1 resource + 12 templates]
+        MCPPROMPTS[7 prompts]
     end
 
     HOST[MCP client / host model]
@@ -290,7 +290,7 @@ and [Resources and URI templates](reference/resources.md).
 
 ## Prompt architecture
 
-The six MCP prompts are deterministic instruction renderers, not server-side generation
+The seven MCP prompts are deterministic instruction renderers, not server-side generation
 endpoints.
 
 Generic workflow logic is shared across frameworks. Versioned prompt configurations can
@@ -305,6 +305,7 @@ This separation is especially important for workflows such as:
 
 - `teacher_guide_draft`;
 - `student_handbook_section`;
+- `multigrade_lesson_plan`;
 - `inferred_progression_hypothesis`;
 - `administrator_alignment_review`; and
 - `cross_framework_comparison`.

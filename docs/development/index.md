@@ -144,7 +144,7 @@ Update all contracts that intentionally describe the tool inventory:
 - MCP reference and user-guide documentation; and
 - any tests that assert inventory or schemas.
 
-The fixed count will change from the current nine tools, so acceptance expectations and
+The fixed count will change from the current thirteen tools, so acceptance expectations and
 public documentation must change together.
 
 ### When adding or removing a prompt
