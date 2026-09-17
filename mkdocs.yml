@@ -63,6 +63,7 @@ nav:
   - Operations:
       - Environment variables: operations/configuration.md
       - CLI commands: operations/cli.md
+      - Hosted deployment: operations/deployment.md
       - MCPB packaging: operations/mcpb.md
       - Troubleshooting: operations/troubleshooting.md
 

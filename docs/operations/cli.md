@@ -1,6 +1,6 @@
 # CLI commands
 
-The backend installs four operator-facing command-line applications. Run them through
+The backend installs five operator-facing command-line applications. Run them through
 the repository's locked `uv` environment so the executable code and dependency graph
 match the checked-in project metadata.
 
@@ -13,6 +13,7 @@ uv --directory backend run --locked --no-dev <command> [options]
 | Command                      | Purpose                                                                                      | Mutates package state?                                              |
 |------------------------------|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
 | `kgfegmcp-stdio-smoke`       | Start the real server in a separate STDIO subprocess and verify its public surface/resources | No                                                                  |
+| `kgfegmcp-http-smoke`        | Connect to a running Streamable HTTP server and verify its public surface/resources          | No                                                                  |
 | `kgfegmcp-validate-packages` | Validate one package or every pending package                                                | Only when validating a pending package without `--read-only`        |
 | `kgfegmcp-build-manifest`    | Construct or dry-run one deterministic **pending** graph package                             | Yes unless `--dry-run`; existing identical output is left unchanged |
 | `kgfegmcp-build-mcpb`        | Assemble, validate, pack, and independently verify the MCP Bundle                            | Writes staging/output files only; does not mutate graph packages    |
@@ -21,6 +22,7 @@ Inspect the installed interfaces directly:
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke --help
+uv --directory backend run --locked --no-dev kgfegmcp-http-smoke --help
 uv --directory backend run --locked --no-dev kgfegmcp-validate-packages --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
@@ -93,6 +95,42 @@ The stage must contain the runtime files required by the bundle contract, includ
 
 **Exit status:** `0` on success; `1` on startup, handshake, inventory, resource-read, or
 shutdown failure.
+
+## `kgfegmcp-http-smoke`
+
+Use this to verify a server that is already running over Streamable HTTP, such as a local
+`kgfegmcp.http_server` process, a local container, or the hosted deployment:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
+  --url https://<service-domain>/mcp
+```
+
+The command does not start a server. It connects to the endpoint and then runs exactly
+the same checks as `kgfegmcp-stdio-smoke`:
+
+1. completes the MCP handshake;
+2. lists and requires the exact approved inventory;
+3. reads one known-good JSON resource from the fixed catalog and every resource-template
+   family; and
+4. closes the client cleanly.
+
+Both smoke commands share one definition of the approved surface in
+`cli/smoke_checks.py`, so the two transports cannot be held to different inventories.
+
+Options:
+
+| Option           | Required | Meaning                                                   |
+|------------------|----------|-----------------------------------------------------------|
+| `--url ENDPOINT` | Yes      | Full MCP endpoint of the running server, including `/mcp` |
+
+A successful result is the same deterministic JSON summary as the STDIO smoke, with the
+exercised endpoint reported as `url` in place of `bundleRoot`.
+
+**Exit status:** `0` on success; `1` on connection, handshake, inventory, or
+resource-read failure.
+
+See [Hosted deployment](deployment.md) for the container and hosting workflow.
 
 ## `kgfegmcp-validate-packages`
 
@@ -299,4 +337,4 @@ The exact archive name follows the version in `packaging/mcpb/manifest.json`.
 
 ---
 
-**Next:** [MCPB packaging](mcpb.md)
+**Next:** [Hosted deployment](deployment.md)

@@ -1,14 +1,20 @@
 # Connect an MCP client
 
-**KGForEdGlobalMCP** is exposed locally over STDIO. An MCP host starts the server as a
-child process, communicates with it over the MCP protocol, and uses the returned tools,
-resources, and prompts as context for client-side reasoning.
+**KGForEdGlobalMCP** can be reached in two ways. Locally, an MCP host starts the server
+as a child process over STDIO. When the server is hosted, an MCP client connects to its
+Streamable HTTP endpoint by URL. In both cases the client communicates over the MCP
+protocol and uses the returned tools, resources, and prompts as context for client-side
+reasoning. The MCP surface is identical across the two transports.
 
-Claude Desktop is the default local-development integration. Other MCP hosts that 
-support custom STDIO servers can use the same server launch contract, but their 
+Claude Desktop is the default local-development integration. Other MCP hosts that
+support custom STDIO servers can use the same server launch contract, but their
 configuration files and UI steps are client-specific.
 
-## Connection model
+If someone has given you a hosted URL, skip to
+[Connect to a hosted server](#connect-to-a-hosted-server); no local installation is
+required.
+
+## Local connection model
 
 ```mermaid
 %%{init: {"themeVariables": {"fontSize": "18px"}}}%%
@@ -163,6 +169,53 @@ safe way to make runtime input locations independent of the host's working direc
     Use `python -m kgfegmcp.mcpb_server` intact Launching `src/kgfegmcp/mcpb_server.py` 
     directly can cause Python package-name shadowing and break imports from the 
     external MCP SDK.
+
+## Connect to a hosted server
+
+A hosted deployment exposes the server at a Streamable HTTP endpoint:
+
+```text
+https://<service-domain>/mcp
+```
+
+Nothing is installed or started on your machine. The endpoint is unauthenticated, so the
+URL is the only value a client needs.
+
+### Claude custom connector
+
+In Claude, open the connector settings, add a custom connector, give it a name such as
+**curriculum-knowledge-graph**, and enter the endpoint URL, including `/mcp`. Leave the
+authentication fields empty. On Team and Enterprise plans an organization owner adds the
+connector first; members then enable it for themselves.
+
+Enable the connector in a new conversation and use the same first connection check as
+the local path:
+
+```text
+Use the curriculum-knowledge-graph connector to list all available frameworks.
+```
+
+### Claude Code
+
+```bash
+claude mcp add --transport http curriculum-knowledge-graph https://<service-domain>/mcp
+```
+
+### Other MCP clients
+
+Any client that supports the Streamable HTTP transport can connect with the same URL.
+
+### Verify a hosted endpoint
+
+From a repository checkout, run the HTTP smoke command against the endpoint:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
+  --url https://<service-domain>/mcp
+```
+
+See [Hosted deployment](../operations/deployment.md) for how the hosted service is built
+and operated.
 
 ## What the host is responsible for
 

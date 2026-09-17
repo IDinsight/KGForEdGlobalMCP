@@ -3,7 +3,7 @@
 This package contains the curriculum-agnostic FastMCP application and its ordinary
 domain services. It loads immutable graph packages, builds the accepted catalog and
 search indexes, exposes deterministic tools, resources, and prompts, and supports local
-STDIO execution and MCP Bundle packaging.
+STDIO execution, hosted Streamable HTTP execution, and MCP Bundle packaging.
 
 The backend remains read-only at runtime. It does not call a server-side LLM, mutate
 accepted curriculum packages, or embed curriculum-specific behavior in generic Python
@@ -18,7 +18,7 @@ The application uses:
 - the external MCP Python SDK;
 - Pydantic 2;
 - `uv` for locked dependency and interpreter management; and
-- STDIO as the initial local transport.
+- STDIO as the local transport and stateless Streamable HTTP as the hosted transport.
 
 The fixed MCP inventory is:
 
@@ -45,6 +45,7 @@ backend/
 │       ├── app.py
 │       ├── bootstrap.py
 │       ├── config.py
+│       ├── http_server.py
 │       ├── mcpb_server.py
 │       ├── catalog/
 │       ├── cli/
@@ -140,6 +141,16 @@ uv --directory backend run --locked --no-dev   python -m kgfegmcp.mcpb_server
 This is not an interactive shell. The process waits for an MCP client and reserves
 stdout for JSON-RPC protocol traffic.
 
+The hosted entry point runs the same `create_mcp` server over stateless Streamable HTTP:
+
+```bash
+PORT=8000 uv --directory backend run --locked --no-dev   python -m kgfegmcp.http_server
+```
+
+It serves MCP at `/mcp`, binds the port supplied through `PORT` (default `8000`), and
+exposes `GET /health`. The root `Dockerfile` starts this entry point. See
+`docs/operations/deployment.md`.
+
 Always launch it as a module:
 
 ```text
@@ -203,6 +214,7 @@ kgfegmcp-build-manifest
 kgfegmcp-validate-packages
 kgfegmcp-build-mcpb
 kgfegmcp-stdio-smoke
+kgfegmcp-http-smoke
 ```
 
 Show their command surfaces:
@@ -215,6 +227,8 @@ uv --directory backend run --locked --no-dev   kgfegmcp-validate-packages --help
 uv --directory backend run --locked --no-dev   kgfegmcp-build-mcpb --help
 
 uv --directory backend run --locked --no-dev   kgfegmcp-stdio-smoke --help
+
+uv --directory backend run --locked --no-dev   kgfegmcp-http-smoke --help
 ```
 
 Every new user-facing CLI module must have a matching `[project.scripts]` entry in

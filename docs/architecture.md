@@ -119,6 +119,12 @@ automatic discovery from accidentally expanding the public MCP surface.
 The server can therefore treat the published tool, resource, and prompt inventory as an
 intentional contract rather than an incidental consequence of module imports.
 
+Two thin process entry points run that one assembled server. `kgfegmcp.mcpb_server`
+serves it over STDIO for local MCP hosts and the MCPB bundle, and `kgfegmcp.http_server`
+serves it over stateless Streamable HTTP for hosted deployments. Neither contains
+registration or domain logic, so the transport never changes the public surface. See
+[Hosted deployment](operations/deployment.md).
+
 ## Lifespan and application bootstrap
 
 Application data is not loaded during package import. Instead, runtime construction 

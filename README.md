@@ -104,6 +104,9 @@ Install:
 - Python 3.13 through `uv`
 - Claude Desktop for local MCP use
 
+None of this is needed to use a hosted deployment; see
+[Connect to a hosted server](#connect-to-a-hosted-server).
+
 The project requires Python `>=3.13,<3.14`.
 
 Install the required Python version:
@@ -240,6 +243,37 @@ A simple first request is:
 Use the curriculum-knowledge-graph connector to list all available frameworks.
 ```
 
+## Connect to a hosted server
+
+The same server can run as a hosted Streamable HTTP service. Clients then connect to a
+URL instead of starting a local process, and nothing is installed on the user's machine:
+
+```text
+https://<service-domain>/mcp
+```
+
+In Claude, add a custom connector in the connector settings and enter that URL, leaving
+authentication empty. In Claude Code:
+
+```bash
+claude mcp add --transport http curriculum-knowledge-graph https://<service-domain>/mcp
+```
+
+The hosted service is built from the root `Dockerfile`, which bakes `config/` and
+`data/graph_packages/` into the image and starts `python -m kgfegmcp.http_server`. The
+MCP surface is identical to the local STDIO server. Build and verify it locally with:
+
+```bash
+docker build -t kgfegmcp-http:local .
+docker run --rm --read-only -e PORT=8000 -p 8000:8000 kgfegmcp-http:local
+
+uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
+  --url http://localhost:8000/mcp
+```
+
+See `docs/operations/deployment.md` for the hosting workflow, rollback, and the access
+and rights posture of a public endpoint.
+
 ## Optional MCPB package
 
 The repository can build a deterministic MCP Bundle containing the locked Python
@@ -296,6 +330,7 @@ Show command help:
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke --help
+uv --directory backend run --locked --no-dev kgfegmcp-http-smoke --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
 uv --directory backend run --locked --no-dev kgfegmcp-validate-packages --help

@@ -44,6 +44,7 @@ backend/
         ├── app.py
         ├── bootstrap.py
         ├── config.py
+        ├── http_server.py
         ├── mcpb_server.py
         ├── catalog/
         ├── cli/
@@ -109,6 +110,8 @@ and runtime objects.
 | FastMCP construction | `app.py`         | changing server-wide FastMCP policy or lifespan wiring                         |
 | Dependency assembly  | `bootstrap.py`   | constructing or wiring an application service                                  |
 | Environment settings | `config.py`      | adding an application-owned runtime setting                                    |
+| STDIO entry point    | `mcpb_server.py` | changing how the local STDIO transport launches the shared server              |
+| HTTP entry point     | `http_server.py` | changing how the hosted HTTP transport launches the shared server              |
 | Domain vocabulary    | `domain/`        | adding framework-independent identifiers, enums, or domain models              |
 | Graph behavior       | `graph/`         | changing package-local storage or bounded traversal                            |
 | Search               | `search/`        | changing lexical/code indexing, normalization, ranking, or cursors             |
@@ -137,7 +140,7 @@ Update all contracts that intentionally describe the tool inventory:
 - the adapter and its registration function under `mcp/tools/`;
 - `mcp/register.py` if a new registration group is introduced;
 - `_TOOL_NAMES` in `services/capabilities.py`;
-- `_EXPECTED_TOOL_NAMES` in `cli/stdio_smoke.py`;
+- `_EXPECTED_TOOL_NAMES` in `cli/smoke_checks.py`;
 - MCP reference and user-guide documentation; and
 - any tests that assert inventory or schemas.
 
@@ -152,7 +155,7 @@ Keep these synchronized:
 - generic prompt definitions/policy;
 - the thin adapter under `mcp/prompts/`;
 - explicit registration in `mcp/prompts/register.py`;
-- `_EXPECTED_PROMPT_NAMES` in `cli/stdio_smoke.py`;
+- `_EXPECTED_PROMPT_NAMES` in `cli/smoke_checks.py`;
 - prompt configuration support, when an overlay is applicable; and
 - prompt documentation/tests.
 
@@ -163,7 +166,7 @@ Keep these synchronized:
 - URI constants and `RESOURCE_URI_TEMPLATES` in `resources/uri.py`;
 - resource-service/repository behavior and rights policy;
 - the thin adapter and explicit registration under `mcp/resources/`;
-- STDIO smoke resource coverage; and
+- smoke resource coverage in `cli/smoke_checks.py`; and
 - resource documentation/tests.
 
 ## Adding a new CLI

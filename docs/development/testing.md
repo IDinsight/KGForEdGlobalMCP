@@ -4,7 +4,7 @@ Testing should prove the layer being changed while preserving the server's trust
 determinism, and protocol boundaries.
 
 The repository combines ordinary Python tests/static analysis with package validation,
-real STDIO MCP smoke testing, and optional packaged-stage acceptance.
+real STDIO MCP smoke testing, and optional packaged-stage and hosted-image acceptance.
 
 ## Acceptance layers
 
@@ -16,9 +16,11 @@ flowchart TB
     PACKAGE --> STDIO[Real STDIO MCP smoke]
     STDIO --> DOCS[Strict documentation build]
     DOCS --> DIST{Distribution affected?}
-    DIST -- Yes --> MCPB[MCPB build + stage smoke]
+    DIST -- MCPB --> MCPB[MCPB build + stage smoke]
+    DIST -- Hosted image --> IMAGE[Image build + HTTP smoke]
     DIST -- No --> PASS[Acceptance complete]
     MCPB --> PASS
+    IMAGE --> PASS
 ```
 
 Not every code edit requires every layer during iteration, but release acceptance should
@@ -211,9 +213,24 @@ The smoke process:
 4. reads the fixed catalog plus representative resources for every template family; and
 5. proves clean client/server shutdown.
 
-The smoke command intentionally has its own expected tool/prompt inventory. If the
-public surface changes, update those expectations together with capability reporting and
-reference documentation.
+The smoke checks intentionally keep their own expected tool/prompt inventory in
+`cli/smoke_checks.py`. If the public surface changes, update those expectations together
+with capability reporting and reference documentation.
+
+### HTTP smoke for a running server
+
+`kgfegmcp-http-smoke` runs the same `verify_server_surface` checks against a server that
+is already running over Streamable HTTP, such as a local container or the hosted
+deployment:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
+  --url http://localhost:8000/mcp
+```
+
+Because both commands share one set of checks, the STDIO and HTTP transports cannot be
+accepted against different inventories. See
+[Hosted deployment](../operations/deployment.md).
 
 A successful current server reports nine tools, one fixed resource, nine resource
 templates, and six prompts.
@@ -224,7 +241,7 @@ For a tool/prompt/resource change, verify all of the following:
 
 - component implementation and explicit registration;
 - capability inventory;
-- STDIO smoke expected inventory;
+- smoke expected inventory in `cli/smoke_checks.py`;
 - schemas/aliases and error mapping;
 - user guide and MCP reference documentation;
 - representative protocol test; and
@@ -281,6 +298,7 @@ See [MCPB packaging](../operations/mcpb.md) for archive-level verification.
 | Profile change                     | Required where available              | Required                      | Required    | Required        | Before distribution |
 | New graph package                  | Package-focused tests where available | Required                      | Required    | Required        | Before distribution |
 | MCPB/launch change                 | Required where applicable             | —                             | Required    | If docs changed | Required            |
+| Hosted image/HTTP entry point      | Required where applicable             | —                             | Required    | If docs changed | HTTP smoke on image |
 
 `—` means normally not required by that change alone, not forbidden.
 
