@@ -67,6 +67,10 @@ it constructs.
 | `KGFEGMCP_INVALID_PACKAGE_POLICY`    | `fail`                                      | Controls handling of invalid pending packages: `fail` or `quarantine`     |
 | `KGFEGMCP_MAX_RESOURCE_BYTES`        | `8388608` (8 MiB)                           | Maximum bytes returned by an exposed resource                             |
 | `KGFEGMCP_MAX_RESOURCE_SOURCE_BYTES` | `33554432` (32 MiB)                         | Maximum bytes the resource layer may read from a retained source artifact |
+| `PORT`                               | `8000`                                      | Port bound by the hosted HTTP entry point; unused by the STDIO server     |
+
+`PORT` must be an integer from `1` through `65535`. Container hosts normally inject it;
+only `python -m kgfegmcp.http_server` reads it.
 
 `KGFEGMCP_MAX_RESOURCE_SOURCE_BYTES` must be greater than or equal to
 `KGFEGMCP_MAX_RESOURCE_BYTES`. Both values must be positive integers.
@@ -158,7 +162,7 @@ or a command actually reads the corresponding property.
     FastMCP logging. Use the MCP host's stderr/log capture when diagnosing startup rather
     than assuming `KGFEGMCP_LOG_LEVEL=DEBUG` will reconfigure the process.
 
-## Repository-local versus MCPB paths
+## Repository-local, MCPB, and container paths
 
 Repository execution normally resolves paths beneath the checkout:
 
@@ -184,6 +188,21 @@ The MCPB manifest sets `PATHS_PROJECT_DIR` and all active content roots to
 `${__dirname}`-relative paths so the packaged runtime does not depend on the original
 checkout.
 
+The container image built from the repository `Dockerfile` keeps the repository shape
+under `/app` and bakes in only the runtime inputs:
+
+```text
+/app/
+├── backend/
+├── config/
+└── data/
+    └── graph_packages/
+```
+
+The image sets `PATHS_PROJECT_DIR=/app` and `KGFEGMCP_ENV=prod`, so every active content
+root resolves from its default beneath `/app`. See
+[Hosted deployment](deployment.md).
+
 ## Validate a configuration
 
 The most useful end-to-end configuration check is:
@@ -195,6 +214,9 @@ uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 It starts a fresh subprocess with explicit repository paths, completes an MCP handshake,
 checks the exact public inventory, and reads a representative resource from every
 approved resource family.
+
+For a server that is already running over Streamable HTTP, run the same checks against
+its endpoint with `kgfegmcp-http-smoke --url <endpoint>`.
 
 For graph-package policy alone, use:
 

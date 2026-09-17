@@ -88,10 +88,10 @@ uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 The smoke command starts the real module entry point in a separate process, completes an
 MCP handshake, and checks the fixed public inventory:
 
-- 9 tools;
+- 13 tools;
 - 1 fixed resource;
-- 9 resource templates; and
-- 6 prompts.
+- 12 resource templates; and
+- 7 prompts.
 
 A successful run returns JSON containing:
 
@@ -102,14 +102,17 @@ A successful run returns JSON containing:
 ```
 
 !!! warning "Do not start the server by filesystem path"
-    The supported entry point is `python -m kgfegmcp.mcpb_server`. Directly executing
-    `src/kgfegmcp/mcpb_server.py` can cause the internal `kgfegmcp.mcp` package to shadow
-    the external MCP SDK package named `mcp`.
+    The supported local entry point is `python -m kgfegmcp.mcpb_server`. Directly
+    executing `src/kgfegmcp/mcpb_server.py` can cause the internal `kgfegmcp.mcp` package
+    to shadow the external MCP SDK package named `mcp`.
 
 ## 5. Connect an MCP host
 
 The default local integration is Claude Desktop on macOS. It launches the same locked
 backend through an absolute `uv` path and the module-based server entry point.
+
+If you were given the URL of a hosted deployment instead, no local installation is
+needed; see [Connect to a hosted server](mcp-clients.md#connect-to-a-hosted-server).
 
 Follow [Connect an MCP client](mcp-clients.md) for the complete configuration, JSON
 validation, restart, and connector-enablement steps.

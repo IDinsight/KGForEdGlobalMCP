@@ -13,6 +13,7 @@ The main runtime paths are:
 
 ```text
 KGForEdGlobalMCP/
+├── Dockerfile
 ├── backend/
 │   ├── pyproject.toml
 │   ├── uv.lock
@@ -181,10 +182,11 @@ No module named 'mcp.types'
 
 ## Useful local commands
 
-Inspect the four installed project CLIs:
+Inspect the five installed project CLIs:
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke --help
+uv --directory backend run --locked --no-dev kgfegmcp-http-smoke --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
 uv --directory backend run --locked --no-dev kgfegmcp-validate-packages --help

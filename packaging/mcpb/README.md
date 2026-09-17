@@ -160,10 +160,10 @@ uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 This starts the real server in a separate STDIO subprocess, completes the MCP handshake,
 and verifies the exact public inventory:
 
-- 9 tools;
+- 13 tools;
 - 1 fixed resource;
-- 9 resource templates; and
-- 6 prompts.
+- 12 resource templates; and
+- 7 prompts.
 
 A successful command returns a JSON result with `"status": "passed"`. The inventory
 includes the deterministic `collect_progression_evidence` tool used by the

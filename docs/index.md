@@ -58,12 +58,12 @@ progression analysis.
 
 The current MCP surface contains the following:
 
-| Surface            | Count | Purpose                                                                                                                         |
-|--------------------|-------|---------------------------------------------------------------------------------------------------------------------------------|
-| Tools              | 9     | Framework discovery, standards retrieval, graph context, statistics, capability reporting, comparison, and progression evidence |
-| Fixed resources    | 1     | Server catalog                                                                                                                  |
-| Resource templates | 9     | Framework, package, validation, profile, standards, provenance, relationship, unresolved, and declared-artifact access          |
-| Prompts            | 6     | Role-oriented and cross-framework client-side workflows                                                                         |
+| Surface            | Count | Purpose                                                                                                                           |
+|--------------------|-------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Tools              | 13    | Framework discovery, standards and learning-component retrieval, graph context, statistics, capabilities, comparison, progression |
+| Fixed resources    | 1     | Server catalog                                                                                                                    |
+| Resource templates | 12    | Framework, package, validation, profile, standards, learning components, provenance, relationship, unresolved, and artifacts      |
+| Prompts            | 7     | Role-oriented and cross-framework client-side workflows                                                                           |
 
 ### Tools
 
@@ -72,6 +72,10 @@ The current MCP surface contains the following:
 - `search_standards`
 - `get_standard`
 - `get_standard_context`
+- `search_learning_components`
+- `get_learning_component`
+- `get_learning_component_context`
+- `get_learning_components_for_standard`
 - `get_framework_statistics`
 - `get_capabilities`
 - `compare_framework_evidence`
@@ -82,6 +86,7 @@ The current MCP surface contains the following:
 - `student_study_support`
 - `teacher_guide_draft`
 - `student_handbook_section`
+- `multigrade_lesson_plan`
 - `inferred_progression_hypothesis`
 - `administrator_alignment_review`
 - `cross_framework_comparison`
@@ -167,7 +172,7 @@ silently infer educational claims.
 
 The current server also does not provide persisted alignments, accepted mapping
 overlays, embeddings, semantic retrieval, snapshot diffs, server-side LLM calls, or
-first-class learning-component or learning-progression graphs.
+first-class learning-progression graphs.
 
 ## Where to start
 

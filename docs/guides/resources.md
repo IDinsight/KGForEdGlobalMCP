@@ -20,7 +20,7 @@ flowchart LR
     E --> F[Return exact or deterministic resource document]
 ```
 
-The server exposes **one fixed resource** and **nine resource templates**.
+The server exposes **one fixed resource** and **twelve resource templates**.
 
 ## Fixed catalog resource
 
@@ -34,17 +34,20 @@ one document rather than a paginated `list_frameworks` tool result.
 
 ## Resource URI templates
 
-| Resource                   | URI                                                                                         |
-|----------------------------|---------------------------------------------------------------------------------------------|
-| Framework family           | `kgfegmcp://framework/{framework_id}`                                                       |
-| Package manifest           | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/manifest`                       |
-| Validation report          | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/validation`                     |
-| Unresolved-items report    | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/unresolved`                     |
-| Interpretation profile     | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/interpretation-profile`         |
-| Manifest-declared artifact | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/artifact/{artifact_name}`       |
-| Standard                   | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}`             |
-| Standard provenance        | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/provenance`  |
-| Relationship               | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/relationship/{relationship_id}` |
+| Resource                      | URI                                                                                                  |
+|-------------------------------|------------------------------------------------------------------------------------------------------|
+| Framework family              | `kgfegmcp://framework/{framework_id}`                                                                |
+| Package manifest              | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/manifest`                                |
+| Validation report             | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/validation`                              |
+| Unresolved-items report       | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/unresolved`                              |
+| Interpretation profile        | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/interpretation-profile`                  |
+| Manifest-declared artifact    | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/artifact/{artifact_name}`                |
+| Standard                      | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}`                      |
+| Standard provenance           | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/provenance`           |
+| Standard learning components  | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/learning-components`  |
+| Learning component            | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/learning-component/{node_id}`            |
+| Learning component provenance | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/learning-component/{node_id}/provenance` |
+| Relationship                  | `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/relationship/{relationship_id}`          |
 
 Identifier values are percent-encoded as individual URI path segments when links are
 constructed by the server.

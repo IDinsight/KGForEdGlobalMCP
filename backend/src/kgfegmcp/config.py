@@ -82,6 +82,7 @@ class BackendSettings(BaseSettings):
     graph_packages_root_override: Path | None = Field(
         default=None, validation_alias="KGFEGMCP_GRAPH_PACKAGES_ROOT"
     )
+    http_port: int = Field(default=8000, ge=1, le=65_535, validation_alias="PORT")
     invalid_package_policy: InvalidPackagePolicy = Field(
         default=InvalidPackagePolicy.FAIL,
         validation_alias="KGFEGMCP_INVALID_PACKAGE_POLICY",

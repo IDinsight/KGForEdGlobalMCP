@@ -1,6 +1,6 @@
 # Use prompt workflows
 
-The server exposes six deterministic MCP prompt workflows. A prompt does not call an
+The server exposes seven deterministic MCP prompt workflows. A prompt does not call an
 LLM, retrieve evidence by itself, or generate the final educational material. It renders
 versioned instructions and runtime context for the connected MCP host, which then calls
 the appropriate tools and produces any final synthesis or draft.
@@ -35,11 +35,12 @@ evidence-status, package-isolation, or generated-content rules.
 | `student_study_support`           | Evidence-grounded study support and practice                                                           |
 | `teacher_guide_draft`             | Evidence-grounded teacher lesson-guide draft                                                           |
 | `student_handbook_section`        | Evidence-grounded student-facing handbook section                                                      |
+| `multigrade_lesson_plan`          | One lesson for a classroom holding several grades, built from shared learning components               |
 | `inferred_progression_hypothesis` | Review a bounded multi-grade candidate set and formulate an explicitly inferred progression hypothesis |
 | `administrator_alignment_review`  | Structured review between one source and one target framework                                          |
 | `cross_framework_comparison`      | Exploratory evidence-grounded comparison across two to eight frameworks                                |
 
-All six prompts are registered as generated-content workflows. The current prompt
+All seven prompts are registered as generated-content workflows. The current prompt
 version is `1.1.0`.
 
 ## Rights gate
@@ -162,6 +163,50 @@ output_language: en
 target_word_count: 500
 topic_or_standard: B6.1.4.1
 ```
+
+## `multigrade_lesson_plan`
+
+Use this workflow to plan one lesson for a classroom that holds several grades at once.
+It separates a shared teach-together core from grade-specific work by reading which
+learning components the standards of each grade decompose to. A component that supports
+standards in more than one of the requested grades is a candidate for the shared core; a
+component that supports only one grade becomes that grade's differentiated work.
+
+!!! warning "Experimental, and it requires learning components"
+    This workflow has no source-only fallback. A package that contains no learning
+    components is refused with `capability_unavailable` rather than degraded into
+    parallel single-grade plans under a multi-grade heading.
+
+| Parameter                 | Required | Default / bounds                                          |
+|---------------------------|----------|-----------------------------------------------------------|
+| `framework_id`            | yes      | Exact framework ID                                        |
+| `grades_in_room`          | yes      | JSON array of 2 through 8 distinct grades                 |
+| `topic_or_standard`       | yes      | Interpreted by `focus_mode`                               |
+| `focus_mode`              | no       | `topic`                                                   |
+| `lesson_duration_minutes` | no       | `45`, from 10 through 240                                 |
+| `learner_context`         | no       | Anonymous learner context; no sensitive education records |
+| `local_context`           | no       | Untrusted local nuance                                    |
+| `output_language`         | no       | Optional language tag                                     |
+| `snapshot_id`             | no       | Unique-current routing when omitted                       |
+
+Example:
+
+```text
+framework_id: ghana-nacca-primary-mathematics-basic-4-6
+grades_in_room: ["BASIC 4", "BASIC 5", "BASIC 6"]
+lesson_duration_minutes: 40
+output_language: en
+topic_or_standard: fractions
+```
+
+The rendered workflow directs the host to resolve each grade's standards, call
+`get_learning_components_for_standard` for each one, and compare the supported standards
+across grades.
+
+Learning components are model-generated decompositions of published standards, not
+source-asserted curriculum. A shared core therefore rests on a model's judgement that two
+standards decompose to the same component, **not** on a curriculum-authored equivalence
+between those grades, and the generated plan must say so.
 
 ## `inferred_progression_hypothesis`
 
