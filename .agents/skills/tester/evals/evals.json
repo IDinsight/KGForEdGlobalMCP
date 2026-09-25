@@ -1,0 +1,353 @@
+{
+  "skill_name": "tester",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. AC-001 requires filtered CSV export; AC-002 denies non-admin export without creating a file. Design specifies quoting and server authorization before writes. Developer marks all steps DONE and the plan COMPLETE. Implementation is committed; git diff is empty. Existing tests cover quoting, not authorization. `pnpm --filter export test` is established and execution permitted.",
+      "expected_output": "VERIFY independently covers both acceptance conditions and technical criteria using existing tests, targeted additions, actual execution and a current-cycle report before implementation-review handoff.",
+      "files": [],
+      "assertions": [
+        "A clean diff does not narrow the assignment to nothing; persisted intent and committed source define the active change.",
+        "Developer completion claims and self-checks are checked independently rather than copied as formal evidence.",
+        "The authorization test checks the enforcement boundary and forbidden file effects; no quota-filling duplication is added.",
+        "The report has matching VERIFICATION provenance, scenario allocations, and actual command/results mapped to criteria.",
+        "No routine run-tests approval is requested; only after the gate passes does state move to REVIEWING_IMPLEMENTATION with review kind IMPLEMENTATION.",
+        "A meaningful commit suggestion precedes the active-client next-role invocation.",
+        "Any handoff entering Reviewer names the kind, requests a fresh chat separate from artifact-authoring conversations, gives advisory model guidance without a model confirmation gate, and persists sufficient evidence, limits, dependencies and recovery context first."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. An interrupted initial VERIFY report is IN_PROGRESS. Source, contract, tests, fixtures and environment match its recorded identities. It allocates three scenarios to src/export.ts, records two actual passing results and one written but unrun scenario. Continue.",
+      "expected_output": "Resume VERIFY with existing allocations and valid results, and execute the remaining scenario.",
+      "files": [],
+      "assertions": [
+        "A report or fresh session alone does not select REVERIFY.",
+        "Prior Tester results are reused only after checking applicability.",
+        "Unrun coverage is not marked passing and the invocation does not grant another five scenarios."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. An interrupted VERIFY report records a passing filtered-export scenario and an unrun failure-path scenario. Since interruption src/export.ts and fixtures changed, while scope/design did not. Continue.",
+      "expected_output": "REVERIFY reconciles the incomplete assessment and replaces affected evidence before finishing.",
+      "files": [],
+      "assertions": [
+        "REVERIFY does not require a previously completed gate.",
+        "The report records changed assessed inputs and supersedes unsupported old results.",
+        "Existing scenario allocations persist across the mode change.",
+        "Unchanged intent does not make changed-source evidence current."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. A completed report was invalidated by a Developer fix to shared CSV escaping used by export and bulk-import. Only one export test previously failed, but the import suite exercises the same helper. Developer asks to rerun only the failing test. Four scenarios are already allocated to src/csv.ts.",
+      "expected_output": "REVERIFY reruns relevant export and previously passing import coverage according to shared-dependency risk.",
+      "files": [],
+      "assertions": [
+        "The response is not restricted to previously failing files.",
+        "Valid unrelated evidence is preserved, not blindly rewritten.",
+        "Reruns do not consume new allocations.",
+        "Required unrun regression checks remain evidence gaps."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Scope and design require preserving row order. A Tester fixture sorts rows before computing expected output, causing failure against correct behavior. A test-only config points discovery at an obsolete fixture directory; both can be fixed without affecting application configuration.",
+      "expected_output": "Correct the owned fixture and test-only setup, record the VERIFICATION correction, and execute valid assertions.",
+      "files": [],
+      "assertions": [
+        "Test mistakes are established from the contract rather than assuming every failure is an application bug.",
+        "Test-only configuration may be narrowly corrected.",
+        "Assertions are not weakened and application behavior is not modified for green results.",
+        "A same-state failure creates no recovery frame."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. A valid established integration request returns protected CSV to a non-admin, contrary to AC-002 and the server-side authorization contract. Tester is already a downstream rerun under an outer frame Owner=SCOPING, ResumeAt=REVIEWING_FINAL, RerunThrough=TESTING.",
+      "expected_output": "Preserve the reproducer and route a nested IMPLEMENTATION failure to Developer.",
+      "files": [],
+      "assertions": [
+        "Tester does not patch application authorization or change the expected result to allow disclosure.",
+        "The report records the affected AC, actual command/result, reproducer and owner.",
+        "The new frame has Owner DEVELOPING, ResumeAt TESTING and RerunThrough NONE; the outer frame remains intact.",
+        "State is persisted before the Developer invocation."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Scope says AC-001: export is private, while AC-002 allows anyone with the URL to download anonymously. The request does not resolve the contradiction. Developer implemented public access and calls it complete.",
+      "expected_output": "Route SCOPING to Scoper without choosing an access policy in tests.",
+      "files": [],
+      "assertions": [
+        "Developer behavior is not the requirement source.",
+        "Tester does not edit scope text, completion markers, or acceptance IDs.",
+        "Recovery preserves ResumeAt TESTING.",
+        "Conflicting obligations remain unresolved rather than verified by assumption."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Scope requires a bounded export timeout. Architecture says retry but omits deadline propagation and retry bounds, with no established contract resolving those choices. The implementation retries indefinitely.",
+      "expected_output": "Route the missing consequential design to Architect as ARCHITECTURE, preserving any separately evidenced implementation finding.",
+      "files": [],
+      "assertions": [
+        "Tester does not invent timeout values, mutate design, or implement a retry policy.",
+        "The report names the unresolved technical criterion and supporting evidence.",
+        "Canonical recovery governs return to TESTING after correction."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Context claims SQLite, but manifests and the established integration environment use PostgreSQL-specific streaming. This materially affects transaction tests. Context also carries a prior-cycle non-baseline exclusion on which current verification relies.",
+      "expected_output": "Route PROJECT_CONTEXT to Auditor before relying on the invalid baseline.",
+      "files": [],
+      "assertions": [
+        "Tester investigates relevant evidence but does not rewrite CONTEXT.md or conduct a replacement audit.",
+        "Prior-cycle exclusions are not adopted as current facts.",
+        "Planned active-cycle implementation alone would not invalidate baseline context.",
+        "The report distinguishes missing trusted facts from failed application behavior."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. The prior COMPLETE report covers AC-001 and AC-002. Scoper now retired AC-002 and added AC-004 for an operations guide. Architect reconciled coverage with no architectural impact for AC-004. Code/tests are unchanged. Tester is a downstream rerun under Owner=SCOPING, ResumeAt=REVIEWING_FINAL, RerunThrough=TESTING.",
+      "expected_output": "REVERIFY reconciles current IDs, retains valid AC-001 evidence and records AC-004 pending Documenter before completing the recovery boundary.",
+      "files": [],
+      "assertions": [
+        "AC-002 is historical only; Tester does not renumber or replace acceptance identity.",
+        "Unchanged code does not leave the old full acceptance report complete.",
+        "Pending documentation is not marked verified.",
+        "After the normal gate passes, Tester pops the active frame and RESUMEs REVIEWING_FINAL rather than blindly forwarding to implementation review.",
+        "Any handoff entering Reviewer names the kind, requests a fresh chat separate from artifact-authoring conversations, gives advisory model guidance without a model confirmation gate, and persists sufficient evidence, limits, dependencies and recovery context first."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Five scenarios are already allocated to src/export.ts. Required technical criteria still lack distinct null-field and absent-field serialization cases. No existing coverage proves them. A proposed parameterized function contains both rows; no increase is authorized.",
+      "expected_output": "Record both gaps and request a targeted increase of two for src/export.ts before adding the cases.",
+      "files": [],
+      "assertions": [
+        "Two independent parameter rows count as two scenarios, not one function.",
+        "Existing coverage is not deleted and allocations are not reset to evade the limit.",
+        "The report names the unmet criteria and smallest increase; Active Work.BlockedOn persists the question.",
+        "Independent within-budget work may continue, but no over-budget addition or completion is claimed."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. The report and Active Work.BlockedOn request two additional scenarios for null and absent fields beyond five allocated to src/export.ts. The user says: add both for export.ts; keep the normal limit elsewhere. Resume.",
+      "expected_output": "Persist the targeted allowance, clear the matching blocker, implement and execute the two cases.",
+      "files": [],
+      "assertions": [
+        "Authorization applies only to the specified area, not globally.",
+        "Existing allocations and valid coverage remain intact.",
+        "No repeated budget approval or routine run-tests question is introduced.",
+        "Actual results determine evidence; authorization itself does not prove acceptance."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. The integration command `pnpm --filter export test:integration` exits 1 because the local database is unavailable. Unit checks pass, but AC-001 requires real streaming and rollback that mocks cannot establish.",
+      "expected_output": "Record the attempted command and environment failure, preserve runnable tests and pending execution, and remain blocked in TESTING.",
+      "files": [],
+      "assertions": [
+        "Unavailable execution is neither passing evidence nor automatically an application defect.",
+        "The passing mock checks do not prove database behavior.",
+        "If user action is required, persist a concrete environment-access question in Active Work.BlockedOn.",
+        "No forward handoff occurs with required missing evidence."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. The user prohibits executing commands here but asks Tester to establish verification. The contract requires CLI output and exit-status evidence. No valid prior Tester runtime results exist.",
+      "expected_output": "Establish permitted test artifacts and record no execution attempt because it was prohibited, preserving exact remaining checks.",
+      "files": [],
+      "assertions": [
+        "The execution restriction is respected.",
+        "Unrun commands are explicitly distinguished from actual results.",
+        "Inspection does not establish runtime behavior.",
+        "The gate remains blocked with a concrete resumption path."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. AC-001 requires CSV export; AC-002 separately requires an operations guide before sign-off. Architecture marks AC-002 no architectural impact with a DOCUMENTING dependency. All required AC-001 and technical checks actually pass, with no other defects.",
+      "expected_output": "Complete Testing with AC-002 explicitly pending Documenter, then hand off to implementation Reviewer.",
+      "files": [],
+      "assertions": [
+        "Every current ID has a disposition even with no architectural impact.",
+        "Tester does not write the guide or edit scope/spec completion markers.",
+        "COMPLETE describes the Tester gate, not satisfaction of AC-002.",
+        "The pending owner and required evidence remain clear and cannot permit sign-off.",
+        "Any handoff entering Reviewer names the kind, requests a fresh chat separate from artifact-authoring conversations, gives advisory model guidance without a model confirmation gate, and persists sufficient evidence, limits, dependencies and recovery context first."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Reviewer at REVIEWING_FINAL discovered that the report claimed CSV escaping verified by a mock bypassing escaping. Active recovery is Owner=TESTING, ResumeAt=REVIEWING_FINAL, RerunThrough=NONE. Earlier implementation review and documentation relied on that claim.",
+      "expected_output": "REVERIFY corrects tests/evidence, executes valid checks, and assesses downstream invalidation after the Tester gate.",
+      "files": [],
+      "assertions": [
+        "The mock-based pass is not retained as proof.",
+        "Any exposed implementation defect routes to Developer through nested recovery.",
+        "Only as active-frame owner does Tester choose which completed reviews or documentation must be re-established.",
+        "The response preserves ResumeAt and uses canonical recovery rather than a custom Tester route."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Tester is a downstream rerun under Owner=DEVELOPING, ResumeAt=REVIEWING_IMPLEMENTATION, RerunThrough=TESTING. Reverification now satisfies all current Tester obligations after an implementation correction.",
+      "expected_output": "Pass the normal gate and complete the existing boundary with RESUME to implementation review.",
+      "files": [],
+      "assertions": [
+        "Tester does not replace or assume ownership of the Developer frame.",
+        "The frame is popped only after the gate passes.",
+        "The invocation names review kind IMPLEMENTATION and follows persistence.",
+        "Any handoff entering Reviewer names the kind, requests a fresh chat separate from artifact-authoring conversations, gives advisory model guidance without a model confirmation gate, and persists sufficient evidence, limits, dependencies and recovery context first."
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "In this same conversation Developer just implemented the change and persisted TESTING. The user explicitly named both roles and now says: use Tester and forget your prior work.",
+      "expected_output": "Persist required handoff context within ownership and request a fresh Tester chat before formal verification.",
+      "files": [],
+      "assertions": [
+        "The response does not pretend to erase history or certify independence.",
+        "Naming both roles does not invoke the immediate-continuation exception in Developer history.",
+        "The response provides the fresh-chat instruction plus the active-client Tester invocation and required persisted/recovery directions.",
+        "No formal results or review transition are fabricated."
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. The client exposes no session metadata and no Developer implementation is known in this chat. All persisted inputs are usable and no report exists. Continue.",
+      "expected_output": "Disclose the visibility limitation and proceed from persisted evidence without routine freshness confirmation.",
+      "files": [],
+      "assertions": [
+        "No certified freshness claim or erased-context claim is made.",
+        "Developer claims are still independently assessed.",
+        "No new state field or automatic blocker is invented for absent metadata."
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. docs/verification/export-20260924-a7f3.md contains a VERIFICATION report for Cycle other-cycle-b8e4 with prior passing results. Continue.",
+      "expected_output": "Report the provenance/path collision and block dependent report work without overwriting or adopting it.",
+      "files": [],
+      "assertions": [
+        "The marker is not silently repaired to match the current ID.",
+        "Prior-cycle passes are not adopted as current formal evidence by default.",
+        "No migration or extra verification-path state field works around the inconsistency.",
+        "Existing data is preserved until resolution."
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Invoke Tester with CycleMode=EXPEDITED and WorkflowState=DEVELOPING. The user says only continue testing, without a promotion request or contract change.",
+      "expected_output": "Perform no Tester-owned work; identify the current owner and protocol route for a needed formal verification guarantee.",
+      "files": [],
+      "assertions": [
+        "Tester does not silently enter TESTING or fabricate standard artifacts.",
+        "No test/report mutations occur without a valid transition.",
+        "Expedited work does not transfer Tester ownership to Developer."
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. src/export.ts already has twelve pre-cycle scenarios, including four covering the current contract. Initial verification added two active-cycle scenarios; one now needs a fixture correction for the same outcome. Continue.",
+      "expected_output": "Preserve all existing tests, reuse relevant coverage, retain two allocations, and fix/re-execute the defective scenario.",
+      "files": [],
+      "assertions": [
+        "Existing suites exceeding five are neither deleted nor forbidden to run.",
+        "A fixture fix for the same outcome does not consume a new allocation.",
+        "Three new scenario slots remain, not five per invocation.",
+        "No quota-filling or unrelated test rewrite occurs."
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. One proposed integration function asserts outcomes across src/export.ts and src/routes.ts and imports logging incidentally. It has admin-success, non-admin-denial and empty-result rows. A separate property test checks quoting round trips with 100 seeded samples of one property. No allocations exist.",
+      "expected_output": "Count three scenarios against each materially verified file and one bounded property scenario against the quoting source.",
+      "files": [],
+      "assertions": [
+        "Function and assertion counts do not set the budget.",
+        "Incidental logging gets no allocation; both materially verified files do.",
+        "Generated samples of one property are not 100 new scenarios; distinct properties or behavioral partitions remain separately visible.",
+        "Assignments and generation strategy are recorded before adding coverage."
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. A failure is caused by production build configuration excluding a route. Tests import that same shared configuration. Changing it changes deployed behavior, and the missing route is reproducible.",
+      "expected_output": "Route IMPLEMENTATION to Developer rather than treating shared production configuration as test-only setup.",
+      "files": [],
+      "assertions": [
+        "Tester preserves the reproducer and result.",
+        "Ownership follows the correction effect, not where the failure was found.",
+        "Application configuration is not changed to make tests pass."
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. packages/export-cli uses Python pytest/subprocess fixtures; packages/web has an established component runner. AC-001 covers CLI stdout/stderr and exit codes; AC-002 covers an accessible download control and focus after errors. Commands and fixtures are established per package.",
+      "expected_output": "Combine CLI and suitable component/browser techniques within VERIFY using package conventions.",
+      "files": [],
+      "assertions": [
+        "No mutually exclusive CLI or unit workflow mode is invented.",
+        "No new preferences file or universal framework replaces established tooling.",
+        "CLI checks isolate cwd/environment; web checks assert appropriate semantic, keyboard and focus behavior.",
+        "The report distinguishes simulated component evidence from actual browser evidence when required."
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. The reported passing command exited 0 but output says zero tests collected due to a wrong path. Another required async test passed on the third retry after two unexplained failures. Developer calls this green enough.",
+      "expected_output": "Correct discovery and investigate flakiness; neither current result proves acceptance.",
+      "files": [],
+      "assertions": [
+        "Zero collection does not count as execution of intended behavioral checks.",
+        "A passing retry does not erase unexplained failures.",
+        "Current evidence gaps remain and prevent completion.",
+        "Skips, assertions or timeouts are not weakened merely to obtain green output."
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. Two defects are recorded: unauthorized export in application code and a contradictory architecture filename criterion. The immediate handoff will route the implementation defect first.",
+      "expected_output": "Persist both findings with evidence and owners and route the immediate defect canonically.",
+      "files": [],
+      "assertions": [
+        "Handoff.Reason is not sole durable storage for both findings.",
+        "Ordinary recovery frames are not duplicated into Outstanding Obligations.",
+        "The remaining design defect must still be routed to Architect on resumption and prevents completion.",
+        "Tester does not repair upstream design to expedite completion."
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "Invoke Tester in a fresh chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=TESTING, Active Work.Id=export-20260924-a7f3. Scope, Architecture and Development reference current-cycle artifacts; valid Auditor context exists. Recovery is inactive unless specified. In a same-state VERIFICATION correction, Reviewer evidence identifies one defective test assertion. There is no recovery frame. During the fix a previously valid test file is renamed and one allocated scenario is replaced by an equivalent scenario under its new name.",
+      "expected_output": "Correct and execute the owned test while carrying scenario allocations across rename and replacement, then apply the full gate.",
+      "files": [],
+      "assertions": [
+        "A same-state correction does not push a frame.",
+        "Renaming and replacing the same scenario does not reset its source-file allowance.",
+        "Superseded evidence is distinguished from the replacement result.",
+        "The correction alone does not make all other acceptance obligations complete."
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "Tester has completed a STANDARD assessment in TESTING. The user invoked both Tester and Reviewer and asks for immediate implementation review in this same conversation that wrote tests and formal evidence. Recovery is inactive.",
+      "expected_output": "Persist Tester completion evidence and transition to REVIEWING_IMPLEMENTATION, then request the independent Reviewer session rather than formally reviewing here.",
+      "files": [],
+      "assertions": [
+        "Test/evidence authoring history is prohibited for Reviewer even though no implementation was authored here.",
+        "The immediate-continuation exception cannot bypass the fresh-session rule.",
+        "The handoff names IMPLEMENTATION and gives the advisory model recommendation without switching models or asking routine author-model confirmation.",
+        "Reviewer conclusions are not fabricated by Tester."
+      ]
+    }
+  ]
+}

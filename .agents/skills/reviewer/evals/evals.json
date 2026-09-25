@@ -1,0 +1,463 @@
+{
+  "skill_name": "reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. AC-001 requires quoted CSV export and AC-002 denies non-admin export before writes. Developer and Tester claim completion. All work is committed and git diff is empty. Existing integration results identify the assessed source and observe both behaviors; source and tests support those claims. No material defects or gaps exist.",
+      "expected_output": "Complete IMPLEMENTATION assessment with no material findings and hand off to Documenter.",
+      "files": [],
+      "assertions": [
+        "The active change is reconstructed from persisted intent and committed source, not discarded because the working diff is empty.",
+        "Upstream claims, tests and actual results are independently checked against both ACs and technical criteria.",
+        "The report at docs/reviews/export-20260924-a7f3/implementation.md has matching REVIEW provenance, Cycle and ReviewKind IMPLEMENTATION.",
+        "No cosmetic findings, quota-filling tests, or invented requirements are introduced.",
+        "The plain-language summary leads with readiness, states no material findings, identifies checked scope and limits, and does not claim the cycle complete.",
+        "Report and state are persisted before the active-client Documenter invocation; any meaningful commit suggestion precedes the invocation."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. AC-001 requires CSV escaping. Part of src/export.ts is committed, its staged version changes quoting, and unstaged changes change the same function again. An untracked route uses it, a tracked authorization helper was deleted, and an unchanged caller still depends on that helper. An unrelated untracked note is also present.",
+      "expected_output": "Assess the actual assembled active change, including deleted and affected unchanged boundaries, preserving unrelated content.",
+      "files": [],
+      "assertions": [
+        "Staged, unstaged and untracked relevant content is inspected alongside committed work; HEAD alone is not the assessed identity.",
+        "The deleted helper and unchanged caller are investigated for concrete impact.",
+        "The unrelated note is not presumed part of the cycle and is preserved.",
+        "Material defects or uncertainty prevent completion, with exact evidence persisted."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. An interrupted IN_PROGRESS IMPLEMENTATION report records inspected authorization and quoting, one actual diagnostic result, and remaining resource cleanup inspection. Assessed source, contract, tests and environment are unchanged. This chat contains only Reviewer work.",
+      "expected_output": "Resume the same kind from saved progress, retaining justified evidence and completing remaining inspection.",
+      "files": [],
+      "assertions": [
+        "Review history alone does not require discarding the session or restarting assessment.",
+        "A partial report does not select a new mode; there is no third re-review mode.",
+        "Recorded input identities are checked before retaining evidence, and remaining areas are not assumed checked."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. An interrupted report predates a dirty-tree change to the shared CSV helper and its fixture. The helper is also used by an unchanged import path. Scope is unchanged.",
+      "expected_output": "Reconcile the incomplete assessment and recheck affected export/import boundaries.",
+      "files": [],
+      "assertions": [
+        "A report need not be COMPLETE before reconciliation is required.",
+        "Changed source and fixture invalidate supporting old results even though requirements are unchanged.",
+        "Unaffected evidence is preserved with a reason; previously passing dependent behavior is considered for regression checks.",
+        "Resume progress and actual content identities are updated."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. State is now REVIEWING_FINAL. Documentation was completed after a passing implementation review. The guide accurately describes current flags and permissions. Every current AC and relevant technical criterion has sufficient current evidence, including the guide condition previously pending Documenter. No findings or gaps remain.",
+      "expected_output": "Complete FINAL_DELIVERABLE review and hand off to Synchronizer without claiming sign-off.",
+      "files": [],
+      "assertions": [
+        "The final report uses docs/reviews/export-20260924-a7f3/final-deliverable.md with matching FINAL_DELIVERABLE provenance.",
+        "Implementation review conclusions are checked against the assembled current work rather than inherited.",
+        "Earlier dependencies are resolved under the same ACs using current evidence.",
+        "The implementation report is preserved; Synchronizer work is not fabricated.",
+        "The summary says final review can move forward, states no material findings, and notes the remaining workflow step."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. State is REVIEWING_FINAL. The operations guide says all signed-in users can export, while AC-002, implementation, and verified behavior require administrators. At docs/operations.md:42 the incorrect instruction tells support users to run the admin command.",
+      "expected_output": "Record a DOCUMENTATION finding and route to Documenter with ResumeAt REVIEWING_FINAL.",
+      "files": [],
+      "assertions": [
+        "The finding includes exact reference, concrete non-admin failure case, impact, supporting evidence, severity, owner and smallest correction.",
+        "Reviewer does not rewrite the guide or weaken the authorization requirement.",
+        "Final review does not pass merely because implementation review passed."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Invoke Reviewer in the current chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. This conversation previously authored the scope, but not implementation. The user says to invoke Reviewer here and forget earlier messages. All reports are available.",
+      "expected_output": "Stop before formal review and request the canonical fresh Reviewer session.",
+      "files": [],
+      "assertions": [
+        "Scope-authoring history is prohibited just like implementation/test/documentation authoring history.",
+        "No history erasure or certified independence is claimed.",
+        "Persist missing handoff context only within existing ownership; no author artifact is rewritten by Reviewer.",
+        "The handoff names IMPLEMENTATION, directs reading persisted artifacts/recovery, and includes advisory model guidance."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The client exposes neither session metadata nor author model metadata. No artifact authoring is known in the visible conversation. The inputs are sufficient for assessment.",
+      "expected_output": "State the visibility limitations and proceed from persisted evidence.",
+      "files": [],
+      "assertions": [
+        "Absent metadata does not cause automatic blocking or a routine freshness/author-model confirmation request.",
+        "No model identity, capability ranking or freshness attestation is invented.",
+        "The different equal-or-higher-capability model recommendation remains advisory."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The user says a different model of comparable capability is unavailable and asks to proceed in this separate review chat. Reliable metadata identifies the authoring model but supplies no capability ranking for alternatives.",
+      "expected_output": "Proceed with independent assessment while keeping model selection advice optional.",
+      "files": [],
+      "assertions": [
+        "Reviewer neither automatically switches models nor guesses a ranking.",
+        "No routine gate asks the user to confirm author identity or approve the current model.",
+        "The session requirement remains distinct from optional model diversity."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The requested kind is FINAL_DELIVERABLE but persisted state remains REVIEWING_IMPLEMENTATION. No control-plane transition was authorized.",
+      "expected_output": "Use the persisted IMPLEMENTATION kind and explain the mismatch without advancing to final review.",
+      "files": [],
+      "assertions": [
+        "No final report or REVIEWING_FINAL transition is fabricated from a chat label.",
+        "Applicable implementation inputs and gate still govern."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Invoke Reviewer while WorkflowState=DEVELOPING and CycleMode=STANDARD. No control-plane transition is authorized. Developer has not completed.",
+      "expected_output": "Identify Developer as current owner and perform no Reviewer-owned assessment/report mutation.",
+      "files": [],
+      "assertions": [
+        "Report presence cannot override state ownership.",
+        "No invented review transition or recovery frame is created."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Source at src/export.ts:72 writes protected CSV before checking authorization at line 80. AC-002 explicitly prohibits unauthorized writes. A non-admin request produces the file then returns 403; Tester checked only the status code.",
+      "expected_output": "Record supported implementation and verification defects and route the immediate correction canonically.",
+      "files": [],
+      "assertions": [
+        "The established security finding has severity, exact content reference, non-admin trigger, forbidden write impact, evidence, Developer ownership and smallest correction.",
+        "The insufficient assertion is separately preserved as Tester-owned evidence work.",
+        "Reviewer edits neither code nor tests and does not lose the second finding during the first handoff.",
+        "Unresolved material defects block completion even if the report command exited zero."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Tests mock out CSV escaping and assert only that the mocked function was called. Tester claims AC-001 quoted output verified; no actual output assertion or valid equivalent evidence exists.",
+      "expected_output": "Route VERIFICATION to Tester with the concrete evidence gap rather than inventing an implementation defect.",
+      "files": [],
+      "assertions": [
+        "Reviewer examines what the assertions observe rather than trusting COMPLETE status.",
+        "It does not add formal tests or amend Tester evidence itself.",
+        "Reviewer diagnostic commands cannot silently substitute for the missing formal evidence.",
+        "A no-code-defect result cannot pass with this material assessment gap."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Scope AC-001 requires export to remain private while AC-002 explicitly permits anyone with a public URL to download it. The request does not resolve that contradiction. Code implements public access.",
+      "expected_output": "Route SCOPING to Scoper without choosing a product access policy.",
+      "files": [],
+      "assertions": [
+        "Scope remains the intent authority but is examined for contradictions.",
+        "Implementation does not silently become the requirement.",
+        "Scope wording and completion markers remain untouched by Reviewer."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Scope requires bounded retry behavior. Architecture omits the retry limit and deadline propagation, with no established convention determining them. Developer chose infinite retries.",
+      "expected_output": "Route ARCHITECTURE to Architect and preserve separately supported implementation concerns.",
+      "files": [],
+      "assertions": [
+        "Reviewer neither invents a deadline nor edits the specification.",
+        "The omission is tied to a concrete failure/resource case, not a speculative improvement.",
+        "Recovery returns to the interrupted review after canonical corrective work."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Auditor context says only one worker runs, while deployment files establish multiple replicas. This changes the correctness assessment of an in-memory deduplication claim. A stale prior-cycle non-baseline exclusion also affects the relevant source.",
+      "expected_output": "Route PROJECT_CONTEXT to Auditor without rewriting context or adopting stale exclusions.",
+      "files": [],
+      "assertions": [
+        "The report grounds the context defect in repository evidence.",
+        "Planned active-cycle changes alone would not invalidate the baseline.",
+        "Reviewer stays focused on the affected boundaries rather than performing a replacement whole-repository audit."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The previous COMPLETE review covers AC-001 and AC-002. Scoper retired AC-002 and added AC-004 for a guide. Architect and Tester reconciled their inventories, preserving valid AC-001 evidence and recording AC-004 pending Documenter. Code is unchanged.",
+      "expected_output": "Reopen and reconcile the full current acceptance inventory before completing the implementation gate.",
+      "files": [],
+      "assertions": [
+        "AC-002 remains historical only; Reviewer does not reuse or renumber it.",
+        "AC-001 evidence may be retained with applicability justification.",
+        "AC-004 receives its permitted later dependency with owner and required evidence under that exact ID.",
+        "Unchanged code does not keep the earlier report automatically complete."
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. All implementation obligations and technical criteria have current satisfactory evidence. AC-003 separately requires an operations guide during DOCUMENTING; design and Tester explicitly record that later dependency.",
+      "expected_output": "Pass implementation review with AC-003 pending Documenter and required guide evidence recorded.",
+      "files": [],
+      "assertions": [
+        "Pending is not represented as verified.",
+        "The report accounts for every current ID despite no architectural impact for the guide.",
+        "Reviewer does not write documentation or mark the whole cycle complete."
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Tester labels the unexecuted authorization integration check pending Documenter even though AC-002 requires protected writes now. There is no later-role dependency for this behavior.",
+      "expected_output": "Reject the attempted deferral and route the formal evidence gap to Tester.",
+      "files": [],
+      "assertions": [
+        "A later owner label cannot defer a present-phase verification obligation.",
+        "Implementation review remains incomplete; Reviewer does not generate formal tests."
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. State is REVIEWING_FINAL. AC-003 requires a restore guide, but the final report draft still carries it pending Documenter from implementation review. The guide is absent.",
+      "expected_output": "Block final completion and route the missing documentation to Documenter.",
+      "files": [],
+      "assertions": [
+        "A permitted implementation dependency is not automatically permitted at final review.",
+        "The same AC-003 remains unresolved until actual evidence exists.",
+        "No SYNCHRONIZING or sign-off transition is made."
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Reviewer F-001 claimed a byte limit was ignored. The owner provides source showing the limit is checked in an unchanged caller, and independent inspection confirms all relevant callers enforce it. There is a same-state REVIEW correction and no recovery frame.",
+      "expected_output": "Withdraw the mistaken finding with exact evidence and reassess the remaining gate.",
+      "files": [],
+      "assertions": [
+        "Reviewer corrects its own finding candidly and does not manufacture a replacement.",
+        "Same-state correction does not push a frame.",
+        "Finding identity/history is preserved and withdrawal does not automatically establish other unreviewed obligations."
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Reviewer F-002 identified a resource leak. Developer says fixed and marked its plan complete, but src/export.ts still returns before closing the stream on timeout. The original timeout trigger remains possible.",
+      "expected_output": "Keep F-002 OPEN with independent reassessment evidence and route the remaining implementation correction.",
+      "files": [],
+      "assertions": [
+        "Author completion does not resolve a Reviewer finding.",
+        "The fix is checked against the original case and affected cleanup boundaries.",
+        "Reviewer does not patch the stream cleanup or accept a passing happy-path test as resolution."
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. During implementation review as a downstream rerun, the outer frame is Owner=SCOPING, ResumeAt=REVIEWING_FINAL, RerunThrough=REVIEWING_IMPLEMENTATION. A newly observed authorization defect requires Developer correction.",
+      "expected_output": "Push a nested IMPLEMENTATION frame with Owner DEVELOPING and ResumeAt REVIEWING_IMPLEMENTATION, preserving the outer frame.",
+      "files": [],
+      "assertions": [
+        "The newest frame has RerunThrough NONE.",
+        "Reviewer does not overwrite the outer frame, take ownership of its rerun plan, or route directly to final review.",
+        "All findings are persisted before the state transition and Developer invocation."
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. All current review obligations pass. Reviewer is a downstream rerun with Owner=TESTING, ResumeAt=REVIEWING_FINAL, RerunThrough=REVIEWING_IMPLEMENTATION.",
+      "expected_output": "Complete the rerun boundary, pop the active frame, and RESUME REVIEWING_FINAL rather than normally forwarding to Documenter.",
+      "files": [],
+      "assertions": [
+        "The full implementation gate must pass before popping.",
+        "Reviewer does not redefine the Tester-owned frame.",
+        "The same-role transition follows handoff output rules without a redundant next-role invocation; assessment session rules still apply.",
+        "The selected final kind uses its own report and gate on continuation."
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. Reviewer owns an active REVIEW frame at REVIEWING_IMPLEMENTATION with ResumeAt=SYNCHRONIZING and RerunThrough=NONE. Independent inspection withdraws an erroneous finding; already-completed documentation and final review relied on that finding and are now invalid.",
+      "expected_output": "After correcting the review and passing its gate, plan the required downstream rerun through REVIEWING_FINAL before resuming SYNCHRONIZING.",
+      "files": [],
+      "assertions": [
+        "Only as active-frame owner does Reviewer compute this invalidation.",
+        "The existing frame preserves ResumeAt; no duplicate defect frame is introduced for the same invalidation.",
+        "Reviewer does not rewrite documentation or skip invalidated final assessment."
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. After promotion, an Outstanding Obligation owned by REVIEWING_IMPLEMENTATION requires correcting an unsupported finding. Reviewer independently corrects that finding, but another material acceptance gap still remains.",
+      "expected_output": "Remove only the verified Reviewer-owned obligation, then keep the report incomplete for the remaining gap.",
+      "files": [],
+      "assertions": [
+        "The obligation may be removed before the entire gate passes, avoiding a completion deadlock.",
+        "Other owners' obligations and existing frames are preserved.",
+        "Correcting a finding does not automatically complete review or the cycle."
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "Invoke Reviewer in a separate chat. ProjectMode=BROWNFIELD, CycleMode=EXPEDITED, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=note-20260924-c8d2. Active Work.Request asks for a bounded internal optional note field using established behavior. Scope and Architecture are NONE; Development is current and COMPLETE with satisfactory self-checks. Repository inspection supports the bounded request; no material findings, gaps, recovery, outstanding obligations or user blockers remain.",
+      "expected_output": "Pass IMPLEMENTATION review and enter AWAITING_USER_SIGNOFF under the expedited contract.",
+      "files": [],
+      "assertions": [
+        "No scope, architecture, Tester report, documentation, final review or AC IDs are demanded or fabricated.",
+        "Developer evidence is independently assessed without claiming formal Tester guarantees.",
+        "The report records the narrower assurance and summary presents user sign-off actions instead of a next-role invocation."
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "Invoke Reviewer in a separate chat. ProjectMode=BROWNFIELD, CycleMode=EXPEDITED, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=note-20260924-c8d2. Active Work.Request asks for a bounded internal optional note field using established behavior. Scope and Architecture are NONE; Development is current and COMPLETE with satisfactory self-checks. Inspection reveals that safe completion requires a new access policy and formal verification. Frame 1 is Owner=DEVELOPING, ResumeAt=AWAITING_USER_SIGNOFF, RerunThrough=REVIEWING_IMPLEMENTATION, already corrected. Newer Frame 2 is Owner=REVIEWING_IMPLEMENTATION, FailureType=REVIEW, Reason=correct unsupported authorization finding, ResumeAt=DEVELOPING, RerunThrough=NONE; that review correction remains unresolved.",
+      "expected_output": "Promote to STANDARD and AUDITING while preserving the unresolved review obligation and tentative implementation.",
+      "files": [],
+      "assertions": [
+        "Handoff.Kind PROMOTE and PromotionReason identify the omitted guarantees; no failure route enters a skipped state.",
+        "Convert only Frame 2 to an obligation preserving Owner, FailureType and Reason; Frame 1 has already completed its correction.",
+        "Clear the obsolete expedited recovery stack only after preserving its unresolved correction.",
+        "Cycle ID, request, artifacts and open findings survive; no scope/design is fabricated."
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "Invoke Reviewer with CycleMode=EXPEDITED and WorkflowState=REVIEWING_FINAL. No legal transition established this state combination.",
+      "expected_output": "Report the inconsistent state and block dependent review without fabricating expedited final review.",
+      "files": [],
+      "assertions": [
+        "No final report is adopted or marked complete.",
+        "Reviewer does not silently reinterpret state as implementation review or invent a parallel transition."
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The established diagnostic command fails because its database is unavailable. Current Tester evidence also lacks required transaction/rollback execution, so the contract cannot yet be assessed.",
+      "expected_output": "Record actual attempted command/error and route the formal evidence gap to Tester.",
+      "files": [],
+      "assertions": [
+        "Unavailable execution is not passing and is not automatically an application defect.",
+        "Reviewer does not replace transaction evidence with typechecking or shallow mocks.",
+        "The report gives the required remaining check and owner; no passing review is claimed."
+      ]
+    },
+    {
+      "id": 31,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The user prohibits command execution. Current independently examined Tester evidence already covers runtime criteria for exactly the assessed content and environment. The remaining review concerns an inspection-based API declaration; source provides sufficient evidence.",
+      "expected_output": "Respect the restriction and complete the permitted inspection with disclosed unrun diagnostics if no material gap remains.",
+      "files": [],
+      "assertions": [
+        "No command execution is invented or attempted.",
+        "The report explains why existing evidence plus inspection suffices and what was not rerun.",
+        "An optional unrun diagnostic does not automatically block a gate with sufficient current evidence."
+      ]
+    },
+    {
+      "id": 32,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The user prohibits execution. AC-001 requires a measured resource bound, but the only available result is a successful typecheck. There is no valid measurement or formal evidence.",
+      "expected_output": "Record the material evidence gap and route VERIFICATION without claiming resource correctness.",
+      "files": [],
+      "assertions": [
+        "No attempt is permitted; exact remaining checks and that limitation are recorded.",
+        "No material findings does not become a passing review when necessary evidence is missing.",
+        "The user summary leads with inability to move forward and explains the missing measurement plainly."
+      ]
+    },
+    {
+      "id": 33,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The required implementation.md path contains an unmarked project document. A nearby report for an older cycle is marked REVIEW and contains passing results.",
+      "expected_output": "Report the collision and block dependent report work while preserving both existing files.",
+      "files": [],
+      "assertions": [
+        "No unmarked or other-cycle file is adopted, overwritten or relabeled.",
+        "No alternate report path, review-path state field, migration, or new cycle is invented to evade the collision."
+      ]
+    },
+    {
+      "id": 34,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. State is REVIEWING_FINAL. Its required final-deliverable.md has REVIEW provenance for the current cycle but ReviewKind IMPLEMENTATION. A valid implementation.md also exists.",
+      "expected_output": "Block on the wrong-kind provenance collision instead of repurposing either report.",
+      "files": [],
+      "assertions": [
+        "Path, provenance and visible kind must agree.",
+        "The implementation report remains intact; provenance is not silently repaired."
+      ]
+    },
+    {
+      "id": 35,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. An established naming convention already permits a short local variable. Review finds only a cosmetic naming preference, minor repetition in a small helper, and a speculative cache enhancement unrelated to the contract. Existing coverage sufficiently establishes the required behavior.",
+      "expected_output": "Report no material findings without inventing new tests or changes.",
+      "files": [],
+      "assertions": [
+        "No P2 finding is manufactured from preferences or speculative benefits.",
+        "There is no per-file finding quota or blanket new-test requirement.",
+        "The summary is concise and respectful, distinguishes checked behavior from unvalidated areas, and avoids claiming universal correctness."
+      ]
+    },
+    {
+      "id": 36,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. A confirmed P1 authorization defect leaks one tenant's export to another. Give the user-facing result after persisting detailed references and routing to Developer. The user is nontechnical.",
+      "expected_output": "Lead with work being unable to move forward, explain the privacy consequence and Developer correction in plain language, and link the detailed report.",
+      "files": [],
+      "assertions": [
+        "The severity and uncertainty are not hidden by simplifying the wording.",
+        "No unexplained AC IDs, protocol jargon, buzzwords, childish analogies or canned filler overload the concise summary.",
+        "Exact technical reproducer and line references stay in the report."
+      ]
+    },
+    {
+      "id": 37,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. A previous diagnostic exited zero but output says zero tests collected. Another required runtime test passed on its third retry after two unexplained failures. Tester reported both as verified; code correctness is not otherwise established.",
+      "expected_output": "Record a VERIFICATION defect and gaps in the claimed evidence; do not pass review.",
+      "files": [],
+      "assertions": [
+        "Actual discovery/results are inspected instead of relying on exit status.",
+        "A passing retry does not erase unexplained flaky results.",
+        "Reviewer routes evidence correction to Tester without weakening or rewriting tests."
+      ]
+    },
+    {
+      "id": 38,
+      "prompt": "Invoke Reviewer in an independent chat. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=REVIEWING_IMPLEMENTATION, Active Work.Id=export-20260924-a7f3. Current scope, architecture, context, Development and Tester report are available with valid ownership; recovery and outstanding obligations are inactive unless specified. The repository history and persisted plan do not identify whether a committed authorization rewrite belongs to this cycle or a cancelled one. That uncertainty materially changes the active review boundary. No authoritative evidence resolves it.",
+      "expected_output": "Persist a material boundary/provenance gap and request the specific missing clarification after available inspection.",
+      "files": [],
+      "assertions": [
+        "Reviewer does not assume HEAD diff defines the whole change or treat ambiguous work as accepted baseline.",
+        "The blocking user question is persisted in Active Work.BlockedOn before asking.",
+        "No unrelated file is changed or cycle conclusion certified while the gap remains."
+      ]
+    },
+    {
+      "id": 39,
+      "prompt": "Invoke Reviewer in an independent session. ProjectMode=BROWNFIELD, CycleMode=STANDARD, Active Work.Id=export-20260924-a7f3. Current owned artifacts and repository evidence are available; no blockers, recovery or outstanding obligations exist unless specified. WorkflowState=REVIEWING_IMPLEMENTATION. F-002 reported a timeout stream leak. Developer corrected cleanup, Tester independently reverified the original timeout and affected shared import/export boundaries, and recovery returned to this review. Reviewer inspection and established diagnostics support the fix. All other current obligations remain satisfied.",
+      "expected_output": "Independently resolve F-002 with current evidence, retain justified unaffected results, and complete the implementation gate.",
+      "files": [],
+      "assertions": [
+        "F-002 keeps its identity and records the checked fix, assessed content, original failure case, and relevant regression evidence.",
+        "Reviewer verifies rather than copies the author or Tester completion label.",
+        "A satisfied correction does not bypass the rest of the gate; after all conditions pass the normal handoff is to Documenter."
+      ]
+    },
+    {
+      "id": 40,
+      "prompt": "Invoke Reviewer in an independent session. ProjectMode=BROWNFIELD, CycleMode=STANDARD, Active Work.Id=export-20260924-a7f3. Current owned artifacts and repository evidence are available; no blockers, recovery or outstanding obligations exist unless specified. WorkflowState=REVIEWING_FINAL. An interrupted final report identifies documentation pages already inspected and a remaining command example. Since interruption the command flag changed in source and the guide, with corresponding current Tester evidence. Its implementation report is preserved from an earlier revision.",
+      "expected_output": "Resume FINAL_DELIVERABLE with input reconciliation, recheck affected instructions and evidence, and preserve justified unrelated conclusions.",
+      "files": [],
+      "assertions": [
+        "The final report is reopened or kept incomplete until the remaining and invalidated areas are assessed.",
+        "The old implementation pass does not automatically establish the changed final content.",
+        "The two reports are not merged, overwritten into one another, or treated as alternative modes chosen by report existence."
+      ]
+    },
+    {
+      "id": 41,
+      "prompt": "Invoke Reviewer for FINAL_DELIVERABLE while WorkflowState=REVIEWING_FINAL and CycleMode=STANDARD. This conversation just authored the operations guide as Documenter. The user invoked both Documenter and Reviewer and asks to continue directly; the client can identify that authoring history.",
+      "expected_output": "Request the independent Reviewer session after persisting handoff context, before formal final assessment.",
+      "files": [],
+      "assertions": [
+        "Documenter authoring history is prohibited even though the chat contains no Developer work.",
+        "The handoff names FINAL_DELIVERABLE, directs reading persisted artifacts and any active recovery frame, and gives the advisory model recommendation.",
+        "No final report conclusion or session-freshness attestation is fabricated."
+      ]
+    }
+  ]
+}

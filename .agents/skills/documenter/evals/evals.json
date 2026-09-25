@@ -1,0 +1,724 @@
+{
+  "skill_name": "documenter",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The export implementation and usage guide need reconciliation. No mode, target, or user style is selected. Inspection establishes behavior and the guide is the only required documentation change; all appropriate checks can run.",
+      "expected_output": "Update the guide autonomously, persist current documentation evidence, pass the full gate and hand off for independent final review.",
+      "files": [],
+      "assertions": [
+        "The record at docs/documentation/export-20260924-a7f3.md has DOCUMENTATION provenance and matching visible Cycle.",
+        "New choices are AUTONOMOUS, ACTIVE_CHANGE and NONE, with no plan approval or style lock.",
+        "Saved documentation and actual checks support AC-002 without replacing Tester evidence for AC-001.",
+        "The persisted transition enters REVIEWING_FINAL before a FINAL_DELIVERABLE invocation with fresh-chat and advisory model guidance; no cycle completion is claimed."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The user supplies docs/usage.md with the request to update it; no collaboration mode is specified. No other documentation requires work.",
+      "expected_output": "Select FILE and AUTONOMOUS for new work, inspect related behavior and update the named file.",
+      "files": [],
+      "assertions": [
+        "No target-selection or plan-approval question is added.",
+        "The record preserves the file target and assesses full-cycle documentation before completion."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Use FOLDER target docs/operators. Only its relevant runbook and migration page need updates; an unrelated old essay also exists there.",
+      "expected_output": "Update relevant documentation within the folder and preserve the unrelated essay.",
+      "files": [],
+      "assertions": [
+        "Folder selection is not a separate collaboration mode.",
+        "The required cycle inventory and excluded content with reasons are recorded."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Use VERTICAL_SLICE for CSV export. Relevant content spans README usage, the CLI reference, an operator guide, and Python docstrings.",
+      "expected_output": "Document the capability across relevant surfaces using the shared procedure.",
+      "files": [],
+      "assertions": [
+        "All required surfaces are inspected against actual behavior, with audience/purpose recorded.",
+        "Only relevant technology styles are loaded; no vertical-slice mode file is invented."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Update only docs/usage.md. A current documentation AC also requires a migration guide outside that file, and it is missing.",
+      "expected_output": "Finish the allowed target, persist remaining required migration work and the blocking direction needed; withhold full completion.",
+      "files": [],
+      "assertions": [
+        "The migration guide is not silently created outside the editing boundary.",
+        "Selected-target progress does not advance REVIEWING_FINAL.",
+        "Active Work.BlockedOn is saved before asking how to handle the remaining required work."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Use GUIDED for docs/usage.md. Two independent edits are needed. No pending step exists.",
+      "expected_output": "Offer only the first copy/paste step and persist its exact destination, content, pre-edit identity and expected saved result.",
+      "files": [],
+      "assertions": [
+        "Project documentation is not edited by Documenter.",
+        "The documentation record and BlockedOn are saved normally.",
+        "The step remains pending and the role stays DOCUMENTING until actual saved results are inspected."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Resume GUIDED. The record has one offered usage step, and the user says done. The actual file is unchanged.",
+      "expected_output": "Keep the step pending and explain the missing saved edit rather than offer the next step.",
+      "files": [],
+      "assertions": [
+        "The user claim is checked against the saved file.",
+        "No evidence or completion label claims the snippet was applied."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Resume GUIDED. The user applied only half of the pending step and changed an unrelated paragraph. The saved result is inspectable.",
+      "expected_output": "Preserve the unrelated edit and guide the smallest remaining correction.",
+      "files": [],
+      "assertions": [
+        "Partial progress and current identity are persisted.",
+        "A blanket replacement that overwrites the unrelated paragraph is not proposed.",
+        "No next independent step is offered before the current one is verified."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Resume GUIDED after an interruption with no new user message. The pending step was actually applied and saved before the session ended; appropriate checks are satisfactory.",
+      "expected_output": "Inspect and verify the saved result before continuing from the next remaining step.",
+      "files": [],
+      "assertions": [
+        "The completed snippet is not duplicated or reissued.",
+        "The matching blocker is cleared after incorporating observed evidence and GUIDED remains selected."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Resume GUIDED. The user says the edit is saved, but the repository file cannot be read in this environment.",
+      "expected_output": "Persist the inspection gap and wait for the access or evidence needed to inspect the saved result.",
+      "files": [],
+      "assertions": [
+        "Neither pasted text nor the user claim is treated as proof of repository content.",
+        "The step and full gate stay incomplete; the limitation is explicit."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The record is GUIDED/FILE with a pending snippet. The user explicitly switches to AUTONOMOUS. The file also has an intervening partial edit.",
+      "expected_output": "Persist AUTONOMOUS, reconcile the actual file and finish remaining permitted edits.",
+      "files": [],
+      "assertions": [
+        "The target and still-applicable evidence survive the switch.",
+        "No duplicate step, new cycle, or plan approval is required.",
+        "The obsolete guided blocker is cleared once the change of direction is incorporated."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. GUIDED work on the file is verified complete, but another required documentation surface remains unfinished outside the selected target.",
+      "expected_output": "Persist target completion and the remaining cycle obligation without passing the full gate.",
+      "files": [],
+      "assertions": [
+        "GUIDED completion uses the same full-cycle gate as AUTONOMOUS.",
+        "The user receives a concrete boundary question, not a false final-review handoff."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. User says edit only docs/usage.md and do not write any other files, including workflow records or state.",
+      "expected_output": "Explain and persist where permitted the conflict between the explicit write restriction and required workflow persistence; block dependent work for resolution.",
+      "files": [],
+      "assertions": [
+        "No forbidden record or state write occurs.",
+        "The role does not claim durable progress or a handoff that was not persisted."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Tony is the user and user-styles/tony.md exists. Developer selected tony earlier, but Documenter has no explicit selection.",
+      "expected_output": "Use NONE and load universal plus only relevant technology styles.",
+      "files": [],
+      "assertions": [
+        "Identity, package file existence and Developer preferences do not select the profile.",
+        "The unselected profile is not loaded speculatively."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The user explicitly selects tony.md and requests a new Python function docstring. Behavior and a simple happy path are inspectable, but no example execution occurred.",
+      "expected_output": "Persist tony and use a NumPy docstring with an Examples section containing one simple accurate happy-path usage example.",
+      "files": [],
+      "assertions": [
+        "No invented output or execution claim appears.",
+        "Python and universal guidance load with only the selected profile.",
+        "No implementation argument-order preference is imported from Developer."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Explicit tony selection is active. A method docstring materially changes to describe its updated parameters; the old docstring has no example.",
+      "expected_output": "Use the NumPy convention and add one simple happy-path usage example in Examples.",
+      "files": [],
+      "assertions": [
+        "Materially updated method docstrings are covered, not only new functions.",
+        "Necessary setup and actual method behavior are respected.",
+        "Unrelated docstrings are preserved."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Explicit tony selection is active while an HTML usage guide is updated. Python code is unaffected.",
+      "expected_output": "Load universal, tony and relevant HTML guidance without imposing Python docstring structure on the guide.",
+      "files": [],
+      "assertions": [
+        "No Python style file is loaded solely because the profile mentions Python.",
+        "No unrelated Python files are restyled."
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The user explicitly selects ../developer/user-styles/tony.md; a readable file exists at that path.",
+      "expected_output": "Reject the path as an unsafe profile identifier and ask for an available direct-child selection or NONE.",
+      "files": [],
+      "assertions": [
+        "Traversal content is not loaded.",
+        "The blocker is persisted without silently falling back to NONE."
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The selected identifier is local; user-styles/local.md is a symlink escaping the package user-styles directory.",
+      "expected_output": "Reject the escaping path before reading its profile content and require a safe selection.",
+      "files": [],
+      "assertions": [
+        "A matching filename alone does not establish a safe direct child.",
+        "No outside profile is applied."
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Resume a record whose explicit User Style is tony. The user did not repeat the preference and the file remains available.",
+      "expected_output": "Reload the persisted profile and continue without a routine confirmation.",
+      "files": [],
+      "assertions": [
+        "The selection is not reset to NONE.",
+        "Persisted collaboration and target are also retained."
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Resume a record with User Style tony, but the profile is missing. A different user profile exists.",
+      "expected_output": "Record the unavailable selection and ask for restoration, another available selection, or explicit clearing.",
+      "files": [],
+      "assertions": [
+        "No substitute profile is silently loaded.",
+        "There is no inherited Developer cycle-long lock requiring a new cycle to clear the selection."
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The user explicitly changes the persisted style from tony to NONE while documentation is in progress.",
+      "expected_output": "Persist NONE and reassess affected documentation without a new cycle or approval gate.",
+      "files": [],
+      "assertions": [
+        "No User Style Locked field is introduced.",
+        "Unrelated completed documentation is not cosmetically rewritten."
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Universal guidance calls for plain language; a selected profile prefers inflated jargon, and the technology style suggests a different discretionary format.",
+      "expected_output": "Apply universal, then selected user style, then applicable technology guidance within discretionary choices.",
+      "files": [],
+      "assertions": [
+        "Plain language wins over the profile jargon preference.",
+        "Correctness and authoritative project constraints remain outside and above this discretionary ordering."
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The project requires Google-style docstrings through an authoritative instruction; the user explicitly selects tony with NumPy docstrings.",
+      "expected_output": "Apply protocol conflict handling and persist the material contradiction for resolution.",
+      "files": [],
+      "assertions": [
+        "The style precedence list does not silently override the project instruction.",
+        "No blanket rewrite or routine plan approval is used to resolve the conflict."
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Documentation covers a TypeScript async public method, an HTML component and its CSS custom properties. No Python surface is relevant.",
+      "expected_output": "Load universal plus TypeScript, HTML and CSS only, covering the actual public documentation contracts.",
+      "files": [],
+      "assertions": [
+        "Async errors/examples, component structure/accessibility and token/theme/layout constraints are addressed where relevant.",
+        "No implementation redesign or unrelated style loading occurs."
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. All export work is committed on release-work. There is no main or master and git diff is empty. The development plan and history establish the pre-cycle baseline and later relevant commits.",
+      "expected_output": "Reconstruct and document the committed assignment from persisted intent and the evidenced range.",
+      "files": [],
+      "assertions": [
+        "No default branch or empty-diff shortcut is used.",
+        "The range and its evidence are persisted."
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The helper has committed, staged and unstaged versions. An untracked CLI calls it; the usage guide moved and an old API page was deleted. An unchanged README still links to the old page. An unrelated untracked note exists.",
+      "expected_output": "Assess all relevant layers and affected references, document actual saved behavior and preserve unrelated content.",
+      "files": [],
+      "assertions": [
+        "Dirty content identities are recorded separately from HEAD.",
+        "Moved/deleted references and affected unchanged docs are assessed.",
+        "No staging, discarding or adoption of unrelated notes occurs."
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The active request and development plan disagree about whether an old migration belongs to this cycle; repository evidence cannot establish the boundary.",
+      "expected_output": "Persist the material boundary gap and route it or ask the necessary blocking question.",
+      "files": [],
+      "assertions": [
+        "No HEAD-only assumption or arbitrary recent-spec selection is used.",
+        "Required documentation is not guessed into completion."
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. A commit says export is transactional and Developer marks the step complete. Inspection shows partial files are left behind on errors, contrary to the current contract.",
+      "expected_output": "Record the discrepancy and route IMPLEMENTATION to Developer without documenting it as contract-compliant.",
+      "files": [],
+      "assertions": [
+        "The commit message and completion label are treated as claims.",
+        "No code fix, weaker guarantee, or misleading transactional example is authored.",
+        "Evidence and remaining documentation work survive the failure handoff."
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. A Python docstring needs correcting, and a nearby type-ignore/tooling directive is also wrong. Changing the directive would affect checking behavior.",
+      "expected_output": "Correct documentation-only prose within ownership and route the directive defect to Developer.",
+      "files": [],
+      "assertions": [
+        "No runtime behavior, directive, test or executable logic is changed.",
+        "The documentation record distinguishes the two ownership boundaries."
+      ]
+    },
+    {
+      "id": 31,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Project AGENTS.md contains stale user-authored run instructions outside managed blocks. A managed STANDARDS block and installed protocol also appear stale.",
+      "expected_output": "Update relevant project guidance from evidence while preserving user intent; leave managed/runtime content with installer/protocol ownership.",
+      "files": [],
+      "assertions": [
+        "No installed protocol or installation metadata is repaired by Documenter.",
+        "Framework discrepancies are persisted without inventing a failure type.",
+        "Material instruction conflicts use the canonical protocol rules."
+      ]
+    },
+    {
+      "id": 32,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. An API reference is generated from Python docstrings. Its rendering is wrong because of stale docstrings; the existing generator works and its output is within the editing boundary.",
+      "expected_output": "Update owned documentation source and run the established generator and appropriate checks.",
+      "files": [],
+      "assertions": [
+        "Generated output is not hand patched.",
+        "Generator configuration and implementation preferences are not changed.",
+        "Actual generation results and limits are recorded."
+      ]
+    },
+    {
+      "id": 33,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The user selected FILE docs/generated/api.md only, but repository rules require modifying source docstrings and regeneration outside that file.",
+      "expected_output": "Persist the generated-workflow and editing-boundary conflict and request the necessary scope of editing.",
+      "files": [],
+      "assertions": [
+        "The generated output is not patched by hand to evade the boundary.",
+        "No source edit occurs outside authorization.",
+        "Full completion is withheld."
+      ]
+    },
+    {
+      "id": 34,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Two discrepancies are established: a scope contradiction about output format and an independent formal verification gap. Design, review and synchronization records also contain claims requiring later reassessment.",
+      "expected_output": "Persist every known discrepancy and owner before routing the first needed correction.",
+      "files": [],
+      "assertions": [
+        "The scope contradiction routes SCOPING and the formal gap remains assigned to Tester/VERIFICATION.",
+        "No scope checkbox, test, design, review finding or synchronization record is edited.",
+        "Other unresolved work is not lost when the recovery frame is pushed."
+      ]
+    },
+    {
+      "id": 35,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The documentation build passes, but a CLI example was never executed and the current documentation criterion explicitly requires evidence that it runs.",
+      "expected_output": "Record the successful build with its limits and keep the required example check pending.",
+      "files": [],
+      "assertions": [
+        "A build is not claimed as proof of CLI runtime behavior.",
+        "No fabricated execution or Tester-owned evidence is written.",
+        "The gate remains incomplete until sufficient required evidence exists."
+      ]
+    },
+    {
+      "id": 36,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. A link check cannot start because its executable is missing. All inspected local links appear valid, but required published-link validation has not occurred.",
+      "expected_output": "Record the attempted command, actual error and remaining evidence gap; block completion if required evidence is missing.",
+      "files": [],
+      "assertions": [
+        "The environment failure is not automatically blamed on implementation.",
+        "No unexecuted pass or replacement tooling change is invented."
+      ]
+    },
+    {
+      "id": 37,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The only required documentation criterion is an accurate prose description of unchanged flags. Source inspection and local reference checks fully establish it; a remote preview is unavailable and not needed for that criterion.",
+      "expected_output": "Record sufficient inspection evidence and the non-blocking preview limitation with its reason.",
+      "files": [],
+      "assertions": [
+        "No arbitrary requirement to execute every possible check is introduced.",
+        "A justified limitation alone does not block the gate."
+      ]
+    },
+    {
+      "id": 38,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. All required guides already accurately describe the actual behavior. Current contract, references, examples and applicable checks have been sufficiently assessed.",
+      "expected_output": "Persist an evidenced no-change outcome and apply the same completion gate.",
+      "files": [],
+      "assertions": [
+        "No cosmetic rewrite, duplicate release entry or manufactured discrepancy is created.",
+        "File existence alone is not the evidence for no-change completion."
+      ]
+    },
+    {
+      "id": 39,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. A COMPLETE record was saved but the state transition was interrupted. All inputs and sufficient evidence remain identical, and the saved record has no remaining work.",
+      "expected_output": "Verify continued applicability and perform only the missing legal handoff.",
+      "files": [],
+      "assertions": [
+        "No timestamp-only rewrite or duplicate record is required.",
+        "The COMPLETE label is checked against actual inputs before use."
+      ]
+    },
+    {
+      "id": 40,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. An IN_PROGRESS record has valid results for the guide, but the API signatures and dependency version changed while interrupted.",
+      "expected_output": "Reconcile changed inputs, invalidate affected examples/check conclusions and justify any retained evidence.",
+      "files": [],
+      "assertions": [
+        "Incomplete records receive freshness checks too.",
+        "Same HEAD or unchanged documentation text alone does not preserve evidence after behavior changes."
+      ]
+    },
+    {
+      "id": 41,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. A COMPLETE record supports AC-002, but Scoper retired AC-002 and added AC-009 requiring migration instructions. Source behavior is unchanged.",
+      "expected_output": "Reopen completion, reconcile the current acceptance inventory and document AC-009 work.",
+      "files": [],
+      "assertions": [
+        "Retired IDs are preserved as history and not reused or renumbered.",
+        "Unchanged code does not excuse missing current acceptance coverage.",
+        "No new local acceptance IDs or authoritative ledger is created."
+      ]
+    },
+    {
+      "id": 42,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. At the fixed documentation-record path there is an unmarked project essay. Elsewhere a moved record has DOCUMENTATION provenance for a different cycle.",
+      "expected_output": "Report the fixed-path collision and preserve both existing files.",
+      "files": [],
+      "assertions": [
+        "No adopting, relabeling, overwriting or silent alternate record path occurs.",
+        "Moved provenance retains the original cycle ownership."
+      ]
+    },
+    {
+      "id": 43,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The docs/documentation parent is a non-directory or symlink leading outside the safe project location.",
+      "expected_output": "Block dependent record creation and report the unsafe required location.",
+      "files": [],
+      "assertions": [
+        "The path is checked before writing.",
+        "No alternate location or unsafe overwrite bypasses the fixed-path rule."
+      ]
+    },
+    {
+      "id": 44,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Recovery has active Owner=DOCUMENTING, ResumeAt=REVIEWING_FINAL, RerunThrough=NONE for an incorrect API example. The correction is verified and all required documentation passes the gate; final Reviewer must reassess its open finding.",
+      "expected_output": "Complete the documentation gate and apply canonical RESUME to the interrupted final review.",
+      "files": [],
+      "assertions": [
+        "The unfinished review is not required to complete before Documenter can return its correction.",
+        "Reviewer finding status is left unchanged and reassessment is recorded as Reviewer-owned.",
+        "The final-review handoff requests the independent session and names FINAL_DELIVERABLE."
+      ]
+    },
+    {
+      "id": 45,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. An outer frame belongs to AUDITING with ResumeAt=TESTING. The active nested frame belongs to DOCUMENTING with ResumeAt=AUDITING. A documentation correction passes the full role gate without invalidating downstream work.",
+      "expected_output": "Pop only the nested frame and RESUME AUDITING rather than automatically forwarding to final review.",
+      "files": [],
+      "assertions": [
+        "The older frame and remaining obligations are preserved.",
+        "An active stack is not treated as an automatic role-gate blocker.",
+        "No Documenter-specific recovery algorithm replaces canonical routing."
+      ]
+    },
+    {
+      "id": 46,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Documenter is a downstream rerun. The active frame Owner=ARCHITECTING, ResumeAt=SYNCHRONIZING, RerunThrough=DOCUMENTING. All required documentation now passes.",
+      "expected_output": "Honor the rerun boundary and RESUME SYNCHRONIZING.",
+      "files": [],
+      "assertions": [
+        "Documenter does not plan a new resumption route as if it owned the frame.",
+        "Normal FINAL_DELIVERABLE forward handoff does not override the saved boundary."
+      ]
+    },
+    {
+      "id": 47,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. Recovery Owner=DOCUMENTING, ResumeAt=SYNCHRONIZING, RerunThrough=NONE. Corrected public documentation invalidates an already-completed final review. The full documentation gate passes.",
+      "expected_output": "Use canonical recovery to rerun final review before returning to Synchronizer.",
+      "files": [],
+      "assertions": [
+        "The frame remains with RerunThrough=REVIEWING_FINAL.",
+        "The final-review invocation includes independent-session, review-kind and active-frame instructions.",
+        "Synchronization and sign-off readiness are not claimed by Documenter."
+      ]
+    },
+    {
+      "id": 48,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. One Documenter-owned outstanding obligation is verified corrected, but another required guide remains incomplete and can be finished now and a separate Developer obligation is unresolved.",
+      "expected_output": "Remove only the verified documentation obligation and persist incomplete full-gate status.",
+      "files": [],
+      "assertions": [
+        "Correction is distinguished from Documenter completion.",
+        "The Developer obligation remains intact.",
+        "No forward handoff or corrective return occurs: no owned active frame exists and actionable documentation remains."
+      ]
+    },
+    {
+      "id": 49,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The record has a mistaken Documenter discrepancy about a flag. Current inspection establishes the flag was already documented correctly; a Reviewer finding on another issue remains open.",
+      "expected_output": "Withdraw the mistaken local discrepancy with evidence and preserve the separate review finding.",
+      "files": [],
+      "assertions": [
+        "No replacement defect is manufactured.",
+        "Disposition changes occur only in the Documenter record.",
+        "The complete gate is re-evaluated rather than inferred from withdrawal."
+      ]
+    },
+    {
+      "id": 50,
+      "prompt": "Invoke Documenter in STANDARD at DEVELOPING with a file argument and no control-plane rework request.",
+      "expected_output": "Identify Developer as current owner and leave Documenter-owned work unchanged.",
+      "files": [],
+      "assertions": [
+        "No documentation record or state transition is fabricated.",
+        "The file argument does not bypass state ownership."
+      ]
+    },
+    {
+      "id": 51,
+      "prompt": "Invoke Documenter in BROWNFIELD EXPEDITED at REVIEWING_IMPLEMENTATION. The user explicitly requires the full documentation guarantee before sign-off.",
+      "expected_output": "Apply authorized canonical promotion and hand off to Auditor without performing skipped documentation work.",
+      "files": [],
+      "assertions": [
+        "The same cycle and request are preserved with STANDARD/AUDITING and PROMOTE.",
+        "No scope or documentation completion is fabricated.",
+        "Unresolved expedited recovery obligations are preserved by the canonical promotion rules."
+      ]
+    },
+    {
+      "id": 52,
+      "prompt": "Invoke Documenter in EXPEDITED at AWAITING_USER_SIGNOFF. The user asks what documentation would add, without asking for promotion or rework.",
+      "expected_output": "Explain the omitted role without mutating user-owned state.",
+      "files": [],
+      "assertions": [
+        "No silent promotion or expedited documentation artifact is created.",
+        "No sign-off or fabricated omitted guarantee occurs."
+      ]
+    },
+    {
+      "id": 53,
+      "prompt": "Invoke Documenter with CycleMode=UNSET and Id/Request=UNSET at initial AUDITING; there is no initialized active request.",
+      "expected_output": "Identify the legal entry requirements and current owner without role-owned documentation work.",
+      "files": [],
+      "assertions": [
+        "No cycle, evidence or documentation assignment is inferred from existing files."
+      ]
+    },
+    {
+      "id": 54,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The user invoked both Documenter and final Reviewer together. Documenter completes its full gate in this documentation-authoring conversation.",
+      "expected_output": "Persist the legal final-review handoff and request a fresh independent chat before assessment.",
+      "files": [],
+      "assertions": [
+        "Explicit combined invocation does not permit formal review in prohibited authoring history.",
+        "Unknown model metadata is disclosed without invented rankings or a routine confirmation gate.",
+        "A meaningful commit suggestion, if any, precedes the active-client role invocation."
+      ]
+    },
+    {
+      "id": 55,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. The user changes the documentation request because a previously required migration guarantee is no longer wanted; changing the guide would redefine the completed scope.",
+      "expected_output": "Persist the changed request through canonical USER_REWORK and route to Scoper rather than silently weaken documentation acceptance.",
+      "files": [],
+      "assertions": [
+        "AC identity and wording stay Scoper-owned.",
+        "Existing recovery frames and remaining discrepancies survive the transition.",
+        "The requested change is not mislabeled as an agent-discovered failure."
+      ]
+    },
+    {
+      "id": 56,
+      "prompt": "Invoke Documenter. ProjectMode=BROWNFIELD, CycleMode=STANDARD, WorkflowState=DOCUMENTING, Active Work.Id=export-20260924-a7f3. Unless overridden, scope, architecture, relevant context, development, Tester verification and implementation review have matching provenance and current evidence; AC-001 covers CSV export behavior and AC-002 requires an accurate usage guide. Recovery and obligations are inactive, no user question is blocked, and editing is unrestricted. After successful doc checks, another process changes the described default value before the completion conclusion is saved.",
+      "expected_output": "Recheck current identities, reopen affected documentation/checks and withhold the stale conclusion.",
+      "files": [],
+      "assertions": [
+        "Pre-handoff evidence is tied to current content.",
+        "Record progress writes and legal state changes alone do not cause endless self-invalidation."
+      ]
+    },
+    {
+      "id": 57,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. Initial Auditor work found an incorrect setup command in project guidance outside managed blocks. The active frame has Owner=DOCUMENTING, From=AUDITING, ResumeAt=AUDITING, RerunThrough=NONE. The saved correction is verified against the actual project tooling. Scope, design, implementation, verification and review artifacts for the requested new export feature do not exist yet because those phases have not run. Its required usage guide must wait for that work. No completed downstream assessment is invalidated.",
+      "expected_output": "Use Documenter Corrective Return, persist the verified correction and future documentation dependencies, and RESUME AUDITING with the documentation record incomplete.",
+      "files": [],
+      "assertions": [
+        "Future artifacts and AC identifiers are not fabricated or required to verify the setup-command correction.",
+        "The record names the remaining guide, prerequisite owner work, required evidence and when to revisit it.",
+        "The active frame is popped using canonical recovery; no normal FINAL_DELIVERABLE handoff or COMPLETE label occurs."
+      ]
+    },
+    {
+      "id": 58,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. Developer is partway through the new export implementation and routed a materially incorrect existing setup guide to Documenter. The active frame has Owner=DOCUMENTING, ResumeAt=DEVELOPING, RerunThrough=NONE. The setup correction is saved and verified. Current AC-003 requires documenting the new export API, which is not implemented yet; its prerequisite is assigned to Developer in the saved plan. Testing and review have not run. No completed downstream work needs rerunning.",
+      "expected_output": "Return the verified setup correction to DEVELOPING while retaining AC-003 documentation work and incomplete status.",
+      "files": [],
+      "assertions": [
+        "The absence of future Tester and Reviewer artifacts does not cause a spurious failure handoff.",
+        "AC-003 remains unresolved with its Developer prerequisite and documentation resume point.",
+        "No implementation, plan, tests or other owner artifacts are changed by Documenter."
+      ]
+    },
+    {
+      "id": 59,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The oldest frame has Owner=ARCHITECTING, ResumeAt=DEVELOPING, RerunThrough=NONE for an unresolved export contract. The active nested frame has Owner=DOCUMENTING, ResumeAt=ARCHITECTING, RerunThrough=NONE for incorrect existing project guidance needed by Architect. The documentation correction is verified, but the required new API guide cannot be completed before Architect decides the contract and Developer implements it. Nothing completed downstream is invalidated by this correction.",
+      "expected_output": "Use the narrow return for the active documentation frame and RESUME ARCHITECTING, preserving the older frame and dependent guide work.",
+      "files": [],
+      "assertions": [
+        "Only the newest frame is popped and no frame is duplicated into an obligation.",
+        "The record stays incomplete and references the Architect/Developer prerequisites without making their decisions.",
+        "Neither final review nor sign-off readiness is claimed."
+      ]
+    },
+    {
+      "id": 60,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The active frame has Owner=DOCUMENTING, ResumeAt=DEVELOPING, RerunThrough=NONE. The only remaining cycle guide depends on unfinished Developer work. In GUIDED mode, Documenter offered the corrective setup edit and the user says done, but the actual saved file is unchanged.",
+      "expected_output": "Keep the corrective step pending and deny corrective return until the saved fix is inspected and verified.",
+      "files": [],
+      "assertions": [
+        "The user claim and supplied snippet do not satisfy correction evidence.",
+        "The frame and incomplete record remain, with the matching guided blocker persisted."
+      ]
+    },
+    {
+      "id": 61,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The active frame has Owner=DOCUMENTING, ResumeAt=DEVELOPING, RerunThrough=NONE. GUIDED mode previously offered a setup correction; the user applied it. Inspection and appropriate checks verify the saved result. The matching guided blocker is now resolved. The only remaining documentation depends on the unfinished new API already assigned to Developer; no completed downstream work is invalidated.",
+      "expected_output": "Persist the verified guided correction and dependencies, clear its resolved blocker, and RESUME DEVELOPING with incomplete documentation status.",
+      "files": [],
+      "assertions": [
+        "GUIDED uses the same corrective-return conditions as AUTONOMOUS and remains the persisted collaboration choice.",
+        "Future documentation is neither offered prematurely nor marked complete.",
+        "The evidence records inspected saved content and actual checks."
+      ]
+    },
+    {
+      "id": 62,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The active frame has Owner=DOCUMENTING, ResumeAt=AUDITING, RerunThrough=NONE. Its setup correction is verified. The new feature guide awaits future implementation, but an independent materially incorrect installation instruction is also known and can be corrected now.",
+      "expected_output": "Correct and verify the actionable documentation defect before considering the narrow return; persist all unresolved work.",
+      "files": [],
+      "assertions": [
+        "The independent defect is not disguised as a future dependency.",
+        "Passing the specific frame correction alone neither pops the frame nor passes the full gate."
+      ]
+    },
+    {
+      "id": 63,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The active frame has Owner=DOCUMENTING, ResumeAt=DEVELOPING, RerunThrough=NONE. The selected FILE target is docs/setup.md and its correction is verified. A required reference page outside the explicit editing boundary can already be completed from current behavior; another guide genuinely depends on unfinished implementation.",
+      "expected_output": "Persist the actionable out-of-target work and the required boundary decision instead of using corrective return.",
+      "files": [],
+      "assertions": [
+        "The genuine future dependency does not excuse the independent actionable page.",
+        "The editing boundary is preserved and BlockedOn is saved before asking.",
+        "The role does not mark the selected target as full documentation completion."
+      ]
+    },
+    {
+      "id": 64,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The active frame has Owner=DOCUMENTING, ResumeAt=AUDITING, RerunThrough=NONE. A setup correction was saved, but the required check establishing that the corrected command works cannot run in this environment. Other feature documentation legitimately awaits later implementation.",
+      "expected_output": "Record the missing correction evidence and block corrective return until sufficient verification exists.",
+      "files": [],
+      "assertions": [
+        "Unavailable proof of the correction is not treated as unfinished owner work elsewhere.",
+        "No check result, COMPLETE label, frame pop or forward handoff is invented."
+      ]
+    },
+    {
+      "id": 65,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. Recovery is inactive after a same-state DOCUMENTATION correction. That correction is verified, but required feature documentation depends on implementation that remains unfinished. The user has not authorized another control-plane transition.",
+      "expected_output": "Keep the full gate incomplete and do not invent a corrective-return route.",
+      "files": [],
+      "assertions": [
+        "No recovery frame or ResumeAt destination is fabricated.",
+        "Remaining dependencies stay persisted for normal failure/blocking handling."
+      ]
+    },
+    {
+      "id": 66,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. Documenter is a downstream rerun: the active frame has Owner=ARCHITECTING, ResumeAt=SYNCHRONIZING, RerunThrough=DOCUMENTING. A documentation correction is verified, but required documentation still lacks prerequisite behavior/evidence.",
+      "expected_output": "Withhold the rerun gate and handle the missing prerequisite through its owner; do not use Documenter Corrective Return.",
+      "files": [],
+      "assertions": [
+        "Documenter does not own this frame and cannot pop it on partial completion.",
+        "The existing frame and all remaining work are preserved."
+      ]
+    },
+    {
+      "id": 67,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The active frame has Owner=DOCUMENTING, ResumeAt=AWAITING_USER_SIGNOFF, RerunThrough=NONE. The named correction is verified, but the feature guide still depends on unfinished owner work.",
+      "expected_output": "Deny the narrow return to the user-owned state and retain the unresolved full-gate work.",
+      "files": [],
+      "assertions": [
+        "No sign-off readiness, normal forward completion or COMPLETE label occurs.",
+        "The owner dependencies are handled without bypassing Standard Cycle Completion."
+      ]
+    },
+    {
+      "id": 68,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. After an earlier valid corrective return, normal STANDARD work has reached DOCUMENTING again. The record is IN_PROGRESS with AC-003 documentation deferred until Developer finished the export API. Scope, design, implementation and owner evidence are now current; the API guide is still absent. Recovery is inactive.",
+      "expected_output": "Reconcile current inputs, complete and check the retained guide obligation, and use the full Documenter gate before independent final review.",
+      "files": [],
+      "assertions": [
+        "The earlier verified correction is not reused as full documentation completion.",
+        "Still-applicable correction evidence is retained with a reason; new guide evidence supports the same current AC-003.",
+        "Normal success persists REVIEWING_FINAL and requests FINAL_DELIVERABLE in a fresh independent session."
+      ]
+    },
+    {
+      "id": 69,
+      "prompt": "Invoke Documenter in an initialized BROWNFIELD STANDARD cycle at DOCUMENTING, Active Work.Id=export-20260924-a7f3. The current-cycle documentation record has valid DOCUMENTATION provenance and matching visible Cycle. Unless stated otherwise, collaboration is AUTONOMOUS, target is ACTIVE_CHANGE, user style is NONE, and there are no outstanding obligations, independent defects, or blocking user questions. The active frame has Owner=DOCUMENTING, ResumeAt=DEVELOPING, RerunThrough=NONE. A previously verified setup correction is ready for return and the remaining guide depends on unfinished Developer work. Before the handoff, inspection finds the setup command or its required tooling changed since verification.",
+      "expected_output": "Invalidate the unsupported correction evidence and reconcile the changed inputs before deciding whether return is allowed.",
+      "files": [],
+      "assertions": [
+        "A previous verified label cannot authorize a stale corrective return.",
+        "The frame and incomplete record remain until the saved correction has sufficient current evidence."
+      ]
+    }
+  ]
+}
