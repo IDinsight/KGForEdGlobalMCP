@@ -41,7 +41,7 @@ evidence-status, package-isolation, or generated-content rules.
 | `cross_framework_comparison`      | Exploratory evidence-grounded comparison across two to eight frameworks                                |
 
 All seven prompts are registered as generated-content workflows. The current prompt
-version is `1.1.0`.
+version is `1.2.0`.
 
 ## Rights gate
 

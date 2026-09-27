@@ -104,17 +104,23 @@ The result contains:
 
 Each retained candidate includes:
 
-- exact `node` source evidence;
+- `node`, the standard's `nodeId`, `statementCode`, and `description`; the complete
+  record is one `get_standard` call away;
 - local and normalized `facets`;
 - `retrievalStatus: retrieval_candidate`;
 - `selectionRank`;
 - `matchedLocalGradeLabels` and `matchedNormalizedGrades`;
 - one or more `discoveryMethods`;
-- optional originating `searchHit`; and
+- optional `searchHit`, the match evidence of the search hit that found it (matched
+  fields and terms, score, code evidence, warnings); and
 - compact bounded hierarchy `context`.
 
 The compact context reports ancestor and root-path completion independently and retains
-non-empty relationship-resolution statuses.
+non-empty relationship-resolution statuses. Its `rootPaths` are lists of node IDs from
+the framework root to the candidate. Every node those paths name appears once, for the
+whole result, in the top-level `contextNodes` table with its label, statement code,
+statement type, and source order. The relationship records along each path are one
+`get_standard_context` call away.
 
 ## Warning codes
 

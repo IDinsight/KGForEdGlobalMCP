@@ -211,13 +211,12 @@ contains:
 
 | Evidence          | Why it matters                                      |
 |-------------------|-----------------------------------------------------|
-| `node`            | Exact retained source item                          |
-| `packageIdentity` | Framework, snapshot, package, profile, and revision |
+| `node`            | Node ID, statement code, and source wording         |
+| `graphPackageId`  | Package, whose identity is in `selectedPackages`    |
 | `facets`          | Local and normalized grade/subject/type evidence    |
 | `matchedFields`   | Exact field values that matched                     |
 | `matchedTerms`    | Normalized terms responsible for the hit            |
 | `score`           | Deterministic algorithm and integer score           |
-| `retrievalMethod` | `text`, `code_exact`, or `code_prefix`              |
 | `warnings`        | Capability or source-data caveats                   |
 | `codeMatch`       | Code evidence for code modes only                   |
 

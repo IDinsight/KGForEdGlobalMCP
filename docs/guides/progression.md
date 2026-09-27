@@ -221,12 +221,16 @@ For each candidate, inspect:
 | Evidence                       | Meaning                                                    |
 |--------------------------------|------------------------------------------------------------|
 | `context.isComplete`           | Aggregate context completion state                         |
-| `context.rootPaths`            | Bounded framework-root-to-candidate paths                  |
+| `context.rootPaths`            | Framework-root-to-candidate paths as node-ID lists         |
 | `context.relationshipStatuses` | Non-empty retained resolution statuses                     |
 | `matchedLocalGradeLabels`      | Requested local scopes matched by the candidate            |
 | `matchedNormalizedGrades`      | Requested normalized scopes matched by the candidate       |
 | `selectionRank`                | Position after the deterministic selection policy          |
-| `searchHit`                    | Direct search evidence when the candidate came from search |
+| `searchHit`                    | Match evidence when the candidate came from search         |
+
+The nodes those paths name are listed once for the whole result in `contextNodes`, with
+their labels, codes, and statement types, so shared ancestors are not repeated per
+candidate.
 
 If context is incomplete, the tool records `context_incomplete` rather than presenting a
 partial branch as complete.

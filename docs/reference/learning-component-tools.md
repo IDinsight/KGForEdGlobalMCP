@@ -79,22 +79,28 @@ package rather than the node.
 
 ### Result fields
 
-The result contains `effectiveScope`, `page`, and `selectedSnapshots`.
+The result contains `effectiveScope`, `page`, and `selectedPackages`, the identities of
+the packages searched. The page states `mode`, which is the retrieval method of every
+hit, and `epistemicStatus: retrieval_candidate` once.
 
 Each hit in `page.hits` reports:
 
-- `node`, the exact learning component;
-- `packageIdentity`, `retrievalMethod`, `epistemicStatus`, and `score`;
-- `matchedFields` and `matchedTerms`;
-- `matchedCodes`, the supported standards that satisfied the query, present only for the
-  supported-code modes; and
+- `node`, the component's `nodeId`, `description`, and `tags`; its identity key,
+  attribution, licence, and hierarchy placements are one `get_learning_component` call
+  away;
+- `graphPackageId`, the package the component belongs to, whose full identity is in
+  `selectedPackages`;
+- `score`, `matchedFields`, and `matchedTerms`;
+- `matchedCodes`, the `nodeId` and `statementCode` of each supported standard whose code
+  satisfied the query, present only for the supported-code modes; and
 - `supportedStandards`, **every** standard the component supports.
 
-Each entry in `matchedCodes` and `supportedStandards` carries `nodeId`, `statementCode`,
-`description`, `gradeLevels`, and `supportConfidence`. Grade and description are
-projected from the supported standard, not stored on the component, so a component
-supporting standards in several grades reports each grade against the standard that
-declares it, and an uncoded standard is readable without a `get_standard` call:
+Each entry in `supportedStandards` carries `nodeId`, `statementCode`, `description`,
+`gradeLevels`, and `supportConfidence`; a `matchedCodes` entry points at one of them by
+`nodeId`. Grade and description are projected from the supported standard, not stored
+on the component, so a component supporting standards in several grades reports each
+grade against the standard that declares it, and an uncoded standard is readable
+without a `get_standard` call:
 
 ```json
 "supportedStandards": [
@@ -112,9 +118,10 @@ is never flattened into a single-standard result.
 
 !!! tip "Reading a bridge"
     When `supportedStandards` is longer than `matchedCodes`, the component also serves
-    standards your query did not match — frequently in another grade. Of 230 components
-    in the Ghana mathematics package, 37 support more than one standard and 34 of those
-    span more than one grade.
+    standards your query did not match, frequently in another grade; the text result
+    marks the standards that did match `matched`. Of 230 components in the Ghana
+    mathematics package, 37 support more than one standard and 34 of those span more
+    than one grade.
 
 ### Mode semantics
 
@@ -152,18 +159,27 @@ CASE UUID or URI form.
 
 ### Result
 
+`package` identifies the package the record comes from and carries its rights:
+`packageIdentity` and `rights`. The package's counts, capabilities, and profile facets
+are reported by `get_framework` and `get_capabilities`; build metadata and the artifact
+table are in the `package_manifest` resource. The same holds for every tool on this page.
+
 `node`, `package`, `sourceMetadata`, and `placements`. Each placement gives the
 supported standard's `nodeId`, `statementCode`, `description`, `gradeLevels`,
-`supportConfidence`, and
-a labelled `hierarchyPath` from the framework root down to the standard.
+`supportConfidence`, and `hierarchyPaths`: every root path from the framework root down
+to the standard. Each step carries the node's `nodeId`, `statementCode`, and
+`description`. A standard with more than one parent sits on more than one root path, and
+each path is reported separately. The text result prints each path as labels, with the
+statement code standing for a coded node, followed by its node IDs in the same order:
 
 ```text
 Mathematics Curriculum for Primary Schools (Basic 4 - 6) > BASIC 5 >
 Strand 2. ALGEBRA > Sub-Strand 3: Variables and Equations > B5.2.3.1 > B5.2.3.1.3
 ```
 
-The path is a list of labels, not embedded node records, which keeps a multi-standard
-component small enough to read.
+The steps are labels and identifiers, not embedded node records, which keeps a
+multi-standard component small enough to read; any ancestor is one `get_standard` call
+away.
 
 ## `get_learning_component_context`
 
