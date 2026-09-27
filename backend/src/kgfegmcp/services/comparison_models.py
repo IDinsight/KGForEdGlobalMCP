@@ -61,8 +61,7 @@ from kgfegmcp.search.models import (
 )
 from kgfegmcp.services.models import (
     CatalogFilterValue,
-    GetStandardContextResult,
-    GetStandardResult,
+    HierarchyPathStep,
 )
 
 
@@ -207,19 +206,22 @@ class ComparisonWarning(FrozenSchema):
 
 
 class ComparisonMatchEvidence(FrozenSchema):
-    """Return one exact retrieval candidate with optional bounded hierarchy context."""
+    """Return one exact retrieval candidate with optional labelled hierarchy paths.
 
-    context: GetStandardContextResult | None = None
+    The complete standard record and its full context are one ``get_standard`` or
+    ``get_standard_context`` call away by the hit's node ID.
+    """
+
     context_complete: bool | None = None
+    hierarchy_paths: tuple[tuple[HierarchyPathStep, ...], ...] | None = None
     retrieval_status: Literal[  # type: ignore[valid-type]
         EpistemicStatus.RETRIEVAL_CANDIDATE
     ]
     search_hit: SearchHit
-    standard: GetStandardResult
 
     @model_validator(mode="after")
     def validate_evidence_identity(self) -> Self:
-        """Require search, standard, and optional context evidence to agree exactly.
+        """Require paths and completion evidence together, each path ending at the hit.
 
         Returns
         -------
@@ -229,35 +231,17 @@ class ComparisonMatchEvidence(FrozenSchema):
         Raises
         ------
         ValueError
-            If node, package, context, or completion evidence disagrees.
+            If paths and completion evidence disagree or a path ends elsewhere.
         """
 
-        standard_identity = self.standard.package.package_identity
-
-        if self.search_hit.node != self.standard.node:
-            raise ValueError("Search and standard evidence must contain the same node.")
-
-        if self.search_hit.package_identity != standard_identity:
-            raise ValueError("Search and standard package identities must agree.")
-
-        if self.context is None:
-            if self.context_complete is not None:
-                raise ValueError(
-                    "context_complete must be absent when context was not requested."
-                )
-            return self
-
-        if self.context.standard != self.standard:
-            raise ValueError("Context and standard evidence must agree exactly.")
-
-        expected_complete = self.context.ancestors.is_complete and (
-            self.context.root_paths is None or self.context.root_paths.is_complete
-        )
-
-        if self.context_complete is not expected_complete:
+        if (self.hierarchy_paths is None) != (self.context_complete is None):
             raise ValueError(
-                "context_complete must match traversal completion evidence."
+                "hierarchy_paths and context_complete must be present together."
             )
+
+        for path in self.hierarchy_paths or ():
+            if not path or path[-1].node_id != self.search_hit.node.node_id:
+                raise ValueError("Every hierarchy path must end at the matched node.")
 
         return self
 
@@ -308,36 +292,8 @@ class FrameworkComparisonSection(FrozenSchema):
             raise ValueError("has_more and next_cursor must agree.")
 
         for match in self.matches:
-            identity = match.search_hit.package_identity
-
-            if (
-                identity.framework_id != self.framework_id
-                or identity.graph_package_id != self.graph_package_id
-                or identity.graph_type is not self.graph_type
-                or identity.profile_id != self.profile_id
-                or identity.profile_sha256 != self.profile_sha256
-                or identity.profile_version != self.profile_version
-                or identity.snapshot_id != self.snapshot_id
-            ):
+            if match.search_hit.graph_package_id != self.graph_package_id:
                 raise ValueError("Comparison matches must remain package-local.")
-
-            if match.standard.package.rights != self.rights:
-                raise ValueError(
-                    "Comparison rights evidence must remain section-local."
-                )
-
-            if (
-                match.standard.package.profile_facets.normalized_grades
-                != self.normalized_grades
-            ):
-                raise ValueError(
-                    "Comparison normalized-grade evidence must remain section-local."
-                )
-
-            if match.standard.source_metadata != self.source_metadata:
-                raise ValueError(
-                    "Comparison source metadata must remain section-local."
-                )
 
         if self.local_grades_or_stages != self.source_metadata.local_grades_or_stages:
             raise ValueError(

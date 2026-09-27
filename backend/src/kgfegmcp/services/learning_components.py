@@ -8,6 +8,7 @@ and from a standard to the components supporting it.
 
 # Standard Library
 from dataclasses import dataclass
+from typing import Final
 
 # Package Library
 from kgfegmcp.catalog.service import CatalogService
@@ -15,7 +16,6 @@ from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import GraphPackageId, NodeId
 from kgfegmcp.errors import GraphNodeNotFoundError, LearningComponentNotFoundError
 from kgfegmcp.graph.models import (
-    GraphNode,
     GraphRelationship,
     LearningComponentNode,
     StandardNode,
@@ -32,7 +32,11 @@ from kgfegmcp.search.models import (
     LearningComponentTextSearchQuery,
 )
 from kgfegmcp.search.service import SearchService
-from kgfegmcp.services.frameworks import FrameworkService, build_search_scope
+from kgfegmcp.services.frameworks import (
+    FrameworkService,
+    build_search_scope,
+    selected_package_identities,
+)
 from kgfegmcp.services.models import (
     CaseUuidStandardIdentifier,
     GetLearningComponentContextRequest,
@@ -51,7 +55,12 @@ from kgfegmcp.services.models import (
     SupportingLearningComponent,
     TagLearningComponentsSearchRequest,
     TextLearningComponentsSearchRequest,
+    hierarchy_path_steps,
+    package_reference,
 )
+
+_PLACEMENT_MAX_PATH_NODE_OCCURRENCES: Final[int] = 8_192
+_PLACEMENT_MAX_PATHS: Final[int] = 128
 
 
 @dataclass(frozen=True, slots=True)
@@ -103,7 +112,10 @@ class LearningComponentService:
         store: GraphStore,
         supported: tuple[SupportedStandard, ...],
     ) -> tuple[SupportedStandardPlacement, ...]:
-        """Locate each supported standard by label rather than by ancestor record.
+        """Locate each supported standard on every root path, by labelled steps.
+
+        A standard with several parents sits on several root paths; each is reported
+        separately so no path interleaves two chains.
 
         Parameters
         ----------
@@ -124,18 +136,20 @@ class LearningComponentService:
         placements: list[SupportedStandardPlacement] = []
 
         for entry in supported:
-            ancestors = traversal.ancestors(
+            root_paths = traversal.all_root_paths(
                 max_depth=ancestor_depth,
-                max_nodes=ancestor_depth + 1,
+                max_path_node_occurrences=_PLACEMENT_MAX_PATH_NODE_OCCURRENCES,
+                max_paths=_PLACEMENT_MAX_PATHS,
                 node_id=entry.standard.node_id,
                 relationship_type=store.hierarchy_relationship_type,
             )
-            ordered = sorted(ancestors.nodes, key=lambda item: -item.depth)
             placements.append(
                 SupportedStandardPlacement(
                     description=entry.standard.description,
                     grade_levels=entry.standard.grade_level or (),
-                    hierarchy_path=tuple(_node_label(item.node) for item in ordered),
+                    hierarchy_paths=tuple(
+                        hierarchy_path_steps(path) for path in root_paths.paths
+                    ),
                     node_id=entry.standard.node_id,
                     statement_code=entry.standard.statement_code,
                     support_confidence=entry.relationship.support_confidence,
@@ -238,7 +252,9 @@ class LearningComponentService:
         return SearchLearningComponentsResult(
             effective_scope=scope,
             page=self.search_service.search_learning_components(query),
-            selected_snapshots=selected_snapshots,
+            selected_packages=selected_package_identities(
+                selected_snapshots, graph_type=GraphType.ACADEMIC_STANDARDS
+            ),
         )
 
     def get_learning_component(
@@ -291,7 +307,7 @@ class LearningComponentService:
         )
         return GetLearningComponentResult(
             node=node,
-            package=package,
+            package=package_reference(package),
             placements=self._placements(
                 ancestor_depth=request.ancestor_depth,
                 store=store,
@@ -354,7 +370,7 @@ class LearningComponentService:
         supported = self._supported_standards(component_id=node.node_id, store=store)
         return GetLearningComponentContextResult(
             node=node,
-            package=package,
+            package=package_reference(package),
             placements=self._placements(
                 ancestor_depth=request.ancestor_depth, store=store, supported=supported
             ),
@@ -462,29 +478,7 @@ class LearningComponentService:
 
         return GetLearningComponentsForStandardResult(
             components=tuple(components),
-            package=package,
+            package=package_reference(package),
             source_metadata=snapshot.source_metadata,
             standard=standard,
         )
-
-
-def _node_label(node: GraphNode) -> str:
-    """Return one short human-readable label for a node in a hierarchy path.
-
-    Parameters
-    ----------
-    node
-        Decoded framework, framework-item, or learning-component node.
-
-    Returns
-    -------
-    str
-        Statement code when present, otherwise the node's description or name.
-    """
-
-    statement_code = getattr(node, "statement_code", None)
-
-    if statement_code:
-        return str(statement_code)
-
-    return str(getattr(node, "description", None) or getattr(node, "name", "") or "")

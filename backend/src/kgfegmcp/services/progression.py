@@ -24,13 +24,7 @@ from kgfegmcp.catalog.service import CatalogService
 from kgfegmcp.domain.enums import EpistemicStatus, GraphType, NormalizedStatementType
 from kgfegmcp.domain.identifiers import NodeId
 from kgfegmcp.errors import CapabilityUnavailableError
-from kgfegmcp.graph.models import (
-    FrameworkNode,
-    GraphNodeRecord,
-    GraphRelationship,
-    RootPath,
-    StandardNode,
-)
+from kgfegmcp.graph.models import FrameworkNode, GraphNodeRecord, StandardNode
 from kgfegmcp.search.models import (
     SearchFacetEvidence,
     SearchHit,
@@ -38,6 +32,7 @@ from kgfegmcp.search.models import (
     TextMatchMode,
     TextOperator,
     TokenTextMatch,
+    search_hit_node,
 )
 from kgfegmcp.search.normalizers import normalize_lexical_text
 from kgfegmcp.services.models import (
@@ -48,6 +43,7 @@ from kgfegmcp.services.models import (
     GetStandardRequest,
     NodeIdStandardIdentifier,
     TextStandardsSearchRequest,
+    package_reference,
 )
 from kgfegmcp.services.progression_models import (
     CollectProgressionEvidenceRequest,
@@ -58,14 +54,13 @@ from kgfegmcp.services.progression_models import (
     ProgressionCandidateSelectionPolicy,
     ProgressionContextNodeEvidence,
     ProgressionContextNodeKind,
-    ProgressionContextRelationshipEvidence,
     ProgressionEvidenceFocusMode,
     ProgressionEvidenceRequestSummary,
     ProgressionEvidenceWarning,
     ProgressionEvidenceWarningCode,
-    ProgressionRootPathEvidence,
     ProgressionScopeCoverage,
     ProgressionScopeKind,
+    ProgressionSearchEvidence,
 )
 from kgfegmcp.services.standards import StandardsService
 
@@ -102,6 +97,29 @@ class _DiscoveryState:
     candidates: dict[NodeId, _CandidateRecord] = field(default_factory=dict)
     discovery_complete: bool = True
     warnings: list[ProgressionEvidenceWarning] = field(default_factory=list)
+
+
+def _search_evidence(hit: SearchHit) -> ProgressionSearchEvidence:
+    """Keep the match evidence of the search hit that discovered one candidate.
+
+    Parameters
+    ----------
+    hit
+        Exact package-local search hit.
+
+    Returns
+    -------
+    ProgressionSearchEvidence
+        Match fields, terms, score, code evidence, and warnings of the hit.
+    """
+
+    return ProgressionSearchEvidence(
+        code_match=hit.code_match,
+        matched_fields=hit.matched_fields,
+        matched_terms=hit.matched_terms,
+        score=hit.score,
+        warnings=hit.warnings,
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -187,7 +205,7 @@ class ProgressionEvidenceService:
             for candidate in ranked_candidates
             if candidate.node.node_id not in retained_node_ids
         )
-        retained_candidates = tuple(
+        built_candidates = tuple(
             self._build_candidate_evidence(
                 candidate=candidate,
                 package=package,
@@ -197,6 +215,14 @@ class ProgressionEvidenceService:
                 warnings=discovery.warnings,
             )
             for selection_rank, candidate in enumerate(retained_records, start=1)
+        )
+        retained_candidates = tuple(evidence for evidence, _nodes in built_candidates)
+        context_nodes = tuple(
+            {
+                node.node_id: node
+                for _evidence, nodes in built_candidates
+                for node in nodes
+            }.values()
         )
 
         if not ranked_candidates:
@@ -231,13 +257,14 @@ class ProgressionEvidenceService:
         )
         return CollectProgressionEvidenceResult(
             candidate_limit_applied=(len(ranked_candidates) > request.candidate_limit),
+            context_nodes=context_nodes,
             discovered_candidate_count=len(ranked_candidates),
             discovery_complete=discovery.discovery_complete,
             excluded_candidate_count=len(excluded_records),
             excluded_candidate_node_ids=tuple(
                 candidate.node.node_id for candidate in excluded_records
             ),
-            package=package,
+            package=package_reference(package),
             request=request_summary,
             retained_candidate_count=len(retained_candidates),
             retained_candidates=retained_candidates,
@@ -381,7 +408,9 @@ class ProgressionEvidenceService:
         selection_rank: int,
         snapshot: CatalogFrameworkSnapshot,
         warnings: list[ProgressionEvidenceWarning],
-    ) -> ProgressionCandidateEvidence:
+    ) -> tuple[
+        ProgressionCandidateEvidence, tuple[ProgressionContextNodeEvidence, ...]
+    ]:
         """Retrieve exact source and hierarchy evidence for one retained candidate.
 
         Parameters
@@ -401,9 +430,9 @@ class ProgressionEvidenceService:
 
         Returns
         -------
-        ProgressionCandidateEvidence
-            Exact standard, complete bounded context, discovery methods, scope matches,
-            and optional direct search evidence.
+        tuple[ProgressionCandidateEvidence, tuple[ProgressionContextNodeEvidence, ...]]
+            Candidate evidence whose root paths are node-ID lists, and the compact
+            node evidence those paths name, for the result's shared node table.
         """
 
         standard = self.standards_service.get_standard(
@@ -454,7 +483,7 @@ class ProgressionEvidenceService:
                 )
             )
 
-        return ProgressionCandidateEvidence(
+        evidence = ProgressionCandidateEvidence(
             context=ProgressionCandidateContextEvidence(
                 ancestor_traversal_complete=context.ancestors.is_complete,
                 ancestor_truncation_reason=context.ancestors.truncation_reason,
@@ -464,7 +493,8 @@ class ProgressionEvidenceService:
                 relationship_statuses=context.relationship_statuses,
                 relationship_type=root_paths.relationship_type,
                 root_paths=tuple(
-                    self._compact_root_path(path=path) for path in root_paths.paths
+                    tuple(node.node_id for node in path.nodes)
+                    for path in root_paths.paths
                 ),
                 root_paths_complete=root_paths.is_complete,
                 root_paths_truncation_reason=root_paths.truncation_reason,
@@ -486,11 +516,21 @@ class ProgressionEvidenceService:
                 for value in request.normalized_grades
                 if value in candidate.facets.normalized_grades
             ),
-            node=standard.node,
+            node=search_hit_node(standard.node),
             retrieval_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
-            search_hit=candidate.search_hit,
+            search_hit=(
+                _search_evidence(candidate.search_hit)
+                if candidate.search_hit is not None
+                else None
+            ),
             selection_rank=selection_rank,
         )
+        path_nodes = tuple(
+            self._compact_context_node(node)
+            for path in root_paths.paths
+            for node in path.nodes
+        )
+        return evidence, path_nodes
 
     @staticmethod
     def _compact_context_node(node: GraphNodeRecord) -> ProgressionContextNodeEvidence:
@@ -526,55 +566,6 @@ class ProgressionEvidenceService:
             source_export_order=node.source_export_order,
             statement_code=node.statement_code,
             statement_type=node.statement_type,
-        )
-
-    @staticmethod
-    def _compact_context_relationship(
-        relationship: GraphRelationship,
-    ) -> ProgressionContextRelationshipEvidence:
-        """Return one compact exact relationship reference for hierarchy evidence.
-
-        Parameters
-        ----------
-        relationship
-            Exact authored relationship from a validated root path.
-
-        Returns
-        -------
-        ProgressionContextRelationshipEvidence
-            Essential relationship identity, endpoints, order, and status.
-        """
-
-        return ProgressionContextRelationshipEvidence(
-            label=relationship.label,
-            relationship_id=relationship.relationship_id,
-            resolution_status=relationship.resolution_status,
-            source_export_order=relationship.source_export_order,
-            source_node_id=relationship.source_node_id,
-            target_node_id=relationship.target_node_id,
-        )
-
-    @classmethod
-    def _compact_root_path(cls, path: RootPath) -> ProgressionRootPathEvidence:
-        """Return one compact exact root path without repeating raw graph properties.
-
-        Parameters
-        ----------
-        path
-            Validated complete framework-root-to-candidate path.
-
-        Returns
-        -------
-        ProgressionRootPathEvidence
-            Compact node and relationship evidence in source direction.
-        """
-
-        return ProgressionRootPathEvidence(
-            nodes=tuple(cls._compact_context_node(node) for node in path.nodes),
-            relationships=tuple(
-                cls._compact_context_relationship(relationship)
-                for relationship in path.relationships
-            ),
         )
 
     @staticmethod
@@ -821,6 +812,42 @@ class ProgressionEvidenceService:
         )
         return local_matches and normalized_matches
 
+    def _standard_node(
+        self, *, node_id: NodeId, package: CatalogGraphPackage
+    ) -> StandardNode:
+        """Return the exact standard node behind one search hit.
+
+        Parameters
+        ----------
+        node_id
+            Exact outer node identifier reported by the hit.
+        package
+            Exact accepted Academic Standards package that produced the hit.
+
+        Returns
+        -------
+        StandardNode
+            Complete retained node record.
+
+        Raises
+        ------
+        ValueError
+            If the identifier does not select a standard node.
+        """
+
+        identity = package.package_identity
+        store = self.catalog_service.get_graph_store(
+            framework_id=identity.framework_id,
+            graph_type=identity.graph_type,
+            snapshot_id=identity.snapshot_id,
+        )
+        node = store.get_node_by_id(node_id).node
+
+        if not isinstance(node, StandardNode):
+            raise ValueError(f"Search hit {node_id} does not select a standard node.")
+
+        return node
+
     def _process_search_hit(
         self,
         *,
@@ -852,7 +879,7 @@ class ProgressionEvidenceService:
             Mutable discovery accumulator owned by the current service call.
         """
 
-        node = hit.node
+        node = self._standard_node(node_id=hit.node.node_id, package=package)
 
         if node.normalized_statement_type is NormalizedStatementType.STANDARD_GROUPING:
             self._expand_grouping(
@@ -939,7 +966,9 @@ class ProgressionEvidenceService:
             anchors: list[StandardNode] = []
 
             for discovery_index, hit in enumerate(result.page.hits):
-                anchors.append(hit.node)
+                anchors.append(
+                    self._standard_node(node_id=hit.node.node_id, package=package)
+                )
                 self._process_search_hit(
                     discovery_index=discovery_index,
                     discovery_method=(ProgressionCandidateDiscoveryMethod.EXACT_ANCHOR),

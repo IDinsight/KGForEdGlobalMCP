@@ -17,6 +17,7 @@ import json
 import logging
 
 from collections.abc import Mapping
+from dataclasses import dataclass
 from typing import Any
 
 # Third Party Library
@@ -29,7 +30,7 @@ from kgfegmcp.bootstrap import AppState
 from kgfegmcp.catalog.models import CatalogGraphPackage
 from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
 from kgfegmcp.errors import KGFEGMCPError
-from kgfegmcp.graph.models import StandardNode
+from kgfegmcp.graph.models import GraphPackageIdentity, StandardNode
 from kgfegmcp.resources.models import ResourceKind
 from kgfegmcp.resources.uri import (
     CATALOG_URI,
@@ -41,6 +42,7 @@ from kgfegmcp.resources.uri import (
     validation_uri,
 )
 from kgfegmcp.schemas import FrozenSchema
+from kgfegmcp.search.models import SearchMatchedField, SearchScore, SearchWarning
 
 _LOGGER = logging.getLogger("fastmcp.kgfegmcp.mcp.tools")
 
@@ -90,8 +92,36 @@ def build_continuation_text(payload: Mapping[str, object]) -> str:
         ensure_ascii=True, obj=payload, separators=(",", ":"), sort_keys=True
     )
     return (
-        f"MCP continuation data. Cursor values are opaque; pass them back "
-        f"unchanged:\n{serialized}"
+        f"MCP continuation data. Submit each nextRequest unchanged to the "
+        f"continuationTool; cursor values are opaque:\n{serialized}"
+    )
+
+
+def catalog_package(
+    identity: GraphPackageIdentity, state: AppState
+) -> CatalogGraphPackage:
+    """Return the accepted catalog package a result names.
+
+    Results carry only a package's identity and rights; resource-link policy also
+    needs its capabilities, so the adapter reads the accepted package once.
+
+    Parameters
+    ----------
+    identity
+        Exact graph-package identity reported by a result.
+    state
+        Immutable application state created by the FastMCP lifespan.
+
+    Returns
+    -------
+    CatalogGraphPackage
+        The accepted package with capabilities, counts, and rights.
+    """
+
+    return state.catalog_service.get_graph_package(
+        framework_id=identity.framework_id,
+        graph_type=identity.graph_type,
+        snapshot_id=identity.snapshot_id,
     )
 
 
@@ -102,12 +132,12 @@ def build_request_continuation_text(
     next_cursor: str | None,
     request: FrozenSchema,
     tool_name: str,
-) -> str:
-    """Build exact-request continuation guidance for one paginated MCP tool.
+) -> str | None:
+    """Build model-visible replay data for the next page of a paginated result.
 
-    The returned ``nextRequest`` is a complete model-visible replay request with only
-    the opaque cursor replaced. All other request fields are identified as immutable so
-    a client does not reconstruct or alter cursor-bound pagination semantics.
+    The returned ``nextRequest`` is the complete replay request with only the opaque
+    cursor replaced. Fields left at their defaults are omitted because the tool fills
+    them identically, so the replayed request selects exactly the same page sequence.
 
     Parameters
     ----------
@@ -124,8 +154,9 @@ def build_request_continuation_text(
 
     Returns
     -------
-    str
-        Stable instructions and compact JSON containing an exact ``nextRequest``.
+    str | None
+        Instructions and compact JSON containing ``nextRequest``, or ``None`` on the
+        last page.
 
     Raises
     ------
@@ -136,40 +167,180 @@ def build_request_continuation_text(
     if has_more != (next_cursor is not None):
         raise ValueError("has_more and next_cursor must agree.")
 
-    current_request = request.model_dump(by_alias=True, mode="json")
-
-    if cursor_field not in current_request:
+    if cursor_field not in request.model_dump(by_alias=True, mode="json"):
         raise ValueError(
             f"The continuation request does not define cursor field {cursor_field!r}."
         )
 
-    immutable_fields = sorted(
-        field_name for field_name in current_request if field_name != cursor_field
+    if next_cursor is None:
+        return None
+
+    next_request: dict[str, Any] = request.model_dump(
+        by_alias=True, exclude_defaults=True, mode="json"
     )
-    next_request: dict[str, Any] | None = None
-
-    if next_cursor is not None:
-        next_request = dict(current_request)
-        next_request[cursor_field] = next_cursor
-
-    payload: dict[str, object] = {
-        "continuationPolicy": "repeat_exact_request",
-        "continuationTool": tool_name,
-        "cursorField": cursor_field,
-        "hasMore": has_more,
-        "immutableFields": immutable_fields,
-        "mutableFields": [cursor_field],
-        "nextCursor": next_cursor,
-        "nextRequest": next_request,
-    }
+    next_request[cursor_field] = next_cursor
     serialized = json.dumps(
-        ensure_ascii=True, obj=payload, separators=(",", ":"), sort_keys=True
+        ensure_ascii=True,
+        obj={"continuationTool": tool_name, "nextRequest": next_request},
+        separators=(",", ":"),
+        sort_keys=True,
     )
     return (
-        f"MCP continuation data. When hasMore is true, submit nextRequest "
-        f"unchanged. Do not alter any immutable field; cursor values are opaque:\n"
-        f"{serialized}"
+        f"MCP continuation data. Submit nextRequest unchanged as the next "
+        f"{tool_name} request; only its opaque cursor differs:\n{serialized}"
     )
+
+
+@dataclass(frozen=True, slots=True)
+class SharedHitLines:
+    """Carry the hit lines a search page states once instead of on every hit.
+
+    A line that differs between hits is ``None`` here and is printed per hit.
+    """
+
+    match: str | None
+    multi_package: bool
+    score: str | None
+    subject: str | None = None
+
+
+def shared_line(lines: tuple[str, ...]) -> str | None:
+    """Return the one rendered line every hit shares.
+
+    Parameters
+    ----------
+    lines
+        One rendered line per hit, in page order.
+
+    Returns
+    -------
+    str | None
+        The shared line, or ``None`` when hits differ or the page is empty.
+    """
+
+    distinct = tuple(dict.fromkeys(lines))
+    return distinct[0] if len(distinct) == 1 else None
+
+
+def shared_hit_header_lines(shared: SharedHitLines) -> list[str]:
+    """Render the per-hit lines a page states once in its header.
+
+    Parameters
+    ----------
+    shared
+        Lines every hit on the page shares.
+
+    Returns
+    -------
+    list[str]
+        Header lines for the shared subject, match, and score, when present.
+    """
+
+    lines: list[str] = []
+
+    if shared.subject is not None:
+        lines.append(f"Subject (every hit): {shared.subject}")
+
+    if shared.match is not None:
+        lines.append(f"Matched (every hit): {shared.match}")
+
+    if shared.score is not None:
+        lines.append(f"Score (every hit): {shared.score}")
+
+    return lines
+
+
+def format_matched_fields(fields: tuple[SearchMatchedField, ...]) -> str:
+    """Render the matched fields of one hit on one line.
+
+    Parameters
+    ----------
+    fields
+        Exact matched-field evidence of one hit.
+
+    Returns
+    -------
+    str
+        Field, matched terms, and phrase flag per field.
+    """
+
+    return "; ".join(
+        f"{field.field.value} | terms: {', '.join(field.matched_terms)} | "
+        f"phrase: {str(field.phrase_matched).lower()}"
+        for field in fields
+    )
+
+
+def format_score(score: SearchScore) -> str:
+    """Render one deterministic search score on one line.
+
+    Parameters
+    ----------
+    score
+        Exact integer score and its algorithm.
+
+    Returns
+    -------
+    str
+        Value, algorithm, term coverage, and phrase flag.
+    """
+
+    return (
+        f"value={score.value}, algorithm={score.algorithm.value}, "
+        f"matched_terms={score.matched_term_count}/{score.query_term_count}, "
+        f"phrase_matched={str(score.phrase_matched).lower()}"
+    )
+
+
+def page_warning_lines(warnings: tuple[SearchWarning, ...]) -> list[str]:
+    """Render package-level search warnings, or one line saying there are none.
+
+    Parameters
+    ----------
+    warnings
+        Package-level warnings of one search page.
+
+    Returns
+    -------
+    list[str]
+        Warning lines naming code, package, optional node, and message.
+    """
+
+    if not warnings:
+        return ["Page warnings: none"]
+
+    return [
+        "Page warnings:",
+        *(
+            f"- {warning.code.value} | package={warning.graph_package_id} | "
+            f"node={warning.node_id or 'none'} | {warning.message}"
+            for warning in warnings
+        ),
+    ]
+
+
+def hit_warning_legend(warnings: tuple[SearchWarning, ...]) -> list[str]:
+    """Render each distinct hit-warning message once for the whole page.
+
+    Hits list only their warning codes; the message behind each code is stated here.
+
+    Parameters
+    ----------
+    warnings
+        Every hit-level warning on the page, in hit order.
+
+    Returns
+    -------
+    list[str]
+        Heading and one line per distinct code and message, or nothing.
+    """
+
+    meanings = tuple(
+        dict.fromkeys(
+            f"- {warning.code.value}: {warning.message}" for warning in warnings
+        )
+    )
+    return ["Hit warning meanings:", *meanings] if meanings else []
 
 
 def build_resource_link(

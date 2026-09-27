@@ -41,6 +41,7 @@ from kgfegmcp.services.models import (
     NullableValueCount,
     ParentCountBucket,
     UnresolvedRelationshipStatistics,
+    package_reference,
 )
 
 
@@ -472,7 +473,7 @@ class FrameworkStatisticsService:
             ),
         )
         return GetFrameworkStatisticsResult(
-            package=package,
+            package=package_reference(package),
             source_metadata=snapshot.source_metadata,
             statistics=statistics,
         )

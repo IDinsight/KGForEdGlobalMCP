@@ -26,12 +26,20 @@ from kgfegmcp.errors import KGFEGMCPError
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
+    SharedHitLines,
     build_request_continuation_text,
     build_resource_link,
     build_tool_result,
+    catalog_package,
+    format_matched_fields,
+    format_score,
     get_app_state,
+    hit_warning_legend,
     log_optional_link_failure,
+    page_warning_lines,
     result_schema,
+    shared_hit_header_lines,
+    shared_line,
     standard_resource_links,
 )
 from kgfegmcp.resources.models import ResourceKind
@@ -40,7 +48,7 @@ from kgfegmcp.resources.uri import (
     learning_component_uri,
     standard_learning_components_uri,
 )
-from kgfegmcp.search.models import ExactPackageSearchScope, LearningComponentSearchMode
+from kgfegmcp.search.models import LearningComponentSearchMode
 from kgfegmcp.services.frameworks import FrameworkService
 from kgfegmcp.services.learning_components import LearningComponentService
 from kgfegmcp.services.models import (
@@ -66,35 +74,24 @@ if TYPE_CHECKING:
     from kgfegmcp.graph.models import LearningComponentNode
     from kgfegmcp.search.models import (
         LearningComponentSearchHit,
-        SearchWarning,
         SupportedStandardReference,
     )
     from kgfegmcp.services.models import (
+        HierarchyPathStep,
         SupportedStandardPlacement,
         SupportingLearningComponent,
     )
 
 
 _COMPONENT_INTERPRETATION = (
-    "A learning component is model-generated content decomposed from published "
-    "standards. It is not source-asserted curriculum. Its wording, tags, and support "
-    "confidence do not by themselves establish official equivalence, learner mastery, "
-    "prerequisites, instructional progression, or difficulty."
+    "Model-generated decomposition of published standards, not source-asserted "
+    "curriculum; its wording, tags, and support confidence do not by themselves "
+    "establish equivalence, mastery, prerequisites, progression, or difficulty."
 )
-_LEXICAL_SEARCH_SEMANTICS = (
-    "Lexical semantics: text mode matches exact normalized description tokens or a "
-    "contiguous normalized phrase. It performs no stemming, lemmatization, fuzzy "
-    "matching, or synonym expansion."
-)
-_SUPPORTED_CODE_SEMANTICS = (
-    "Supported-code semantics: the query matches the statement codes of standards, and "
-    "the components supporting those standards are returned. Components attach to the "
-    "codes the pipeline decomposed, so an exact query against a parent code returns "
-    "nothing when only its children carry components; use the prefix mode instead."
-)
-_TAG_SEARCH_SEMANTICS = (
-    "Tag semantics: a tag is a controlled facet matched whole after normalization, not "
-    "tokenized. Partial words do not match."
+_PARENT_CODE_GUIDANCE = (
+    "Components attach to the codes the pipeline decomposed, so an exact query "
+    "against a parent code returns nothing when only its children carry components; "
+    "use learning_component_supported_code_prefix where the package implements it."
 )
 _ZERO_RESULT_GUIDANCE = (
     "Zero matches establish only that this exact query did not match the retained "
@@ -267,15 +264,19 @@ def _format_confidence(value: float | None) -> str:
     return "[none]" if value is None else f"{value:.2f}"
 
 
-def _format_search_hit(*, hit: LearningComponentSearchHit, index: int) -> list[str]:
-    """Format one learning-component search hit with its complete evidence.
+def _format_search_hit(
+    *, hit: LearningComponentSearchHit, index: int, shared: SharedHitLines
+) -> list[str]:
+    """Format one learning-component hit, leaving out the lines its page states once.
 
     Parameters
     ----------
     hit
-        Component, package identity, score, and match evidence.
+        Component projection, match evidence, score, supported standards, and warnings.
     index
         One-based display position within the returned page.
+    shared
+        Lines every hit on the page shares, already printed in the page header.
 
     Returns
     -------
@@ -284,42 +285,30 @@ def _format_search_hit(*, hit: LearningComponentSearchHit, index: int) -> list[s
     """
 
     node = hit.node
-    description = _collapse_whitespace(node.description)
+    matched = frozenset(reference.node_id for reference in hit.matched_codes)
     lines = [
         f"{index}. Learning component: {node.node_id}",
-        f"   Package: {hit.package_identity.graph_package_id}",
-        f"   Framework ID: {hit.package_identity.framework_id}",
-        f"   Snapshot ID: {hit.package_identity.snapshot_id}",
-        f"   Description: {description}",
-        f"   Tags: {_format_values(node.tags or ())}",
-        f"   Retrieval method: {hit.retrieval_method.value}",
-        f"   Epistemic status: {hit.epistemic_status}",
-        (
-            f"   Score: value={hit.score.value}, "
-            f"algorithm={hit.score.algorithm.value}, "
-            f"matched_terms={hit.score.matched_term_count}/"
-            f"{hit.score.query_term_count}"
-        ),
-        f"   Matched terms: {_format_values(tuple(hit.matched_terms))}",
+        f"   Description: {_collapse_whitespace(node.description)}",
+        f"   Tags: {_format_values(node.tags)}",
     ]
 
-    if hit.matched_codes:
-        lines.append(f"   Matched codes: {_format_references(hit.matched_codes)}")
+    if shared.match is None:
+        lines.append(f"   Matched: {format_matched_fields(hit.matched_fields)}")
+
+    if shared.score is None:
+        lines.append(f"   Score: {format_score(hit.score)}")
 
     lines.append(
-        f"   Supported standards: {_format_references(hit.supported_standards)}"
+        f"   Supported standards: "
+        f"{_format_references(hit.supported_standards, matched=matched)}"
     )
 
-    if len(hit.supported_standards) > len(hit.matched_codes) and hit.matched_codes:
-        lines.append(
-            "   Note: this component also supports standards the query did not match."
-        )
+    if shared.multi_package:
+        lines.append(f"   Package: {hit.graph_package_id}")
 
     if hit.warnings:
-        lines.append("   Hit warnings:")
-        lines.extend(f"   - {_format_warning(warning)}" for warning in hit.warnings)
-    else:
-        lines.append("   Hit warnings: none")
+        codes = tuple(warning.code.value for warning in hit.warnings)
+        lines.append(f"   Hit warnings: {_format_values(codes)}")
 
     return lines
 
@@ -327,10 +316,13 @@ def _format_search_hit(*, hit: LearningComponentSearchHit, index: int) -> list[s
 def _format_search_result(result: SearchLearningComponentsResult) -> str:
     """Format one learning-component search page as readable evidence.
 
+    Package identity, retrieval method, and epistemic status hold for the whole page
+    and are stated once; so is any match or score every hit shares.
+
     Parameters
     ----------
     result
-        Search page, effective scope, and selected snapshots.
+        Search page, effective scope, and selected packages.
 
     Returns
     -------
@@ -338,53 +330,49 @@ def _format_search_result(result: SearchLearningComponentsResult) -> str:
         Stable summary of packages, hits, matches, warnings, and cursor state.
     """
 
-    scope = result.effective_scope
-    graph_types = (
-        (scope.graph_type,)
-        if isinstance(scope, ExactPackageSearchScope)
-        else scope.graph_types
-    )
+    page = result.page
     package_ids = tuple(
-        dict.fromkeys(
-            str(package.package_identity.graph_package_id)
-            for snapshot in result.selected_snapshots
-            for package in snapshot.graph_packages
-            if package.package_identity.graph_type in graph_types
-        )
+        str(identity.graph_package_id) for identity in result.selected_packages
     )
-    mode = result.page.mode
+    shared = SharedHitLines(
+        match=shared_line(
+            tuple(format_matched_fields(hit.matched_fields) for hit in page.hits)
+        ),
+        multi_package=len(package_ids) > 1,
+        score=shared_line(tuple(format_score(hit.score) for hit in page.hits)),
+    )
     lines = [
-        f"Search mode: {mode.value}",
+        f"Search mode: {page.mode.value} | Epistemic status: {page.epistemic_status}",
         f"Selected packages: {_format_values(package_ids)}",
-        f"Returned hits: {result.page.returned_count}",
-        f"Has more: {_format_boolean(result.page.has_more)}",
+        f"Returned hits: {page.returned_count} | "
+        f"Has more: {_format_boolean(page.has_more)}",
+        *shared_hit_header_lines(shared),
     ]
 
-    if mode is LearningComponentSearchMode.TEXT:
-        lines.append(_LEXICAL_SEARCH_SEMANTICS)
-    elif mode is LearningComponentSearchMode.TAG:
-        lines.append(_TAG_SEARCH_SEMANTICS)
-    else:
-        lines.append(_SUPPORTED_CODE_SEMANTICS)
-
-    if result.page.returned_count == 0:
+    if page.returned_count == 0:
         lines.append(_ZERO_RESULT_GUIDANCE)
 
-    lines.extend(("", f"Interpretation: {_COMPONENT_INTERPRETATION}"))
+        if page.mode is LearningComponentSearchMode.SUPPORTED_CODE_EXACT:
+            lines.append(_PARENT_CODE_GUIDANCE)
 
-    for index, hit in enumerate(result.page.hits, start=1):
-        lines.extend(("", *_format_search_hit(hit=hit, index=index)))
+    lines.append(f"Interpretation: {_COMPONENT_INTERPRETATION}")
 
-    lines.extend(("", f"Page warnings: {len(result.page.warnings)}"))
+    for index, hit in enumerate(page.hits, start=1):
+        lines.extend(("", *_format_search_hit(hit=hit, index=index, shared=shared)))
 
-    if result.page.warnings:
-        lines.extend(
-            f"- {_format_warning(warning)}" for warning in result.page.warnings
+    lines.extend(
+        (
+            "",
+            *page_warning_lines(page.warnings),
+            *hit_warning_legend(
+                tuple(warning for hit in page.hits for warning in hit.warnings)
+            ),
         )
-    else:
-        lines.append("- none")
+    )
 
-    lines.append("Continuation data: see the following MCP continuation block.")
+    if page.has_more:
+        lines.append("Continuation: see the MCP continuation block below.")
+
     return "\n".join(lines)
 
 
@@ -403,26 +391,6 @@ def _format_values(values: tuple[object, ...]) -> str:
     """
 
     return ", ".join(str(value) for value in values) if values else "[none]"
-
-
-def _format_warning(warning: SearchWarning) -> str:
-    """Format one deterministic package or hit warning.
-
-    Parameters
-    ----------
-    warning
-        Exact warning evidence.
-
-    Returns
-    -------
-    str
-        Stable single-line warning rendering.
-    """
-
-    return (
-        f"{warning.package_identity.graph_package_id} | "
-        f"{warning.code.value} | {warning.message}"
-    )
 
 
 def _component_lines(
@@ -462,11 +430,52 @@ def _component_lines(
                 f"- {placement.statement_code or '[uncoded]'} ({placement.node_id})",
                 f"  Description: {_collapse_whitespace(placement.description)}",
                 f"  Grade levels: {_format_values(placement.grade_levels)}",
-                f"  Hierarchy path: {' > '.join(placement.hierarchy_path) or '[none]'}",
+                *_hierarchy_path_lines(placement.hierarchy_paths),
                 f"  Support confidence: "
                 f"{_format_confidence(placement.support_confidence)}",
             )
         )
+
+    return lines
+
+
+def _hierarchy_path_lines(
+    paths: tuple[tuple[HierarchyPathStep, ...], ...],
+) -> list[str]:
+    """Render every root path as a label line followed by its node-ID line.
+
+    A step is labelled by its statement code when it has one, otherwise by its
+    wording. The node IDs are positionally aligned with the labels, so any ancestor
+    can be fetched with ``get_standard``.
+
+    Parameters
+    ----------
+    paths
+        Every framework-root-to-standard path of one placement.
+
+    Returns
+    -------
+    list[str]
+        Two indented lines per path, or one line when no path is available.
+    """
+
+    if not paths:
+        return ["  Hierarchy path: [none]"]
+
+    lines: list[str] = []
+
+    for number, path in enumerate(paths, start=1):
+        heading = (
+            "Hierarchy path"
+            if len(paths) == 1
+            else f"Hierarchy path {number} of {len(paths)}"
+        )
+        labels = " > ".join(
+            step.statement_code or _collapse_whitespace(step.description or "")
+            for step in path
+        )
+        node_ids = " > ".join(str(step.node_id) for step in path)
+        lines.extend((f"  {heading}: {labels}", f"  Path node IDs: {node_ids}"))
 
     return lines
 
@@ -496,6 +505,7 @@ def _supported_code_values(
     references: tuple[SupportedStandardReference, ...],
     *,
     already_shown: NodeId | None = None,
+    matched: frozenset[NodeId] = frozenset(),
 ) -> tuple[str, ...]:
     """Render supported-standard references as display values.
 
@@ -506,6 +516,8 @@ def _supported_code_values(
     already_shown
         Standard whose wording the caller has already printed once, so it is not
         repeated on every reference to it.
+    matched
+        Standards whose statement code satisfied a supported-code query.
 
     Returns
     -------
@@ -531,6 +543,9 @@ def _supported_code_values(
                 f"confidence {_format_confidence(reference.support_confidence)}"
             )
 
+        if reference.node_id in matched:
+            qualifiers.append("matched")
+
         if qualifiers:
             value = f"{value} ({', '.join(qualifiers)})"
 
@@ -547,6 +562,7 @@ def _format_references(
     references: tuple[SupportedStandardReference, ...],
     *,
     already_shown: NodeId | None = None,
+    matched: frozenset[NodeId] = frozenset(),
 ) -> str:
     """Join rendered supported-standard references with semicolons.
 
@@ -556,6 +572,8 @@ def _format_references(
         Supported standards in deterministic relationship order.
     already_shown
         Standard whose wording is already printed once in the surrounding output.
+    matched
+        Standards whose statement code satisfied a supported-code query.
 
     Returns
     -------
@@ -564,7 +582,9 @@ def _format_references(
         ``[none]``.
     """
 
-    values = _supported_code_values(references, already_shown=already_shown)
+    values = _supported_code_values(
+        references, already_shown=already_shown, matched=matched
+    )
     return "; ".join(values) if values else "[none]"
 
 
@@ -748,7 +768,9 @@ async def get_learning_component(
         return build_tool_result(
             content=_format_component_result(result),
             resource_links=_component_resource_links(
-                node_id=result.node.node_id, package=result.package, state=state
+                node_id=result.node.node_id,
+                package=catalog_package(result.package.package_identity, state),
+                state=state,
             ),
             result=result,
         )
@@ -780,7 +802,9 @@ async def get_learning_component_context(
         return build_tool_result(
             content=_format_component_context(result),
             resource_links=_component_resource_links(
-                node_id=result.node.node_id, package=result.package, state=state
+                node_id=result.node.node_id,
+                package=catalog_package(result.package.package_identity, state),
+                state=state,
             ),
             result=result,
         )
@@ -809,15 +833,16 @@ async def get_learning_components_for_standard(
         result = _learning_component_service(
             state
         ).get_learning_components_for_standard(request)
+        package = catalog_package(result.package.package_identity, state)
         return build_tool_result(
             content=_format_components_for_standard(result),
             resource_links=(
                 *standard_resource_links(
-                    node=result.standard, package=result.package, state=state
+                    node=result.standard, package=package, state=state
                 ),
                 *_standard_components_resource_links(
                     node_id=result.standard.node_id,
-                    package=result.package,
+                    package=package,
                     state=state,
                 ),
             ),
@@ -859,7 +884,9 @@ async def search_learning_components(
             tool_name="search_learning_components",
         )
         return build_tool_result(
-            additional_text=(continuation_text,),
+            additional_text=(
+                (continuation_text,) if continuation_text is not None else ()
+            ),
             content=_format_search_result(result),
             result=result,
         )
@@ -879,17 +906,21 @@ def register_learning_component_tools(server: FastMCP[dict[str, AppState]]) -> N
         description=(
             "Search model-generated learning components decomposed from published "
             "standards. Modes are learning_component_text over component descriptions, "
-            "learning_component_tag over controlled keyword tags matched whole, and "
-            "learning_component_supported_code_exact or "
+            "matching exact normalized tokens or a contiguous phrase with no stemming "
+            "or synonym expansion; learning_component_tag over controlled keyword "
+            "tags, each matched whole after normalization, so partial words do not "
+            "match; and learning_component_supported_code_exact or "
             "learning_component_supported_code_prefix over the statement codes of the "
-            "standards a component supports. Inspect get_capabilities "
-            "packages[].implementedLearningComponentSearchModes before using a "
-            "supported-code mode. Text mode matches exact normalized tokens and "
-            "performs no stemming or synonym expansion. Every hit reports every "
-            "standard the component supports, not only the matched one, so a component "
-            "bridging several standards or grades is visible as such. Results are "
-            "generated content and are never source-asserted curriculum. For "
-            "continuation, submit the provided nextRequest unchanged."
+            "standards a component supports, where an exact query against a parent "
+            "code returns nothing when only its children carry components. Inspect "
+            "get_capabilities packages[].implementedLearningComponentSearchModes "
+            "before using a supported-code mode. Every hit reports every standard the "
+            "component supports, marking the ones a supported-code query matched, so a "
+            "component bridging several standards or grades is visible as such. "
+            "Package identity, retrieval method, and epistemic status are stated once "
+            "per page, and the complete component is one get_learning_component call "
+            "away. Results are generated content and are never source-asserted "
+            "curriculum. For continuation, submit the provided nextRequest unchanged."
         ),
         name="search_learning_components",
         output_schema=result_schema(SearchLearningComponentsResult),

@@ -39,6 +39,7 @@ from kgfegmcp.errors import (
     FrameworkNotFoundError,
     InvalidCursorError,
 )
+from kgfegmcp.graph.models import GraphPackageIdentity
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.models import (
     ExactPackageSearchScope,
@@ -51,6 +52,7 @@ from kgfegmcp.services.models import (
     GetFrameworkResult,
     ListFrameworksRequest,
     ListFrameworksResult,
+    framework_snapshot_summary,
 )
 
 _FRAMEWORK_CURSOR_KIND: Final[str] = "framework_catalog_v1"
@@ -463,6 +465,32 @@ def _snapshot_order_key(snapshot: CatalogFrameworkSnapshot) -> tuple[str, str]:
     return str(snapshot.framework_id), str(snapshot.snapshot_id)
 
 
+def selected_package_identities(
+    snapshots: tuple[CatalogFrameworkSnapshot, ...], *, graph_type: GraphType
+) -> tuple[GraphPackageIdentity, ...]:
+    """Return the identities of the packages a search actually touched.
+
+    Parameters
+    ----------
+    snapshots
+        Exact accepted snapshots selected for the search, in catalog order.
+    graph_type
+        Graph domain the search ran against.
+
+    Returns
+    -------
+    tuple[GraphPackageIdentity, ...]
+        One identity per selected package of that graph type.
+    """
+
+    return tuple(
+        package.package_identity
+        for snapshot in snapshots
+        for package in snapshot.graph_packages
+        if package.package_identity.graph_type is graph_type
+    )
+
+
 def build_search_scope(
     snapshots: tuple[CatalogFrameworkSnapshot, ...],
 ) -> ExactPackageSearchScope | FederatedPackageSearchScope:
@@ -578,7 +606,7 @@ class FrameworkService:
         framework = self.catalog_service.get_framework(
             framework_id=request.framework_id, snapshot_id=request.snapshot_id
         )
-        return GetFrameworkResult(framework=framework)
+        return GetFrameworkResult(framework=framework_snapshot_summary(framework))
 
     def get_snapshot_by_id(self, snapshot_id: SnapshotId) -> CatalogFrameworkSnapshot:
         """Return one exact snapshot without inferring its framework identity.
@@ -702,7 +730,7 @@ class FrameworkService:
         return ListFrameworksResult(
             catalog_sha256=catalog_sha256,
             has_more=has_more,
-            items=items,
+            items=tuple(framework_snapshot_summary(item) for item in items),
             next_cursor=next_cursor,
             returned_count=len(items),
             total_matching_count=len(matching),
