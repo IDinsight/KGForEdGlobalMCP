@@ -122,10 +122,16 @@ Each `sections[]` item includes:
 
 Each match has:
 
-- the original `searchHit`;
-- an exact `standard` result;
+- the original `searchHit`, whose `node` gives the standard's `nodeId`,
+  `statementCode`, and `description`;
 - `retrievalStatus: retrieval_candidate`; and
-- optional bounded `context` plus `contextComplete`.
+- when `includeContextPaths` is true, `hierarchyPaths` plus `contextComplete`.
+
+`hierarchyPaths` lists every root path from the framework root to the matched standard.
+Each step carries the node's `nodeId`, `statementCode`, and `description`, so any
+ancestor can be quoted or fetched. The complete standard record is one `get_standard`
+call away, and its full neighbourhood, with relationship records, one
+`get_standard_context` call away.
 
 ## Comparison warning codes
 

@@ -21,16 +21,20 @@ from dataclasses import dataclass
 from kgfegmcp.catalog.models import CatalogFrameworkSnapshot
 from kgfegmcp.catalog.service import CatalogService
 from kgfegmcp.domain.enums import GraphType
-from kgfegmcp.domain.identifiers import GraphPackageId
+from kgfegmcp.domain.identifiers import GraphPackageId, NodeId, RelationshipId
 from kgfegmcp.errors import (
     CapabilityUnavailableError,
     GraphNodeNotFoundError,
     StandardNotFoundError,
 )
 from kgfegmcp.graph.models import (
+    DirectNodeRelationshipsResult,
     FrameworkNode,
+    GraphNodeRecord,
     GraphRelationship,
+    RootPathsResult,
     StandardNode,
+    TraversalResult,
     graph_relationship_order_key,
 )
 from kgfegmcp.graph.traversal import GraphTraversal
@@ -45,11 +49,17 @@ from kgfegmcp.search.models import (
     TextSearchQuery,
 )
 from kgfegmcp.search.service import SearchService
-from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.services.frameworks import FrameworkService, selected_package_identities
 from kgfegmcp.services.models import (
     CaseUriStandardIdentifier,
     CaseUuidStandardIdentifier,
+    ContextNeighbor,
+    ContextNode,
+    ContextNodeDepth,
+    ContextRelationship,
     ContextRelationshipStatus,
+    ContextRootPaths,
+    ContextTraversal,
     ExactCodeStandardsSearchRequest,
     GetStandardContextRequest,
     GetStandardContextResult,
@@ -58,9 +68,234 @@ from kgfegmcp.services.models import (
     NodeIdStandardIdentifier,
     PrefixCodeStandardsSearchRequest,
     SearchStandardsResult,
+    StandardContextView,
     StandardsSearchRequest,
     TextStandardsSearchRequest,
+    package_reference,
 )
+
+
+def _context_node(node: GraphNodeRecord) -> ContextNode:
+    """Describe one hierarchy node by identity, code, type, grade, and wording.
+
+    Parameters
+    ----------
+    node
+        Framework root or standards item on a context path.
+
+    Returns
+    -------
+    ContextNode
+        Compact node description without rights or raw source properties.
+    """
+
+    if isinstance(node, FrameworkNode):
+        return ContextNode(
+            description=node.name, node_id=node.node_id, node_kind="framework"
+        )
+
+    return ContextNode(
+        description=node.description,
+        grade_level=getattr(node, "grade_level", None),
+        node_id=node.node_id,
+        node_kind="standard",
+        normalized_statement_type=getattr(node, "normalized_statement_type", None),
+        statement_code=getattr(node, "statement_code", None),
+        statement_type=getattr(node, "statement_type", None),
+    )
+
+
+def _context_relationship(relationship: GraphRelationship) -> ContextRelationship:
+    """Describe one hierarchy relationship by identity, endpoints, and status.
+
+    Parameters
+    ----------
+    relationship
+        Exact authored relationship on a context path.
+
+    Returns
+    -------
+    ContextRelationship
+        Compact relationship description without rights or entity labels.
+    """
+
+    return ContextRelationship(
+        relationship_id=relationship.relationship_id,
+        resolution_status=relationship.resolution_status,
+        source_node_id=relationship.source_node_id,
+        target_node_id=relationship.target_node_id,
+    )
+
+
+@dataclass(slots=True)
+class _ContextTables:
+    """Collect every node and relationship of one context result once, in order."""
+
+    nodes: dict[NodeId, ContextNode]
+    relationships: dict[RelationshipId, ContextRelationship]
+
+    def add_node(self, node: GraphNodeRecord) -> NodeId:
+        """Record one node the first time it is seen and return its identifier.
+
+        Parameters
+        ----------
+        node
+            Node referenced by a context section.
+
+        Returns
+        -------
+        NodeId
+            The node's identifier.
+        """
+
+        self.nodes.setdefault(node.node_id, _context_node(node))
+        return node.node_id
+
+    def add_relationship(self, relationship: GraphRelationship) -> RelationshipId:
+        """Record one relationship the first time it is seen and return its identifier.
+
+        Parameters
+        ----------
+        relationship
+            Relationship referenced by a context section.
+
+        Returns
+        -------
+        RelationshipId
+            The relationship's identifier.
+        """
+
+        self.relationships.setdefault(
+            relationship.relationship_id, _context_relationship(relationship)
+        )
+        return relationship.relationship_id
+
+    def traversal(self, traversal: TraversalResult) -> ContextTraversal:
+        """Record one traversal's nodes and relationships and refer to them by ID.
+
+        Parameters
+        ----------
+        traversal
+            Bounded ancestor or descendant traversal.
+
+        Returns
+        -------
+        ContextTraversal
+            The traversal's bounds, completion, and node and relationship references.
+        """
+
+        return ContextTraversal(
+            is_complete=traversal.is_complete,
+            max_depth=traversal.max_depth,
+            max_nodes=traversal.max_nodes,
+            nodes=tuple(
+                ContextNodeDepth(depth=item.depth, node_id=self.add_node(item.node))
+                for item in traversal.nodes
+            ),
+            relationship_ids=tuple(
+                self.add_relationship(relationship)
+                for relationship in traversal.relationships
+            ),
+            truncation_reason=traversal.truncation_reason,
+        )
+
+    def neighbors(
+        self, relationships: DirectNodeRelationshipsResult
+    ) -> tuple[ContextNeighbor, ...]:
+        """Record direct neighbours and refer to each with its linking relationship.
+
+        Parameters
+        ----------
+        relationships
+            Direct parents or children of the origin.
+
+        Returns
+        -------
+        tuple[ContextNeighbor, ...]
+            Neighbour and relationship identifiers in source order.
+        """
+
+        return tuple(
+            ContextNeighbor(
+                node_id=self.add_node(neighbor.node),
+                relationship_id=self.add_relationship(neighbor.relationship),
+            )
+            for neighbor in relationships.neighbors
+        )
+
+    def root_paths(self, root_paths: RootPathsResult) -> ContextRootPaths:
+        """Record every root-path node and refer to each path as a node-ID list.
+
+        Parameters
+        ----------
+        root_paths
+            Bounded complete framework-root-to-origin paths.
+
+        Returns
+        -------
+        ContextRootPaths
+            The paths' bounds, completion, and node-ID lists.
+        """
+
+        for path in root_paths.paths:
+            for relationship in path.relationships:
+                self.add_relationship(relationship)
+
+        return ContextRootPaths(
+            framework_root_id=root_paths.framework_root_id,
+            is_complete=root_paths.is_complete,
+            max_depth=root_paths.max_depth,
+            max_path_node_occurrences=root_paths.max_path_node_occurrences,
+            max_paths=root_paths.max_paths,
+            paths=tuple(
+                tuple(self.add_node(node) for node in path.nodes)
+                for path in root_paths.paths
+            ),
+            truncation_reason=root_paths.truncation_reason,
+        )
+
+
+def standard_context_view(result: GetStandardContextResult) -> StandardContextView:
+    """Return one context result with each node and relationship described once.
+
+    Parameters
+    ----------
+    result
+        Complete direct, bounded, and root-path context of one standard.
+
+    Returns
+    -------
+    StandardContextView
+        The same context, with sections referring to shared node and relationship
+        tables by identifier.
+    """
+
+    tables = _ContextTables(nodes={}, relationships={})
+    ancestors = tables.traversal(result.ancestors)
+    direct_parents = tables.neighbors(result.direct_parents)
+    direct_children = (
+        tables.neighbors(result.direct_children)
+        if result.direct_children is not None
+        else None
+    )
+    descendants = (
+        tables.traversal(result.descendants) if result.descendants is not None else None
+    )
+    root_paths = (
+        tables.root_paths(result.root_paths) if result.root_paths is not None else None
+    )
+    return StandardContextView(
+        ancestors=ancestors,
+        descendants=descendants,
+        direct_children=direct_children,
+        direct_parents=direct_parents,
+        nodes=tuple(tables.nodes.values()),
+        relationship_statuses=result.relationship_statuses,
+        relationship_type=result.ancestors.relationship_type,
+        relationships=tuple(tables.relationships.values()),
+        root_paths=root_paths,
+        standard=result.standard,
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -290,7 +525,7 @@ class StandardsService:
         return GetStandardResult(
             facets=facets,
             node=node,
-            package=package,
+            package=package_reference(package),
             source_metadata=snapshot.source_metadata,
         )
 
@@ -493,5 +728,9 @@ class StandardsService:
 
         page = self.search_service.search(query)
         return SearchStandardsResult(
-            effective_scope=scope, page=page, selected_snapshots=selected_snapshots
+            effective_scope=scope,
+            page=page,
+            selected_packages=selected_package_identities(
+                selected_snapshots, graph_type=GraphType.ACADEMIC_STANDARDS
+            ),
         )

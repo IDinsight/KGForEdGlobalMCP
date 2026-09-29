@@ -31,7 +31,11 @@ from kgfegmcp.search.service import (
     implemented_learning_component_search_modes,
     implemented_search_modes,
 )
-from kgfegmcp.services.models import GetCapabilitiesResult, PackageCapabilityResult
+from kgfegmcp.services.models import (
+    GetCapabilitiesResult,
+    PackageCapabilityResult,
+    PackageSearchCounts,
+)
 
 if TYPE_CHECKING:
     # Package Library
@@ -186,6 +190,8 @@ class CapabilitiesService:
                             text_available=package.capabilities.text_search,
                         )
                     ),
+                    capabilities=package.capabilities,
+                    counts=package.counts,
                     implemented_search_modes=implemented_search_modes(
                         code_availability=profile.code_search_policy.availability,
                         prefix_available=(
@@ -193,9 +199,16 @@ class CapabilitiesService:
                         ),
                         text_available=package.capabilities.text_search,
                     ),
-                    package=package,
-                    search_index=metadata,
-                    source_metadata=snapshot.source_metadata,
+                    package_identity=package.package_identity,
+                    rights=package.rights,
+                    search_index=PackageSearchCounts(
+                        coded_node_count=metadata.coded_node_count,
+                        learning_component_document_count=(
+                            metadata.learning_component_document_count
+                        ),
+                        lexical_document_count=metadata.lexical_document_count,
+                        tag_vocabulary_size=metadata.tag_vocabulary_size,
+                    ),
                     traversal_relationship_type=(
                         runtime.graph_store.hierarchy_relationship_type
                     ),

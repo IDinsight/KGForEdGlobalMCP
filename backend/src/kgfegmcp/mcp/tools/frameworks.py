@@ -137,13 +137,11 @@ def _format_framework_list(result: ListFrameworksResult) -> str:
             for package in snapshot.graph_packages
         )
 
-    lines.extend(
-        (
-            "",
-            f"Has more: {_format_boolean(result.has_more)}",
-            "Continuation data: see the following MCP continuation block.",
-        )
-    )
+    lines.extend(("", f"Has more: {_format_boolean(result.has_more)}"))
+
+    if result.has_more:
+        lines.append("Continuation: see the MCP continuation block below.")
+
     return "\n".join(lines)
 
 
@@ -191,7 +189,7 @@ def _format_graph_package(package: CatalogGraphPackage) -> list[str]:
         ),
         f"  Multi-parent: {_format_boolean(capabilities.multi_parent)}",
         f"  Counts: {_format_package_counts(package)}",
-        f"  Validation status: {package.validation.status.value}",
+        f"  Validation status: {package.validation_status.value}",
         f"  Rights review status: {rights.review_status.value}",
         f"  Source license: {rights.source_license}",
         (
@@ -273,7 +271,7 @@ def _format_package_summary(package: CatalogGraphPackage) -> str:
         f"code_coverage={capabilities.code_search.value} | "
         f"text_search={_format_boolean(capabilities.text_search)} | "
         f"learning_components={package.counts.learning_component_nodes} | "
-        f"validation={package.validation.status.value}"
+        f"validation={package.validation_status.value}"
     )
 
 
@@ -393,7 +391,9 @@ async def list_frameworks(
             tool_name="list_frameworks",
         )
         return build_tool_result(
-            additional_text=(continuation_text,),
+            additional_text=(
+                (continuation_text,) if continuation_text is not None else ()
+            ),
             content=_format_framework_list(result),
             resource_links=catalog_resource_links(),
             result=result,

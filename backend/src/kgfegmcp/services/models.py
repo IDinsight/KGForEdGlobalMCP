@@ -28,6 +28,7 @@ from pydantic import ConfigDict, Field, RootModel, StringConstraints, model_vali
 from kgfegmcp.catalog.models import (
     CatalogFrameworkSnapshot,
     CatalogGraphPackage,
+    CatalogProfileFacets,
     CatalogSourceMetadata,
 )
 from kgfegmcp.domain.enums import GraphType, NormalizedStatementType, ValidationStatus
@@ -43,20 +44,29 @@ from kgfegmcp.domain.identifiers import (
     Sha256Digest,
     SnapshotId,
 )
+from kgfegmcp.domain.models import RightsPolicy
 from kgfegmcp.graph.models import (
     DirectNodeRelationshipsResult,
+    FrameworkNode,
+    GraphPackageIdentity,
     GraphRelationship,
     LearningComponentNode,
+    RootPath,
     RootPathsResult,
     StandardNode,
     TraversalResult,
+    TraversalTruncationReason,
+)
+from kgfegmcp.packages.models import (
+    FrameworkCapabilities,
+    PackageCounts,
+    SnapshotRelation,
 )
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.models import (
     CodeQueryText,
     LearningComponentSearchMode,
     LearningComponentSearchPage,
-    PackageSearchIndexMetadata,
     PackageSearchScope,
     SearchCursor,
     SearchFacetEvidence,
@@ -290,12 +300,130 @@ class ListFrameworksRequest(FrozenSchema):
         return self
 
 
+class PackageReference(FrozenSchema):
+    """Identify the package a record comes from and the rights that govern it.
+
+    Counts, capabilities, and profile facets are reported by ``get_framework`` and
+    ``get_capabilities``; build metadata and the artifact table are in the package's
+    manifest resource.
+    """
+
+    package_identity: GraphPackageIdentity
+    rights: RightsPolicy
+
+
+def package_reference(package: CatalogGraphPackage) -> PackageReference:
+    """Reduce one accepted catalog package to its identity and rights.
+
+    Parameters
+    ----------
+    package
+        Accepted catalog graph package.
+
+    Returns
+    -------
+    PackageReference
+        Package identity and rights policy.
+    """
+
+    return PackageReference(
+        package_identity=package.package_identity, rights=package.rights
+    )
+
+
+class PackageSummary(FrozenSchema):
+    """Summarise one accepted graph package for framework discovery.
+
+    Build timestamps, schema and manifest versions, and the artifact table are in the
+    package's manifest resource.
+    """
+
+    capabilities: FrameworkCapabilities
+    counts: PackageCounts
+    package_identity: GraphPackageIdentity
+    profile_facets: CatalogProfileFacets
+    rights: RightsPolicy
+    validation_status: ValidationStatus
+
+
+def package_summary(package: CatalogGraphPackage) -> PackageSummary:
+    """Summarise one accepted catalog package for framework discovery.
+
+    Parameters
+    ----------
+    package
+        Accepted catalog graph package.
+
+    Returns
+    -------
+    PackageSummary
+        Identity, capabilities, counts, profile facets, rights, and validation status.
+    """
+
+    return PackageSummary(
+        capabilities=package.capabilities,
+        counts=package.counts,
+        package_identity=package.package_identity,
+        profile_facets=package.profile_facets,
+        rights=package.rights,
+        validation_status=package.validation.status,
+    )
+
+
+class FrameworkSnapshotSummary(FrozenSchema):
+    """Describe one accepted framework snapshot with a summary of each package."""
+
+    available_graph_types: tuple[GraphType, ...] = Field(min_length=1)
+    framework_id: FrameworkId
+    graph_packages: tuple[PackageSummary, ...] = Field(min_length=1)
+    snapshot_id: SnapshotId
+    snapshot_relations: tuple[SnapshotRelation, ...] = ()
+    source_metadata: CatalogSourceMetadata
+
+
+def framework_snapshot_summary(
+    snapshot: CatalogFrameworkSnapshot,
+) -> FrameworkSnapshotSummary:
+    """Describe one accepted snapshot with package summaries instead of records.
+
+    Parameters
+    ----------
+    snapshot
+        Accepted catalog framework snapshot.
+
+    Returns
+    -------
+    FrameworkSnapshotSummary
+        Snapshot identity, source metadata, relations, and package summaries.
+    """
+
+    return FrameworkSnapshotSummary(
+        available_graph_types=snapshot.available_graph_types,
+        framework_id=snapshot.framework_id,
+        graph_packages=tuple(
+            package_summary(package) for package in snapshot.graph_packages
+        ),
+        snapshot_id=snapshot.snapshot_id,
+        snapshot_relations=snapshot.snapshot_relations,
+        source_metadata=snapshot.source_metadata,
+    )
+
+
+class PackageSearchCounts(FrozenSchema):
+    """Report the search-index counts that show what one package can answer."""
+
+    coded_node_count: int = Field(ge=0)
+    learning_component_document_count: int = Field(ge=0)
+    lexical_document_count: int = Field(ge=0)
+    tag_vocabulary_size: int = Field(ge=0)
+
+
 class ListFrameworksResult(FrozenSchema):
     """Return one deterministic page of accepted framework snapshots."""
 
     catalog_sha256: Sha256Digest
     has_more: bool
-    items: tuple[CatalogFrameworkSnapshot, ...]
+    items: tuple[FrameworkSnapshotSummary, ...]
     next_cursor: FrameworkCursor | None
     returned_count: int = Field(ge=0)
     total_matching_count: int = Field(ge=0)
@@ -337,7 +465,7 @@ class GetFrameworkRequest(FrozenSchema):
 class GetFrameworkResult(FrozenSchema):
     """Return one complete accepted framework snapshot."""
 
-    framework: CatalogFrameworkSnapshot
+    framework: FrameworkSnapshotSummary
 
 
 class StandardsSearchRequestBase(FrozenSchema):
@@ -439,7 +567,7 @@ class SearchStandardsResult(FrozenSchema):
 
     effective_scope: PackageSearchScope
     page: SearchPage
-    selected_snapshots: tuple[CatalogFrameworkSnapshot, ...] = Field(min_length=1)
+    selected_packages: tuple[GraphPackageIdentity, ...] = Field(min_length=1)
 
 
 class LearningComponentsSearchRequestBase(FrozenSchema):
@@ -540,7 +668,7 @@ class SearchLearningComponentsResult(FrozenSchema):
 
     effective_scope: PackageSearchScope
     page: LearningComponentSearchPage
-    selected_snapshots: tuple[CatalogFrameworkSnapshot, ...] = Field(min_length=1)
+    selected_packages: tuple[GraphPackageIdentity, ...] = Field(min_length=1)
 
 
 class GetStandardRequest(FrozenSchema):
@@ -577,16 +705,54 @@ class GetStandardResult(FrozenSchema):
 
     facets: SearchFacetEvidence
     node: StandardNode
-    package: CatalogGraphPackage
+    package: PackageReference
     source_metadata: CatalogSourceMetadata
 
 
+class HierarchyPathStep(FrozenSchema):
+    """Name one node on a framework-root-to-standard hierarchy path.
+
+    The node's complete record is one ``get_standard`` call away by ``node_id``. The
+    framework root is named by its framework name.
+    """
+
+    description: str | None = None
+    node_id: NodeId
+    statement_code: str | None = None
+
+
+def hierarchy_path_steps(path: RootPath) -> tuple[HierarchyPathStep, ...]:
+    """Name every node of one complete root path, root first.
+
+    Parameters
+    ----------
+    path
+        Complete framework-root-to-node hierarchy path.
+
+    Returns
+    -------
+    tuple[HierarchyPathStep, ...]
+        One step per node carrying its identifier, statement code, and wording.
+    """
+
+    return tuple(
+        HierarchyPathStep(
+            description=(
+                node.name if isinstance(node, FrameworkNode) else node.description
+            ),
+            node_id=node.node_id,
+            statement_code=getattr(node, "statement_code", None),
+        )
+        for node in path.nodes
+    )
+
+
 class SupportedStandardPlacement(FrozenSchema):
-    """Locate one supported standard without repeating its ancestor records."""
+    """Locate one supported standard on every root path, without ancestor records."""
 
     description: str
     grade_levels: tuple[str, ...]
-    hierarchy_path: tuple[str, ...]
+    hierarchy_paths: tuple[tuple[HierarchyPathStep, ...], ...]
     node_id: NodeId
     statement_code: str | None = None
     support_confidence: float | None = None
@@ -633,7 +799,7 @@ class GetLearningComponentResult(FrozenSchema):
     """Return one exact learning component with the standards it is placed against."""
 
     node: LearningComponentNode
-    package: CatalogGraphPackage
+    package: PackageReference
     placements: tuple[SupportedStandardPlacement, ...]
     source_metadata: CatalogSourceMetadata
 
@@ -672,7 +838,7 @@ class GetLearningComponentContextResult(FrozenSchema):
     """Return the standards one learning component supports and where they sit."""
 
     node: LearningComponentNode
-    package: CatalogGraphPackage
+    package: PackageReference
     placements: tuple[SupportedStandardPlacement, ...]
     source_metadata: CatalogSourceMetadata
     supported_standards: tuple[SupportedStandard, ...]
@@ -719,7 +885,7 @@ class GetLearningComponentsForStandardResult(FrozenSchema):
     """Return every learning component supporting one exact standard."""
 
     components: tuple[SupportingLearningComponent, ...]
-    package: CatalogGraphPackage
+    package: PackageReference
     source_metadata: CatalogSourceMetadata
     standard: StandardNode
 
@@ -785,6 +951,151 @@ class GetStandardContextResult(FrozenSchema):
     standard: GetStandardResult
 
 
+class ContextNode(FrozenSchema):
+    """Describe one node a standard-context result refers to, once per result.
+
+    The complete record, with rights, language, and CASE identity, is one
+    ``get_standard`` call away by ``node_id``. The framework root carries its framework
+    name as its description.
+    """
+
+    description: str | None = None
+    grade_level: tuple[str, ...] | None = None
+    node_id: NodeId
+    node_kind: Literal["framework", "standard"]
+    normalized_statement_type: NormalizedStatementType | None = None
+    statement_code: str | None = None
+    statement_type: str | None = None
+
+
+class ContextRelationship(FrozenSchema):
+    """Describe one hierarchy relationship a standard-context result refers to.
+
+    The complete record is readable through the relationship resource by
+    ``relationship_id``.
+    """
+
+    relationship_id: RelationshipId
+    resolution_status: str | None = None
+    source_node_id: NodeId
+    target_node_id: NodeId
+
+
+class ContextNeighbor(FrozenSchema):
+    """Point at one direct parent or child and the relationship that links it."""
+
+    node_id: NodeId
+    relationship_id: RelationshipId
+
+
+class ContextNodeDepth(FrozenSchema):
+    """Place one traversed node at its depth from the origin."""
+
+    depth: int = Field(ge=0)
+    node_id: NodeId
+
+
+class ContextTraversal(FrozenSchema):
+    """Report one bounded ancestor or descendant traversal by node reference."""
+
+    is_complete: bool
+    max_depth: int = Field(ge=0)
+    max_nodes: int = Field(ge=1)
+    nodes: tuple[ContextNodeDepth, ...] = Field(min_length=1)
+    relationship_ids: tuple[RelationshipId, ...]
+    truncation_reason: TraversalTruncationReason | None = None
+
+
+class ContextRootPaths(FrozenSchema):
+    """Report bounded complete framework-root-to-origin paths as node-ID lists."""
+
+    framework_root_id: NodeId
+    is_complete: bool
+    max_depth: int = Field(ge=0)
+    max_path_node_occurrences: int = Field(ge=1)
+    max_paths: int = Field(ge=1)
+    paths: tuple[tuple[NodeId, ...], ...]
+    truncation_reason: TraversalTruncationReason | None = None
+
+
+class StandardContextView(FrozenSchema):
+    """Return one standard's hierarchy context with each node and relationship once.
+
+    Traversals, neighbours, and root paths refer to ``nodes`` and ``relationships`` by
+    identifier, so a node on several of them is described one time.
+    """
+
+    ancestors: ContextTraversal
+    descendants: ContextTraversal | None
+    direct_children: tuple[ContextNeighbor, ...] | None
+    direct_parents: tuple[ContextNeighbor, ...]
+    nodes: tuple[ContextNode, ...] = Field(min_length=1)
+    relationship_statuses: tuple[ContextRelationshipStatus, ...]
+    relationship_type: str = Field(min_length=1)
+    relationships: tuple[ContextRelationship, ...]
+    root_paths: ContextRootPaths | None
+    standard: GetStandardResult
+
+    @model_validator(mode="after")
+    def validate_references(self) -> Self:
+        """Require each table entry once and every reference to resolve in a table.
+
+        Returns
+        -------
+        Self
+            The unchanged internally consistent context view.
+
+        Raises
+        ------
+        ValueError
+            If a table repeats an entry or a section refers to a missing one.
+        """
+
+        node_ids = tuple(node.node_id for node in self.nodes)
+        relationship_ids = tuple(
+            relationship.relationship_id for relationship in self.relationships
+        )
+
+        if len(node_ids) != len(set(node_ids)):
+            raise ValueError("nodes must list each node once.")
+
+        if len(relationship_ids) != len(set(relationship_ids)):
+            raise ValueError("relationships must list each relationship once.")
+
+        neighbors = self.direct_parents + (self.direct_children or ())
+        traversals = (
+            self.ancestors,
+            *((self.descendants,) if self.descendants else ()),
+        )
+        referenced_nodes = {
+            *(neighbor.node_id for neighbor in neighbors),
+            *(item.node_id for traversal in traversals for item in traversal.nodes),
+            *(
+                node_id
+                for path in (self.root_paths.paths if self.root_paths else ())
+                for node_id in path
+            ),
+        }
+        referenced_relationships = {
+            *(neighbor.relationship_id for neighbor in neighbors),
+            *(
+                relationship_id
+                for traversal in traversals
+                for relationship_id in traversal.relationship_ids
+            ),
+        }
+
+        if not referenced_nodes <= set(node_ids):
+            raise ValueError("Every referenced node must appear in nodes.")
+
+        if not referenced_relationships <= set(relationship_ids):
+            raise ValueError(
+                "Every referenced relationship must appear in relationships."
+            )
+
+        return self
+
+
 class LearningComponentStatistics(FrozenSchema):
     """Describe deterministic counts for one package's generated learning components."""
 
@@ -834,7 +1145,7 @@ class FrameworkStatistics(FrozenSchema):
 class GetFrameworkStatisticsResult(FrozenSchema):
     """Return structural statistics with exact package and source metadata."""
 
-    package: CatalogGraphPackage
+    package: PackageReference
     source_metadata: CatalogSourceMetadata
     statistics: FrameworkStatistics
 
@@ -845,10 +1156,12 @@ class PackageCapabilityResult(FrozenSchema):
     available_resource_artifacts: tuple[ArtifactName, ...]
     available_resource_kinds: tuple[str, ...]
     implemented_learning_component_search_modes: tuple[LearningComponentSearchMode, ...]
+    capabilities: FrameworkCapabilities
+    counts: PackageCounts
     implemented_search_modes: tuple[SearchMode, ...]
-    package: CatalogGraphPackage
-    search_index: PackageSearchIndexMetadata
-    source_metadata: CatalogSourceMetadata
+    package_identity: GraphPackageIdentity
+    rights: RightsPolicy
+    search_index: PackageSearchCounts
     traversal_relationship_type: str = Field(min_length=1)
 
 

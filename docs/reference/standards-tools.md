@@ -133,23 +133,27 @@ statement codes.
 | Field               | Meaning                                            |
 |---------------------|----------------------------------------------------|
 | `effectiveScope`    | Exact or federated package scope actually searched |
-| `selectedSnapshots` | Exact accepted snapshots selected for the search   |
+| `selectedPackages`  | Identities of the packages searched                |
 | `page`              | Hits, warnings, mode, count, and cursor state      |
 
 Each `page.hits[]` entry contains:
 
-- exact `node` source evidence;
-- immutable `packageIdentity`;
-- local and normalized `facets`;
-- `retrievalMethod`;
-- `epistemicStatus: retrieval_candidate`;
+- `node`, the standard's `nodeId`, `statementCode`, and `description`; the complete
+  record, with rights, language, and CASE identity, is one `get_standard` call away;
+- `graphPackageId`, whose full identity is in `selectedPackages`;
+- local and normalized `facets`, including statement type and grades;
 - deterministic `score` and scoring algorithm;
 - `matchedTerms` and `matchedFields`;
 - optional `codeMatch` scope/derivation evidence; and
 - hit-local `warnings`.
 
-The page also exposes package-level `warnings`, `returnedCount`, `hasMore`, and
-`nextCursor`.
+The page states `mode`, which is the retrieval method of every hit, and
+`epistemicStatus: retrieval_candidate` once. It also exposes package-level `warnings`,
+`returnedCount`, `hasMore`, and `nextCursor`.
+
+The text result states once, in its header, anything every hit shares: the subject, the
+matched field and terms, and the score. A hit lists only its warning codes; each
+distinct warning message is stated once below the hits.
 
 ### Search warning codes
 
@@ -223,7 +227,10 @@ At least one of `frameworkId` or `snapshotId` is required.
 }
 ```
 
-The result contains `node`, `facets`, `package`, and `sourceMetadata`.
+The result contains `node`, `facets`, `package`, and `sourceMetadata`. `package` identifies the package the record comes from and carries its rights:
+`packageIdentity` and `rights`. The package's counts, capabilities, and profile facets
+are reported by `get_framework` and `get_capabilities`; build metadata and the artifact
+table are in the `package_manifest` resource.
 
 ## `get_standard_context`
 
@@ -264,15 +271,26 @@ At least one of `frameworkId` or `snapshotId` is required.
 
 ### Result fields
 
-| Field                  | Meaning                                                 |
-|------------------------|---------------------------------------------------------|
-| `standard`             | Exact `get_standard`-equivalent evidence for the origin |
-| `directParents`        | Direct parent nodes and authored relationships          |
-| `directChildren`       | Direct children, or null when not requested             |
-| `ancestors`            | Bounded ancestor traversal                              |
-| `descendants`          | Bounded descendant traversal, or null                   |
-| `rootPaths`            | Complete bounded root-to-origin paths, or null          |
-| `relationshipStatuses` | Non-empty relationship-resolution statuses              |
+| Field                  | Meaning                                                         |
+|------------------------|-----------------------------------------------------------------|
+| `standard`             | Exact `get_standard`-equivalent evidence for the origin         |
+| `nodes`                | Every node the result refers to, described once                 |
+| `relationships`        | Every relationship the result refers to, described once         |
+| `relationshipType`     | The hierarchy relationship type of every section                |
+| `directParents`        | `nodeId` and `relationshipId` of each direct parent             |
+| `directChildren`       | Same for each direct child, or null when not requested          |
+| `ancestors`            | Bounded ancestor traversal as `nodeId` and `depth` pairs        |
+| `descendants`          | Bounded descendant traversal, or null                           |
+| `rootPaths`            | Complete bounded root-to-origin paths as node-ID lists, or null |
+| `relationshipStatuses` | Non-empty relationship-resolution statuses                      |
+
+A node appearing in several sections, such as a parent that is also an ancestor and a
+root-path step, is described once in `nodes` with its `nodeKind`, `statementCode`,
+`statementType`, `normalizedStatementType`, `gradeLevel`, and `description`. Its
+complete record, with rights, language, and CASE identity, is one `get_standard` call
+away. A relationship is described once in `relationships` by `relationshipId`,
+endpoints, and `resolutionStatus`; its complete record is readable through the
+`relationship` resource.
 
 Traversal results explicitly report `isComplete` and `truncationReason`. Node traversal
 can truncate at `max_nodes`; root-path enumeration can truncate at `max_paths` or

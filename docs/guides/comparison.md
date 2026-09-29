@@ -138,9 +138,9 @@ Each candidate is explicitly marked `retrieval_candidate`.
 
 ## Context paths
 
-With `includeContextPaths: true`, the service retrieves bounded ancestor and root-path
-context for each match. This helps distinguish superficially similar descriptions that
-sit in different local source structures.
+With `includeContextPaths: true`, each match reports every root path from the
+framework root to the standard, as labelled steps with node IDs. This helps distinguish
+superficially similar descriptions that sit in different local source structures.
 
 If context reaches an established traversal bound, the section records a
 `context_incomplete` warning. If returned context includes a non-empty unresolved
@@ -167,9 +167,10 @@ preserve the same filters and per-framework bound.
 Each section has its own `hasMore` and `nextCursor`. The comparison tool does not flatten
 those cursors into one global pagination stream.
 
-When more evidence is needed from a section, use that section's cursor with the
-equivalent exact-package `search_standards` request. The tool's continuation block
-identifies the framework, snapshot, graph package, graph type, and cursor.
+When more evidence is needed from a section, submit that section's `nextRequest` from
+the tool's continuation block to `search_standards` unchanged. It is the exact-package
+search the comparison ran, with only the cursor replaced; sections without more
+evidence have no entry.
 
 Do not treat a first page as full curriculum coverage when `hasMore` is `true`.
 

@@ -93,8 +93,8 @@ the MCP surface.
 
 ## Cursor behavior
 
-Only `list_frameworks` and `search_standards` expose caller-visible continuation
-cursors.
+Only `list_frameworks`, `search_standards`, and `search_learning_components` expose
+caller-visible continuation cursors.
 
 Cursors are:
 
@@ -108,17 +108,14 @@ Cursors are:
 When another page is available, the tool includes a compatibility text block with:
 
 ```text
-continuationPolicy
 continuationTool
-cursorField
-hasMore
-immutableFields
-mutableFields
-nextCursor
 nextRequest
 ```
 
-The policy is `repeat_exact_request`. Submit `nextRequest` unchanged.
+`nextRequest` is the complete request with only the opaque cursor replaced. Fields left
+at their defaults are omitted because the tool fills them identically, so the replayed
+request selects the same page sequence. Submit it unchanged. On the last page the block
+is absent; the structured result still reports `hasMore` and `nextCursor`.
 
 !!! warning "Only the cursor is mutable during continuation"
     Do not change `limit`, filters, framework selectors, snapshots, search mode, query, or

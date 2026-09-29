@@ -36,15 +36,20 @@ This tool has no caller-supplied arguments.
 | `promptConfigSchemaVersion`       | Prompt configuration schema version       |
 | `packages`                        | Per-package capability evidence           |
 
-Each `packages[]` entry includes the accepted package and source metadata plus:
+Each `packages[]` entry includes:
 
+- `packageIdentity`, `rights`, `counts`, and `capabilities` (code coverage, text
+  search, detailed provenance, multi-parent, and official source roles);
 - `implementedSearchModes`;
 - `implementedLearningComponentSearchModes`;
-- package-local search index metadata, including `learningComponentDocumentCount` and
-  `tagVocabularySize`;
+- `searchIndex`, the package-local index counts: `codedNodeCount`,
+  `lexicalDocumentCount`, `learningComponentDocumentCount`, and `tagVocabularySize`;
 - `availableResourceKinds`;
 - `availableResourceArtifacts`; and
 - `traversalRelationshipType`.
+
+Source metadata is reported by `list_frameworks` and `get_framework`. Build metadata
+and the artifact table are in each package's `package_manifest` resource.
 
 Standards and learning-component modes are reported separately because they are
 governed differently. Learning-component modes carry a `learning_component_` prefix so
@@ -133,11 +138,17 @@ A filtered request is:
 | Field                | Meaning                                                    |
 |----------------------|------------------------------------------------------------|
 | `catalogSha256`      | Checksum of the accepted catalog state used for pagination |
-| `items`              | Returned accepted framework snapshots                      |
+| `items`              | Returned accepted framework snapshots, summarised          |
 | `returnedCount`      | Number of items on the page                                |
 | `totalMatchingCount` | Total snapshots matching the request                       |
 | `hasMore`            | Whether another page exists                                |
 | `nextCursor`         | Opaque cursor for the next page, or null                   |
+
+Each item carries the snapshot's identity, source metadata, relations, and available
+graph types, and a summary of each graph package: `packageIdentity`, `capabilities`,
+`counts`, `profileFacets`, `rights`, and `validationStatus`. Build timestamps, schema
+and manifest versions, and the artifact table are in the package's `package_manifest`
+resource.
 
 When `hasMore` is true, the result text also contains a complete `nextRequest`.
 Submit that request unchanged.
@@ -174,8 +185,9 @@ For reproducible work, pin the exact snapshot:
 
 ### Result
 
-The result contains one `framework` object with the complete accepted snapshot,
-including exact source metadata and accepted graph-package metadata.
+The result contains one `framework` object with the accepted snapshot's identity,
+source metadata, relations, and available graph types, and the same package summaries as
+`list_frameworks`.
 
 If snapshot omission does not resolve to one unique current snapshot, the tool returns
 an `ambiguous_framework` error rather than choosing silently.
@@ -203,7 +215,10 @@ Returns deterministic structural statistics for one Academic Standards package.
 
 ### Result fields
 
-The result contains `package`, `sourceMetadata`, and `statistics`.
+The result contains `package`, `sourceMetadata`, and `statistics`. `package` identifies the package the record comes from and carries its rights:
+`packageIdentity` and `rights`. The package's counts, capabilities, and profile facets
+are reported by `get_framework`; build metadata and the artifact table are in the
+`package_manifest` resource.
 
 `statistics` includes:
 

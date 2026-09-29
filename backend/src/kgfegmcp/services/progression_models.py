@@ -22,23 +22,32 @@ from typing import Literal, Self
 from pydantic import Field, model_validator
 
 # Package Library
-from kgfegmcp.catalog.models import CatalogGraphPackage, CatalogSourceMetadata
+from kgfegmcp.catalog.models import CatalogSourceMetadata
 from kgfegmcp.domain.enums import EpistemicStatus, NormalizedStatementType
 from kgfegmcp.domain.identifiers import (
     FrameworkId,
     GraphPackageId,
     NodeId,
-    RelationshipId,
     SnapshotId,
 )
 from kgfegmcp.graph.models import (
     SourceExportOrder,
-    StandardNode,
     TraversalTruncationReason,
 )
 from kgfegmcp.schemas import FrozenSchema
-from kgfegmcp.search.models import SearchFacetEvidence, SearchHit, SearchWarning
-from kgfegmcp.services.models import CatalogFilterValue, ContextRelationshipStatus
+from kgfegmcp.search.models import (
+    CodeMatchEvidence,
+    SearchFacetEvidence,
+    SearchHitNode,
+    SearchMatchedField,
+    SearchScore,
+    SearchWarning,
+)
+from kgfegmcp.services.models import (
+    CatalogFilterValue,
+    ContextRelationshipStatus,
+    PackageReference,
+)
 
 
 class ProgressionCandidateDiscoveryMethod(StrEnum):
@@ -208,66 +217,17 @@ class ProgressionContextNodeEvidence(FrozenSchema):
     statement_type: str | None = None
 
 
-class ProgressionContextRelationshipEvidence(FrozenSchema):
-    """Describe one exact hierarchy relationship in compact endpoint form."""
+class ProgressionSearchEvidence(FrozenSchema):
+    """Carry the match evidence of the search hit that discovered one candidate.
 
-    label: str = Field(min_length=1)
-    relationship_id: RelationshipId
-    resolution_status: str | None = None
-    source_export_order: SourceExportOrder
-    source_node_id: NodeId
-    target_node_id: NodeId
+    The hit's node and facets are the candidate's own ``node`` and ``facets``.
+    """
 
-
-class ProgressionRootPathEvidence(FrozenSchema):
-    """Describe one compact complete framework-root-to-candidate hierarchy path."""
-
-    nodes: tuple[ProgressionContextNodeEvidence, ...] = Field(min_length=1)
-    relationships: tuple[ProgressionContextRelationshipEvidence, ...]
-
-    @model_validator(mode="after")
-    def validate_path(self) -> Self:
-        """Require compact relationships to connect consecutive unique path nodes.
-
-        Returns
-        -------
-        Self
-            The unchanged internally consistent path evidence.
-
-        Raises
-        ------
-        ValueError
-            If nodes repeat or relationships do not connect consecutive nodes.
-        """
-
-        if len(self.relationships) != len(self.nodes) - 1:
-            raise ValueError(
-                "A compact root path must contain one fewer relationship than nodes."
-            )
-
-        node_ids = tuple(node.node_id for node in self.nodes)
-
-        if len(node_ids) != len(set(node_ids)):
-            raise ValueError("A compact root path may not repeat a node.")
-
-        if self.nodes[0].node_kind is not ProgressionContextNodeKind.FRAMEWORK:
-            raise ValueError("A compact root path must begin with a framework node.")
-
-        if self.nodes[-1].node_kind is not ProgressionContextNodeKind.STANDARD:
-            raise ValueError("A compact root path must end with a standard node.")
-
-        for index, relationship in enumerate(self.relationships):
-            if relationship.source_node_id != self.nodes[index].node_id:
-                raise ValueError(
-                    "A compact root-path source must match its preceding node."
-                )
-
-            if relationship.target_node_id != self.nodes[index + 1].node_id:
-                raise ValueError(
-                    "A compact root-path target must match its following node."
-                )
-
-        return self
+    code_match: CodeMatchEvidence | None = None
+    matched_fields: tuple[SearchMatchedField, ...] = Field(min_length=1)
+    matched_terms: tuple[str, ...] = Field(min_length=1)
+    score: SearchScore
+    warnings: tuple[SearchWarning, ...] = ()
 
 
 class ProgressionCandidateContextEvidence(FrozenSchema):
@@ -280,7 +240,7 @@ class ProgressionCandidateContextEvidence(FrozenSchema):
     origin_node_id: NodeId
     relationship_statuses: tuple[ContextRelationshipStatus, ...]
     relationship_type: str = Field(min_length=1)
-    root_paths: tuple[ProgressionRootPathEvidence, ...]
+    root_paths: tuple[tuple[NodeId, ...], ...]
     root_paths_complete: bool
     root_paths_truncation_reason: TraversalTruncationReason | None = None
 
@@ -324,31 +284,23 @@ class ProgressionCandidateContextEvidence(FrozenSchema):
             )
 
     def _check_root_path_bounds(self) -> None:
-        """Require every root path to span framework_root_id to origin_node_id.
+        """Require every root path to run from framework_root_id to origin_node_id.
 
         Raises
         ------
         ValueError
-            If a path starts or ends at the wrong node, or uses an unexpected
-            relationship type.
+            If a path is empty, repeats a node, or starts or ends at the wrong node.
         """
 
         for path in self.root_paths:
-            if path.nodes[0].node_id != self.framework_root_id:
-                raise ValueError(
-                    "Every compact root path must begin at framework_root_id."
-                )
+            if not path or len(path) != len(set(path)):
+                raise ValueError("A root path must be non-empty and repeat no node.")
 
-            if path.nodes[-1].node_id != self.origin_node_id:
-                raise ValueError("Every compact root path must end at origin_node_id.")
+            if path[0] != self.framework_root_id:
+                raise ValueError("Every root path must begin at framework_root_id.")
 
-            if any(
-                relationship.label != self.relationship_type
-                for relationship in path.relationships
-            ):
-                raise ValueError(
-                    "Compact root paths must use the selected relationship type."
-                )
+            if path[-1] != self.origin_node_id:
+                raise ValueError("Every root path must end at origin_node_id.")
 
     def _check_truncation_reasons(self) -> None:
         """Require each completion flag to match its recorded truncation reason.
@@ -422,11 +374,11 @@ class ProgressionCandidateEvidence(FrozenSchema):
     facets: SearchFacetEvidence
     matched_local_grade_labels: tuple[str, ...]
     matched_normalized_grades: tuple[str, ...]
-    node: StandardNode
+    node: SearchHitNode
     retrieval_status: Literal[  # type: ignore[valid-type]
         EpistemicStatus.RETRIEVAL_CANDIDATE
     ]
-    search_hit: SearchHit | None = None
+    search_hit: ProgressionSearchEvidence | None = None
     selection_rank: int = Field(ge=1)
 
     @model_validator(mode="after")
@@ -447,9 +399,6 @@ class ProgressionCandidateEvidence(FrozenSchema):
         if len(self.discovery_methods) != len(set(self.discovery_methods)):
             raise ValueError("discovery_methods must not contain duplicate values.")
 
-        if self.search_hit is not None and self.search_hit.node != self.node:
-            raise ValueError("Search-hit and candidate nodes must agree.")
-
         if self.context.origin_node_id != self.node.node_id:
             raise ValueError("Candidate node and compact context origin must agree.")
 
@@ -460,11 +409,12 @@ class CollectProgressionEvidenceResult(FrozenSchema):
     """Return one deterministically bounded progression-evidence candidate set."""
 
     candidate_limit_applied: bool
+    context_nodes: tuple[ProgressionContextNodeEvidence, ...]
     discovered_candidate_count: int = Field(ge=0)
     discovery_complete: bool
     excluded_candidate_count: int = Field(ge=0)
     excluded_candidate_node_ids: tuple[NodeId, ...]
-    package: CatalogGraphPackage
+    package: PackageReference
     request: ProgressionEvidenceRequestSummary
     retained_candidate_count: int = Field(ge=0)
     retained_candidates: tuple[ProgressionCandidateEvidence, ...] = Field(max_length=20)
@@ -489,6 +439,7 @@ class CollectProgressionEvidenceResult(FrozenSchema):
         """
 
         self._check_package_identity()
+        self._check_context_nodes()
         self._check_candidate_counts()
         self._check_candidate_node_ids()
         self._check_candidate_scopes()
@@ -516,6 +467,30 @@ class CollectProgressionEvidenceResult(FrozenSchema):
 
         if self.request.snapshot_id != identity.snapshot_id:
             raise ValueError("Request and package snapshot identities must agree.")
+
+    def _check_context_nodes(self) -> None:
+        """Require the node table to hold exactly the nodes of every root path once.
+
+        Raises
+        ------
+        ValueError
+            If the table repeats a node, misses a path node, or holds an unused one.
+        """
+
+        table_ids = tuple(node.node_id for node in self.context_nodes)
+
+        if len(table_ids) != len(set(table_ids)):
+            raise ValueError("context_nodes must not repeat a node.")
+
+        path_ids = {
+            node_id
+            for candidate in self.retained_candidates
+            for path in candidate.context.root_paths
+            for node_id in path
+        }
+
+        if set(table_ids) != path_ids:
+            raise ValueError("context_nodes must hold exactly the root-path nodes.")
 
     def _check_candidate_counts(self) -> None:
         """Require the recorded candidate counts and limit flag to be consistent.
@@ -614,8 +589,8 @@ class CollectProgressionEvidenceResult(FrozenSchema):
         Parameters
         ----------
         candidate
-            The retained candidate whose search-hit identity and matched grades
-            are validated against the resolved request.
+            The retained candidate whose matched grades are validated against the
+            resolved request.
         requested_local
             The local grade labels the resolved request scopes to.
         requested_normalized
@@ -624,19 +599,9 @@ class CollectProgressionEvidenceResult(FrozenSchema):
         Raises
         ------
         ValueError
-            If the candidate's search-hit identity disagrees, a matched grade falls
-            outside the request, or a populated scope is left unmatched.
+            If a matched grade falls outside the request, or a populated scope is left
+            unmatched.
         """
-
-        identity = self.package.package_identity
-
-        if (
-            candidate.search_hit is not None
-            and candidate.search_hit.package_identity != identity
-        ):
-            raise ValueError(
-                "Candidate search-hit and result package identities must agree."
-            )
 
         matched_local = set(candidate.matched_local_grade_labels)
         matched_normalized = set(candidate.matched_normalized_grades)

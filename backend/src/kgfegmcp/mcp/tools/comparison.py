@@ -52,7 +52,7 @@ from kgfegmcp.services.comparison_models import (
     CompareFrameworkEvidenceResult,
     FrameworkComparisonRequest,
 )
-from kgfegmcp.services.models import CatalogFilterValue
+from kgfegmcp.services.models import CatalogFilterValue, StandardsSearchRequest
 
 if TYPE_CHECKING:
     # Third Party Library
@@ -65,11 +65,8 @@ if TYPE_CHECKING:
 _COMPARISON_REQUEST_ADAPTER: Final[TypeAdapter[FrameworkComparisonRequest]] = (
     TypeAdapter(FrameworkComparisonRequest)
 )
-_LEXICAL_COMPARISON_SEMANTICS: Final[str] = (
-    "Lexical semantics: text mode matches exact normalized description tokens or "
-    "a contiguous normalized phrase. It performs no stemming, lemmatization, "
-    "fuzzy matching, or synonym expansion. Every section count is bounded to the "
-    "exact query, filters, and per-framework limit."
+_STANDARDS_SEARCH_REQUEST: Final[TypeAdapter[StandardsSearchRequest]] = TypeAdapter(
+    StandardsSearchRequest
 )
 _LEXICAL_NO_MATCH_GUIDANCE: Final[str] = (
     "No-match interpretation: no retained description matched this exact query and "
@@ -227,9 +224,6 @@ def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
         f"Query: {result.request.query}",
     ]
 
-    if result.request.mode is SearchMode.TEXT:
-        lines.append(_LEXICAL_COMPARISON_SEMANTICS)
-
     for section in result.sections:
         lines.extend(
             (
@@ -250,23 +244,69 @@ def _format_comparison_result(result: CompareFrameworkEvidenceResult) -> str:
             lines.append(_LEXICAL_NO_MATCH_GUIDANCE)
 
         for index, match in enumerate(section.matches, start=1):
-            node = match.standard.node
+            node = match.search_hit.node
             lines.append(
                 f"  {index}. {node.statement_code or '[uncoded]'} | {node.node_id}"
             )
 
-    lines.extend(
-        (
-            "",
-            f"Fixed disclosures: {len(result.disclosures)}",
-            (
-                "Use each non-null section cursor with the equivalent exact-package "
-                "search_standards request."
-            ),
-            "Continuation data: see the following MCP continuation block.",
+    lines.extend(("", f"Fixed disclosures: {len(result.disclosures)}"))
+
+    if any(section.has_more for section in result.sections):
+        lines.append(
+            "Continuation: each section with more matches has a search_standards "
+            "nextRequest in the MCP continuation block below."
         )
-    )
+
     return "\n".join(lines)
+
+
+def _section_next_requests(
+    result: CompareFrameworkEvidenceResult,
+) -> list[dict[str, object]]:
+    """Return the next exact-package search request of every section with more matches.
+
+    Each request repeats the per-framework search the comparison ran, so its cursor
+    validates; fields left at their defaults are omitted.
+
+    Parameters
+    ----------
+    result
+        Complete typed cross-framework comparison evidence.
+
+    Returns
+    -------
+    list[dict[str, object]]
+        One ``search_standards`` request per section whose ``hasMore`` is true.
+    """
+
+    summary = result.request
+    requests: list[dict[str, object]] = []
+
+    for section in result.sections:
+        if section.next_cursor is None:
+            continue
+
+        payload: dict[str, object] = {
+            "cursor": section.next_cursor.root,
+            "frameworkIds": [str(section.framework_id)],
+            "includeGroupings": summary.include_groupings,
+            "limit": summary.max_matches_per_framework,
+            "localGradeLabels": list(summary.local_grade_labels),
+            "mode": summary.mode.value,
+            "normalizedGrades": list(summary.normalized_grades),
+            "query": summary.query,
+            "snapshotIds": [str(section.snapshot_id)],
+        }
+
+        if summary.match is not None:
+            payload["match"] = summary.match.model_dump(by_alias=True, mode="json")
+
+        request = _STANDARDS_SEARCH_REQUEST.validate_python(payload)
+        requests.append(
+            request.model_dump(by_alias=True, exclude_defaults=True, mode="json")
+        )
+
+    return requests
 
 
 async def compare_framework_evidence(
@@ -342,29 +382,20 @@ async def compare_framework_evidence(
     with tool_error_boundary("compare_framework_evidence"):
         state = get_app_state(context)
         result = state.comparison_service.compare_framework_evidence(request)
-        continuation_text = build_continuation_text(
-            {
-                "sectionCursors": [
-                    {
-                        "continuationTool": "search_standards",
-                        "cursorField": "cursor",
-                        "frameworkId": str(section.framework_id),
-                        "graphPackageId": str(section.graph_package_id),
-                        "graphType": section.graph_type.value,
-                        "hasMore": section.has_more,
-                        "nextCursor": (
-                            section.next_cursor.root
-                            if section.next_cursor is not None
-                            else None
-                        ),
-                        "snapshotId": str(section.snapshot_id),
-                    }
-                    for section in result.sections
-                ]
-            }
-        )
+        next_requests = _section_next_requests(result)
         return build_tool_result(
-            additional_text=(continuation_text,),
+            additional_text=(
+                (
+                    build_continuation_text(
+                        {
+                            "continuationTool": "search_standards",
+                            "nextRequests": next_requests,
+                        }
+                    ),
+                )
+                if next_requests
+                else ()
+            ),
             content=_format_comparison_result(result),
             resource_links=catalog_resource_links(),
             result=result,
@@ -387,8 +418,12 @@ def register_comparison_tools(server: "FastMCP[dict[str, AppState]]") -> None:
             "package-governed search modes. A request variant present in this generic "
             "schema may be unavailable for one or more selected packages; inspect "
             "get_capabilities packages[].implementedSearchModes before using "
-            "code_exact or code_prefix. Preserve each package's search order, warnings, "
-            "hierarchy context, and continuation cursor. Text mode uses the flat "
+            "code_exact or code_prefix. Each match carries its search hit and, when "
+            "includeContextPaths is true, every root path as labelled steps with node "
+            "IDs; the complete standard is one get_standard call away. Preserve each "
+            "package's search order, warnings, hierarchy paths, and continuation "
+            "cursor. Every section count is bounded to the exact query, filters, and "
+            "per-framework limit. Text mode uses the flat "
             "matchMode and matchOperator fields and exact normalized description tokens "
             "without stemming or synonym expansion. For concept discovery, use the caller's "
             "original wording first, then make only a small number of separate "

@@ -26,14 +26,20 @@ from __future__ import annotations
 import unicodedata
 
 from enum import StrEnum
-from typing import Annotated, Literal, TypeAlias
+from typing import Annotated, Final, Literal, TypeAlias
 
 # Third Party Library
 from pydantic import ConfigDict, Field, RootModel, StringConstraints, model_validator
 
 # Package Library
 from kgfegmcp.domain.enums import EpistemicStatus, GraphType, NormalizedStatementType
-from kgfegmcp.domain.identifiers import FrameworkId, NodeId, Sha256Digest, SnapshotId
+from kgfegmcp.domain.identifiers import (
+    FrameworkId,
+    GraphPackageId,
+    NodeId,
+    Sha256Digest,
+    SnapshotId,
+)
 from kgfegmcp.graph.models import (
     GraphPackageIdentity,
     LearningComponentNode,
@@ -548,7 +554,6 @@ class SearchMatchedField(FrozenSchema):
     field: SearchField
     matched_terms: tuple[str, ...] = Field(min_length=1)
     phrase_matched: bool
-    source_value: str = Field(min_length=1)
 
 
 class SearchScore(FrozenSchema):
@@ -599,10 +604,77 @@ class SearchFacetEvidence(FrozenSchema):
     statement_type: str | None
 
 
+class SearchHitNode(FrozenSchema):
+    """Identify one standard by node ID, statement code, and source wording.
+
+    Statement type and grades travel in the hit's facets. The complete node record,
+    including rights, language, and CASE identity, is one ``get_standard`` call away
+    by ``node_id``.
+    """
+
+    description: str | None = None
+    node_id: NodeId
+    statement_code: str | None = None
+
+
+def search_hit_node(node: StandardNode) -> SearchHitNode:
+    """Project one exact standard node into its search-hit form.
+
+    Parameters
+    ----------
+    node
+        Exact retained standard node.
+
+    Returns
+    -------
+    SearchHitNode
+        Identifier, code, and wording of the node.
+    """
+
+    return SearchHitNode(
+        description=node.description,
+        node_id=node.node_id,
+        statement_code=node.statement_code,
+    )
+
+
+class LearningComponentHitNode(FrozenSchema):
+    """Project the component fields a search hit needs to be chosen and fetched.
+
+    Identity key, attribution, license, and provenance are one
+    ``get_learning_component`` call away by ``node_id``.
+    """
+
+    description: str
+    node_id: NodeId
+    tags: tuple[str, ...] = ()
+
+
+def learning_component_hit_node(
+    node: LearningComponentNode,
+) -> LearningComponentHitNode:
+    """Project one exact learning component into its search-hit form.
+
+    Parameters
+    ----------
+    node
+        Exact retained learning component.
+
+    Returns
+    -------
+    LearningComponentHitNode
+        Identifier, wording, and tags of the component.
+    """
+
+    return LearningComponentHitNode(
+        description=node.description, node_id=node.node_id, tags=tuple(node.tags or ())
+    )
+
+
 class CodeScopeEvidence(FrozenSchema):
     """Expose one exact graph node that supplies configured code scope."""
 
-    scope_node: StandardNode
+    scope_node: SearchHitNode
     scope_statement_type: str = Field(min_length=1)
 
 
@@ -631,28 +703,26 @@ class SearchWarning(FrozenSchema):
     """Describe one deterministic capability or data-evidence warning."""
 
     code: SearchWarningCode
+    graph_package_id: GraphPackageId
     message: str = Field(min_length=1)
     node_id: NodeId | None = None
-    package_identity: GraphPackageIdentity
 
 
 class SearchHit(FrozenSchema):
     """Return one exact source node with package identity and search evidence."""
 
     code_match: CodeMatchEvidence | None = None
-    epistemic_status: Literal[EpistemicStatus.RETRIEVAL_CANDIDATE]  # type: ignore[valid-type]
     facets: SearchFacetEvidence
+    graph_package_id: GraphPackageId
     matched_fields: tuple[SearchMatchedField, ...] = Field(min_length=1)
     matched_terms: tuple[str, ...] = Field(min_length=1)
-    node: StandardNode
-    package_identity: GraphPackageIdentity
-    retrieval_method: SearchMode
+    node: SearchHitNode
     score: SearchScore
     warnings: tuple[SearchWarning, ...] = ()
 
     @model_validator(mode="after")
     def validate_hit_mode(self) -> SearchHit:
-        """Require code evidence only for code modes and lexical evidence for text.
+        """Require matched fields to agree with the presence of code evidence.
 
         Returns
         -------
@@ -662,16 +732,13 @@ class SearchHit(FrozenSchema):
         Raises
         ------
         ValueError
-            If retrieval mode and evidence fields disagree.
+            If code evidence and matched fields disagree.
         """
 
-        is_text = self.retrieval_method is SearchMode.TEXT
-
-        if is_text == (self.code_match is not None):
-            raise ValueError("Search hit code evidence does not match retrieval mode.")
-
         expected_field = (
-            SearchField.DESCRIPTION if is_text else SearchField.STATEMENT_CODE
+            SearchField.DESCRIPTION
+            if self.code_match is None
+            else SearchField.STATEMENT_CODE
         )
 
         if any(field.field is not expected_field for field in self.matched_fields):
@@ -683,6 +750,7 @@ class SearchHit(FrozenSchema):
 class SearchPage(FrozenSchema):
     """Return one immutable deterministic page of package-scoped search hits."""
 
+    epistemic_status: Literal[EpistemicStatus.RETRIEVAL_CANDIDATE]  # type: ignore[valid-type]
     has_more: bool
     hits: tuple[SearchHit, ...]
     mode: SearchMode
@@ -708,8 +776,12 @@ class SearchPage(FrozenSchema):
         if self.returned_count != len(self.hits):
             raise ValueError("returned_count must equal the number of hits.")
 
-        if any(hit.retrieval_method is not self.mode for hit in self.hits):
-            raise ValueError("Every hit must use the page search mode.")
+        is_text = self.mode is SearchMode.TEXT
+
+        if any(is_text == (hit.code_match is not None) for hit in self.hits):
+            raise ValueError(
+                "Every hit must carry the evidence of the page search mode."
+            )
 
         if self.has_more != (self.next_cursor is not None):
             raise ValueError("has_more and next_cursor must agree.")
@@ -733,23 +805,32 @@ class SupportedStandardReference(FrozenSchema):
     support_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
 
 
+class MatchedCodeReference(FrozenSchema):
+    """Name one supported standard whose statement code satisfied the query.
+
+    Its wording, grades, and support confidence are in the same hit's
+    ``supported_standards`` entry with this ``node_id``.
+    """
+
+    node_id: NodeId
+    statement_code: str = Field(min_length=1)
+
+
 class LearningComponentSearchHit(FrozenSchema):
     """Return one learning component with package identity and search evidence."""
 
-    epistemic_status: Literal[EpistemicStatus.RETRIEVAL_CANDIDATE]  # type: ignore[valid-type]
-    matched_codes: tuple[SupportedStandardReference, ...] = ()
+    graph_package_id: GraphPackageId
+    matched_codes: tuple[MatchedCodeReference, ...] = ()
     matched_fields: tuple[SearchMatchedField, ...] = Field(min_length=1)
     matched_terms: tuple[str, ...] = Field(min_length=1)
-    node: LearningComponentNode
-    package_identity: GraphPackageIdentity
-    retrieval_method: LearningComponentSearchMode
+    node: LearningComponentHitNode
     score: SearchScore
     supported_standards: tuple[SupportedStandardReference, ...]
     warnings: tuple[SearchWarning, ...] = ()
 
     @model_validator(mode="after")
     def validate_hit_mode(self) -> LearningComponentSearchHit:
-        """Require matched-field and matched-code evidence to match retrieval mode.
+        """Require matched-code evidence exactly when a supported code matched.
 
         Returns
         -------
@@ -759,27 +840,17 @@ class LearningComponentSearchHit(FrozenSchema):
         Raises
         ------
         ValueError
-            If retrieval mode and evidence fields disagree.
+            If matched fields mix kinds or disagree with matched-code evidence.
         """
 
-        expected_fields = {
-            LearningComponentSearchMode.SUPPORTED_CODE_EXACT: (
-                SearchField.SUPPORTED_STATEMENT_CODE
-            ),
-            LearningComponentSearchMode.SUPPORTED_CODE_PREFIX: (
-                SearchField.SUPPORTED_STATEMENT_CODE
-            ),
-            LearningComponentSearchMode.TAG: SearchField.TAG,
-            LearningComponentSearchMode.TEXT: SearchField.DESCRIPTION,
-        }
-        expected_field = expected_fields[self.retrieval_method]
+        fields = {field.field for field in self.matched_fields}
 
-        if any(field.field is not expected_field for field in self.matched_fields):
+        if len(fields) != 1:
             raise ValueError(
-                "Learning component hit matched fields do not match retrieval mode."
+                "Learning component hit matched fields must share one kind."
             )
 
-        is_supported_code = expected_field is SearchField.SUPPORTED_STATEMENT_CODE
+        is_supported_code = SearchField.SUPPORTED_STATEMENT_CODE in fields
 
         if is_supported_code != bool(self.matched_codes):
             raise ValueError(
@@ -789,9 +860,20 @@ class LearningComponentSearchHit(FrozenSchema):
         return self
 
 
+_LEARNING_COMPONENT_MATCH_FIELDS: Final[
+    dict[LearningComponentSearchMode, SearchField]
+] = {
+    LearningComponentSearchMode.SUPPORTED_CODE_EXACT: SearchField.SUPPORTED_STATEMENT_CODE,
+    LearningComponentSearchMode.SUPPORTED_CODE_PREFIX: SearchField.SUPPORTED_STATEMENT_CODE,
+    LearningComponentSearchMode.TAG: SearchField.TAG,
+    LearningComponentSearchMode.TEXT: SearchField.DESCRIPTION,
+}
+
+
 class LearningComponentSearchPage(FrozenSchema):
     """Return one immutable deterministic page of learning-component search hits."""
 
+    epistemic_status: Literal[EpistemicStatus.RETRIEVAL_CANDIDATE]  # type: ignore[valid-type]
     has_more: bool
     hits: tuple[LearningComponentSearchHit, ...]
     mode: LearningComponentSearchMode
@@ -817,8 +899,16 @@ class LearningComponentSearchPage(FrozenSchema):
         if self.returned_count != len(self.hits):
             raise ValueError("returned_count must equal the number of hits.")
 
-        if any(hit.retrieval_method is not self.mode for hit in self.hits):
-            raise ValueError("Every hit must use the page search mode.")
+        expected_field = _LEARNING_COMPONENT_MATCH_FIELDS[self.mode]
+
+        if any(
+            field.field is not expected_field
+            for hit in self.hits
+            for field in hit.matched_fields
+        ):
+            raise ValueError(
+                "Every hit must carry the evidence of the page search mode."
+            )
 
         if self.has_more != (self.next_cursor is not None):
             raise ValueError("has_more and next_cursor must agree.")

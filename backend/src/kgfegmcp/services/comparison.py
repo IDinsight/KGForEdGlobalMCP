@@ -49,11 +49,10 @@ from kgfegmcp.services.comparison_models import (
 from kgfegmcp.services.models import (
     ExactCodeStandardsSearchRequest,
     GetStandardContextRequest,
-    GetStandardRequest,
-    NodeIdStandardIdentifier,
     PrefixCodeStandardsSearchRequest,
     StandardsSearchRequest,
     TextStandardsSearchRequest,
+    hierarchy_path_steps,
 )
 from kgfegmcp.services.standards import StandardsService
 
@@ -164,7 +163,7 @@ class ComparisonService:
         search_hit: SearchHit,
         selection: _ResolvedComparisonSelection,
     ) -> tuple[ComparisonMatchEvidence, tuple[ComparisonWarning, ...]]:
-        """Retrieve exact standard and optional hierarchy evidence for one search hit.
+        """Attach optional labelled hierarchy paths to one search hit.
 
         Parameters
         ----------
@@ -182,24 +181,14 @@ class ComparisonService:
         """
 
         identity = selection.package.package_identity
-        standard_request = GetStandardRequest(
-            framework_id=identity.framework_id,
-            graph_type=identity.graph_type,
-            identifier=NodeIdStandardIdentifier(
-                identifier_type="node_id", node_id=search_hit.node.node_id
-            ),
-            snapshot_id=identity.snapshot_id,
-        )
-        standard = self.standards_service.get_standard(standard_request)
 
         if not include_context_paths:
             return (
                 ComparisonMatchEvidence(
-                    context=None,
                     context_complete=None,
+                    hierarchy_paths=None,
                     retrieval_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
                     search_hit=search_hit,
-                    standard=standard,
                 ),
                 (),
             )
@@ -222,9 +211,12 @@ class ComparisonService:
                 snapshot_id=identity.snapshot_id,
             )
         )
-        context_complete = context.ancestors.is_complete and (
-            context.root_paths is None or context.root_paths.is_complete
-        )
+        root_paths = context.root_paths
+
+        if root_paths is None:
+            raise RuntimeError("Requested comparison context returned no root paths.")
+
+        context_complete = context.ancestors.is_complete and root_paths.is_complete
         warnings: list[ComparisonWarning] = []
 
         if not context_complete:
@@ -262,11 +254,12 @@ class ComparisonService:
         warnings.sort(key=self._comparison_warning_order_key)
         return (
             ComparisonMatchEvidence(
-                context=context,
                 context_complete=context_complete,
+                hierarchy_paths=tuple(
+                    hierarchy_path_steps(path) for path in root_paths.paths
+                ),
                 retrieval_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
                 search_hit=search_hit,
-                standard=standard,
             ),
             tuple(warnings),
         )

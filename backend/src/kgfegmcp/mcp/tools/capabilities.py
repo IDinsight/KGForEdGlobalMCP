@@ -102,7 +102,7 @@ def _format_package_capability(
         Stable readable package identity, implemented modes, and code coverage.
     """
 
-    identity = package.package.package_identity
+    identity = package.package_identity
     implemented_modes = (
         ", ".join(mode.value for mode in package.implemented_search_modes) or "none"
     )
@@ -119,7 +119,7 @@ def _format_package_capability(
         f"  Snapshot ID: {identity.snapshot_id}",
         "  Academic standards:",
         f"    implementedSearchModes: {implemented_modes}",
-        f"    codeCoverage: {package.package.capabilities.code_search.value}",
+        f"    codeCoverage: {package.capabilities.code_search.value}",
         f"    codedNodes: {package.search_index.coded_node_count}",
         "  Learning components:",
         f"    implementedLearningComponentSearchModes: {implemented_component_modes}",
@@ -174,7 +174,15 @@ def register_capability_tools(server: FastMCP[dict[str, AppState]]) -> None:
             "inspect packages[].implementedSearchModes for the selected package before "
             "choosing code_exact or code_prefix. Also report tools, prompts, "
             "resources, graph types, traversal behavior, and unavailable features "
-            "implemented by the accepted runtime."
+            "implemented by the accepted runtime. Each package's source metadata, "
+            "such as languages, grade labels, and adoption status, is reported by "
+            "get_framework and list_frameworks. In counts, itemNodes, codedItems, and "
+            "additionalCounts.multiParentTargets describe the curriculum tree, whose "
+            "items are standards and groupings alike; multiParentTargets counts items "
+            "with more than one parent in that tree. Learning components are counted "
+            "separately, and get_framework_statistics reports "
+            "multiStandardComponentCount, the components linked to more than one "
+            "standard."
         ),
         name="get_capabilities",
         output_schema=result_schema(GetCapabilitiesResult),

@@ -83,8 +83,9 @@ unresolved relationship status to be hidden from returned hierarchy evidence.
 
 ## Direct parents and children
 
-Direct relationships preserve the exact adjacent node and relationship record. This is
-the best evidence for answering questions such as:
+Direct relationships name the exact adjacent node and the relationship that links it,
+by `nodeId` and `relationshipId`; both are described once in the result's `nodes` and
+`relationships` tables. This is the best evidence for answering questions such as:
 
 ```text
 What is the immediate source parent of this Indicator?
@@ -96,8 +97,8 @@ or:
 What source statements are directly grouped under this Content Standard?
 ```
 
-Do not assume that `directParents.neighbors` contains exactly one item. The current
-runtime supports valid multi-parent packages.
+Do not assume that `directParents` contains exactly one item. The current runtime
+supports valid multi-parent packages.
 
 ## Ancestor traversal
 
@@ -165,7 +166,8 @@ flowchart LR
 
 For the shared standard above, a single-parent-chain assumption would lose one source
 placement. `rootPaths.paths` can retain both branches when the package and traversal
-bounds allow them.
+bounds allow them. Each path is a list of node IDs from the framework root to the
+selected standard; the nodes are described once in `nodes`.
 
 ## Completion and truncation evidence
 

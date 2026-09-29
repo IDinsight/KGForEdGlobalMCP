@@ -84,6 +84,7 @@ from kgfegmcp.search.models import (
     LearningComponentSupportedCodePrefixSearchQuery,
     LearningComponentTagSearchQuery,
     LearningComponentTextSearchQuery,
+    MatchedCodeReference,
     PackageSearchIndexMetadata,
     PrefixCodeSearchQuery,
     SearchCursor,
@@ -103,6 +104,8 @@ from kgfegmcp.search.models import (
     SearchWarningCode,
     SupportedStandardReference,
     TextSearchQuery,
+    learning_component_hit_node,
+    search_hit_node,
 )
 from kgfegmcp.search.normalizers import (
     CODE_NORMALIZER_VERSION,
@@ -733,6 +736,7 @@ class SearchService:
             tool_name="search_standards",
         )
         return SearchPage(
+            epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
             has_more=next_cursor is not None,
             hits=tuple(ranked_hit.hit for ranked_hit in page_hits),
             mode=query.mode,
@@ -794,6 +798,7 @@ class SearchService:
             tool_name="search_learning_components",
         )
         return LearningComponentSearchPage(
+            epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
             has_more=next_cursor is not None,
             hits=tuple(ranked_hit.hit for ranked_hit in page_hits),
             mode=query.mode,
@@ -1375,7 +1380,8 @@ def _build_code_ranked_hit(
     )
     scopes = tuple(
         CodeScopeEvidence(
-            scope_node=scope, scope_statement_type=_require_scope_statement_type(scope)
+            scope_node=search_hit_node(scope),
+            scope_statement_type=_require_scope_statement_type(scope),
         )
         for scope in posting.scopes
     )
@@ -1403,17 +1409,14 @@ def _build_code_ranked_hit(
         field=SearchField.STATEMENT_CODE,
         matched_terms=(candidate.normalized_query,),
         phrase_matched=False,
-        source_value=posting.authored_code,
     )
     hit = SearchHit(
         code_match=code_match,
-        epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
         facets=evidence,
         matched_fields=(matched_field,),
         matched_terms=(candidate.normalized_query,),
-        node=posting.node,
-        package_identity=identity,
-        retrieval_method=retrieval_method,
+        graph_package_id=identity.graph_package_id,
+        node=search_hit_node(posting.node),
         score=score,
         warnings=hit_warnings,
     )
@@ -1454,7 +1457,6 @@ def _build_component_text_ranked_hit(
         field=SearchField.DESCRIPTION,
         matched_terms=candidate.matched_terms,
         phrase_matched=candidate.phrase_matched,
-        source_value=candidate.source_value,
     )
     score = SearchScore(
         algorithm=SearchScoreAlgorithm.LEXICAL_TOKEN_COVERAGE_V1,
@@ -1464,12 +1466,10 @@ def _build_component_text_ranked_hit(
         value=candidate.score_value,
     )
     hit = LearningComponentSearchHit(
-        epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
         matched_fields=(matched_field,),
         matched_terms=candidate.matched_terms,
-        node=candidate.node,
-        package_identity=package.catalog_runtime.catalog_package.package_identity,
-        retrieval_method=LearningComponentSearchMode.TEXT,
+        graph_package_id=package.catalog_runtime.catalog_package.package_identity.graph_package_id,
+        node=learning_component_hit_node(candidate.node),
         score=score,
         supported_standards=_supported_standards(
             component_id=candidate.node.node_id, package=package
@@ -1645,7 +1645,7 @@ def _build_supported_code_ranked_hits(
 
     components_by_id: dict[NodeId, LearningComponentNode] = {}
     exact_by_id: dict[NodeId, bool] = {}
-    matched_by_id: dict[NodeId, list[SupportedStandardReference]] = {}
+    matched_by_id: dict[NodeId, list[MatchedCodeReference]] = {}
     normalized_queries_by_id: dict[NodeId, list[str]] = {}
     store = package.catalog_runtime.graph_store
 
@@ -1677,12 +1677,9 @@ def _build_supported_code_ranked_hits(
                 posting.authored_code,
             ) not in already_matched:
                 matched_codes.append(
-                    SupportedStandardReference(
-                        description=posting.node.description,
-                        grade_levels=posting.node.grade_level or (),
+                    MatchedCodeReference(
                         node_id=posting.node.node_id,
                         statement_code=posting.authored_code,
-                        support_confidence=relationship.support_confidence,
                     )
                 )
 
@@ -1710,21 +1707,17 @@ def _build_supported_code_ranked_hits(
             value=score_value,
         )
         hit = LearningComponentSearchHit(
-            epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
             matched_codes=tuple(matched_codes),
-            matched_fields=tuple(
+            matched_fields=(
                 SearchMatchedField(
                     field=SearchField.SUPPORTED_STATEMENT_CODE,
                     matched_terms=matched_terms,
                     phrase_matched=False,
-                    source_value=matched.statement_code,
-                )
-                for matched in matched_codes
+                ),
             ),
             matched_terms=matched_terms,
-            node=component,
-            package_identity=package.catalog_runtime.catalog_package.package_identity,
-            retrieval_method=retrieval_method,
+            graph_package_id=package.catalog_runtime.catalog_package.package_identity.graph_package_id,
+            node=learning_component_hit_node(component),
             score=score,
             supported_standards=_supported_standards(
                 component_id=component_id, package=package
@@ -1765,11 +1758,6 @@ def _build_tag_ranked_hit(
         Public tag hit and stable ordering position.
     """
 
-    source_value = next(
-        tag
-        for tag in component.tags or ()
-        if normalize_facet_value(tag) == normalized_query
-    )
     score = SearchScore(
         algorithm=SearchScoreAlgorithm.TAG_EXACT_V1,
         matched_term_count=1,
@@ -1778,19 +1766,16 @@ def _build_tag_ranked_hit(
         value=1_000_000,
     )
     hit = LearningComponentSearchHit(
-        epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
         matched_fields=(
             SearchMatchedField(
                 field=SearchField.TAG,
                 matched_terms=(normalized_query,),
                 phrase_matched=False,
-                source_value=source_value,
             ),
         ),
         matched_terms=(normalized_query,),
-        node=component,
-        package_identity=package.catalog_runtime.catalog_package.package_identity,
-        retrieval_method=LearningComponentSearchMode.TAG,
+        graph_package_id=package.catalog_runtime.catalog_package.package_identity.graph_package_id,
+        node=learning_component_hit_node(component),
         score=score,
         supported_standards=_supported_standards(
             component_id=component.node_id, package=package
@@ -1832,7 +1817,6 @@ def _build_text_ranked_hit(
         field=SearchField.DESCRIPTION,
         matched_terms=candidate.matched_terms,
         phrase_matched=candidate.phrase_matched,
-        source_value=candidate.source_value,
     )
     score = SearchScore(
         algorithm=SearchScoreAlgorithm.LEXICAL_TOKEN_COVERAGE_V1,
@@ -1843,13 +1827,11 @@ def _build_text_ranked_hit(
     )
     hit = SearchHit(
         code_match=None,
-        epistemic_status=EpistemicStatus.RETRIEVAL_CANDIDATE,
         facets=evidence,
         matched_fields=(matched_field,),
         matched_terms=candidate.matched_terms,
-        node=candidate.node,
-        package_identity=identity,
-        retrieval_method=SearchMode.TEXT,
+        graph_package_id=identity.graph_package_id,
+        node=search_hit_node(candidate.node),
         score=score,
         warnings=(),
     )
@@ -1924,7 +1906,7 @@ def _code_hit_warnings(
                     "matching record is returned without selecting a preferred one."
                 ),
                 node_id=node.node_id,
-                package_identity=identity,
+                graph_package_id=identity.graph_package_id,
             )
         )
 
@@ -1938,7 +1920,7 @@ def _code_hit_warnings(
                         "record; graph parentage remains unchanged."
                     ),
                     node_id=node.node_id,
-                    package_identity=identity,
+                    graph_package_id=identity.graph_package_id,
                 )
             )
         elif derivation.status is CodeParentDerivationStatus.MATCHED_MULTIPLE:
@@ -1950,7 +1932,7 @@ def _code_hit_warnings(
                         "source records; no preferred graph parent is inferred."
                     ),
                     node_id=node.node_id,
-                    package_identity=identity,
+                    graph_package_id=identity.graph_package_id,
                 )
             )
 
@@ -2286,11 +2268,7 @@ def _ordered_warnings(warnings: tuple[SearchWarning, ...]) -> tuple[SearchWarnin
 
     warnings_by_key = {
         (
-            str(warning.package_identity.framework_id),
-            str(warning.package_identity.snapshot_id),
-            warning.package_identity.graph_type.value,
-            warning.package_identity.package_revision,
-            str(warning.package_identity.graph_package_id),
+            str(warning.graph_package_id),
             warning.code.value,
             str(warning.node_id or ""),
             warning.message,
@@ -2323,7 +2301,10 @@ def _package_warning(
     """
 
     return SearchWarning(
-        code=code, message=message, node_id=None, package_identity=identity
+        code=code,
+        graph_package_id=identity.graph_package_id,
+        message=message,
+        node_id=None,
     )
 
 

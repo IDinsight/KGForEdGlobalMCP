@@ -26,13 +26,21 @@ from fastmcp.tools.base import ToolResult
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
+    SharedHitLines,
     build_request_continuation_text,
     build_tool_result,
+    catalog_package,
+    format_matched_fields,
+    format_score,
     get_app_state,
+    hit_warning_legend,
+    page_warning_lines,
     result_schema,
+    shared_hit_header_lines,
+    shared_line,
     standard_resource_links,
 )
-from kgfegmcp.search.models import ExactPackageSearchScope, SearchMode
+from kgfegmcp.search.models import SearchMode
 from kgfegmcp.services.frameworks import FrameworkService
 from kgfegmcp.services.models import (
     GetStandardRequest,
@@ -49,18 +57,12 @@ if TYPE_CHECKING:
     # Package Library
     from kgfegmcp.bootstrap import AppState
     from kgfegmcp.search.models import (
+        CodeMatchEvidence,
         SearchFacetEvidence,
         SearchHit,
-        SearchMatchedField,
-        SearchWarning,
     )
 
 
-_LEXICAL_SEARCH_SEMANTICS = (
-    "Lexical semantics: text mode matches exact normalized description tokens or "
-    "a contiguous normalized phrase. It performs no stemming, lemmatization, "
-    "fuzzy matching, or synonym expansion."
-)
 _LEXICAL_ZERO_RESULT_GUIDANCE = (
     "Recovery hint: preserve the original query, then consider a small number of "
     "conservative inflectional, orthographic, or retrieved local-terminology "
@@ -69,15 +71,12 @@ _LEXICAL_ZERO_RESULT_GUIDANCE = (
     "curriculum absence."
 )
 _SEARCH_INTERPRETATION = (
-    "Search hits are deterministic retrieval candidates. Lexical or code matches, "
-    "normalized grades, grade order, and hierarchy placement do not by themselves "
-    "establish official equivalence, learner mastery, prerequisites, instructional "
-    "progression, or difficulty."
+    "Hits are retrieval candidates; a match, grade, or placement does not by itself "
+    "establish equivalence, mastery, prerequisites, progression, or difficulty."
 )
 _STANDARD_INTERPRETATION = (
-    "This record is source-backed curriculum evidence. Its presence or structural "
-    "placement does not by itself establish learner mastery, prerequisites, "
-    "instructional progression, difficulty, or official equivalence."
+    "Source-backed curriculum evidence; its presence or placement does not by itself "
+    "establish mastery, prerequisites, progression, difficulty, or equivalence."
 )
 
 
@@ -146,28 +145,80 @@ def _format_facets(facets: SearchFacetEvidence) -> list[str]:
     ]
 
 
-def _format_matched_field(field: SearchMatchedField) -> str:
-    """Format one exact source field that produced a deterministic search match.
+def _format_code_match(code_match: CodeMatchEvidence) -> str:
+    """Render the code evidence of one code-mode hit on one line.
 
     Parameters
     ----------
-    field
-        Exact field, matched terms, phrase flag, and retained source value.
+    code_match
+        Authored and normalized code, code type, scopes, and parent derivations.
 
     Returns
     -------
     str
-        Stable compact match-evidence line.
+        Compact code-match evidence naming any code scope, such as a Class.
     """
 
-    source_value = _truncate_display_text(
-        limit=240, value=_collapse_whitespace(field.source_value)
+    text = (
+        f"{code_match.authored_code} ({code_match.code_type}), normalized "
+        f"{code_match.normalized_code}"
     )
+
+    if code_match.scopes:
+        scopes = "; ".join(
+            scope.scope_node.description or str(scope.scope_node.node_id)
+            for scope in code_match.scopes
+        )
+        text += f", scope {scopes}"
+
+    if code_match.parent_derivations:
+        text += f", parent derivations {len(code_match.parent_derivations)}"
+
+    return text
+
+
+def _format_grade(facets: SearchFacetEvidence) -> str:
+    """Render local, normalized, and differing node grade evidence on one line.
+
+    Parameters
+    ----------
+    facets
+        Package-local source and normalized facets of one hit.
+
+    Returns
+    -------
+    str
+        Local grade labels with normalized grades, plus node grades when they differ.
+    """
+
+    grade = (
+        f"{_format_values(tuple(facets.resolved_local_grade_labels))} "
+        f"(normalized: {_format_values(tuple(facets.normalized_grades))}"
+    )
+
+    if tuple(facets.node_grade_levels) != tuple(facets.normalized_grades):
+        grade += f"; node: {_format_values(tuple(facets.node_grade_levels))}"
+
+    return f"{grade})"
+
+
+def _format_subject(facets: SearchFacetEvidence) -> str:
+    """Render the local and normalized subject of one hit.
+
+    Parameters
+    ----------
+    facets
+        Package-local source and normalized facets of one hit.
+
+    Returns
+    -------
+    str
+        Local subject with normalized subjects.
+    """
+
     return (
-        f"{field.field.value} | matched_terms="
-        f"{_format_values(tuple(field.matched_terms))} | "
-        f"phrase_matched={_format_boolean(field.phrase_matched)} | "
-        f"source_value={source_value}"
+        f"{_format_optional_value(facets.local_subject)} "
+        f"(normalized: {_format_values(tuple(facets.normalized_subjects))})"
     )
 
 
@@ -188,15 +239,19 @@ def _format_optional_value(value: object | None) -> str:
     return "none" if value is None else str(value)
 
 
-def _format_search_hit(*, hit: SearchHit, index: int) -> list[str]:
-    """Format one deterministic search hit with its complete practical evidence.
+def _format_search_hit(
+    *, hit: SearchHit, index: int, shared: SharedHitLines
+) -> list[str]:
+    """Format one search hit, leaving out the lines its page states once.
 
     Parameters
     ----------
     hit
-        Exact source node, package identity, facets, score, and match evidence.
+        Node projection, facets, match evidence, score, and warnings of one hit.
     index
         One-based display position within the returned page.
+    shared
+        Lines every hit on the page shares, already printed in the page header.
 
     Returns
     -------
@@ -208,54 +263,35 @@ def _format_search_hit(*, hit: SearchHit, index: int) -> list[str]:
     description = _truncate_display_text(
         limit=240, value=_collapse_whitespace(node.description or "[no description]")
     )
-    lines = [
-        f"{index}. Standard: {node.statement_code or '[uncoded]'}",
-        f"   Node ID: {node.node_id}",
-        f"   Package: {hit.package_identity.graph_package_id}",
-        f"   Framework ID: {hit.package_identity.framework_id}",
-        f"   Snapshot ID: {hit.package_identity.snapshot_id}",
-        f"   Description: {description}",
-    ]
-    lines.extend(f"   {line}" for line in _format_facets(hit.facets))
-    lines.extend(
-        (
-            f"   Retrieval method: {hit.retrieval_method.value}",
-            f"   Epistemic status: {hit.epistemic_status}",
-            (
-                f"   Score: "
-                f"value={hit.score.value}, algorithm={hit.score.algorithm.value}, "
-                f"matched_terms={hit.score.matched_term_count}/"
-                f"{hit.score.query_term_count}, "
-                f"phrase_matched={_format_boolean(hit.score.phrase_matched)}"
-            ),
-            f"   Matched terms: {_format_values(tuple(hit.matched_terms))}",
-            "   Matched fields:",
-        )
+    statement_type = (
+        f"{_format_optional_value(hit.facets.statement_type)} "
+        f"({_format_optional_value(hit.facets.normalized_statement_type)})"
     )
-    lines.extend(f"   - {_format_matched_field(field)}" for field in hit.matched_fields)
+    lines = [
+        f"{index}. Standard: {node.statement_code or '[uncoded]'} | "
+        f"Node ID: {node.node_id}",
+        f"   Description: {description}",
+        f"   Type: {statement_type} | Grade: {_format_grade(hit.facets)}",
+    ]
+
+    if shared.subject is None:
+        lines.append(f"   Subject: {_format_subject(hit.facets)}")
+
+    if shared.match is None:
+        lines.append(f"   Matched: {format_matched_fields(hit.matched_fields)}")
+
+    if shared.score is None:
+        lines.append(f"   Score: {format_score(hit.score)}")
 
     if hit.code_match is not None:
-        lines.extend(
-            (
-                (
-                    f"   Code match: "
-                    f"authored={hit.code_match.authored_code}, "
-                    f"normalized={hit.code_match.normalized_code}, "
-                    f"type={hit.code_match.code_type}"
-                ),
-                f"   Code scopes returned: {len(hit.code_match.scopes)}",
-                (
-                    f"   Parent-code derivations returned: "
-                    f"{len(hit.code_match.parent_derivations)}"
-                ),
-            )
-        )
+        lines.append(f"   Code match: {_format_code_match(hit.code_match)}")
+
+    if shared.multi_package:
+        lines.append(f"   Package: {hit.graph_package_id}")
 
     if hit.warnings:
-        lines.append("   Hit warnings:")
-        lines.extend(f"   - {_format_warning(warning)}" for warning in hit.warnings)
-    else:
-        lines.append("   Hit warnings: none")
+        codes = tuple(warning.code.value for warning in hit.warnings)
+        lines.append(f"   Hit warnings: {_format_values(codes)}")
 
     return lines
 
@@ -263,10 +299,13 @@ def _format_search_hit(*, hit: SearchHit, index: int) -> list[str]:
 def _format_search_result(result: SearchStandardsResult) -> str:
     """Format one standards search page as deterministic readable evidence.
 
+    Package identity, retrieval method, and epistemic status hold for the whole page
+    and are stated once; so is any subject, match, or score every hit shares.
+
     Parameters
     ----------
     result
-        Complete search result including selected snapshots and package-local hits.
+        Complete search result including the selected packages and their hits.
 
     Returns
     -------
@@ -274,48 +313,47 @@ def _format_search_result(result: SearchStandardsResult) -> str:
         Stable summary of packages, hits, facets, matches, warnings, and cursor state.
     """
 
-    scope = result.effective_scope
-    graph_types = (
-        (scope.graph_type,)
-        if isinstance(scope, ExactPackageSearchScope)
-        else scope.graph_types
-    )
+    page = result.page
     package_ids = tuple(
-        dict.fromkeys(
-            str(package.package_identity.graph_package_id)
-            for snapshot in result.selected_snapshots
-            for package in snapshot.graph_packages
-            if package.package_identity.graph_type in graph_types
-        )
+        str(identity.graph_package_id) for identity in result.selected_packages
+    )
+    shared = SharedHitLines(
+        match=shared_line(
+            tuple(format_matched_fields(hit.matched_fields) for hit in page.hits)
+        ),
+        multi_package=len(package_ids) > 1,
+        score=shared_line(tuple(format_score(hit.score) for hit in page.hits)),
+        subject=shared_line(tuple(_format_subject(hit.facets) for hit in page.hits)),
     )
     lines = [
-        f"Search mode: {result.page.mode.value}",
+        f"Search mode: {page.mode.value} | Epistemic status: {page.epistemic_status}",
         f"Selected packages: {_format_values(package_ids)}",
-        f"Returned hits: {result.page.returned_count}",
-        f"Has more: {_format_boolean(result.page.has_more)}",
+        f"Returned hits: {page.returned_count} | "
+        f"Has more: {_format_boolean(page.has_more)}",
+        *shared_hit_header_lines(shared),
     ]
 
-    if result.page.mode is SearchMode.TEXT:
-        lines.append(_LEXICAL_SEARCH_SEMANTICS)
+    if page.mode is SearchMode.TEXT and page.returned_count == 0:
+        lines.append(_LEXICAL_ZERO_RESULT_GUIDANCE)
 
-        if result.page.returned_count == 0:
-            lines.append(_LEXICAL_ZERO_RESULT_GUIDANCE)
+    lines.append(f"Interpretation: {_SEARCH_INTERPRETATION}")
 
-    lines.extend(("", f"Interpretation: {_SEARCH_INTERPRETATION}"))
+    for index, hit in enumerate(page.hits, start=1):
+        lines.extend(("", *_format_search_hit(hit=hit, index=index, shared=shared)))
 
-    for index, hit in enumerate(result.page.hits, start=1):
-        lines.extend(("", *_format_search_hit(hit=hit, index=index)))
-
-    lines.extend(("", f"Page warnings: {len(result.page.warnings)}"))
-
-    if result.page.warnings:
-        lines.extend(
-            f"- {_format_warning(warning)}" for warning in result.page.warnings
+    lines.extend(
+        (
+            "",
+            *page_warning_lines(page.warnings),
+            *hit_warning_legend(
+                tuple(warning for hit in page.hits for warning in hit.warnings)
+            ),
         )
-    else:
-        lines.append("- none")
+    )
 
-    lines.append("Continuation data: see the following MCP continuation block.")
+    if page.has_more:
+        lines.append("Continuation: see the MCP continuation block below.")
+
     return "\n".join(lines)
 
 
@@ -385,27 +423,6 @@ def _format_values(values: tuple[object, ...]) -> str:
     return ", ".join(str(value) for value in values) or "none"
 
 
-def _format_warning(warning: SearchWarning) -> str:
-    """Format one deterministic search warning with exact package provenance.
-
-    Parameters
-    ----------
-    warning
-        Capability or data-evidence warning produced by the search service.
-
-    Returns
-    -------
-    str
-        Stable warning code, package, optional node, and message.
-    """
-
-    return (
-        f"{warning.code.value} | package="
-        f"{warning.package_identity.graph_package_id} | "
-        f"node={_format_optional_value(warning.node_id)} | {warning.message}"
-    )
-
-
 def _standards_service(state: AppState) -> StandardsService:
     """Construct one stateless standards orchestrator over retained application data.
 
@@ -470,7 +487,9 @@ async def get_standard(request: GetStandardRequest, context: Context) -> ToolRes
         state = get_app_state(context)
         result = _standards_service(state).get_standard(request)
         resource_links = standard_resource_links(
-            node=result.node, package=result.package, state=state
+            node=result.node,
+            package=catalog_package(result.package.package_identity, state),
+            state=state,
         )
         return build_tool_result(
             content=_format_standard(result),
@@ -499,11 +518,13 @@ def register_standard_tools(server: FastMCP[dict[str, AppState]]) -> None:
             "performs no stemming or synonym expansion. For concept discovery, search "
             "the caller's original wording first; when recall is visibly narrow, make "
             "a small number of separate conservative variant calls with the same filters. "
-            "Return exact source nodes, package provenance, local and normalized facets, "
-            "matched fields and terms, warnings, epistemic status, and established cursor "
-            "evidence without progression inference. For continuation, submit the "
-            "provided nextRequest unchanged; only its opaque cursor differs from the "
-            "previous request. A zero-match page does not establish curriculum absence."
+            "Each hit gives the node ID, statement code, source wording, local and "
+            "normalized facets, matched fields, score, and hit warnings, without "
+            "progression inference; package identity, retrieval method, and epistemic "
+            "status are stated once per page, and the complete record is one "
+            "get_standard call away. For continuation, submit the provided nextRequest "
+            "unchanged; only its opaque cursor differs from the previous request. A "
+            "zero-match page does not establish curriculum absence."
         ),
         name="search_standards",
         output_schema=result_schema(SearchStandardsResult),
@@ -557,7 +578,9 @@ async def search_standards(
             tool_name="search_standards",
         )
         return build_tool_result(
-            additional_text=(continuation_text,),
+            additional_text=(
+                (continuation_text,) if continuation_text is not None else ()
+            ),
             content=_format_search_result(result),
             result=result,
         )

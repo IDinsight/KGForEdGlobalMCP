@@ -23,25 +23,18 @@ from fastmcp import Context
 from fastmcp.tools.base import ToolResult
 
 # Package Library
-from kgfegmcp.graph.models import (
-    DirectNodeRelationshipsResult,
-    FrameworkNode,
-    GraphNodeRecord,
-    GraphRelationship,
-    RootPathsResult,
-    TraversalResult,
-)
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
     build_tool_result,
+    catalog_package,
     get_app_state,
     result_schema,
     standard_resource_links,
 )
 from kgfegmcp.services.frameworks import FrameworkService
-from kgfegmcp.services.models import GetStandardContextRequest, GetStandardContextResult
-from kgfegmcp.services.standards import StandardsService
+from kgfegmcp.services.models import GetStandardContextRequest, StandardContextView
+from kgfegmcp.services.standards import StandardsService, standard_context_view
 
 if TYPE_CHECKING:
     # Third Party Library
@@ -49,12 +42,19 @@ if TYPE_CHECKING:
 
     # Package Library
     from kgfegmcp.bootstrap import AppState
+    from kgfegmcp.services.models import (
+        ContextNeighbor,
+        ContextNode,
+        ContextRelationship,
+        ContextRootPaths,
+        ContextTraversal,
+    )
 
 
 _CONTEXT_INTERPRETATION = (
-    "Hierarchy relationships are structural curriculum-placement evidence. They do "
-    "not by themselves establish prerequisite order, instructional sequence, "
-    "progression, difficulty, learner mastery, official equivalence, or alignment."
+    "Hierarchy relationships are structural placement evidence; they do not by "
+    "themselves establish prerequisite order, sequence, progression, difficulty, "
+    "mastery, equivalence, or alignment."
 )
 
 
@@ -92,13 +92,17 @@ def _format_boolean(value: bool) -> str:
     return str(value).lower()
 
 
-def _format_context(result: GetStandardContextResult) -> str:
-    """Format one graph-context result as deterministic readable evidence.
+def _format_context(result: StandardContextView) -> str:
+    """Format one standard-context view as deterministic readable evidence.
+
+    Each node and relationship is described once, in the node and relationship
+    tables; the sections after the tables refer to them by identifier.
 
     Parameters
     ----------
     result
-        Complete direct, bounded, and root-path graph context.
+        Direct, bounded, and root-path context with shared node and relationship
+        tables.
 
     Returns
     -------
@@ -130,49 +134,52 @@ def _format_context(result: GetStandardContextResult) -> str:
         ),
         (
             f"Origin description: "
-            f"{_format_node_description(limit=320, node=standard.node)}"
+            f"{_truncate_display_text(limit=320, value=_collapse_whitespace(standard.node.description or '[no description]'))}"
         ),
         "",
         f"Interpretation: {_CONTEXT_INTERPRETATION}",
         "",
-    ]
-    lines.extend(
-        _format_direct_relationships(
-            relationships=result.direct_parents, title="Direct parents"
-        )
-    )
-    lines.append("")
-
-    if result.direct_children is None:
-        lines.append("Direct children: not requested")
-    else:
-        lines.extend(
-            _format_direct_relationships(
-                relationships=result.direct_children, title="Direct children"
+        f"Relationship type: {result.relationship_type}",
+        (
+            f"Nodes: {len(result.nodes)}, each described once; the sections below "
+            f"refer to them by node_id"
+        ),
+        *(f"- {_format_node(node)}" for node in result.nodes),
+        f"Relationships: {len(result.relationships)}",
+        *(
+            [
+                f"- {_format_relationship(relationship)}"
+                for relationship in result.relationships
+            ]
+            or ["- none"]
+        ),
+        "",
+        *_format_neighbors(title="Direct parents", neighbors=result.direct_parents),
+        *(
+            ["Direct children: not requested"]
+            if result.direct_children is None
+            else _format_neighbors(
+                title="Direct children", neighbors=result.direct_children
             )
-        )
-    lines.append("")
+        ),
+        "",
+        *_format_traversal(title="Ancestors", traversal=result.ancestors),
+        "",
+        *(
+            ["Descendants: not requested"]
+            if result.descendants is None
+            else _format_traversal(title="Descendants", traversal=result.descendants)
+        ),
+        "",
+        *(
+            ["Complete root paths: not requested"]
+            if result.root_paths is None
+            else _format_root_paths(result.root_paths)
+        ),
+        "",
+        f"Unresolved-status relationships in result: {len(result.relationship_statuses)}",
+    ]
 
-    lines.extend(_format_traversal(title="Ancestors", traversal=result.ancestors))
-    lines.append("")
-
-    if result.descendants is None:
-        lines.append("Descendants: not requested")
-    else:
-        lines.extend(
-            _format_traversal(title="Descendants", traversal=result.descendants)
-        )
-    lines.append("")
-
-    if result.root_paths is None:
-        lines.append("Complete root paths: not requested")
-    else:
-        lines.extend(_format_root_paths(result.root_paths))
-    lines.append("")
-
-    lines.append(
-        f"Unresolved-status relationships in result: {len(result.relationship_statuses)}"
-    )
     if result.relationship_statuses:
         lines.extend(
             (
@@ -187,96 +194,66 @@ def _format_context(result: GetStandardContextResult) -> str:
     return "\n".join(lines)
 
 
-def _format_direct_relationships(
-    *, relationships: DirectNodeRelationshipsResult, title: str
+def _format_neighbors(
+    *, neighbors: tuple[ContextNeighbor, ...], title: str
 ) -> list[str]:
-    """Format direct parent or child evidence with exact authored relationships.
+    """Format direct parents or children by node and relationship identifier.
 
     Parameters
     ----------
-    relationships
-        Deterministically ordered direct-neighbor result.
+    neighbors
+        Direct neighbours in source order.
     title
         Human-readable section title.
 
     Returns
     -------
     list[str]
-        Stable neighbor nodes and relationship evidence.
+        Count line and one reference line per neighbour.
     """
 
-    lines = [
-        f"{title}: {len(relationships.neighbors)}",
-        f"Relationship type: {relationships.relationship_type}",
+    if not neighbors:
+        return [f"{title}: none"]
+
+    return [
+        f"{title}: {len(neighbors)}",
+        *(
+            f"- node_id={neighbor.node_id} | relationship_id={neighbor.relationship_id}"
+            for neighbor in neighbors
+        ),
     ]
-    if not relationships.neighbors:
-        lines.append("- none")
-        return lines
-
-    for index, neighbor in enumerate(relationships.neighbors, start=1):
-        lines.extend(
-            (
-                f"{index}. " f"{_format_node(node=neighbor.node, prefix='Neighbor')}",
-                "   Relationship: " f"{_format_relationship(neighbor.relationship)}",
-            )
-        )
-
-    return lines
 
 
-def _format_node(*, node: GraphNodeRecord, prefix: str) -> str:
-    """Format one exact graph node without assigning curriculum-specific meaning.
+def _format_node(node: ContextNode) -> str:
+    """Format one node of the context node table on one line.
 
     Parameters
     ----------
     node
-        Framework or standards-framework-item record.
-    prefix
-        Display label identifying the node's role in the current section.
+        Compact framework-root or standards-item description.
 
     Returns
     -------
     str
-        Stable node type, source label, identifiers, and available grade evidence.
+        Stable identifier, type, code, grade, and source label.
     """
 
-    if isinstance(node, FrameworkNode):
+    if node.node_kind == "framework":
         return (
-            f"{prefix} type=Framework | name="
-            f"{_format_optional_value(node.name)} | node_id={node.node_id}"
+            f"node_id={node.node_id} | type=Framework | "
+            f"name={_format_optional_value(node.description)}"
         )
 
-    return (
-        f"{prefix} type={_format_optional_value(node.statement_type)} | "
-        f"normalized_type={_format_optional_value(node.normalized_statement_type)} | "
-        f"description={_format_node_description(limit=240, node=node)} | "
-        f"node_id={node.node_id} | code={node.statement_code or '[uncoded]'} | "
-        f"grade_levels={_format_values(tuple(node.grade_level or ()))}"
+    description = _truncate_display_text(
+        limit=240, value=_collapse_whitespace(node.description or "[no description]")
     )
-
-
-def _format_node_description(*, limit: int, node: GraphNodeRecord) -> str:
-    """Format one node's primary readable source label for display.
-
-    Parameters
-    ----------
-    node
-        Framework or standards-framework-item record.
-    limit
-        Maximum display characters after whitespace collapse.
-
-    Returns
-    -------
-    str
-        Framework name or standard description, deterministically truncated.
-    """
-
-    if isinstance(node, FrameworkNode):
-        value = node.name or "[unnamed framework]"
-    else:
-        value = node.description or "[no description]"
-
-    return _truncate_display_text(limit=limit, value=_collapse_whitespace(value))
+    return (
+        f"node_id={node.node_id} | type={_format_optional_value(node.statement_type)} | "
+        f"normalized_type={_format_optional_value(node.normalized_statement_type)} | "
+        f"code={node.statement_code or '[uncoded]'} | "
+        f"grade_levels={_format_values(tuple(node.grade_level or ()))} | "
+        f"description={description}"
+    )
 
 
 def _format_optional_value(value: object | None) -> str:
@@ -296,23 +273,21 @@ def _format_optional_value(value: object | None) -> str:
     return "none" if value is None else str(value)
 
 
-def _format_relationship(relationship: GraphRelationship) -> str:
-    """Format one exact authored relationship and resolution status.
+def _format_relationship(relationship: ContextRelationship) -> str:
+    """Format one relationship of the context relationship table on one line.
 
     Parameters
     ----------
     relationship
-        Exact source relationship connecting returned graph nodes.
+        Compact hierarchy relationship.
 
     Returns
     -------
     str
-        Stable relationship identity, type, endpoints, and status.
+        Stable relationship identity, endpoints, and resolution status.
     """
 
     return (
-        f"label={relationship.label} | "
-        f"relationship_type={_format_optional_value(relationship.relationship_type)} | "
         f"relationship_id={relationship.relationship_id} | "
         f"source={relationship.source_node_id} | "
         f"target={relationship.target_node_id} | "
@@ -320,93 +295,65 @@ def _format_relationship(relationship: GraphRelationship) -> str:
     )
 
 
-def _format_root_paths(result: RootPathsResult) -> list[str]:
-    """Format every returned complete root path in authored source direction.
+def _format_root_paths(result: ContextRootPaths) -> list[str]:
+    """Format every returned complete root path as a node-ID chain.
 
     Parameters
     ----------
     result
-        Deterministically bounded complete root-path collection.
+        Bounded complete root paths referring to the node table.
 
     Returns
     -------
     list[str]
-        Stable path nodes, connecting relationships, and completeness evidence.
+        Bounds and completion line, then one line per path, root first.
     """
 
     lines = [
-        f"Complete root paths returned: {len(result.paths)}",
-        f"Root paths complete: {_format_boolean(result.is_complete)}",
-        f"Maximum depth: {result.max_depth}",
-        f"Maximum paths: {result.max_paths}",
-        "Maximum path-node occurrences: " f"{result.max_path_node_occurrences}",
         (
-            f"Root-path truncation reason: "
-            f"{_format_optional_value(result.truncation_reason)}"
-        ),
-        f"Relationship type: {result.relationship_type}",
+            f"Complete root paths: {len(result.paths)} | "
+            f"complete: {_format_boolean(result.is_complete)} | "
+            f"max depth: {result.max_depth} | max paths: {result.max_paths} | "
+            f"max path-node occurrences: {result.max_path_node_occurrences} | "
+            f"truncation: {_format_optional_value(result.truncation_reason)}"
+        )
     ]
+
     if not result.paths:
         lines.append("- none")
-        return lines
 
-    for path_index, path in enumerate(result.paths, start=1):
-        lines.append(f"Root path {path_index}:")
-        for node_index, node in enumerate(path.nodes, start=1):
-            lines.append(f"  {node_index}. {_format_node(node=node, prefix='Node')}")
-            if node_index <= len(path.relationships):
-                relationship = path.relationships[node_index - 1]
-                lines.append(f"     -> {_format_relationship(relationship)}")
-
+    lines.extend(
+        f"- Path {index}: {' > '.join(str(node_id) for node_id in path)}"
+        for index, path in enumerate(result.paths, start=1)
+    )
     return lines
 
 
-def _format_traversal(*, title: str, traversal: TraversalResult) -> list[str]:
-    """Format one bounded ancestor or descendant traversal completely.
+def _format_traversal(*, title: str, traversal: ContextTraversal) -> list[str]:
+    """Format one bounded traversal as depth-ordered node references.
 
     Parameters
     ----------
     title
         Human-readable section title.
     traversal
-        Deterministically ordered bounded traversal result.
+        Bounded ancestor or descendant traversal referring to the node table.
 
     Returns
     -------
     list[str]
-        Stable traversal nodes, relationships, limits, and completeness evidence.
+        Bounds and completion line, then one line per traversed node.
     """
 
-    lines = [
-        f"{title}: {len(traversal.nodes)} nodes including the origin",
-        f"Direction: {traversal.direction.value}",
-        f"Traversal complete: {_format_boolean(traversal.is_complete)}",
-        f"Maximum depth: {traversal.max_depth}",
-        f"Maximum nodes: {traversal.max_nodes}",
+    return [
         (
-            f"Traversal truncation reason: "
-            f"{_format_optional_value(traversal.truncation_reason)}"
+            f"{title}: {len(traversal.nodes)} nodes including the origin | "
+            f"complete: {_format_boolean(traversal.is_complete)} | "
+            f"max depth: {traversal.max_depth} | max nodes: {traversal.max_nodes} | "
+            f"truncation: {_format_optional_value(traversal.truncation_reason)}"
         ),
-        f"Relationship type: {traversal.relationship_type}",
-        "Nodes:",
+        *(f"- depth={item.depth} | node_id={item.node_id}" for item in traversal.nodes),
     ]
-    lines.extend(
-        (
-            f"- depth={traversal_node.depth} | "
-            f"{_format_node(node=traversal_node.node, prefix='Node')}"
-        )
-        for traversal_node in traversal.nodes
-    )
-    lines.append(f"Relationships: {len(traversal.relationships)}")
-    if traversal.relationships:
-        lines.extend(
-            f"- {_format_relationship(relationship)}"
-            for relationship in traversal.relationships
-        )
-    else:
-        lines.append("- none")
-
-    return lines
 
 
 def _format_values(values: tuple[object, ...]) -> str:
@@ -463,7 +410,7 @@ async def get_standard_context(
     Returns
     -------
     ToolResult
-        Human-readable summary and complete ``GetStandardContextResult`` evidence.
+        Human-readable summary and the ``StandardContextView`` evidence.
     """
 
     with tool_error_boundary("get_standard_context"):
@@ -474,9 +421,11 @@ async def get_standard_context(
             framework_service=framework_service,
             search_service=state.search_service,
         )
-        result = service.get_standard_context(request)
+        result = standard_context_view(service.get_standard_context(request))
         resource_links = standard_resource_links(
-            node=result.standard.node, package=result.standard.package, state=state
+            node=result.standard.node,
+            package=catalog_package(result.standard.package.package_identity, state),
+            state=state,
         )
         return build_tool_result(
             content=_format_context(result),
@@ -498,11 +447,14 @@ def register_context_tools(server: FastMCP[dict[str, AppState]]) -> None:
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
             "Return exact readable direct parents and children, bounded ancestors or "
-            "descendants, and every requested complete root path with source node, "
-            "relationship, resolution, and completeness evidence. Hierarchy is "
-            "reported as structural placement without progression inference."
+            "descendants, and every requested complete root path with relationship, "
+            "resolution, and completeness evidence. Each node and relationship is "
+            "described once, in nodes and relationships, and the sections refer to "
+            "them by ID; a node's complete record is one get_standard call away. "
+            "Hierarchy is reported as structural placement without progression "
+            "inference."
         ),
         name="get_standard_context",
-        output_schema=result_schema(GetStandardContextResult),
+        output_schema=result_schema(StandardContextView),
         title="Get Standard Context",
     )(get_standard_context)

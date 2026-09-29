@@ -162,7 +162,9 @@ def register_statistics_tools(server: FastMCP[dict[str, AppState]]) -> None:
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
             "Return deterministic source, normalized, code-presence, hierarchy-depth, "
-            "multi-parent, and unresolved-status counts for one accepted graph package."
+            "multi-parent, and unresolved-status counts for one accepted graph package. "
+            "The package's capabilities, counts, profile facets, and validation status "
+            "are reported by get_framework."
         ),
         name="get_framework_statistics",
         output_schema=result_schema(GetFrameworkStatisticsResult),

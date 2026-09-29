@@ -10,7 +10,25 @@ For workflow guidance, see [Use prompt workflows](../guides/prompts.md).
 
 ## Common prompt behavior
 
-All prompts are registered at prompt version `1.1.0`.
+All prompts are registered at prompt version `1.2.0`.
+
+Version 1.2.0 renders every prompt in its lean form:
+
+- the embedded `ACCEPTED PACKAGE CONTEXT` is compact JSON holding only the profile
+  facts a workflow reads: code-search policy, grade and stage mappings, hierarchy,
+  known anomalies, language policy, subjects, source metadata, source-role
+  capabilities, and statement types. Package identity, rights, required disclosures,
+  and prompt-configuration identity appear once in their own sections, resource URIs
+  arrive as links on the mandated tool results, and the interpretation-profile resource
+  holds the complete profile; empty values are omitted;
+- every tool request template is one compact line in the exact shape the tool schema
+  accepts (`{"request": {...}}` for the request-wrapped tools; flat fields for
+  `compare_framework_evidence` and `collect_progression_evidence`);
+- multi-framework prompts render the generic soft guidance once, in a `SHARED
+  GUIDANCE` section, and each framework section carries only what its configuration
+  adds to or replaces in a named block; and
+- guidance slots that share a label are merged under one heading.
+
 
 A successful prompt returns one user-role prompt message plus metadata. Single-framework
 metadata includes:

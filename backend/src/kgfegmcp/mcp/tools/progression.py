@@ -25,6 +25,7 @@ from kgfegmcp.mcp.tools import (
     build_tool_result,
     get_app_state,
     result_schema,
+    shared_line,
 )
 from kgfegmcp.services.models import CatalogFilterValue
 from kgfegmcp.services.progression_models import (
@@ -92,10 +93,35 @@ def _format_progression_evidence(result: CollectProgressionEvidenceResult) -> st
         "Retained candidate standards:",
     ]
 
-    if not result.retained_candidates:
+    candidates = result.retained_candidates
+    candidate_lines = {
+        "Local grade labels": tuple(
+            ", ".join(candidate.matched_local_grade_labels) or "none"
+            for candidate in candidates
+        ),
+        "Normalized grades": tuple(
+            ", ".join(candidate.matched_normalized_grades) or "none"
+            for candidate in candidates
+        ),
+        "Discovery methods": tuple(
+            ", ".join(method.value for method in candidate.discovery_methods)
+            for candidate in candidates
+        ),
+        "Context complete": tuple(
+            str(candidate.context.is_complete).lower() for candidate in candidates
+        ),
+    }
+    shared = {label: shared_line(values) for label, values in candidate_lines.items()}
+    lines.extend(
+        f"{label} (every candidate): {value}"
+        for label, value in shared.items()
+        if value is not None
+    )
+
+    if not candidates:
         lines.append("- none")
 
-    for candidate in result.retained_candidates:
+    for position, candidate in enumerate(candidates):
         node = candidate.node
         description = " ".join((node.description or "[no description]").split())
         lines.extend(
@@ -105,19 +131,11 @@ def _format_progression_evidence(result: CollectProgressionEvidenceResult) -> st
                     f"| {node.node_id}"
                 ),
                 f"   Description: {description}",
-                (
-                    "   Local grade labels: "
-                    + (", ".join(candidate.matched_local_grade_labels) or "none")
+                *(
+                    f"   {label}: {values[position]}"
+                    for label, values in candidate_lines.items()
+                    if shared[label] is None
                 ),
-                (
-                    "   Normalized grades: "
-                    + (", ".join(candidate.matched_normalized_grades) or "none")
-                ),
-                (
-                    "   Discovery methods: "
-                    + ", ".join(method.value for method in candidate.discovery_methods)
-                ),
-                f"   Context complete: {str(candidate.context.is_complete).lower()}",
             )
         )
 
@@ -142,9 +160,9 @@ def _format_progression_evidence(result: CollectProgressionEvidenceResult) -> st
     lines.extend(
         (
             "",
-            "Interpretation: Every retained node is a retrieval candidate. The tool "
-            "does not assert a source-authored prerequisite, sequence, progression, "
-            "difficulty relation, or learner mastery.",
+            "Interpretation: Retained nodes are retrieval candidates; the tool asserts "
+            "no source-authored prerequisite, sequence, progression, difficulty, or "
+            "mastery.",
         )
     )
     return "\n".join(lines)
@@ -229,7 +247,10 @@ def register_progression_tools(server: "FastMCP[dict[str, AppState]]") -> None:
             "Collect a deterministic, grade-scoped, deduplicated, and hard-bounded "
             "set of Academic Standards retrieval candidates for an inferred "
             "progression review. Grouping and hierarchy nodes provide context but do "
-            "not count toward the candidate limit."
+            "not count toward the candidate limit. Root paths are node-ID lists "
+            "resolved through the contextNodes table; a candidate's complete record "
+            "is one get_standard call away, and the relationships along its paths "
+            "are one get_standard_context call away."
         ),
         name="collect_progression_evidence",
         output_schema=result_schema(CollectProgressionEvidenceResult),
