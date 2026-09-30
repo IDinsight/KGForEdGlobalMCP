@@ -1,0 +1,1172 @@
+# S.T.A.N.D.A.R.D.S. Protocol
+
+<!-- standards:framework-owned -->
+
+This file is the canonical contract for shared workflow vocabulary, state,
+transitions, recovery, and the installed runtime in S.T.A.N.D.A.R.D.S.
+
+`README.md` explains the framework at a high level. Individual skills define
+role-specific behavior. This protocol defines the rules those skills must share.
+
+Read all of this file before workflow work, then each chapter that the reading
+guide below names for the current state or request. This file is longer than a
+single read in some tools. If a read shows only part of it, such as its
+beginning, or its beginning and end with lines left out between them, read the
+missing lines in consecutive parts before acting.
+
+## How to read this document
+
+The sections run from foundations (roles, modes, states, the persisted state
+record, and the runtime tools) through handoffs, gates, failure and recovery,
+user decisions, record formats, and user styles. The
+order is for orientation only: a role applies every applicable rule wherever it
+appears. **Canonical Terms**, the last section, defines terms this protocol uses
+in a specific sense; consult it whenever a term is load-bearing.
+
+Three chapters in `.standards/protocol/` hold rules that apply only in some
+situations. Read a chapter before acting whenever its condition holds. If a
+chapter is missing, stop and report an incomplete runtime.
+
+| Chapter             | Sections                                                                                                                                                | Read when                                                                                                                                                                                                                                                                                                                  |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `user-decisions.md` | Choose the next cycle's mode, Start a cycle, Promote an expedited cycle, Sign off, Cancel an active cycle, Greenfield Bootstrap Cancellation, Cycle IDs | No cycle is active (`Active Work.Id` is `UNSET`, or `WorkflowState` is `SIGNED_OFF` or `CANCELLED`), or the user asks to choose the next cycle's mode or to start, promote, sign off, or cancel a cycle, or `Active Work.BlockedOn` holds a pending approval to reset the workflow for a greenfield bootstrap cancellation |
+| `expedited.md`      | Expedited Cycle Contract, Expedited Promotion, Outstanding Obligations                                                                                  | `CycleMode` or `PendingCycleMode` is `EXPEDITED`, `EXPEDITED` is requested or being considered, `Active Work.PromotionReason` is not `NONE`, or `Outstanding Obligations` is active                                                                                                                                        |
+| `installation.md`   | Installed Runtime Contract, Running the CLI, Project Reset, Project Uninstallation                                                                      | Before running the `standards` CLI, including for a greenfield bootstrap cancellation, or when the user asks about installing, upgrading, resetting, or uninstalling                                                                                                                                                       |
+
+## Roles
+
+```text
+Role
+- SCOPER
+- TESTER
+- ARCHITECT
+- NAVIGATOR
+- DEVELOPER
+- AUDITOR
+- REVIEWER
+- DOCUMENTER
+- SYNCHRONIZER
+```
+
+A role owns decisions or artifacts; it is not necessarily a workflow state.
+Workflow role skills are invoked explicitly by the user. `WorkflowState`
+determines whether an invoked role may perform role-owned workflow work; it does
+not dispatch a skill automatically. Where supported, client installation must
+prevent implicit model invocation of workflow role skills.
+
+`NAVIGATOR` is explicitly invoked, strictly non-mutating, and outside the
+workflow state machine. Its **Navigator Boundary** below applies instead of
+workflow entry, persistence, completion, and handoff requirements.
+
+State ownership governs role-owned work, not protocol coordination.
+**User Decisions and Intervention** defines the control-plane transitions that
+an explicit user instruction authorizes regardless of which role owns the
+current state. An active workflow role may also `PROMOTE` without separate user
+authorization when an expedited cycle can no longer safely remain expedited.
+
+## Project Modes
+
+```text
+ProjectMode
+- GREENFIELD
+- BROWNFIELD
+```
+
+- `GREENFIELD`: no meaningful pre-existing project implementation must be
+  treated as established baseline.
+- `BROWNFIELD`: meaningful implementation already exists and workflow work must
+  understand, preserve, extend, repair, or otherwise depend on it.
+
+Choose the initial mode from project state at installation. `GREENFIELD` is
+temporary: during the initial greenfield cycle, Developer must permanently
+change `.standards/MODE.md` to `BROWNFIELD` as soon as Developer observes and
+verifies that the active cycle has successfully created or materially modified a
+project implementation artifact. The trigger is implementation existence, not
+authorship: it applies equally to code written by Developer and code applied by
+the user during Developer collaboration. Workflow metadata and role-owned
+planning, context, test, review, or documentation artifacts do not count as
+project implementation. The mode never reverts, including during recovery; only
+**Project Reset** (in `.standards/protocol/installation.md`) chooses it again,
+from `--mode` or the project's contents at that time.
+
+For a `STANDARD` cycle:
+
+- `GREENFIELD` starts in `SCOPING`.
+- `BROWNFIELD` starts in `AUDITING`.
+
+Before the first greenfield audit, missing Auditor-produced project context is
+intentional. Treat it as a `PROJECT_CONTEXT` failure only when the active role
+actually requires context that cannot be established from completed upstream
+artifacts and known project constraints.
+
+Cancellation while still `GREENFIELD` follows **Greenfield Bootstrap
+Cancellation** in `.standards/protocol/user-decisions.md`, which resets the
+workflow. Cancellation after the permanent transition to `BROWNFIELD` enters
+terminal `CANCELLED`.
+
+## Cycle Modes
+
+```text
+CycleMode
+- UNSET
+- STANDARD
+- EXPEDITED
+```
+
+`ProjectMode` describes the persistent implementation baseline. `CycleMode`
+records the assurance topology of the active cycle only. `PendingCycleMode`
+records an explicit user preference for the next cycle before that cycle exists.
+`PendingCycleRequest` and `PendingCycleBlockedOn` durably hold a next-cycle
+request only when a pre-cycle decision prevents that request from becoming an
+active cycle. All are persisted in `.standards/STATE.md`.
+
+- `CycleMode: UNSET`: no cycle is active yet. It is a coordination value, not an
+  execution topology.
+- `CycleMode: STANDARD`: the active cycle uses the full topology for the current
+  `ProjectMode`.
+- `CycleMode: EXPEDITED`: the active cycle uses the bounded brownfield path that
+  intentionally omits Scoping, Architecture, Auditing, Testing, Documentation,
+  Final Review, and Synchronization unless promoted.
+- `PendingCycleMode: UNSET`: no explicit next-cycle preference is persisted.
+- `PendingCycleMode: STANDARD | EXPEDITED`: explicit user preference for the
+  next cycle. It is not an active topology and must be validated when consumed.
+- `PendingCycleRequest: UNSET | <request>`: normally `UNSET`; stores the actual
+  next-cycle request only while a pre-cycle decision blocks cycle creation.
+- `PendingCycleBlockedOn: NONE | <question>`: unresolved pre-cycle user decision
+  for `PendingCycleRequest`, otherwise `NONE`. `PendingCycleRequest` and
+  `PendingCycleBlockedOn` are paired: the request is `UNSET` exactly when the
+  blocker is `NONE`.
+
+Cycle-mode rules:
+
+1. Installation initializes `CycleMode: UNSET`, `PendingCycleMode: UNSET`,
+   `PendingCycleRequest: UNSET`, and `PendingCycleBlockedOn: NONE`. Terminal
+   `SIGNED_OFF` and retained `CANCELLED` states reset `CycleMode` to `UNSET`
+   after the completed or cancelled cycle's mode-specific transition rules have
+   been applied; all pending-cycle fields must be clear at that point.
+2. No role-owned workflow work may proceed with `CycleMode: UNSET`. A cycle's
+   mode is chosen, validated, and persisted when it starts, under **Start a
+   cycle** in `.standards/protocol/user-decisions.md`; the user sets a pending
+   preference under **Choose the next cycle's mode** in
+   `.standards/protocol/user-decisions.md`.
+3. `GREENFIELD` supports only `STANDARD`. A pending `EXPEDITED` preference is
+   invalid in `GREENFIELD` and must not be persisted.
+4. `BROWNFIELD` supports both execution modes. Without a pending preference,
+   `STANDARD` is the default, except that an explicit Developer invocation for a
+   sufficiently bounded brownfield implementation change may select
+   `EXPEDITED`.
+5. The rules for keeping, promoting, and completing an expedited cycle are in
+   **Expedited Cycle Contract** and **Expedited Promotion**, both in
+   `.standards/protocol/expedited.md`.
+
+## Workflow States
+
+```text
+WorkflowState
+- SCOPING
+- ARCHITECTING
+- AUDITING
+- DEVELOPING
+- TESTING
+- REVIEWING_IMPLEMENTATION
+- DOCUMENTING
+- REVIEWING_FINAL
+- SYNCHRONIZING
+- AWAITING_USER_SIGNOFF
+- SIGNED_OFF
+- CANCELLED
+```
+
+`.standards/STATE.md` records exactly one `WorkflowState`, one `CycleMode`, and
+one set of pending-cycle coordination fields: `PendingCycleMode`,
+`PendingCycleRequest`, and `PendingCycleBlockedOn`. `SIGNED_OFF` and `CANCELLED`
+are terminal and mean there is no active cycle. In a terminal state, `CycleMode`
+is `UNSET`; persisted `Active Work` data describe the most recent cycle for
+traceability until `NEW_CYCLE` replaces them, while the pending-cycle fields may
+independently describe an explicit next-cycle preference or a blocked next-cycle
+request.
+
+The owning role for each state is:
+
+| Workflow state             | Owning role     |
+|----------------------------|-----------------|
+| `SCOPING`                  | `SCOPER`        |
+| `ARCHITECTING`             | `ARCHITECT`     |
+| `AUDITING`                 | `AUDITOR`       |
+| `DEVELOPING`               | `DEVELOPER`     |
+| `TESTING`                  | `TESTER`        |
+| `REVIEWING_IMPLEMENTATION` | `REVIEWER`      |
+| `DOCUMENTING`              | `DOCUMENTER`    |
+| `REVIEWING_FINAL`          | `REVIEWER`      |
+| `SYNCHRONIZING`            | `SYNCHRONIZER`  |
+| `AWAITING_USER_SIGNOFF`    | User            |
+| `SIGNED_OFF`               | User (terminal) |
+| `CANCELLED`                | User (terminal) |
+
+## Persisted Workflow State
+
+`.standards/STATE.md` is the authoritative, branch-persisted, version-controlled
+record needed to resume workflow work across sessions or agents. Before workflow
+work, read `.standards/PROTOCOL.md`, `.standards/MODE.md`, and
+`.standards/STATE.md`. Resume
+from persisted state, active work, handoff, recovery context, and outstanding
+corrective obligations; do not infer a different state from chat history or
+artifact presence.
+
+`STATE.md` uses this shape:
+
+```markdown
+# S.T.A.N.D.A.R.D.S. Workflow State
+
+`WorkflowState`: `ARCHITECTING`
+`CycleMode`: `STANDARD`
+`PendingCycleMode`: `UNSET`
+`PendingCycleRequest`: `UNSET`
+`PendingCycleBlockedOn`: `NONE`
+
+## Active Work
+
+`Id`: `add-user-search-by-name-and-email-20260923T150000Z-a7f3c2e9`
+`Request`: `Add user search by name and email.` `Scope`: `docs/scope/add-user-search.md`
+`Architecture`: `docs/specs/add-user-search.md`
+`Development`: `.standards/docs/development/add-user-search-by-name-and-email-20260923T150000Z-a7f3c2e9.md`
+`PromotionReason`: `NONE` `AuditTarget`: `NONE` `BlockedOn`: `NONE`
+
+`BaselineReconciliation`: `NONE`
+
+## Handoff
+
+`Kind`: `FAILURE` `From`: `TESTING` `FailureType`: `ARCHITECTURE` `Reason`:
+`Retry behavior is not defined by the current technical design.`
+
+## Recovery
+
+`Active`: `true`
+
+### Frame 1
+
+`From`: `TESTING` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
+`Reason`: `Retry behavior is not defined by the current technical design.`
+`ResumeAt`: `TESTING` `RerunThrough`: `NONE`
+
+## Outstanding Obligations
+
+`Active`: `false`
+```
+
+### Branches and merges
+
+Commit `.standards/` like any other project files. `STATE.md` belongs to the
+branch it is committed on, and each branch carries at most one active cycle,
+which anyone who checks out the branch continues where it was left.
+
+- To start over on a branch, including one created from a branch with an active
+  cycle, the user cancels the cycle or runs **Project Reset** in
+  `.standards/protocol/installation.md`.
+- Once a branch's cycle is signed off or cancelled, the user runs **Project
+  Reset** (in `.standards/protocol/installation.md`) on it before merging it
+  into the main branch. The main branch then keeps a fresh installation with an
+  accurate `MODE.md` instead of one branch's workflow state, Auditor context,
+  and cycle records, and every branch created from it starts with no cycle.
+
+Merging two branches that both changed `.standards/` without a reset usually
+conflicts in `STATE.md`. The user resolves it by keeping exactly one cycle; the
+other cycle stops being tracked, and its records stay under `.standards/docs/`
+for the user to decide about. While `.standards/` has unmerged files or conflict
+markers, a workflow role stops, tells the user which cycles are involved, and
+waits; it never resolves the conflict by choosing a side.
+
+### Manual edits
+
+STANDARDS changes its runtime files and cycle records only through legal
+protocol transitions and the runtime tools. Editing them by hand is unsupported,
+except to resolve a merge conflict as described above; a user who edits them
+otherwise is responsible for the result. `check` reports many, but not all, of
+the problems such edits cause.
+
+## Navigator Boundary
+
+Navigator helps the user understand existing work, investigate questions, and
+check comprehension. It may run in any workflow state, including user-owned and
+terminal states, with any cycle mode or no active cycle. It owns no workflow
+state or persisted artifact and has no workflow completion gate.
+
+- Navigator persists nothing. It creates no quiz scores, preferences, or
+  summaries, and conversation context stays in the conversation.
+- The control-plane permissions elsewhere in this protocol do not apply while
+  Navigator runs. It never initializes cycles, generates IDs, records blockers,
+  selects or promotes cycle modes, signs off, cancels, or creates failure,
+  recovery, or other state-changing handoffs. It may explain these actions and
+  their owners, but performing them requires leaving Navigator.
+
+The Navigator skill defines the full operating boundary, including its
+non-mutation rules, diagnostic safety requirements, explanation standards, and
+interaction modes.
+
+## Instruction Layering and Conflicts
+
+Role-specific precedence may order **compatible** guidance, such as applying a
+repository formatter before generic style preferences. Precedence must never be
+used to silently resolve a material conflict among the protocol or installed
+integration contract, explicit user constraints, completed role-owned workflow
+artifacts, project-specific instructions, or repository-enforced/toolchain
+constraints.
+
+When authorities materially conflict:
+
+1. If the conflict is a defect or changed requirement owned by a workflow role,
+   route it through the protocol's normal failure, recovery, or `USER_REWORK`
+   mechanics to that owner.
+2. If no workflow owner can resolve the contradiction without overriding another
+   authority, or project instructions conflict with the protocol/integration
+   contract, stop workflow work and require user resolution.
+3. Do not weaken an authority, invent an exception, or choose a winner merely
+   because one source appears earlier in a role-specific precedence list.
+
+Role skills should reference these rules rather than redefine conflict-resolution
+semantics locally.
+
+## Runtime Tools and Hooks
+
+Installation places these tools in `.standards/bin/`. They run with Node.js.
+Roles use them instead of doing these steps by hand:
+
+| Command                                                       | Purpose                                                                                                               |
+|---------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `node .standards/bin/cycle.mjs new --request "<request>"`     | Generate a new cycle ID (see **Cycle IDs** in `.standards/protocol/user-decisions.md`).                               |
+| `node .standards/bin/artifact.mjs init <TYPE>`                | Create one of the active cycle's records with its provenance block and header (see **Workflow Artifact Provenance**). |
+| `node .standards/bin/id.mjs next <AC\|DEV\|F\|D\|DOC> <file>` | Print the next free identifier for a record.                                                                          |
+| `node .standards/bin/check.mjs`                               | Check the runtime files and the active cycle's records. It only reads files.                                          |
+
+A workflow role runs `check` before its first substantive work and again before
+every state-changing handoff. For each problem it reports:
+
+1. If the problem is in work the current role owns, fix it before continuing.
+2. If another role owns it, route it through **Failure Handoffs**.
+3. If no role can fix it, for example a merge conflict or a hand-edited file,
+   stop and report it to the user.
+
+A forward handoff requires that `check` reports no problem in files the current
+role owns. `check` finds mechanical errors such as malformed cycle IDs, broken
+provenance, or missing acceptance coverage; it does not replace a role's
+completion gate. If a tool is missing or fails, stop and report it; do not do
+its step by hand.
+
+Installation can also add a stop hook for Claude Code and Codex (see **Installed
+Runtime Contract** in `.standards/protocol/installation.md`). When an agent
+finishes a turn and workflow files have uncommitted changes, the stop hook runs
+`check`. If it finds problems, it sends the agent back once with the list, and
+the agent handles them as described above. Because the turn may have ended with
+a handoff, the hook does not hold the current state's own `COMPLETE` records to
+full acceptance coverage; the role that owns the state reconciles them when it
+starts, and its own `check` before handing off still includes them. During
+recovery, when `check` otherwise holds only the current state's `COMPLETE`
+records, the hook instead holds those of the state named in `Handoff.From` after
+a `FORWARD`, `RESUME`, or `FAILURE` handoff, which that state's role made with
+its records current. It holds none while in `SCOPING`, because Scoper may have
+changed the acceptance conditions since that handoff.
+
+Navigator may run `check`, because it changes nothing. When `check` or a hook
+reports problems during Navigator work, Navigator reports them and changes
+nothing.
+
+## Forward Transitions
+
+A forward transition occurs only after the current state's completion gate
+passes.
+
+### Standard Greenfield
+
+```text
+SCOPING
+-> ARCHITECTING
+-> AUDITING
+-> DEVELOPING
+-> TESTING
+-> REVIEWING_IMPLEMENTATION
+-> DOCUMENTING
+-> REVIEWING_FINAL
+-> SYNCHRONIZING
+-> AWAITING_USER_SIGNOFF
+```
+
+### Standard Brownfield
+
+```text
+AUDITING
+-> SCOPING
+-> ARCHITECTING
+-> DEVELOPING
+-> TESTING
+-> REVIEWING_IMPLEMENTATION
+-> DOCUMENTING
+-> REVIEWING_FINAL
+-> SYNCHRONIZING
+-> AWAITING_USER_SIGNOFF
+```
+
+For brownfield standard work, `ARCHITECTING -> DEVELOPING` requires valid
+project context for the active cycle. Missing, materially incomplete, incorrect,
+or unexpectedly invalidated context routes to `AUDITING`. Planned active-cycle
+implementation changes do not alone make context stale.
+
+### Expedited Brownfield
+
+```text
+DEVELOPING
+-> REVIEWING_IMPLEMENTATION
+-> AWAITING_USER_SIGNOFF
+```
+
+This topology is valid only for `ProjectMode: BROWNFIELD` with
+`CycleMode: EXPEDITED`, under **Expedited Cycle Contract** in
+`.standards/protocol/expedited.md`.
+
+## Handoff Rules
+
+1. Forward handoff requires the current completion gate to pass.
+2. A role does not repair work it does not own; failures route under **Failure
+   Handoffs**.
+3. A handoff identifies its target role or workflow state. A failure handoff
+   also identifies `FailureType`; `REVIEW` targets the Reviewer state matching
+   the affected `ReviewKind`.
+4. No role silently changes another role's artifact or decision.
+5. Corrective routing and reruns follow **Recovery Mechanics**, which skills
+   must not redefine; user decisions follow **User Decisions and Intervention**;
+   and promotion follows **Expedited Promotion** in
+   `.standards/protocol/expedited.md` and is not encoded as `FAILURE`.
+6. Every state-changing transition persists all applicable `WorkflowState`,
+   `CycleMode`, pending-cycle, `Active Work`, `Handoff`, `Recovery`, and
+   `Outstanding Obligations` changes before further role work and before
+   presenting any next-role invocation.
+7. After a legal transition to a different workflow role, provide a concise
+   copy/paste invocation for that role unless the same user instruction already
+   explicitly invoked it and it will continue immediately. Do not emit one when
+   the workflow remains with the same role, a blocking question is unresolved,
+   the result is `AWAITING_USER_SIGNOFF`, `SIGNED_OFF`, or `CANCELLED`, or
+   Navigator is used.
+8. The invocation is convenience only; `STATE.md` and role-owned artifacts
+   remain authoritative. Use the active client's syntax and avoid duplicating
+   authoritative workflow content unless needed for disambiguation:
+
+```text
+Next role: <Role>
+
+Codex:       $<skill> Continue the active workflow from `.standards/STATE.md`. Read the persisted Active Work, relevant project context and owned artifacts, and recovery context before proceeding.
+Claude Code: /<skill> Continue the active workflow from `.standards/STATE.md`. Read the persisted Active Work, relevant project context and owned artifacts, and recovery context before proceeding.
+```
+
+Emit only the active-client line. When recovery is active, replace “active
+workflow” with “active recovery” and explicitly direct the role to read the
+active recovery frame.
+
+At `AWAITING_USER_SIGNOFF`, present the applicable user actions rather than a
+next-role invocation.
+
+### Independent Assessment Sessions
+
+Tester and Reviewer reconstruct assessments from persisted artifacts and
+repository evidence. Before a handoff to either role, persist the applicable
+state, owned artifacts, claims, assessed content identities, actual commands and
+results, limitations, unresolved findings and dependencies, and resume context.
+Record detail in the owning artifact, not in `Handoff.Reason`. The receiving
+role must be able to work without the authoring conversation.
+
+Every handoff entering `TESTING`, `REVIEWING_IMPLEMENTATION`, or
+`REVIEWING_FINAL`, including recovery and corrections, keeps the normal
+invocation with its persisted-input and recovery-frame directions, adds the
+fresh-session prefix below, and names the review kind when entering Reviewer.
+Even when the user invoked both roles together, the immediate-continuation
+exception never runs an assessment in a conversation that contains the
+prohibited authoring history.
+
+A skill cannot erase chat history or certify session freshness without client
+support. Known prohibited history requires persisting missing context within
+existing ownership, then stopping before the formal assessment to request a
+fresh session. When history or client metadata is unavailable, state that
+limitation and proceed from persisted evidence, without inventing an
+attestation, blocking automatically, or asking for routine confirmation. The
+assessing role may resume its own interrupted assessment in a conversation
+separate from the prohibited authoring work.
+
+### Independent Tester Session
+
+Apply **Independent Assessment Sessions**. Prefix a Tester invocation with
+“Open a fresh chat separate from Developer's implementation conversation, then
+run:”. Developer implementation history is prohibited for formal Tester work.
+
+### Independent Reviewer Session
+
+Apply **Independent Assessment Sessions**. Prefix a Reviewer invocation with
+“Open a fresh chat separate from the conversations that produced the artifacts
+under review, then run:”. The separation covers requirements, design, context,
+implementation, tests and evidence, and documentation authoring, not just
+Developer. Reviewer's own review history, including resuming its assessment and
+correcting its own findings, is not prohibited history.
+
+Also recommend that the user select a different model of equal or higher
+capability than the one that produced the work, where known. This is advisory:
+do not switch models automatically, guess model identities or capability
+rankings, or add a routine author-model confirmation gate. Unknown model
+metadata is a stated limitation, not a blocker, and session separation is
+required even when no different model is available.
+
+## Commit Message Guidance
+
+After role work, if the role produced a meaningful atomic set of repository
+changes, provide a suggested Git commit message. Do not create the commit unless
+the user explicitly requests it. Coordination-only changes such as advancing
+`STATE.md` do not justify a suggestion by themselves.
+
+Use Conventional Commits, `<type>(<optional-scope>): <description>`, for
+example `feat(search): implement user search` or `docs(scope): define user
+search requirements`. Choose type and scope from the actual changes, not the
+role or workflow state. Common types include `feat`, `fix`, `docs`, `test`,
+`refactor`, `perf`, `build`, `ci`, and `chore`. Keep the description concise,
+imperative, and specific. Use breaking-change syntax or footers only for
+genuinely breaking changes.
+
+`NAVIGATOR` never suggests a commit. Other roles omit the suggestion when they
+produced no meaningful committable changes. When both a commit suggestion and a
+next-role invocation are emitted, present the commit suggestion first.
+
+## Acceptance Traceability
+
+These obligations apply only to `STANDARD` cycles and do not create a shared
+traceability artifact or add acceptance data to `STATE.md`. `EXPEDITED` cycles
+do not fabricate Scoper-owned acceptance conditions or substitute identifiers.
+If an expedited cycle is promoted, Scoper establishes them when the standard
+topology reaches `SCOPING`.
+
+1. Scoper represents every verifiable in-scope completion obligation as one or
+   more acceptance conditions with stable, unique `AC-NNN` identifiers for the
+   active cycle. Do not combine separable obligations under one identifier when
+   their satisfaction or verification evidence is established in different
+   workflow phases. The identifier is a reference, not an ordering guarantee.
+   Get each new identifier with `node .standards/bin/id.mjs next AC <scope>`.
+   Define each condition as a Markdown list item, bulleted or numbered, that
+   starts with its identifier followed by a colon or dash, for example
+   ``- `AC-001`: Users can search by name.`` A table row, heading, or prose
+   mention does not define a condition, and `check` reports an identifier the
+   scope mentions without defining. This applies to a reused project scope
+   document too: write its current conditions in this form.
+2. During REPLAN, preserve an identifier when meaning is unchanged. New or
+   materially replaced conditions receive previously unused identifiers.
+   Removed or replaced identifiers remain in the scope's retired-identifier
+   record: list items in the same form under a
+   `## Retired Acceptance Identifiers` heading. Never renumber surviving
+   identifiers or reuse retired ones within the cycle.
+3. When a cycle reuses a canonical scope document that already holds another
+   cycle's acceptance conditions, numbering continues from the highest
+   identifier ever used in that document. Move the earlier cycle's conditions,
+   including its retired identifiers, under a `## Previous Cycles` heading that
+   stays the document's last section; the moved content may keep its own
+   headings. Everything under that heading is history, not current
+   obligations, and its identifiers are never used again in that document.
+4. Scoper owns acceptance wording and meaning. Downstream roles reference IDs
+   but do not redefine intent; material defects route to Scoper.
+5. Architect accounts for every current ID with technical design coverage or an
+   explicit no-architectural-impact disposition when satisfaction depends
+   entirely on established nontechnical behavior or work owned by another
+   workflow phase. Group IDs only when the same disposition applies; do not
+   invent architecture or claim ownership of satisfaction that belongs to
+   another workflow phase. When a cycle reuses a canonical design document that
+   already holds another cycle's acceptance coverage or technical acceptance
+   criteria, move them under a `## Previous Cycles` heading that stays the
+   document's last section, as in rule 3, before adding the current coverage.
+   Everything under that heading is history, not current coverage or criteria.
+6. All downstream coverage, work, and evidence references the same current IDs;
+   downstream roles do not invent substitute requirement IDs.
+7. Tester accounts for every current ID with verification evidence, a blocker,
+   or—when satisfaction explicitly depends on a later role—a pending dependency.
+   Pending is not verification evidence and must be resolved downstream under
+   the same ID.
+8. `AWAITING_USER_SIGNOFF` is forbidden while any current ID lacks sufficient
+   evidence or has an unresolved blocker. Route defects to their owning roles
+   through normal failure and recovery rules; never treat an unevidenced
+   condition as satisfied by assumption.
+9. Acceptance changes during recovery or rework invalidate any completed
+   downstream artifact whose completion contract requires accounting for every
+   current ID. Include those states when computing downstream invalidation even
+   if underlying behavior or technical decisions remain otherwise valid.
+
+## Review Kinds
+
+```text
+ReviewKind
+- IMPLEMENTATION
+- FINAL_DELIVERABLE
+```
+
+`IMPLEMENTATION` corresponds to `REVIEWING_IMPLEMENTATION`.
+`FINAL_DELIVERABLE` corresponds to `REVIEWING_FINAL`. A review handoff must
+identify the requested kind.
+
+### Review Gates
+
+Reviewer's skill defines the gate for each review kind. `FINAL_DELIVERABLE` is
+available only in `STANDARD`; in `EXPEDITED`, implementation review assesses the
+bounded `Active Work.Request` and Developer evidence under **Expedited Cycle
+Contract** in `.standards/protocol/expedited.md`.
+
+Passing a review gate does not complete the cycle. Apply **Recovery Mechanics**
+when active; otherwise follow **Forward Transitions**. Before entering
+`AWAITING_USER_SIGNOFF`, all applicable cycle completion requirements, including
+an empty recovery stack and inactive outstanding obligations, must hold.
+
+## Synchronization Gate
+
+Synchronizer reconciles completed assessments, the current deliverable, and
+workflow records in `SYNCHRONIZING` during `STANDARD` only. Reviewer owns the
+assessment of soundness; Synchronizer establishes whether that assessment and
+its supporting evidence still apply to the work being offered for sign-off.
+Synchronizer's skill defines the gate; passing it is not cycle completion or
+user acceptance.
+
+Project-facing documentation and agent guidance are Documenter-owned, including
+project instructions outside managed framework blocks. Their completion evidence
+must identify the relevant documents and assessed content, checks performed and
+results or limits, and any current AC or technical criterion they satisfy.
+Documenter persists this evidence and resumable progress in its documentation
+record under **Workflow Artifact Provenance**, referencing supporting evidence
+where it already exists rather than copying it. The record also preserves
+collaboration mode, target and editing boundary, explicitly selected user style
+(or `NONE`), remaining work, discrepancies, dependencies, and the completion
+conclusion. It is not an authoritative acceptance ledger and does not certify
+another role's work. Reviewer and Synchronizer consume it independently; neither
+manufactures its evidence or rewrites documentation. Managed framework blocks,
+installed protocol, and installation metadata retain installer/protocol ownership.
+Preserve user-authored instructions and apply **Instruction Layering and
+Conflicts** when necessary.
+
+## Standard Cycle Completion
+
+Before a `STANDARD` cycle enters `AWAITING_USER_SIGNOFF`, all applicable
+standard role gates must be satisfied for the current work, including final
+review and synchronization. Every current AC and relevant technical criterion
+must have sufficient current evidence, with no unresolved material findings,
+discrepancies, dependencies, or blocking user question. Required project context
+must be valid and `Active Work.BaselineReconciliation` must be `NONE`.
+Recovery must be complete (empty stack) and outstanding obligations inactive.
+Apply recovery routing first; neither a report label nor correction of one
+owned obligation bypasses these requirements.
+
+`AWAITING_USER_SIGNOFF` means ready for the user's decision, not accepted or
+`SIGNED_OFF`. User acceptance follows **User Decisions and Intervention**;
+revalidate these requirements at sign-off against current inputs. `EXPEDITED`
+uses **Expedited Cycle Contract** in `.standards/protocol/expedited.md` instead
+and never fabricates synchronization.
+
+## Failure Types
+
+```text
+FailureType
+- SCOPING
+- ARCHITECTURE
+- PROJECT_CONTEXT
+- IMPLEMENTATION
+- VERIFICATION
+- DOCUMENTATION
+- REVIEW
+- SYNCHRONIZATION
+```
+
+| Failure type      | Owning role    |
+|-------------------|----------------|
+| `SCOPING`         | `SCOPER`       |
+| `ARCHITECTURE`    | `ARCHITECT`    |
+| `PROJECT_CONTEXT` | `AUDITOR`      |
+| `IMPLEMENTATION`  | `DEVELOPER`    |
+| `VERIFICATION`    | `TESTER`       |
+| `DOCUMENTATION`   | `DOCUMENTER`   |
+| `REVIEW`          | `REVIEWER`     |
+| `SYNCHRONIZATION` | `SYNCHRONIZER` |
+
+The discoverer of a failure does not automatically own the fix. Route it to the
+owner of the defective artifact or decision.
+
+## Failure Handoffs
+
+A failure handoff routes a defect to its owning state:
+
+```text
+SCOPING failure         -> SCOPING
+ARCHITECTURE failure    -> ARCHITECTING
+PROJECT_CONTEXT failure -> AUDITING
+IMPLEMENTATION failure  -> DEVELOPING
+VERIFICATION failure    -> TESTING
+DOCUMENTATION failure   -> DOCUMENTING
+REVIEW failure          -> REVIEWING_IMPLEMENTATION or REVIEWING_FINAL, matching the affected review
+SYNCHRONIZATION failure -> SYNCHRONIZING
+```
+
+In `STANDARD`, use this routing directly. In `EXPEDITED`, only
+`IMPLEMENTATION -> DEVELOPING` and implementation
+`REVIEW -> REVIEWING_IMPLEMENTATION` are valid failure routes because only those
+states exist in the expedited topology. A defect or guarantee owned by a skipped
+role requires **Expedited Promotion** in `.standards/protocol/expedited.md`, not
+a failure transition into a skipped state.
+
+If routing changes state, apply **Recovery Mechanics**. A same-state failure
+records the handoff but does not create a recovery frame.
+
+## Recovery Mechanics
+
+This is the canonical recovery algorithm. Skills define only how their role
+corrects its owned work, evaluates its completion gate, and identifies which
+previously completed downstream states its correction invalidates.
+
+Recovery follows the active `CycleMode` topology. Expedited recovery reruns only
+expedited states; a newly required skipped role or guarantee triggers
+**Expedited Promotion** in `.standards/protocol/expedited.md`, which preserves
+unresolved corrective obligations as `Outstanding Obligations` and clears only
+the now-obsolete expedited recovery routing.
+
+1. **Push only when corrective routing changes state.** For `FAILURE` or
+   `USER_REWORK` moving to a different state, push a frame with `From` =
+   interrupted state, `Owner` = corrective target, applicable `FailureType` and
+   `Reason`, `ResumeAt` = interrupted state, and `RerunThrough: NONE`.
+   Same-state correction creates no frame.
+2. **Preserve nesting.** New failure or rework during recovery pushes another
+   frame. Never overwrite older frames. The last frame is active.
+3. **Only the active frame owner plans resumption.** After correcting the defect
+   and passing its normal gate, that owner decides whether previously completed
+   downstream states must be re-established before `ResumeAt`. The only
+   exceptions are the **Corrective Returns**. Their conditions allow the
+   respective owner to plan resumption without declaring its full gate passed;
+   the routing algorithm below remains unchanged.
+4. **No rerun:** pop the frame and transition directly to `ResumeAt` with
+   `Handoff.Kind: RESUME`.
+5. **Rerun required:** set `RerunThrough` to the last required state and
+   transition to the earliest required rerun state. Keep the frame on the
+   stack.
+6. **Rerun states use normal gates and legal forward handoffs** while preserving
+   the stack. They do not own the frame unless a nested defect creates a new one.
+7. **At the rerun boundary**, after `RerunThrough` passes its gate, pop the frame
+   and transition to `ResumeAt` with `Handoff.Kind: RESUME` instead of taking
+   the normal forward handoff. This explicit return is valid even when
+   `ResumeAt` lies outside the project's normal forward topology.
+8. Recovery ends only when the stack is empty.
+
+Examples:
+
+```text
+Architecture defect discovered during testing:
+TESTING -> ARCHITECTING                 # push frame, ResumeAt TESTING
+ARCHITECTING -> DEVELOPING              # set RerunThrough DEVELOPING
+DEVELOPING -> TESTING                   # boundary completes, pop, resume TESTING
+
+Scoping defect discovered during implementation review:
+REVIEWING_IMPLEMENTATION -> SCOPING     # push frame
+SCOPING -> ARCHITECTING                 # set RerunThrough TESTING
+ARCHITECTING -> DEVELOPING -> TESTING
+TESTING -> REVIEWING_IMPLEMENTATION     # pop, explicit resume
+
+Invalid project context discovered during architecture:
+ARCHITECTING -> AUDITING                # push frame
+AUDITING -> ARCHITECTING                # no rerun; pop and resume
+
+Nested recovery:
+TESTING -> AUDITING                     # outer frame, ResumeAt TESTING
+AUDITING -> SCOPING                     # nested rework frame, ResumeAt AUDITING
+SCOPING -> ARCHITECTING                 # set nested RerunThrough DEVELOPING
+ARCHITECTING -> DEVELOPING
+DEVELOPING -> AUDITING                  # pop nested frame, explicit resume
+```
+
+### Corrective Returns
+
+An interrupted role may need a documentation or reconciliation defect corrected
+before it can finish its own work, and requiring the correcting role to finish
+its full gate first would stop both. Documenter and Synchronizer may therefore
+plan resumption without passing their full gate. This is a narrow recovery
+outcome in `STANDARD`, not another mode or a passing completion conclusion, and
+it applies only when:
+
+- the correcting role owns the active recovery frame, whose `RerunThrough` is
+  `NONE`, and `ResumeAt` is another workflow role's state, not a user-owned
+  state;
+- its record has valid current-cycle provenance, and the frame's specific
+  correction has been verified as that role's skill requires under
+  **Documenter Corrective Return** or **Synchronizer Corrective Return**;
+- every remaining full-gate gap exists only because work or assessment already
+  assigned to the interrupted role or the preserved recovery route is
+  unfinished. Record each remaining item, its owner, and the evidence still
+  required;
+- any newly discovered independent defect or gap is handled through normal
+  failure and blocking rules instead of being deferred by this exception.
+
+Persist the correction evidence and remaining work, leaving the record
+`IN_PROGRESS` or `BLOCKED` while its full gate is unmet. Then use **Recovery
+Mechanics** to determine reruns and the return, preserving older frames and
+outstanding obligations. Do not mark the record `COMPLETE`, claim the gate
+passed, close another role's findings, or take a normal forward handoff on the
+strength of the correction. A same-state correction, a downstream rerun that
+does not own the active frame, or a return to `AWAITING_USER_SIGNOFF` cannot use
+this exception. The full gate still applies before a normal forward handoff,
+and **Standard Cycle Completion** still requires completed documentation and
+full synchronization before sign-off readiness.
+
+## User Decisions and Intervention
+
+These are user-authorized control-plane transitions, subject to **Navigator
+Boundary**. An explicit, unambiguous user instruction may authorize the receiving
+agent to persist the coordination change regardless of current state ownership.
+That authorizes only the coordination changes the applicable rule requires, not
+the target role's work: resulting role-owned work may proceed only
+when that role was explicitly invoked and owns the resulting state. Otherwise
+stop after persisting the transition and provide the next-role invocation when
+the handoff rules require one.
+
+At `AWAITING_USER_SIGNOFF`, available actions are sign off, rework, or cancel;
+for expedited work, explicit promotion is also available. Bounded expedited
+rework follows normal recovery back to sign-off. Rework requiring a skipped
+standard guarantee promotes and restarts the standard brownfield topology at
+`AUDITING`.
+
+The rules for choosing the next cycle's mode and for starting, promoting,
+signing off, and cancelling a cycle are in
+`.standards/protocol/user-decisions.md`. Reworking an active cycle follows
+below.
+
+### Rework an active cycle
+
+From any nonterminal state, update `Active Work.Request` when the request
+changed, identify the earliest owned artifact or decision invalidated, record
+`Handoff.Kind: USER_REWORK` with its `FailureType`, and route to that owner. If
+state changes, push the recovery frame defined by **Recovery Mechanics** with
+`ResumeAt` equal to the interrupted state; preserve older frames. User-requested
+changes are not agent-discovered failures.
+
+In `EXPEDITED`, bounded implementation rework routes to `DEVELOPING`. If the new
+contract requires a skipped standard role or guarantee, the rework request
+itself authorizes promotion: update `Active Work.Request` to the changed
+contract, then apply **Expedited Promotion** in
+`.standards/protocol/expedited.md` instead of routing to `DEVELOPING`. Record
+`Handoff.Kind: PROMOTE`, not `USER_REWORK`, and push no rework frame.
+
+## Workflow State Reference
+
+This section defines the fields of `.standards/STATE.md` and the rules for
+updating them. The subsections follow the order of the shape example in
+**Persisted Workflow State**: `Active Work`, `Handoff`, and `Recovery`.
+`Outstanding Obligations` is normally `Active: false`; only **Expedited
+Promotion** adds entries. When it is active, read **Outstanding Obligations** in
+`.standards/protocol/expedited.md` before role work.
+
+### Active Work
+
+- `Id`: stable, user-readable identifier generated by `cycle.mjs new` (see
+  **Cycle IDs** in `.standards/protocol/user-decisions.md`). It is never reused
+  by another cycle. Never overwrite or repurpose an artifact belonging to
+  another cycle.
+- `Request`: persisted user request at enough fidelity for the entry role to
+  understand the work.
+- `Scope`, `Architecture`, and `Development`: repository-relative paths to the
+  owning artifacts, or `NONE` until created. Scoper, Architect, and Developer
+  must persist their artifact path before their normal completion gate passes.
+  In expedited work `Scope` and `Architecture` normally remain `NONE` unless the
+  cycle is promoted; `Development` is still Developer-owned and is created before
+  implementation begins.
+- `PromotionReason`: durable reason an expedited cycle was promoted, otherwise
+  `NONE`. Preserve it for the remainder of the cycle; it is workflow context,
+  not a user requirement, scope decision, architecture decision, or baseline
+  fact.
+- `BaselineReconciliation`: durable provenance for unresolved project changes
+  retained from cancelled cycles, otherwise `NONE`. It must be resolved before
+  the current cycle may rely on the affected repository state as established
+  baseline. Use the **Baseline Reconciliation Format** below, with one entry
+  per unique `SourceCycle` and its `Request` summary. Carry the list across
+  handoffs, failures, rework, recovery, and cancellation until Auditor resolves
+  every source and clears it. `Handoff.Reason` is not a substitute.
+- `AuditTarget`: transient repository-relative path or area label for an
+  in-progress targeted audit when that focus cannot otherwise be recovered from
+  persisted active work, owned artifacts, or recovery context; otherwise
+  `NONE`. Auditor must persist an ad-hoc user-directed target before relying on
+  it and clear it when that targeted audit completes, is abandoned, or no longer
+  needs separate persistence.
+- `BlockedOn`: unresolved user question preventing completion, otherwise
+  `NONE`.
+
+Installation initializes `Id` and `Request` as `UNSET`; **Start a cycle** (in
+`.standards/protocol/user-decisions.md`) sets them for every cycle.
+
+### Baseline Reconciliation Format
+
+Within `Active Work`, store `BaselineReconciliation` on its own line. When no
+obligation exists, use exactly:
+
+```markdown
+`BaselineReconciliation`: `NONE`
+```
+
+Otherwise use a nonempty Markdown list with both required fields in each entry:
+
+```markdown
+`BaselineReconciliation`:
+
+- `SourceCycle`: `change-invoice-cache-invalidation-20260923T141500Z-5d2e8b17`
+  `Request`: `Change invoice-cache invalidation behavior.`
+- `SourceCycle`: `add-internal-notes-to-admin-records-20260924T093000Z-c81f4a06`
+  `Request`: `Add internal notes to admin records.`
+```
+
+`SourceCycle` is the cancelled source's exact cycle `Id`, not the new cycle's
+ID. It is the unique key; `Request` is that source's brief persisted request
+summary. Preserve entry order and existing entries when carrying the list into
+another cycle. Append a newly obligated source only if its ID is absent; never
+replace older sources with the latest cancellation or duplicate an existing ID.
+Confirmation that the latest cycle left no changes does not clear older entries.
+Keep the complete list while any source remains unresolved; only Auditor clears
+it to `NONE` after reconciling every listed source. An empty list is represented
+as `NONE`, not an empty string or `[]`.
+
+A value that does not match this format is invalid workflow state. Report the
+inconsistency and block work that depends on it until corrected; do not infer
+entries or discard obligations.
+
+### Handoff
+
+`Handoff.Kind` is one of `INITIAL`, `FORWARD`, `FAILURE`, `RESUME`, `PROMOTE`,
+`USER_REWORK`, `NEW_CYCLE`, `SIGNOFF`, or `CANCEL`. Use `NONE` for inapplicable
+fields. `Reason` describes only the latest transition and must remain concise;
+it is not durable storage for outstanding recovery or baseline obligations.
+
+Use `RESUME` whenever a recovery frame returns to `ResumeAt`, and for any other
+recovery-directed transition that is not the normal forward handoff.
+
+### Recovery
+
+`Recovery` is a stack ordered oldest to newest, and **Recovery Mechanics**
+defines how frames are pushed, rerun, and popped. A frame preserves one
+corrective defect together with the routing needed to return to interrupted
+work. A role owns the active frame only when the current `WorkflowState` equals
+its `Owner`; merely running during recovery does not make a role responsible
+for the frame.
+
+### State-update rules
+
+1. Installation initializes from the selected mode template: `SCOPING` for
+   `GREENFIELD`, `AUDITING` for `BROWNFIELD`, `CycleMode: UNSET`,
+   `PendingCycleMode: UNSET`, `PendingCycleRequest: UNSET`,
+   `PendingCycleBlockedOn: NONE`, `Handoff.Kind: INITIAL`, unset active work,
+   and inactive recovery.
+2. Every legal state-changing transition updates all applicable fields as
+   **Handoff Rules** requires; failure and recovery, promotion, and user-control
+   transitions follow their canonical sections.
+3. Blocking questions during an active cycle do not change workflow state. Set
+   `Active Work.BlockedOn` before asking and clear it after incorporating the
+   answer. Pre-cycle control-plane questions must not modify
+   `Active Work.BlockedOn`; persist the blocked request and question in
+   `PendingCycleRequest` and `PendingCycleBlockedOn` instead.
+
+`STATE.md` coordinates the workflow; it does not replace role-owned artifacts.
+Role-owned artifacts remain authoritative for their own content.
+
+## Workflow Artifact Provenance
+
+Cycle ownership must be recoverable from the artifact itself whenever STANDARDS
+creates one of the records below. Create each with
+`node .standards/bin/artifact.mjs init <TYPE>`, adding `--kind <ReviewKind>` for
+a review; it writes the provenance block and record header and never overwrites
+an existing file. Every newly created record begins with this block, using
+exactly one concrete artifact type and the exact current cycle ID. A review
+report adds `ReviewKind: IMPLEMENTATION | FINAL_DELIVERABLE` before `-->`, with
+exactly one concrete kind matching its path and the current review state.
+
+```markdown
+<!-- STANDARDS
+Artifact: SCOPE | ARCHITECTURE | DEVELOPMENT | VERIFICATION | REVIEW | DOCUMENTATION | SYNCHRONIZATION
+Cycle: <Active Work.Id>
+-->
+```
+
+| Record                   | Owner        | Artifact type                      | Location                                                                              | Entries                                           |
+|--------------------------|--------------|------------------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------|
+| Scope                    | Scoper       | `SCOPE`                            | `.standards/docs/scope/<Active Work.Id>.md`, or an existing unmarked project document | `AC-NNN` list items (**Acceptance Traceability**) |
+| Technical design         | Architect    | `ARCHITECTURE`                     | `.standards/docs/specs/<Active Work.Id>.md`, or an existing unmarked project document | —                                                 |
+| Development plan         | Developer    | `DEVELOPMENT`                      | `.standards/docs/development/<Active Work.Id>.md`                                     | `### DEV-NNN`                                     |
+| Verification report      | Tester       | `VERIFICATION`                     | `.standards/docs/verification/<Active Work.Id>.md`                                    | —                                                 |
+| Implementation review    | Reviewer     | `REVIEW`, kind `IMPLEMENTATION`    | `.standards/docs/reviews/<Active Work.Id>/implementation.md`                          | `### F-NNN`                                       |
+| Final-deliverable review | Reviewer     | `REVIEW`, kind `FINAL_DELIVERABLE` | `.standards/docs/reviews/<Active Work.Id>/final-deliverable.md`                       | `### F-NNN`                                       |
+| Documentation record     | Documenter   | `DOCUMENTATION`                    | `.standards/docs/documentation/<Active Work.Id>.md`                                   | `### DOC-NNN`                                     |
+| Synchronization record   | Synchronizer | `SYNCHRONIZATION`                  | `.standards/docs/synchronization/<Active Work.Id>.md`                                 | `### D-NNN`                                       |
+
+An existing unmarked project document remains project-owned when Scoper or
+Architect selects it as the active scope or design location. The role may
+update an appropriate unmarked canonical project document and must not add
+STANDARDS provenance solely because `Active Work.Scope` or
+`Active Work.Architecture` references it; a new scope or design record is
+created with `artifact init` at its path in the table.
+
+Every other record is always cycle-owned at its fixed path. Its provenance block
+must match `Active Work.Id` and the path, and its visible `Cycle` field, plus
+the visible `ReviewKind` field in a review report, must match the block.
+`Active Work.Development` names the plan; the other fixed paths derive from the
+cycle ID, so `STATE.md` gets no path field for them. Because every path that
+`artifact init` creates includes the cycle ID, a new record's path never belongs
+to another cycle.
+
+A valid provenance block makes the file a STANDARDS cycle-owned artifact even if
+it is later renamed or moved. A different cycle may read it as prior evidence
+when a role contract permits, but must never overwrite, repurpose, or adopt it.
+Preserve other cycles' records and the other review kind's report, including
+moved artifacts whose provenance still names their original cycle.
+
+Before creating or editing a record, or an artifact referenced by
+`Active Work.Scope`, `Active Work.Architecture`, or `Active Work.Development`,
+inspect its path and any provenance block:
+
+- A file that starts with a malformed STANDARDS block (for example an unknown
+  artifact type, an invalid cycle ID, a missing or extra `ReviewKind`, or an
+  unclosed block) is a collision for every artifact type. Do not edit, adopt, or
+  repair it.
+- An unrelated, unmarked, incorrectly marked, or different-cycle or
+  different-kind file at a fixed path is a collision, and so is a non-directory
+  or unsafe path that prevents the required location.
+- An `Active Work` reference to another cycle's artifact is inconsistent with
+  the active cycle. Do not overwrite or silently repair that artifact; correct
+  the reference without mutating it.
+
+Report a collision and block dependent work until the user resolves it,
+preserving the existing content, without overwriting, relabeling, or adopting
+it or silently choosing another path.
+
+Test suites, fixtures, ordinary project documentation, comments, and docstrings
+remain reusable project assets and do not acquire cycle provenance because a
+role creates or updates them.
+
+The development plan, review reports, documentation record, and synchronization
+record number their entries as headings with the prefixes in the table. Get
+each new number, and each new `AC-NNN`, with
+`node .standards/bin/id.mjs next <prefix> <file>`. When a record refers to an
+entry in another record, it names that record's path with the identifier, for
+example `.standards/docs/reviews/<Active Work.Id>/implementation.md#F-003`; a
+path relative to the referring file, as in a Markdown link, also works.
+Acceptance identifiers (`AC-NNN`) and development steps (`DEV-NNN`) of the
+active cycle are referred to without a path.
+
+## Project context lifecycle
+
+`.standards/CONTEXT.md` is the canonical Auditor-owned project-context artifact.
+Installation does not fabricate it; Auditor creates or refreshes it when
+`AUDITING` runs. In a `STANDARD` cycle, refreshed context is the project
+baseline for downstream roles, subject to ownership and freshness rules. In an
+`EXPEDITED` cycle, existing context is prior evidence only and is not presumed
+refreshed.
+
+Any **Active-Cycle Non-Baseline Work** entry is scoped to the `Active Work.Id`
+that produced it and applies only while that same cycle is nonterminal; it is
+stale in `SIGNED_OFF`, `CANCELLED`, and later cycles. A later audit reconciles
+each prior-cycle exclusion against current repository and version-control
+evidence, removing or reclassifying it rather than copying it forward, and
+blocks for user clarification when baseline status cannot be established
+safely.
+
+Greenfield status does not require context to be absent. Before the first
+scheduled greenfield audit, Scoping and Architecture may run or rerun without
+`CONTEXT.md` when the facts their owned work needs are otherwise established;
+absence of context alone is not a defect, and a role that needs project facts
+that cannot safely be established without Auditor-owned context routes a
+`PROJECT_CONTEXT` failure. Once
+`CONTEXT.md` exists, later Scoping or Architecture work uses it when relevant,
+even while `ProjectMode` remains `GREENFIELD`.
+
+`.standards/MODE.md` and `.standards/STATE.md` are protocol-owned coordination
+artifacts. A role or user may change them only through **Project Reset** (in
+`.standards/protocol/installation.md`), a legal protocol transition, or a
+protocol-required coordination update, including initializing `Active Work`,
+recording artifact paths, selecting or promoting `CycleMode`, and setting or
+clearing `PromotionReason`, `BaselineReconciliation`, `AuditTarget`, or
+`BlockedOn`. `.standards/PROTOCOL.md`, its chapters in `.standards/protocol/`,
+`.standards/bin/`, `.standards/VERSION.json`, and `.standards/INSTALLATION.json`
+are framework-owned and may be changed only by framework installation or
+upgrade.
+
+## User Styles
+
+A user style is a Markdown file of personal preferences for one role, kept at
+`.standards/user-styles/<role>/<identifier>.md`, where `<role>` is the role's
+skill name, such as `developer` or `tester`. Users add and maintain these files;
+STANDARDS ships none. Installation and **Project Reset** keep them, and
+**Project Uninstallation** deletes them with `.standards/` (both in
+`.standards/protocol/installation.md`).
+
+A role uses a user style only when the user explicitly selects one:
+
+- The identifier is the filename stem: `tony` and `tony.md` both select
+  `.standards/user-styles/<role>/tony.md`. Only a direct child Markdown file of
+  that role's folder can be selected; reject paths, separators, traversal, and
+  symlinks that leave the folder. `NONE` is reserved and means no user style.
+- Never infer a style from the user's identity, repository ownership, prior
+  usage, another role's selection, or the mere presence of a file.
+- If a selection does not resolve to exactly one available file, stop and ask
+  the user to choose an available style or clear the selection; never
+  substitute another.
+
+A user style governs discretionary choices only. Within a role's style
+guidance, apply the role's `styles/universal.md` first when it has one, then the
+selected user style, then the role's other applicable style files. A user style
+never overrides the protocol, role ownership, the active contract, the required
+shape of a role's artifacts, repository-enforced constraints, project
+instructions, or correctness. A precedence list never settles a material
+conflict; use **Instruction Layering and Conflicts**.
+
+Roles that keep a cycle record persist the selection as `User Style` in that
+record and reload it on resume: Developer's development plan, Tester's
+verification report, Reviewer's review reports, Documenter's documentation
+record, and Synchronizer's synchronization record. Scoper, Architect, Auditor,
+and Navigator have no record for it, so their selection lasts only for the
+current conversation and the user names it again when resuming. The user may
+change or clear a selection at any time, except that Developer locks its
+selection when the user first approves the development plan. If a persisted
+selection's file is missing on resume, stop and ask the user to restore it or,
+when the selection is not locked, to choose another or clear it.
+
+## Canonical Terms
+
+Use these terms consistently across all skills, and likewise the names defined
+in other sections, such as the handoff kinds (failure, forward, resume, and
+promotion handoffs), expedited cycle, recovery frame, outstanding obligation,
+active work, cycle mode, user style, runtime tools, and project reset:
+
+- **completed scope**: scope artifact that passed Scoper's completion gate; it
+  does not imply separate user approval unless the project adds such a gate.
+- **scope-level acceptance conditions**: observable outcomes owned by Scoper,
+  each identified by a stable `AC-NNN` **acceptance identifier** for the active
+  cycle that downstream artifacts reuse.
+- **retired acceptance identifier**: an ID whose condition was removed or
+  materially replaced; retained so it cannot be reused and no longer a current
+  coverage or verification obligation.
+- **technical acceptance criteria**: Architect-derived technical conditions
+  linked to scope-level acceptance identifiers.
+- **development plan**: Developer's persisted plan for the active cycle. It
+  decomposes the active contract into stable `DEV-NNN` steps, records
+  collaboration mode and resumable progress, and never replaces scope,
+  architecture, Tester verification, review, or documentation.
+- **verification report**: records acceptance coverage, scenario allocations,
+  actual execution evidence, gaps, and later-phase dependencies; it does not
+  replace scope, design, or workflow coordination state.
+- **review report**: records inspected inputs, checks, findings, limitations,
+  dependencies, and resumable progress under Reviewer's **Review Gates**.
+- **documentation record**: holds the evidence and progress that
+  **Synchronization Gate** describes; it is distinct from reusable project
+  documentation and does not replace another role's evidence or an acceptance
+  authority.
+- **synchronization record**: records assessed identities, references to
+  completion and evidence artifacts, discrepancies and their owners,
+  limitations, and a resumable conclusion under Synchronizer's
+  **Synchronization Gate**; it is not an acceptance ledger or user sign-off.
+- **project context**: the Auditor-owned baseline in `.standards/CONTEXT.md`.
+  It may persist as evidence across cycles under **Project context lifecycle**.
+  A `PROJECT_CONTEXT` failure means it is materially incomplete, incorrect, or
+  unexpectedly invalidated; planned implementation does not by itself make it
+  stale.
+- **completion gate**: conditions required before a role may make a forward
+  handoff.
+- **STANDARDS hook**: a Claude Code or Codex hook handler whose command runs
+  `.standards/bin/hook.mjs`.
+
+The paths of the records are in **Workflow Artifact Provenance**. Do not
+introduce alternate names for these concepts inside individual skills unless
+this protocol is updated first.
