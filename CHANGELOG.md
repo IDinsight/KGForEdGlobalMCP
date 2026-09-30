@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v0.3.0...v0.3.1) (2026-09-29)
+
+
+### Bug Fixes
+
+* cut token usage across tool results and prompts ([#11](https://github.com/IDinsight/KGForEdGlobalMCP/issues/11)) ([bda2a12](https://github.com/IDinsight/KGForEdGlobalMCP/commit/bda2a12c5b0badd923557e0908fc6b62e3608ca7))
+
 ## [0.3.0](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v0.2.0...v0.3.0) (2026-09-17)
 
 
