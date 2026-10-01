@@ -152,7 +152,7 @@ Existing decoder, graph models and domain enums already preserve generic LP rela
 
 ### DEV-003 — Prepare normalized LP inputs and verified provenance partitions
 
-`Status`: `PENDING` `Depends On`: `DEV-002`
+`Status`: `DONE` `Depends On`: `DEV-002`
 `Acceptance`: `AC-001, AC-002, AC-004, AC-010, AC-011, AC-012`
 
 **Goal**
@@ -169,7 +169,66 @@ Original node bytes and AS/LC relationship prefix remain exact. Appended LP wire
 
 **Self-Check**
 
-Run command help and deterministic preparation on copied inputs; compare repeated output hashes, AS/LC bytes, complete LP ID/type/endpoint/metadata reconciliation, partition placement/union/deep equality and sanitized receipt content. Never regenerate producer/checker judgments. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — reproducible local preparation completed for all six copied frameworks. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; assessed HEAD: `d601908b040d21eb5b3f0fe8b08c6273521e08d5` plus the five changed-content identities below. Final commands exited 0. No network/model/paid-service calls, producer/checker regeneration or package acceptance occurred.
+
+Actual command-help and execution commands from the repository root:
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python -m kgfegmcp.cli.prepare_learning_progressions --help
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline kgfegmcp-prepare-learning-progressions --help
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python -m kgfegmcp.cli.prepare_learning_progressions > /tmp/kgfegmcp-dev003-first-run.json
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-prepare-learning-progressions > /tmp/kgfegmcp-dev003-repeat-run.json
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python -m kgfegmcp.cli.prepare_learning_progressions --framework-id nigeria-nerdc-mathematics-primary-1-3 > /tmp/kgfegmcp-dev003-selected-run.json
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev003-self-check.py /Users/tzz/Projects/private/idi/KGForEdGlobalMCP
+```
+
+The command-help run without `--no-sync` rebuilt only the local editable project offline to register its new console entry point. Python remains 3.13.9; no dependency or lockfile change. First execution created six complete trees. Repeat execution returned `existing_identical` for all six, with identical counts and all artifact hashes; exact selection returned one unchanged tree. A separate fresh temporary root reproduced every artifact hash for all six frameworks.
+
+The ad hoc Developer feedback script assessed the produced bytes independently and exercised temporary negative fixtures only; it is not a Tester-owned suite. Final scratch identities: script `sha256:6195020ccbd3a54b1d16f14e915ea49f0f85062a4b9d966ba3b7114df4e65dcd`, result `sha256:8ca842ff7cbacfaf9563cca09ffb403a46bd04f82e67a41e3bc03a7fe5e1961b`, protected baseline inventory `sha256:a89f7624ab4a0729889b1803e192e08909d8fabb7f1b190819730c391120617b`. Scratch files may be discarded; material outcomes and persistent preparation identities are recorded here.
+
+Static checks used the prefix `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync`, effective working directory `backend`, and these exact module arguments: `src/kgfegmcp/packages/normalization.py src/kgfegmcp/packages/normalization_models.py src/kgfegmcp/packages/normalization_sources.py src/kgfegmcp/cli/prepare_learning_progressions.py`.
+
+- `ruff check <module arguments>`: all checks passed.
+- `black --check <module arguments>` and `isort --check-only <module arguments>`: passed for all four modules. The final isort pass removed one blank import-separator line in normalization_models.py; Black reconfirmed that file. Earlier successful semantic checks are unchanged by this whitespace-only fix.
+- `mypy --cache-dir /tmp/kgfegmcp-dev003-mypy <module arguments>`: no issues in four files.
+- `pylint <module arguments>`: 10.00/10, including configured complexity checks.
+- `interrogate <module arguments>`: 100% docstrings; configured badge generation caused no tracked badge change.
+- `git diff --check` and `node .standards/bin/check.mjs`: passed; workflow check rerun at the final STEPWISE pause.
+
+Self-check outcomes:
+
+- 519 named implementation sanity checks passed. Every original node byte and AS/LC relationship prefix is unchanged; all 8,080 stored LP IDs/types/endpoint values/author/provider/license/attribution/descriptions match original split records. CASE selectors resolve to existing outer IDs, including a synthetic case where those IDs differ. Appended LP records are sorted by type/ID; optional non-null date strings are preserved and null dates omitted. A temporary no-final-LF prefix receives only the recorded separator.
+- Split records agree with both combined JSONL formats, the rich combined bundle, exact original provenance metadata and accepted final claims. Original report/unresolved/summary/final-claims bytes remain intact, including CBSE needs_review and Ghana warning evidence. Candidates/no_relation/needs_review never supply exported edges.
+- All 384 partition maps (64 per framework) use canonical UTF-8 JSON, sorted keys and one final LF. Placement independently matches the SHA-256-first-byte modulo-64 rule. Their unique exhaustive union is deeply equal to every original provenance entry and covers exactly all exported LP IDs. Index version 1.0 records exact original-map hash, fixed algorithm and all manifest logical slots with relative paths/counts/hashes. The largest actual partition is 900,480 bytes, below the unchanged 32 MiB source-read limit; future resource limits remain independently enforced.
+- Normalization receipts record exact input/output byte hashes, copy-receipt identity, framework/document CASE mapping, per-type counts and prefix/separator facts. Generated receipts/indexes contain no private filesystem/source paths or copied model/rationale content. Original evidence is retained rather than sanitized or regenerated.
+- Negative feedback covers unknown/missing/coerced split fields, invalid CASE namespaces/IDs, unresolved endpoints, duplicate/wrong-slot split IDs, missing/mismatched combined edges/rich metadata/provenance/final claims, duplicate JSON keys/nonfinite numeric values including overflow, copied-byte drift, symlink components, unknown framework selection, protected output roots and conflicting existing output without overwrite. Empty LP provenance generates all 64 empty maps. CLI failures remain concise and omit private paths.
+- All 319 start-of-step files across raw copies/copy receipt, config/profiles, config/prompts, data/graph_packages and data/input_artifacts retain their hashes. The 516 generated files (86 per framework) live only under ignored `data/source_artifacts/learning_progressions/prepared/<framework-id>/`; no active configuration, old accepted package or existing preparation input was changed. Temporary fixtures/fresh-root trees were removed after feedback.
+- Limits: this is deterministic preparation feedback, not independent package integrity acceptance, formal Tester verification, semantic/pedagogical certification or runtime activation. DEV-004 independently validates LP graph/provenance/report integrity; DEV-005 constructs accepted replacements. Current legacy active packages remain unchanged and the intermediate schema-migration checkout is not a deployment milestone. DEV-023 later replaces tracked data/input_artifacts with normalized rebuild inputs; required runtime evidence will be retained in accepted packages, separate from ignored raw copies. No later step started.
+
+Persistent preparation evidence (paths relative to each framework's prepared tree):
+
+| Framework | buildsTowards | relatesTo | detailed/lp_relationship_provenance_index.json | detailed/lp_normalization_receipt.json |
+|---|---:|---:|---|---|
+| `nigeria-nerdc-mathematics-primary-1-3` | 189 | 297 | `sha256:0c103b882464e2f078e6c7e1bb4d6c07347ef94efd62762b0854ed789e718385` | `sha256:0b2faaa042f116cbf20690021a3ebaa738ac2b37c641a39acfb815e936839038` |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5` | 472 | 435 | `sha256:15f1599034ab63ab5266ecd84e0d3b2d5bfd5ffb70af65a55761363ab6f858fc` | `sha256:961770d68d9c5d27815738c35fe1a37ede13f09760b1a8ad252f869a6c3b4783` |
+| `india-cbse-science-learning-framework-classes-9-10` | 891 | 2315 | `sha256:fbd393547c06471e51ff9b2f6c98cd91ca765315868f39a53bd6136f8708766d` | `sha256:1ac49085408a87f5b0ee47868a4a6e61c69150bc3b63e109000dc28f92b93056` |
+| `rwanda-reb-mathematics-lower-primary-1-3` | 938 | 893 | `sha256:7d7c981b93e521d7f73b6784a23984a271989e289604aeddc0a022b4922d1582` | `sha256:a74ada4497caf42dcfa8ad02dad93e533167cf4ca93a4bb99d95943a1b11d4ef` |
+| `ghana-nacca-primary-mathematics-basic-4-6` | 299 | 300 | `sha256:d53ac196c33c101fc75ae4f5259ce8c65a3a039ebb35c40c66895df3cf72c075` | `sha256:f44484d55b0ec667a93cd761f98b4c991f90e45e6a47a8b7fa0156723fa216ca` |
+| `ghana-nacca-primary-english-language-basic-1-3` | 250 | 801 | `sha256:87ccab088d8a24324336af72eecb97d1da791b52f082eba9f2cf2510739971b0` | `sha256:57e7047c33a09350d7ea9b99e0cf7e5850d6965bd6c7dd5035d6b8878f22b262` |
+
+Each normalization receipt's `outputSha256` covers the other 85 generated files; its own exact-byte hash above closes the complete preparation-tree identity.
+
+Assessed changed-content identities:
+
+- `backend/pyproject.toml`: `sha256:83fc2343c199c7aaa9140a1b093408a1df9c992dfb9c7af8d1b53b06c84181e0`.
+- `backend/src/kgfegmcp/cli/prepare_learning_progressions.py`: `sha256:dcc19231323c3a4194198e8b9d32f03ebd8546bf98f0fbb39d41a5e1996cf53b`.
+- `backend/src/kgfegmcp/packages/normalization.py`: `sha256:aef47a5a472fc9ecc8787ce5b8e09303ffe8c0a98df2c0593cebae723cabac33`.
+- `backend/src/kgfegmcp/packages/normalization_models.py`: `sha256:a4fc413d1432e056807ece8ba14295f6f63334dc7cbde80328576aa7163ed060`.
+- `backend/src/kgfegmcp/packages/normalization_sources.py`: `sha256:0f269e0b154f6b87b5660d17897c1fc91128fa54f79be82885bb5c4ffe6927fd`.
+
+**Implementation Notes**
+
+New `kgfegmcp-prepare-learning-progressions` console command and matching Python module consume only the repository-local copy receipt and its exact 23-file mappings; external receipt paths are ignored and never read. By default all frameworks are prepared in sorted order under the ignored local prepared root; optional `--framework-id` selects an exact mapping. Every framework publishes from an isolated stage only after reconciliation and repeat copy-hash checks. Existing identical output is reusable; conflicting output is preserved and rejected. Source/copy/config/runtime path overlap and symlinks are rejected. No package manifest or old profile build specification is written here; later steps supply the new profile identities and acceptance. Strict source models and generated receipt/index models make these boundaries available to DEV-004 without adopting producer/checker judgments as validation.
 
 ### DEV-004 — Accept LP integrity independently and retain small query projections
 
@@ -469,8 +528,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 and DEV-002 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-003. No later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002 and DEV-003. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-003 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-004. No later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -479,5 +538,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 and DEV-002 are DONE. Next approved dependency-ready step is DEV-003; user continuation is required before starting it. Re-read the normalization/provenance-partition architecture, new package/delivery contracts and retained local copy receipt.
+- Resume: DEV-001 through DEV-003 are DONE. Next approved dependency-ready step is DEV-004; user continuation is required before starting it. Re-read LP acceptance/projection architecture, the new strict source/index/normalization models, generated six-framework preparation receipts and validator/loader boundaries. Preparation is complete but no replacement has been accepted or activated.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
