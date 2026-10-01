@@ -60,7 +60,6 @@ from kgfegmcp.prompts.models import (
     ComparisonSnapshotIds,
     CrossFrameworkComparisonGuidance,
     FrameworkPromptConfig,
-    InferredProgressionHypothesisGuidance,
     LoadedPromptConfig,
     MultiContextPromptRenderResult,
     MultigradeLessonPlanGuidance,
@@ -350,7 +349,6 @@ def _prompt_overlay(  # pylint: disable=R0911
 ) -> (
     AdministratorAlignmentReviewGuidance
     | CrossFrameworkComparisonGuidance
-    | InferredProgressionHypothesisGuidance
     | MultigradeLessonPlanGuidance
     | StudentHandbookSectionGuidance
     | StudentStudySupportGuidance
@@ -369,7 +367,7 @@ def _prompt_overlay(  # pylint: disable=R0911
     Returns
     -------
     AdministratorAlignmentReviewGuidance | CrossFrameworkComparisonGuidance |
-    InferredProgressionHypothesisGuidance | MultigradeLessonPlanGuidance |
+    MultigradeLessonPlanGuidance |
     StudentHandbookSectionGuidance | StudentStudySupportGuidance |
     TeacherGuideDraftGuidance | None
         Matching immutable prompt-specific guidance aggregate, or ``None``.
@@ -385,7 +383,7 @@ def _prompt_overlay(  # pylint: disable=R0911
         return config.prompts.cross_framework_comparison
 
     if prompt_name is PromptName.INFERRED_PROGRESSION_HYPOTHESIS:
-        return config.prompts.inferred_progression_hypothesis
+        return None
 
     if prompt_name is PromptName.MULTIGRADE_LESSON_PLAN:
         return config.prompts.multigrade_lesson_plan
@@ -1890,7 +1888,6 @@ class PromptService:
             "requestedSnapshotId": str(snapshot_id) if snapshot_id else None,
             "topicOrStandard": str(topic_or_standard),
         }
-        heuristics = context.profile.progression_heuristics
         output_contract = (
             "Use retainedCandidates from collect_progression_evidence as the complete "
             "standard-item evidence set. Do not add standards from separate searches, "
@@ -1909,13 +1906,6 @@ class PromptService:
             "Label every proposed transition [LLM-INFERRED / GENERATED] and provide "
             "supporting evidence, counter-considerations, alternative interpretations, "
             "evidence gaps, and qualitative uncertainty.",
-            (
-                "Apply these configured profile progression heuristics: "
-                + "; ".join(heuristics)
-                if heuristics
-                else "State explicitly that the selected profile supplies no "
-                "progression heuristics."
-            ),
             f"Repeat this disclosure exactly: {PROGRESSION_DISCLOSURE}",
             "Learning components may serve as progression atoms through "
             "get_learning_components_for_standard; label them [GENERATED-EVIDENCE / "

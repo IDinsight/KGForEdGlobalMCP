@@ -43,7 +43,7 @@ from kgfegmcp.schemas import FrozenSchema
 ConfigurationKey = Annotated[
     str, StringConstraints(max_length=100, min_length=1, pattern=r"^[a-z][a-z0-9_]*$")
 ]
-PROFILE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
+PROFILE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.1")
 
 
 def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
@@ -420,7 +420,6 @@ class CurriculumProfile(FrozenSchema):
     profile_id: ProfileId
     profile_schema_version: SchemaVersion = PROFILE_SCHEMA_VERSION
     profile_version: ProfileVersion
-    progression_heuristics: tuple[str, ...] = ()
     required_disclosures: tuple[str, ...] = ()
     rights: RightsPolicy
     source_role_capabilities: SourceRoleCapabilities = Field(
@@ -785,9 +784,6 @@ class CurriculumProfile(FrozenSchema):
         _require_unique(field_name="subject_aliases", values=self.subject_aliases)
         _require_unique(
             field_name="comparison_dimensions", values=self.comparison_dimensions
-        )
-        _require_unique(
-            field_name="progression_heuristics", values=self.progression_heuristics
         )
         _require_unique(
             field_name="required_disclosures", values=self.required_disclosures

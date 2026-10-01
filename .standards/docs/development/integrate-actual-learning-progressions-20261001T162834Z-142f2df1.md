@@ -322,7 +322,7 @@ Adapted feedback source: `/tmp/kgfegmcp-dev004-rename-feedback.py`, `sha256:aa85
 
 ### DEV-005 — Build six accepted replacement snapshots in a separate root
 
-`Status`: `PENDING` `Depends On`: `DEV-004`
+`Status`: `DONE` `Depends On`: `DEV-004`
 `Acceptance`: `AC-002, AC-003, AC-004, AC-017, AC-018, AC-019, AC-020`
 
 **Goal**
@@ -339,7 +339,101 @@ Profile/prompt-config schemas advance to 1.1, preserve useful interpretation/rig
 
 **Self-Check**
 
-Load all fresh configurations; build/accept/revalidate each replacement with established CLI commands; compare counts, exact AS/LC IDs/text/relationships, generated LP metadata, complete declared evidence and old identity receipt. Old terminal packages remain byte-identical until retirement in DEV-017. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+Completed: both configuration schemas are 1.1; all six profile version 2.0 and matching prompt configuration version 2.0.0 files load through the existing repositories. All six revision-1 replacements passed persisted atomic acceptance and read-only terminal revalidation. The package total is 3,039 buildsTowards and 5,041 relatesTo. All 835 start-of-step protected files remain unchanged. Replacements are retained separately and have not been activated.
+
+**Actual Evidence**
+
+- Assessed HEAD: `19bcb440b0164dfacbc398693ccc92cf2d6955a8`; entry tracked working tree was clean. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`. No commit was created. Workflow check passed before implementation; this continuation was explicitly authorized by the user and cleared only DEV-005's matching blocker.
+- Python command prefix: `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync`. Python tools execute in `backend`; no dependency installation or network call was needed.
+- Executed `python /tmp/kgfegmcp-dev005-build.py` with that prefix. This scratch orchestrator ran the established CLI, once per exact generated specification: `kgfegmcp-build-manifest --spec /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/dev005/build_specs/<framework-id>.json` for six frameworks; then `kgfegmcp-validate-packages pending`; then `kgfegmcp-validate-packages one --framework-id <framework-id> --snapshot-id <replacement-snapshot-id> --read-only` for each terminal replacement. Every command exited 0. Acceptance returned six valid pending-to-passed persisted transitions with no findings. Each subsequent revalidation reported observed/effective passed, terminalRevalidation true, readOnly true and persisted false, with byte-identical terminal manifest before/after.
+- CLI environment overrides were `PATHS_PROJECT_DIR=/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`, `KGFEGMCP_PROFILE_ROOT=<project>/config/profiles`, `KGFEGMCP_PROMPT_ROOT=<project>/config/prompts`, and `KGFEGMCP_GRAPH_PACKAGES_ROOT=<project>/data/source_artifacts/learning_progressions/dev005/replacement_packages`. The generated specifications use repository-relative prepared delivery/detailed/shard paths, profileVersion 2.0, unchanged jurisdiction/source version/publication/snapshot-relation settings, and packageRevision 1. Existing maintained `data/input_artifacts/*/package_build.json` files were not changed; their replacement is DEV-023.
+- Executed `python /tmp/kgfegmcp-dev005-feedback.py` with the prefix: 1,543 named assertions passed, including individual protected-file and artifact comparisons. Read-only catalog reconstruction yielded six accepted runtimes; PromptConfigRepository loaded all six exact version 2.0 configurations, bound by actual byte hashes. Entire new profile JSON equals the original after only version/schema changes and heuristic removal; entire new prompt JSON equals the original after only version/schema changes and hypothesis-overlay removal. Shared and all unrelated guidance, grade/code/hierarchy interpretation, source anomalies and rights remain intact.
+- Every replacement's 86 declared artifacts is byte-identical to its prepared input, including all nine dedicated LP artifacts and all 64 canonical provenance shards (384 total). Closed-tree acceptance verifies their exact checksum closure and complete retained evidence. Original node delivery bytes and complete AS/LC relationship prefix remain byte-identical to the baseline, preserving all AS/LC IDs, source text, hasChild/supports edges, unresolved status and multi-parent targets. AS/LC counts are unchanged; total relationships add exactly the two LP counts. All 8,080 exported LP identifiers and type/author/provider/license/attribution/description/endpoint values agree with split evidence. All 8,080 validated judgment projections remain present. Source framework metadata, sourceVersion, isCurrent, rights and snapshotRelations equal the baseline.
+- Config feedback accepts/round-trips every declared field of all three new overlays and their 60-instruction boundary; rejects old schema versions, progressionHeuristics, inferredProgressionHypothesis, unknown guidance fields, empty configs, excess shared/per-prompt/block instructions, duplicate/blank/oversized instruction text and invalid modes. New overlays are optional bounded soft-guidance contracts only; future workflows are not registered or rendered by this step.
+- Initial scratch feedback stopped on an overstrict expectation that old and newly copied detailed evidence would all be byte-identical. Read-only recursive comparison reconciled 2,721 scalar differences across 23 detailed artifacts: producer run paths, the Ghana Mathematics AS run timestamp, run/bundle/LC input fingerprints and LC generated-from-bundle metadata. All other detailed values agree with the baseline, and every new detailed artifact exactly matches the previously normalized copied input. Sealed originals are unchanged. Two subsequent scratch-script errors used an incorrect attribution key and Python tuple-versus-JSON-list equality; corrected to attribution_statement/attributionStatement and JSON-mode serialization. Final feedback passed without package/source changes or weakening the delivery/evidence contract. The receipt records all differing JSON paths and old/new artifact hashes without copying private producer paths into the plan.
+- Final source checks against `src/kgfegmcp/profiles/models.py src/kgfegmcp/prompts/models.py src/kgfegmcp/prompts/__init__.py src/kgfegmcp/prompts/service.py`: `ruff check`, `mypy --cache-dir /tmp/kgfegmcp-dev005-mypy`, `pylint`, `interrogate`, `black --check`, and `isort --check-only` all passed. Mypy found no issues in four files; pylint rated 10.00/10; docstring coverage was 100%. Interrogate's configured badge write produced no tracked badge diff. `git diff --check` passed. Searches returned no old heuristic/guidance-class references under backend/src and no heuristic/hypothesis-overlay keys in version 2.0 JSON; version 1.0 sealed configs are deliberately preserved until DEV-017 retirement.
+- Limits: these are Developer implementation checks, not independent Tester verification or semantic/pedagogical certification. CBSE's single needs_review claim and Ghana English/Mathematics 10/141 unresolved-warning pairs remain retained and excluded from published LP edges. CBSE's original provenance is still over 32 MiB; all evidence was checked without increasing resource limits, and the 64 validated partitions remain the later per-edge access mechanism. Active old packages/configurations were not activated, modified or retired; this intermediate migration checkout is not a deployment milestone. No full bootstrap/transport/distribution acceptance was claimed; those depend on future service/prompt/activation steps. No external source reads/writes, upstream regeneration, live LLM/paid-service calls, sampling, deployment, DEV-023 or later implementation occurred.
+
+Retained preparation root: `data/source_artifacts/learning_progressions/dev005/replacement_packages/`. It is outside active discovery and distribution and remains ignored local preparation until the approved activation step; do not delete it before DEV-023 comparison/DEV-017 activation. Each package has one manifest plus 86 exact declared artifacts; all six contain 522 files. New version 2.0 configuration files are ordinary unignored repository changes. Build specs, command/result receipts and identity inventory are retained beside the replacement root for continuation.
+
+Replacement identities and actual counts (graph package ID is the snapshot ID plus `--academic-standards--p1`):
+
+| Framework | Replacement snapshot ID | buildsTowards | relatesTo | Accepted manifest SHA-256 |
+|---|---|---:|---:|---|
+| `ghana-nacca-primary-english-language-basic-1-3` | `ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507` | 250 | 801 | `sha256:ab2bd1ce95caddfb8f9f67f66a46b7117f45e61f7ccc76e5c62fe444cd70861e` |
+| `ghana-nacca-primary-mathematics-basic-4-6` | `ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9` | 299 | 300 | `sha256:4a602730f1144bb961b1b9118c02ef4dc7ea9906f893e104eea16313209c2f3d` |
+| `india-cbse-science-learning-framework-classes-9-10` | `india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1` | 891 | 2315 | `sha256:7068e5a5b39ff45bd373b15fa33a6311e899e896e5d3cb5f0851c7883cb836b3` |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5` | `india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f` | 472 | 435 | `sha256:3e9fdacf040a5a6ca957b2ae9adca4a8bf2b871d779361103d6c19712696def8` |
+| `nigeria-nerdc-mathematics-primary-1-3` | `nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f` | 189 | 297 | `sha256:994dd1270d5badffaf07c8c9325a3b5985a5541296415ba10ce0f68879a5c981` |
+| `rwanda-reb-mathematics-lower-primary-1-3` | `rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13` | 938 | 893 | `sha256:d2cd631accaf1ec382d185b7a21d1be479f51a54cf4e817b84de92c9ec2488d6` |
+
+Fresh configuration byte identities (paths `config/profiles/<framework>/2.0/profile.json` and `config/prompts/<framework>/2.0/prompts.json`):
+
+| Framework | Profile SHA-256 | Prompt configuration SHA-256 |
+|---|---|---|
+| `ghana-nacca-primary-english-language-basic-1-3` | `sha256:fe2b269f7e76d0abf89d00799857602e17c8e76b6d1b4055797c662629ce7212` | `sha256:2b941a1e93e3b1c133f0d5b40ee2abf24b36333a6d87d523378f25c6a72e357e` |
+| `ghana-nacca-primary-mathematics-basic-4-6` | `sha256:4981190e0b1f79a924b92088ed7e78820961935a022ea1abcb13500e8136e848` | `sha256:1702079f466317e0e953449938cd7b45a9dce77b92aabcc0b99497e23589c877` |
+| `india-cbse-science-learning-framework-classes-9-10` | `sha256:5e5e9ed3ec1f52f296b0ff5538aff56e6f2b8f58cc87ba0a29ac6e892bf5f852` | `sha256:788fd22501ea2a84a8db5f36a48a894bd7c715aaf6b5d0f64a4ff1873e71fb50` |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5` | `sha256:8b9e1ffde3595ff24fa20bc2fa468fd952ec78aad6daaa4b19c1d5ebefc46595` | `sha256:4711bb6d09b8e07fac6e9cac9d7d6a3d8cad8a754d1c76803e127f30150a96cd` |
+| `nigeria-nerdc-mathematics-primary-1-3` | `sha256:b04a2bcefa88d2e235cd9a1f988ae6af7dd9e50da565ec7aa9a5ac76015cd3e8` | `sha256:a9d6e333574a9a12c9b77514caace37b494120293831efbfb371991b18e90ec6` |
+| `rwanda-reb-mathematics-lower-primary-1-3` | `sha256:d3fc130a70ce0502fc07f93a8211124adbe69a3b36b6302cf463f728fb41e0b6` | `sha256:3113ae183123271e5a3d0e075c72b807bfc59df5a3bf7bd0e0d1babf1e3aeb69` |
+
+Preserved sealed baseline identities:
+
+| Framework | Original snapshot ID | Original manifest SHA-256 |
+|---|---|---|
+| `ghana-nacca-primary-english-language-basic-1-3` | `ghana-nacca-primary-english-language-basic-1-3@2019+c33ab5a379fb` | `sha256:d5f1e8c40903ad0e2034018e9b08cda6a74bdd0e97e588c870ee15e0a8f630a7` |
+| `ghana-nacca-primary-mathematics-basic-4-6` | `ghana-nacca-primary-mathematics-basic-4-6@2019+7afbd99e7f80` | `sha256:ae3ed336fb4303ab4908a1f998c2cf53683894c022b5aaed3d595ed4ec476afb` |
+| `india-cbse-science-learning-framework-classes-9-10` | `india-cbse-science-learning-framework-classes-9-10@undated+e8361376ae1e` | `sha256:2e80061fd906c5972096686690f244ebc6722411e128b32e340667456772cb2a` |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5` | `india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+3b9f8f89171e` | `sha256:9c96732b5ff8cb8b1a655d20ced0ed00131687edd8bd896e7133a900d08fce5a` |
+| `nigeria-nerdc-mathematics-primary-1-3` | `nigeria-nerdc-mathematics-primary-1-3@undated+3f35e11c6624` | `sha256:bbab42346d3cf0258e4783c6c44889ed57f326aa77b06be00f4b10c7a94ae611` |
+| `rwanda-reb-mathematics-lower-primary-1-3` | `rwanda-reb-mathematics-lower-primary-1-3@2025+98426787aa9f` | `sha256:cf2bb982bce3b505c5936e418b5a09620cf1daab1056fcf982fecf158329c1c1` |
+
+Assessed source byte identities:
+
+- `backend/src/kgfegmcp/profiles/models.py`: `sha256:6f067fa55ded0c528d6597ecf54ca2b3276ce4a85c8a10e41c93c774621b98af`.
+- `backend/src/kgfegmcp/prompts/models.py`: `sha256:01094ab256b267d1acb1a5cdee9ca222ddcb7475f72943cf4c1fb29917bd71b7`.
+- `backend/src/kgfegmcp/prompts/__init__.py`: `sha256:14e340575f28c2da083fef04a7bff158a4a2c9c4b7a11726f3d6d6f2abba4d5e`.
+- `backend/src/kgfegmcp/prompts/service.py`: `sha256:acbaf7207b79968a11d6d8441e043ae6a522d92e16bb8ddfba44728392f1c9ad`.
+
+Exact evidence identities (local preparation receipts contain full commands, artifact checksum maps and comparison outcomes):
+
+- `/tmp/kgfegmcp-dev005-baseline.json`: `sha256:1a9d8f37fe668eda0c1d0280b7914dff249aefa9365179fd584928e36f9bce64`.
+- `/tmp/kgfegmcp-dev005-build.py`: `sha256:37554b3f469afa09359411670d012c61493cf225eef70c57b70f3fc443583089`.
+- `/tmp/kgfegmcp-dev005-feedback.py`: `sha256:10edf4c0e060df97de6d355c86b41707e31fa3dc07e7cde8e1d3abaa88034a0a`.
+- `data/source_artifacts/learning_progressions/dev005/commands.json`: `sha256:6e66db4cc79483b24afdf37763b44cffc075a7b139d2341e583f47d87fec6e5a`.
+- `data/source_artifacts/learning_progressions/dev005/checks/atomic-acceptance.json`: `sha256:bbd833d7d444494c4f9f18146a049365c25b89989a97a12f0ec29b63c4989db0`.
+- `data/source_artifacts/learning_progressions/dev005/checks/content-feedback.json`: `sha256:0c7a96a030de08b9f1368922c5317b9230cbc21b140984460c2143d9a962c0eb`.
+- `data/source_artifacts/learning_progressions/dev005/checks/assessed-identities.json`: `sha256:af0f06880a445b4530ac8995c6b560525a423589918aaab3733e0f7d43d4a35b`.
+
+Per-framework build, read-only validation and specification receipt identities:
+
+- `data/source_artifacts/learning_progressions/dev005/build_specs/ghana-nacca-primary-english-language-basic-1-3.json`: `sha256:27ad9c29a54d012571f5e42929b32b5cfdca4b39663b99d3d0a28defe8134516`.
+- `data/source_artifacts/learning_progressions/dev005/checks/ghana-nacca-primary-english-language-basic-1-3-build.json`: `sha256:ad53d70e6e30e7fa8f1b3bf48ef6327aebafd6a382a26fab685f32f04944ded4`.
+- `data/source_artifacts/learning_progressions/dev005/checks/ghana-nacca-primary-english-language-basic-1-3-revalidation.json`: `sha256:d04d63316975ec14610900e75f0e2e7ddfd07fe03d08cb43b73805412b5b7682`.
+- `data/source_artifacts/learning_progressions/dev005/build_specs/ghana-nacca-primary-mathematics-basic-4-6.json`: `sha256:8e13b7dfbbdf6b482569ffaf0eb765f1379437b04c0b78a812a33eeef8156689`.
+- `data/source_artifacts/learning_progressions/dev005/checks/ghana-nacca-primary-mathematics-basic-4-6-build.json`: `sha256:2aa04013a137a3fbf3993644ea2600759376bf1389e8b887c2632b6c2267d919`.
+- `data/source_artifacts/learning_progressions/dev005/checks/ghana-nacca-primary-mathematics-basic-4-6-revalidation.json`: `sha256:f75efb7f972458aa4c8375eb9e95bc020197de1bc0e79ea3618a81ff9d6330d0`.
+- `data/source_artifacts/learning_progressions/dev005/build_specs/india-cbse-science-learning-framework-classes-9-10.json`: `sha256:c568767512e4849ffc984c13cb746c3c243719b3656d613f83bd1e659abbd685`.
+- `data/source_artifacts/learning_progressions/dev005/checks/india-cbse-science-learning-framework-classes-9-10-build.json`: `sha256:a0c96f59daa15aef6fb456ad1f2d5856ac1fb5cc94f98398b259b9356c98329f`.
+- `data/source_artifacts/learning_progressions/dev005/checks/india-cbse-science-learning-framework-classes-9-10-revalidation.json`: `sha256:9a6da17e21f64679e73a758ded60cbe5892c51aa134d976dc1c85c34641ad781`.
+- `data/source_artifacts/learning_progressions/dev005/build_specs/india-tamil-nadu-tnscert-mathematics-classes-1-5.json`: `sha256:daaaa4e718a7e21519fa5ae38abed1e5c76300c73bd552f12398da51f9e865de`.
+- `data/source_artifacts/learning_progressions/dev005/checks/india-tamil-nadu-tnscert-mathematics-classes-1-5-build.json`: `sha256:cd4c9be0640f64519d600165ee5a583aaf987b97f70df8ac62d95f78d084fcbd`.
+- `data/source_artifacts/learning_progressions/dev005/checks/india-tamil-nadu-tnscert-mathematics-classes-1-5-revalidation.json`: `sha256:261767a71fb55497afe9c7fcf1a2e1d78b862a40afeac97bdfc4a0ba288ca478`.
+- `data/source_artifacts/learning_progressions/dev005/build_specs/nigeria-nerdc-mathematics-primary-1-3.json`: `sha256:2e639a83e293184069c2b586cd267945954890e84eb8210578ed248fa8d8c401`.
+- `data/source_artifacts/learning_progressions/dev005/checks/nigeria-nerdc-mathematics-primary-1-3-build.json`: `sha256:304b9d5064814c8c46406a2ae55eb9a542ba3f136d3d19f47790ef692a58e176`.
+- `data/source_artifacts/learning_progressions/dev005/checks/nigeria-nerdc-mathematics-primary-1-3-revalidation.json`: `sha256:f7c2fb693487cbee70764296be8d26dec9977e7befb8ead21c0f9bfeb5505e05`.
+- `data/source_artifacts/learning_progressions/dev005/build_specs/rwanda-reb-mathematics-lower-primary-1-3.json`: `sha256:724874bfc0e5ffe6c9bc61d1dd9802abaacd73fa2722d237aa71bfc6c5352ec6`.
+- `data/source_artifacts/learning_progressions/dev005/checks/rwanda-reb-mathematics-lower-primary-1-3-build.json`: `sha256:cd20f06d08cdf59d4ff8ce6798c99484a05a85078ce560aa60d11ee8bbc2db8d`.
+- `data/source_artifacts/learning_progressions/dev005/checks/rwanda-reb-mathematics-lower-primary-1-3-revalidation.json`: `sha256:9b5d1dcc24ed636da80fc3c032ee5142b61dd08b0ffc67aa89bb138cb055864d`.
+
+**Implementation Notes**
+
+Removed progressionHeuristics from the profile model/collection validator and removed the hypothesis guidance class/export/overlay. Added typed optional curriculum-review, support-plan and teaching-sequence guidance models; configuration instruction accounting covers all nine retained/new overlay slots, including multigrade. The remaining old prompt renderer's references to the deleted configuration field/class were removed so imports and type checks remain valid during migration; its complete obsolete runtime removal remains DEV-017/DEV-021. Public prompt version remains 1.2.0 until the planned DEV-018 workflow implementation advances it to 1.3.0. Version 2.0.0 is the new prompt-configuration version, distinct from profile version 2.0 and schema version 1.1.
+
+`node .standards/bin/check.mjs` and `git diff --check` passed after persisting completion and the DEV-023 blocker.
+
+DEV-005 is DONE. The next dependency-ready approved step is DEV-023, but it has not started; wait for explicit user continuation. Verification cadence remains AFTER_IMPLEMENTATION, Current Increment NONE, plan IN_PROGRESS, and workflow DEVELOPING with no recovery/obligations. No full Developer handoff gate passes while later approved work is unfinished.
 
 ### DEV-023 — Replace all six package preparation sets and build specifications
 
@@ -597,8 +691,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003 and DEV-004. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-004 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-005. No later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004 and DEV-005. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-023; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -607,5 +701,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-004 are DONE. Next approved dependency-ready step is DEV-005; user continuation is required before starting it. Re-read fresh profile/prompt schema/version contracts, the complete LP acceptance/projection boundary and six-framework preparation receipts. Publish fresh configurations and build/accept/revalidate replacements in a separate root, preserving sealed baseline directories. Temporary DEV-004 packages were removed; no replacement has been retained or activated.
+- Resume: DEV-001 through DEV-005 are DONE. Next approved dependency-ready step is DEV-023; user continuation is required before starting it. Re-read the six accepted replacement identities and DEV-005 local build/validation/content receipts. Replace maintained input_artifacts preparation sets/specifications and compare isolated rebuild identities to these retained replacements. Keep source copies, prepared artifacts, sealed baseline packages/version 1.0 configs and accepted replacements unchanged; activation/retirement is DEV-017. No later step has started.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.

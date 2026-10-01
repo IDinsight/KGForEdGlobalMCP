@@ -241,7 +241,7 @@ PromptInstruction = Annotated[
     StringConstraints(max_length=1_000, min_length=1),
     AfterValidator(_require_non_whitespace),
 ]
-PROMPT_CONFIG_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
+PROMPT_CONFIG_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.1")
 PROMPT_VERSION: Final[str] = "1.2.0"
 MAX_PROMPT_CONFIG_BYTES: Final[int] = 64 * 1_024
 MAX_RENDERED_PROMPT_BYTES: Final[int] = 64 * 1_024
@@ -383,12 +383,45 @@ class StudentHandbookSectionGuidance(FrozenSchema):
     section_structure_guidance: PromptGuidanceBlock | None = None
 
 
-class InferredProgressionHypothesisGuidance(FrozenSchema):
-    """Define optional soft guidance for the inferred-progression workflow."""
+class LearningProgressionCurriculumReviewGuidance(FrozenSchema):
+    """Define soft guidance for inspection of stored curriculum relationships.
 
-    counter_evidence_guidance: PromptGuidanceBlock | None = None
+    Examples
+    --------
+    >>> LearningProgressionCurriculumReviewGuidance().evidence_guidance is None
+    True
+    """
+
+    coverage_guidance: PromptGuidanceBlock | None = None
     evidence_guidance: PromptGuidanceBlock | None = None
-    inference_guidance: PromptGuidanceBlock | None = None
+    review_question_guidance: PromptGuidanceBlock | None = None
+
+
+class LearningProgressionSupportPlanGuidance(FrozenSchema):
+    """Define soft guidance for support planning from stored relationships.
+
+    Examples
+    --------
+    >>> LearningProgressionSupportPlanGuidance().evidence_guidance is None
+    True
+    """
+
+    evidence_guidance: PromptGuidanceBlock | None = None
+    practice_guidance: PromptGuidanceBlock | None = None
+    support_guidance: PromptGuidanceBlock | None = None
+
+
+class LearningProgressionTeachingSequenceGuidance(FrozenSchema):
+    """Define soft guidance for teaching sequences from stored relationships.
+
+    Examples
+    --------
+    >>> LearningProgressionTeachingSequenceGuidance().evidence_guidance is None
+    True
+    """
+
+    evidence_guidance: PromptGuidanceBlock | None = None
+    pedagogy_guidance: PromptGuidanceBlock | None = None
     sequence_presentation_guidance: PromptGuidanceBlock | None = None
 
 
@@ -415,7 +448,15 @@ class PromptOverlays(FrozenSchema):
 
     administrator_alignment_review: AdministratorAlignmentReviewGuidance | None = None
     cross_framework_comparison: CrossFrameworkComparisonGuidance | None = None
-    inferred_progression_hypothesis: InferredProgressionHypothesisGuidance | None = None
+    learning_progression_curriculum_review: (
+        LearningProgressionCurriculumReviewGuidance | None
+    ) = None
+    learning_progression_support_plan: LearningProgressionSupportPlanGuidance | None = (
+        None
+    )
+    learning_progression_teaching_sequence: (
+        LearningProgressionTeachingSequenceGuidance | None
+    ) = None
     multigrade_lesson_plan: MultigradeLessonPlanGuidance | None = None
     student_handbook_section: StudentHandbookSectionGuidance | None = None
     student_study_support: StudentStudySupportGuidance | None = None
@@ -464,7 +505,16 @@ class FrameworkPromptConfig(FrozenSchema):
         prompt_counts = (
             _count_guidance_instructions(self.prompts.administrator_alignment_review),
             _count_guidance_instructions(self.prompts.cross_framework_comparison),
-            _count_guidance_instructions(self.prompts.inferred_progression_hypothesis),
+            _count_guidance_instructions(
+                self.prompts.learning_progression_curriculum_review
+            ),
+            _count_guidance_instructions(
+                self.prompts.learning_progression_support_plan
+            ),
+            _count_guidance_instructions(
+                self.prompts.learning_progression_teaching_sequence
+            ),
+            _count_guidance_instructions(self.prompts.multigrade_lesson_plan),
             _count_guidance_instructions(self.prompts.student_handbook_section),
             _count_guidance_instructions(self.prompts.student_study_support),
             _count_guidance_instructions(self.prompts.teacher_guide_draft),
