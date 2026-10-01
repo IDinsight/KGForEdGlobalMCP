@@ -6,8 +6,8 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 # Development Plan
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
-`User Style`: `tony` `User Style Locked`: `false`
-`Status`: `PROPOSED` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`User Style`: `tony` `User Style Locked`: `true`
+`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Implementation Contract
@@ -20,7 +20,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 ### DEV-001 — Copy and verify all six source sets
 
-`Status`: `PENDING` `Depends On`: `NONE`
+`Status`: `DONE` `Depends On`: `NONE`
 `Acceptance`: `AC-001, AC-002, AC-004, AC-018`
 
 **Goal**
@@ -37,7 +37,57 @@ All 138 inputs have recorded source/destination paths, sizes and SHA-256 values.
 
 **Self-Check**
 
-Local hash/byte comparisons, framework/endpoint/count inspection and copy-receipt completeness. No runtime/implementation edits in this step. Stop before packaging on missing files or material drift. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — copy and reconciliation completed using a local inline Python copy script (command: `python3 -u - <<'PY'`), followed by the separate read-only receipt verification command below. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`. Assessed HEAD: `0dc54cb635a3acd94b514e6affed808188941be9`; dirty-tree additions are the exact 138 destination paths/hashes in the receipt. Copy execution exited 0; separate verification exited 0.
+
+- Receipt: `data/source_artifacts/learning_progressions/copy_receipt.json`, `sha256:e61d67b053a237e8fce6be86842f32ed5b398a145fb223410443d475419ae8ea`; includes every source/destination path, size, source-before/source-after/destination SHA-256, six framework CASE mappings, old package/snapshot/profile/prompt identities and protected baseline hashes.
+- 138/138 files verified, 933,392,640 bytes total, all six mappings reconciled; source bytes unchanged after copying and at the final recheck. No selected symlinks or unexpected copied inputs.
+- All six AS/LC delivery node and relationship hashes agree exactly with manifest-selected baseline delivery. All 8,080 exported LP IDs are unique and resolve to existing standards CASE UUIDs/node identities: 3,039 buildsTowards and 5,041 relatesTo. Split/combined signatures and accepted final claims agree; provenance covers exactly every edge and equals retained split metadata. relatesTo endpoint order is canonical.
+- LP upstream report counts/status agree. CBSE retains one needs_review claim; Ghana Mathematics and Ghana English retain 141 and 10 unresolved-warning pairs respectively; other audited notice counts remain zero. Needs-review/nonrelationship claims were retained as evidence, not copied into accepted edge tables.
+- All 296 protected runtime/configuration/package/preparation/CI/packaging files retain their pre-copy hashes. No production source/configuration/accepted package or existing data/input_artifacts files changed.
+- Limitation: copy/reconciliation is Developer implementation feedback, not server package acceptance, Tester verification, semantic validation or pedagogical certification. No normalization, replacement package construction, model/paid-service call, or deployment occurred.
+
+Exact read-only receipt verification command:
+
+```sh
+python3 -c '
+import hashlib
+import json
+from pathlib import Path
+
+def digest(path):
+    with Path(path).open("rb") as stream:
+        return "sha256:" + hashlib.file_digest(stream, "sha256").hexdigest()
+
+root = Path.cwd()
+receipt_path = root / "data/source_artifacts/learning_progressions/copy_receipt.json"
+receipt = json.loads(receipt_path.read_text())
+files = receipt["files"]
+if len(files) != 138 or len(receipt["frameworks"]) != 6:
+    raise RuntimeError("Receipt coverage mismatch")
+for entry in files:
+    source = Path(entry["sourcePath"])
+    destination = root / entry["destinationPath"]
+    if digest(source) != entry["sourceSha256Before"] or digest(destination) != entry["destinationSha256"] or entry["sourceSha256After"] != entry["sourceSha256Before"]:
+        raise RuntimeError("Source or destination hash drift")
+    if source.stat().st_size != entry["sizeBytes"] or destination.stat().st_size != entry["sizeBytes"]:
+        raise RuntimeError("Source or destination size drift")
+for relative, expected in receipt["protectedBaselineSha256Before"].items():
+    if digest(root / relative) != expected:
+        raise RuntimeError("Protected baseline changed")
+actual_paths = {str(p.relative_to(root)) for p in (root / receipt["destinationRoot"]).glob("*/kgs/*") if p.is_file()}
+if actual_paths != {e["destinationPath"] for e in files}:
+    raise RuntimeError("Copy inventory mismatch")
+if sum(e["sizeBytes"] for e in files) != 933392640 or receipt["totals"] != {"buildsTowards": 3039, "relatesTo": 5041}:
+    raise RuntimeError("Copied totals mismatch")
+if next(Path(".").glob(".standards/docs/development/*.md")).is_file():
+    print(json.dumps({"status": "passed", "files": len(files), "bytes": receipt["totalBytesCopied"], "frameworks": len(receipt["frameworks"]), "totals": receipt["totals"], "protectedFilesUnchanged": len(receipt["protectedBaselineSha256Before"]), "assessedHead": receipt["assessedHead"], "receiptSha256": digest(receipt_path)}, sort_keys=True))
+'
+```
+
+**Implementation Notes**
+
+The raw inputs remain in the architecture-prescribed `data/source_artifacts/learning_progressions/<doc-key>/kgs/` directories. User explicitly requested local-only retention: the repository-root `.gitignore` rule `/data/source_artifacts/` excludes the raw copies and local copy receipt from commits. Required normalized preparation inputs and accepted runtime package evidence remain version-controlled under their existing unignored roots. This bookkeeping choice does not change approved implementation intent or authorize DEV-002. Ignore-rule self-check passed from the repository root: `git check-ignore --stdin` covered all 139 copied files/receipt; `git ls-files -- data/source_artifacts` returned no tracked files; representative input/profile paths were not ignored. `git status --short` no longer reports the source-artifacts directory. Assessed `.gitignore` hash: `sha256:d1c7e552a4829a5985687439ebd54c730e42137f81e6d19bcd1665d1fc2c39f3`. `node .standards/bin/check.mjs` passed; the DEV-002 continuation blocker remains unchanged. Their receipt intentionally retains external absolute source paths for local preparation traceability; later public normalization receipts must sanitize them. No later step was started.
+
 
 ### DEV-002 — Extend immutable package and delivery contracts for LP
 
@@ -379,13 +429,15 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. No implementation step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, and explicitly directed DEV-001 only. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 is DONE with verified copy evidence; STEPWISE is paused before DEV-002. No later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
-- Plan revision: user requested replacing the legacy data/input_artifacts sets and build specifications. DEV-023 runs after DEV-005 and before DEV-012, preserving the architecture-prescribed raw-copy location and accepted-package boundaries. The revised 17-step plan remains PROPOSED and unapproved.
+- Plan revision: user requested replacing the legacy data/input_artifacts sets and build specifications. DEV-023 runs after DEV-005 and before DEV-012, preserving the architecture-prescribed raw-copy location and accepted-package boundaries. The revised 17-step plan was explicitly approved before DEV-001 began.
 - Preserve source files and old sealed package/profile identities. Raw preparation copies stay outside runtime/distribution roots. Required runtime evidence is retained in accepted packages. During schema migration the incomplete development checkout may not bootstrap until replacement activation; do not deploy partial work or introduce legacy decoders/aliases to hide that boundary.
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
+- Resume: first approved step DEV-001 is DONE. Next approved dependency-ready step is DEV-002; user continuation is required before starting it. Re-read its relevant package/delivery contracts and retained receipts.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
