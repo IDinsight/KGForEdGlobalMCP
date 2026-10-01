@@ -54,6 +54,10 @@ from kgfegmcp.graph.models import (
     StandardNode,
 )
 from kgfegmcp.packages.loader import GraphPackageLoader, GraphPackageLoadResult
+from kgfegmcp.packages.lp_graph import (
+    LP_TYPES,
+    validate_learning_progression_graph,
+)
 from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_CODED_ITEMS,
     ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
@@ -724,6 +728,7 @@ def _validate_counts_capabilities_and_report(
         relationship.resolution_status
         == DELIVERY_SCHEMA_1_0_UNRESOLVED_ROOT_FALLBACK_STATUS
         for relationship in package.relationships
+        if relationship.label not in LP_TYPES
     )
     parent_sources: dict[str, set[str]] = defaultdict(set)
 
@@ -804,6 +809,9 @@ def _validate_counts_capabilities_and_report(
         has_detailed_provenance=(
             package.manifest.artifacts.entity_provenance is not None
         ),
+        has_learning_progression_provenance=package.learning_progression_evidence
+        is not None,
+        has_learning_progressions=package.learning_progression_evidence is not None,
         has_official_activities=(
             profile.source_role_capabilities.has_official_activities
         ),
@@ -831,7 +839,9 @@ def _validate_counts_capabilities_and_report(
         findings=findings,
         item_count=item_count,
         package=package,
-        relationship_count=relationship_count,
+        relationship_count=sum(
+            edge.label not in LP_TYPES for edge in package.relationships
+        ),
         unresolved_relationships=unresolved_relationships,
     )
 
@@ -893,7 +903,7 @@ def _validate_detailed_report_counts(
     package
         Loaded package aggregate.
     relationship_count
-        Total number of decoded relationships.
+        Number of decoded AS/LC relationships, excluding LP edges.
     unresolved_relationships
         Independently counted unresolved root-fallback relationships.
     """
@@ -918,7 +928,9 @@ def _validate_detailed_report_counts(
         (
             DELIVERY_REPORT_COUNT_RELATIONSHIPS,
             relationship_count,
-            manifest.counts.relationships,
+            manifest.counts.relationships
+            - manifest.counts.builds_towards_relationships
+            - manifest.counts.relates_to_relationships,
         ),
         (
             DELIVERY_REPORT_COUNT_UNRESOLVED_RELATIONSHIPS,
@@ -2137,18 +2149,25 @@ def _validate_relationship_endpoints(
             source_export_order=relationship.source_export_order,
         )
 
-    metadata_comparisons = [
-        (
-            relationship.attribution_statement,
-            root.attribution_statement,
-            "relationship attribution statement",
-        ),
-        (relationship.license, root.license, "relationship source license"),
-    ]
+    metadata_comparisons = (
+        []
+        if relationship.label in LP_TYPES
+        else [
+            (
+                relationship.attribution_statement,
+                root.attribution_statement,
+                "relationship attribution statement",
+            ),
+            (relationship.license, root.license, "relationship source license"),
+        ]
+    )
 
-    # On a supports relationship author and provider are generator facts, not inherited
-    # source metadata. Credit and licence still follow the source.
-    if relationship.label != DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
+    # LP credit is checked against retained evidence independently. On supports edges,
+    # author/provider are generator facts while source attribution/licence are inherited.
+    if (
+        relationship.label not in LP_TYPES
+        and relationship.label != DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
+    ):
         metadata_comparisons.extend(
             (
                 (relationship.author, root.author, "relationship author"),
@@ -2645,6 +2664,7 @@ def validate_loaded_package(
         package=package,
         text_items=text_items,
     )
+    findings.extend(validate_learning_progression_graph(package))
     _validate_learning_component_package(findings=findings, package=package)
     _validate_learning_component_semantics(findings=findings, package=package)
     return tuple(findings)

@@ -11,7 +11,8 @@ The loader verifies exact packaged-byte checksums, rejects missing, undeclared, 
 unsafe package content, and confirms that the verified artifact set reproduces the
 manifest snapshot identity. Delivery records and the supported detailed validation
 report are decoded or parsed from the same exact bytes that were checksum-verified.
-Other detailed artifacts are preserved without introducing new artifact schemas.
+LP evidence is validated in full from the same verified bytes before retaining bounded
+judgment/coverage projections. Other detailed artifacts preserve their source schemas.
 
 Each valid manifest load records an immutable package-integrity snapshot. Before
 terminal persistence, the validator can ask this module to compare the current
@@ -69,6 +70,9 @@ from kgfegmcp.packages.checksums import (
 from kgfegmcp.packages.decoder import (
     iter_decoded_nodes,
     iter_decoded_relationships,
+)
+from kgfegmcp.packages.lp_validation import (
+    validate_learning_progression_evidence,
 )
 from kgfegmcp.packages.models import (
     SUPPORTED_INCLUDED_GRAPH_TYPES,
@@ -487,6 +491,14 @@ class GraphPackageLoader:
             profile_sha256=loaded_profile.sha256,
             relationships=delivery.relationships,
             validation_report=loaded_report,
+        )
+        lp_evidence, lp_findings = validate_learning_progression_evidence(
+            captured_contents=dict(verification.captured_contents),
+            package=loaded_package,
+        )
+        findings.extend(lp_findings)
+        loaded_package = loaded_package.model_copy(
+            update={"learning_progression_evidence": lp_evidence}
         )
         return GraphPackageLoadResult(
             candidate=candidate,
@@ -1888,7 +1900,19 @@ def _verify_declared_artifacts(
         assert resolved_path is not None
 
         try:
-            if capture_contents and logical_name in _CAPTURED_ARTIFACT_NAMES:
+            capture_lp = (
+                GraphType.LEARNING_PROGRESSIONS in manifest.included_graph_types
+                and (
+                    logical_name in manifest.artifacts.learning_progression_artifacts()
+                    or str(logical_name).startswith(
+                        "learningProgressionProvenanceShard"
+                    )
+                )
+            )
+
+            if capture_contents and (
+                logical_name in _CAPTURED_ARTIFACT_NAMES or capture_lp
+            ):
                 content = _read_regular_file(resolved_path)
                 actual_sha256 = calculate_bytes_sha256(content)
                 size_bytes = len(content)

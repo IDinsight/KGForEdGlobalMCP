@@ -67,6 +67,7 @@ from kgfegmcp.graph.models import (
     LearningComponentNode,
     StandardNode,
 )
+from kgfegmcp.packages.lp_models import LearningProgressionEvidence
 from kgfegmcp.profiles.models import CurriculumProfile
 from kgfegmcp.schemas import FrozenSchema
 
@@ -1020,6 +1021,7 @@ class LoadedGraphPackage(FrozenSchema):
     framework_root: FrameworkNode
     item_nodes: tuple[StandardNode, ...]
     learning_component_nodes: tuple[LearningComponentNode, ...]
+    learning_progression_evidence: LearningProgressionEvidence | None = None
     manifest: GraphPackageManifest
     manifest_bytes: bytes = Field(exclude=True, repr=False)
     manifest_path: Path = Field(exclude=True, repr=False)
