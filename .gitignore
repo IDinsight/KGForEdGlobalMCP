@@ -18,6 +18,7 @@ venv.bak/
 # Misc.
 caches/
 !/data/input_artifacts/
+/data/source_artifacts/
 graveyard/
 logs/
 results/
