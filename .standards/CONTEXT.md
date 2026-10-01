@@ -53,14 +53,14 @@ Established repository-root commands; listed for downstream use, not asserted to
 - Runtime data is local accepted packages/configuration, not the other project's directory or a remote graph database. Config root overrides include `PATHS_PROJECT_DIR`, `KGFEGMCP_CONFIG_ROOT`, `KGFEGMCP_DATA_ROOT`, `KGFEGMCP_GRAPH_PACKAGES_ROOT`, `KGFEGMCP_PROFILE_ROOT`, and `KGFEGMCP_PROMPT_ROOT`; environment values were not inspected.
 - User's source root: `/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed`. Each document has a `<doc-key>/kgs/` directory. The following mapping was checked by exact framework CASE UUID against current package framework artifacts. Counts were independently counted from combined relationships and cross-checked with upstream LP reports:
 
-| Framework | Source document key | buildsTowards | relatesTo |
-|---|---|---:|---:|
-| Nigeria Mathematics Primary 1–3 | `09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a` | 189 | 297 |
-| Tamil Nadu Mathematics Classes 1–5 | `33c5da78839a7611308dd30f342b72f931a661235e094cc641832ec2a5548444` | 472 | 435 |
-| CBSE Science IX–X | `3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc` | 891 | 2,315 |
-| Rwanda Mathematics P1–P3 | `7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874` | 938 | 893 |
-| Ghana Mathematics Basic 4–6 | `8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa` | 299 | 300 |
-| Ghana English Basic 1–3 | `e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8` | 250 | 801 |
+| Framework                          | Source document key                                                | buildsTowards | relatesTo |
+|------------------------------------|--------------------------------------------------------------------|---------------|-----------|
+| Nigeria Mathematics Primary 1–3    | `09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a` | 189           | 297       |
+| Tamil Nadu Mathematics Classes 1–5 | `33c5da78839a7611308dd30f342b72f931a661235e094cc641832ec2a5548444` | 472           | 435       |
+| CBSE Science IX–X                  | `3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc` | 891           | 2,315     |
+| Rwanda Mathematics P1–P3           | `7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874` | 938           | 893       |
+| Ghana Mathematics Basic 4–6        | `8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa` | 299           | 300       |
+| Ghana English Basic 1–3            | `e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8` | 250           | 801       |
 
 - Every source `kgs/` has `as_lc_lp_kg_bundle.json`, `as_lc_lp_nodes.jsonl`, `as_lc_lp_relationships.jsonl`, `lp_relationships_builds_towards.jsonl`, `lp_relationships_relates_to.jsonl`, `lp_relationship_provenance.json`, `lp_validation_report.json`, `lp_unresolved_items.json`, `lp_generation_summary.json`, and `lp_final_claims.json`. Supporting candidate/request/checkpoint/generation artifacts also exist. Existing standards/components artifacts include `as_standards_framework.json`, `as_standards_framework_items.jsonl`, `as_relationships_has_child.jsonl`, `as_entity_provenance.json`, `as_unresolved_items.json`, AS/LC bundles/validation, `lc_entity_provenance.json`, `lc_generation_summary.json`, and `lc_dedup_groups.json`. These are an evidence inventory, not a selected copy set or packaging design.
 - For all six sources, upstream `as_lc_nodes.jsonl` and `as_lc_relationships.jsonl` are byte-identical to the current manifest-selected delivery files. Every new LP endpoint resolves to an existing standards CASE UUID and outer node ID. All 8,080 exported LP relationships have entries in the corresponding relationship-provenance map; exported `relatesTo` pairs use lexicographically canonical endpoint order.
