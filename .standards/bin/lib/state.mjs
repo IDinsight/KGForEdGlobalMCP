@@ -1,7 +1,7 @@
 // Parsing for `.standards/STATE.md` and `.standards/MODE.md`. The installer
 // imports the basic validators from here too, so installs, upgrades, and
 // `check` read these files the same way.
-import { MODES, STATES, fieldPairs, withoutBom } from './core.mjs';
+import { MODES, STATES, VERIFICATION_CADENCES, fieldPairs, withoutBom } from './core.mjs';
 
 // The one non-empty value of a field, or an error naming the field.
 export function field(text, name, relative) {
@@ -73,6 +73,13 @@ export function validateState(input) {
   const id = field(activeFields, 'Id', relative);
   for (const name of ['Request', 'Scope', 'Architecture', 'Development', 'PromotionReason', 'AuditTarget', 'BlockedOn']) {
     field(activeFields, name, relative);
+  }
+  const pendingCadence = field(activeFields, 'PendingVerificationCadence', relative);
+  if (!['NONE', ...VERIFICATION_CADENCES].includes(pendingCadence)) {
+    throw new Error(`Invalid PendingVerificationCadence in ${relative}`);
+  }
+  if ((id === 'UNSET' || ['SIGNED_OFF', 'CANCELLED'].includes(workflowState)) && pendingCadence !== 'NONE') {
+    throw new Error(`Inactive cycles require PendingVerificationCadence NONE in ${relative}`);
   }
   if (baseline === null) throw new Error(`Missing BaselineReconciliation in ${relative}`);
   const handoff = stateSection(text, 'Handoff');
@@ -148,6 +155,7 @@ export function parseState(input) {
       architecture: activeFields.Architecture,
       development: activeFields.Development,
       promotionReason: activeFields.PromotionReason,
+      pendingVerificationCadence: activeFields.PendingVerificationCadence,
       baseline: parseBaseline(baseline),
     },
     handoff: fieldsOf(stateSection(text, 'Handoff')),

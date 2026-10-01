@@ -27,11 +27,11 @@ Three chapters in `.standards/protocol/` hold rules that apply only in some
 situations. Read a chapter before acting whenever its condition holds. If a
 chapter is missing, stop and report an incomplete runtime.
 
-| Chapter             | Sections                                                                                                                                                | Read when                                                                                                                                                                                                                                                                                                                  |
-|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `user-decisions.md` | Choose the next cycle's mode, Start a cycle, Promote an expedited cycle, Sign off, Cancel an active cycle, Greenfield Bootstrap Cancellation, Cycle IDs | No cycle is active (`Active Work.Id` is `UNSET`, or `WorkflowState` is `SIGNED_OFF` or `CANCELLED`), or the user asks to choose the next cycle's mode or to start, promote, sign off, or cancel a cycle, or `Active Work.BlockedOn` holds a pending approval to reset the workflow for a greenfield bootstrap cancellation |
-| `expedited.md`      | Expedited Cycle Contract, Expedited Promotion, Outstanding Obligations                                                                                  | `CycleMode` or `PendingCycleMode` is `EXPEDITED`, `EXPEDITED` is requested or being considered, `Active Work.PromotionReason` is not `NONE`, or `Outstanding Obligations` is active                                                                                                                                        |
-| `installation.md`   | Installed Runtime Contract, Running the CLI, Project Reset, Project Uninstallation                                                                      | Before running the `standards` CLI, including for a greenfield bootstrap cancellation, or when the user asks about installing, upgrading, resetting, or uninstalling                                                                                                                                                       |
+| Chapter             | Sections                                                                                                                                                                             | Read when                                                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `user-decisions.md` | Choose the next cycle's mode, Start a cycle, Switch verification cadence, Promote an expedited cycle, Sign off, Cancel an active cycle, Greenfield Bootstrap Cancellation, Cycle IDs | No cycle is active (`Active Work.Id` is `UNSET`, or `WorkflowState` is `SIGNED_OFF` or `CANCELLED`), or the user asks to choose the next cycle's mode, switch verification cadence, or start, promote, sign off, or cancel a cycle, or `Active Work.PendingVerificationCadence` is not `NONE`, or `Active Work.BlockedOn` holds a pending approval to reset the workflow for a greenfield bootstrap cancellation |
+| `expedited.md`      | Expedited Cycle Contract, Expedited Promotion, Outstanding Obligations                                                                                                               | `CycleMode` or `PendingCycleMode` is `EXPEDITED`, `EXPEDITED` is requested or being considered, `Active Work.PromotionReason` is not `NONE`, or `Outstanding Obligations` is active                                                                                                                                                                                                                              |
+| `installation.md`   | Installed Runtime Contract, Running the CLI, Project Reset, Project Uninstallation                                                                                                   | Before running the `standards` CLI, including for a greenfield bootstrap cancellation, or when the user asks about installing, upgrading, resetting, or uninstalling                                                                                                                                                                                                                                             |
 
 ## Roles
 
@@ -231,6 +231,7 @@ artifact presence.
 `Architecture`: `docs/specs/add-user-search.md`
 `Development`: `.standards/docs/development/add-user-search-by-name-and-email-20260923T150000Z-a7f3c2e9.md`
 `PromotionReason`: `NONE` `AuditTarget`: `NONE` `BlockedOn`: `NONE`
+`PendingVerificationCadence`: `NONE`
 
 `BaselineReconciliation`: `NONE`
 
@@ -362,18 +363,131 @@ full acceptance coverage; the role that owns the state reconciles them when it
 starts, and its own `check` before handing off still includes them. During
 recovery, when `check` otherwise holds only the current state's `COMPLETE`
 records, the hook instead holds those of the state named in `Handoff.From` after
-a `FORWARD`, `RESUME`, or `FAILURE` handoff, which that state's role made with
-its records current. It holds none while in `SCOPING`, because Scoper may have
-changed the acceptance conditions since that handoff.
+a `FORWARD`, `CHECKPOINT`, `RESUME`, or `FAILURE` handoff. Apply the gate for
+the persisted assignment: a checkpoint or scoped corrective return does not
+assert full phase completion. It holds none while in `SCOPING`, because Scoper
+may have changed the acceptance conditions since that handoff. The checker must
+allow legitimate partial records during an increment assessment or scoped
+correction while preserving full completion checks at Reviewer entry.
 
 Navigator may run `check`, because it changes nothing. When `check` or a hook
 reports problems during Navigator work, Navigator reports them and changes
 nothing.
 
+## Verification Cadence
+
+Verification cadence controls when Developer hands implemented outcomes to
+Tester in a `STANDARD` cycle. It is independent of Developer's `AUTONOMOUS`,
+`STEPWISE`, or `CODE_WITH_ME` collaboration mode and does not add a workflow
+state or change `CycleMode`.
+
+Developer persists exactly one effective `Verification Cadence` in its plan:
+
+- `AFTER_IMPLEMENTATION`: the default. Finish all approved implementation,
+  then hand off to Tester for full verification.
+- `INCREMENTAL`: alternate implementation and independent verification of
+  testable increments, then establish full completion before Reviewer.
+
+`Verification Cadence` and `Current Increment` are required. Initialize new
+plans with `AFTER_IMPLEMENTATION` and `NONE`, respectively. Missing, invalid,
+repeated, or contradictory values are defects.
+`EXPEDITED` supports only `AFTER_IMPLEMENTATION`. Initial selection and later
+switches follow **Switch verification cadence** in
+`.standards/protocol/user-decisions.md`, including promotion when required.
+
+### Testable Increments
+
+An increment is an observable implementation outcome ready for independent
+assessment, usually one AC or a small group of dependent ACs. It may require
+several `DEV-NNN` steps. Increment references do not redefine acceptance or
+imply that every referenced AC is fully satisfied by that increment.
+
+The existing development plan holds ordered `### Increment N` entries, starting
+at 1, with their `Development Steps`, `Acceptance`, and concrete `Ready Outcome`.
+Their numbers are plan-local scheduling references, not new requirement IDs.
+Preserve existing numbers; append new entries rather than renumbering assessed
+increments. An AC or development step may be referenced by more than one
+increment when their testable outcomes genuinely require it. Respect approved
+dependencies; do not manufacture a checkpoint for an outcome that cannot yet be
+assessed independently.
+
+Developer alone selects and advances `Current Increment`, a defined positive
+increment number or `NONE`, in its plan. Tester records assessments in the
+existing cycle verification report and never edits the plan. Before advancing,
+Developer independently reconciles the matching Tester result and current
+inputs. A report's existence or an earlier pass alone does not authorize
+progression. `NONE` is valid before scheduling, after switching to
+`AFTER_IMPLEMENTATION`, or at full completion. Every checkpoint requires a
+defined increment. Historical handoffs follow **Handoff**; partial acceptance
+coverage follows **Acceptance Traceability**.
+
+### Checkpoint Handoffs
+
+With effective cadence `INCREMENTAL` and no active recovery, `CHECKPOINT` permits
+only `DEVELOPING -> TESTING` and `TESTING -> DEVELOPING`. Set `FailureType: NONE`.
+It records a completed assignment gate, not full phase completion, and creates
+no recovery frame. Persist claims and actual evidence in the owning records
+before changing state; independent-session and explicit-role-invocation rules
+still apply. A pending cadence request does not change the active assignment.
+
+Before Developer hands off an increment:
+
+- the plan has explicit approval under the normal approval rules;
+- `Current Increment` names a defined, testable outcome; all implementation
+  steps and dependencies needed for that outcome are `DONE`;
+- relevant self-checks are satisfactory and the assessed implementation content
+  and readiness claim are saved;
+- no unresolved defect, Developer-owned outstanding obligation, unapproved
+  material deviation, or user question blocks the assignment;
+- `check` reports no problem in Developer-owned files.
+
+Tester independently reconstructs that assignment, selects `VERIFY` or
+`REVERIFY` using the existing input-change rules, records `Assessment Purpose:
+INCREMENT` and `Assessment Target: Increment N`, and assesses the outcome plus
+affected earlier behavior. Both checkpoint directions identify the increment
+concisely in `Handoff.Reason`; the owned artifacts hold readiness and assessment
+evidence. Tests may be updated, replaced, or removed when
+appropriate to the current contract; preserve required coverage, evidence
+history, and cycle-wide scenario allocations. Source, test, fixture, dependency,
+configuration, or contract changes can invalidate earlier results.
+
+Before Tester returns a checkpoint to Developer:
+
+- the selected outcome and affected completed behavior have sufficient current
+  evidence and the report identifies assessed content, actual results, and any
+  justified evidence reuse;
+- no required assignment check is unrun, failed, flaky, blocked, or uncovered,
+  and no unresolved defect, Tester-owned obligation, or user question blocks it;
+- the increment assessment and remaining acceptance work are saved, with the
+  report still `IN_PROGRESS` while full verification remains unfinished;
+- `check` reports no problem in Tester-owned files.
+
+A failed checkpoint follows normal failure routing. During recovery, use the
+saved `FAILURE`, `FORWARD`, and `RESUME` route rather than ordinary checkpoint
+exchanges; see **Implementation and Verification Recovery Gates**. Developer
+resumes under its collaboration mode's permissions and pauses.
+
+### Full Verification Boundary
+
+For normal completion, when all current approved steps are `DONE` and every
+other Developer completion-gate condition passes, mark the plan `COMPLETE`, set
+`Current Increment: NONE`, and hand off to full Tester verification. Recovery follows
+**Recovery Mechanics**. Tester reconciles every current AC and relevant
+technical criterion against the final implementation, reusing only still-valid
+evidence and choosing regression breadth from affected dependencies and risk.
+
+Only the full Tester gate permits a `COMPLETE` verification report and normal
+handoff to Reviewer, with `Assessment Purpose: FULL` and `Assessment Target:
+NONE`. Before either a `FORWARD` or recovery `RESUME` enters a
+Reviewer state, the full applicable Developer and Tester gates must hold for the
+current implementation, even if another recovery frame remains active. Existing
+implementation-stage dependencies on later roles remain permitted under those
+gates. Checkpoint passes, targeted corrections, and report labels cannot replace
+full completion.
+
 ## Forward Transitions
 
-A forward transition occurs only after the current state's completion gate
-passes.
+The following normal forward routes use the gates defined in **Handoff Rules**.
 
 ### Standard Greenfield
 
@@ -425,6 +539,10 @@ This topology is valid only for `ProjectMode: BROWNFIELD` with
 ## Handoff Rules
 
 1. Forward handoff requires the current completion gate to pass.
+   Scoped recovery reruns use the explicitly permitted applicable gate under
+   **Implementation and Verification Recovery Gates**.
+   A `CHECKPOINT` uses its assignment gate under **Checkpoint Handoffs** and
+   does not assert the full completion gate passed.
 2. A role does not repair work it does not own; failures route under **Failure
    Handoffs**.
 3. A handoff identifies its target role or workflow state. A failure handoff
@@ -475,7 +593,7 @@ role must be able to work without the authoring conversation.
 Every handoff entering `TESTING`, `REVIEWING_IMPLEMENTATION`, or
 `REVIEWING_FINAL`, including recovery and corrections, keeps the normal
 invocation with its persisted-input and recovery-frame directions, adds the
-fresh-session prefix below, and names the review kind when entering Reviewer.
+independent-session prefix below, and names the review kind when entering Reviewer.
 Even when the user invoked both roles together, the immediate-continuation
 exception never runs an assessment in a conversation that contains the
 prohibited authoring history.
@@ -488,12 +606,18 @@ limitation and proceed from persisted evidence, without inventing an
 attestation, blocking automatically, or asking for routine confirmation. The
 assessing role may resume its own interrupted assessment in a conversation
 separate from the prohibited authoring work.
+Both roles reload persisted state and current inputs on every resumption; two
+open chats do not authorize simultaneous role-owned workflow work. Developer and
+Tester must operate on the same active cycle and checkout.
 
 ### Independent Tester Session
 
 Apply **Independent Assessment Sessions**. Prefix a Tester invocation with
-“Open a fresh chat separate from Developer's implementation conversation, then
-run:”. Developer implementation history is prohibited for formal Tester work.
+“Use the existing independent Tester chat, or open a fresh chat separate from
+Developer's implementation conversation, then run:”. Developer implementation
+history is prohibited for formal Tester work, including later increments and
+targeted corrections. Reusing the Tester chat preserves independence only while
+it contains no prohibited authoring history.
 
 ### Independent Reviewer Session
 
@@ -579,8 +703,14 @@ topology reaches `SCOPING`.
    downstream roles do not invent substitute requirement IDs.
 7. Tester accounts for every current ID with verification evidence, a blocker,
    or—when satisfaction explicitly depends on a later role—a pending dependency.
-   Pending is not verification evidence and must be resolved downstream under
-   the same ID.
+   During partial development, `AWAITING_IMPLEMENTATION` identifies approved
+   future steps or increments, regardless of effective cadence. It is neither a
+   defect nor a later-role dependency, and cannot pass full verification or
+   Reviewer entry. For partially satisfied ACs, distinguish evidenced outcomes
+   from the remaining work; an increment pass alone does not verify an entire
+   AC. Known regressions or defective completed outcomes follow failure routing.
+   Pending and awaiting implementation are not verification evidence and must
+   be resolved under the same ID.
 8. `AWAITING_USER_SIGNOFF` is forbidden while any current ID lacks sufficient
    evidence or has an unresolved blocker. Route defects to their owning roles
    through normal failure and recovery rules; never treat an unevidenced
@@ -714,7 +844,7 @@ records the handoff but does not create a recovery frame.
 
 This is the canonical recovery algorithm. Skills define only how their role
 corrects its owned work, evaluates its completion gate, and identifies which
-previously completed downstream states its correction invalidates.
+downstream work its correction invalidates.
 
 Recovery follows the active `CycleMode` topology. Expedited recovery reruns only
 expedited states; a newly required skipped role or guarantee triggers
@@ -730,21 +860,26 @@ the now-obsolete expedited recovery routing.
 2. **Preserve nesting.** New failure or rework during recovery pushes another
    frame. Never overwrite older frames. The last frame is active.
 3. **Only the active frame owner plans resumption.** After correcting the defect
-   and passing its normal gate, that owner decides whether previously completed
-   downstream states must be re-established before `ResumeAt`. The only
-   exceptions are the **Corrective Returns**. Their conditions allow the
-   respective owner to plan resumption without declaring its full gate passed;
+   and passing its applicable gate, that owner decides which already-produced
+   downstream work must be re-established before `ResumeAt`. Include affected
+   implementation and checkpoint evidence in unfinished phases; a phase need
+   not be `COMPLETE` to require a rerun. Unimplemented future work alone does
+   not require a rerun. Route through the states owning the affected work using
+   the active topology. **Corrective Returns** and **Implementation and
+   Verification Recovery Gates** define the only exceptions to full completion;
    the routing algorithm below remains unchanged.
 4. **No rerun:** pop the frame and transition directly to `ResumeAt` with
    `Handoff.Kind: RESUME`.
 5. **Rerun required:** set `RerunThrough` to the last required state and
    transition to the earliest required rerun state. Keep the frame on the
    stack.
-6. **Rerun states use normal gates and legal forward handoffs** while preserving
-   the stack. They do not own the frame unless a nested defect creates a new one.
-7. **At the rerun boundary**, after `RerunThrough` passes its gate, pop the frame
-   and transition to `ResumeAt` with `Handoff.Kind: RESUME` instead of taking
-   the normal forward handoff. This explicit return is valid even when
+6. **Rerun states use the applicable gates and legal recovery handoffs** while
+   preserving the stack. Normal full gates apply unless **Implementation and
+   Verification Recovery Gates** explicitly permits a scoped rerun. They do not
+   own the frame unless a nested defect creates a new one.
+7. **At the rerun boundary**, after `RerunThrough` passes its applicable gate,
+   pop the frame and transition to `ResumeAt` with `Handoff.Kind: RESUME`
+   instead of taking the normal forward handoff. This explicit return is valid even when
    `ResumeAt` lies outside the project's normal forward topology.
 8. Recovery ends only when the stack is empty.
 
@@ -773,6 +908,72 @@ SCOPING -> ARCHITECTING                 # set nested RerunThrough DEVELOPING
 ARCHITECTING -> DEVELOPING
 DEVELOPING -> AUDITING                  # pop nested frame, explicit resume
 ```
+
+### Implementation and Verification Recovery Gates
+
+Developer and Tester may finish a scoped corrective assignment or affected
+downstream rerun in `STANDARD` without completing unrelated future implementation
+or verification. This exception is selected by the interrupted assignment and
+required return, not by effective cadence, a pending switch, or the latest
+handoff kind. It also applies when Developer needs a Tester-owned test corrected
+after switching to `AFTER_IMPLEMENTATION`.
+
+Before replacing a Developer or Tester assignment during corrective routing,
+persist its purpose, target, assessed input identities, and next action in that
+role's existing artifact. Associate the saved assignment with the recovery frame
+and its specific reason; a frame number alone may be reused after it is popped.
+In Developer's `Plan Notes` or Tester's `Resume or Handoff`, use a
+`### Suspended Assignment N` entry with these required fields:
+
+```markdown
+`Recovery Frame`: `1` `Recovery Reason`: `<exact frame Reason>`
+`Purpose`: `DEVELOPMENT | FULL | INCREMENT | CORRECTION`
+`Target`: `NONE | Increment N | specific correction`
+`Assessed Inputs`: `<relevant content identities>`
+`Next Action`: `<concrete action to resume>`
+```
+
+`DEVELOPMENT` represents Developer's overall implementation assignment, and
+`FULL` represents Tester's overall assessment; both use target `NONE`.
+`INCREMENT` names the assigned increment and `CORRECTION` names the specific
+correction. Select one concrete value for each field. Append entries with unique
+numbers within the artifact; the latest entry for a frame is its saved assignment.
+Retain the frame association through nested recovery.
+The checker uses these records to distinguish scoped work from full assignments;
+the owning roles still determine evidence validity and required reruns.
+
+Preserve older suspended assignments through nested recovery. When the role
+receives its corresponding `RESUME`, restore the assignment and reconcile
+changed inputs. Corrected
+upstream intent may require revising the assignment under normal ownership and
+approval rules; record that reconciliation before relying on it.
+
+A scoped gate may replace a Developer or Tester full gate only when:
+
+- the active recovery frame and owned artifacts identify the specific
+  correction or affected rerun and the unfinished assignment to resume;
+- all owned work necessary to correct that defect or re-establish the affected
+  outcome is done and verified with appropriate role-owned evidence;
+- affected dependencies and previously completed behavior have been reconciled,
+  and any newly discovered independent defect follows normal failure routing;
+- remaining full-gate gaps consist only of explicitly recorded future approved
+  implementation or assessment that depends on unfinished work in the preserved
+  route; no assignment defect, owned outstanding obligation, required check, or
+  blocking user question is being deferred;
+- `check` reports no problem in the correcting or rerunning role's owned files,
+  and the applicable claims, limitations, and resume context are current.
+
+Use the canonical stack algorithm. For a scoped return, Developer keeps its plan
+`IN_PROGRESS`; Tester keeps its report `IN_PROGRESS` or `BLOCKED`. Only full
+completion permits `COMPLETE`. A same-state correction can resume the partial
+assignment without a new frame. Scoper, Architect, and Auditor retain their full
+gates; Documenter and Synchronizer retain their separate **Corrective Returns**.
+
+For example, an architecture correction discovered in an increment assessment
+can rerun Developer's affected implementation and resume that assessment while
+future steps remain unfinished. A nested test correction may return to unfinished
+Developer work before the outer frame resumes Tester. A return to Reviewer or a
+later phase must satisfy **Full Verification Boundary**.
 
 ### Corrective Returns
 
@@ -824,8 +1025,8 @@ rework follows normal recovery back to sign-off. Rework requiring a skipped
 standard guarantee promotes and restarts the standard brownfield topology at
 `AUDITING`.
 
-The rules for choosing the next cycle's mode and for starting, promoting,
-signing off, and cancelling a cycle are in
+The rules for choosing the next cycle's mode, switching verification cadence,
+and starting, promoting, signing off, and cancelling a cycle are in
 `.standards/protocol/user-decisions.md`. Reworking an active cycle follows
 below.
 
@@ -887,6 +1088,13 @@ Promotion** adds entries. When it is active, read **Outstanding Obligations** in
   needs separate persistence.
 - `BlockedOn`: unresolved user question preventing completion, otherwise
   `NONE`.
+- `PendingVerificationCadence`: `NONE`, `INCREMENTAL`, or
+  `AFTER_IMPLEMENTATION`; a user-requested cadence change awaiting application
+  by Developer under **Switch verification cadence** in
+  `.standards/protocol/user-decisions.md`. It is coordination, not the effective
+  cadence or an acceptance ledger. This field is required; a missing, invalid,
+  or repeated value is an inconsistency. Initialize and clear it under the cycle
+  lifecycle rules; never carry it into a new cycle.
 
 Installation initializes `Id` and `Request` as `UNSET`; **Start a cycle** (in
 `.standards/protocol/user-decisions.md`) sets them for every cycle.
@@ -927,13 +1135,19 @@ entries or discard obligations.
 
 ### Handoff
 
-`Handoff.Kind` is one of `INITIAL`, `FORWARD`, `FAILURE`, `RESUME`, `PROMOTE`,
-`USER_REWORK`, `NEW_CYCLE`, `SIGNOFF`, or `CANCEL`. Use `NONE` for inapplicable
-fields. `Reason` describes only the latest transition and must remain concise;
+`Handoff.Kind` is one of `INITIAL`, `FORWARD`, `CHECKPOINT`, `FAILURE`, `RESUME`,
+`PROMOTE`, `USER_REWORK`, `NEW_CYCLE`, `SIGNOFF`, or `CANCEL`. Use `NONE` for
+inapplicable fields. `Reason` describes only the latest transition and must remain concise;
 it is not durable storage for outstanding recovery or baseline obligations.
 
 Use `RESUME` whenever a recovery frame returns to `ResumeAt`, and for any other
 recovery-directed transition that is not the normal forward handoff.
+`CHECKPOINT` is reserved for the two normal incremental exchange routes under
+**Checkpoint Handoffs**, never for a defect, cadence change, or recovery return.
+Validate a saved checkpoint against its assigned increment and evidence. After
+the return, Developer may change cadence or select the next increment without
+rewriting the handoff or Tester's historical assessment target. These records
+do not assert that the new selection is verified.
 
 ### Recovery
 
@@ -950,7 +1164,7 @@ for the frame.
    `GREENFIELD`, `AUDITING` for `BROWNFIELD`, `CycleMode: UNSET`,
    `PendingCycleMode: UNSET`, `PendingCycleRequest: UNSET`,
    `PendingCycleBlockedOn: NONE`, `Handoff.Kind: INITIAL`, unset active work,
-   and inactive recovery.
+   `Active Work.PendingVerificationCadence: NONE`, and inactive recovery.
 2. Every legal state-changing transition updates all applicable fields as
    **Handoff Rules** requires; failure and recovery, promotion, and user-control
    transitions follow their canonical sections.
@@ -959,6 +1173,11 @@ for the frame.
    answer. Pre-cycle control-plane questions must not modify
    `Active Work.BlockedOn`; persist the blocked request and question in
    `PendingCycleRequest` and `PendingCycleBlockedOn` instead.
+4. A user-requested cadence switch is a protocol coordination update, not a
+   failure or `USER_REWORK`. Preserve the current handoff, recovery stack, and
+   unrelated blockers while recording or applying it. Follow **Switch
+   verification cadence** in `.standards/protocol/user-decisions.md` for safe
+   application, replacement, and cleanup of pending requests.
 
 `STATE.md` coordinates the workflow; it does not replace role-owned artifacts.
 Role-owned artifacts remain authoritative for their own content.
@@ -1144,6 +1363,12 @@ active work, cycle mode, user style, runtime tools, and project reset:
   decomposes the active contract into stable `DEV-NNN` steps, records
   collaboration mode and resumable progress, and never replaces scope,
   architecture, Tester verification, review, or documentation.
+- **verification cadence**: the plan's effective `AFTER_IMPLEMENTATION` or
+  `INCREMENTAL` scheduling choice, independent of collaboration mode.
+- **increment**: a plan-local testable implementation outcome linked to existing
+  development steps and acceptance conditions; it may revisit earlier ACs.
+- **checkpoint handoff**: a normal incremental exchange after an assignment gate
+  passes, without asserting full Developer or Tester completion.
 - **verification report**: records acceptance coverage, scenario allocations,
   actual execution evidence, gaps, and later-phase dependencies; it does not
   replace scope, design, or workflow coordination state.

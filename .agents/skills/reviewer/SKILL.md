@@ -28,6 +28,13 @@ cycle/state combination. Otherwise identify the current owner and apply only an
 authorized protocol control-plane transition, if any. Do not infer entry from a
 report or chat.
 
+For a successful handoff entering either review state, enforce the protocol's
+**Full Verification Boundary**, including when an outer recovery frame remains.
+Independently check current full Developer and, in `STANDARD`, Tester
+completion; an increment pass or scoped corrective return cannot substitute for
+it. Route defective claims or missing evidence to their owners before relying on
+them.
+
 Apply the protocol's **Independent Assessment Sessions** and **Independent
 Reviewer Session** rules before formal assessment, including honest session
 visibility and the advisory model recommendation. Keep these shared rules

@@ -55,7 +55,8 @@ it without asking the user to restate it, and let a revised request replace it.
 5. **Persist the cycle** in one state update:
    - `Active Work`: the new ID and request; `Scope`, `Architecture`,
      `Development`, `PromotionReason`, `AuditTarget`, and `BlockedOn` set to
-     `NONE`; and `BaselineReconciliation` from step 1.
+     `NONE`; `PendingVerificationCadence: NONE`; and `BaselineReconciliation`
+     from step 1.
    - `CycleMode`: the chosen mode. `PendingCycleMode` and `PendingCycleRequest`
      become `UNSET`, and `PendingCycleBlockedOn` becomes `NONE`.
    - `Handoff`: for the first cycle, keep `Kind: INITIAL` with `From: NONE` and
@@ -72,6 +73,56 @@ it without asking the user to restate it, and let a revised request replace it.
      `ProjectMode`: `SCOPING` for `GREENFIELD` or `AUDITING` for `BROWNFIELD`.
 
 `CycleMode` never remains `UNSET` once a cycle has started.
+
+## Switch verification cadence
+
+An explicit user instruction may select `INCREMENTAL` or `AFTER_IMPLEMENTATION`
+for the active cycle under **Verification Cadence**. Record and apply it as
+follows, preserving collaboration-mode permissions and pauses. The coordination
+rules in **State-update rules** apply throughout.
+
+1. **Promote when needed.** `EXPEDITED` supports only `AFTER_IMPLEMENTATION`. An
+   explicit `INCREMENTAL` request authorizes **Expedited Promotion** in
+   `.standards/protocol/expedited.md`. Preserve the request as pending during
+   promotion and follow the Auditor handoff. Evaluate remaining scheduling after
+   the standard contract is established.
+2. **Check whether there is work to schedule.** Accept the request during an
+   active cycle while implementation or its increment scheduling remains
+   unfinished, including before a development plan exists or during recovery.
+   Once the current contract and recovery route establish that no implementation
+   or increment scheduling remains, clear pending intent and explain why the
+   switch has no remaining effect. Do not rely on completion claims invalidated
+   by rework or promotion, or reopen work solely to change cadence. No request
+   is retained for an unset, signed-off, or cancelled cycle.
+3. **Persist the latest request.** Any current role may record the explicit
+   request in `Active Work.PendingVerificationCadence`. Replace an earlier
+   pending choice with the latest one. A request matching the effective cadence
+   cancels an opposite pending choice; if no plan exists, retain the explicit
+   selection for Developer to apply when creating it.
+4. **Apply only at a safe Developer boundary.** Developer applies the pending
+   choice during normal `DEVELOPING`, before its next implementation action or
+   checkpoint assignment. Finish any already assigned Tester assessment and its
+   required return first. During recovery, defer application until the preserved
+   route returns to normal development. Until then, the saved effective setting
+   governs the assignment.
+5. **Reconcile scheduling under existing approval rules.** When enabling
+   `INCREMENTAL`, group planned work into testable outcomes and select the next
+   increment, including implemented work still needing assessment. When enabling
+   `AFTER_IMPLEMENTATION` at the safe boundary, clear `Current Increment`,
+   including an increment selected but not yet handed to Tester, and schedule
+   remaining implementation before full verification. Retain previous increment
+   definitions and evidence; reconcile changed inputs under normal ownership.
+   Pure cadence selection and grouping of unchanged approved steps do not
+   require duplicate approval. Material changes to steps, dependencies,
+   behavior, or technical approach still require plan approval.
+6. **Save effective selection before clearing pending intent.** Persist the
+   plan's cadence and reconciled scheduling first, then clear
+   `Active Work.PendingVerificationCadence` to `NONE`. If interrupted between
+   those writes, Developer reconciles the matching request and clears it
+   idempotently. Report whether the switch was applied or remains pending.
+
+Cycle lifecycle rules clear pending intent on cancellation, sign-off, reset, or
+new-cycle initialization; it never becomes a preference for a later cycle.
 
 ## Promote an expedited cycle
 
@@ -90,7 +141,8 @@ narrower **Expedited Cycle Contract** in `.standards/protocol/expedited.md`;
 skipped standard phases must not be represented as completed. Then transition to
 `SIGNED_OFF`, set `CycleMode: UNSET`, leave all pending-cycle fields clear,
 record `Handoff.Kind: SIGNOFF`, `From: AWAITING_USER_SIGNOFF`, and
-`FailureType: NONE`, and clear recovery. The cycle is complete.
+`FailureType: NONE`, clear `Active Work.PendingVerificationCadence` to `NONE`,
+and clear recovery. The cycle is complete.
 
 ## Cancel an active cycle
 
@@ -99,8 +151,9 @@ record `Handoff.Kind: SIGNOFF`, `From: AWAITING_USER_SIGNOFF`, and
 - If `ProjectMode: BROWNFIELD`, transition to `CANCELLED`, set
   `CycleMode: UNSET`, leave all pending-cycle fields clear, record
   `Handoff.Kind: CANCEL`, set `From` to the interrupted state,
-  `FailureType: NONE`, preserve `Active Work`, and clear recovery plus
-  outstanding obligations. Residual project-change provenance is handled through
+  `FailureType: NONE`, preserve `Active Work` except for clearing
+  `PendingVerificationCadence` to `NONE`, and clear recovery plus outstanding
+  obligations. Residual project-change provenance is handled through
   `BaselineReconciliation` when a later cycle starts.
 
 Cancellation never reverts project artifacts and does not by itself establish

@@ -7,7 +7,8 @@ not a reason to select REVERIFY.
 Build the assessment from persisted intent and repository evidence using the
 shared procedure in `../SKILL.md`. Reuse existing tests and valid results
 already recorded during this pass, then fill only the remaining gaps. Preserve
-budget allocations and the next action across sessions.
+budget allocations and the next action across sessions and increments.
 
-Use `../template.md` and the shared completion gate. This mode introduces no
-separate approval, technique restriction, or transition rule.
+Use `../template.md` and **Assignment Gates and Handoffs** in `../SKILL.md` for
+the persisted purpose and target. This mode introduces no separate approval,
+technique restriction, or transition rule.

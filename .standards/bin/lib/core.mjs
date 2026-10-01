@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 export const MARKER = '<!-- standards:framework-owned -->';
 export const MODES = new Set(['GREENFIELD', 'BROWNFIELD']);
+export const VERIFICATION_CADENCES = ['AFTER_IMPLEMENTATION', 'INCREMENTAL'];
 export const STATES = new Set([
   'SCOPING', 'ARCHITECTING', 'AUDITING', 'DEVELOPING', 'TESTING',
   'REVIEWING_IMPLEMENTATION', 'DOCUMENTING', 'REVIEWING_FINAL',
@@ -20,7 +21,7 @@ export const FAILURE_TYPES = new Set([
   'VERIFICATION', 'DOCUMENTATION', 'REVIEW', 'SYNCHRONIZATION',
 ]);
 export const HANDOFF_KINDS = new Set([
-  'INITIAL', 'FORWARD', 'FAILURE', 'RESUME', 'PROMOTE', 'USER_REWORK',
+  'INITIAL', 'FORWARD', 'CHECKPOINT', 'FAILURE', 'RESUME', 'PROMOTE', 'USER_REWORK',
   'NEW_CYCLE', 'SIGNOFF', 'CANCEL',
 ]);
 // Characters a cycle ID may use. Provenance blocks from any cycle are read

@@ -29,7 +29,8 @@ Cycle: <Active Work.Id>
 
 `Cycle`: `<Active Work.Id>` `Mode`: `AUTONOMOUS | STEPWISE | CODE_WITH_ME`
 `User Style`: `<style-name | NONE>` `User Style Locked`: `false | true`
-`Status`: `PROPOSED | APPROVED | IN_PROGRESS | COMPLETE`
+`Status`: `PROPOSED | APPROVED | IN_PROGRESS | COMPLETE` `Verification Cadence`:
+`AFTER_IMPLEMENTATION` `Current Increment`: `NONE`
 
 ## Implementation Contract
 
@@ -67,8 +68,8 @@ lint, existing test command, targeted runtime sanity check, inspection, or other
 established mechanism. Record the actual command and working directory, result,
 relevant assessed revision or dirty-tree content, and any limitation when the
 self-check runs. This is implementation feedback, not formal Tester
-verification. Keep the evidence sufficient for the protocol's fresh-session
-Tester or Reviewer handoff.
+verification. Keep the evidence sufficient for the protocol's
+independent-session Tester or Reviewer handoff.
 
 **Implementation Notes**
 
@@ -76,10 +77,30 @@ Record only non-obvious local choices or resume information. Omit when empty.
 
 ---
 
+## Verification Increments
+
+Include this section when scheduling incremental verification. Omit it for a new
+`AFTER_IMPLEMENTATION` plan with no increments; retain existing entries after a
+cadence switch.
+
+### Increment 1
+
+`Development Steps`: `DEV-NNN, ...` `Acceptance`: `AC-NNN, ...`
+
+**Ready Outcome**
+
+Describe the testable outcome available when these approved development steps
+and their dependencies are done, following the protocol's **Testable
+Increments**. Reference acceptance conditions without redefining them.
+
+---
+
 ## Plan Notes
 
 Record only cross-step sequencing or resume information that cannot be expressed
-on an individual step.
+on an individual step. Store suspended assignments here under the protocol's
+**Implementation and Verification Recovery Gates**. State and routing remain
+canonical in `STATE.md`.
 
 ---
 
@@ -87,6 +108,11 @@ on an individual step.
 
 - Create steps from the active request, completed scope/design when present, and
   relevant repository evidence; do not invent new requirements or architecture.
+- Use the required fields defined in the protocol's **Verification Cadence** and
+  **Testable Increments**. For an explicit user selection, follow **Switch
+  verification cadence** in `.standards/protocol/user-decisions.md` before
+  changing the effective setting or scheduling. Tester's report owns assessment
+  conclusions; record implementation readiness in this plan.
 - Set `User Style` only from an explicit user selection or a previously
   persisted selection for this development plan, under the protocol's **User
   Styles**. Store the identifier of

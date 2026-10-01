@@ -3,11 +3,11 @@ name: tester
 description:
   Independently verify the active S.T.A.N.D.A.R.D.S. change while WorkflowState
   is TESTING in a STANDARD cycle. Establish tests and acceptance evidence with
-  VERIFY, or reconcile verification after changes with REVERIFY. Begin in a
-  fresh chat separate from Developer, reconstruct intent from persisted
-  artifacts, reuse existing coverage, and record actual execution and gaps. Own
-  tests and formal verification evidence; route defects to their owners and
-  follow protocol completion and recovery handoffs.
+  VERIFY, or reconcile verification after changes with REVERIFY. Work in a chat
+  separate from Developer; reconstruct full, increment, or corrective
+  assignments from persisted artifacts, reuse coverage, and record actual
+  execution and gaps. Own tests and formal verification evidence; route defects
+  to their owners and follow protocol completion and recovery handoffs.
 ---
 
 <!-- standards:framework-owned -->
@@ -33,7 +33,10 @@ Developer's implementation conversation, persist any missing handoff context
 within existing ownership, request a fresh Tester chat, and stop before formal
 verification. Do not claim to clear history or certify freshness. When session
 metadata is unavailable, disclose that limit and reconstruct the assessment from
-files without adding a routine freshness-confirmation gate.
+files without adding a routine freshness-confirmation gate. An existing
+independent Tester chat may be reused across increments and corrections. Reload
+state and current inputs each time; shared cycle and checkout access does not
+authorize simultaneous Developer and Tester work.
 
 Read:
 
@@ -75,9 +78,36 @@ wording or identifiers, Developer's plan, Auditor context, reviews, or user
 documentation. Never weaken assertions, skip a failing obligation, accept a new
 snapshot blindly, or change behavior just to obtain green results.
 
+## Assessment Assignment
+
+Reconstruct the assigned purpose and target from the persisted handoff, plan,
+report, and recovery context under **Verification Cadence**, **Checkpoint
+Handoffs**, and **Implementation and Verification Recovery Gates**. Record the
+required `Assessment Purpose` and `Assessment Target` using `template.md`:
+
+- `FULL` with target `NONE` for full verification;
+- `INCREMENT` with target `Increment N` for the assigned testable outcome and
+  affected completed behavior;
+- `CORRECTION` with a specific target for a scoped corrective assignment or
+  recovery rerun.
+
+Restore suspended assignments on their corresponding recovery returns and
+reconcile changed inputs. Scope comes from the preserved assignment and route;
+neither cadence nor a partial report alone authorizes a scoped gate. Tester
+never changes the plan's `Current Increment`, and its previous target remains
+history until a new assessment starts. A same-state test correction retains its
+current assignment and creates no recovery frame; correct the owned defect and
+resume that assessment.
+
+Handle explicit or pending cadence requests under **Switch verification
+cadence** in `.standards/protocol/user-decisions.md`. They do not change
+assigned Tester work or create an additional Developer return; preserve the
+required handoff or recovery route.
+
 ## Modes and Styles
 
-Choose and read one thin mode file; both use the procedure and gate below:
+Choose and read one thin mode file; both use the procedure and assignment gates
+below, independently of assessment purpose or Developer's collaboration mode:
 
 - **VERIFY** — establish initial verification, including resuming an interrupted
   initial pass whose assessed inputs remain unchanged. Read
@@ -134,8 +164,9 @@ Count and persist allocations in the report before adding coverage:
 - Re-running, fixing a test mistake, or replacing an invalidated test for the
   same scenario uses its existing allocation. A materially new scenario uses
   another allocation. Carry allocations across VERIFY, REVERIFY, interrupted
-  sessions, renames, and recovery for the active cycle; removing coverage does
-  not reset the allowance. Record replacements and why old evidence is invalid.
+  sessions, increments, cadence switches, renames, and recovery for the active
+  cycle; removing coverage does not reset the allowance. Record replacements and
+  why old evidence is invalid.
 - Persist explicit user-requested additions or targeted increases and their
   area/limit in the report. Do not treat approval for one area as an unlimited
   increase elsewhere.
@@ -151,9 +182,9 @@ acceptance evidence.
 ## Shared Verification Procedure
 
 1. Establish the inputs and active-change boundaries independently. Check
-   Developer's claimed completed outcomes against the repository and contract;
-   use the plan as an implementation map, not the acceptance authority. Route
-   missing or defective owned inputs using the table below.
+   Developer's claimed outcomes for the assignment against the repository and
+   contract; use the plan as an implementation map, not the acceptance
+   authority. Route missing or defective owned inputs using the table below.
 2. Create or resume the report early. Record the assessed source/test revisions,
    relevant dirty-tree content, upstream artifact versions or content
    identities, environment, mode, and next action at enough fidelity to detect
@@ -165,11 +196,15 @@ acceptance evidence.
    existing AC ID when several technical criteria share it; do not invent
    requirement IDs. Map existing tests and identify remaining evidence needed.
    Retired IDs are historical references, not current obligations. A condition
-   with no architectural impact still needs a verification disposition.
-4. Choose techniques and the smallest valuable additions under the budget.
-   Extend existing suites, fixtures, and package conventions. Include relevant
-   negative, security, accessibility, and boundary cases according to the
-   contract and risk, without an exhaustive matrix or arbitrary coverage target.
+   with no architectural impact still needs a verification disposition. For
+   partial work, distinguish assessed outcomes from future approved work using
+   `AWAITING_IMPLEMENTATION` under **Acceptance Traceability**; an increment
+   pass alone does not satisfy every referenced AC.
+4. Choose techniques and the smallest valuable additions for the assigned work
+   and affected behavior under the budget. Extend existing suites, fixtures, and
+   package conventions. Include relevant negative, security, accessibility, and
+   boundary cases according to the contract and risk, without an exhaustive
+   matrix or arbitrary coverage target.
 5. Implement or correct Tester-owned tests. Distinguish test validity from test
    success: demonstrate that assertions observe the required behavior and can
    detect the relevant defect. Use controlled failures or isolated negative
@@ -200,16 +235,18 @@ acceptance evidence.
    unresolved finding merely because another defect was routed first.
 10. Resolve owned recovery corrections and outstanding obligations under the
     protocol. Remove a Tester-owned outstanding obligation once its specific
-    correction is verified, then apply the full completion gate. Do not remove
-    another owner's obligation or duplicate recovery frames into obligations.
+    correction is verified, then apply **Assignment Gates and Handoffs**. Do not
+    remove another owner's obligation or duplicate recovery frames into
+    obligations.
 
 When execution is unavailable, record the actual attempted command and error, or
 explicitly state that no attempt was permitted and why. Preserve runnable tests
-and the exact remaining checks. Stay in `TESTING` if required evidence is
-missing; persist a blocking user question when permission, environment access,
-or another user action is necessary. An environment limitation is not by itself
-an implementation failure. Inspection may establish an inspection-based
-criterion, but may not masquerade as an unexecuted runtime check.
+and the exact remaining checks. Stay in `TESTING` if required assignment
+evidence is missing; persist a blocking user question when permission,
+environment access, or another user action is necessary. An environment
+limitation is not by itself an implementation failure. Inspection may establish
+an inspection-based criterion, but may not masquerade as an unexecuted runtime
+check.
 
 ## Defects and Routing
 
@@ -227,24 +264,31 @@ criterion, but may not masquerade as an unexecuted runtime check.
 Planned implementation does not alone invalidate baseline context. Investigate
 relevant repository facts for verification without taking over an Auditor audit.
 When another owner is needed, use canonical **Failure Handoffs** and **Recovery
-Mechanics**, preserving existing frames. A user-requested change follows **User
-Decisions and Intervention**, not an invented agent-discovered failure.
+Mechanics**, preserving existing frames. When routing changes state, save the
+interrupted Tester assignment in Resume or Handoff before replacing it, under
+**Implementation and Verification Recovery Gates**. A user-requested change
+follows **User Decisions and Intervention**, not an invented agent-discovered
+failure.
 
-## Completion Gate
+## Assignment Gates and Handoffs
+
+### Full Completion
 
 Tester is complete only when:
 
 - `node .standards/bin/check.mjs` reports no problem in files Tester owns (see
   the protocol's **Runtime Tools and Hooks**);
-- the current-cycle report satisfies `template.md` and protocol provenance;
+- the current-cycle report satisfies `template.md` and protocol provenance, with
+  `Assessment Purpose: FULL` and `Assessment Target: NONE`;
 - every current AC and relevant technical criterion has sufficient valid
   verification evidence, except explicit later-role dependencies recorded as
   pending with owner, required evidence, and the same AC ID;
 - tests are appropriate to the contract, budget allocations and any targeted
   user increases are recorded, and required executions have actual satisfactory
   results or still-valid independently assessed Tester evidence;
-- Developer's relevant implementation/completion claims have been independently
-  checked, with no unresolved implementation, upstream, or verification defect;
+- Developer's full completion claims and current `COMPLETE` plan have been
+  independently checked under **Full Verification Boundary**, with no unresolved
+  implementation, upstream, or verification defect;
 - no required present-phase check is unrun, failed, flaky, blocked, or
   uncovered;
 - no unresolved Tester-owned outstanding obligation or blocking user question
@@ -256,15 +300,29 @@ not evidence and cannot permit sign-off under **Acceptance Traceability**. Mark
 the report `COMPLETE` only after the other gate conditions pass; this means
 Testing is complete, not that every later-phase acceptance condition is met.
 
-On normal success with no recovery, hand off to **Reviewer**, review kind
-`IMPLEMENTATION` (`TESTING -> REVIEWING_IMPLEMENTATION`). When recovery is
-active, apply canonical **Recovery Mechanics** instead. Only when Tester owns
-the active frame does it determine which completed downstream work its
-correction invalidates, such as reviews or documentation relying on corrected
-evidence. As a downstream rerun, preserve the frame and honor its rerun
-boundary. Persist the report before the state transition and follow protocol
-completion-output rules. For any handoff entering either review state, follow
-**Independent Reviewer Session**, name the review kind, and persist evidence,
-limits, findings, later dependencies, and resume context before requesting the
-fresh Reviewer chat and giving the advisory model recommendation. Do not perform
-the next role's work.
+On full success with no recovery, hand off to **Reviewer**, review kind
+`IMPLEMENTATION` (`TESTING -> REVIEWING_IMPLEMENTATION`).
+
+### Checkpoints and Recovery
+
+For an `INCREMENT` assignment with no recovery, apply **Checkpoint Handoffs**.
+Save the increment assessment as `VERIFIED`, current execution evidence, and
+remaining acceptance work; keep the report `IN_PROGRESS` and return to Developer
+with `CHECKPOINT` naming that increment. Stop Tester work and provide the
+Developer invocation under **Handoff Rules**. A passed increment does not permit
+a Reviewer handoff or a `COMPLETE` report.
+
+During recovery, select the applicable full or scoped gate under
+**Implementation and Verification Recovery Gates**, then apply **Recovery
+Mechanics** without using `CHECKPOINT`. Preserve unfinished assignments,
+remaining acceptance work, and the stack. Only the active frame owner chooses
+required reruns, including affected evidence in unfinished phases; downstream
+reruns honor the saved boundary. A scoped return retains `IN_PROGRESS` or
+`BLOCKED` rather than claiming full completion. Every return to Reviewer or a
+later phase must satisfy **Full Verification Boundary**, even with an outer
+frame still active.
+
+Persist the report before each transition and follow **Handoff Rules**. For any
+handoff entering either review state, follow **Independent Reviewer Session**,
+name the review kind, and provide the advisory model recommendation. Do not
+perform the next role's work.

@@ -92,15 +92,20 @@ export function parseProvenance(text) {
 // The `Name`: `value` fields between a record's `# Title` and its first `##`
 // section, e.g. `Cycle`, `Status`, `Mode`.
 export function headerFields(text) {
+  const fields = {};
+  for (const [name, value] of headerFieldPairs(text)) if (!(name in fields)) fields[name] = value;
+  return fields;
+}
+
+// Keep occurrences when a field's contract requires exactly one value.
+export function headerFieldPairs(text) {
   const body = text.replace(/^\uFEFF?<!--[\s\S]*?-->/, '');
   const title = /^# .*$/m.exec(body);
-  if (!title) return {};
+  if (!title) return [];
   const rest = body.slice(title.index + title[0].length);
   const next = /^## /m.exec(rest);
   const header = next ? rest.slice(0, next.index) : rest;
-  const fields = {};
-  for (const [name, value] of fieldPairs(header)) if (!(name in fields)) fields[name] = value;
-  return fields;
+  return fieldPairs(header);
 }
 
 const SKIPPED_FOLDERS = new Set(['.git', 'node_modules', '.standards', '.agents', '.claude', '.codex']);
@@ -214,6 +219,31 @@ function sectionName({ line, fenced }) {
   const name = fenced ? null : /^##\s+(.+?)\s*$/.exec(line)?.[1];
   return name === undefined || name === null ? null
     : name.replace(/\s+#+$/, '').replace(/:$/, '').trim().toLowerCase();
+}
+
+// A record section, excluding fenced examples and stopping at the next H2.
+export function recordSection(text, name, { includeFenced = false } = {}) {
+  const lines = markdownLines(text);
+  const start = lines.findIndex((entry) => sectionName(entry) === name.toLowerCase());
+  if (start === -1) return '';
+  const next = lines.findIndex((entry, index) => index > start && sectionName(entry) !== null);
+  return lines.slice(start + 1, next === -1 ? undefined : next)
+    .map(({ line, fenced }) => (fenced && !includeFenced ? '' : line)).join('\n');
+}
+
+// The first fields in each step are authoritative; later self-check prose may
+// mention fields such as Status with a different meaning.
+export function developmentSteps(text) {
+  const lines = markdownLines(text);
+  const raw = lines.map(({ line }) => line).join('\n');
+  const body = lines.map(({ line, fenced }) => (fenced ? ' '.repeat(line.length) : line)).join('\n');
+  const headings = [...body.matchAll(/^###\s+(DEV-\d{3,})\b.*$/gm)];
+  return headings.map((match, index) => {
+    const chunk = body.slice(match.index + match[0].length, headings[index + 1]?.index).split(/^## /m)[0];
+    const fields = {};
+    for (const [name, value] of fieldPairs(chunk)) if (!(name in fields)) fields[name] = value;
+    return { id: match[1], fields, text: raw.slice(match.index + match[0].length, match.index + match[0].length + chunk.length) };
+  });
 }
 
 // Everything before the "## Previous Cycles" heading. That section is the

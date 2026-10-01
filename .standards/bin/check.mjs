@@ -9,9 +9,10 @@
 import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 
-import { FAILURE_TYPES, GENERATED_CYCLE_ID, HANDOFF_KINDS, STATES, TERMINAL_STATES, UsageError, committedText, exists, fieldPairs, git, isMain, printProblem, projectRootFor, readText } from './lib/core.mjs';
-import { LOCAL_PREFIX, QUALIFIED_PREFIXES, acceptanceInventory, acceptanceMentions, bareIds, fixedPath, fixedRecords, headerFields, headingIds, parseProvenance, qualifiedReferences, recordName, scanArtifacts, withoutLinkLabels, withoutPreviousCycles } from './lib/records.mjs';
+import { FAILURE_TYPES, GENERATED_CYCLE_ID, HANDOFF_KINDS, STATES, TERMINAL_STATES, UsageError, committedText, exists, git, isMain, printProblem, projectRootFor, readText } from './lib/core.mjs';
+import { LOCAL_PREFIX, QUALIFIED_PREFIXES, acceptanceInventory, acceptanceMentions, bareIds, developmentSteps, fixedPath, fixedRecords, headerFields, headingIds, parseProvenance, qualifiedReferences, recordName, recordSection, scanArtifacts, withoutLinkLabels, withoutPreviousCycles } from './lib/records.mjs';
 import { modeFromFile, parseState, validateState } from './lib/state.mjs';
+import { checkVerificationWorkflow } from './lib/verification.mjs';
 
 const RUNTIME_FILES = ['PROTOCOL.md', 'VERSION.json', 'INSTALLATION.json', 'MODE.md', 'STATE.md'];
 const STATE_FILE = '.standards/STATE.md';
@@ -205,19 +206,6 @@ function unfilledFields(fields) {
   return Object.entries(fields).filter(([, value]) => value.includes(' | ') || /^<.*>$/.test(value));
 }
 
-// Each `### DEV-NNN` step with its fields; the first occurrence of a field
-// wins, so prose such as `Status`: `200` later in the step does not count.
-function stepEntries(text) {
-  const headings = [...text.matchAll(/^###\s+(DEV-\d{3,})\b.*$/gm)];
-  return headings.map((match, index) => {
-    const end = headings[index + 1]?.index ?? text.length;
-    const chunk = text.slice(match.index + match[0].length, end).split(/^## /m)[0];
-    const fields = {};
-    for (const [name, value] of fieldPairs(chunk)) if (!(name in fields)) fields[name] = value;
-    return { id: match[1], fields };
-  });
-}
-
 async function checkDevelopmentPlan(root, relative, text, { mustBeComplete, report }) {
   const problem = (message) => report(relative, message);
   const status = headerFields(text).Status;
@@ -226,7 +214,7 @@ async function checkDevelopmentPlan(root, relative, text, { mustBeComplete, repo
   } else if (mustBeComplete && status !== 'COMPLETE' && !status?.includes(' | ')) {
     problem(`The plan must be COMPLETE once the cycle has passed DEVELOPING; its Status is \`${status ?? 'missing'}\`.`);
   }
-  const steps = stepEntries(text);
+  const steps = developmentSteps(text);
   const ids = new Set(steps.map((step) => step.id));
   const graph = new Map();
   for (const step of steps) {
@@ -261,7 +249,7 @@ async function checkDevelopmentPlan(root, relative, text, { mustBeComplete, repo
   for (const node of graph.keys()) if (visit(node, [])) break;
   const committed = await committedText(root, relative);
   if (committed !== null) {
-    for (const step of stepEntries(committed)) {
+    for (const step of developmentSteps(committed)) {
       if (step.fields.Status === 'DONE' && !ids.has(step.id)) {
         problem(`${step.id} was DONE in the last commit but is missing now. Completed steps are never removed or renumbered.`);
       }
@@ -337,7 +325,7 @@ async function checkAcceptance(root, context) {
   const recovering = state.recovery.active;
   const missing = (text) => [...current].filter((id) => !bareIds(text, ['AC']).includes(id));
   // The state whose role made the last handoff, for the given kinds. Only a
-  // FORWARD, RESUME, or FAILURE handoff is made by its From state's own role;
+  // FORWARD, CHECKPOINT, RESUME, or FAILURE is made by its From state's own role;
   // any agent may record a USER_REWORK, whose From state's owner may not have
   // reconciled its work yet. Handoff.From stays set until the next handoff,
   // and only Scoper changes the acceptance conditions, so nothing is taken
@@ -349,9 +337,9 @@ async function checkAcceptance(root, context) {
   // the last handoff is a FORWARD or RESUME from ARCHITECTING, which Architect
   // makes only after passing its gate. A FAILURE from ARCHITECTING interrupts
   // the design, so it is not held then.
-  const designDone = recovering
+  const designDone = context.fullBoundary || (recovering
     ? handedOffBy(['FORWARD', 'RESUME']) === 'ARCHITECTING'
-    : pastArchitecture(workflowState, context.mode);
+    : pastArchitecture(workflowState, context.mode));
   if (designDone && context.architecture !== null) {
     for (const id of missing(withoutPreviousCycles(context.architecture))) {
       report(path.posix.normalize(state.active.architecture), `does not account for ${id}. Every current acceptance condition needs design coverage or "No architectural impact".`);
@@ -363,8 +351,9 @@ async function checkAcceptance(root, context) {
   // check before handing off still holds it to full coverage. During recovery
   // the record of the state whose role made the last handoff is held instead:
   // that role made the handoff, so its record had to be current then.
-  const justLeft = handedOffBy(['FORWARD', 'RESUME', 'FAILURE']);
+  const justLeft = handedOffBy(['FORWARD', 'CHECKPOINT', 'RESUME', 'FAILURE']);
   const held = (phase) => {
+    if (context.fullBoundary && phase === 'TESTING') return true;
     if (context.atTurnEnd && phase === workflowState) return false;
     if (recovering) return phase === (context.atTurnEnd ? justLeft : workflowState);
     return rank(workflowState) >= rank(phase);
@@ -373,9 +362,15 @@ async function checkAcceptance(root, context) {
     const key = artifact.provenance.artifact === 'REVIEW'
       ? `REVIEW:${artifact.provenance.reviewKind}` : artifact.provenance.artifact;
     const phase = COMPLETED_IN[key];
-    if (!phase || headerFields(artifact.text).Status !== 'COMPLETE' || !held(phase)) continue;
-    for (const id of missing(artifact.text)) {
-      report(artifact.path, `is COMPLETE but does not account for ${id}.`);
+    const fields = headerFields(artifact.text);
+    const partialAssessment = phase === 'TESTING' && ['INCREMENT', 'CORRECTION'].includes(fields['Assessment Purpose'])
+      && (context.atTurnEnd ? justLeft === phase : workflowState === phase);
+    if (!phase || !((fields.Status === 'COMPLETE' && held(phase)) || partialAssessment)) continue;
+    // Increment history and suspended assignments do not establish current
+    // acceptance coverage, whether the assessment is partial or full.
+    const coverage = phase === 'TESTING' ? recordSection(artifact.text, 'Acceptance Evidence') : artifact.text;
+    for (const id of missing(coverage)) {
+      report(artifact.path, `${partialAssessment ? 'the partial assessment' : 'is COMPLETE but'} does not account for ${id}.`);
     }
   }
 }
@@ -470,6 +465,9 @@ async function checkActiveCycle(root, state, mode, artifacts, report, { atTurnEn
     }
     if (!artifact.provenance.error && artifact.provenance.cycle !== id) {
       report(record.path, `holds a ${recordName(artifact.provenance.artifact, artifact.provenance.reviewKind)} record for cycle \`${artifact.provenance.cycle}\`, not this cycle's ${recordName(record.artifact, record.reviewKind)} record. ${COLLISION}`);
+    } else if (!artifact.provenance.error && (artifact.provenance.artifact !== record.artifact
+        || artifact.provenance.reviewKind !== record.reviewKind)) {
+      report(record.path, `must hold this cycle's ${recordName(record.artifact, record.reviewKind)} record, but holds ${recordName(artifact.provenance.artifact, artifact.provenance.reviewKind)}. ${COLLISION}`);
     }
   }
 
@@ -573,16 +571,25 @@ async function checkActiveCycle(root, state, mode, artifacts, report, { atTurnEn
     }
     texts[name] = text;
   }
-  const pastDevelopment = !recovering && rank(workflowState) > rank('DEVELOPING');
+  const fullBoundary = rank(workflowState) >= rank('REVIEWING_IMPLEMENTATION')
+    && (!recovering || ['FORWARD', 'RESUME'].includes(state.handoff.Kind));
+  const verification = mine.find((artifact) => artifact.path === fixedPath('VERIFICATION', id)
+    && artifact.provenance.artifact === 'VERIFICATION');
+  const workflow = checkVerificationWorkflow({
+    state, planText: ownPlan ? planText : null, verificationText: verification?.text ?? null,
+    report, atTurnEnd, fullBoundary,
+  });
+  const pastDevelopment = rank(workflowState) > rank('DEVELOPING')
+    && (!recovering || fullBoundary || workflowState === 'TESTING');
   if (planPath && planText !== null && (state.active.development === 'NONE' || texts.Development !== undefined)) {
-    await checkDevelopmentPlan(root, planPath, planText, { mustBeComplete: pastDevelopment, report });
+    await checkDevelopmentPlan(root, planPath, planText, { mustBeComplete: pastDevelopment && !workflow.partialDevelopment, report });
   }
   if (pastDevelopment && state.active.development === 'NONE') {
     report(STATE_FILE, `Active Work.Development is NONE, but this cycle is already in ${workflowState}.`);
   }
 
   const standard = state.CycleMode === 'STANDARD';
-  if (standard && !recovering) {
+  if (standard && (!recovering || fullBoundary)) {
     if ((workflowState === 'ARCHITECTING' || pastArchitecture(workflowState, mode)) && state.active.scope === 'NONE') {
       report(STATE_FILE, `Active Work.Scope is NONE, but this STANDARD cycle is already in ${workflowState}.`);
     }
@@ -592,8 +599,11 @@ async function checkActiveCycle(root, state, mode, artifacts, report, { atTurnEn
   }
   // Once the cycle has passed a phase, that phase's record must exist and be
   // COMPLETE. An EXPEDITED cycle has only the implementation review.
-  if (!recovering && ['STANDARD', 'EXPEDITED'].includes(state.CycleMode)) {
+  if ((!recovering || fullBoundary) && ['STANDARD', 'EXPEDITED'].includes(state.CycleMode)) {
     for (const record of fixedRecords(id)) {
+      // Recovery's later-role exceptions remain intact; Reviewer entry still
+      // holds the verification record to full completion.
+      if (recovering && record.phase !== 'TESTING') continue;
       if (!standard && record.reviewKind !== 'IMPLEMENTATION') continue;
       if (rank(workflowState) <= rank(record.phase)) continue;
       const artifact = mine.find((candidate) => candidate.path === record.path
@@ -619,6 +629,7 @@ async function checkActiveCycle(root, state, mode, artifacts, report, { atTurnEn
   if (standard && texts.Scope !== undefined) {
     await checkAcceptance(root, {
       state, mode, scope: texts.Scope, architecture: texts.Architecture ?? null, mine, report, atTurnEnd,
+      fullBoundary,
     });
   }
   if (state.CycleMode === 'EXPEDITED') {

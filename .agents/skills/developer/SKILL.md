@@ -2,14 +2,14 @@
 name: developer
 description:
   Implement the active S.T.A.N.D.A.R.D.S. change while WorkflowState is
-  DEVELOPING. Use after Architect or Auditor hands off to Developer, for bounded
-  EXPEDITED brownfield implementation, or when implementation recovery returns
-  to Developer. Maintain a persisted atomic development plan and require user
-  approval before initial implementation or any material plan revision. Then
-  execute in Autonomous, Stepwise, or Code With Me mode, follow applicable
-  development styles, perform implementation-level self-checks, and hand off
-  according to the protocol without taking ownership of scope, architecture,
-  testing, review, documentation, or synchronization.
+  DEVELOPING. Use after an upstream handoff, a Tester checkpoint, or recovery
+  returns to Developer, or for bounded EXPEDITED brownfield implementation.
+  Maintain a persisted atomic development plan and require user approval before
+  initial implementation or any material plan revision. Then execute in
+  Autonomous, Stepwise, or Code With Me mode, follow applicable development
+  styles, perform implementation-level self-checks, and hand off according to
+  the protocol without taking ownership of scope, architecture, testing, review,
+  documentation, or synchronization.
 ---
 
 <!-- standards:framework-owned -->
@@ -84,9 +84,9 @@ materially changes approved implementation intent. After correcting the specific
 defect and verifying that corrective outcome with appropriate
 implementation-level evidence, remove that Developer-owned obligation from
 `STATE.md`. Removing the obligation records only that the corrective requirement
-is satisfied; it does not make Developer complete. Do not forward from
-`DEVELOPING` until every Developer-owned outstanding obligation is resolved and
-removed and the normal Developer completion gate passes.
+is satisfied; it does not make Developer complete. Do not hand off successful
+work from `DEVELOPING` until every Developer-owned outstanding obligation is
+resolved and removed and the applicable assignment gate passes.
 
 ## Entry and State Validation
 
@@ -127,7 +127,7 @@ Select exactly one collaboration mode for the active development plan. The mode
 is Developer-local and does not change `WorkflowState` or `CycleMode`.
 
 - **AUTONOMOUS** — default. After user approval of the development plan, execute
-  all remaining approved steps without pausing between steps unless blocked.
+  approved work without routine pauses until an assignment handoff or blocker.
   Read and follow [`modes/autonomous.md`](modes/autonomous.md).
 - **STEPWISE** — after plan approval, implement one atomic step at a time,
   report the completed step and its self-check, then wait for the user before
@@ -143,6 +143,9 @@ development plan. Do not treat a mode switch as workflow rework when the
 implementation contract itself is unchanged.
 
 Load only the selected mode file.
+
+Verification cadence is independent of this mode. A checkpoint does not change
+the mode or grant permission to implement beyond its user-directed boundaries.
 
 ## Development Styles
 
@@ -319,10 +322,8 @@ remains valid. Reconcile the persisted plan before coding:
   change rather than a bookkeeping decomposition of already approved intent.
 
 A plan that was `COMPLETE` may return to `IN_PROGRESS` during implementation
-recovery. Mark it `COMPLETE` again only after every current approved step is
-`DONE`, every Developer-owned outstanding obligation has been corrected,
-verified, and removed, and every completion-gate condition other than the plan's
-own `Status: COMPLETE` requirement passes.
+recovery. Restore full completion or make a scoped return through **Assignment
+Gates and Handoffs** below.
 
 ### Promotion Reconciliation
 
@@ -351,14 +352,44 @@ and current repository evidence.
 - Do not mark or keep the plan `COMPLETE` until it satisfies the `STANDARD` plan
   requirements and every current approved step is `DONE`.
 
+## Verification Scheduling
+
+Use the plan's required `Verification Cadence` and `Current Increment` under the
+protocol's **Verification Cadence**. New plans start with `AFTER_IMPLEMENTATION`
+and `NONE`. For an explicit selection or a pending
+`Active Work.PendingVerificationCadence`, follow **Switch verification cadence**
+in `.standards/protocol/user-decisions.md`; apply it only at the safe normal
+Developer boundary defined there. It must not interrupt assigned Tester work or
+recovery, or clear an unrelated mode-continuation blocker.
+
+For `INCREMENTAL`, persist testable outcomes in Verification Increments and
+select the next assignment as **Testable Increments** requires. An increment may
+span several steps; completing one step or one AC does not by itself make the
+outcome ready. Respect dependencies and the selected mode's pauses.
+
+On every return from Tester, reload state, the plan, and the report.
+Independently reconcile the assigned result, assessed inputs, changed tests, and
+affected earlier behavior before advancing or reopening work. Developer alone
+changes `Current Increment`; retain Tester's historical target and evidence.
+Resume under the persisted collaboration mode without duplicate approval of
+unchanged intent. A Tester pass grants no additional implementation authority.
+
 ## Implementation Procedure
+
+After reconciling the current assignment, apply **Assignment Gates and
+Handoffs** before selecting more implementation work and after each ready
+outcome or completed correction. An already implemented increment can be ready
+for Tester without another coding step. Otherwise continue under the selected
+mode.
 
 1. Resume from the persisted development plan rather than reconstructing work
    from chat history. Preserve completed `DEV-NNN` identifiers and statuses
    except where the plan-recovery rules explicitly reopen affected steps.
 2. After initial approval, set the plan to `IN_PROGRESS` when implementation
    begins. On recovery, reconcile and reopen the existing plan as defined above.
-3. Execute the selected mode from the first incomplete approved step.
+3. Execute the selected mode on the next dependency-ready approved step needed
+   for the current increment, full implementation, or corrective assignment,
+   including required dependencies.
 4. Before each step, re-read only the relevant code and constraints needed for
    that step. Avoid broad repository scans unless evidence shows the current
    context is insufficient.
@@ -367,18 +398,11 @@ and current repository evidence.
 6. Run the step's relevant implementation-level self-checks. Prefer established
    repository commands. Do not create or rewrite Tester-owned test artifacts.
 7. Record the step as `DONE` only when its expected outcome exists and its
-   self-check is satisfactory. Record concise implementation notes only when
-   they help resume work or explain a non-obvious local choice.
+   self-check is satisfactory. Persist actual self-check evidence as
+   `template.md` requires; add implementation notes only when they help resume
+   work or explain a non-obvious local choice.
 8. If a step exposes an upstream defect or a need to promote, persist the
    applicable transition before stopping. Do not keep coding around it.
-9. Continue according to the active collaboration mode until all approved steps
-   are complete or a blocker occurs.
-10. When every current approved step is `DONE`, every Developer-owned
-    outstanding obligation has been corrected, verified, and removed, and every
-    completion-gate condition other than the plan's own `Status: COMPLETE`
-    requirement passes, set the development plan to `Status: COMPLETE`. Then
-    apply the full completion gate and perform the applicable normal or recovery
-    handoff.
 
 While `ProjectMode` is `GREENFIELD`, immediately change `.standards/MODE.md`
 permanently to `BROWNFIELD` as soon as Developer observes and verifies that the
@@ -416,15 +440,16 @@ implementation change exists, not when the plan is created or approved.
 9. Keep active-cycle implementation distinct from established baseline during
    expedited promotion or Auditor-directed reconciliation.
 
-## Completion Gate
+## Assignment Gates and Handoffs
 
-Developer is complete when:
+### Full Completion
 
-- `node .standards/bin/check.mjs` reports no problem in files Developer owns
-  (see the protocol's **Runtime Tools and Hooks**);
+This gate establishes full Developer completion; checkpoints and scoped
+corrections use the applicable gates below. For full completion, require:
+
 - every current approved `DEV-NNN` step is `DONE`;
-- the development plan is `Status: COMPLETE`, carries matching current-cycle
-  `DEVELOPMENT` provenance, and `Active Work.Development` points to it;
+- the development plan carries matching current-cycle `DEVELOPMENT` provenance
+  and `Active Work.Development` points to it;
 - implemented behavior conforms to the active contract and established technical
   constraints;
 - `User Style Locked` is `true`, the selection is unchanged since first
@@ -436,25 +461,43 @@ Developer is complete when:
 - no unresolved `Outstanding Obligations` entry owned by `DEVELOPING` remains;
 - no blocking Developer question remains unresolved.
 
-On normal success with no active recovery:
+Once these conditions pass, set `Status: COMPLETE` and
+`Current Increment: NONE`, then run `node .standards/bin/check.mjs` under
+**Runtime Tools and Hooks**. Full handoff requires no reported problem in files
+Developer owns.
 
-- `STANDARD` hands off to **Tester** (`DEVELOPING -> TESTING`);
+On full success with no active recovery:
+
+- `STANDARD` hands off to **Tester** for full verification
+  (`DEVELOPING -> TESTING`), under **Full Verification Boundary**;
 - `EXPEDITED` hands off to **Reviewer** for `IMPLEMENTATION` review
   (`DEVELOPING -> REVIEWING_IMPLEMENTATION`).
 
-For any handoff entering `TESTING`, follow the protocol's **Independent Tester
-Session** rule. Persist enough implementation and self-check evidence in the
-development plan for Tester to assess the claims from files, then explicitly
-request a fresh Tester chat in the handoff.
+### Checkpoints and Recovery
+
+When full completion is not yet established, a normal `INCREMENTAL` assignment
+uses the protocol's **Checkpoint Handoffs** gate. Save the ready outcome and
+self-check evidence, keep the plan `IN_PROGRESS`, and hand off to Tester with
+`CHECKPOINT` naming the selected increment. Stop Developer work until the
+workflow returns to `DEVELOPING` and the user invokes Developer again.
+
+When corrective routing changes state and interrupts a Developer assignment,
+persist its suspended assignment in Plan Notes before replacing it, under
+**Implementation and Verification Recovery Gates**. During recovery, select the
+applicable full or scoped gate and retain unfinished work. Apply **Recovery
+Mechanics** for the return or rerun; do not use `CHECKPOINT`. Only the active
+frame owner chooses required reruns, including affected evidence in unfinished
+phases. A return to Reviewer or a later phase requires **Full Verification
+Boundary** even while another frame remains active.
+
+For every handoff entering `TESTING`, follow **Independent Tester Session** and
+persist enough implementation and self-check evidence for assessment from files.
+Direct the user to the existing independent Tester chat or a fresh one separate
+from Developer. Reload current state on resumption; the two chats share the
+active cycle and checkout and must not perform role-owned work simultaneously.
 
 For any handoff entering either review state, including expedited completion and
 recovery returns, follow **Independent Reviewer Session**. Persist the
 implementation claims, actual self-check evidence, limitations, and resume
 context in the development plan; name the review kind and request the fresh
 Reviewer chat with the advisory model recommendation.
-
-When recovery is active, apply `.standards/PROTOCOL.md` **Recovery Mechanics**
-after the completion gate succeeds. If Developer owns the active frame, decide
-which previously completed downstream states must be re-established because of
-the implementation correction. If Developer is only a downstream rerun, follow
-the existing frame and normal gate without redefining recovery.

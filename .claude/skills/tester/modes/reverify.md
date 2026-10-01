@@ -10,6 +10,7 @@ allocations, and evidence with a reason for reuse. A changed current acceptance
 set requires reconciling the whole acceptance inventory, including removed and
 new IDs, even when implementation is unchanged.
 
-Continue through the shared procedure, template, budget, and completion gate in
-`../SKILL.md`. Re-execute according to regression risk; this mode neither grants
-another five scenarios nor limits reruns to previously failing files.
+Continue through the shared procedure, template, budget, and **Assignment Gates
+and Handoffs** in `../SKILL.md` for the persisted purpose and target. Re-execute
+according to regression risk; this mode neither grants another five scenarios
+nor limits reruns to previously failing files.
