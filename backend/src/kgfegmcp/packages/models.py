@@ -85,12 +85,26 @@ DELIVERY_REPORT_COUNT_RELATIONSHIPS: Final[str] = "learning_commons_relationship
 DELIVERY_REPORT_COUNT_UNRESOLVED_RELATIONSHIPS: Final[str] = (
     "learning_commons_unresolved_fallback_relationships"
 )
-DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.1")
+DELIVERY_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.2")
 SUPPORTED_INCLUDED_GRAPH_TYPES: Final[tuple[GraphType, ...]] = (
     GraphType.ACADEMIC_STANDARDS,
     GraphType.LEARNING_COMPONENTS,
+    GraphType.LEARNING_PROGRESSIONS,
 )
-MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.0")
+MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.1")
+REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
+    {
+        "learningProgressionBuildsTowards",
+        "learningProgressionFinalClaims",
+        "learningProgressionNormalization",
+        "learningProgressionProvenance",
+        "learningProgressionProvenanceIndex",
+        "learningProgressionRelatesTo",
+        "learningProgressionSummary",
+        "learningProgressionUnresolved",
+        "learningProgressionValidation",
+    }
+)
 REQUIRED_ADDITIONAL_COUNT_NAMES: Final[frozenset[str]] = frozenset(
     {
         ADDITIONAL_COUNT_CODED_ITEMS,
@@ -336,6 +350,8 @@ class FrameworkCapabilities(FrozenSchema):
 
     code_search: CodeAvailability
     has_detailed_provenance: bool = False
+    has_learning_progression_provenance: StrictBool = False
+    has_learning_progressions: StrictBool = False
     has_official_activities: bool = False
     has_official_assessment_guidance: bool = False
     has_unresolved_relationships: bool = False
@@ -422,6 +438,15 @@ class PackageArtifacts(FrozenSchema):
     learning_component_provenance: ArtifactPath | None = None
     learning_component_summary: ArtifactPath | None = None
     learning_components_bundle: ArtifactPath | None = None
+    learning_progression_builds_towards: ArtifactPath | None = None
+    learning_progression_final_claims: ArtifactPath | None = None
+    learning_progression_normalization: ArtifactPath | None = None
+    learning_progression_provenance: ArtifactPath | None = None
+    learning_progression_provenance_index: ArtifactPath | None = None
+    learning_progression_relates_to: ArtifactPath | None = None
+    learning_progression_summary: ArtifactPath | None = None
+    learning_progression_unresolved: ArtifactPath | None = None
+    learning_progression_validation: ArtifactPath | None = None
     nodes: ArtifactPath
     relationships: ArtifactPath
     relationships_has_child: ArtifactPath | None = None
@@ -446,6 +471,7 @@ class PackageArtifacts(FrozenSchema):
         """
 
         reserved_names = {
+            *REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
             "academicStandardsBundle",
             "entityProvenance",
             "learningComponentDedupGroups",
@@ -507,6 +533,7 @@ class PackageArtifacts(FrozenSchema):
                 if path is not None
             }
         )
+        artifacts.update(self.learning_progression_artifacts())
         artifacts.update(
             {
                 str(name): path
@@ -518,14 +545,48 @@ class PackageArtifacts(FrozenSchema):
         )
         return artifacts
 
+    def learning_progression_artifacts(self) -> dict[str, ArtifactPath]:
+        """Return the declared dedicated LP evidence by manifest logical name.
+
+        Returns
+        -------
+        dict[str, ArtifactPath]
+            Present LP artifact declarations in deterministic logical-name order.
+
+        Examples
+        --------
+        >>> artifacts = PackageArtifacts(
+        ...     nodes="delivery/n.jsonl", relationships="delivery/r.jsonl"
+        ... )
+        >>> artifacts.learning_progression_artifacts()
+        {}
+        """
+
+        optional_artifacts = {
+            "learningProgressionBuildsTowards": self.learning_progression_builds_towards,
+            "learningProgressionFinalClaims": self.learning_progression_final_claims,
+            "learningProgressionNormalization": self.learning_progression_normalization,
+            "learningProgressionProvenance": self.learning_progression_provenance,
+            "learningProgressionProvenanceIndex": self.learning_progression_provenance_index,
+            "learningProgressionRelatesTo": self.learning_progression_relates_to,
+            "learningProgressionSummary": self.learning_progression_summary,
+            "learningProgressionUnresolved": self.learning_progression_unresolved,
+            "learningProgressionValidation": self.learning_progression_validation,
+        }
+        return {
+            name: path for name, path in optional_artifacts.items() if path is not None
+        }
+
 
 class PackageCounts(FrozenSchema):
     """Record declared graph counts and exact version-1 additional counts."""
 
     additional_counts: dict[str, NonNegativeStrictInt]
+    builds_towards_relationships: NonNegativeStrictInt = 0
     framework_nodes: int = Field(default=1, ge=1, le=1)
     item_nodes: int = Field(ge=0)
     learning_component_nodes: int = Field(ge=0)
+    relates_to_relationships: NonNegativeStrictInt = 0
     relationships: int = Field(ge=0)
     supports_relationships: int = Field(ge=0)
 
@@ -811,6 +872,61 @@ class GraphPackageManifest(FrozenSchema):
             )
 
         return value
+
+    @model_validator(mode="after")
+    def validate_learning_progressions(self) -> Self:
+        """Require LP declarations, counts and capability flags to agree.
+
+        Returns
+        -------
+        Self
+            Manifest with a complete LP evidence declaration or no LP capability.
+
+        Raises
+        ------
+        ValueError
+            If evidence, graph declarations, counts or availability conflict.
+
+        Examples
+        --------
+        >>> manifest = GraphPackageManifest.model_validate(lp_manifest)
+        >>> manifest.capabilities.has_learning_progressions
+        True
+        """
+
+        declared = GraphType.LEARNING_PROGRESSIONS in self.included_graph_types
+        artifacts = self.artifacts.learning_progression_artifacts()
+        lp_count = (
+            self.counts.builds_towards_relationships
+            + self.counts.relates_to_relationships
+        )
+
+        if declared and set(artifacts) != REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES:
+            raise ValueError(
+                "Learning progressions require all dedicated LP evidence artifacts."
+            )
+
+        if not declared and (artifacts or lp_count):
+            raise ValueError(
+                "LP evidence and counts require learning_progressions declaration."
+            )
+
+        if self.capabilities.has_learning_progressions != declared:
+            raise ValueError(
+                "has_learning_progressions must agree with the declared LP graph."
+            )
+
+        if self.capabilities.has_learning_progression_provenance != declared:
+            raise ValueError(
+                "has_learning_progression_provenance must agree with complete LP evidence."
+            )
+
+        if self.counts.supports_relationships + lp_count > self.counts.relationships:
+            raise ValueError(
+                "Supports and LP counts may not exceed total relationships."
+            )
+
+        return self
 
     @model_validator(mode="after")
     def validate_manifest(self) -> Self:

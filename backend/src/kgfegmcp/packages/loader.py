@@ -1331,7 +1331,7 @@ def _manifest_semantic_findings(
             )
         )
 
-    if manifest.included_graph_types != SUPPORTED_INCLUDED_GRAPH_TYPES:
+    if not set(manifest.included_graph_types).issubset(SUPPORTED_INCLUDED_GRAPH_TYPES):
         findings.append(
             _finding(
                 code="included_graph_types_unsupported",

@@ -91,7 +91,7 @@ The raw inputs remain in the architecture-prescribed `data/source_artifacts/lear
 
 ### DEV-002 — Extend immutable package and delivery contracts for LP
 
-`Status`: `PENDING` `Depends On`: `DEV-001`
+`Status`: `DONE` `Depends On`: `DEV-001`
 `Acceptance`: `AC-002, AC-003, AC-010, AC-018, AC-019`
 
 **Goal**
@@ -108,7 +108,47 @@ Manifest 1.1/delivery 1.2/source 1.0 contracts recognize buildsTowards and relat
 
 **Self-Check**
 
-Changed-module formatter/lint/type checks and local model/decoder/builder sanity checks for valid LP/non-LP inputs and invalid labels/IDs/counts. Full runtime activation waits for accepted replacements. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — completed the immutable LP package/delivery construction contract. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; assessed HEAD: `a3b40387048ff075d13eabe8266fc482a3e90e89` plus the six changed-module identities below. All final commands exited 0. Backend checks used the existing Python 3.13.9 environment through locked/offline/no-sync uv; no dependency installation or network/model calls.
+
+Actual final commands (from the repository root):
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev002-self-check.py /Users/tzz/Projects/private/idi/KGForEdGlobalMCP
+```
+
+The temporary ad hoc script assessed real copied LP edges in memory and temporary package proposals only; it is not a Tester-owned test suite. Script identity: `sha256:6c0c8ddd7165dee4c4f84870439708c1876803fa1f145fde62180f3da6d6de76`; result identity: `sha256:47fdc2c969f04d9e94f82df7367f5447774b39a990abddfac2f7211818903cf5`; protected baseline inventory identity: `sha256:7e70c9bdc5ec7807a58f769bfdc651cb87bcfd8b60efa3721560653e157f07a0`. These scratch files may be discarded after this step; the assessed outcomes are persisted here.
+
+For each command below the full prefix was `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync`; its effective working directory was `backend`. The exact module arguments were `src/kgfegmcp/packages/builder.py src/kgfegmcp/packages/loader.py src/kgfegmcp/packages/models.py src/kgfegmcp/packages/repository.py src/kgfegmcp/packages/wire.py src/kgfegmcp/regexes.py`.
+
+- `ruff check <module arguments>`: all checks passed.
+- `black --check <module arguments>`: all six unchanged by formatting.
+- `isort --check-only <module arguments>`: passed.
+- `mypy --cache-dir /tmp/kgfegmcp-dev002-mypy <module arguments>`: no issues in six source files.
+- `pylint <module arguments>`: 10.00/10.
+- `interrogate <module arguments>`: 100% docstring coverage; its configured badge generation caused no tracked badge change.
+- `git diff --check`: passed. `node .standards/bin/check.mjs`: passed before recording completion and at the final STEPWISE pause.
+
+Self-check outcomes:
+
+- 69 named sanity checks passed; all 8,080 stored LP edges (3,039 buildsTowards, 5,041 relatesTo) decoded across six curricula with preserved identifiers, types, exact CASE selectors, authors, attribution and licensing. All six existing AS/LC node/relationship counts and supports counts remain unchanged.
+- New-schema non-LP manifests, loader graph-type checks, persistence contract checks and temporary builder proposals remain representable. No acceptance was persisted.
+- Strict LP counts reject negative, boolean, fractional and string values. Malformed LP label/type agreement, outer/property identifiers, endpoint labels/entities/keys and blank/whitespace/coerced selectors are rejected. Conflicting availability, missing dedicated evidence, counts exceeding total, logical-name shadowing, unsafe paths/delivery names, mismatched/out-of-range provenance partitions and unsupported relationship labels are rejected.
+- Temporary LP proposals declare all nine evidence artifacts and their checksum closure; buildsTowards/relatesTo counts are separate from existing supports and hierarchy-related counts. Repeated proposals retain snapshot/checksum identities; materialized temporary packages remain PENDING and round-trip. A declared LP package with zero LP edges remains available.
+- All 180 protected files across `config/profiles`, `config/prompts`, `data/graph_packages` and `data/input_artifacts` retain their start-of-step hashes. No raw sources, preparation inputs, accepted packages or active configuration were changed.
+- Limits: evidence contents were placeholders in temporary builder checks; full provenance/graph integrity and package acceptance belong to DEV-004. Existing legacy manifests remain schema 1.0 and will be replaced/activated in later steps; this intermediate checkout is not a runtime activation milestone. Developer sanity checks do not establish formal Tester verification, semantic validation or pedagogical certification. No live LLM/paid-service calls or deployment occurred.
+
+Assessed changed-content identities:
+
+- `backend/src/kgfegmcp/packages/builder.py`: `sha256:d917e9590ee9ab81fd264ed60500ed8d63a2610110f174182b35eea224308188`.
+- `backend/src/kgfegmcp/packages/loader.py`: `sha256:08408a9ae718976a2fccf702482a41cbaf0a5a625b55cc3844385cdb07a88817`.
+- `backend/src/kgfegmcp/packages/models.py`: `sha256:dcd73e308d658c962b793a1b9e6f72eebaf445ce3876269186efb0604a1c0591`.
+- `backend/src/kgfegmcp/packages/repository.py`: `sha256:4e0f0621d1ee2c1fa5e557fd7e91230922310ee9bc610965acaf810619632cfa`.
+- `backend/src/kgfegmcp/packages/wire.py`: `sha256:6384effad1fd2c4d6fbfd185a358a058ae12cfc77e6f06b493adf0ff2a229147`.
+- `backend/src/kgfegmcp/regexes.py`: `sha256:ec989cbd55da39100806fe284139751f253066d02083b56f63ad2867090a3182`.
+
+**Implementation Notes**
+
+Existing decoder, graph models and domain enums already preserve generic LP relationship fields, so they were reused. Loader and validation-persistence graph-type constraints were adjusted alongside the package contracts to admit supported combinations with or without LP; this is contract consistency within the approved outcome, not an integrity-acceptance implementation. Availability is derived from complete evidence declarations rather than nonzero counts. Original LP provenance maps remain dedicated evidence; the builder only permits the 64 canonical additional provenance filenames with their matching logical slots. DEV-003 will construct the complete partitions; DEV-004 will verify their contents. No later step was started.
 
 ### DEV-003 — Prepare normalized LP inputs and verified provenance partitions
 
@@ -429,8 +469,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, and explicitly directed DEV-001 only. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 is DONE with verified copy evidence; STEPWISE is paused before DEV-002. No later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 and DEV-002 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-003. No later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -439,5 +479,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: first approved step DEV-001 is DONE. Next approved dependency-ready step is DEV-002; user continuation is required before starting it. Re-read its relevant package/delivery contracts and retained receipts.
+- Resume: DEV-001 and DEV-002 are DONE. Next approved dependency-ready step is DEV-003; user continuation is required before starting it. Re-read the normalization/provenance-partition architecture, new package/delivery contracts and retained local copy receipt.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.

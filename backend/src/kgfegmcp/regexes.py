@@ -13,13 +13,13 @@ ARTIFACT_NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 # Matches ASCII control characters that are unsafe in identifiers and paths.
 CONTROL_CHARACTER_RE = re.compile(r"[\x00-\x1f\x7f]")
 
-# Delivery artifacts carry standards and learning components together. These patterns
-# gate package construction only; built packages resolve paths from their manifest.
+# Delivery artifacts carry standards, learning components and optional progressions.
+# These patterns gate construction; built packages resolve manifest-declared paths.
 DELIVERY_NODES_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
-    r"^as_lc_nodes_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
+    r"^as_lc(?:_lp)?_nodes_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
 )
 DELIVERY_RELATIONSHIPS_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
-    r"^as_lc_relationships_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
+    r"^as_lc(?:_lp)?_relationships_[A-Za-z0-9][A-Za-z0-9_-]*\.jsonl$"
 )
 
 # Matches graph package IDs based on a snapshot, with an optional future package suffix.
@@ -32,6 +32,11 @@ GRAPH_PACKAGE_ID_RE = re.compile(
 
 # Matches lowercase kebab-case registry keys such as framework and profile IDs.
 KEBAB_CASE_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+# Only the 64 defined LP provenance partitions may use an lp_-prefixed extra file.
+LEARNING_PROGRESSION_PROVENANCE_SHARD_BASENAME_RE: Final[re.Pattern[str]] = re.compile(
+    r"^lp_relationship_provenance_shard_([0-5][0-9]|6[0-3])\.json$"
+)
 
 # Matches a conservative BCP 47-shaped language tag.
 LANGUAGE_TAG_RE = re.compile(r"^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$")
