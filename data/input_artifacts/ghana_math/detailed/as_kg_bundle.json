@@ -26018,11 +26018,11 @@
         }
       },
       "country": "Ghana",
-      "created_at": "2026-07-20T19:43:06.033193+00:00",
+      "created_at": "2026-08-23T20:19:00.862897+00:00",
       "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
-      "document_ir_fp": "/Users/tzz/Projects/private/idi/SenegalKG/results/kg_for_ed/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/stitching/document_ir.json",
+      "document_ir_fp": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/stitching/document_ir.json",
       "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-      "kg_run_dir": "/Users/tzz/Projects/private/idi/SenegalKG/results/kg_for_ed/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/kgs",
+      "kg_run_dir": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/kgs",
       "observed_languages": [
         "en",
         "mul"
@@ -114245,7 +114245,7 @@
       "has_child_resolution_summary": "e7363198157305c8d8e328211ee777412cbc9db22fec8b9131579c1e3ff90418",
       "has_child_unresolved_edges": "75e5e490818d24b9b62e9c561f01eb9bcb3377242cafc5b04eca52cb8a279a22",
       "is_current": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
-      "kg_run_manifest": "ff53f9f7a51d5b045412fe49fecf80f68cf54138d2237125de1d4466a0489278",
+      "kg_run_manifest": "68aa529bb485bfdae27748eb552ab186aed4ddaa43c38d456d00d9718dd8952e",
       "learning_commons_export_schema_version": "092de488d43e78a45f583c2a8a550ae5ca0671d3ba20b2f0a0aa0d52eaa675d9",
       "learning_commons_nodes": "2f31c27b3cfbaa08052b47f58c94f764143e8ca77fe40f7214553f0000a0b7da",
       "learning_commons_relationships": "3b5e64c434229e5368b7bef4e7e2359855f073afcb4244c3c87f8ad5df9393c6",

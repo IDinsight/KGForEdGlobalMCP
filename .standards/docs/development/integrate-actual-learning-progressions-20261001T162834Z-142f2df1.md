@@ -437,7 +437,7 @@ DEV-005 is DONE. The next dependency-ready approved step is DEV-023, but it has 
 
 ### DEV-023 — Replace all six package preparation sets and build specifications
 
-`Status`: `PENDING` `Depends On`: `DEV-005`
+`Status`: `DONE` `Depends On`: `DEV-005`
 `Acceptance`: `AC-002, AC-003, AC-017, AC-018, AC-022, AC-027`
 
 **Goal**
@@ -456,7 +456,83 @@ Verify all replacement inputs and specifications before deleting the correspondi
 
 **Self-Check**
 
-Inventory each old/new input set and record hashes before cleanup. Validate all six build specifications and rebuild/revalidate their packages in an isolated preparation root using the established build/validation CLI, comparing exact manifest-derived snapshot/profile/artifact identities and counts with the accepted replacements from DEV-005. Check that every referenced path exists, complete evidence/shard declarations are present, no stale profile-version or delivery reference remains in the six specifications, and superseded files are absent while required AS/LC content and source copies are unchanged. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+Completed: all six maintained input sets contain the exact 86-artifact normalized AS/LC/LP payload plus updated package_build.json. Specifications bind profile version 2.0, declare all 64 provenance shards and build into a separate local root. All six dry-run proposals, actual builds, persisted atomic acceptance and read-only revalidation passed and reproduce the DEV-005 snapshot/package/profile/count/artifact identities. Only after that comparison passed were the twelve superseded delivery files removed. Sealed packages, configs, original copies and prepared/DEV-005 evidence remain unchanged.
+
+**Actual Evidence**
+
+- Assessed HEAD: `20f47ab2f50474aef5ac26f54341385338469652`; entry tracked working tree was clean. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`. User explicitly authorized DEV-023; its matching continuation blocker was cleared and this step alone changed to IN_PROGRESS. No recovery, outstanding obligation, mode/cadence change or material plan revision was needed. No Git commit or staging was performed.
+- Executed `python3 /tmp/kgfegmcp-dev023-prepare.py`: inventoried 84 old input files and 1,526 protected files; verified the six DEV-005 accepted manifest/profile and full artifact byte identities, all 138 local copied source hashes, and prepared bytes before mutation. Backed up the complete old input tree under ignored `data/source_artifacts/learning_progressions/dev023/old_inputs/`. Copied 473 new/updated artifacts through checked temporary files and atomic per-file replacement: 450 new delivery/LP/shard files plus 23 previously reconciled producer metadata artifacts. The other 43 required AS/LC detailed files remain byte-identical. Six specifications were replaced after verifying their authoritative metadata, preserving jurisdiction, source publication/version, package revision, profile ID and snapshot relations. Old delivery files remained until rebuild verification succeeded.
+- Executed `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev023-build.py`. Its 19 established CLI invocations all exited 0: for each maintained specification, `kgfegmcp-build-manifest --spec <project>/data/input_artifacts/<set>/package_build.json --dry-run` and the same command without `--dry-run`; then `kgfegmcp-validate-packages pending`; then for each exact replacement `kgfegmcp-validate-packages one --framework-id <framework-id> --snapshot-id <snapshot-id> --read-only`. The orchestrator uses the same locked/offline/no-sync uv prefix with absolute backend directory; Python tooling executes in backend and subprocess working directory is the repository root. Command arguments, environment overrides, exit codes and output hashes are retained in commands.json.
+- CLI environment explicitly bound `PATHS_PROJECT_DIR=<project>`, `KGFEGMCP_PROFILE_ROOT=<project>/config/profiles`, `KGFEGMCP_PROMPT_ROOT=<project>/config/prompts`, and `KGFEGMCP_GRAPH_PACKAGES_ROOT=<project>/data/source_artifacts/learning_progressions/rebuilt_packages`. This ignored isolated rebuild root is also the maintained specifications' repository-relative outputRoot. All actual input references are within the corresponding maintained input set; no build reads prepared/raw-copy or external-project inputs. The profile reference is 2.0, with no stale delivery/configuration paths. Existing builder/normalization/validation implementation sufficed; no production Python changes or new CLI contract were needed.
+- All six pending packages atomically persisted to passed with no findings. Terminal read-only revalidation reported valid, terminalRevalidation true, readOnly true and persisted false, no findings, with identical terminal manifest bytes before/after. Entire rebuilt manifest content equals DEV-005 except createdAt and validation.validatedAt, which record this new build/acceptance event. Snapshot ID, graph package ID, profile ID/version/hash, every declared artifact path/checksum, all counts, framework/source/current metadata, rights, included graph types, capabilities and snapshot relations match. Every one of the 516 rebuilt artifacts is byte-identical to the DEV-005 accepted counterpart. Total stored edges remain 3,039 buildsTowards and 5,041 relatesTo. Full-evidence validation retains the same CBSE needs_review and Ghana warning evidence and does not promote those items into published edges.
+- Executed `python3 /tmp/kgfegmcp-dev023-cleanup.py` only after all six rebuild/acceptance/revalidation/content comparisons passed. Rechecked every new input against prepared bytes and each obsolete file against its pre-migration hash, then deleted only the twelve old as_lc_nodes/as_lc_relationships delivery files. Final maintained inventory is exactly 522 files: 87 per set, including the specification, with 384 shards. Of the 84 previous input paths, 43 detailed files are unchanged, 23 detailed evidence files and six specs are updated, and twelve delivery files are removed. The 450 new paths consist of twelve normalized delivery files, 54 dedicated LP artifacts and 384 provenance shards. No unrelated/required file disappeared; final payload for each set exactly equals the prepared/accepted 86-artifact payload.
+- Preservation check passed for all 1,526 entry protected files: backend source, every config version (including 1.0), old sealed active graph packages, source copies/copy receipt, normalized preparation, DEV-005 accepted replacements and previous local evidence. All hashes and sizes match. The old input backup also remains available locally; Git HEAD retains the old committed versions. Inputs are repository data, while provenance's historical producer paths/hashes remain original evidence rather than live dependencies. The 23 detailed metadata updates are exactly those reconciled in DEV-005; no curriculum/source text or graph edge was changed.
+- `git check-ignore --stdin` confirmed all 522 maintained files are unignored, while new local receipts and rebuilt packages are ignored. Inspected existing Dockerfile and build_mcpb.py: they select config and data/graph_packages, excluding input_artifacts/source_artifacts from runtime distribution. These files were not changed; no distribution was built or deployed in this step. `git diff --check` passed after cleanup. Workflow validation passed at entry.
+- Limits: these are Developer implementation checks, not independent Tester verification, semantic/pedagogical certification or runtime activation. No formal test suite was added/changed and no Python static checks were needed for this data/spec-only change. No external source access/modification, model/paid-service call, producer/checker regeneration, sampling, publication or deployed service update occurred. Full application bootstrap, new query surface, transports and staged distribution remain future approved work. Active sealed packages and version 1.0 configuration folders remain intact until DEV-017. DEV-012 and later steps have not started.
+
+Maintained build specifications (reusable command prefix `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-build-manifest --spec`, followed by the absolute specification path):
+
+| Input set | Specification SHA-256 | Canonical 87-file input inventory SHA-256 |
+|---|---|---|
+| `data/input_artifacts/ghana_english/package_build.json` | `sha256:e24c249dceff96646d0630da12e56a20b49d6f6b881d0271fe8ce069dad951ad` | `sha256:ba3d99844a107516b263c4bde98fa10c6676be8e81d7bcd4761ab69ee626063d` |
+| `data/input_artifacts/ghana_math/package_build.json` | `sha256:8eca68df6015f2fc99197a120073c88a78c8d0e17791bf040577347c47def260` | `sha256:e56c47326282231bcd1d8d7a7e15bdb115cf650e92fb8ae6724ab196a9a3cda5` |
+| `data/input_artifacts/madhi_math/package_build.json` | `sha256:50397815509dbe255be2269a34852ec5d77d9d866fe87815a58bb9407389d945` | `sha256:914f1d5d40a025fda9dfa3e2afcbbdab066d7321fbfd979f28b9ccf91ee7c0c9` |
+| `data/input_artifacts/nigeria_math/package_build.json` | `sha256:3989fb1ef27f20437ddde1883ffa9f50f8c1bdf9f920e57fba9d33b9c56f0dd7` | `sha256:2c19f0d71b7a05656a7cd970e2c9b379fdd7461c95c5b6d50bf2d3e01883502b` |
+| `data/input_artifacts/pratham_science/package_build.json` | `sha256:77c5ac915b0c8d5bfc79dec51f3c572317c20586ab8b4c9479b5c7a0a87368ac` | `sha256:c7d46165150367ce4dd1ea36c59c3962540cbfa1d0866153ce91e81f7fbffc2f` |
+| `data/input_artifacts/rwanda_math/package_build.json` | `sha256:d44e564ac1c9e1f750f7aa61de97aa0764d43d374a69ff2e5c4cde929e5d1477` | `sha256:75e5f84e497a8876d3cad9149bb1bd0a160361104e960cbe80b3c237531a4b1b` |
+
+Rebuilt snapshot identities (graph package ID is the snapshot ID plus `--academic-standards--p1`; profile identities/artifact checksums match the DEV-005 tables and retained comparison receipt):
+
+| Set | Snapshot ID | buildsTowards | relatesTo | Rebuilt accepted manifest SHA-256 |
+|---|---|---:|---:|---|
+| `ghana_english` | `ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507` | 250 | 801 | `sha256:5cf5dbb35785b0ded64f062c19589b1601cd1f76e08cdddf991f9a1a14439f7b` |
+| `ghana_math` | `ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9` | 299 | 300 | `sha256:16ef563d4fea0a5f6d259580ef834b1231d4376c9d34b521e416b39960b70533` |
+| `madhi_math` | `india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f` | 472 | 435 | `sha256:32e860054447d9dde6d6d7b15bddb118e33727111953f2c4671b0b3359ca359b` |
+| `nigeria_math` | `nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f` | 189 | 297 | `sha256:3b0616d3ad9c2d6017c7c9bd4f9624927875daf9d1a6cd46b0a2316916544479` |
+| `pratham_science` | `india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1` | 891 | 2315 | `sha256:d7431e9e49ff4d4c99b985d3a42dd10bae506c406dca0e96c26d9d8159515a96` |
+| `rwanda_math` | `rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13` | 938 | 893 | `sha256:7a00e1afee01ff60ba4862eb833e26a4f85c727f08447573d229c5a3e89b3e2b` |
+
+Superseded delivery paths and their exact original byte identities (removed only after successful comparison):
+
+| Previous path | Original SHA-256 |
+|---|---|
+| `data/input_artifacts/ghana_english/delivery/as_lc_nodes_ghana_english.jsonl` | `sha256:cdd93c3e5d42bc1f13d1deca34863a46e292d94668e3e11f524b0d01f53e4902` |
+| `data/input_artifacts/ghana_english/delivery/as_lc_relationships_ghana_english.jsonl` | `sha256:36fef88e4622f8c63d0f1937873945c7cece861b5f235446a76ecc650ddac9e7` |
+| `data/input_artifacts/ghana_math/delivery/as_lc_nodes_ghana_math.jsonl` | `sha256:24e662c76cca3d2a209615e4e8961f5b008a6857c2d2c1829bd59f1394a396ac` |
+| `data/input_artifacts/ghana_math/delivery/as_lc_relationships_ghana_math.jsonl` | `sha256:28a904a0c1a496ad9d4065a5719aa7324d9c3e8b0b8e70c4c97ff8891ac5af1b` |
+| `data/input_artifacts/madhi_math/delivery/as_lc_nodes_madhi_math.jsonl` | `sha256:df6b2ef0d01ad439fd1d10e214069c2006ec3527ce6b7bd4b00bc196289a4263` |
+| `data/input_artifacts/madhi_math/delivery/as_lc_relationships_madhi_math.jsonl` | `sha256:d89b1aaabe5ea6db121f69233b3e5e466673660acc66b9bbd6382cf675e79575` |
+| `data/input_artifacts/nigeria_math/delivery/as_lc_nodes_nigeria_math.jsonl` | `sha256:cebe0db559f29c93da432216ad468d1d2449cdc2019e66745809812c262b7252` |
+| `data/input_artifacts/nigeria_math/delivery/as_lc_relationships_nigeria_math.jsonl` | `sha256:497d2896475adf959814845085beb73b153d23a372cce172c44d474a718870c2` |
+| `data/input_artifacts/pratham_science/delivery/as_lc_nodes_pratham_science.jsonl` | `sha256:aa523e7642a63b29b301f9396e98c365849796ef1d68a87b8afdb19a5c8b1132` |
+| `data/input_artifacts/pratham_science/delivery/as_lc_relationships_pratham_science.jsonl` | `sha256:490671e915dc261929d903b4bb211a0d5dc1fed3b3666398c25abf957eb09e72` |
+| `data/input_artifacts/rwanda_math/delivery/as_lc_nodes_rwanda_math.jsonl` | `sha256:5baa25285b2ff926a168d6d2736c209713b2041c46b0be348aec98bb0761f00f` |
+| `data/input_artifacts/rwanda_math/delivery/as_lc_relationships_rwanda_math.jsonl` | `sha256:6414f565f8ad02fd9dabf8e50f68998d7f644bde4525255f501b6858a0fdf23c` |
+
+Exact implementation evidence identities:
+
+- `/tmp/kgfegmcp-dev023-prepare.py`: `sha256:d66fe6fce9a76d936450e892da16ab8b396492ce484fe4986055ca8c0996df9a`.
+- `/tmp/kgfegmcp-dev023-build.py`: `sha256:04a1fc0314413cf31163ce84777112d856ed6067c04ade20251999a63e3b8de8`.
+- `/tmp/kgfegmcp-dev023-cleanup.py`: `sha256:466f9d50a3c245fc77eae1501aa1c4493291f829467a3de8a648a3c5dcf36841`.
+- `data/source_artifacts/learning_progressions/dev023/baseline.json`: `sha256:d157b315de640f8b4887fd936746dc40e238372655b7c96bbab9b0263a8ee1df`.
+- `data/source_artifacts/learning_progressions/dev023/migration-plan.json`: `sha256:a86804ebf5d84ea20b37a182028f6e04f3d0d9525425bf53b9ca80c8b05e675c`.
+- `data/source_artifacts/learning_progressions/dev023/copied-files.json`: `sha256:c3ce60f13ac6b65660d2a8ea9926699787a170aedb66ea84dac0e74cb63a0ffb`.
+- `data/source_artifacts/learning_progressions/dev023/new-inputs-before-cleanup.json`: `sha256:7c44d37e13f275dc66b92a726f3172599456dd58cbf80cecab9c24e9bb621225`.
+- `data/source_artifacts/learning_progressions/dev023/commands.json`: `sha256:5f2e53b543d4897d4973340b156de1542521a285e5a8511682b8cf943f2db5fb`.
+- `data/source_artifacts/learning_progressions/dev023/checks/atomic-acceptance.json`: `sha256:b775a6f651a9b5684ac2d10c682a75116a234a1f70724b473a6755f930a06cd4`.
+- `data/source_artifacts/learning_progressions/dev023/checks/rebuild-comparison.json`: `sha256:f3b884d148434589522d3e4c1023f7b9183f4fa318ff89df8addf36150c9dc0c`.
+- `data/source_artifacts/learning_progressions/dev023/checks/final-inventory.json`: `sha256:0c15ab6550c3ddc0a7df248886c44243f5f8f247c1232bdc3875eb899eada5fa`.
+- `data/source_artifacts/learning_progressions/dev023/checks/input-set-identities.json`: `sha256:ce9850f0babe2cfc96a488a34a6f7acf00573e35c9b84b123a1d81cc5a925b5b`.
+
+The baseline receipt records every old input/protected path, size and hash; final-inventory.json records every new path/hash and all removed/retained/updated paths. Canonical inventory hashes above bind the complete per-set content, using the encoding specified in input-set-identities.json. commands.json binds every per-set dry-run/build/revalidation output. The comparison receipt binds rebuilt versus original manifest byte hashes, profile/artifact identities, actual counts and both timestamp pairs. These local receipts are ignored preparation evidence; current maintained inputs and the workflow plan are version-controlled deliverables.
+
+**Implementation Notes**
+
+Normalized delivery filenames retain the framework-ID tokens produced by DEV-003, rather than introducing new short tokens: the sanitized normalization receipt and provenance index stay byte-identical, so exact artifact-set snapshot identities reproduce DEV-005. Shards remain under each set's additional/ directory with explicit logical-name mappings; the existing detailedArtifactsDirectory discovery includes all eleven AS/LC and nine LP detailed artifacts. The output root is safe local preparation, distinct from active graph_packages; activation remains DEV-017. The existing normalization command still stages verified output separately, and the maintained builder can rebuild directly from these repository input sets without raw copies or an external project.
+
+`node .standards/bin/check.mjs` and `git diff --check` passed after saving completion and the DEV-012 continuation blocker.
+
+DEV-023 is DONE. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMENTATION and Current Increment NONE; workflow remains DEVELOPING with no recovery or obligations. Next dependency-ready step is DEV-012; explicit user continuation is required. Suggested commit: `feat(data): replace preparation inputs with accepted learning progressions`.
 
 ### DEV-012 — Implement exact LP selection and shared evidence results
 
@@ -691,8 +767,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004 and DEV-005. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-023; no later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005 and DEV-023. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005 and DEV-023 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-012; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -701,5 +777,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005 are DONE. Next approved dependency-ready step is DEV-023; user continuation is required before starting it. Re-read the six accepted replacement identities and DEV-005 local build/validation/content receipts. Replace maintained input_artifacts preparation sets/specifications and compare isolated rebuild identities to these retained replacements. Keep source copies, prepared artifacts, sealed baseline packages/version 1.0 configs and accepted replacements unchanged; activation/retirement is DEV-017. No later step has started.
+- Resume: DEV-001 through DEV-005 and DEV-023 are DONE. Next approved dependency-ready step is DEV-012; user continuation is required before starting it. Re-read stored LP service/model, exact selection, rights/error/excerpt/identity/byte-budget contracts and the accepted DEV-005 or byte-identical DEV-023 rebuild evidence. Maintained data/input_artifacts now rebuild the same six replacements directly; isolated rebuilt packages are under data/source_artifacts/learning_progressions/rebuilt_packages. Keep all source/prepared/accepted packages and version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.

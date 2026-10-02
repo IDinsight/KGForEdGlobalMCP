@@ -37207,9 +37207,9 @@
       "country": "Ghana",
       "created_at": "2026-08-23T17:35:57.828621+00:00",
       "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
-      "document_ir_fp": "/Users/mustafa/IDinsight/KGForEdGlobal/results/ghana_english/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/stitching/document_ir.json",
+      "document_ir_fp": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/stitching/document_ir.json",
       "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-      "kg_run_dir": "/Users/mustafa/IDinsight/KGForEdGlobal/results/ghana_english/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/kgs",
+      "kg_run_dir": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/kgs",
       "observed_languages": [
         "en"
       ],
@@ -165718,7 +165718,7 @@
       "has_child_resolution_summary": "673b4071b60d773742969fd45fa8d4855b5c107f6b4ce3cb9d5ce9f369950e6e",
       "has_child_unresolved_edges": "0e19110c00d86aff40a2df7c36cfe2243f3e35be54d4f14071ba3d80960bd3b3",
       "is_current": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
-      "kg_run_manifest": "c5e91aedd005ee0d435f4d9d3f2fbd5c20b5d46b637ef5a26c732a8a84ed0ecd",
+      "kg_run_manifest": "94944ba6877ea40275abc92630c5a06162f25674271add0ee95f428ff79268cd",
       "learning_commons_export_schema_version": "092de488d43e78a45f583c2a8a550ae5ca0671d3ba20b2f0a0aa0d52eaa675d9",
       "learning_commons_nodes": "d400317c54241215f0fc4afa0aca01cf2273d77b7540afdffde4b906880175a4",
       "learning_commons_relationships": "5936c24c3c54e2eb64c9fbc1619ce4e500351c856a44b814a82ef24ba8af7db3",
