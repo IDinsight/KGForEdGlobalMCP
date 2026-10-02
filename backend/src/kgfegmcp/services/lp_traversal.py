@@ -198,6 +198,9 @@ def _admit_edge(
             )
             return "byte_limit"
 
+        _require_edge_size(
+            adjacent=adjacent, context=context, edge=edge, node_id=node_id, rows=rows
+        )
         del rows.relationships[edge.relationship_id]
 
         if is_new:
@@ -255,6 +258,48 @@ def _examine_node(
         rows.positions[node_id] += 1
 
     return True
+
+
+def _require_edge_size(
+    *,
+    adjacent: NodeId,
+    context: _TraversalContext,
+    edge: GraphRelationship,
+    node_id: NodeId,
+    rows: _TraversalRows,
+) -> None:
+    """Reject an unreturnable edge before treating overflow as collection truncation.
+
+    Parameters
+    ----------
+    adjacent
+        Neighbor endpoint in the requested direction.
+    context
+        Shared byte policy and pinned query metadata.
+    edge
+        Speculative original edge whose complete evidence must fit individually.
+    node_id
+        Current BFS endpoint.
+    rows
+        Projected evidence and actual counters before whole-entry rollback.
+    """
+
+    # Keep the origin and both endpoints, without earlier unrelated evidence. This
+    # exact minimal envelope distinguishes an oversized entry from a full collection;
+    # conservative reservation alone must not reject a fitting entry.
+    node_ids = dict.fromkeys((next(iter(rows.nodes)), node_id, adjacent))
+    single = _TraversalRows(
+        depth_examined=rows.depth_examined,
+        distances={key: rows.distances[key] for key in node_ids},
+        examined=rows.examined,
+        nodes={key: rows.nodes[key] for key in node_ids},
+        positions={key: int(key == node_id) for key in node_ids},
+        reasons={"byte_limit"},
+        relationships={edge.relationship_id: rows.relationships[edge.relationship_id]},
+    )
+    _require_size(
+        context=context, result=_result(context=context, reserve=False, rows=single)
+    )
 
 
 def _require_size(

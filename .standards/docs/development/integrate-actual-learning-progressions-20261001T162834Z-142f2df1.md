@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Implementation Contract
@@ -1410,7 +1410,7 @@ DEV-021 is DONE. Suggested Conventional Commit: `feat(prompts)!: replace progres
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `DONE` `Depends On`: `DEV-021`
+`Status`: `PENDING` `Depends On`: `DEV-021`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025`
 
 **Goal**
@@ -1508,3 +1508,44 @@ Tester must use the same checkout, reload STATE/context/scope/architecture/devel
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
 - Resume / full assessment: All approved steps (DEV-001–DEV-005, DEV-023 and DEV-012–DEV-022) are DONE. Plan COMPLETE, locked tony, STEPWISE, AFTER_IMPLEMENTATION, Current Increment NONE. Workflow advances to TESTING, with no Developer continuation blocker, recovery or obligations. Final public surface is 17 tools/nine prompts/one fixed resource/14 templates; prompt version 1.3.0, package/MCPB version 0.3.1. Assessed HEAD `3a11ded38a3ad666487207e79c14f31012ec6fa7` plus six DEV-022 changed-content identities and local receipts establish the handoff input. All six accepted rebuilt runtimes remain active; all 3,129 entry protected files are byte-exact. The final retained bundle/archive are under dev022; initial build evidence is separate. Actual pytest exit 5 reflects absent formal cases and is not acceptance; Tester owns those cases and full verification. Documenter owns remaining user-reference cleanup and strict docs checks. Do not rerun activation, regenerate original evidence, call live LLM/paid APIs, deploy or publish. Use an independent Tester session on this checkout; Developer must not continue implementation concurrently.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
+
+### Recovery correction — DEV-014, 2026-10-02
+
+Entry HEAD `9ff00c5c381bf349645655ae7f04057fa649a44c`; clean tree. Active frame 1 is IMPLEMENTATION from TESTING, owner DEVELOPING, ResumeAt TESTING, RerunThrough NONE. Exact reason: `Traversal silently omits a later individually oversized edge instead of raising progression_result_too_large (AC-009).` Read Tester report and Suspended Assignment 1; preserve its FULL/NONE assignment and scenario allocations.
+
+Reopened DEV-014 IN_PROGRESS for the unchanged approved standalone-entry error contract. Reopened DEV-022 PENDING because its retained archive/stage contains the defective traversal source; refresh to a new distinct retained path and rerun relevant distribution/transport checks after the STEPWISE continuation. Preserve both old distributions and receipts. No material intent or dependency change, no duplicate approval required. Unaffected steps remain DONE. Current cadence AFTER_IMPLEMENTATION, Current Increment NONE, locked tony unchanged. This is Developer correction work, not independent Tester acceptance.
+
+**DEV-014 corrective outcome and actual Developer checks**
+
+Added `_require_edge_size` at the later-entry overflow boundary before whole-entry rollback. It uses the existing shared traversal encoder with exact origin, both endpoint summaries, original projected relationship, route metadata and finite counters/frontier. It excludes earlier unrelated rows and uses the actual minimal envelope rather than conservative reservation. An individually unreturnable edge raises the existing `progression_result_too_large` with resource recovery; a fitting edge that overflows only the accumulated result still rolls back with its speculative endpoint and returns explicit byte truncation. First-entry handling, public models/schema, original orientations, rights, metadata and all search/work/queue ceilings remain unchanged. No base-model/service import dependency was added.
+
+Commands ran 2026-10-02 from repository root; Python commands used `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync` (effective Python cwd backend). Environment explicitly set `UV_OFFLINE=1`, `PYTHONDONTWRITEBYTECODE=1` and `PATHS_PROJECT_DIR=/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`. Exact argv, environments, stdout/stderr and exits are in commands.json and commands-before.json; scripts and logs are retained under `data/source_artifacts/learning_progressions/recovery-dev014/checks/`.
+
+- Before correction: `pytest -q -p no:cacheprovider tests/kgfegmcp/test_progression_traversal.py`, exit 1, one PASS/one FAIL in 12.14s, reproduced later omission with returned=1/examined=2/byte_limit/scopeComplete=false. This deliberate diagnostic failure is superseded only by the changed-content run below.
+- After correction: same exact pytest command, exit 0, **2 passed in 5.94s**. Existing Tester-owned file was run unchanged as Developer feedback. Pytest emits the pre-existing pytest-asyncio default-loop-scope deprecation warning; no config/test weakening.
+- `python /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/recovery-dev014/checks/feedback.py`, exit 0. Real accepted local bootstrap, all six DEV-023 rebuilt/DEV-017 active runtimes, no reactivation. Socket connect/connect_ex forbidden. Twelve package/direction combinations each exercised normal deterministic repeat, individually oversized first and later projected edges (24 expected typed errors with resource hints), and two individually fitting 600,000-byte UTF-8 attribution projections exceeding the combined ceiling (12 expected byte-truncated responses). Verified returned/examined counts 1/2, pending frontier, incomplete flags, exact retained first edge, whole-edge/endpoint rollback, final encoded size <=1 MiB and deterministic repeats. Restoring the temporary projection patch reproduces the original normal result. Projections are synthetic feedback only and do not mutate or establish acceptance of giant package records.
+- Target module `src/kgfegmcp/services/lp_traversal.py`: `black --check`, `isort --check-only`, `ruff check --no-cache --select E,F,C90`, `mypy --cache-dir /tmp/kgfegmcp-recovery-dev014-mypy`, `pylint` and `interrogate --generate-badge /tmp/kgfegmcp-recovery-dev014-badge`, all exit 0. Mypy no issues; pylint 10.00/10; interrogate 100%. `node .standards/bin/check.mjs` and `git diff --check` exit 0.
+- Final read-only exact hash comparison: **4,506 protected files unchanged** under data/config/dist and Tester report/test plus scope/design/context. This includes active/retired sealed packages, original/raw/prepared/rebuilt inputs, versioned configurations, prior receipts and both prior DEV-022 stages/archives. Inventory omits environment/bytecode cache directories `.venv` and `__pycache__`; those are not source evidence. The only new data files are this separate recovery receipt directory. No external-source read, source evidence regeneration, activation, dependency sync, model/paid-service call, publication or deployment occurred.
+
+Assessed changed source: `backend/src/kgfegmcp/services/lp_traversal.py`: `sha256:b6a7982dae8a76b420bd33c2af0e7499d28b88f82039ff80c9a43970070ac577`. Entry source identity was `sha256:5d6a100fb58efc900fdf948ef675c3cb9874ebc096baec15af5b683bedcfbf72`; assessed HEAD remains `9ff00c5c381bf349645655ae7f04057fa649a44c` plus this dirty source content and Developer coordination records. No commit created.
+
+Receipt identities (all relative to the separate recovery checks directory):
+
+- `protected-inputs.json`: `sha256:d949e05047df9e94e8af224568c4b34f91283456542a52b3f9aed9993b602980`.
+- `preservation.json`: `sha256:b3888f204d8299ed1d7ae211e4cde7b87349a88a26d5d140bf4d5f6ed61f3304`.
+- `commands-before.json`: `sha256:f34ad8fb472ae48e08396ced0e332d27eb8e4b26c80a18a3676b2a5e4ddcaacc`.
+- `commands.json`: `sha256:e6bc78affbccda981e8be7598319a3cc1cc1e894545faef77cb2dfd15b04287f`.
+- `feedback.py`: `sha256:81908b49affa2aec58fa40984c88528cbe5f575dc4a80301dafad648a769556d`.
+- `feedback.log`: `sha256:257a163da42e6afc8b261968a492281b4310dc53bf8d48fd8b150580a75004a6`.
+- `run_checks.py`: `sha256:6dd4a25d4369f20fc8a0be46592cccdad4c95b420341705539521433c43b60f5`.
+- `pytest-before.log`: `sha256:bb11f75d9785be3bc5a856807c9d62d9093f2824651b2c00ce0511870a7a7694`.
+- `pytest-after.log`: `sha256:ab317c10fc7bc4350938075bd6a1b9cdb84e8b63e418f5faa6a2a81ce799246d`.
+- `evidence-index.json`: `sha256:84f9e0cb293e3a78ab4a0302018f2248742a3821231bdcb44e8f9032ffcc068f`.
+
+**Limits, current assignment and STEPWISE continuation**
+
+DEV-014 correction is DONE; these are ad hoc Developer checks, not independent Tester acceptance and not closure of the Tester-owned finding/report. No pedagogical/semantic certification or executed model composition is claimed. Historical DEV-014/DEV-022 completion evidence and previous full handoff above remain historical; this recovery section supersedes their current readiness claims. The full Developer gate does not pass yet: reopened DEV-022 is PENDING, because old retained distribution source still has the defect. Repository traversal checks pass, while refreshed transport/archive/stage evidence is not yet run. Prior static/domain evidence outside this small correction supports reconstruction only.
+
+STEPWISE stops here with plan IN_PROGRESS, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE, workflow DEVELOPING. Active recovery frame 1 and FAILURE handoff are preserved; no pop/RESUME or formal Tester handoff yet. Next authorized step after user continuation is DEV-022: build a new distinctly named recovery archive and stage preserving both dev022 archives/stages, rerun applicable offline repository/staged transport checks, verify distribution source/data closure and unchanged protected bytes, then record identities and apply the full Developer gate. No production build recipe change is currently required. Return to TESTING with RESUME and pop the frame only after that gate passes; restore Tester's Suspended Assignment 1 (FULL/NONE), reconcile changed implementation/distribution inputs and rerun affected byte boundaries plus remaining full verification. Independent Tester must allocate missing formal coverage and assess all outstanding obligations itself. Do not edit its tests/report or certify its acceptance. Documenter dependencies AC-026/AC-027 persist.
+
+Suggested Conventional Commit: `fix(progressions): reject individually oversized later traversal edges`.
