@@ -56,6 +56,8 @@ from kgfegmcp.services.lp_discovery import collection_result, ordered_progressio
 from kgfegmcp.services.lp_models import (
     MAX_PROGRESSION_RESULT_BYTES,
     MAX_STATEMENT_EXCERPT_CHARACTERS,
+    GetLearningProgressionPathsRequest,
+    GetLearningProgressionPathsResult,
     GetLearningProgressionRequest,
     GetLearningProgressionResult,
     GetStandardProgressionsRequest,
@@ -71,6 +73,7 @@ from kgfegmcp.services.lp_models import (
     TraverseLearningProgressionsRequest,
     TraverseLearningProgressionsResult,
 )
+from kgfegmcp.services.lp_paths import paths_result
 from kgfegmcp.services.lp_traversal import (
     TraversalAdjacency,
     traversal_adjacency,
@@ -120,6 +123,16 @@ def progression_result_text(result: ProgressionEvidenceResult) -> str:
             f"Truncation reasons: {', '.join(result.truncation_reasons) or 'none'}. "
             f"Examined: {result.counters.examined_relationship_count} adjacency edges. "
             f"{result.traversal_notice}"
+        )
+
+    if isinstance(result, GetLearningProgressionPathsResult):
+        page_notice = (
+            f"\nReturned paths: {len(result.paths)}. "
+            f"Requested depth complete: {result.scope_complete}. "
+            f"Simple-path search exhausted: {result.graph_exhausted}. "
+            f"Truncation reasons: {', '.join(result.truncation_reasons) or 'none'}. "
+            f"Examined: {result.counters.examined_relationship_count} adjacency edges. "
+            f"{result.path_notice}"
         )
 
     return (
@@ -353,6 +366,35 @@ class LearningProgressionsService:
         )
         return result
 
+    def get_learning_progression_paths(
+        self, request: GetLearningProgressionPathsRequest
+    ) -> GetLearningProgressionPathsResult:
+        """Find bounded alternative directed simple paths between exact standards.
+
+        Parameters
+        ----------
+        request
+            Source, target and positive depth/path bounds in one framework route.
+
+        Returns
+        -------
+        GetLearningProgressionPathsResult
+            Original generated hops, derived paths and honest search completeness.
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        return paths_result(
+            adjacency=self._traversal_by_package[
+                runtime.catalog_package.package_identity.graph_package_id
+            ],
+            request=request,
+            runtime=runtime,
+            service=self,
+        )
+
     def get_standard_progressions(
         self, request: GetStandardProgressionsRequest
     ) -> ProgressionCollectionResult:
@@ -505,6 +547,26 @@ class LearningProgressionsService:
         self.resource_policy.require_resource_access(
             resource_kind=ResourceKind.RELATIONSHIP,
             rights=runtime.catalog_package.rights,
+        )
+
+    def require_paths_result_size(
+        self, *, result: GetLearningProgressionPathsResult
+    ) -> int:
+        """Measure path text and structured evidence under the shared byte ceiling.
+
+        Parameters
+        ----------
+        result
+            Complete bounded path envelope.
+
+        Returns
+        -------
+        int
+            Encoded result bytes.
+        """
+
+        return require_progression_result_size(
+            result=result, text=progression_result_text(result=result)
         )
 
     def require_traversal_result_size(

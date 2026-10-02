@@ -316,3 +316,75 @@ class TraverseLearningProgressionsResult(ProgressionEvidenceResult):
         "absence means no stored connection, not no pedagogical connection."
     )
     truncation_reasons: tuple[TraversalTruncationReason, ...]
+
+
+# Path contract dependencies precede their derived result.
+PathTruncationReason: TypeAlias = Literal[
+    "depth_limit", "path_limit", "work_limit", "queue_limit", "byte_limit"
+]
+
+
+class GetLearningProgressionPathsRequest(FrozenSchema):
+    """Select directed simple builds paths between two exact standards."""
+
+    framework_id: FrameworkId
+    max_depth: Annotated[StrictInt, Field(ge=1, le=12)] = 6
+    max_paths: Annotated[StrictInt, Field(ge=1, le=20)] = 3
+    snapshot_id: SnapshotId | None = None
+    source_identifier: ProgressionStandardIdentifier
+    target_identifier: ProgressionStandardIdentifier
+
+
+class ProgressionPath(FrozenSchema):
+    """Reference ordered original hops and standards in deduplicated evidence tables."""
+
+    node_ids: Annotated[tuple[NodeId, ...], Field(min_length=2, max_length=13)]
+    relationship_ids: Annotated[
+        tuple[RelationshipId, ...], Field(min_length=1, max_length=12)
+    ]
+
+
+class ProgressionPathCounters(FrozenSchema):
+    """Report actual work and cumulative queue admission, including the source state."""
+
+    depth_frontier_examined_relationship_count: Annotated[
+        StrictInt, Field(ge=0, le=5000)
+    ]
+    enqueued_state_count: Annotated[StrictInt, Field(ge=1, le=5000)]
+    examined_relationship_count: Annotated[StrictInt, Field(ge=0, le=5000)]
+    max_examined_relationships: Literal[5000] = 5000
+    max_queue_states: Literal[5000] = 5000
+    peak_queue_state_count: Annotated[StrictInt, Field(ge=1, le=5000)]
+    returned_path_count: Annotated[StrictInt, Field(ge=0, le=20)]
+
+
+class ProgressionPathFrontier(FrozenSchema):
+    """Expose remaining partial paths and excluded extensions without queue content."""
+
+    depth_limited_extension_count: Annotated[StrictInt, Field(ge=0, le=5000)]
+    pending_adjacency_count: Annotated[StrictInt, Field(ge=0)]
+    queued_state_count: Annotated[StrictInt, Field(ge=0, le=5000)]
+
+
+class GetLearningProgressionPathsResult(ProgressionEvidenceResult):
+    """Return bounded alternative simple paths with original generated hop evidence."""
+
+    counters: ProgressionPathCounters
+    epistemic_status: Literal["deterministic_derived"] = "deterministic_derived"
+    frontier: ProgressionPathFrontier
+    graph_exhausted: bool
+    path_notice: str = (
+        "Paths follow stored buildsTowards edges from source to target, ordered by "
+        "hop count then relationship-ID tuple. Completed target paths are terminal. "
+        "Exhaustion refers to this simple-path search; requested-depth completeness "
+        "does not imply global exhaustion. Derived paths assert no new direct edge "
+        "or compulsory teaching order. No continuation is offered; callers can "
+        "change bounded inputs and rerun. Even exhausted absence means no stored "
+        "connection, not no pedagogical connection."
+    )
+    paths: tuple[ProgressionPath, ...]
+    request: GetLearningProgressionPathsRequest
+    scope_complete: bool
+    source_node_id: NodeId
+    target_node_id: NodeId
+    truncation_reasons: tuple[PathTruncationReason, ...]

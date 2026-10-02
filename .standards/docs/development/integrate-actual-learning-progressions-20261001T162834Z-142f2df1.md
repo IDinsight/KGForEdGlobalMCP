@@ -775,7 +775,7 @@ DEV-014 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded
 
 ### DEV-015 — Implement bounded connecting paths without losing alternatives
 
-`Status`: `PENDING` `Depends On`: `DEV-014`
+`Status`: `DONE` `Depends On`: `DEV-014`
 `Acceptance`: `AC-008, AC-009, AC-010`
 
 **Goal**
@@ -792,7 +792,79 @@ Paths retain alternatives through merging branches, ordered by hop count then ed
 
 **Self-Check**
 
-Static/type checks and temporary DAG/cycle sanity calls for multiple paths, direction, deterministic order and each bound. Validate every reported hop against accepted edges and inspect incomplete versus exhausted absence. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — bounded directed simple connecting paths implemented and checked offline. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; assessed HEAD: `0be6494de414fb8367485c28309733ddb00423a7`, with the three source identities below. Entry working tree was clean. The user explicitly authorized DEV-015 only; its matching continuation blocker was cleared before implementation. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE; workflow remains DEVELOPING with historical Architect handoff and inactive recovery/obligations.
+
+**Implemented outcome**
+
+- Added `services/lp_paths.py`, strict frozen path request/result/counter/frontier contracts, the shared service method `get_learning_progression_paths` and concise tool text/size support. Reuses DEV-014's immutable builds-only sorted adjacency and the exact accepted runtime, route, node/CASE/code selectors, rights policy, endpoint summaries, original relationship/judgment projections and metadata/byte encoder. No new graph store, source reads during queries, relationship inference or public MCP registration.
+- Breadth-first partial paths retain their own bounded visited-node tuples. Both prefixes through a merging node survive and are expanded independently; no global visited pruning. Neighbors are original builds edges sorted by ID, so completed paths are ordered by hop count then relationship-ID tuple independently of export order. Completed target paths never expand; cycles cannot repeat nodes. hasChild, supports and relatesTo cannot become hops. Every complete path references ordered original relationship IDs and node IDs in deduplicated evidence tables; tables include both exact endpoints even for a zero-path result.
+- StrictInt depth defaults to 6/max 12, returned paths to 3/max 20. Fixed work and cumulative queue admission ceilings are 5,000; the source partial state counts toward admission. Bounds apply before excess adjacency inspection or partial-state allocation. Reports actual examined edges, charged depth-frontier inspections, enqueued states, peak queue and returned paths; frontier reports queued states, pending adjacency and depth-excluded extensions. At requested depth, unseen extensions consume work and set depth_limit; visited cycle closures do not imply an unexplored simple path. No traversal cursor or retry bypass.
+- `scopeComplete` means complete enumeration within the requested depth; depth-only exclusion preserves it while `graphExhausted` is false. Path/work/queue/byte stops make both false. Exhaustion is explicitly scoped to source-to-target simple-path search with targets terminal, rather than every edge reachable beyond the target. Zero paths under a hard budget is incomplete; even exhausted absence means no stored connection, not no pedagogical connection. Same standard selected through any namespaces fails invalid_progression_request; missing/ambiguous standards, invalid routes and unavailable capabilities retain shared typed failures.
+- Shared 1,048,576-byte UTF-8 text-plus-structured envelope ceiling includes request, original generated evidence, exact identities, final counters/frontier/reasons and JSON escaping. Before admitting each path, reserves worst-case bounded final metadata; reservation may conservatively stop early. A fitting first path survives reservation using its actual final frontier and stops further work when needed. A combination that exceeds the ceiling rolls back the whole last path and its exclusive evidence, retaining it in the queued frontier. An individually oversized first or later path raises progression_result_too_large with resource recovery; no entry is silently clipped. Paths have deterministic_derived status; original hops retain llm_inferred origin/attribution and accepted judgment disclosures.
+
+**Actual commands and results**
+
+All runtime Python commands used `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync` from the repository directory above; effective Python working directory is backend. Existing Python 3.13 environment was used without installation/sync/network/model/paid-service execution.
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev015-feedback.py
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev015-regression.py
+python3 /tmp/kgfegmcp-dev015-static.py
+```
+
+- Final path feedback exit 0: 659 named checks, 214 actual accepted-package path queries and 23 recorded synthetic outcomes, plus 60 deterministic randomized DAG/cyclic-graph queries checked against independent depth-first enumeration followed by contractual sorting. All six DEV-023 replacements load read-only through CatalogRepository/GraphPackageValidator. All query calls execute with Path.open, Path.read_bytes and builtins.open blocked. Real direct/multi-hop/reverse-pair samples match the independent whole-edge DFS oracle; returned evidence agrees with exact lookup, original accepted instances, exact IDs/facets/manifest/profile/artifact hashes and generated origin. Repeated envelopes and node/CASE UUID/CASE URI/profile-enabled code selectors agree. Same endpoint across namespaces, missing/root endpoints/frameworks, unavailable LP/code and rights failure propagation are explicit.
+- Synthetic checks pass merging diamond alternatives, reversed input order, reverse-direction absence, target-terminal behavior, per-path cycle safety, complete isolated absence, depth 6/12 with charged frontier, exact twelfth-hop target, path caps 1/3/20 and an exactly exhausted one-path cap. Work stops before edge 5,001 and exact 5,000 examination exhaustion does not falsely truncate. Queue insertion stops before state 5,001 with 4,999 queued alternatives; exactly 5,000 cumulative admitted states can exhaust normally. Zero-path work/queue searches are incomplete. UTF-8 combination overflow rolls back whole-path evidence; oversized first and later individual paths fail. Both fully exhausted and pending-frontier first-path envelopes fit exactly 1,048,576 bytes; one byte over is rejected. Strict malformed/coerced/boolean/nonpositive/excess bounds and unsupported cursor are rejected; schema maxima are 12/20.
+- Traversal regression exit 0: 3,495 prior DEV-014 checks, 406 actual accepted-package traversal queries and 17 synthetic outcomes. Both directions, reachable/induced-edge/minimum-depth oracles, original adjacency references, selectors/rights, branching/merging/cycle behavior, depth/node/edge/work/byte ceilings and empty/exhausted distinctions remain intact. No direct/discovery helper or adjacency-construction implementation changed; their persisted DEV-013/014 evidence remains supporting history rather than a claim of a new full-suite run.
+- Final static feedback retains exact argv/cwd/exit/stdout/stderr: Black --check, isort --check-only, Ruff `check --select E,F,C90`, mypy `--cache-dir /tmp/kgfegmcp-dev015-mypy`, pylint and interrogate `--generate-badge /tmp/kgfegmcp-dev015-badge` on learning_progressions.py/lp_models.py/lp_paths.py all exit 0. Mypy reports no issues in three files; pylint 10.00/10 under the repository McCabe <=10 configuration; docstrings 100%. Workflow `node .standards/bin/check.mjs` and `git diff --check` pass, and are rerun after this DONE/blocker record.
+- First static pass found a Black formatting change after final-metadata reservation adjustment; formatted it. A later temporary byte-boundary calibration used 1,040,000 attribution characters without allowing the full shared metadata overhead, correctly raising the size error; corrected the scratch calibration to measure a fitting baseline. These preliminary runs are not counted as final passes. Final runtime/static results above assessed the final source bytes. No accepted-data alteration or bound weakening was used.
+- Independent pre/post comparison preserves every byte and path of all 2,485 entry protected files under config (including original version 1.0 and new 2.0), sealed active packages, maintained inputs, raw/prepared/rebuilt/replacement artifacts and earlier receipts. Only the nine new ignored DEV-015 receipts below were added afterward. Preservation is rechecked after recording. No replacement activation, source modification, producer/checker regeneration, live LLM/paid calls, deployment, publication, formal tests or later DEV step.
+
+**Assessed implementation identities**
+
+| File | SHA-256 |
+|---|---|
+| `backend/src/kgfegmcp/services/learning_progressions.py` | `sha256:8104380a714a38b2f75b22a4f3b5882166fb56b0cb6ccd15c32898a0a11480f1` |
+| `backend/src/kgfegmcp/services/lp_models.py` | `sha256:8caf0c41961c08c64fa3084cffd0ec071ff278771a0f1ff350098a5926335b09` |
+| `backend/src/kgfegmcp/services/lp_paths.py` | `sha256:49023dc640ab91ee182b6260aadc0ca6a2d67fe39fe8030bead49df640d08497` |
+
+**Accepted query input identities**
+
+All six queried runtimes are the DEV-023 rebuilt mixed academic_standards revision-1 packages under `data/source_artifacts/learning_progressions/rebuilt_packages`. Exact snapshot/package/profile-version-2.0/hash and all 86 artifact identities agree with DEV-014's Accepted query input identities table, preserved unchanged. Full exact package references and artifact maps are in content-feedback.json; evidence-index.json also binds the sorted compact logical-name/hash artifact-map digest. Actual manifest byte identities and path-query counts:
+
+| Framework | Actual path queries | Manifest SHA-256 |
+|---|---:|---|
+| `ghana-nacca-primary-english-language-basic-1-3` | 31 | `sha256:5cf5dbb35785b0ded64f062c19589b1601cd1f76e08cdddf991f9a1a14439f7b` |
+| `ghana-nacca-primary-mathematics-basic-4-6` | 40 | `sha256:16ef563d4fea0a5f6d259580ef834b1231d4376c9d34b521e416b39960b70533` |
+| `india-cbse-science-learning-framework-classes-9-10` | 35 | `sha256:d7431e9e49ff4d4c99b985d3a42dd10bae506c406dca0e96c26d9d8159515a96` |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5` | 35 | `sha256:32e860054447d9dde6d6d7b15bddb118e33727111953f2c4671b0b3359ca359b` |
+| `nigeria-nerdc-mathematics-primary-1-3` | 35 | `sha256:3b0616d3ad9c2d6017c7c9bd4f9624927875daf9d1a6cd46b0a2316916544479` |
+| `rwanda-reb-mathematics-lower-primary-1-3` | 38 | `sha256:7a00e1afee01ff60ba4862eb833e26a4f85c727f08447573d229c5a3e89b3e2b` |
+
+**Local receipts and limitations**
+
+Retained under ignored `data/source_artifacts/learning_progressions/dev015/checks`; commands above are the actual scratch runs. Persisted feedback script only adjusts its protected-inventory input to this receipt directory and permits its own nine additions for resumption; production logic and fixtures are unchanged. They remain ad hoc Developer feedback, not Tester-owned formal tests. Actual scratch source hashes:
+
+- `/tmp/kgfegmcp-dev015-feedback.py`: `sha256:f406b65504c5f4cfe5ed316566a6326c2cdfcdbe9600ab551b75d23f4b1038bb`.
+- `/tmp/kgfegmcp-dev015-regression.py`: `sha256:0a17daf70aa2e502184dbe504ec04c322fb080cc9e7a5c1f1391172f09a75637`.
+- `/tmp/kgfegmcp-dev015-static.py`: `sha256:e305dff234273b4d73b19df820522fa214c7b8e91439a9f081e5742e2b9323c5`.
+
+| Receipt | SHA-256 |
+|---|---|
+| `content-feedback.json` | `sha256:347ccfa61ef0d852f856fb91e18c7e75dca079d5cb4193a43a3ea5905a1d5084` |
+| `content-feedback.py` | `sha256:dfa75f42336376848f24c8f65e19fcd3188171315550cf083599bf08b40f33ba` |
+| `preservation.json` | `sha256:8573eb6131a9598947d289cad7617c5595f554ef943f8c4d3d4403b83161ad3f` |
+| `protected-inputs.json` | `sha256:9f83b2461732c34d73007cea673fb77a9bd397cb0e2fab54610d320d76729aca` |
+| `regression-feedback.json` | `sha256:ee67595e341fb343997a6588ce7788c8390c09de31cabf7b2a53878cb920e839` |
+| `regression-feedback.py` | `sha256:0a17daf70aa2e502184dbe504ec04c322fb080cc9e7a5c1f1391172f09a75637` |
+| `static-feedback.json` | `sha256:c7f300a297097ae2607aee5a7939a6d9779b39d5ba6ff293c0b523a6e8f82f93` |
+| `static-feedback.py` | `sha256:e305dff234273b4d73b19df820522fa214c7b8e91439a9f081e5742e2b9323c5` |
+| `evidence-index.json` | `sha256:b7e17cb191ad5695a1bbfc0cd5ce38c1f04740dd2d07d97408d2e5509b8a176c` |
+
+Limitations: sampled actual query pairs plus independent synthetic/random graph and byte-ceiling cases establish implementation feedback, not exhaustive all-pair enumeration, formal Tester acceptance, semantic/pedagogical verification or a new public transport milestone. Rights/route helpers are reused; denial cases check propagation using temporary boundary faults, while DEV-012 records actual policy-denial checks. Resource handlers/public MCP adapters/bootstrap/activation/transports/distribution remain later approved steps. Legacy-schema bootstrap limitation remains until DEV-017; no workaround or replacement activation was introduced.
+
+**Continuation**
+
+DEV-015 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded connecting paths with alternatives`. Next STEPWISE continuation is DEV-016 (exact LP provenance and sanitized summary resources), which remains PENDING. All later steps remain unstarted. The full Developer handoff gate does not pass while approved later work remains unfinished; wait for explicit user continuation.
 
 ### DEV-016 — Expose exact LP provenance and sanitized summary resources
 
@@ -943,8 +1015,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012 and DEV-013. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013 and DEV-014 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-015; no later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014 and DEV-015. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014 and DEV-015 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-016; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -953,5 +1025,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013 and DEV-014 are DONE. Next approved dependency-ready step is DEV-015; user continuation is required before starting it. Re-read directed simple connecting-path enumeration, per-path cycle guards without global visited pruning, alternative preservation, hop-count/relationship-ID ordering, depth/path/work/queue/byte limits and scopeComplete/graphExhausted semantics. Reuse DEV-014 immutable builds adjacency and shared route/selector/rights/evidence/byte helpers with accepted DEV-023 rebuilt runtimes. Maintained data/input_artifacts now rebuild the same six replacements directly; isolated rebuilt packages are under data/source_artifacts/learning_progressions/rebuilt_packages. Keep all source/prepared/accepted packages and version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
+- Resume: DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014 and DEV-015 are DONE. Next approved dependency-ready step is DEV-016; user continuation is required before starting it. Re-read per-edge provenance partition lookup/hash/rights/source-byte limits, sanitized LP summary exposure, artifact policy classes and missing/denied/oversized failure behavior. Reuse accepted DEV-023 rebuilt runtimes and existing shared resources machinery; retain exact source/accepted evidence. Maintained data/input_artifacts directly rebuild the six replacements; isolated rebuilt packages remain under data/source_artifacts/learning_progressions/rebuilt_packages. Keep source/prepared/accepted packages and all original version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
