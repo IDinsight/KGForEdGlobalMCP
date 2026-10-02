@@ -6,7 +6,6 @@ explicitly:
 * ``student_study_support``;
 * ``teacher_guide_draft``;
 * ``student_handbook_section``;
-* ``inferred_progression_hypothesis``;
 * ``learning_progression_curriculum_review``;
 * ``learning_progression_support_plan``;
 * ``learning_progression_teaching_sequence``;
@@ -39,7 +38,6 @@ from kgfegmcp.mcp.prompts.learning_progressions import (
     learning_progression_teaching_sequence,
 )
 from kgfegmcp.mcp.prompts.multigrade import multigrade_lesson_plan
-from kgfegmcp.mcp.prompts.progression import inferred_progression_hypothesis
 from kgfegmcp.mcp.prompts.student import (
     student_handbook_section,
     student_study_support,
@@ -134,14 +132,6 @@ def register_prompt_components(server: FastMCP[dict[str, AppState]]) -> None:
         name="multigrade_lesson_plan",
         server=server,
         title="Multigrade Lesson Plan",
-        workflow_kind="role_oriented",
-    )
-    _register_prompt(
-        description=PROMPT_DESCRIPTIONS[PromptName.INFERRED_PROGRESSION_HYPOTHESIS],
-        function=inferred_progression_hypothesis,
-        name="inferred_progression_hypothesis",
-        server=server,
-        title="Inferred Progression Hypothesis",
         workflow_kind="role_oriented",
     )
     _register_prompt(

@@ -32,8 +32,6 @@ from kgfegmcp.prompts.models import (
     LessonDurationMinutes,
     MultigradeGradesInRoom,
     PracticeCount,
-    ProgressionCandidateLimit,
-    ProgressionDirection,
     ProgressionGradeFilters,
     PromptFocusMode,
     PromptFocusText,
@@ -189,13 +187,6 @@ OptionalSnapshotIdArgument = Annotated[
 PracticeCountArgument = Annotated[
     PracticeCount, BeforeValidator(_BlankPromptArgumentDefault(default=5))
 ]
-ProgressionCandidateLimitArgument = Annotated[
-    ProgressionCandidateLimit, BeforeValidator(_BlankPromptArgumentDefault(default=8))
-]
-ProgressionDirectionArgument = Annotated[
-    ProgressionDirection,
-    BeforeValidator(_BlankPromptArgumentDefault(default=ProgressionDirection.BOTH)),
-]
 ProgressionLocalGradeLabelsArgument = Annotated[
     ProgressionGradeFilters,
     BeforeValidator(_BlankPromptArgumentDefault(default=())),
@@ -284,8 +275,6 @@ __all__ = [
     "OptionalPromptMaterialsArgument",
     "OptionalSnapshotIdArgument",
     "PracticeCountArgument",
-    "ProgressionCandidateLimitArgument",
-    "ProgressionDirectionArgument",
     "ProgressionLocalGradeLabelsArgument",
     "ProgressionNormalizedGradesArgument",
     "PromptFocusModeArgument",

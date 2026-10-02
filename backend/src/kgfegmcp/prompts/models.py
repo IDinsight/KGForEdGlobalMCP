@@ -185,7 +185,6 @@ PromptConfigVersion = Annotated[
 HandbookWordCount = Annotated[int, Field(ge=150, le=1_500)]
 LessonDurationMinutes = Annotated[int, Field(ge=10, le=240)]
 PracticeCount = Annotated[int, Field(ge=1, le=10)]
-ProgressionCandidateLimit = Annotated[int, Field(ge=2, le=20)]
 PromptFocusText = Annotated[
     str,
     StringConstraints(max_length=512, min_length=1),
@@ -253,7 +252,6 @@ class PromptName(StrEnum):
 
     ADMINISTRATOR_ALIGNMENT_REVIEW = "administrator_alignment_review"
     CROSS_FRAMEWORK_COMPARISON = "cross_framework_comparison"
-    INFERRED_PROGRESSION_HYPOTHESIS = "inferred_progression_hypothesis"
     LEARNING_PROGRESSION_CURRICULUM_REVIEW = "learning_progression_curriculum_review"
     LEARNING_PROGRESSION_SUPPORT_PLAN = "learning_progression_support_plan"
     LEARNING_PROGRESSION_TEACHING_SEQUENCE = "learning_progression_teaching_sequence"
@@ -267,7 +265,6 @@ PROMPT_NAMES: Final[tuple[str, ...]] = (
     PromptName.STUDENT_STUDY_SUPPORT.value,
     PromptName.TEACHER_GUIDE_DRAFT.value,
     PromptName.STUDENT_HANDBOOK_SECTION.value,
-    PromptName.INFERRED_PROGRESSION_HYPOTHESIS.value,
     PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW.value,
     PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN.value,
     PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE.value,
@@ -300,14 +297,6 @@ class ComparisonSearchMode(StrEnum):
     CODE_EXACT = "code_exact"
     CODE_PREFIX = "code_prefix"
     TEXT = "text"
-
-
-class ProgressionDirection(StrEnum):
-    """Identify the requested direction of an inferred progression review."""
-
-    BOTH = "both"
-    EARLIER_TO_LATER = "earlier_to_later"
-    LATER_TO_EARLIER = "later_to_earlier"
 
 
 class StudyDifficulty(StrEnum):

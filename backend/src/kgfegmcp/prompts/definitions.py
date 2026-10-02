@@ -67,14 +67,20 @@ COMMON_EVIDENCE_STATUS_RULES: Final[tuple[str, ...]] = (
     "normalization results.",
     "Use [RETRIEVAL-CANDIDATE] for search hits or possible correspondences that have "
     "not been established as official.",
-    "Use [GENERATED-EVIDENCE / llm_inferred] for learning components and any other "
-    "content the server supplies that a model produced. Its support confidence is "
-    "reported inline; its source page references live in the linked "
+    "Use [GENERATED-EVIDENCE / llm_inferred] for learning components. Their support "
+    "confidence is reported inline; their source page references live in the linked "
     "learning_component_provenance resource, which a client may need to attach. Do not "
     "state that pages are unrecorded when that link is present. The curriculum's "
     "publisher did not author the component.",
+    "Use [GENERATED-EVIDENCE / llm_inferred] for stored buildsTowards/relatesTo "
+    "judgments. Preserve exact edge IDs, endpoint roles, relationshipUri and full "
+    "provenanceUri citations, rationale, model-judgment confidence, warnings and "
+    "source/config/content identities. They are not source-authored curriculum "
+    "progressions. Structural-only validation does not certify pedagogy.",
+    "Caller observations remain unverified reports, separate from source standards, "
+    "stored generated evidence and client suggestions.",
     "Use [LLM-INFERRED / GENERATED] for explanations, examples, activities, questions, "
-    "rubrics, hypotheses, and other client-model composition.",
+    "rubrics, and other client-model composition.",
 )
 
 COMMON_UNSUPPORTED_CLAIMS: Final[tuple[str, ...]] = (
@@ -108,6 +114,11 @@ COMPARISON_DISCLOSURES: Final[tuple[str, ...]] = (
     "Code, identifier, grade, hierarchy, or text similarity does not establish "
     "official equivalence.",
     "Cross-framework matches are exploratory retrieval evidence.",
+    "Stored buildsTowards/relatesTo are generated judgments within one exact "
+    "framework/snapshot. They do not establish official equivalence or "
+    "cross-framework alignment. Comparison matches and shared components never "
+    "create cross-framework progression edges; do not imply LP evidence was "
+    "retrieved when it was not.",
     "Generated comparative conclusions are LLM-inferred.",
     "Rights, attribution, and provenance apply independently to every selected "
     "package.",
@@ -371,47 +382,6 @@ LEXICAL_QUERY_EXPANSION_RULES: Final[tuple[str, ...]] = (
     "source-document absence.",
 )
 
-PROGRESSION_DEFAULT_GUIDANCE: Final[tuple[tuple[str, str, tuple[str, ...]], ...]] = (
-    (
-        "counter_evidence_guidance",
-        "Counter-evidence guidance",
-        (
-            "Present evidence that weakens, complicates, or contradicts each proposed "
-            "transition.",
-        ),
-    ),
-    (
-        "evidence_guidance",
-        "Evidence guidance",
-        (
-            "Use standards text, local grade or stage context, hierarchy context, and "
-            "profile heuristics as separate evidence types.",
-        ),
-    ),
-    (
-        "inference_guidance",
-        "Inference guidance",
-        (
-            "Label every proposed learning transition as LLM-inferred and do not "
-            "create "
-            "a source-authored or persisted progression edge.",
-        ),
-    ),
-    (
-        "sequence_presentation_guidance",
-        "Sequence presentation guidance",
-        (
-            "Show the proposed order, supporting evidence, counter-considerations, and "
-            "uncertainty for each transition.",
-        ),
-    ),
-)
-
-PROGRESSION_DISCLOSURE: Final[str] = (
-    "This is an LLM-inferred likely progression based on standards text, grade "
-    "context, and curriculum-specific guidance. It is not a source-authored "
-    "progression edge."
-)
 
 LEARNING_COMPONENT_GRAIN_DISCLOSURE: Final[str] = (
     "Learning components from different frameworks were generated independently, "
@@ -469,10 +439,6 @@ PROMPT_DESCRIPTIONS: Final[dict[PromptName, str]] = {
     PromptName.CROSS_FRAMEWORK_COMPARISON: (
         "Guide an exploratory cross-framework comparison over independently "
         "retrieved exact-package evidence."
-    ),
-    PromptName.INFERRED_PROGRESSION_HYPOTHESIS: (
-        "Guide an evidence-linked, explicitly LLM-inferred likely progression review "
-        "within one accepted framework."
     ),
     PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW: (
         "Guide bounded curriculum relationship inspection with coverage, warnings "
@@ -666,7 +632,6 @@ PROMPT_SPECIFIC_DEFAULTS: Final[
     PromptName.CROSS_FRAMEWORK_COMPARISON: (
         CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE
     ),
-    PromptName.INFERRED_PROGRESSION_HYPOTHESIS: PROGRESSION_DEFAULT_GUIDANCE,
     PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW: (
         LEARNING_PROGRESSION_CURRICULUM_REVIEW_DEFAULT_GUIDANCE
     ),
@@ -697,7 +662,6 @@ __all__ = [
     "LEARNING_PROGRESSION_TEACHING_SEQUENCE_DEFAULT_GUIDANCE",
     "LEARNING_PROGRESSION_TEACHING_SEQUENCE_OUTPUT",
     "LEXICAL_QUERY_EXPANSION_RULES",
-    "PROGRESSION_DISCLOSURE",
     "PROMPT_DESCRIPTIONS",
     "PROMPT_SPECIFIC_DEFAULTS",
     "SHARED_DEFAULT_GUIDANCE",

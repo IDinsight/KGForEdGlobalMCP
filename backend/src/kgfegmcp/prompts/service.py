@@ -40,7 +40,6 @@ from kgfegmcp.catalog.service import CatalogService
 from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
 from kgfegmcp.errors import (
-    CapabilityUnavailableError,
     InvalidComparisonSelectionError,
     InvalidProgressionRequestError,
 )
@@ -55,7 +54,6 @@ from kgfegmcp.prompts.definitions import (
     LEARNING_PROGRESSION_SUPPORT_PLAN_OUTPUT,
     LEARNING_PROGRESSION_TEACHING_SEQUENCE_OUTPUT,
     LEXICAL_QUERY_EXPANSION_RULES,
-    PROGRESSION_DISCLOSURE,
     PROMPT_DESCRIPTIONS,
     PROMPT_SPECIFIC_DEFAULTS,
     SHARED_DEFAULT_GUIDANCE,
@@ -65,6 +63,7 @@ from kgfegmcp.prompts.learning_progressions import (
     LearningProgressionCurriculumReviewRequest,
     LearningProgressionSupportPlanRequest,
     render_curriculum_review_workflow,
+    render_optional_progression_workflow,
     render_support_plan_workflow,
     render_teaching_sequence_workflow,
 )
@@ -85,7 +84,6 @@ from kgfegmcp.prompts.models import (
     LoadedPromptConfig,
     MultiContextPromptRenderResult,
     MultigradeLessonPlanGuidance,
-    ProgressionDirection,
     ProgressionGradeFilters,
     PromptConfigRegistry,
     PromptContextEvidence,
@@ -287,50 +285,6 @@ def _merge_guidance_block(
     return tuple(dict.fromkeys(instructions))
 
 
-def _progression_evidence_tool_call(
-    *,
-    candidate_limit: int,
-    context: _SelectedPromptContext,
-    focus_mode: PromptFocusMode,
-    local_grade_labels: ProgressionGradeFilters,
-    normalized_grades: ProgressionGradeFilters,
-    topic_or_standard: PromptFocusText,
-) -> dict[str, object]:
-    """Build one exact top-level ``collect_progression_evidence`` call shape.
-
-    Parameters
-    ----------
-    candidate_limit
-        Hard maximum number of retained standard-item candidates.
-    context
-        Exact selected package and snapshot evidence.
-    focus_mode
-        Topic, code, or exact identifier namespace selected by the caller.
-    local_grade_labels
-        Exact source-facing grade or stage filters.
-    normalized_grades
-        Exact normalized grade retrieval facets.
-    topic_or_standard
-        Caller-supplied topic, code, or exact identifier.
-
-    Returns
-    -------
-    dict[str, object]
-        Protocol-facing direct tool input with an exact snapshot route.
-    """
-
-    identity = context.package.package_identity
-    return {
-        "candidateLimit": candidate_limit,
-        "focusMode": focus_mode.value,
-        "frameworkId": str(identity.framework_id),
-        "localGradeLabels": [str(value) for value in local_grade_labels],
-        "normalizedGrades": [str(value) for value in normalized_grades],
-        "snapshotId": str(identity.snapshot_id),
-        "topicOrStandard": str(topic_or_standard),
-    }
-
-
 def _prompt_context_evidence(context: _SelectedPromptContext) -> PromptContextEvidence:
     """Convert one selected runtime context into immutable audit evidence.
 
@@ -412,7 +366,6 @@ def _prompt_overlay(
         PromptName.CROSS_FRAMEWORK_COMPARISON: (
             config.prompts.cross_framework_comparison
         ),
-        PromptName.INFERRED_PROGRESSION_HYPOTHESIS: None,
         PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW: (
             config.prompts.learning_progression_curriculum_review
         ),
@@ -1353,6 +1306,25 @@ class PromptService:
             prompt_version=PROMPT_VERSION,
         )
 
+    def _render_optional_progression_step(self, context: _SelectedPromptContext) -> str:
+        """Render bounded optional evidence through the already selected runtime.
+
+        Parameters
+        ----------
+        context
+            Exact rights-authorized package, snapshot and profile selection.
+
+        Returns
+        -------
+        str
+            Shared client retrieval instructions without executing graph queries.
+        """
+
+        runtime = self.catalog_service.get_package_runtime(
+            context.package.package_identity.graph_package_id
+        )
+        return render_optional_progression_workflow(runtime=runtime)
+
     def _select_comparison_contexts(
         self,
         *,
@@ -1550,78 +1522,6 @@ class PromptService:
         )
         return _SelectedPromptContext(
             config=config, package=package, profile=profile, snapshot=snapshot
-        )
-
-    @staticmethod
-    def _validate_progression_scope(
-        *,
-        context: _SelectedPromptContext,
-        local_grade_labels: ProgressionGradeFilters,
-        normalized_grades: ProgressionGradeFilters,
-    ) -> None:
-        """Require explicit progression grade filters available in the package.
-
-        Parameters
-        ----------
-        context
-            Exact selected snapshot, package, and profile evidence.
-        local_grade_labels
-            Exact source-facing grade or stage labels.
-        normalized_grades
-            Exact normalized retrieval facets.
-
-        Raises
-        ------
-        CapabilityUnavailableError
-            If no scope was supplied or any requested value is unavailable.
-        """
-
-        if not local_grade_labels and not normalized_grades:
-            raise CapabilityUnavailableError(
-                message=(
-                    "The inferred progression prompt requires at least one explicit "
-                    "local or normalized grade scope."
-                ),
-                recovery_hint=(
-                    "Supply each exact source-facing grade in local_grade_labels or "
-                    "each normalized retrieval facet in normalized_grades as a "
-                    "separate array item."
-                ),
-            )
-
-        unavailable_local = tuple(
-            value
-            for value in local_grade_labels
-            if value not in context.snapshot.source_metadata.local_grades_or_stages
-        )
-        unavailable_normalized = tuple(
-            value
-            for value in normalized_grades
-            if value not in context.package.profile_facets.normalized_grades
-        )
-
-        if not unavailable_local and not unavailable_normalized:
-            return
-
-        raise CapabilityUnavailableError(
-            details={
-                "available_local_grade_labels": (
-                    context.snapshot.source_metadata.local_grades_or_stages
-                ),
-                "available_normalized_grades": (
-                    context.package.profile_facets.normalized_grades
-                ),
-                "unavailable_local_grade_labels": unavailable_local,
-                "unavailable_normalized_grades": unavailable_normalized,
-            },
-            message=(
-                "One or more requested progression grade scopes are unavailable in "
-                "the selected framework snapshot."
-            ),
-            recovery_hint=(
-                "Use exact values reported by get_framework and supply each value as "
-                "a separate array item."
-            ),
         )
 
     def administrator_alignment_review(
@@ -1850,131 +1750,6 @@ class PromptService:
         return self._render_multi_context(
             comparison_call=comparison_call,
             contexts=contexts,
-            output_contract=output_contract,
-            prompt_name=prompt_name,
-            request_data=request_data,
-        )
-
-    def inferred_progression_hypothesis(
-        self,
-        *,
-        candidate_limit: int,
-        direction: ProgressionDirection,
-        focus_mode: PromptFocusMode,
-        framework_id: FrameworkId,
-        local_context: PromptLocalContext | None,
-        local_grade_labels: ProgressionGradeFilters,
-        normalized_grades: ProgressionGradeFilters,
-        output_language: LanguageTag | None,
-        snapshot_id: SnapshotId | None,
-        topic_or_standard: PromptFocusText,
-    ) -> PromptRenderResult:
-        """Render a reviewable inferred-progression-hypothesis workflow.
-
-        Parameters
-        ----------
-        candidate_limit
-            Hard maximum number of unique standard-item candidates.
-        direction
-            Requested earlier/later review direction.
-        focus_mode
-            Topic, statement code, or exact identifier namespace.
-        framework_id
-            Exact conceptual framework identifier.
-        local_context
-            Optional untrusted local nuance supplied by the caller.
-        local_grade_labels
-            Exact source-facing grade or stage filters.
-        normalized_grades
-            Exact normalized grade retrieval facets.
-        output_language
-            Optional requested output language tag.
-        snapshot_id
-            Optional exact immutable snapshot identifier.
-        topic_or_standard
-            Topic text, statement code, or exact anchor identifier.
-
-        Returns
-        -------
-        PromptRenderResult
-            Complete deterministic client-side workflow.
-        """
-
-        prompt_name = PromptName.INFERRED_PROGRESSION_HYPOTHESIS
-        context = self._select_context(
-            focus_mode=focus_mode,
-            framework_id=framework_id,
-            prompt_name=prompt_name,
-            snapshot_id=snapshot_id,
-        )
-        self._validate_progression_scope(
-            context=context,
-            local_grade_labels=local_grade_labels,
-            normalized_grades=normalized_grades,
-        )
-        evidence_call = _progression_evidence_tool_call(
-            candidate_limit=candidate_limit,
-            context=context,
-            focus_mode=focus_mode,
-            local_grade_labels=local_grade_labels,
-            normalized_grades=normalized_grades,
-            topic_or_standard=topic_or_standard,
-        )
-        request_data = {
-            "candidateLimit": candidate_limit,
-            "direction": direction.value,
-            "focusMode": focus_mode.value,
-            "frameworkId": str(framework_id),
-            "localContext": local_context,
-            "localGradeLabels": [str(value) for value in local_grade_labels],
-            "normalizedGrades": [str(value) for value in normalized_grades],
-            "outputLanguage": str(output_language) if output_language else None,
-            "requestedSnapshotId": str(snapshot_id) if snapshot_id else None,
-            "topicOrStandard": str(topic_or_standard),
-        }
-        output_contract = (
-            "Use retainedCandidates from collect_progression_evidence as the complete "
-            "standard-item evidence set. Do not add standards from separate searches, "
-            "and do not count ancestors or grouping nodes as candidates.",
-            "Report candidateLimit, discoveredCandidateCount, retainedCandidateCount, "
-            "excludedCandidateCount, selectionPolicy, and every retained node ID "
-            "before proposing transitions.",
-            f"Review the retained candidates in the requested {direction.value} "
-            "direction without treating the input scope order as source-authored "
-            "progression evidence.",
-            "Cite exact framework, snapshot, graph-package, node, and context "
-            "identifiers for every retained candidate used in a substantive claim.",
-            "Display exact local grade/stage evidence separately from normalized grade "
-            "retrieval aids, and do not propose transitions for any requested scope "
-            "whose retainedCandidateCount is zero.",
-            "Label every proposed transition [LLM-INFERRED / GENERATED] and provide "
-            "supporting evidence, counter-considerations, alternative interpretations, "
-            "evidence gaps, and qualitative uncertainty.",
-            f"Repeat this disclosure exactly: {PROGRESSION_DISCLOSURE}",
-            "Learning components may serve as progression atoms through "
-            "get_learning_components_for_standard; label them [GENERATED-EVIDENCE / "
-            "llm_inferred] and repeat this disclosure exactly, once where they are "
-            f"used and once at the end: {LEARNING_COMPONENT_INFERENCE_DISCLOSURE}",
-            "Do not persist a progression edge or present hierarchy, grade order, "
-            "source table order, recurring terminology, or candidate rank alone as an "
-            "official prerequisite relationship.",
-        )
-        evidence_workflow = "\n".join(
-            (
-                "1. Call collect_progression_evidence exactly once with this direct "
-                "top-level input:",
-                _canonical_compact_json(evidence_call),
-                "Do not wrap this input inside an additional request object.",
-                "2. Verify that retainedCandidateCount is no greater than "
-                "candidateLimit and that every standard cited in the final hypothesis "
-                "appears in retainedCandidates.",
-                "3. Treat excluded candidates only as deterministic exclusion "
-                "evidence; do not reintroduce them into the progression hypothesis.",
-            )
-        )
-        return self._render(
-            context=context,
-            evidence_workflow=evidence_workflow,
             output_contract=output_contract,
             prompt_name=prompt_name,
             request_data=request_data,
@@ -2322,6 +2097,7 @@ class PromptService:
                 "Call get_learning_component for any component you intend to build on, "
                 "to read its hierarchy placement and support confidence before using "
                 "it.",
+                self._render_optional_progression_step(context),
             )
         )
         output_contract = (
@@ -2442,6 +2218,7 @@ class PromptService:
                         purpose="Target activities at components and state which "
                         "components each activity covers.",
                     ),
+                    self._render_optional_progression_step(context),
                 )
             ),
             output_contract=output_contract,
@@ -2546,6 +2323,7 @@ class PromptService:
                         "another grade, say so, so remediation can point at the "
                         "earlier occurrence.",
                     ),
+                    self._render_optional_progression_step(context),
                 )
             ),
             output_contract=output_contract,
@@ -2661,6 +2439,7 @@ class PromptService:
                         "so the teacher knows what is revision, and which support this "
                         "grade only.",
                     ),
+                    self._render_optional_progression_step(context),
                 )
             ),
             output_contract=output_contract,

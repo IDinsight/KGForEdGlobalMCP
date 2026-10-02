@@ -451,6 +451,97 @@ def render_curriculum_review_workflow(
     return "\n".join(lines)
 
 
+def render_optional_progression_workflow(*, runtime: CatalogPackageRuntime) -> str:
+    """Render optional stored links without changing the role's useful core output.
+
+    Parameters
+    ----------
+    runtime
+        Already selected accepted runtime, including exact capability and identity.
+
+    Returns
+    -------
+    str
+        Shared finite retrieval and citation instructions, or unavailable disclosure.
+    """
+
+    if not runtime.catalog_package.capabilities.has_learning_progressions:
+        return (
+            "OPTIONAL STORED PROGRESSION EVIDENCE: CAPABILITY UNAVAILABLE in this "
+            "pinned package. Skip LP tools/resources, disclose unavailable evidence "
+            "and continue the existing standards/component workflow and useful "
+            "output. Do not invent edges or use an inferred-edge fallback."
+        )
+
+    identity = runtime.catalog_package.package_identity
+    route = {
+        "frameworkId": str(identity.framework_id),
+        "snapshotId": str(identity.snapshot_id),
+    }
+    selector = {"identifierType": "node_id", "nodeId": "<selected-node-id>"}
+    return "\n".join(
+        (
+            "OPTIONAL STORED PROGRESSION EVIDENCE (after exact standard selection)",
+            "Use stored links only when useful to this role's requested output. "
+            "Retain at most 3 distinct already-resolved standards for this optional "
+            "step across the entire workflow, including all grades in a multigrade "
+            "room; explain selection and omitted standards. This cap does not "
+            "replace the existing standards, shared-component or grade workflow.",
+            "For each retained standard, call get_standard_progressions once: "
+            "one direct page of 25 per standard, at most 3 calls in total. Replace "
+            "<selected-node-id> with its exact node ID; do not follow nextCursor, "
+            "traverse, request paths or expand through returned neighbors:",
+            _tool_call(
+                {**route, "connectionKind": "all", "identifier": selector, "limit": 25}
+            ),
+            "Keep incoming builds, outgoing builds and related concepts distinct. "
+            "buildsTowards follows stored source-to-target direction and may "
+            "motivate an optional teaching order, not a mandatory prerequisite or "
+            "proof of learner mastery/readiness. relatesTo is readable from either "
+            "endpoint but retains canonical stored orientation and has no "
+            "sequence/dependency meaning. Neither hasChild nor supports nor shared "
+            "Learning Components establish LP edges.",
+            "Read the sanitized LP summary if using this optional evidence:",
+            learning_progressions_uri(
+                framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
+            ),
+            "Preserve package-wide totals separately from the returned and reviewed "
+            "subset; never equate them. Retain coverage notices, warnings, "
+            "needs_review/no_relation exclusions, unknown denominators and linked "
+            "validation/unresolved evidence when material and permitted. Do not "
+            "invent percentages. Structural-only validation does not establish "
+            "semantic or pedagogical correctness.",
+            "Before using any edge in a recommendation, call get_learning_progression "
+            "for its exact returned relationship ID and read its full provenanceUri:",
+            _tool_call({**route, "relationshipId": "<returned-relationship-id>"}),
+            "Inspect at most 10 distinct full edge-provenance resources in this "
+            "entire workflow, deduplicating relationship IDs across standards. "
+            "Preserve original rationale, model-judgment confidence, all warnings, "
+            "candidate references, producer/checker trace and source/config/content "
+            "hashes. Cite exact relationshipUri and provenanceUri with endpoint "
+            "node/CASE IDs, framework, snapshot, package and attribution. Excerpts "
+            "or clipped warnings are not full provenance. Reduce or clearly defer "
+            "recommendations needing over-cap, unread or denied provenance.",
+            "Use get_learning_components_for_standard through the existing exact "
+            "support links for retained standards; reuse earlier results. Keep "
+            "component/support IDs and URIs, confidence, supportedStandards and "
+            "their grade evidence, and inspect material linked component provenance "
+            "under policy. Preserve existing hierarchy/DAG and shared-core behavior; "
+            "a shared component does not create an LP edge or grade equivalence.",
+            "Retain all query bounds, cursors, counts and completeness/truncation "
+            "flags. Distinguish unavailable, empty, sparse, incomplete and "
+            "rights/byte-denied evidence. No bulk-map reads or retries to bypass "
+            "policy. If optional evidence cannot be used, continue the original "
+            "useful output from permitted standards/components with explicit "
+            "limitations. Absence of returned evidence does not establish "
+            "curriculum omission, no pedagogical connection or cross-framework "
+            "alignment. Never invent a replacement progression edge. Keep caller "
+            "observations, source standards, stored generated judgments and "
+            "generated teaching/study suggestions visibly separate.",
+        )
+    )
+
+
 def render_support_plan_workflow(
     *, request: LearningProgressionSupportPlanRequest, runtime: CatalogPackageRuntime
 ) -> str:

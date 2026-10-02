@@ -1333,7 +1333,7 @@ DEV-020 is DONE. Suggested Conventional Commit: `feat(prompts): add bounded curr
 
 ### DEV-021 — Integrate stored evidence into existing prompts and remove hypothesis remnants
 
-`Status`: `PENDING` `Depends On`: `DEV-020`
+`Status`: `DONE` `Depends On`: `DEV-020`
 `Acceptance`: `AC-010, AC-016, AC-017, AC-018, AC-021`
 
 **Goal**
@@ -1348,9 +1348,65 @@ prompts/definitions.py, models.py, service.py; mcp/prompts registration/argument
 
 Teacher guide, study support, handbook and multigrade retrieve optional stored links/provenance/LC evidence after exact selection while preserving existing outputs. Administrator/comparison notices remain truthful. No old hypothesis prompt, guidance type, candidate fallback or obsolete heuristic/overlay/reference expectation remains in active runtime/configuration. Historical source-origin text and useful LC/comparison inference remain.
 
-**Self-Check**
+**Implementation**
 
-Static/type checks and render every retained/new prompt; inspect bounded shared retrieval and unavailable/partial behavior. Targeted symbol/config searches plus exact nine-prompt inventory establish removal; scope documentation replacements as Documenter-owned work. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+Added one focused `render_optional_progression_workflow` helper, reached through the already-selected accepted runtime by PromptService. Teacher guide, study support, handbook and multigrade each append this step once after exact selection and existing component retrieval. The step retains at most three already-resolved standards across the whole workflow/all room grades, one direct page of 25 per standard with no cursor follow-up/traversal/path expansion, and at most ten distinct full used-edge provenance inspections. It preserves incoming/outgoing/related distinctions, original endpoint/relationship identities, rationale, confidence as model judgment, warnings, producer/checker traces, source/config/content hashes and exact citations. It reuses existing LC support links and earlier results; shared LC, hierarchy/DAG and grade behavior never become LP edges.
+
+Sanitized summary evidence distinguishes package-wide totals from the returned/reviewed subset, exclusions, unknown denominators and structural-only validation. Unavailable/empty/sparse/incomplete/denied optional evidence preserves the original useful output with explicit limits and no inferred-edge fallback. Absence cannot establish curriculum omission or cross-framework alignment. Shared rules now distinguish LC provenance from stored LP judgment provenance and caller observations from source/generated evidence. Administrator/comparison disclosures acknowledge stored generated LP without creating cross-framework links or official equivalence.
+
+Deleted the hypothesis adapter module, PromptService method, old candidate call and scope validator, direction/candidate aliases, name/registration/exports/default guidance/disclosure. Retained ProgressionGradeFilters used by the teaching-sequence workflow. Public prompt version stays 1.3.0. No base prompt-model/service imports were added; selectors, facets, endpoint_scope semantics, three new prompt workflows and shared routing/rights/guidance/metadata/byte enforcement remain intact. Active versioned configurations already removed old heuristics/overlays and remain byte-exact.
+
+**Self-Check — Actual Developer Feedback**
+
+PASS — working directory `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; assessed HEAD `da31e934f98fc59435c66c1ae0038d10ed0f221a`, clean entry. Changed working-tree identities below bind implementation checks; no commit was created. Actual final commands:
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev021/feedback.py > /tmp/kgfegmcp-dev021/feedback.log 2>&1
+python3 /tmp/kgfegmcp-dev021/static.py > /tmp/kgfegmcp-dev021/static.log 2>&1
+python3 /tmp/kgfegmcp-dev021/preservation.py
+node .standards/bin/check.mjs
+git diff --check
+```
+
+- Final commands exited 0. Real factory/lifespan/default bootstrap accepted all six already-activated DEV-023 rebuilt runtimes with zero exclusions. Feedback passed 1,116 named assertions: 150 actual in-process prompt calls/attempts, 40 tool calls and 48 successful resource reads. Counts include intended negative prompt calls, not only successful workflows. Fifty-four render cases cover all nine prompts against six frameworks/pairs; repeated protocol renders are deterministic with file-read and lexical-search guards. Maximum sampled message size is 28,555 bytes. Version and exact runtime/config metadata remain present.
+- Final exact discovery/capability/PromptName inventory agrees on 17 tools and nine prompts. The old prompt lookup fails as unknown and the obsolete service method/tool is absent. Targeted source/config search finds only the two intentionally stale CLI smoke inventory strings in `backend/src/kgfegmcp/cli/smoke_checks.py` (old prompt and old tool). Those checks are DEV-022-owned and are not active registrations; transport smoke is not claimed passing. Historical STANDARDS evidence, original provenance and Documenter-owned user documentation remain unchanged.
+- Shared nested request templates validate against existing direct-query/exact-edge schemas and pin framework/snapshot/node-ID namespaces. Actual calls execute three direct pages per framework (18 total), six existing LC support queries and 15 exact edge queries. Fifteen full per-edge provenance resources and their exact relationship resources were read: ten distinct edges in one framework workflow and one in each other framework. Six sanitized summary/validation/unresolved sets were read. Original generated edge identities and explicit citations remain exact. All 18 sampled direct pages were complete and returned 3–11 relationships each; this sample does not establish all possible cursor/empty conditions. Incomplete/empty/denied handling is explicit rendered guidance, not executed model behavior.
+- Missing-LP projections for all four roles across six runtimes skip LP calls while keeping standards/component output. No-LC projections preserve standards-only output for the three applicable roles and retain multigrade's existing capability rejection. Prohibited/review-required derivatives and unreviewed rights reject all four extended prompts. Lower prompt-byte policy fails without clipping; replacement soft lesson guidance cannot remove mandatory evidence limits. Unexpected adapter errors stay masked. These checks use temporary boundary projections only; no accepted package is altered.
+- AST comparison preserves 64 existing functions/methods across prompt service/models/renderers/adapters; for the four extended service methods the only ignored addition is the single shared helper call. This preserves their original output contracts, grade/shared-LC behavior, exact selection, three prior LP renderer workflows and support/teaching/curriculum facet contracts. Existing guidance constants remain identical outside the declared shared disclosure/maps and obsolete removals. Three clean-process import orders pass without cycles.
+- Seven changed-module Black, isort, Ruff E/F/C90, mypy, pylint and interrogate checks all pass: no type errors, pylint 10.00/10 and 100% docstring coverage. Exact argv/cwd/exit/stdout/stderr and final source hashes are retained in static.json; workflow and whitespace checks pass. Initial static syntax issues from deleting multiline aliases were corrected. The initial no-LP check fixture correctly hit the accepted-runtime manifest invariant and was replaced with an isolated metadata projection. Failed-attempt logs/results are preserved alongside final passing results.
+- All 3,112 entry data/config files retain exactly the same inventory and SHA-256 values, including active and retired sealed packages, original/raw/prepared/rebuilt inputs, maintained build sets, versioned configurations and all prior receipts. Only new ignored DEV-021 receipts are added. No activation, source regeneration, external source modification, live LLM/paid call, deployment, publication or formal test edit occurred.
+
+**Content Identities**
+
+- `backend/src/kgfegmcp/prompts/models.py`: `sha256:05e825ec92e45a905501d30da7c9025c41c353850659dce7d2674a706c39c22c`.
+- `backend/src/kgfegmcp/prompts/definitions.py`: `sha256:1ff1fb9a93cc87b079c8e988435f10e5b39d7bb1efb9c4bb44c337025a0ed827`.
+- `backend/src/kgfegmcp/prompts/service.py`: `sha256:18ffb9109f9c0e53c5b0c6e22fee7e08fa89049ea985795e9fa8fcac51e744e8`.
+- `backend/src/kgfegmcp/prompts/learning_progressions.py`: `sha256:b1e523a9607547cd68157bebb52dcd007422ce5af5beb1336755a6dd3a60f187`.
+- `backend/src/kgfegmcp/mcp/prompts/arguments.py`: `sha256:c9750355416e7b84b00645774e839021c186a95d5cb599733a9b5b70c88cd1e8`.
+- `backend/src/kgfegmcp/mcp/prompts/register.py`: `sha256:bd20dcbba02c522e64af4cfdaf5516f72c728cbe519d67b0cf6a4a3033c54795`.
+- `backend/src/kgfegmcp/prompts/__init__.py`: `sha256:df384a97f842ded51435e27ffd039e46086436fe303d00d037545a270c322d87`.
+- Deleted `backend/src/kgfegmcp/mcp/prompts/progression.py`; assessed-HEAD content was `sha256:37f4506aa0cf06df57f824646223df323a24dca0c2beb08d91eb1c8f6cccb3ca`.
+
+**Local Evidence and Limitations**
+
+Local Developer scripts, exact command results, rendered-message/runtime identities, protected inventory and hashes are retained under ignored `data/source_artifacts/learning_progressions/dev021/checks/`. Selected receipt identities:
+
+- `commands.json`: `sha256:8b467f17797db106b9f198f5ce6db39c3e94b71f76b20833332893e956c7b947`.
+- `entry.json`: `sha256:4f92e51303664d0d88e0450e1c3dc79ea6cbb372d5e3169c5ce052d16b002e65`.
+- `evidence-index.json`: `sha256:9472fbbccacc3da83015974d1c501891eca1b717d8c2aa4846b1b37da5d09334`.
+- `feedback.py`: `sha256:d95b6b64a5bc426ab173b1e46d3decb0c2179f23a06c1ea2b1048e1780a03338`.
+- `feedback.json`: `sha256:b6e8149d23a82c20af7b5d017ed602cb2f708df8814be835122eb5ae8c2b806d`.
+- `static.py`: `sha256:565b38773bf4ed669f08c89d46881844f13847df4e618393707e587f3544775f`.
+- `static.json`: `sha256:3c90637ee56474dfc702413fa065f21d392ef65631b1b9a36eac61ed3f395501`.
+- `preservation.py`: `sha256:32b71463f2c8ffe661f111e667c3b48eae6daeba391af7be934f2b6ee39e74f3`.
+- `preservation.json`: `sha256:86faf880f97c590cae46cb8ea10fbe14ca77e38920fadcf2f8eb3ceaf3967c7b`.
+- `protected-inputs.json`: `sha256:e207d158512ccae144fbad6756c0f5c1e58edb1af5babe875ec504c685badf9d`.
+
+These are ad hoc Developer checks, not independent Tester acceptance or formal AC verification. No client model composed educational output or enforced evidence-selection/citation instructions. Rendered bounded behavior and representative real evidence retrieval do not establish semantic/pedagogical correctness, exhaustive all-edge/all-selector coverage or curriculum certification. No formal pytest suite was created or run. STDIO, local HTTP, CI and MCPB distribution verification remain DEV-022; Documenter owns user-facing obsolete-reference cleanup.
+
+**Continuation**
+
+DEV-021 is DONE. Suggested Conventional Commit: `feat(prompts)!: replace progression hypotheses with stored evidence`. STEPWISE now waits for explicit DEV-022 continuation. Keep DEVELOPING, locked tony, AFTER_IMPLEMENTATION and Current Increment NONE; no full Developer/Tester handoff gate passes while DEV-022 is unfinished. Preserve all source/package/configuration evidence and do not rerun activation.
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
@@ -1375,8 +1431,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019 and DEV-020. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019 and DEV-020 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-021; no later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019, DEV-020 and DEV-021. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019, DEV-020 and DEV-021 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-022; DEV-022 has not started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -1385,5 +1441,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005, DEV-023 and DEV-012 through DEV-020 are DONE. Next dependency-ready step is DEV-021; explicit user continuation is required. Keep STEPWISE, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE and DEVELOPING. Public prompt version is 1.3.0 with ten implemented registrations, including obsolete inferred_progression_hypothesis; DEV-021 integrates bounded LP evidence into existing workflows and removes remaining hypothesis implementation/registration/references to reach the final nine prompts. Reuse the shared route/rights/guidance/metadata/byte policies and focused renderer; preserve exact selector/facet contracts and nested-request tool schemas. All six accepted rebuilt runtimes remain active and unchanged; all 3,092 DEV-020 entry data/config files and prior receipts were preserved. Keep raw/prepared/rebuilt copies and byte-exact retired config/graph_packages under data/source_artifacts/learning_progressions/dev017/retired intact. Do not rerun activation or regenerate source evidence. DEV-022 transport/CI/distribution work remains unstarted; deployment/publication remain user-owned.
+- Resume: DEV-001 through DEV-005, DEV-023 and DEV-012 through DEV-021 are DONE. Next dependency-ready step is DEV-022; explicit user continuation is required. Keep STEPWISE, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE and DEVELOPING. Public prompt version is 1.3.0 with the final nine prompt registrations and 17 tools; obsolete runtime hypothesis logic is removed. DEV-022 aligns the intentionally stale CLI smoke inventories with current exact names/schemas, CI and retained MCPB distribution, then runs its offline transport/package checks. Reuse shared route/rights/guidance/metadata/byte policies and exact selector/facet/endpoint_scope contracts. All six accepted rebuilt runtimes remain active; all 3,112 DEV-021 entry data/config files and prior receipts are byte-exact. Preserve raw/prepared/rebuilt copies and retired config/graph_packages under data/source_artifacts/learning_progressions/dev017/retired. Do not rerun activation or regenerate source evidence. No live LLM/paid services; deployment/publication remain user-owned.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
