@@ -7,3 +7,4 @@
 5. Keep McCabe complexity <= 10. This is checked by the repo's `pylint` tool.
 6. Always use type hints in function and method signatures. Elsewhere, use them when helpful. The repo's `mypy` tool checks type hints.
 7. Use inline comments where helpful to explain complex or tricky code.
+8. Private function/method/class/variable names should begin with an underscore to distinguish against their public counterparts.

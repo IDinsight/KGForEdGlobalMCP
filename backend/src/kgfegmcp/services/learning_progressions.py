@@ -4,7 +4,9 @@
 import hashlib
 import json
 
-from dataclasses import dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, field
+from types import MappingProxyType
 from typing import cast
 
 # Third Party Library
@@ -17,6 +19,7 @@ from kgfegmcp.domain.enums import CodeAvailability, GraphType
 from kgfegmcp.domain.identifiers import (
     ArtifactName,
     FrameworkId,
+    GraphPackageId,
     Sha256Digest,
     SnapshotId,
 )
@@ -49,17 +52,21 @@ from kgfegmcp.search.models import (
 )
 from kgfegmcp.search.service import SearchService
 from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.services.lp_discovery import collection_result, ordered_progressions
 from kgfegmcp.services.lp_models import (
     MAX_PROGRESSION_RESULT_BYTES,
     MAX_STATEMENT_EXCERPT_CHARACTERS,
     GetLearningProgressionRequest,
     GetLearningProgressionResult,
+    GetStandardProgressionsRequest,
     ProgressionArtifactIdentity,
+    ProgressionCollectionResult,
     ProgressionEvidenceResult,
     ProgressionMetadata,
     ProgressionRelationshipEvidence,
     ProgressionStandardIdentifier,
     ProgressionStandardSummary,
+    SearchLearningProgressionsRequest,
     StatementCodeStandardIdentifier,
 )
 from kgfegmcp.services.models import (
@@ -89,12 +96,26 @@ def progression_result_text(result: ProgressionEvidenceResult) -> str:
     """
 
     identity = result.metadata.package.package_identity
+    page_notice = ""
+
+    if isinstance(result, ProgressionCollectionResult):
+        page_notice = (
+            f"\nPage: {result.page.returned_count} returned, "
+            f"{result.page.examined_count} examined. "
+            f"Selection complete: {result.page.is_complete}. "
+            f"Stopping reason: {result.page.stopping_reason or 'exhausted'}. "
+            f"Counts describe this page; package coverage is separate metadata. "
+            f"A continuation cursor requires unchanged route, filters and limits. "
+            f"Absence of a stored match does not establish absence of a "
+            f"pedagogical connection."
+        )
+
     return (
         f"Stored learning progressions: {len(result.relationships)} relationships, "
         f"{len(result.nodes)} standards. Snapshot: {identity.snapshot_id}.\n"
         f"{result.metadata.generated_origin_notice}\n"
         f"{result.metadata.semantic_notice}\n"
-        f"Summary: {result.metadata.summary_uri}"
+        f"Summary: {result.metadata.summary_uri}{page_notice}"
     )
 
 
@@ -157,10 +178,40 @@ class LearningProgressionsService:
     >>> result = service.get_learning_progression(request=request)
     """
 
+    _progressions_by_package: Mapping[GraphPackageId, tuple[GraphRelationship, ...]] = (
+        field(init=False, repr=False)
+    )
     catalog_service: CatalogService
     framework_service: FrameworkService
     resource_policy: ResourcePolicy
     search_service: SearchService
+
+    def __post_init__(self) -> None:
+        """Index sorted original LP references once, without another graph store.
+
+        Examples
+        --------
+        >>> service = LearningProgressionsService(
+        ...     catalog_service=catalog, framework_service=frameworks,
+        ...     resource_policy=policy, search_service=search
+        ... )
+        """
+
+        packages = (
+            package
+            for family in self.catalog_service.list_frameworks().frameworks
+            for snapshot in family.snapshots
+            for package in snapshot.graph_packages
+        )
+        ordered = {
+            package.package_identity.graph_package_id: ordered_progressions(
+                runtime=self.catalog_service.get_package_runtime(
+                    graph_package_id=package.package_identity.graph_package_id
+                )
+            )
+            for package in packages
+        }
+        object.__setattr__(self, "_progressions_by_package", MappingProxyType(ordered))
 
     @staticmethod
     def evidence_metadata(*, runtime: CatalogPackageRuntime) -> ProgressionMetadata:
@@ -214,6 +265,10 @@ class LearningProgressionsService:
                 framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
             ),
             package=package_reference(package=runtime.catalog_package),
+            stored_builds_towards_count=(
+                runtime.catalog_package.counts.builds_towards_relationships
+            ),
+            stored_relates_to_count=runtime.catalog_package.counts.relates_to_relationships,
             summary_uri=learning_progressions_uri(
                 framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
             ),
@@ -299,6 +354,57 @@ class LearningProgressionsService:
         )
         return result
 
+    def get_standard_progressions(
+        self, request: GetStandardProgressionsRequest
+    ) -> ProgressionCollectionResult:
+        """Return bounded direct builds and symmetric relates connections.
+
+        Parameters
+        ----------
+        request
+            Exact standard selection, connection meaning and page limits.
+
+        Returns
+        -------
+        ProgressionCollectionResult
+            Original edge tables, per-connection meanings and stateless continuation.
+
+        Examples
+        --------
+        >>> result = service.get_standard_progressions(request=request)
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        node = self.resolve_standard(identifier=request.identifier, runtime=runtime)
+        store = runtime.graph_store
+        groups = {
+            "incoming_builds": store.incoming_by_type_and_node.get(
+                ("buildsTowards", node.node_id), ()
+            ),
+            "outgoing_builds": store.outgoing_by_type_and_node.get(
+                ("buildsTowards", node.node_id), ()
+            ),
+            "related": (
+                *store.incoming_by_type_and_node.get(("relatesTo", node.node_id), ()),
+                *store.outgoing_by_type_and_node.get(("relatesTo", node.node_id), ()),
+            ),
+        }
+        keys = (
+            tuple(groups)
+            if request.connection_kind == "all"
+            else (request.connection_kind,)
+        )
+        edges = {edge.relationship_id: edge for key in keys for edge in groups[key]}
+        candidates = tuple(
+            sorted(edges.values(), key=lambda edge: (edge.label, edge.relationship_id))
+        )
+        return collection_result(
+            candidates=candidates, request=request, runtime=runtime, service=self
+        )
+
     @staticmethod
     def relationship_evidence(
         *, relationship: GraphRelationship, runtime: CatalogPackageRuntime
@@ -376,6 +482,30 @@ class LearningProgressionsService:
                 relationship_id=relationship.relationship_id,
                 snapshot_id=identity.snapshot_id,
             ),
+        )
+
+    def require_collection_result_size(
+        self, *, result: ProgressionCollectionResult
+    ) -> int:
+        """Apply the shared complete text-plus-structured-content byte ceiling.
+
+        Parameters
+        ----------
+        result
+            Bounded collection with current continuation/count metadata.
+
+        Returns
+        -------
+        int
+            Encoded result bytes.
+
+        Examples
+        --------
+        >>> size = service.require_collection_result_size(result=result)
+        """
+
+        return require_progression_result_size(
+            result=result, text=progression_result_text(result=result)
         )
 
     def require_content_access(self, *, runtime: CatalogPackageRuntime) -> None:
@@ -510,6 +640,39 @@ class LearningProgressionsService:
             )
 
         return node
+
+    def search_learning_progressions(
+        self, request: SearchLearningProgressionsRequest
+    ) -> ProgressionCollectionResult:
+        """Discover stored LP edges with profile-validated endpoint conjunctions.
+
+        Parameters
+        ----------
+        request
+            Type, standard and grade/type criteria with explicit endpoint scope.
+
+        Returns
+        -------
+        ProgressionCollectionResult
+            Bounded deduplicated evidence, matched facets and honest continuation.
+
+        Examples
+        --------
+        >>> result = service.search_learning_progressions(request=request)
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        return collection_result(
+            candidates=self._progressions_by_package[
+                runtime.catalog_package.package_identity.graph_package_id
+            ],
+            request=request,
+            runtime=runtime,
+            service=self,
+        )
 
     def standard_summary(
         self, *, node: StandardNode, runtime: CatalogPackageRuntime

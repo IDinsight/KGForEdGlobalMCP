@@ -7,3 +7,4 @@
 5. Always use type hints in function and method signatures. Elsewhere, use them when helpful. The repo's `mypy` tool checks type hints.
 6. Never make live API calls in any tests. These should be mocked or stubbed out to the extent possible. If this would seriously degrade the quality of a test, then pause and point this out to me, provide your recommendation(s) and await my decision before writing such a test.
 7. Always reuse existing pytest fixtures when possible. If a new fixture is needed, it should be added to the `conftest.py` file in the appropriate directory.
+8. Private function/method/class/variable names should begin with an underscore to distinguish against their public counterparts.
