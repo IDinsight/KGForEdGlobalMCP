@@ -71,12 +71,7 @@ class GetLearningProgressionRequest(FrozenSchema):
 
 # Metadata dependencies are declared before their containing schema.
 class ProgressionArtifactIdentity(FrozenSchema):
-    """Expose an accepted artifact hash and resource URI without private file paths.
-
-    Examples
-    --------
-    >>> identity.sha256  # Accepted source byte identity.
-    """
+    """Expose an accepted artifact hash and resource URI without private file paths."""
 
     logical_name: ArtifactName
     sha256: Sha256Digest
@@ -84,25 +79,14 @@ class ProgressionArtifactIdentity(FrozenSchema):
 
 
 class ProgressionLimits(FrozenSchema):
-    """Report fixed service ceilings independently of caller-selected query limits.
-
-    Examples
-    --------
-    >>> ProgressionLimits().max_result_bytes
-    1048576
-    """
+    """Report fixed service ceilings independently of caller-selected query limits."""
 
     max_result_bytes: Literal[1048576] = MAX_PROGRESSION_RESULT_BYTES  # type: ignore[assignment]
     max_statement_excerpt_characters: Literal[2048] = MAX_STATEMENT_EXCERPT_CHARACTERS  # type: ignore[assignment]
 
 
 class ProgressionMetadata(FrozenSchema):
-    """Carry exact identity, retained coverage and generated-evidence notices.
-
-    Examples
-    --------
-    >>> metadata.package.package_identity.snapshot_id
-    """
+    """Carry exact identity, retained coverage and generated-evidence notices."""
 
     artifacts: tuple[ProgressionArtifactIdentity, ...]
     coverage: CoverageProjection
@@ -129,13 +113,7 @@ class ProgressionMetadata(FrozenSchema):
 
 # Evidence table rows precede the result models that contain them.
 class ProgressionRelationshipEvidence(FrozenSchema):
-    """Keep the original generated edge and bounded accepted judgment together.
-
-    Examples
-    --------
-    >>> evidence.relationship.relationship_id == evidence.judgment.relationship_id
-    True
-    """
+    """Keep the original generated edge and bounded accepted judgment together."""
 
     epistemic_status: Literal["llm_inferred"] = "llm_inferred"
     judgment: JudgmentProjection
@@ -145,12 +123,7 @@ class ProgressionRelationshipEvidence(FrozenSchema):
 
 
 class ProgressionStandardSummary(FrozenSchema):
-    """Retain endpoint identity and facets with explicitly bounded statement text.
-
-    Examples
-    --------
-    >>> summary.statement_excerpted  # True when the original wording was shortened.
-    """
+    """Retain endpoint identity and facets with explicitly bounded statement text."""
 
     case_identifier_uri: CaseIdentifierUri | None
     case_identifier_uuid: CaseIdentifierUuid | None
@@ -164,13 +137,7 @@ class ProgressionStandardSummary(FrozenSchema):
 
 
 class ProgressionEvidenceResult(FrozenSchema):
-    """Share deduplicated endpoint and original edge tables across LP operations.
-
-    Examples
-    --------
-    >>> result.metadata.limits.max_result_bytes
-    1048576
-    """
+    """Share deduplicated endpoint and original edge tables across LP operations."""
 
     metadata: ProgressionMetadata
     nodes: tuple[ProgressionStandardSummary, ...]
@@ -179,14 +146,7 @@ class ProgressionEvidenceResult(FrozenSchema):
 
 # Result inheritance follows its shared evidence base.
 class GetLearningProgressionResult(ProgressionEvidenceResult):
-    """Return one exact relationship with its pinned request and evidence tables.
-
-    Examples
-    --------
-    >>> edge = result.relationships[0].relationship
-    >>> edge.relationship_id == result.request.relationship_id
-    True
-    """
+    """Return one exact relationship with its pinned request and evidence tables."""
 
     request: GetLearningProgressionRequest
 
@@ -209,12 +169,7 @@ RelationshipTypes: TypeAlias = Annotated[
 
 
 class ProgressionFilters(FrozenSchema):
-    """Define OR-within, AND-across endpoint facets with bounded arrays.
-
-    Examples
-    --------
-    >>> filters = ProgressionFilters(normalized_grades=("1",))
-    """
+    """Define OR-within, AND-across endpoint facets with bounded arrays."""
 
     local_grade_labels: FacetValues = ()
     normalized_grades: FacetValues = ()
@@ -223,13 +178,7 @@ class ProgressionFilters(FrozenSchema):
 
 
 class ProgressionPageRequest(FrozenSchema):
-    """Bound a direct or discovery page within one exact framework route.
-
-    Examples
-    --------
-    >>> request.limit
-    25
-    """
+    """Bound a direct or discovery page within one exact framework route."""
 
     cursor: ProgressionCursor | None = None
     framework_id: FrameworkId
@@ -238,26 +187,14 @@ class ProgressionPageRequest(FrozenSchema):
 
 
 class GetStandardProgressionsRequest(ProgressionPageRequest):
-    """Select incoming/outgoing builds or symmetric related concepts.
-
-    Examples
-    --------
-    >>> request.connection_kind
-    'all'
-    """
+    """Select incoming/outgoing builds or symmetric related concepts."""
 
     connection_kind: ConnectionKind = "all"
     identifier: ProgressionStandardIdentifier
 
 
 class SearchLearningProgressionsRequest(ProgressionPageRequest, ProgressionFilters):
-    """Select stored edges with conjunctions applied to explicit endpoint scopes.
-
-    Examples
-    --------
-    >>> request.endpoint_scope
-    'either'
-    """
+    """Select stored edges with conjunctions applied to explicit endpoint scopes."""
 
     endpoint_scope: EndpointScope = "either"
     relationship_types: RelationshipTypes = ()
@@ -272,13 +209,7 @@ ProgressionCollectionRequest: TypeAlias = (
 
 
 class ProgressionEndpointMatch(ProgressionFilters):
-    """Report the matched requested facet values separately for each endpoint.
-
-    Examples
-    --------
-    >>> match.matches  # All populated criteria hold on this endpoint.
-    True
-    """
+    """Report the matched requested facet values separately for each endpoint."""
 
     matches: bool
     node_id: NodeId
@@ -286,13 +217,7 @@ class ProgressionEndpointMatch(ProgressionFilters):
 
 
 class ProgressionConnection(FrozenSchema):
-    """Name a stored edge's direct meaning and endpoint filter evidence.
-
-    Examples
-    --------
-    >>> connection.connection_kind  # Relative to the selected direct standard.
-    'incoming_builds'
-    """
+    """Name a stored edge's direct meaning and endpoint filter evidence."""
 
     connection_kind: Literal["incoming_builds", "outgoing_builds", "related"] | None
     relationship_id: RelationshipId
@@ -301,13 +226,7 @@ class ProgressionConnection(FrozenSchema):
 
 
 class ProgressionPage(FrozenSchema):
-    """Distinguish one returned page from exhaustive selection counts.
-
-    Examples
-    --------
-    >>> page.is_complete == (page.next_cursor is None)
-    True
-    """
+    """Distinguish one returned page from exhaustive selection counts."""
 
     candidate_count: Annotated[StrictInt, Field(ge=0)]
     examined_count: Annotated[StrictInt, Field(ge=0, le=5000)]
@@ -321,13 +240,7 @@ class ProgressionPage(FrozenSchema):
 
 
 class ProgressionCollectionResult(ProgressionEvidenceResult):
-    """Share bounded deduplicated tables, normalized filters and page continuation.
-
-    Examples
-    --------
-    >>> result.page.returned_count == len(result.relationships)
-    True
-    """
+    """Share bounded deduplicated tables, normalized filters and page continuation."""
 
     connections: tuple[ProgressionConnection, ...]
     endpoint_scope: EndpointScope
@@ -335,3 +248,71 @@ class ProgressionCollectionResult(ProgressionEvidenceResult):
     page: ProgressionPage
     request: ProgressionCollectionRequest
     resolved_standard_node_ids: tuple[NodeId, ...]
+
+
+# Traversal contract dependencies precede the derived subgraph result.
+ProgressionTraversalDirection: TypeAlias = Literal["downstream", "upstream"]
+TraversalTruncationReason: TypeAlias = Literal[
+    "depth_limit", "node_limit", "edge_limit", "work_limit", "byte_limit"
+]
+
+
+class TraverseLearningProgressionsRequest(FrozenSchema):
+    """Select a builds-only reachable subgraph with finite positive bounds."""
+
+    direction: ProgressionTraversalDirection = "downstream"
+    framework_id: FrameworkId
+    identifier: ProgressionStandardIdentifier
+    max_depth: Annotated[StrictInt, Field(ge=1, le=12)] = 8
+    max_edges: Annotated[StrictInt, Field(ge=1, le=100)] = 100
+    max_nodes: Annotated[StrictInt, Field(ge=1, le=250)] = 100
+    snapshot_id: SnapshotId | None = None
+
+
+class ProgressionTraversalDistance(FrozenSchema):
+    """Record minimum builds-edge distance from the selected origin."""
+
+    depth: Annotated[StrictInt, Field(ge=0, le=12)]
+    node_id: NodeId
+
+
+class ProgressionTraversalFrontier(ProgressionTraversalDistance):
+    """Report excluded depth edges and pending adjacency at returned nodes."""
+
+    depth_limited_relationship_count: Annotated[StrictInt, Field(ge=0)]
+    pending_relationship_count: Annotated[StrictInt, Field(ge=0)]
+
+
+class ProgressionTraversalCounters(FrozenSchema):
+    """Expose actual bounded search effort separately from returned evidence."""
+
+    depth_frontier_examined_relationship_count: Annotated[
+        StrictInt, Field(ge=0, le=5000)
+    ]
+    examined_relationship_count: Annotated[StrictInt, Field(ge=0, le=5000)]
+    fully_examined_node_count: Annotated[StrictInt, Field(ge=0, le=250)]
+    max_examined_relationships: Literal[5000] = 5000
+    returned_node_count: Annotated[StrictInt, Field(ge=1, le=250)]
+    returned_relationship_count: Annotated[StrictInt, Field(ge=0, le=100)]
+
+
+class TraverseLearningProgressionsResult(ProgressionEvidenceResult):
+    """Return exact generated edges within a deterministic derived subgraph."""
+
+    counters: ProgressionTraversalCounters
+    distances: tuple[ProgressionTraversalDistance, ...]
+    epistemic_status: Literal["deterministic_derived"] = "deterministic_derived"
+    frontier: tuple[ProgressionTraversalFrontier, ...]
+    graph_exhausted: bool
+    origin_node_id: NodeId
+    request: TraverseLearningProgressionsRequest
+    scope_complete: bool
+    traversal_notice: str = (
+        "Distances are minimum stored buildsTowards hops in the requested direction. "
+        "Edges between returned nodes retain their stored orientation, including "
+        "branching, merging and cycle-closing edges. This derived subgraph asserts "
+        "no new direct relationship or compulsory teaching order. No continuation "
+        "is offered; callers can change bounded inputs and rerun. Even exhausted "
+        "absence means no stored connection, not no pedagogical connection."
+    )
+    truncation_reasons: tuple[TraversalTruncationReason, ...]

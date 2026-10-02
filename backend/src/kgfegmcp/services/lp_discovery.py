@@ -49,13 +49,7 @@ if TYPE_CHECKING:
 
 
 class _CursorState(FrozenSchema):
-    """Bind a private candidate position to exact identity and effective selection.
-
-    Examples
-    --------
-    >>> state.cursor_kind
-    'learning_progressions_v1'
-    """
+    """Bind a private candidate position to exact identity and effective selection."""
 
     cursor_kind: Literal["learning_progressions_v1"] = "learning_progressions_v1"
     manifest_sha256: Sha256Digest
@@ -66,26 +60,14 @@ class _CursorState(FrozenSchema):
 
 
 class _SignedCursorState(_CursorState):
-    """Retain the canonical payload checksum under existing cursor conventions.
-
-    Examples
-    --------
-    >>> state.payload_sha256.startswith("sha256:")
-    True
-    """
+    """Retain the canonical payload checksum under existing cursor conventions."""
 
     payload_sha256: Sha256Digest
 
 
 @dataclass(frozen=True, slots=True)
 class _Selection:
-    """Keep only normalized bounded criteria and exact resolved node identities.
-
-    Examples
-    --------
-    >>> selection.endpoint_scope
-    'either'
-    """
+    """Keep only normalized bounded criteria and exact resolved node identities."""
 
     endpoint_scope: str
     filters: ProgressionFilters
@@ -95,13 +77,7 @@ class _Selection:
 
 @dataclass(slots=True)
 class _PageRows:
-    """Own a query-local bounded evidence cache; never mutate accepted graph state.
-
-    Examples
-    --------
-    >>> len(rows.relationships)
-    0
-    """
+    """Own a query-local bounded evidence cache; never mutate accepted graph state."""
 
     connections: list[ProgressionConnection] = field(default_factory=list)
     nodes: dict[NodeId, ProgressionStandardSummary] = field(default_factory=dict)
@@ -111,13 +87,7 @@ class _PageRows:
 
 @dataclass(frozen=True, slots=True)
 class _PageContext:
-    """Pin page inputs independently of the mutable query-local output buffers.
-
-    Examples
-    --------
-    >>> context.request.limit
-    25
-    """
+    """Pin page inputs independently of the mutable query-local output buffers."""
 
     candidates: tuple[GraphRelationship, ...]
     metadata: ProgressionMetadata
@@ -152,12 +122,6 @@ def collection_result(
     -------
     ProgressionCollectionResult
         Bounded evidence and truthful continuation/completeness metadata.
-
-    Examples
-    --------
-    >>> result = collection_result(
-    ...     candidates=candidates, request=request, runtime=runtime, service=service
-    ... )
     """
 
     selection = _resolve_selection(request=request, runtime=runtime, service=service)
@@ -253,10 +217,6 @@ def normalize_progression_filters(
     ------
     InvalidProgressionRequestError
         If a criterion is blank, duplicate, unsafe or unsupported by the profile.
-
-    Examples
-    --------
-    >>> filters = normalize_progression_filters(request=request, runtime=runtime)
     """
 
     profile = runtime.loaded_package.profile
@@ -313,10 +273,6 @@ def ordered_progressions(
     -------
     tuple[GraphRelationship, ...]
         LP references in file-order-independent type/ID order, without another store.
-
-    Examples
-    --------
-    >>> edges = ordered_progressions(runtime=runtime)
     """
 
     return tuple(
@@ -361,12 +317,6 @@ def _build_result(
     -------
     ProgressionCollectionResult
         Result whose totals distinguish candidates from fully computed matches.
-
-    Examples
-    --------
-    >>> result = _build_result(
-    ...     context=context, examined=1, position=1, reason=None, rows=rows, start=0
-    ... )
     """
 
     remaining = position < len(context.candidates)
@@ -418,10 +368,6 @@ def _canonical_hash(payload: object) -> Sha256Digest:
     -------
     Sha256Digest
         Qualified deterministic SHA-256.
-
-    Examples
-    --------
-    >>> digest = _canonical_hash(payload={"version": 1})
     """
 
     encoded = json.dumps(
@@ -448,10 +394,6 @@ def _connection(
     -------
     ProgressionConnection | None
         Per-endpoint match evidence, or None when this candidate does not qualify.
-
-    Examples
-    --------
-    >>> match = _connection(context=context, edge=edge, rows=rows)
     """
 
     selection = context.selection
@@ -530,10 +472,6 @@ def _cursor_position(*, context: _PageContext) -> int:
     ------
     InvalidCursorError
         If shape, encoding, checksum, identity, fingerprint or range is invalid.
-
-    Examples
-    --------
-    >>> position = _cursor_position(context=context)
     """
 
     cursor = context.request.cursor
@@ -586,10 +524,6 @@ def _encode_cursor(*, context: _PageContext, position: int) -> str:
     -------
     str
         Bounded unpadded base64url continuation.
-
-    Examples
-    --------
-    >>> cursor = _encode_cursor(context=context, position=1)
     """
 
     state = _CursorState(
@@ -629,10 +563,6 @@ def _endpoint_match(
     -------
     ProgressionEndpointMatch
         Matched values and whole-conjunction outcome for this endpoint alone.
-
-    Examples
-    --------
-    >>> match = _endpoint_match(evidence=facets, node_id=node_id, selection=selection)
     """
 
     actual = {
@@ -696,12 +626,6 @@ def _finish_result(
     -------
     ProgressionCollectionResult
         A fully budget-checked page with no lost entry or zero-progress byte cursor.
-
-    Examples
-    --------
-    >>> result = _finish_result(
-    ...     context=context, examined=1, position=1, reason=None, rows=rows, start=0
-    ... )
     """
 
     while True:
@@ -781,10 +705,6 @@ def _remove_last(*, rows: _PageRows) -> int:
     -------
     int
         Unconsumed candidate position of the removed entry.
-
-    Examples
-    --------
-    >>> position = _remove_last(rows=rows)
     """
 
     rows.connections.pop()
@@ -813,12 +733,6 @@ def _resolve_selection(
     -------
     _Selection
         Canonical filters, type set and deduplicated resolved standards.
-
-    Examples
-    --------
-    >>> selection = _resolve_selection(
-    ...     request=request, runtime=runtime, service=service
-    ... )
     """
 
     if isinstance(request, GetStandardProgressionsRequest):
@@ -838,7 +752,7 @@ def _resolve_selection(
     selector_keys = tuple(
         item.model_dump_json(by_alias=True) for item in request.standard_identifiers
     )
-    
+
     if len(selector_keys) != len(set(selector_keys)):
         raise InvalidProgressionRequestError(
             message="LP standard selectors must be unique."
@@ -877,10 +791,6 @@ def _selection_hash(
     -------
     Sha256Digest
         Effective operation fingerprint, separate from exact accepted identity.
-
-    Examples
-    --------
-    >>> digest = _selection_hash(request=request, selection=selection)
     """
 
     return _canonical_hash(

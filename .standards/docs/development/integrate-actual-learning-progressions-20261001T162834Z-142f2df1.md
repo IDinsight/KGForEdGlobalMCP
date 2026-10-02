@@ -692,7 +692,7 @@ User explicitly authorized DEV-013 after committed DEV-012. This step changes on
 
 ### DEV-014 — Implement bounded upstream and downstream traversal
 
-`Status`: `PENDING` `Depends On`: `DEV-013`
+`Status`: `DONE` `Depends On`: `DEV-013`
 `Acceptance`: `AC-008, AC-009, AC-010, AC-018`
 
 **Goal**
@@ -709,7 +709,69 @@ Breadth-first traversal preserves branching/merging edges and upstream stored or
 
 **Self-Check**
 
-Static/type checks and local branch/merge/cycle/depth/node/edge/work/byte sanity checks; inspect every hop as a buildsTowards edge and confirm hierarchy/support isolation. No traversal cursor or inferred direct edge. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — bounded builds-only upstream/downstream traversal implemented and checked offline. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`. Assessed HEAD: `24dee0f150eb360ab298eadb04ec0ec70c272994`; entry tracked working tree was clean. The user explicitly authorized this one dependency-ready step; only its matching continuation blocker was cleared. The plan stays IN_PROGRESS with STEPWISE, locked style tony, AFTER_IMPLEMENTATION and Current Increment NONE.
+
+**Implemented outcome**
+
+- Added frozen typed traversal request/result, distance/frontier/counter contracts and a focused `services/lp_traversal.py` helper. Requests strictly reject coercion, booleans, invalid directions and nonpositive/excess bounds: depth default 8/max 12; nodes default 100/max 250 including origin; edges default/max 100. Fixed adjacency work 5,000 and text-plus-structured UTF-8 result ceiling 1,048,576 bytes remain service constants.
+- Reuses the accepted runtime, exact standard/code/CASE selectors, rights policy, metadata, endpoint summaries and original relationship/judgment projections. At service construction, existing builds-only incoming/outgoing GraphStore adjacency is sorted into immutable original-reference tuples by relationship ID; query work never sorts or copies an unbounded adjacency list. No second graph store, file reads during query, altered accepted records or pedagogical inference.
+- BFS deduplicates nodes/edges while retaining branching, merging and cycle-closing edges. Minimum directional hop distances are separate from original source/target orientation; upstream never reverses stored records. Internal edges between returned nodes also survive depth-frontier inspection. hasChild, supports and relatesTo never participate.
+- Applies node/edge caps before evidence/queue admission and work before each adjacency inspection. Depth-frontier edges consume actual work. `scopeComplete` reports complete requested-depth evidence; depth-only truncation leaves it true while `graphExhausted` is false. Node/edge/work/byte interruptions leave both false. Frontier gives returned node/depth, examined depth-excluded edge count and pending adjacency count; pending includes an inspected entry whose admission was blocked. Counters distinguish actual examinations, depth examinations, fully inspected nodes and returned rows. Exact exhausted ceilings and isolated valid standards do not falsely truncate.
+- Reserves bounded worst-case final counter/reason/frontier overhead before accepting each entry, then checks the actual final shared tool envelope. Reservation can conservatively stop a later entry early. A first entry that fits its exact final envelope survives reservation and returns with explicit byte frontier (or full exhaustion when no frontier remains); an actually oversized single entry fails progression_result_too_large with resource recovery. Excess entries and their speculative endpoints are omitted together. No traversal cursor or synthetic direct relationship; notices explain derived evidence, rerun with changed bounded inputs and absent-edge limits.
+
+**Actual commands and results**
+
+Runtime feedback and repository Python tools used `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync` from the repository directory above; no install/sync/network/model/API/paid-service execution.
+
+- `python /tmp/kgfegmcp-dev014-feedback.py` — final exit 0: 3,495 named checks, 406 actual accepted-package queries and 17 synthetic outcome records. All six DEV-023 replacements loaded through CatalogRepository/GraphPackageValidator read-only. Query calls ran with Path.open, Path.read_bytes and builtins.open blocked. Independent whole-graph reachable-set/minimum-depth and induced-edge oracles compared complete depth-1/depth-8 results for high-degree and isolated samples in both directions; every returned edge was the original accepted builds record with original endpoint/rights/provenance/judgment identity, and all 3,039 builds edges were checked in both immutable sorted indexes. Repeated envelopes, exact node/CASE/code selections, unavailable code, missing framework/standard, root rejection and rights failures passed.
+- Synthetic feedback passed branch/merge diamond order, upstream orientation, cycles including a closing edge at requested depth, complete empty subgraph, depth-only versus exhausted distinction, node/edge stops, strict request schemas, depth 12 versus thirteenth hop, exact 100-edge exhaustion, depth-frontier work stop at 5,000 actual examinations and exact 5,000 completion. UTF-8 attribution expansion established whole-entry byte stop, oversized-single-entry failure and both complete/incomplete fitting first-entry envelopes at exactly 1,048,575 bytes.
+- `python /tmp/kgfegmcp-dev014-regression.py` — final exit 0: 905 prior direct/discovery implementation checks, 382 actual pages and all 8,080 original LP IDs retrieved once. Existing selectors/filters/cursors/counts/work/byte/endpoint behavior remains usable with the new shared service constructor. Its protected-input comparison passed against this step's entry inventory.
+- `python3 /tmp/kgfegmcp-dev014-static.py` ran Black --check, isort --check-only, Ruff `check --select E,F,C90`, mypy `--cache-dir /tmp/kgfegmcp-dev014-mypy`, pylint and interrogate `--generate-badge /tmp/kgfegmcp-dev014-badge` on learning_progressions.py/lp_models.py/lp_traversal.py. All exit 0: mypy no issues in three files, pylint 10.00/10 and McCabe <=10, docstrings 100%. Workflow `node .standards/bin/check.mjs` and `git diff --check` also passed; final persisted-state `node .standards/bin/check.mjs` and `git diff --check` each exited 0 after saving DONE and the DEV-015 blocker. The final post-record comparison also confirmed all 2,476 original files plus exactly nine local receipt additions, and verified persisted source/receipt hashes.
+- Initial static feedback found an overlong module docstring and McCabe 11 in edge admission; shortened the docstring and separated admission/rollback from depth/node/edge decisions. Initial scratch traversal feedback referenced `framework_node` instead of the existing `framework_root`; corrected the feedback script. Initial regression feedback completed query cases then stopped on its historical DEV-013 inventory (which preceded nine later DEV-013 receipts); reran with the current DEV-014 entry inventory. These iterations are not counted as passes. No package data or contract workaround was applied.
+- Independent final preservation comparison confirmed every byte and path in all 2,476 entry files under config, sealed active packages, maintained input artifacts and source/prepared/replacement/evidence roots unchanged. Only new ignored DEV-014 receipts were subsequently added. One unrelated whitespace-only line removal in lp_discovery.py appeared in the working diff during execution and was left intact; DEV-014 does not depend on it.
+
+**Assessed implementation identities**
+
+| File | SHA-256 |
+|---|---|
+| `backend/src/kgfegmcp/services/learning_progressions.py` | `sha256:fd56fd282f26e235022094c26713de0cfd63a537912f4e942ecc74712db8b218` |
+| `backend/src/kgfegmcp/services/lp_models.py` | `sha256:2b0bd8e28f8c9e56f41698b510332ef4d79740ec3c5b3cfba1dbf5545b1366fa` |
+| `backend/src/kgfegmcp/services/lp_traversal.py` | `sha256:35c7a0a33f66f217f6403c6c6b34f46e1e8555a702e2b09c831740bf444e05e8` |
+
+**Accepted query input identities**
+
+All six are mixed academic_standards revision 1 packages, graphPackageId = exact snapshot below plus `--academic-standards--p1`; profile ID = framework, profile version 2.0. Each result retains all 86 declared artifact identities. Artifact-table digest hashes the sorted compact JSON logical-name→SHA-256 map; full maps and exact package references are in content-feedback.json.
+
+| Exact snapshot | Manifest bytes | Profile bytes | 86-artifact hash-table digest | Queries / stored builds |
+|---|---|---|---|---|
+| `ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507` | `sha256:5cf5dbb35785b0ded64f062c19589b1601cd1f76e08cdddf991f9a1a14439f7b` | `sha256:fe2b269f7e76d0abf89d00799857602e17c8e76b6d1b4055797c662629ce7212` | `sha256:95b8c46423fe81ba544a97357b8877e569d3b80b7def1a4b8c0f5604b6d72005` | 68 / 250 |
+| `ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9` | `sha256:16ef563d4fea0a5f6d259580ef834b1231d4376c9d34b521e416b39960b70533` | `sha256:4981190e0b1f79a924b92088ed7e78820961935a022ea1abcb13500e8136e848` | `sha256:2c6ddb75470b8bad7a9021dd2b8fe7416eabe1ee9af3661e0e841eb737d9f00b` | 68 / 299 |
+| `india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1` | `sha256:d7431e9e49ff4d4c99b985d3a42dd10bae506c406dca0e96c26d9d8159515a96` | `sha256:5e5e9ed3ec1f52f296b0ff5538aff56e6f2b8f58cc87ba0a29ac6e892bf5f852` | `sha256:e6c2d4a855c8b360c341afe3f6bb7fae879c8889dd24d4709c167bc22e15a706` | 68 / 891 |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f` | `sha256:32e860054447d9dde6d6d7b15bddb118e33727111953f2c4671b0b3359ca359b` | `sha256:8b9e1ffde3595ff24fa20bc2fa468fd952ec78aad6daaa4b19c1d5ebefc46595` | `sha256:5ea590b21575ef269a107be21f5047b60cc54679ee856f0f8f0272fe8a0939a9` | 68 / 472 |
+| `nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f` | `sha256:3b0616d3ad9c2d6017c7c9bd4f9624927875daf9d1a6cd46b0a2316916544479` | `sha256:b04a2bcefa88d2e235cd9a1f988ae6af7dd9e50da565ec7aa9a5ac76015cd3e8` | `sha256:0148160d46f2e397240872cccb3356037249c74f6f1cf18e8ee5cc57651a5a54` | 67 / 189 |
+| `rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13` | `sha256:7a00e1afee01ff60ba4862eb833e26a4f85c727f08447573d229c5a3e89b3e2b` | `sha256:d3fc130a70ce0502fc07f93a8211124adbe69a3b36b6302cf463f728fb41e0b6` | `sha256:9ad500a92d2483089f75e6aaa64704ab1dc919ee3f01ce26d599bbf5a0a3281e` | 67 / 938 |
+
+**Local receipts and limits**
+
+Retained under ignored `data/source_artifacts/learning_progressions/dev014/checks`. Scratch commands above are the actual runs; saved script copies use persisted local receipt inputs for resumption and allow only this step's receipt additions when comparing inventory. They are Developer ad hoc feedback, not formal Tester-owned test artifacts. Actual commands/stdout/stderr/exit codes, changed hashes, full package/artifact maps and protected inventory are persisted:
+
+| Receipt | SHA-256 |
+|---|---|
+| `content-feedback.json` | `sha256:ee67595e341fb343997a6588ce7788c8390c09de31cabf7b2a53878cb920e839` |
+| `content-feedback.py` | `sha256:d9ff39905ce55da4733fd1e08b41cede0bc3983bac3fb2f41b97b09ed51c8e31` |
+| `evidence-index.json` | `sha256:74ebe2660f86a6c55f650a3f40dc66db27751cc5f087f4f9729dd59f50853ae8` |
+| `preservation.json` | `sha256:07814b17c551dab08346700a1ae62ad7e0924a8766be08aa5b1845067344dd63` |
+| `protected-inputs.json` | `sha256:b9060c308d795b3623d57341c03a1e6a6de10e989992ff4038fb0c96af88780f` |
+| `regression-feedback.json` | `sha256:c8dc44fdcc6e48bd1d3ec0e5ba89494c0c121ea2a6b7a5b416588903eb06562d` |
+| `regression-feedback.py` | `sha256:836d153920dd538187549c408f9ed2707c123feda43e5303f560fd098cc08e44` |
+| `static-feedback.json` | `sha256:34f2caac26f2945e881f929420b521ec0176c68ab954cb9d236470d3a6556ba8` |
+| `static-feedback.py` | `sha256:e07f0c8effdf2e806019fdb8efbbd3b6a27af7ed421c02925671974d486935f2` |
+
+No formal AC acceptance or pedagogical correctness is claimed. Accepted-package query samples plus all-edge index checks are supplemented by synthetic cycle/high-frontier/large-entry cases; the accepted six curricula have no such generated artificial records. Public MCP registration, connecting paths, resource handlers, bootstrap/replacement activation and transport/distribution verification remain their later approved steps. The incomplete schema-migration checkout retains the previously recorded legacy-bootstrap limitation until DEV-017; no activation, compatibility alias, original/source change, producer regeneration or deployment occurred.
+
+**Continuation**
+
+DEV-014 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded upstream and downstream traversal`. STEPWISE pauses before DEV-015 (bounded connecting paths without losing alternatives), which remains PENDING. Effective cadence AFTER_IMPLEMENTATION, Current Increment NONE, workflow DEVELOPING, historical Architect handoff and inactive recovery/obligations are preserved; the full Developer handoff gate does not pass while later steps remain unfinished.
 
 ### DEV-015 — Implement bounded connecting paths without losing alternatives
 
@@ -882,7 +944,7 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 ## Plan Notes
 
 - Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012 and DEV-013. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012 and DEV-013 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-014; no later step has started.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013 and DEV-014 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-015; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -891,5 +953,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005, DEV-023, DEV-012 and DEV-013 are DONE. Next approved dependency-ready step is DEV-014; user continuation is required before starting it. Re-read bounded builds-only BFS traversal, branching/merging, upstream orientation, depth/frontier/work/byte bounds and scopeComplete/graphExhausted contracts; reuse existing GraphStore label adjacency and DEV-012/DEV-013 route/selector/rights/evidence/model helpers with accepted DEV-023 rebuilt runtimes. Maintained data/input_artifacts now rebuild the same six replacements directly; isolated rebuilt packages are under data/source_artifacts/learning_progressions/rebuilt_packages. Keep all source/prepared/accepted packages and version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
+- Resume: DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013 and DEV-014 are DONE. Next approved dependency-ready step is DEV-015; user continuation is required before starting it. Re-read directed simple connecting-path enumeration, per-path cycle guards without global visited pruning, alternative preservation, hop-count/relationship-ID ordering, depth/path/work/queue/byte limits and scopeComplete/graphExhausted semantics. Reuse DEV-014 immutable builds adjacency and shared route/selector/rights/evidence/byte helpers with accepted DEV-023 rebuilt runtimes. Maintained data/input_artifacts now rebuild the same six replacements directly; isolated rebuilt packages are under data/source_artifacts/learning_progressions/rebuilt_packages. Keep all source/prepared/accepted packages and version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.

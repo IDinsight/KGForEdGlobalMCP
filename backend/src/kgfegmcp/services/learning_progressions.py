@@ -68,6 +68,13 @@ from kgfegmcp.services.lp_models import (
     ProgressionStandardSummary,
     SearchLearningProgressionsRequest,
     StatementCodeStandardIdentifier,
+    TraverseLearningProgressionsRequest,
+    TraverseLearningProgressionsResult,
+)
+from kgfegmcp.services.lp_traversal import (
+    TraversalAdjacency,
+    traversal_adjacency,
+    traversal_result,
 )
 from kgfegmcp.services.models import (
     CaseUriStandardIdentifier,
@@ -89,10 +96,6 @@ def progression_result_text(result: ProgressionEvidenceResult) -> str:
     -------
     str
         Summary suitable for the future MCP adapter and byte-budget calculation.
-
-    Examples
-    --------
-    >>> text = progression_result_text(result=result)
     """
 
     identity = result.metadata.package.package_identity
@@ -108,6 +111,15 @@ def progression_result_text(result: ProgressionEvidenceResult) -> str:
             f"A continuation cursor requires unchanged route, filters and limits. "
             f"Absence of a stored match does not establish absence of a "
             f"pedagogical connection."
+        )
+
+    if isinstance(result, TraverseLearningProgressionsResult):
+        page_notice = (
+            f"\nRequested depth complete: {result.scope_complete}. "
+            f"Reachable graph exhausted: {result.graph_exhausted}. "
+            f"Truncation reasons: {', '.join(result.truncation_reasons) or 'none'}. "
+            f"Examined: {result.counters.examined_relationship_count} adjacency edges. "
+            f"{result.traversal_notice}"
         )
 
     return (
@@ -140,10 +152,6 @@ def require_progression_result_size(
     ------
     ProgressionResultTooLargeError
         If the complete result exceeds the fixed ceiling.
-
-    Examples
-    --------
-    >>> size = require_progression_result_size(result=result, text=text)
     """
 
     # Include envelope/escaping overhead; Unicode characters are measured as bytes.
@@ -171,33 +179,23 @@ def require_progression_result_size(
 
 @dataclass(frozen=True, slots=True)
 class LearningProgressionsService:
-    """Reuse one accepted runtime, standard indexes and rights policy for LP queries.
+    """Reuse one accepted runtime, standard indexes and rights policy for LP queries."""
 
-    Examples
-    --------
-    >>> result = service.get_learning_progression(request=request)
-    """
-
-    _progressions_by_package: Mapping[GraphPackageId, tuple[GraphRelationship, ...]] = (
-        field(init=False, repr=False)
-    )
     catalog_service: CatalogService
     framework_service: FrameworkService
     resource_policy: ResourcePolicy
     search_service: SearchService
+    _progressions_by_package: Mapping[GraphPackageId, tuple[GraphRelationship, ...]] = (
+        field(init=False, repr=False)
+    )
+    _traversal_by_package: Mapping[GraphPackageId, TraversalAdjacency] = field(
+        init=False, repr=False
+    )
 
     def __post_init__(self) -> None:
-        """Index sorted original LP references once, without another graph store.
+        """Index sorted original LP references once, without another graph store."""
 
-        Examples
-        --------
-        >>> service = LearningProgressionsService(
-        ...     catalog_service=catalog, framework_service=frameworks,
-        ...     resource_policy=policy, search_service=search
-        ... )
-        """
-
-        packages = (
+        packages = tuple(
             package
             for family in self.catalog_service.list_frameworks().frameworks
             for snapshot in family.snapshots
@@ -212,6 +210,15 @@ class LearningProgressionsService:
             for package in packages
         }
         object.__setattr__(self, "_progressions_by_package", MappingProxyType(ordered))
+        adjacency = {
+            package.package_identity.graph_package_id: traversal_adjacency(
+                runtime=self.catalog_service.get_package_runtime(
+                    graph_package_id=package.package_identity.graph_package_id
+                )
+            )
+            for package in packages
+        }
+        object.__setattr__(self, "_traversal_by_package", MappingProxyType(adjacency))
 
     @staticmethod
     def evidence_metadata(*, runtime: CatalogPackageRuntime) -> ProgressionMetadata:
@@ -226,10 +233,6 @@ class LearningProgressionsService:
         -------
         ProgressionMetadata
             Artifact byte identities, rights, limits, coverage and evidence links.
-
-        Examples
-        --------
-        >>> metadata = service.evidence_metadata(runtime=runtime)
         """
 
         identity = runtime.catalog_package.package_identity
@@ -305,10 +308,6 @@ class LearningProgressionsService:
             If the identifier is missing or belongs to a non-LP relationship.
         ProgressionResultTooLargeError
             If the complete result cannot fit without dropping stored evidence.
-
-        Examples
-        --------
-        >>> result = service.get_learning_progression(request=request)
         """
 
         runtime = self.resolve_runtime(
@@ -368,10 +367,6 @@ class LearningProgressionsService:
         -------
         ProgressionCollectionResult
             Original edge tables, per-connection meanings and stateless continuation.
-
-        Examples
-        --------
-        >>> result = service.get_standard_progressions(request=request)
         """
 
         runtime = self.resolve_runtime(
@@ -427,12 +422,6 @@ class LearningProgressionsService:
         ------
         LearningProgressionNotFoundError
             If the supplied edge lacks accepted LP evidence.
-
-        Examples
-        --------
-        >>> edge = service.relationship_evidence(
-        ...     relationship=relationship, runtime=runtime
-        ... )
         """
 
         evidence = runtime.loaded_package.learning_progression_evidence
@@ -498,10 +487,6 @@ class LearningProgressionsService:
         -------
         int
             Encoded result bytes.
-
-        Examples
-        --------
-        >>> size = service.require_collection_result_size(result=result)
         """
 
         return require_progression_result_size(
@@ -515,15 +500,31 @@ class LearningProgressionsService:
         ----------
         runtime
             Owning package whose content will be returned.
-
-        Examples
-        --------
-        >>> service.require_content_access(runtime=runtime)
         """
 
         self.resource_policy.require_resource_access(
             resource_kind=ResourceKind.RELATIONSHIP,
             rights=runtime.catalog_package.rights,
+        )
+
+    def require_traversal_result_size(
+        self, *, result: TraverseLearningProgressionsResult
+    ) -> int:
+        """Measure the complete traversal envelope using the shared byte ceiling.
+
+        Parameters
+        ----------
+        result
+            Exact evidence with frontier and completeness metadata.
+
+        Returns
+        -------
+        int
+            Encoded result bytes.
+        """
+
+        return require_progression_result_size(
+            result=result, text=progression_result_text(result=result)
         )
 
     def resolve_runtime(
@@ -547,12 +548,6 @@ class LearningProgressionsService:
         ------
         CapabilityUnavailableError
             If the selected package lacks accepted stored LPs.
-
-        Examples
-        --------
-        >>> runtime = service.resolve_runtime(
-        ...     framework_id=framework_id, snapshot_id=None
-        ... )
         """
 
         snapshot = self.framework_service.resolve_snapshot_selection(
@@ -604,10 +599,6 @@ class LearningProgressionsService:
             If the identifier matches several standards.
         InvalidProgressionRequestError
             If a semantic code selection is invalid.
-
-        Examples
-        --------
-        >>> standard = service.resolve_standard(identifier=identifier, runtime=runtime)
         """
 
         store = runtime.graph_store
@@ -655,10 +646,6 @@ class LearningProgressionsService:
         -------
         ProgressionCollectionResult
             Bounded deduplicated evidence, matched facets and honest continuation.
-
-        Examples
-        --------
-        >>> result = service.search_learning_progressions(request=request)
         """
 
         runtime = self.resolve_runtime(
@@ -690,10 +677,6 @@ class LearningProgressionsService:
         -------
         ProgressionStandardSummary
             Bounded wording, explicit excerpt flag and full standard resource URI.
-
-        Examples
-        --------
-        >>> summary = service.standard_summary(node=standard, runtime=runtime)
         """
 
         identity = runtime.catalog_package.package_identity
@@ -722,6 +705,35 @@ class LearningProgressionsService:
             statement_type=node.statement_type,
         )
 
+    def traverse_learning_progressions(
+        self, request: TraverseLearningProgressionsRequest
+    ) -> TraverseLearningProgressionsResult:
+        """Return bounded upstream or downstream stored builds evidence.
+
+        Parameters
+        ----------
+        request
+            Exact standard selector, direction and finite service bounds.
+
+        Returns
+        -------
+        TraverseLearningProgressionsResult
+            Derived subgraph retaining original edge orientation and evidence.
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        return traversal_result(
+            adjacency=self._traversal_by_package[
+                runtime.catalog_package.package_identity.graph_package_id
+            ],
+            request=request,
+            runtime=runtime,
+            service=self,
+        )
+
     def _resolve_code(
         self,
         *,
@@ -741,10 +753,6 @@ class LearningProgressionsService:
         -------
         StandardNode
             Unique exact matching source standard.
-
-        Examples
-        --------
-        >>> standard = service._resolve_code(identifier=identifier, runtime=runtime)
         """
 
         identity = runtime.catalog_package.package_identity
