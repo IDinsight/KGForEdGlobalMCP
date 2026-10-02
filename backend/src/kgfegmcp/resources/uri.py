@@ -167,6 +167,38 @@ def interpretation_profile_uri(
     )
 
 
+def learning_progressions_uri(
+    *, framework_id: FrameworkId, snapshot_id: SnapshotId
+) -> str:
+    """Build a pinned LP evidence URI for later resource registration.
+
+    Parameters
+    ----------
+    framework_id
+        Exact owning framework.
+    snapshot_id
+        Exact accepted snapshot.
+
+    Returns
+    -------
+    str
+        Percent-encoded public URI with no private source path.
+
+    Examples
+    --------
+    >>> uri = learning_progressions_uri(
+    ...     framework_id=framework_id, snapshot_id=snapshot_id
+    ... )
+    """
+
+    return (
+        manifest_uri(framework_id=framework_id, snapshot_id=snapshot_id).removesuffix(
+            "/manifest"
+        )
+        + "/learning-progressions"
+    )
+
+
 def manifest_uri(*, framework_id: FrameworkId, snapshot_id: SnapshotId) -> str:
     """Build the URI for one accepted package manifest.
 
@@ -187,6 +219,46 @@ def manifest_uri(*, framework_id: FrameworkId, snapshot_id: SnapshotId) -> str:
     return (
         f"kgfegmcp://framework/{_segment(framework_id)}/snapshot/"
         f"{_segment(snapshot_id)}/manifest"
+    )
+
+
+def relationship_provenance_uri(
+    *,
+    framework_id: FrameworkId,
+    relationship_id: RelationshipId,
+    snapshot_id: SnapshotId,
+) -> str:
+    """Build a pinned LP evidence URI for later resource registration.
+
+    Parameters
+    ----------
+    framework_id
+        Exact owning framework.
+    snapshot_id
+        Exact accepted snapshot.
+    relationship_id
+        Exact stored relationship.
+
+    Returns
+    -------
+    str
+        Percent-encoded public URI with no private source path.
+
+    Examples
+    --------
+    >>> uri = relationship_provenance_uri(
+    ...     framework_id=framework_id, relationship_id=relationship_id,
+    ...     snapshot_id=snapshot_id
+    ... )
+    """
+
+    return (
+        relationship_uri(
+            framework_id=framework_id,
+            relationship_id=relationship_id,
+            snapshot_id=snapshot_id,
+        )
+        + "/provenance"
     )
 
 

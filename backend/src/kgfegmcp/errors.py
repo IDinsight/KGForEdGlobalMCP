@@ -164,6 +164,18 @@ class InvalidCursorError(KGFEGMCPError):
     error_code = "invalid_cursor"
 
 
+class InvalidProgressionRequestError(KGFEGMCPError):
+    """Raised when LP selectors or operation semantics are invalid.
+
+    Examples
+    --------
+    >>> InvalidProgressionRequestError(message="Unavailable.").error_code
+    'invalid_progression_request'
+    """
+
+    error_code = "invalid_progression_request"
+
+
 class JSONLParsingError(KGFEGMCPError):
     """Raised when a JSONL record cannot be read or validated as a wire envelope."""
 
@@ -174,6 +186,18 @@ class LearningComponentNotFoundError(KGFEGMCPError):
     """Raised when a requested learning-component identifier cannot be resolved."""
 
     error_code = "learning_component_not_found"
+
+
+class LearningProgressionNotFoundError(KGFEGMCPError):
+    """Raised when an exact ID is missing or is not an accepted LP edge.
+
+    Examples
+    --------
+    >>> LearningProgressionNotFoundError(message="Unavailable.").error_code
+    'learning_progression_not_found'
+    """
+
+    error_code = "learning_progression_not_found"
 
 
 class ManifestBuildError(KGFEGMCPError):
@@ -192,6 +216,18 @@ class ProfileValidationError(KGFEGMCPError):
     """Raised when a curriculum interpretation profile is invalid."""
 
     error_code = "profile_validation_error"
+
+
+class ProgressionResultTooLargeError(KGFEGMCPError):
+    """Raised when complete LP evidence exceeds the fixed tool byte ceiling.
+
+    Examples
+    --------
+    >>> ProgressionResultTooLargeError(message="Unavailable.").error_code
+    'progression_result_too_large'
+    """
+
+    error_code = "progression_result_too_large"
 
 
 class PromptAccessDeniedError(KGFEGMCPError):

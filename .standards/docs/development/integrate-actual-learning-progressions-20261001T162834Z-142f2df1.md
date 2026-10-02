@@ -536,7 +536,7 @@ DEV-023 is DONE. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMEN
 
 ### DEV-012 — Implement exact LP selection and shared evidence results
 
-`Status`: `PENDING` `Depends On`: `DEV-023`
+`Status`: `DONE` `Depends On`: `DEV-023`
 `Acceptance`: `AC-005, AC-009, AC-010, AC-012, AC-018`
 
 **Goal**
@@ -553,7 +553,57 @@ Exact LP lookup pins one package/snapshot and returns original stored edge/endpo
 
 **Self-Check**
 
-Changed-module static/type checks and local exact-ID sanity calls against prepared packages, including non-LP ID/unavailable/rights/oversized cases. Inspect stable package/profile/manifest/artifact identities and excerpt flags. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — exact stored LP lookup and shared service contracts implemented. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`. Assessed HEAD: `9357949fb79d734514e493f51fe5d81a2434b0e8`; the entry tree was clean. All final commands below exited 0 against the changed-content identities recorded here.
+
+- `services/learning_progressions.py` adds a frozen LearningProgressionsService using the existing accepted primary mixed-graph runtime. Route resolution pins the exact framework/snapshot once; no file read, graph reload, second GraphStore or generated relationship is needed for queries. Exact lookup accepts only stored buildsTowards/relatesTo IDs and retains the original GraphRelationship record instance, endpoint node/CASE IDs, code/type/grade facets, author/provider/license/attribution and bounded accepted judgment.
+- `services/lp_models.py` adds immutable exact request/result and shared evidence-table/metadata/selector contracts. Existing node/CASE selectors and profile-governed exact-code search are reused; missing/nonstandard/ambiguous selectors preserve typed failures, unavailable code/LP capability stays distinct, semantic invalid codes use invalid_progression_request, and malformed request types/extra fields use normal Pydantic transport validation.
+- Shared rights helper applies the existing reviewed/full-text/single-standard relationship policy. Metadata carries PackageReference (including exact profile version/hash), manifest byte hash, every declared source-artifact byte hash, retained coverage projection, request/limits, generated-origin/semantic/confidence notices and pinned evidence links. Standard statements are bounded to 2,048 characters with an explicit excerpt flag/full URI; accepted rationale/warning bounds and omitted/excerpt flags are preserved. Confidence is explicitly not a calibrated probability of learner success.
+- Shared tool text is a concise summary, and shared size enforcement counts the UTF-8 JSON envelope of all text blocks plus aliased structured content, including escaping and conservative whitespace. The hard ceiling is 1,048,576 bytes. Oversized exact evidence fails progression_result_too_large with resource recovery guidance, without silently discarding original fields. New summary/provenance URI constructors reuse existing percent-encoding; no handler/template/tool/prompt inventory was registered or activated in this step.
+- Offline feedback loaded all six maintained DEV-023 replacements through CatalogRepository/GraphPackageValidator and checked every one of 8,080 accepted LP IDs. All original edges, endpoints/facets, judgment values/flags, manifest/profile/artifact identities and generated semantics were checked. File reads were blocked during query execution. Final feedback reports 132 named checks plus exhaustive per-edge assertions. Synthetic cases supplement actual sources for Unicode statement clipping, CASE/scoped-code ambiguity, rights denials (review/full-text/single-standard), missing projections, and oversized retained attribution. Exact 1 MiB output passes; one byte over fails; multiple text blocks include Unicode, escaping and block overhead.
+- All 2,462 pre-existing protected files under config, maintained input artifacts, sealed baselines, raw/prepared/accepted/rebuilt source artifacts and prior receipts retained exact hashes and inventories at feedback completion. Only this step's local ignored `dev012/checks` receipts were added afterward. Baseline packages/source artifacts/version 1.0 configurations remain preserved. No replacement activation, later development step, live LLM/paid-service call, producer/checker regeneration, deployment or publication occurred.
+
+Actual final commands (run from the working directory above):
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev012-feedback.py
+python3 /tmp/kgfegmcp-dev012-static.py
+```
+
+The persisted static script runs the existing offline uv runtime against these four changed modules: `src/kgfegmcp/services/lp_models.py`, `src/kgfegmcp/services/learning_progressions.py`, `src/kgfegmcp/errors.py`, `src/kgfegmcp/resources/uri.py`. Exact argv/cwd/exit/output for every command is retained in static-feedback.json: `black --check`, `isort --check-only`, `ruff check --select E,F,C90`, `mypy --cache-dir /tmp/kgfegmcp-dev012-mypy`, `pylint`, `interrogate --generate-badge /tmp/kgfegmcp-dev012-badge`, `node .standards/bin/check.mjs`, and `git diff --check`. Final outcomes: formatting unchanged; Ruff syntax/complexity passes; mypy no issues in four files; pylint 10.00/10 with the repository configuration/McCabe extension; interrogate 100%; workflow/whitespace checks pass.
+
+During implementation, Ruff initially rejected long documentation/message lines; these were shortened. The first scratch feedback run rejected its oversized fixture because CatalogPackageRuntime correctly requires the GraphStore to retain the exact loaded record instances; the fixture was corrected to inject oversized projected evidence at the service boundary without altering accepted source records. An intermediate workflow check rejected the temporary Current Increment DEV-012 bookkeeping; it was restored to NONE as AFTER_IMPLEMENTATION requires. Final feedback and all static/workflow checks were rerun successfully after these corrections. No source acceptance or production query failure was hidden by those corrections.
+
+Assessed production content identities:
+
+- `backend/src/kgfegmcp/services/lp_models.py`: `sha256:16754291deabaaee2020bda51fc45b09ee33bb81f5850ed42ba611b2a2efba88`
+- `backend/src/kgfegmcp/services/learning_progressions.py`: `sha256:6f6b8837406a5e2c12b476df2559cabe2a112f6450b4aa19821f3505541c6ece`
+- `backend/src/kgfegmcp/errors.py`: `sha256:53464ff3819e8d70151c4c07b2808dcea1b5ab75407434fe1206221145ffe6c4`
+- `backend/src/kgfegmcp/resources/uri.py`: `sha256:2ca7075533804d58946edf68d766dd8719fb6a98e6fa88adbc398bd0cc5977de`
+
+Exact package and evidence identities (the artifact-map digest covers canonical compact JSON with sorted logical-name keys; the complete 86-entry maps and snapshot/package IDs remain in content-feedback.json and accepted manifests):
+
+| Framework | Exact edges checked | Maximum encoded result bytes | Manifest byte SHA-256 | Profile byte SHA-256 | Artifact-map SHA-256 |
+|---|---:|---:|---|---|---|
+| ghana-nacca-primary-english-language-basic-1-3 | 1051 | 39108 | sha256:5cf5dbb35785b0ded64f062c19589b1601cd1f76e08cdddf991f9a1a14439f7b | sha256:fe2b269f7e76d0abf89d00799857602e17c8e76b6d1b4055797c662629ce7212 | sha256:95b8c46423fe81ba544a97357b8877e569d3b80b7def1a4b8c0f5604b6d72005 |
+| ghana-nacca-primary-mathematics-basic-4-6 | 599 | 38147 | sha256:16ef563d4fea0a5f6d259580ef834b1231d4376c9d34b521e416b39960b70533 | sha256:4981190e0b1f79a924b92088ed7e78820961935a022ea1abcb13500e8136e848 | sha256:2c6ddb75470b8bad7a9021dd2b8fe7416eabe1ee9af3661e0e841eb737d9f00b |
+| india-cbse-science-learning-framework-classes-9-10 | 3206 | 40267 | sha256:d7431e9e49ff4d4c99b985d3a42dd10bae506c406dca0e96c26d9d8159515a96 | sha256:5e5e9ed3ec1f52f296b0ff5538aff56e6f2b8f58cc87ba0a29ac6e892bf5f852 | sha256:e6c2d4a855c8b360c341afe3f6bb7fae879c8889dd24d4709c167bc22e15a706 |
+| india-tamil-nadu-tnscert-mathematics-classes-1-5 | 907 | 40684 | sha256:32e860054447d9dde6d6d7b15bddb118e33727111953f2c4671b0b3359ca359b | sha256:8b9e1ffde3595ff24fa20bc2fa468fd952ec78aad6daaa4b19c1d5ebefc46595 | sha256:5ea590b21575ef269a107be21f5047b60cc54679ee856f0f8f0272fe8a0939a9 |
+| nigeria-nerdc-mathematics-primary-1-3 | 486 | 37088 | sha256:3b0616d3ad9c2d6017c7c9bd4f9624927875daf9d1a6cd46b0a2316916544479 | sha256:b04a2bcefa88d2e235cd9a1f988ae6af7dd9e50da565ec7aa9a5ac76015cd3e8 | sha256:0148160d46f2e397240872cccb3356037249c74f6f1cf18e8ee5cc57651a5a54 |
+| rwanda-reb-mathematics-lower-primary-1-3 | 1831 | 37493 | sha256:7a00e1afee01ff60ba4862eb833e26a4f85c727f08447573d229c5a3e89b3e2b | sha256:d3fc130a70ce0502fc07f93a8211124adbe69a3b36b6302cf463f728fb41e0b6 | sha256:9ad500a92d2483089f75e6aaa64704ab1dc919ee3f01ce26d599bbf5a0a3281e |
+
+Local ignored feedback receipts and reproducible scripts:
+
+- `data/source_artifacts/learning_progressions/dev012/checks/content-feedback.json`: `sha256:f9e3ec1c9c3c22b1f28585d796d4ee00f47419e339d691930974590f980e73dd`
+- `data/source_artifacts/learning_progressions/dev012/checks/content-feedback.py`: `sha256:bf7db1bd9652cbfed759ba0c88fe388ca5db847f77e5596b23fc745ecceeefee`
+- `data/source_artifacts/learning_progressions/dev012/checks/protected-inputs.json`: `sha256:fcfa03a6eadb4ee95161f2eca8c9b5e91ee363b65756ffdf08c87d3507d5aa12`
+- `data/source_artifacts/learning_progressions/dev012/checks/static-feedback.json`: `sha256:74e4167b9a38e82fc07c212fdf77d88add0e75614c03bb8527c1d9af99778957`
+- `data/source_artifacts/learning_progressions/dev012/checks/static-feedback.py`: `sha256:1033125e29267edc82925f1fd33209e0a5d39c04a8fd3a0fddb196368dd42f83`
+
+Limitations: this is offline Developer implementation feedback, not independent Tester verification, semantic validation or pedagogical certification. Real packages do not naturally exercise every error/ceiling; named synthetic cases are explicitly recorded. The closed acceptance/catalog load is rechecked here, but source artifact read-only CLI revalidation was already established in DEV-023 and not repeated as a separate command in DEV-012. LP resources/MCP adapters/public bootstrap/transport checks remain their later planned increments; the migration checkout still selects sealed old packages until DEV-017 activation and may not bootstrap against the advanced profile schema. Formal test suites remain Tester-owned. Resource policy limits remain unchanged; full evidence links are governed by their eventual handlers and existing resource-size limits.
+
+**Implementation Notes**
+
+User explicitly authorized DEV-012 after DEV-023. Only DEV-012 implementation and its workflow records were changed. Conventional Commit suggestion: `feat(progressions): add exact stored relationship lookup`. STEPWISE pauses before DEV-013; verification cadence remains AFTER_IMPLEMENTATION, Current Increment NONE and WorkflowState DEVELOPING. DEV-013 and all later steps remain PENDING.
 
 ### DEV-013 — Implement direct connections and filtered paged discovery
 
@@ -767,8 +817,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005 and DEV-023. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005 and DEV-023 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-012; no later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023 and DEV-012. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023 and DEV-012 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-013; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -777,5 +827,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005 and DEV-023 are DONE. Next approved dependency-ready step is DEV-012; user continuation is required before starting it. Re-read stored LP service/model, exact selection, rights/error/excerpt/identity/byte-budget contracts and the accepted DEV-005 or byte-identical DEV-023 rebuild evidence. Maintained data/input_artifacts now rebuild the same six replacements directly; isolated rebuilt packages are under data/source_artifacts/learning_progressions/rebuilt_packages. Keep all source/prepared/accepted packages and version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
+- Resume: DEV-001 through DEV-005, DEV-023 and DEV-012 are DONE. Next approved dependency-ready step is DEV-013; user continuation is required before starting it. Re-read direct/discovery, endpoint-conjunction, facet validation, ordering/cursor identity/work/byte-bound/completeness contracts and reuse the DEV-012 service/model/selector/rights/evidence helpers and accepted DEV-023 rebuilt runtimes. Maintained data/input_artifacts now rebuild the same six replacements directly; isolated rebuilt packages are under data/source_artifacts/learning_progressions/rebuilt_packages. Keep all source/prepared/accepted packages and version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
