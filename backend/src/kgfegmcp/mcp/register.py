@@ -20,7 +20,7 @@ from kgfegmcp.mcp.tools.comparison import register_comparison_tools
 from kgfegmcp.mcp.tools.context import register_context_tools
 from kgfegmcp.mcp.tools.frameworks import register_framework_tools
 from kgfegmcp.mcp.tools.learning_components import register_learning_component_tools
-from kgfegmcp.mcp.tools.progression import register_progression_tools
+from kgfegmcp.mcp.tools.learning_progressions import register_learning_progression_tools
 from kgfegmcp.mcp.tools.standards import register_standard_tools
 from kgfegmcp.mcp.tools.statistics import register_statistics_tools
 
@@ -46,7 +46,7 @@ def register_components(server: FastMCP[dict[str, AppState]]) -> None:
     register_context_tools(server)
     register_framework_tools(server)
     register_learning_component_tools(server)
-    register_progression_tools(server)
+    register_learning_progression_tools(server)
     register_standard_tools(server)
     register_statistics_tools(server)
     register_resource_components(server)

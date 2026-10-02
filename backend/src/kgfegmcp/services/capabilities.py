@@ -44,11 +44,12 @@ if TYPE_CHECKING:
 _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "bounded_ancestor_traversal",
     "bounded_descendant_traversal",
+    "bounded_learning_progression_paths",
+    "bounded_learning_progression_traversal",
     "catalog_discovery",
-    "complete_root_path_enumeration",
     "comparison_prompt_workflows",
+    "complete_root_path_enumeration",
     "deterministic_cross_framework_evidence",
-    "deterministic_progression_evidence",
     "direct_graph_navigation",
     "exact_framework_lookup",
     "exact_standard_lookup",
@@ -61,30 +62,34 @@ _IMPLEMENTED_FEATURES: Final[tuple[str, ...]] = (
     "read_only_resources",
     "rights_aware_resource_access",
     "role_oriented_prompt_workflows",
+    "stored_learning_progressions",
     "unique_current_framework_routing",
 )
 _SERVER_NAME: Final[str] = "Knowledge Graph For Education Global MCP"
 _TOOL_NAMES: Final[tuple[str, ...]] = (
-    "get_capabilities",
     "compare_framework_evidence",
-    "collect_progression_evidence",
+    "get_capabilities",
     "get_framework",
     "get_framework_statistics",
     "get_learning_component",
     "get_learning_component_context",
     "get_learning_components_for_standard",
+    "get_learning_progression",
+    "get_learning_progression_paths",
     "get_standard",
     "get_standard_context",
+    "get_standard_progressions",
     "list_frameworks",
     "search_learning_components",
+    "search_learning_progressions",
     "search_standards",
+    "traverse_learning_progressions",
 )
 _UNAVAILABLE_FEATURES: Final[tuple[str, ...]] = (
     "accepted_mapping_overlays",
     "alignment_persistence",
     "alignments",
     "embeddings",
-    "learning_progressions",
     "mcp_sampling",
     "semantic_candidate_retrieval",
     "semantic_search",
@@ -181,6 +186,8 @@ class CapabilitiesService:
                     available_resource_kinds=tuple(
                         resource_kind.value for resource_kind in resource_kinds
                     ),
+                    capabilities=package.capabilities,
+                    counts=package.counts,
                     implemented_learning_component_search_modes=(
                         implemented_learning_component_search_modes(
                             code_availability=(profile.code_search_policy.availability),
@@ -190,8 +197,6 @@ class CapabilitiesService:
                             text_available=package.capabilities.text_search,
                         )
                     ),
-                    capabilities=package.capabilities,
-                    counts=package.counts,
                     implemented_search_modes=implemented_search_modes(
                         code_availability=profile.code_search_policy.availability,
                         prefix_available=(
@@ -199,6 +204,7 @@ class CapabilitiesService:
                         ),
                         text_available=package.capabilities.text_search,
                     ),
+                    included_graph_types=package.included_graph_types,
                     package_identity=package.package_identity,
                     rights=package.rights,
                     search_index=PackageSearchCounts(

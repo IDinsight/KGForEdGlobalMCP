@@ -1119,11 +1119,22 @@ class GetFrameworkStatisticsRequest(FrozenSchema):
     snapshot_id: SnapshotId | None = None
 
 
+class LearningProgressionStatistics(FrozenSchema):
+    """Separate stored LP counts from hierarchy and component statistics."""
+
+    builds_towards_relationships: int = Field(ge=0)
+    has_learning_progression_provenance: bool
+    has_learning_progressions: bool
+    relates_to_relationships: int = Field(ge=0)
+
+
 class FrameworkStatistics(FrozenSchema):
     """Describe deterministic source and normalized counts for one package."""
 
     canonical_relationship_label_counts: tuple[NullableValueCount, ...]
     code_presence: CodePresenceStatistics
+    learning_components: LearningComponentStatistics
+    learning_progressions: LearningProgressionStatistics
     local_grade_label_counts: tuple[NullableValueCount, ...]
     maximum_structural_depth: int = Field(ge=0)
     minimum_structural_depth_counts: tuple[DepthCount, ...]
@@ -1134,7 +1145,6 @@ class FrameworkStatistics(FrozenSchema):
     source_relationship_type_counts: tuple[NullableValueCount, ...]
     statement_type_counts: tuple[NullableValueCount, ...]
     total_framework_nodes: int = Field(ge=0)
-    learning_components: LearningComponentStatistics
     total_item_nodes: int = Field(ge=0)
     total_nodes: int = Field(ge=0)
     total_relationships: int = Field(ge=0)
@@ -1159,6 +1169,7 @@ class PackageCapabilityResult(FrozenSchema):
     capabilities: FrameworkCapabilities
     counts: PackageCounts
     implemented_search_modes: tuple[SearchMode, ...]
+    included_graph_types: tuple[GraphType, ...]
     package_identity: GraphPackageIdentity
     rights: RightsPolicy
     search_index: PackageSearchCounts

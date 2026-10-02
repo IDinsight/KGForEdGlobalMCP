@@ -966,7 +966,7 @@ DEV-016 is DONE. Suggested Conventional Commit: `feat(resources): expose progres
 
 ### DEV-017 — Activate accepted replacements and register the five LP tools
 
-`Status`: `PENDING` `Depends On`: `DEV-016`
+`Status`: `DONE` `Depends On`: `DEV-016`
 `Acceptance`: `AC-005, AC-006, AC-007, AC-008, AC-009, AC-017, AC-018, AC-019, AC-020, AC-021`
 
 **Goal**
@@ -983,7 +983,126 @@ One GraphStore/runtime per package exposes five new tools with service/protocol 
 
 **Self-Check**
 
-Bootstrap only repository roots; inspect five schemas/annotations/error mapping and exact tool inventory. Exercise representative LP calls and AS/LC discovery/search/context/support/statistics/comparison across six frameworks. Compare pre-retirement old hashes and accepted replacement identities. Full shared transport smoke runs after prompts are complete. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — all six accepted replacements are active, the five bounded LP tools are registered, and exact shared bootstrap/capability/statistics integration is checked offline. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; assessed entry HEAD: `a1207f480c1222b0bc5f080f8ce0cea210c5acc0`, with final source, deletion and data identities below. Entry working tree was clean. User explicitly authorized DEV-017 next; its matching blocker was cleared before work. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE; workflow remains DEVELOPING with historical Architect handoff and inactive recovery/obligations.
+
+**Implemented outcome**
+
+- AppState/bootstrap now retain one LearningProgressionsService sharing the exact CatalogService, SearchService, FrameworkService catalog and ResourcePolicy with resources. State invariants reject independent runtime/policy objects. All five methods reuse DEV-012 through DEV-015's accepted edge/projection/selectors, immutable builds adjacency, rights and bounds; no second graph store, query-time source reads or fallback inference.
+- Added `mcp/tools/learning_progressions.py` and explicit registration for get_learning_progression, get_standard_progressions, search_learning_progressions, traverse_learning_progressions and get_learning_progression_paths. Each uses the established nested `request` object with camel-case schema aliases, typed service models, required framework, closed fields, shared tool error boundary, read-only/idempotent/non-destructive/closed-world annotations and exact output schema. The adapters use the same concise text plus full structured evidence and recheck the fixed 1 MiB encoder; no extra table copy or unbudgeted resource-link blocks. Direct/discovery cursors remain unchanged in structured results. Schema defaults/maxima match service page 25/100, traversal depth 8/12/nodes 100/250/edges 100/100 and paths depth 6/12/paths 3/20; fixed work/queue counters remain 5,000.
+- Removed services/progression.py, services/progression_models.py and mcp/tools/progression.py, their service exports/bootstrap field/invariant and registration. No collect_progression_evidence tool/alias or candidate service/model remains in those runtime boundaries. New service/request/result/statistics contracts are exported under their current names. Prompt-side hypothesis implementation/registration and stale smoke/reference expectations are deliberately still DEV-021/DEV-022/Documenter work; no new prompt step was started.
+- Capabilities advertise exactly 17 current tools and implementation features for stored LP paths/traversal, and no longer list learning_progressions as unavailable. Package capability evidence adds includedGraphTypes from accepted metadata and retains exact LP flags/counts/resource policy availability. Global availableGraphTypes keeps its established meaning as primary routing types (academic_standards here); each mixed package separately includes academic_standards, learning_components and learning_progressions. Current prompt/resource inventory remains truthful: seven prompts (including the pending obsolete prompt), one fixed resource, 14 templates. Final nine-prompt inventory is later work.
+- FrameworkStatistics adds a separate learningProgressions block with accepted availability/provenance flags and actual buildsTowards/relatesTo counts. Existing totalRelationships, canonical/source relationship types and unresolved statistics count hierarchy only; learningComponents retains supports counts. Root-connected AS/LC counts follow only hasChild/supports, preventing LP edges from changing existing connectivity meaning. Package totals reconcile all four labels; statistics text reports the new counts with generated-origin/semantic limits. No hasChild ancestor/parent/path or supports behavior is changed.
+- Revalidated the six accepted DEV-023 rebuilt packages and exact DEV-016 package/manifest/profile/all-artifact identities, then staged byte-exact copies (522 files) and only fresh version-2.0 profile/prompt configs (12 files). Staged package validation and prompt registry load pass before retirement; the real staged application factory/bootstrap/lifespan and all five tools pass before cutover.
+- Guarded offline cutover moved the entire prior config and graph_packages trees to `data/source_artifacts/learning_progressions/dev017/retired/{config,graph_packages}` and renamed staged trees into active roots. Each same-filesystem directory rename is atomic; the multi-root operation has reverse-order rollback on failure and a persisted phase journal. No simultaneous filesystem transaction across both roots or deployed atomicity is claimed. All four renames completed and post-move inventories match. Active roots contain one current replacement per framework and only version-2.0 configs; old terminal bytes were moved intact, never rewritten. Source/prepared/rebuilt accepted copies remain unchanged. Deployment/publication remains user-owned.
+
+**Actual commands and results**
+
+All runtime Python checks used the existing Python 3.13 environment through `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync`, from the repository above (effective Python cwd backend). No installation/sync/model/paid-service call, regeneration, sampling, endpoint update or publication.
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev017-stage.py > /tmp/kgfegmcp-dev017-stage.log 2>&1
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev017-feedback.py --staged > /tmp/kgfegmcp-dev017-staged-feedback.log 2>&1
+python3 /tmp/kgfegmcp-dev017-activate.py
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev017-feedback.py > /tmp/kgfegmcp-dev017-active-feedback.log 2>&1
+python3 /tmp/kgfegmcp-dev017-static.py > /tmp/kgfegmcp-dev017-static.log 2>&1
+python3 /tmp/kgfegmcp-dev017-preserve.py
+```
+
+- Staging exit 0: CatalogRepository/GraphPackageValidator read-only loads six complete accepted runtimes, zero excluded packages, exact agreement with DEV-016 identities and 86 artifacts each. Source/staged inventories are equal (522 files); staged configs are exactly 12 version-2.0 files and their prompt registry loads. Stored totals remain 3,039 buildsTowards and 5,041 relatesTo. No acceptance flag was fabricated or persisted over terminal evidence.
+- Staged feedback exit 0: 509 named checks, 142 actual MCP tool calls including successful and negative calls, six frameworks. A real create_mcp factory/lifespan delegates to real bootstrap, with settings pinned to repository-local staged roots; no state-lookup mock. Exact 17-tool inventory and current seven prompts/one fixed resource/14 templates agree with advertised names. Five input/output schemas, closed required-framework requests, annotations and caller bounds are inspected. Query calls execute with Path.open/read_bytes and builtins.open blocked. Both stored types, direct/discovery, upstream/downstream and connecting paths agree exactly with ordinary service payloads, pinned manifest/snapshot/type totals and <=1 MiB actual text-plus-structured envelopes. Real ordered cursor replay preserves IDs; changed-bound cursor fails invalid_cursor.
+- Active feedback exit 0: the same 509 checks and 142 MCP calls pass against only active roots and the final source bytes. Existing exact standards/components/context/support resources and lexical search remain usable; original node bytes and complete AS/LC relationship prefixes match retired sealed data for all six. hasChild and supports counts and exact instances remain unchanged. Separate LP statistics are checked through the real public adapter; hierarchy canonical labels remain hasChild only. Retained comparison is usable. Actual LP provenance/summary resources read through real lifespan state and retain exact IDs/counts. Each package shares one original GraphStore for the mixed runtime.
+- Negative local protocol cases reject unknown extra fields, missing framework, boolean/string/nonpositive/excess integer bounds, invalid direction/type/connection/scope and >20 selectors. Profile-invalid facets map to invalid_progression_request. Missing/non-LP edge, same endpoint, unknown framework and stale/mismatched cursor retain stable domain failures. Temporary service-method faults confirm resource_access_denied, progression_result_too_large and masked internal_error mapping for all five tools without private paths. Old collect_progression_evidence calls fail as an unknown tool. These faults check adapter propagation; actual policy/entry-size/cycle/branch ceilings have their persisted DEV-012 through DEV-016 evidence and are not newly claimed as exhaustive service verification here.
+- Unpatched default `bootstrap_application()` exit 0: BackendSettings resolves exactly this repository's data/graph_packages, config/profiles and config/prompts, and loads six accepted runtimes. Exact actual Python -c argv, cwd, exit and output are retained in default-bootstrap-command.json/log; no settings or state lookup was mocked in this separate check. The prior migration-checkout bootstrap limitation is now resolved. No external source directory is a runtime dependency.
+- Final static feedback on the eight listed source files: Black --check, isort --check-only, Ruff `check --select E,F,C90`, mypy `--cache-dir /tmp/kgfegmcp-dev017-mypy`, pylint and interrogate `--generate-badge /tmp/kgfegmcp-dev017-badge` all exit 0. Mypy finds no issues in eight files; pylint 10.00/10 under McCabe <=10; docstrings 100%. Exact argv/cwd/exit/stdout/stderr are in static-feedback.json/log. `node .standards/bin/check.mjs` and `git diff --check` pass and are rerun after this DONE/blocker record.
+- Preliminary static feedback found three pre-existing long strings in touched modules; split/shortened them. Temporary feedback fixtures initially assumed an aggregate context view, mapping-valued artifact references, plural wire labels and a generic LC lexical mode; corrected them to the established contracts. Preliminary runs are not passing evidence. Final staged/static records cover the gate before cutover; final active/static records cover the final source. After cutover, capability availableGraphTypes was narrowed back to its established primary-routing meaning while includedGraphTypes remains explicit per package; final active/static checks were rerun. Preactivation source hashes are retained separately and in the activation journal rather than falsely equated with final metadata bytes.
+- Activation and preservation exit 0: all 2,503 entry file identities survive; 2,395 remain at their original paths and 108 are retained byte-exact at recorded retirement paths (84 package files, 24 prior configs). All active 522 package files equal the accepted DEV-023 inventory; all 12 active configs equal staged version-2.0 bytes. Original source artifacts, prepared/rebuilt packages, maintained inputs and earlier receipts are unchanged. The root journal records four completed renames and exact preactivation source identities. No old terminal manifest/profile/config was edited.
+
+**Final source identities**
+
+| File | SHA-256 |
+|---|---|
+| `backend/src/kgfegmcp/bootstrap.py` | `sha256:af6932319ca22fef2280deea26833f6663239b9eb1ab4169f302323b76138b2b` |
+| `backend/src/kgfegmcp/services/__init__.py` | `sha256:45cc24abdbb0749c2e0ee4c09a5e929d0f2cf0e92745fb6a361a5ca23a3b7805` |
+| `backend/src/kgfegmcp/services/capabilities.py` | `sha256:cf91dc01518c0b8b7550ed470a324093d8a3d86d5b7595fcd5eb118a8bde7425` |
+| `backend/src/kgfegmcp/services/models.py` | `sha256:b242e860f27adcb74710dc35746448d98c791e2dc01c97814a68354af6e9c5cd` |
+| `backend/src/kgfegmcp/services/statistics.py` | `sha256:da3cdc8fc5a2c823205e3bf51c8f6d897d550314de2e29576c68eb8409f82266` |
+| `backend/src/kgfegmcp/mcp/register.py` | `sha256:5cabd9c8a0d43685fc6bd7e3e582349871d7c5cdbbb2d1f9c161acf500cc5ed6` |
+| `backend/src/kgfegmcp/mcp/tools/learning_progressions.py` | `sha256:b744eae3100f9fcd3fc32c073a4496e752afff92bcd15cebd29e1c2a49111236` |
+| `backend/src/kgfegmcp/mcp/tools/statistics.py` | `sha256:279f3573eb5ddd094e95ed25cbde3a86621e1af108f494912574af9eedcee493` |
+
+Removed module entry content remains in Git history; no alias or dormant copy is kept in active production source:
+
+| Removed file | Entry SHA-256 |
+|---|---|
+| `backend/src/kgfegmcp/mcp/tools/progression.py` | `sha256:90b68f8bb78c0ca20331bf8a615b1fb1c3afa71b25f69770e76cbeba38d4a0bf` |
+| `backend/src/kgfegmcp/services/progression.py` | `sha256:effdff2ce1393de43ee9187bb98fb20a0bea63407cdc9b29752a922c445a4ef6` |
+| `backend/src/kgfegmcp/services/progression_models.py` | `sha256:03b213d6fc0f1063188143568003ae6582ae5f0e5e69c9be7ca32cd31b45ecb7` |
+
+**Active input and retirement identities**
+
+Exact new snapshot/package/profile-version-2.0 and all 86 artifact identities remain the accepted DEV-023/DEV-016 identities. Full references and complete active tree/config maps are in stage.json and evidence-index.json; source artifact maps in preceding steps remain unchanged. Every original file's retirement mapping is in preservation.json. Active manifest identities and queryable LP counts:
+
+| Framework | buildsTowards | relatesTo | Manifest SHA-256 |
+|---|---:|---:|---|
+| `ghana-nacca-primary-english-language-basic-1-3` | 250 | 801 | `sha256:5cf5dbb35785b0ded64f062c19589b1601cd1f76e08cdddf991f9a1a14439f7b` |
+| `ghana-nacca-primary-mathematics-basic-4-6` | 299 | 300 | `sha256:16ef563d4fea0a5f6d259580ef834b1231d4376c9d34b521e416b39960b70533` |
+| `india-cbse-science-learning-framework-classes-9-10` | 891 | 2315 | `sha256:d7431e9e49ff4d4c99b985d3a42dd10bae506c406dca0e96c26d9d8159515a96` |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5` | 472 | 435 | `sha256:32e860054447d9dde6d6d7b15bddb118e33727111953f2c4671b0b3359ca359b` |
+| `nigeria-nerdc-mathematics-primary-1-3` | 189 | 297 | `sha256:3b0616d3ad9c2d6017c7c9bd4f9624927875daf9d1a6cd46b0a2316916544479` |
+| `rwanda-reb-mathematics-lower-primary-1-3` | 938 | 893 | `sha256:7a00e1afee01ff60ba4862eb833e26a4f85c727f08447573d229c5a3e89b3e2b` |
+
+Active config byte identities (profiles retain profile version 2.0; prompt configs retain configuration version 2.0.0, distinct from public prompt version 1.2.0 until DEV-018):
+
+| File | SHA-256 |
+|---|---|
+| `config/profiles/rwanda-reb-mathematics-lower-primary-1-3/2.0/profile.json` | `sha256:d3fc130a70ce0502fc07f93a8211124adbe69a3b36b6302cf463f728fb41e0b6` |
+| `config/profiles/ghana-nacca-primary-english-language-basic-1-3/2.0/profile.json` | `sha256:fe2b269f7e76d0abf89d00799857602e17c8e76b6d1b4055797c662629ce7212` |
+| `config/profiles/india-tamil-nadu-tnscert-mathematics-classes-1-5/2.0/profile.json` | `sha256:8b9e1ffde3595ff24fa20bc2fa468fd952ec78aad6daaa4b19c1d5ebefc46595` |
+| `config/profiles/nigeria-nerdc-mathematics-primary-1-3/2.0/profile.json` | `sha256:b04a2bcefa88d2e235cd9a1f988ae6af7dd9e50da565ec7aa9a5ac76015cd3e8` |
+| `config/profiles/ghana-nacca-primary-mathematics-basic-4-6/2.0/profile.json` | `sha256:4981190e0b1f79a924b92088ed7e78820961935a022ea1abcb13500e8136e848` |
+| `config/profiles/india-cbse-science-learning-framework-classes-9-10/2.0/profile.json` | `sha256:5e5e9ed3ec1f52f296b0ff5538aff56e6f2b8f58cc87ba0a29ac6e892bf5f852` |
+| `config/prompts/rwanda-reb-mathematics-lower-primary-1-3/2.0/prompts.json` | `sha256:3113ae183123271e5a3d0e075c72b807bfc59df5a3bf7bd0e0d1babf1e3aeb69` |
+| `config/prompts/ghana-nacca-primary-english-language-basic-1-3/2.0/prompts.json` | `sha256:2b941a1e93e3b1c133f0d5b40ee2abf24b36333a6d87d523378f25c6a72e357e` |
+| `config/prompts/india-tamil-nadu-tnscert-mathematics-classes-1-5/2.0/prompts.json` | `sha256:4711bb6d09b8e07fac6e9cac9d7d6a3d8cad8a754d1c76803e127f30150a96cd` |
+| `config/prompts/nigeria-nerdc-mathematics-primary-1-3/2.0/prompts.json` | `sha256:a9d6e333574a9a12c9b77514caace37b494120293831efbfb371991b18e90ec6` |
+| `config/prompts/ghana-nacca-primary-mathematics-basic-4-6/2.0/prompts.json` | `sha256:1702079f466317e0e953449938cd7b45a9dce77b92aabcc0b99497e23589c877` |
+| `config/prompts/india-cbse-science-learning-framework-classes-9-10/2.0/prompts.json` | `sha256:788fd22501ea2a84a8db5f36a48a894bd7c715aaf6b5d0f64a4ff1873e71fb50` |
+
+**Local evidence and limitations**
+
+Retained under ignored `data/source_artifacts/learning_progressions/dev017/checks`. Stage and activation scripts are one-time preparation/cutover evidence; do not rerun them in place or overwrite retirement trees. The saved content feedback defaults to active mode; its staged roots were moved at activation. Preservation script only adjusts checkpoint-input paths to retained receipts for resumption. Actual scratch scripts and source identities are bound in evidence-index.json. The root activation journal is `sha256:e434250149e957730369235ddfecdfd1cd48eb9d5665d0fbece4f1a1d698cff8`.
+
+| Receipt | SHA-256 |
+|---|---|
+| `activation.json` | `sha256:d5003f1b115adcd0bfe8b684862e7f2c88979cad0b181d3c401827b6989b3543` |
+| `activation.py` | `sha256:84f4f3645c1e2a2c390771fbdea9e0ba46871d6ca6c264bef037db3a21528d28` |
+| `active-feedback.json` | `sha256:311b11dd41e09be7e3747f9e726dd471a8912233484299e9dcb7134177eb17fb` |
+| `active-feedback.log` | `sha256:1a985ca67f131d3284877e67dfa6885a8f622adbbde6c75b934f315326e6f459` |
+| `content-feedback.py` | `sha256:2537040afab4d9d814748bdf829520bb729dbffcb0dd48140b6dfbfa64635f87` |
+| `default-bootstrap-command.json` | `sha256:1e2c09026885771b779c9c3906c996f194802693237f68349cb50418a3450ee5` |
+| `default-bootstrap.json` | `sha256:eefd2e2599ab4c411e4446663f68cc02c9ea38b089ae1d95252afaec504cceaf` |
+| `default-bootstrap.log` | `sha256:9209a2d83bc704ab4c01b49975c872f791e15c277c797de97aa38c9ac5dc073b` |
+| `entry.json` | `sha256:e1a427c21f83fe243fbc489560a2ca3e54cfb8403eb5129fd92aeb8e48265b38` |
+| `evidence-index.json` | `sha256:2ed8bbb96f26e3fd58355bb7055e17eff4c2ea2517c878f2ec2573b14383fb96` |
+| `preactivation-static.json` | `sha256:7a4f05c73ebf4393ddd35d1b484695a4dcee4840896a10e575be540696a6d3ea` |
+| `preactivation-static.log` | `sha256:8dd15b00925b6f5ec9fc5f5c1793e7c4cfeeea5cbd1bc588582e6071245f2899` |
+| `preservation.json` | `sha256:118be8f45114915c0fdd2d81c152ba40c505aece133905526d71343ef204feeb` |
+| `preservation.py` | `sha256:30bd8fce10acb18f1d481dcdff12d04db4f6d154bd03f647fe20f934a57be959` |
+| `protected-inputs.json` | `sha256:0395a86b0dcb2edd1e29c67df02791469fb302fda6e927ee5365dc4466305d1f` |
+| `stage.json` | `sha256:64bd06716e7d3ec417c1f4a607bdb42c46f340b9946aa7f54dbaef52b98ea1d1` |
+| `stage.log` | `sha256:5ff70a0a99fda5432489fb107a94c541907d8284682b3c30786bbd4888dd8eba` |
+| `stage.py` | `sha256:fe2124c2b2924a890061a0bcead93428c9c747fb550640a7f8a919044ddecea8` |
+| `staged-feedback.json` | `sha256:5dc88b5ca9b04a7dc1a49d5d568a8695b95cbf45da6ebd7c6a901e308ef6babe` |
+| `staged-feedback.log` | `sha256:7b2008cb7d13489a827e6aa8bda669ccb99606f43c9bc309462b865affa9dc53` |
+| `static-feedback.json` | `sha256:f3f2f56142f451ba22a9864c01fe53ad5315a33881fd8cb787d9cc0e8de74563` |
+| `static-feedback.log` | `sha256:8dd15b00925b6f5ec9fc5f5c1793e7c4cfeeea5cbd1bc588582e6071245f2899` |
+| `static-feedback.py` | `sha256:8bd1876e6eb06ba578da46e323ab32a0db9fa0b7aae00c2872c36cda742f4fdd` |
+
+Limitations: this is ad hoc offline Developer implementation feedback, not independent Tester acceptance, exhaustive all-edge/all-pair query coverage, semantic/pedagogical certification or deployment. Actual factory/lifespan/bootstrap and in-process local protocol calls are established; shared STDIO/local HTTP/MCPB smoke/CI updates remain DEV-022 after prompts. Existing smoke inventory is intentionally stale until then. The old hypothesis prompt adapter/renderer/registration still references the removed tool and is pending DEV-021 removal; it is not a usable retained workflow or an inferred-edge fallback for the new tools. Six useful prompt registrations and fresh config registry remain, but prompt rendering/integration and the three new workflows are later increments. Formal tests and complete scope acceptance remain Tester-owned, and the full Developer gate remains unmet while future approved steps are unfinished.
+
+**Continuation**
+
+DEV-017 is DONE. Suggested Conventional Commit: `feat(mcp)!: activate stored learning progression tools`. Next STEPWISE continuation is DEV-018 (teaching-sequence prompt workflow), which remains PENDING. All later steps remain unstarted. Reuse the now-active shared state and exact nested-request tool schemas; keep both retired roots and all source/accepted copies intact. Wait for explicit user continuation.
 
 ### DEV-018 — Add the teaching-sequence prompt workflow
 
@@ -1092,15 +1211,15 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015 and DEV-016. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015 and DEV-016 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-017; no later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016 and DEV-017. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016 and DEV-017 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-018; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
 - Plan revision: user requested replacing the legacy data/input_artifacts sets and build specifications. DEV-023 runs after DEV-005 and before DEV-012, preserving the architecture-prescribed raw-copy location and accepted-package boundaries. The revised 17-step plan was explicitly approved before DEV-001 began.
-- Preserve source files and old sealed package/profile identities. Raw preparation copies stay outside runtime/distribution roots. Required runtime evidence is retained in accepted packages. During schema migration the incomplete development checkout may not bootstrap until replacement activation; do not deploy partial work or introduce legacy decoders/aliases to hide that boundary.
+- Preserve source files and old sealed package/profile identities. Raw preparation copies stay outside runtime/distribution roots. Required runtime evidence is retained in accepted packages. DEV-017 activation has resolved the intermediate schema-migration bootstrap limitation; retired old packages/configs remain byte-exact outside active discovery. Do not deploy partial work or introduce legacy decoders/aliases.
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015 and DEV-016 are DONE. Next approved dependency-ready step is DEV-017; user continuation is required before starting it. Re-read activation/retirement atomicity and all-six acceptance gates, five LP tool schemas/annotations/masked errors, shared bootstrap/runtime wiring, truthful capability/count separation, obsolete implementation removal and AS/LC routing/search/support regression requirements. Reuse accepted DEV-023 rebuilt packages and the shared DEV-012 through DEV-016 services/resources. Compare original sealed/config and accepted replacement hashes before any retirement; activate only after all six checks pass. Maintained data/input_artifacts directly rebuild the six replacements; isolated rebuilt packages remain under data/source_artifacts/learning_progressions/rebuilt_packages. Keep source/prepared/accepted artifacts and original version 1.0 configs intact until the explicitly authorized DEV-017 transition. No later step has started.
+- Resume: DEV-001 through DEV-005, DEV-023 and DEV-012 through DEV-017 are DONE. Next approved dependency-ready step is DEV-018; user continuation is required before starting it. All six accepted replacements and version-2.0 configs are now active, and default repository bootstrap is usable. Re-read teaching-sequence selection/topic/exact identifier/grade/language/context policy, retrieval caps, generated-origin/coverage/partialness and provenance/LC limits; advance public prompt version to 1.3.0 in that step. Use the shared active LearningProgressionsService and exact nested request/camel-case tool schemas from DEV-017. Keep raw/prepared/rebuilt accepted source copies and byte-exact retired config/graph_packages trees under data/source_artifacts/learning_progressions/dev017/retired intact. Do not rerun one-time cutover scripts or revive old service/tool aliases. The obsolete hypothesis prompt renderer/registration remains explicitly pending DEV-021; transport inventory/CI/distribution remains DEV-022. No later step has started; deployment/publication remain user-owned.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
