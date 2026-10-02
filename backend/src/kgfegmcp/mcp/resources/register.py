@@ -38,7 +38,9 @@ from kgfegmcp.resources.uri import (
     INTERPRETATION_PROFILE_URI_TEMPLATE,
     LEARNING_COMPONENT_PROVENANCE_URI_TEMPLATE,
     LEARNING_COMPONENT_URI_TEMPLATE,
+    LEARNING_PROGRESSIONS_URI_TEMPLATE,
     MANIFEST_URI_TEMPLATE,
+    RELATIONSHIP_PROVENANCE_URI_TEMPLATE,
     RELATIONSHIP_URI_TEMPLATE,
     STANDARD_LEARNING_COMPONENTS_URI_TEMPLATE,
     STANDARD_PROVENANCE_URI_TEMPLATE,
@@ -161,6 +163,34 @@ async def read_interpretation_profile(
         return build_resource_result(document)
 
 
+async def read_learning_progressions(
+    *, context: Context, framework_id: FrameworkId, snapshot_id: SnapshotId
+) -> ResourceResult:
+    """Return sanitized LP summary counts, eligibility and exact artifact links.
+
+    Parameters
+    ----------
+    context
+        Injected shared application state.
+    framework_id
+        Exact owning framework.
+    snapshot_id
+        Exact immutable snapshot.
+
+    Returns
+    -------
+    ResourceResult
+        Public derived metadata with source and content hashes.
+    """
+
+    with resource_error_boundary("read_learning_progressions_resource"):
+        state = get_resource_state(context)
+        document = state.resource_service.learning_progressions(
+            framework_id=framework_id, snapshot_id=snapshot_id
+        )
+        return build_resource_result(document)
+
+
 async def read_manifest(
     *, context: Context, framework_id: FrameworkId, snapshot_id: SnapshotId
 ) -> ResourceResult:
@@ -218,6 +248,42 @@ async def read_relationship(
     with resource_error_boundary("read_relationship_resource"):
         state = get_resource_state(context)
         document = state.resource_service.relationship(
+            framework_id=framework_id,
+            relationship_id=relationship_id,
+            snapshot_id=snapshot_id,
+        )
+        return build_resource_result(document)
+
+
+async def read_relationship_provenance(
+    *,
+    context: Context,
+    framework_id: FrameworkId,
+    relationship_id: RelationshipId,
+    snapshot_id: SnapshotId,
+) -> ResourceResult:
+    """Return complete original LP provenance under single-standard rights and limits.
+
+    Parameters
+    ----------
+    context
+        Injected shared application state.
+    framework_id
+        Exact owning framework.
+    relationship_id
+        Exact accepted stored LP identifier.
+    snapshot_id
+        Exact immutable snapshot.
+
+    Returns
+    -------
+    ResourceResult
+        Original entry and exact package/profile/artifact/content identity.
+    """
+
+    with resource_error_boundary("read_relationship_provenance_resource"):
+        state = get_resource_state(context)
+        document = state.resource_service.relationship_provenance(
             framework_id=framework_id,
             relationship_id=relationship_id,
             snapshot_id=snapshot_id,
@@ -553,3 +619,17 @@ def register_resource_components(server: FastMCP[dict[str, AppState]]) -> None:
         title="Relationship",
         uri=RELATIONSHIP_URI_TEMPLATE,
     )(read_relationship)
+    server.resource(
+        description="Return full original LP provenance with generated-origin notices.",
+        mime_type="application/json",
+        name="relationship_provenance",
+        title="Learning Progression Provenance",
+        uri=RELATIONSHIP_PROVENANCE_URI_TEMPLATE,
+    )(read_relationship_provenance)
+    server.resource(
+        description="Return sanitized LP counts, availability and evidence links.",
+        mime_type="application/json",
+        name="learning_progressions",
+        title="Learning Progressions Summary",
+        uri=LEARNING_PROGRESSIONS_URI_TEMPLATE,
+    )(read_learning_progressions)

@@ -40,6 +40,13 @@ INTERPRETATION_PROFILE_URI_TEMPLATE = (
     "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
     "interpretation-profile"
 )
+LEARNING_PROGRESSIONS_URI_TEMPLATE = (
+    "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/learning-progressions"
+)
+RELATIONSHIP_PROVENANCE_URI_TEMPLATE = (
+    "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
+    "relationship/{relationship_id}/provenance"
+)
 MANIFEST_URI_TEMPLATE = (
     "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/manifest"
 )
@@ -77,6 +84,8 @@ RESOURCE_URI_TEMPLATES: tuple[str, ...] = (
     LEARNING_COMPONENT_URI_TEMPLATE,
     LEARNING_COMPONENT_PROVENANCE_URI_TEMPLATE,
     RELATIONSHIP_URI_TEMPLATE,
+    RELATIONSHIP_PROVENANCE_URI_TEMPLATE,
+    LEARNING_PROGRESSIONS_URI_TEMPLATE,
 )
 
 

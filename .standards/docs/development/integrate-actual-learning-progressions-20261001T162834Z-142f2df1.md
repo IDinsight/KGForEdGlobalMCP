@@ -868,7 +868,7 @@ DEV-015 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded
 
 ### DEV-016 — Expose exact LP provenance and sanitized summary resources
 
-`Status`: `PENDING` `Depends On`: `DEV-015`
+`Status`: `DONE` `Depends On`: `DEV-015`
 `Acceptance`: `AC-004, AC-010, AC-011, AC-012`
 
 **Goal**
@@ -885,7 +885,84 @@ Two new resource templates resolve accepted package-local identities. Exact prov
 
 **Self-Check**
 
-Static/type checks and local exact resource reads including CBSE partition access, unknown edge/artifact, denied rights, low configured byte limits, content/source hash agreement and summary redaction. Inspect retained unresolved/needs_review evidence without returning it as edges. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — exact per-edge LP provenance and sanitized public summary resources implemented and checked offline. Working directory: `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; assessed HEAD: `9f0f9fcb1adc786b6b42c8eb85e07f54ee53f320`, with the six final source identities below. Entry working tree was clean. The user explicitly authorized DEV-016 next; its matching continuation blocker was cleared before implementation. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE; workflow remains DEVELOPING with historical Architect handoff and inactive recovery/obligations.
+
+**Implemented outcome**
+
+- Added the exact `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/relationship/{relationship_id}/provenance` and `kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/learning-progressions` templates, strict result/notices contracts, two shared ResourceService handlers and thin MCP resources. Reuses accepted package selection, primary academic-standards routing, existing rights policy, safe checksum/size repository reads, deterministic JSON encoding, canonical URIs and resource error boundary. Existing exact relationship URI remains unchanged.
+- Added `resources/lp.py` for the fixed SHA-256 UTF-8 relationship-ID first-byte modulo-64 resolver, exact partition-index/manifest validation and summary allowlist. Each full entry reads only the checksum-verified index and selected declared shard. The original full provenance map is referenced by hash without being read by the handler. Exact 64-slot membership, algorithm/version, original-map hash, all declared shard hashes/paths and canonical relative filenames must agree; no caller-selected paths or permissive shard-prefix exposure. Selected shard entry and count must exist. Malformed/missing/inconsistent evidence maps to resource_not_found rather than inferred fallback.
+- Full provenance returns the original retained object, including nested candidate, judgment, rationale, every warning and producer/checker trace, plus llm_inferred/generated-origin/semantics/confidence/coverage notices. Metadata carries exact package/snapshot/profile identity and source hashes/sizes for manifest, original map, selected shard, index and relationships. Canonical returned bytes receive their own content hash.
+- Sanitized summary contains availability, manifest per-type stored counts, allowlisted original numeric counts, accepted eligibility denominators, needs-review/no-relation/unresolved/validation warning counts, separate edge-warning totals, structural-only validation status and nine exact artifact URI/hash links. Unknown counts/eligibility remain null. Projection excludes rationale, candidate text, producer paths, model configuration/prompts and arbitrary unknown count names. No-LP returns explicit unavailable metadata; an available zero-edge projection remains distinguishable. Original generation summary bytes remain unchanged.
+- Explicit generic policies classify LP validation/index/normalization as PUBLIC_METADATA, unresolved as FULL_TEXT, and split edges/original summary/final claims/original provenance/validated shards as BULK_CONTENT. Per-edge provenance requires reviewed/full-text/single-standard rights independently of bulk; derived summary is public metadata. Capability lookup respects rights, validates the index once when bulk is allowed, and fails closed for unavailable shard membership. Unknown additional artifacts remain unavailable.
+- Existing 33,554,432-byte source and 8,388,608-byte returned-content ceilings remain unchanged. Actual index/shard/original-summary reads honor lower operator ceilings; complete deterministic responses honor the return ceiling. No oversized map read or clipped full entry is introduced. No new graph store, activation, five-tool registration or later increment.
+
+**Actual commands and results**
+
+Runtime Python commands used the existing Python 3.13 environment through `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync` from the repository above; effective Python working directory is backend. No install/sync/network/model/paid-service execution.
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev016-feedback.py > /tmp/kgfegmcp-dev016-feedback.log 2>&1
+python3 /tmp/kgfegmcp-dev016-static.py > /tmp/kgfegmcp-dev016-static.log 2>&1
+```
+
+- Final resource feedback exit 0: 2,197 named checks and 850 verified resource documents across all six accepted DEV-023 rebuilt runtimes, loaded read-only through CatalogRepository/GraphPackageValidator. All 384 shard resources are byte-exact under temporary bulk-permitted rights fixtures; their union equals all 8,080 original accepted LP entries and their judgment IDs, with correct hash buckets and original nested values. One accepted entry per nonempty shard plus each package's longest-rationale/warnings sample preserves complete original evidence. Tracking proves each per-edge read uses exactly index plus selected shard, never the original map. Independent offline oracle reads inspect original source maps directly; they are not resource-handler reads.
+- CBSE original map remains 40,860,837 bytes, above the unchanged 32 MiB source ceiling. Its individual provenance reads succeed through partitions; generic original-map access with bulk-permitted fixture rights is still denied by the source ceiling. Oversized original artifacts in other packages remain denied by source/return bounds. The largest measured one-per-partition sample is 15,266 returned bytes; this is a sample measurement, not a global maximum claim.
+- Actual accepted rights in all six packages are provisional_operator_approved, full text/single standard allowed, bulk false. Individual provenance and derived summaries succeed under those unchanged rights; raw summary/map/final-claims/shard requests deny before any artifact read. Positive bulk checks use in-memory rights projections only. Separate negative projections deny unreviewed/full-text/single-standard access before content IO while allowing sanitized summary metadata. Public validation/index/normalization and full-text unresolved retain their independent classes. Capability checks both omit shards under actual bulk denial and expose exactly declared shards under permitted fixtures, reading the index once.
+- Six summaries agree with stored type counts, accepted needs-review/unresolved counts and separate per-edge warning totals; exact source/content/profile hashes and deterministic repeated responses agree. Public redaction checks and hostile unknown-field/count-name injection pass; unknown eligibility remains null. Retained unresolved totals are inspected without promoting needs_review/no_relation into graph edges. All nine generic LP artifact policies preserve exact source bytes when permitted and within limits; unknown edge, non-LP edge, unknown artifact and shard suffix/bucket expansion reject.
+- Lower index/partition/original-summary source limits and full-provenance/derived-summary return limits reject. Temporary checksum-bound fixtures cover missing slot, wrong original/shard hash, wrong path/algorithm, malformed JSON, missing entry, wrong entry count, nonobject partition, changed length/same-length hash and missing file. Malformed/nonobject/duplicate-key summary errors are stable resource_not_found. No-LP and zero-edge fixtures check public availability distinctions and missing provenance; these are boundary projections rather than newly accepted complete packages.
+- Existing generic relationship samples remain exact original stored records. Eighteen actual standard/component/standard-component resource samples across six frameworks retain successful reads and content/source identities. In-process FastMCP with real ResourceService and a mocked state lookup exposes exactly one fixed resource and 14 templates, matching the URI constants. New summary/provenance and existing relationship reads succeed through encoded exact snapshot/relationship URIs; missing provenance returns masked resource_not_found without local paths. Full bootstrap/STDIO/HTTP are not exercised here.
+- Final static commands retain exact argv/cwd/exit/stdout/stderr in static-feedback.json/log. Black --check, isort --check-only, Ruff `check --select E,F,C90`, mypy `--cache-dir /tmp/kgfegmcp-dev016-mypy`, pylint and interrogate `--generate-badge /tmp/kgfegmcp-dev016-badge` on the six source files all exit 0. Mypy finds no issues in six files; pylint 10.00/10 under repository McCabe <=10; docstrings 100%. `node .standards/bin/check.mjs` and `git diff --check` pass and are rerun after this DONE/blocker record.
+- Preliminary static feedback found long description/policy lines; shortened them. Temporary feedback fixtures initially assumed bulk permission and model_copy support on the runtime dataclass; corrected the fixtures to retain runtime invariants and test actual denials separately. Fault injection exposed the strict package JSON parser's ManifestBuildError escaping the resource boundary; explicitly mapped it alongside validation errors in both new helpers and reran the final checks. Preliminary failed runs are not counted as passes; final receipts assess the exact final source hashes below.
+- Independent pre/post comparison preserves every byte and path of all 2,494 entry protected files under config (original 1.0 and new 2.0), sealed active packages, maintained inputs, raw/prepared/rebuilt/replacement artifacts and earlier receipts. Only nine new ignored DEV-016 receipts were added afterward. Preservation is rechecked after recording. No activation/retirement, source/config alteration, regeneration, live LLM/paid calls, deployment/publication, formal tests or later DEV step.
+
+**Assessed implementation identities**
+
+| File | SHA-256 |
+|---|---|
+| `backend/src/kgfegmcp/resources/lp.py` | `sha256:92490dd00f37af1d0a7d52c4c0826ef5356171f8c5b763bcb4e7e50c587fb711` |
+| `backend/src/kgfegmcp/resources/models.py` | `sha256:2348900c4e433e9a1b4b1c4b76cfe1ed5d3c54fc72500b81542fea37be04bcbb` |
+| `backend/src/kgfegmcp/resources/policy.py` | `sha256:2b7fa57ebad16ad0fee8243fc9081b0349de584d50c768dc4aba6050cba85c0d` |
+| `backend/src/kgfegmcp/resources/service.py` | `sha256:dcf6be5421c49500a563cf201d1a84db1931b281e078e9a01eeba76e07bc33cd` |
+| `backend/src/kgfegmcp/resources/uri.py` | `sha256:ca68afc115fe1a12833b9a6da7b183d3696ddee42a8307ef4f6e1b214a20c7d4` |
+| `backend/src/kgfegmcp/mcp/resources/register.py` | `sha256:ff64b6958e9eb82ddadbe05c3d082327842686f1f2ae7079ceac48477aa9919b` |
+
+**Accepted resource input identities**
+
+All six queried runtimes are DEV-023 revision-1 mixed academic_standards replacements under `data/source_artifacts/learning_progressions/rebuilt_packages`, with profile version 2.0. Exact snapshot/package/profile and all 86 artifact identities agree with DEV-014/015 inputs, preserved unchanged. Full identities, actual rights and complete logical-name/hash maps are retained in content-feedback.json; evidence-index.json binds the sorted compact artifact-map digest. Actual documents/counts and manifest/derived-summary hashes:
+
+| Framework | Accepted LP entries | Verified documents | Manifest SHA-256 | Summary content SHA-256 |
+|---|---:|---:|---|---|
+| `ghana-nacca-primary-english-language-basic-1-3` | 1,051 | 141 | `sha256:5cf5dbb35785b0ded64f062c19589b1601cd1f76e08cdddf991f9a1a14439f7b` | `sha256:97cc0d338d72b60a483cfba1b8dd58f62a4cd173e990ec3ee1491bffc142e621` |
+| `ghana-nacca-primary-mathematics-basic-4-6` | 599 | 143 | `sha256:16ef563d4fea0a5f6d259580ef834b1231d4376c9d34b521e416b39960b70533` | `sha256:ccf05e00b3332f2ecde0a32856785be93e5997356a6471a2bcf3dcabf12df046` |
+| `india-cbse-science-learning-framework-classes-9-10` | 3,206 | 140 | `sha256:d7431e9e49ff4d4c99b985d3a42dd10bae506c406dca0e96c26d9d8159515a96` | `sha256:f301fd30d7190a680a394bf49bf0eab31c40ac2351c42d472d2380e83d210533` |
+| `india-tamil-nadu-tnscert-mathematics-classes-1-5` | 907 | 142 | `sha256:32e860054447d9dde6d6d7b15bddb118e33727111953f2c4671b0b3359ca359b` | `sha256:a4f0a315ed1b85640027f63ebcd71836fa4432dd04175358d6b0baccfa015cf3` |
+| `nigeria-nerdc-mathematics-primary-1-3` | 486 | 144 | `sha256:3b0616d3ad9c2d6017c7c9bd4f9624927875daf9d1a6cd46b0a2316916544479` | `sha256:85838e56fe5174bdf9a56649991b26382fc2984d3d6516ad97811494b091111f` |
+| `rwanda-reb-mathematics-lower-primary-1-3` | 1,831 | 140 | `sha256:7a00e1afee01ff60ba4862eb833e26a4f85c727f08447573d229c5a3e89b3e2b` | `sha256:d3376971b3eadcca405d89b3682086b7060b5213776ff3512fdd34ad57b17c37` |
+
+**Local receipts and limitations**
+
+Retained under ignored `data/source_artifacts/learning_progressions/dev016/checks`; commands above are actual scratch runs. The persisted feedback script only adjusts its protected-inventory path and excludes its own nine receipt additions from preservation comparison for resumption. It depends on the retained DEV-013 loader setup and remains ad hoc Developer feedback, not a formal test suite. Actual scratch source identities:
+
+- `/tmp/kgfegmcp-dev016-feedback.py`: `sha256:04e31f4f8abb2231c403a94b2de1b294d7b427d71592e5799c40ad2f0dcc7dd9`.
+- `/tmp/kgfegmcp-dev016-static.py`: `sha256:f9dccf6767930e2e82b650d00d418bbc84969cafd1db0bf13c71c07a97202435`.
+
+| Receipt | SHA-256 |
+|---|---|
+| `content-feedback.json` | `sha256:6fb476c8e66c5dced25bffaf5dc2cb7beb9b2672d8455b483520d087e102a5b3` |
+| `content-feedback.log` | `sha256:f988d6951042f5347e25f8df82b991335e6a820548cbf55d940add26a1ffdab9` |
+| `content-feedback.py` | `sha256:01622ac22bfeec0ee1bedb1ad89b26fb31b4fc99f9b386573150ad4cc6ccd737` |
+| `evidence-index.json` | `sha256:6544956c1870dd92af5a98dcbd0c730d30cd62e275c720db9a56389972604a04` |
+| `preservation.json` | `sha256:364537159ca41d9c08b1ce0b0ac73a4d76ea445662ff83bf7cbfa43a88090329` |
+| `protected-inputs.json` | `sha256:c543662c86f00a45cb28db1feefab15fa9c391eaafe655e4d1fb3151e65b983d` |
+| `static-feedback.json` | `sha256:e0bcfdf5cce15d46a897059dd42b49d2c425dcf71768c232b08357e8c1423e05` |
+| `static-feedback.log` | `sha256:722234f1eca02508fb42e4110ec6bf1a8857f1d9c7beb1d1f69d6f425c22e59a` |
+| `static-feedback.py` | `sha256:f9dccf6767930e2e82b650d00d418bbc84969cafd1db0bf13c71c07a97202435` |
+
+Limitations: Developer implementation feedback is not independent Tester acceptance, exhaustive per-edge resource querying, semantic validation or pedagogical certification. All entries are compared through raw shard union; individual handlers are sampled per shard and by long-evidence cases. Synthetic faults/rights/no-LP/zero-edge projections supplement actual packages without altering accepted data. Local MCP registration uses a mocked state lookup with the real service; full application bootstrap, five public tools, transports and distribution remain later increments. The legacy-schema bootstrap limitation remains until DEV-017 activation. Formal test suites and the complete Developer handoff remain unfinished approved work.
+
+**Continuation**
+
+DEV-016 is DONE. Suggested Conventional Commit: `feat(resources): expose progression provenance and summary`. Next STEPWISE continuation is DEV-017 (activate accepted replacements and register the five LP tools), which remains PENDING. All later steps remain unstarted. The full Developer handoff gate does not pass while approved later work remains unfinished; wait for explicit user continuation.
 
 ### DEV-017 — Activate accepted replacements and register the five LP tools
 
@@ -1015,8 +1092,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014 and DEV-015. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014 and DEV-015 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-016; no later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015 and DEV-016. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015 and DEV-016 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-017; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -1025,5 +1102,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014 and DEV-015 are DONE. Next approved dependency-ready step is DEV-016; user continuation is required before starting it. Re-read per-edge provenance partition lookup/hash/rights/source-byte limits, sanitized LP summary exposure, artifact policy classes and missing/denied/oversized failure behavior. Reuse accepted DEV-023 rebuilt runtimes and existing shared resources machinery; retain exact source/accepted evidence. Maintained data/input_artifacts directly rebuild the six replacements; isolated rebuilt packages remain under data/source_artifacts/learning_progressions/rebuilt_packages. Keep source/prepared/accepted packages and all original version 1.0 configs intact; activation/retirement remains DEV-017. No later step has started.
+- Resume: DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015 and DEV-016 are DONE. Next approved dependency-ready step is DEV-017; user continuation is required before starting it. Re-read activation/retirement atomicity and all-six acceptance gates, five LP tool schemas/annotations/masked errors, shared bootstrap/runtime wiring, truthful capability/count separation, obsolete implementation removal and AS/LC routing/search/support regression requirements. Reuse accepted DEV-023 rebuilt packages and the shared DEV-012 through DEV-016 services/resources. Compare original sealed/config and accepted replacement hashes before any retirement; activate only after all six checks pass. Maintained data/input_artifacts directly rebuild the six replacements; isolated rebuilt packages remain under data/source_artifacts/learning_progressions/rebuilt_packages. Keep source/prepared/accepted artifacts and original version 1.0 configs intact until the explicitly authorized DEV-017 transition. No later step has started.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.

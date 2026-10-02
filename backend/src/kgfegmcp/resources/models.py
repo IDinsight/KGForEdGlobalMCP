@@ -16,6 +16,7 @@ from __future__ import annotations
 # Standard Library
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Literal
 
 # Third Party Library
 from pydantic import Field
@@ -29,6 +30,7 @@ from kgfegmcp.domain.identifiers import (
     NodeId,
     ProfileId,
     ProfileVersion,
+    RelationshipId,
     Sha256Digest,
     SnapshotId,
 )
@@ -44,8 +46,10 @@ class ResourceKind(StrEnum):
     INTERPRETATION_PROFILE = "interpretation_profile"
     LEARNING_COMPONENT = "learning_component"
     LEARNING_COMPONENT_PROVENANCE = "learning_component_provenance"
+    LEARNING_PROGRESSIONS = "learning_progressions"
     MANIFEST = "manifest"
     RELATIONSHIP = "relationship"
+    RELATIONSHIP_PROVENANCE = "relationship_provenance"
     STANDARD = "standard"
     STANDARD_LEARNING_COMPONENTS = "standard_learning_components"
     STANDARD_PROVENANCE = "standard_provenance"
@@ -93,6 +97,69 @@ class LearningComponentProvenanceResult(FrozenSchema):
 
     node_id: NodeId
     provenance: dict[str, object]
+
+
+class LearningProgressionNotices(FrozenSchema):
+    """Disclose stored generated origin and semantics without copying source prompts."""
+
+    confidence_notice: str = (
+        "Confidence is a model judgment, not a calibrated probability of learner "
+        "success or validated pedagogical correctness."
+    )
+    coverage_notice: str = (
+        "Candidate selection is not exhaustive. Missing edges do not establish "
+        "absence of a pedagogical connection. Passed validation covers structural "
+        "and process integrity only. Warning totals do not erase per-edge warnings."
+    )
+    generated_origin_notice: str = (
+        "IDinsight model-generated relationships are not publisher endorsement "
+        "or certified pedagogy."
+    )
+    semantic_notice: str = (
+        "buildsTowards describes support for success, not a mandatory prerequisite. "
+        "relatesTo is a conceptual or skill link without sequence or dependency. "
+        "Stored direction and canonical endpoint orientation remain unchanged."
+    )
+
+
+class LearningProgressionArtifactLink(FrozenSchema):
+    """Link exact retained LP artifacts without filesystem or producer paths."""
+
+    logical_name: str
+    sha256: Sha256Digest
+    uri: str
+
+
+class LearningProgressionSummaryResult(LearningProgressionNotices):
+    """Expose only allowlisted counts and eligibility metadata, never rich evidence."""
+
+    artifacts: tuple[LearningProgressionArtifactLink, ...]
+    builds_towards_relationships: int = Field(ge=0)
+    eligible_sfis_per_relationship: tuple[tuple[str, int], ...] | None
+    has_learning_progression_provenance: bool
+    has_learning_progressions: bool
+    needs_review_claims: int | None
+    no_relation_claims: int | None
+    object_counts: dict[str, int | None]
+    pedagogical_correctness_established: bool | None
+    relates_to_relationships: int = Field(ge=0)
+    relationship_warning_count: int | None
+    relationships_with_warnings_count: int | None
+    semantic_validation_performed: bool | None
+    total_sfis_considered: int | None
+    total_sfis_eligible: int | None
+    total_sfis_excluded: int | None
+    unresolved_warning_pairs: int | None
+    validation_passed: bool | None
+    validation_warning_count: int | None
+
+
+class RelationshipProvenanceResult(LearningProgressionNotices):
+    """Return the complete original retained entry with explicit generated origin."""
+
+    epistemic_status: Literal["llm_inferred"] = "llm_inferred"
+    provenance: dict[str, object]
+    relationship_id: RelationshipId
 
 
 class StandardProvenanceResult(FrozenSchema):

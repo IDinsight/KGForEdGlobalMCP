@@ -61,6 +61,33 @@ _ARTIFACT_POLICIES: Final[dict[str, ArtifactPolicyDecision]] = {
     "learningComponentsBundle": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
     ),
+    "learningProgressionBuildsTowards": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
+    ),
+    "learningProgressionFinalClaims": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
+    ),
+    "learningProgressionNormalization": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
+    ),
+    "learningProgressionProvenance": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
+    ),
+    "learningProgressionProvenanceIndex": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
+    ),
+    "learningProgressionRelatesTo": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
+    ),
+    "learningProgressionSummary": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
+    ),
+    "learningProgressionUnresolved": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.FULL_TEXT, mime_type="application/json"
+    ),
+    "learningProgressionValidation": ArtifactPolicyDecision(
+        access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
+    ),
     "nodes": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
     ),
@@ -176,7 +203,11 @@ class ResourcePolicy:
             )
 
     def artifact_decision(
-        self, *, logical_name: str, rights: RightsPolicy
+        self,
+        *,
+        logical_name: str,
+        rights: RightsPolicy,
+        validated_partitions: tuple[str, ...] = (),
     ) -> ArtifactPolicyDecision:
         """Return and enforce the closed policy for one manifest artifact.
 
@@ -186,6 +217,8 @@ class ResourcePolicy:
             Exact public logical name declared by the accepted manifest.
         rights
             Accepted source rights and operator exposure policy.
+        validated_partitions
+            Exact partition names verified against the accepted index and manifest.
 
         Returns
         -------
@@ -201,6 +234,12 @@ class ResourcePolicy:
         """
 
         decision = _ARTIFACT_POLICIES.get(logical_name)
+
+        if logical_name in validated_partitions:
+            decision = ArtifactPolicyDecision(
+                access_class=ArtifactAccessClass.BULK_CONTENT,
+                mime_type="application/json",
+            )
 
         if decision is None:
             raise ResourceNotFoundError(
@@ -247,13 +286,15 @@ class ResourcePolicy:
 
         if resource_kind is ResourceKind.ARTIFACT:
             raise ValueError(
-                "Generic artifact access must use artifact_decision with a logical name."
+                "Generic artifact access must use artifact_decision "
+                "with a logical name."
             )
 
         if resource_kind in {
             ResourceKind.CATALOG,
             ResourceKind.FRAMEWORK,
             ResourceKind.INTERPRETATION_PROFILE,
+            ResourceKind.LEARNING_PROGRESSIONS,
             ResourceKind.MANIFEST,
             ResourceKind.VALIDATION,
         }:
@@ -266,6 +307,7 @@ class ResourcePolicy:
             ResourceKind.LEARNING_COMPONENT,
             ResourceKind.LEARNING_COMPONENT_PROVENANCE,
             ResourceKind.RELATIONSHIP,
+            ResourceKind.RELATIONSHIP_PROVENANCE,
             ResourceKind.STANDARD,
             ResourceKind.STANDARD_LEARNING_COMPONENTS,
             ResourceKind.STANDARD_PROVENANCE,
