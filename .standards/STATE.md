@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,12 +20,18 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
-`All approved development steps are complete. Proceed to full independent Tester verification from the persisted development evidence; actual pytest collected no cases and exited 5, so formal offline coverage remains Tester-owned.`
+`Kind`: `FAILURE` `From`: `TESTING` `FailureType`: `IMPLEMENTATION` `Reason`:
+`Traversal silently omits a later individually oversized edge instead of raising progression_result_too_large (AC-009).`
 
 ## Recovery
 
-`Active`: `false`
+`Active`: `true`
+
+### Frame 1
+
+`From`: `TESTING` `Owner`: `DEVELOPING` `FailureType`: `IMPLEMENTATION`
+`Reason`: `Traversal silently omits a later individually oversized edge instead of raising progression_result_too_large (AC-009).`
+`ResumeAt`: `TESTING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 
