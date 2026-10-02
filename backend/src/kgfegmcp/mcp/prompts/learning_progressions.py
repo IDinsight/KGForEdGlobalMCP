@@ -1,4 +1,4 @@
-"""Expose deterministic stored-progression teaching instructions through FastMCP."""
+"""Expose deterministic stored-progression teaching/support instructions."""
 
 # Third Party Library
 from fastmcp import Context
@@ -16,9 +16,54 @@ from kgfegmcp.mcp.prompts.arguments import (
     ProgressionNormalizedGradesArgument,
     PromptFocusModeArgument,
     PromptFocusTextArgument,
+    PromptStandardIdentifierArgument,
 )
 from kgfegmcp.mcp.tools import get_app_state
 from kgfegmcp.prompts.models import PromptFocusMode
+
+
+async def learning_progression_support_plan(
+    *,
+    context: Context,
+    framework_id: FrameworkId,
+    identifier: PromptStandardIdentifierArgument,
+    local_context: OptionalPromptLocalContextArgument = None,
+    output_language: OptionalLanguageTagArgument = None,
+    snapshot_id: OptionalSnapshotIdArgument = None,
+) -> PromptResult:
+    """Return cited support options with observations separate from suggestions.
+
+    Parameters
+    ----------
+    context
+        Injected FastMCP context containing shared immutable application state.
+    framework_id
+        Exact conceptual framework identifier.
+    identifier
+        Exact node/CASE selector supplied as a JSON-object prompt argument.
+    local_context
+        Optional unverified teacher observations, at most 4,000 characters.
+    output_language
+        Optional output language tag.
+    snapshot_id
+        Optional exact snapshot; omission pins unique-current once.
+
+    Returns
+    -------
+    PromptResult
+        One deterministic user-role workflow and exact runtime metadata.
+    """
+
+    with prompt_error_boundary("learning_progression_support_plan"):
+        state = get_app_state(context)
+        result = state.prompt_service.learning_progression_support_plan(
+            framework_id=framework_id,
+            identifier=identifier,
+            local_context=local_context,
+            output_language=output_language,
+            snapshot_id=snapshot_id,
+        )
+        return build_prompt_result(result)
 
 
 async def learning_progression_teaching_sequence(

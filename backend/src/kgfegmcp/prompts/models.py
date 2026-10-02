@@ -254,6 +254,7 @@ class PromptName(StrEnum):
     ADMINISTRATOR_ALIGNMENT_REVIEW = "administrator_alignment_review"
     CROSS_FRAMEWORK_COMPARISON = "cross_framework_comparison"
     INFERRED_PROGRESSION_HYPOTHESIS = "inferred_progression_hypothesis"
+    LEARNING_PROGRESSION_SUPPORT_PLAN = "learning_progression_support_plan"
     LEARNING_PROGRESSION_TEACHING_SEQUENCE = "learning_progression_teaching_sequence"
     MULTIGRADE_LESSON_PLAN = "multigrade_lesson_plan"
     STUDENT_HANDBOOK_SECTION = "student_handbook_section"
@@ -266,6 +267,7 @@ PROMPT_NAMES: Final[tuple[str, ...]] = (
     PromptName.TEACHER_GUIDE_DRAFT.value,
     PromptName.STUDENT_HANDBOOK_SECTION.value,
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS.value,
+    PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN.value,
     PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE.value,
     PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW.value,
     PromptName.CROSS_FRAMEWORK_COMPARISON.value,

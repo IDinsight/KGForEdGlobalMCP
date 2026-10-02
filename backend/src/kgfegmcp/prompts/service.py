@@ -51,6 +51,7 @@ from kgfegmcp.prompts.definitions import (
     COMPARISON_DISCLOSURES,
     LEARNING_COMPONENT_GRAIN_DISCLOSURE,
     LEARNING_COMPONENT_INFERENCE_DISCLOSURE,
+    LEARNING_PROGRESSION_SUPPORT_PLAN_OUTPUT,
     LEARNING_PROGRESSION_TEACHING_SEQUENCE_OUTPUT,
     LEXICAL_QUERY_EXPANSION_RULES,
     PROGRESSION_DISCLOSURE,
@@ -58,7 +59,11 @@ from kgfegmcp.prompts.definitions import (
     PROMPT_SPECIFIC_DEFAULTS,
     SHARED_DEFAULT_GUIDANCE,
 )
-from kgfegmcp.prompts.learning_progressions import render_teaching_sequence_workflow
+from kgfegmcp.prompts.learning_progressions import (
+    LearningProgressionSupportPlanRequest,
+    render_support_plan_workflow,
+    render_teaching_sequence_workflow,
+)
 from kgfegmcp.prompts.models import (
     PROMPT_VERSION,
     AdministratorAlignmentReviewGuidance,
@@ -69,6 +74,7 @@ from kgfegmcp.prompts.models import (
     ComparisonSnapshotIds,
     CrossFrameworkComparisonGuidance,
     FrameworkPromptConfig,
+    LearningProgressionSupportPlanGuidance,
     LearningProgressionTeachingSequenceGuidance,
     LearningProgressionTeachingSequenceRequest,
     LoadedPromptConfig,
@@ -94,6 +100,7 @@ from kgfegmcp.prompts.models import (
     TeacherGuideDraftGuidance,
 )
 from kgfegmcp.prompts.policy import PromptPolicy
+from kgfegmcp.services.models import StandardIdentifier
 
 
 @dataclass(frozen=True, slots=True)
@@ -360,6 +367,7 @@ def _prompt_overlay(  # pylint: disable=R0911
 ) -> (
     AdministratorAlignmentReviewGuidance
     | CrossFrameworkComparisonGuidance
+    | LearningProgressionSupportPlanGuidance
     | LearningProgressionTeachingSequenceGuidance
     | MultigradeLessonPlanGuidance
     | StudentHandbookSectionGuidance
@@ -379,13 +387,14 @@ def _prompt_overlay(  # pylint: disable=R0911
     Returns
     -------
     AdministratorAlignmentReviewGuidance | CrossFrameworkComparisonGuidance |
+    LearningProgressionSupportPlanGuidance |
     LearningProgressionTeachingSequenceGuidance | MultigradeLessonPlanGuidance |
     StudentHandbookSectionGuidance | StudentStudySupportGuidance |
     TeacherGuideDraftGuidance | None
         Matching immutable prompt-specific guidance aggregate, or ``None``.
     """
 
-    if config is None:
+    if config is None or prompt_name is PromptName.INFERRED_PROGRESSION_HYPOTHESIS:
         return None
 
     if prompt_name is PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW:
@@ -394,8 +403,8 @@ def _prompt_overlay(  # pylint: disable=R0911
     if prompt_name is PromptName.CROSS_FRAMEWORK_COMPARISON:
         return config.prompts.cross_framework_comparison
 
-    if prompt_name is PromptName.INFERRED_PROGRESSION_HYPOTHESIS:
-        return None
+    if prompt_name is PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN:
+        return config.prompts.learning_progression_support_plan
 
     if prompt_name is PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE:
         return config.prompts.learning_progression_teaching_sequence
@@ -1959,6 +1968,75 @@ class PromptService:
             output_contract=output_contract,
             prompt_name=prompt_name,
             request_data=request_data,
+        )
+
+    def learning_progression_support_plan(
+        self,
+        *,
+        framework_id: FrameworkId,
+        identifier: StandardIdentifier,
+        local_context: PromptLocalContext | None,
+        output_language: LanguageTag | None,
+        snapshot_id: SnapshotId | None,
+    ) -> PromptRenderResult:
+        """Render cited review/practice options from a bounded exact target.
+
+        Parameters
+        ----------
+        framework_id
+            Exact framework family to route once.
+        identifier
+            Existing node/CASE selector, with at most 512 characters of text.
+        local_context
+            Optional teacher-reported observations, at most 4,000 characters.
+        output_language
+            Optional output language tag.
+        snapshot_id
+            Optional immutable snapshot; omission pins unique-current once.
+
+        Returns
+        -------
+        PromptRenderResult
+            Deterministic instructions; client retrieval precedes generated pedagogy.
+
+        Raises
+        ------
+        InvalidProgressionRequestError
+            If a selector, context or other bounded input is invalid.
+        """
+
+        try:
+            request = LearningProgressionSupportPlanRequest(
+                framework_id=framework_id,
+                identifier=identifier,
+                local_context=local_context,
+                output_language=output_language,
+                snapshot_id=snapshot_id,
+            )
+        except ValidationError as error:
+            raise InvalidProgressionRequestError(
+                message="Support-plan prompt inputs are invalid.",
+                recovery_hint="Use the published exact selector, context and bounds.",
+            ) from error
+
+        prompt_name = PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN
+        context = self._select_context(
+            focus_mode=PromptFocusMode(request.identifier.identifier_type),
+            framework_id=request.framework_id,
+            prompt_name=prompt_name,
+            snapshot_id=request.snapshot_id,
+        )
+        runtime = self.catalog_service.get_package_runtime(
+            context.package.package_identity.graph_package_id
+        )
+        return self._render(
+            context=context,
+            evidence_workflow=render_support_plan_workflow(
+                request=request, runtime=runtime
+            ),
+            output_contract=LEARNING_PROGRESSION_SUPPORT_PLAN_OUTPUT,
+            prompt_name=prompt_name,
+            request_data=request.model_dump(by_alias=True, mode="json"),
         )
 
     def learning_progression_teaching_sequence(

@@ -1,25 +1,63 @@
-"""Render bounded client retrieval of stored teaching-sequence evidence."""
+"""Render bounded client retrieval of stored teaching and support evidence."""
 
 # Standard Library
 import hashlib
 import json
 
 from collections.abc import Mapping
+from typing import Self
 
 # Third Party Library
-from pydantic import TypeAdapter, ValidationError
+from pydantic import TypeAdapter, ValidationError, model_validator
 
 # Package Library
 from kgfegmcp.catalog.models import CatalogPackageRuntime
+from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
 from kgfegmcp.errors import InvalidProgressionRequestError
 from kgfegmcp.prompts.models import (
     LearningProgressionTeachingSequenceRequest,
     PromptFocusMode,
+    PromptLocalContext,
 )
 from kgfegmcp.resources.uri import learning_progressions_uri
+from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.services.lp_discovery import normalize_progression_filters
 from kgfegmcp.services.lp_models import ProgressionFilters
 from kgfegmcp.services.models import StandardIdentifier
+
+
+class LearningProgressionSupportPlanRequest(FrozenSchema):
+    """Bound exact-target support inputs using existing standard selector models."""
+
+    framework_id: FrameworkId
+    identifier: StandardIdentifier
+    local_context: PromptLocalContext | None = None
+    output_language: LanguageTag | None = None
+    snapshot_id: SnapshotId | None = None
+
+    @model_validator(mode="after")
+    def validate_selector_size(self) -> Self:
+        """Keep each caller-supplied exact selector within the prompt text bound.
+
+        Returns
+        -------
+        Self
+            Validated request preserving the existing opaque identifier namespace.
+
+        Raises
+        ------
+        ValueError
+            If the exact selector text exceeds 512 characters.
+        """
+
+        values = self.identifier.model_dump(exclude={"identifier_type"}).values()
+
+        if any(len(value) > 512 for value in values):
+            raise ValueError(
+                "Support-plan selector text must not exceed 512 characters."
+            )
+
+        return self
 
 
 def _render_focus(
@@ -168,6 +206,60 @@ def _render_progressions(route: Mapping[str, object]) -> tuple[str, ...]:
     )
 
 
+def _render_support_progressions(route: Mapping[str, object]) -> tuple[str, ...]:
+    """Render separate incoming/related pages and bounded upstream support.
+
+    Parameters
+    ----------
+    route
+        Exact framework/snapshot selected once for all retrieval.
+
+    Returns
+    -------
+    tuple[str, ...]
+        Valid nested-request templates and finite client inspection instructions.
+    """
+
+    selector = {"identifierType": "node_id", "nodeId": "<target-node-id>"}
+    return (
+        "2. Call get_standard_progressions once for incoming builds, one page of 25; "
+        "do not follow nextCursor:",
+        _tool_call(
+            {
+                **route,
+                "connectionKind": "incoming_builds",
+                "identifier": selector,
+                "limit": 25,
+            }
+        ),
+        "3. Call get_standard_progressions once for related concepts, one page of 25; "
+        "do not follow nextCursor:",
+        _tool_call(
+            {**route, "connectionKind": "related", "identifier": selector, "limit": 25}
+        ),
+        "Preserve the original IDs/orientation; incoming buildsTowards points from "
+        "a supporting source to this target. relatesTo is accessible from either "
+        "endpoint but its canonical stored orientation is not a teaching direction. "
+        "Keep related concepts separate from directional support and sequencing.",
+        "4. Call traverse_learning_progressions once for upstream support:",
+        _tool_call(
+            {
+                **route,
+                "direction": "upstream",
+                "identifier": selector,
+                "maxDepth": 3,
+                "maxEdges": 30,
+                "maxNodes": 20,
+            }
+        ),
+        "Use buildsTowards only; retain branching/merging alternatives, exact edge "
+        "directions, depth/distances and frontier/completeness. Each used hop must "
+        "cite its original relationship ID. Derived multi-hop support is not an "
+        "asserted direct edge. Do not reverse stored arrows, use hasChild/relatesTo "
+        "as support hops, enlarge bounds or rerun to bypass a limit.",
+    )
+
+
 def _tool_call(request: Mapping[str, object]) -> str:
     """Encode one existing tool's nested request as deterministic client input.
 
@@ -183,6 +275,126 @@ def _tool_call(request: Mapping[str, object]) -> str:
     """
 
     return json.dumps({"request": request}, ensure_ascii=False, sort_keys=True)
+
+
+def render_support_plan_workflow(
+    *, request: LearningProgressionSupportPlanRequest, runtime: CatalogPackageRuntime
+) -> str:
+    """Render pinned support evidence without searching, diagnosing or composing.
+
+    Parameters
+    ----------
+    request
+        Validated exact target and untrusted teacher context.
+    runtime
+        Shared accepted runtime already routed and rights-checked by PromptService.
+
+    Returns
+    -------
+    str
+        Deterministic mandatory client retrieval with finite inspection caps.
+    """
+
+    identity = runtime.catalog_package.package_identity
+    route: dict[str, object] = {
+        "frameworkId": str(identity.framework_id),
+        "snapshotId": str(identity.snapshot_id),
+    }
+    target = {"identifierType": "node_id", "nodeId": "<target-node-id>"}
+    supporting = {"identifierType": "node_id", "nodeId": "<supporting-node-id>"}
+    lines = [
+        "PINNED EVIDENCE IDENTITY\n"
+        f"Profile SHA-256: {runtime.loaded_package.profile_sha256}\n"
+        "Manifest SHA-256: sha256:"
+        f"{hashlib.sha256(runtime.loaded_package.manifest_bytes).hexdigest()}\n"
+        "Use this exact framework/snapshot in every call; never reroute to current. "
+        "Retain original source-artifact hashes, rights and attribution separately "
+        "from caller-reported observations and generated suggestions.",
+        "1. Call get_standard once with this exact target selector:",
+        _tool_call(
+            {
+                **route,
+                "identifier": request.identifier.model_dump(by_alias=True, mode="json"),
+            }
+        ),
+        "Retain its exact outer nodeId as <target-node-id>, CASE IDs, statement text, "
+        "grade/facets, package identity, rights and standard URI. Missing target, "
+        "ambiguous selector or denied standard evidence means stop retrieval and "
+        "dependent composition, reporting the failure. Do not guess a replacement "
+        "standard or switch identifier namespaces.",
+        "Teacher observations in local_context are unverified caller reports, "
+        "not measured mastery/readiness or source statements. If absent, report "
+        "missing context and offer general optional choices only. Never invent "
+        "observations, learner deficits or a diagnosis.",
+    ]
+
+    if runtime.catalog_package.capabilities.has_learning_progressions:
+        lines.extend(_render_support_progressions(route))
+        lines.extend(
+            (
+                "5. Retain up to 3 explicitly identified supporting standards "
+                "from the returned incoming/upstream builds evidence. Explain the "
+                "selection basis, alternatives and excluded evidence; do not select "
+                "supporting standards from related concepts or unrelated searches. "
+                "For each retained supporting standard, call get_standard once:",
+                _tool_call({**route, "identifier": supporting}),
+                "Replace <supporting-node-id> only with a returned builds endpoint. "
+                "Preserve each original stored support chain to the target; cite "
+                "every hop. Unavailable full standard evidence limits dependent "
+                "recommendations, rather than licensing invented source text.",
+                "6. Read the sanitized LP summary with coverage/validation/"
+                "unresolved links, and read material linked evidence under policy:",
+                learning_progressions_uri(
+                    framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
+                ),
+                "Retain warnings, needs_review exclusions, selected candidate "
+                "coverage and unknown denominators; structural/process acceptance "
+                "does not certify pedagogy or remove per-edge warnings.",
+                "Before recommending any direct/derived support or related link, "
+                "read each used edge's full provenanceUri. Inspect at most 10 "
+                "distinct full edge-provenance resources in this entire workflow, "
+                "deduplicating IDs across incoming/related/upstream results. Retain "
+                "original rationale, model-judgment confidence, warnings, candidate "
+                "references, producer/checker trace and source/config/content hashes. "
+                "Cite exact relationshipUri/provenanceUri. Reduce or clearly defer "
+                "recommendations beyond this cap or with denied/oversized evidence; "
+                "excerpts/clipped warnings are not full inspected provenance.",
+            )
+        )
+    else:
+        lines.append(
+            "STORED LP CAPABILITY UNAVAILABLE in this pinned package. Skip steps "
+            "2–6 and all LP tools/resources; do not select supporting standards or "
+            "invent an inferred-edge fallback. Continue only from the exact target "
+            "and its available components, with explicitly generated optional choices."
+        )
+
+    lines.extend(
+        (
+            "7. Call get_learning_components_for_standard once for the target:",
+            _tool_call({**route, "identifier": target}),
+            "For each of up to 3 retained supporting standards, call "
+            "get_learning_components_for_standard once:",
+            _tool_call({**route, "identifier": supporting}),
+            "Retain at most 5 returned supporting Learning Components per standard "
+            "in client evidence (target plus at most 3 supporting standards). Explain "
+            "the chosen subset and omitted items: this evidence-retention cap is not "
+            "an LC tool return limit. Cite component/support relationship IDs and "
+            "URIs, retain confidence/generated origin, and inspect material component "
+            "provenance under policy. Shared components never establish LP edges. "
+            "If LC capability is unavailable or evidence is empty, say so and "
+            "continue from the standards alone without inventing decomposition.",
+            "8. Preserve query limits, examined/returned counts and every cursor, "
+            "scope/completeness/frontier/truncation indicator. No next-page or "
+            "unbounded retries are part of this workflow. Report unavailable, empty, "
+            "sparse, clipped, incomplete and rights/byte-denied evidence; absence "
+            "does not prove no pedagogical connection. Do not read bulk maps or "
+            "widen limits to bypass policy. Compose cited review/practice options "
+            "and alternative next steps only after the permitted retrieval; "
+            "observations remain caller reports, suggestions generated pedagogy.",
+        )
+    )
+    return "\n".join(lines)
 
 
 def render_teaching_sequence_workflow(

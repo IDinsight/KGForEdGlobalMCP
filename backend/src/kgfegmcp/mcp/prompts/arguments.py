@@ -42,6 +42,7 @@ from kgfegmcp.prompts.models import (
     PromptMaterials,
     StudyDifficulty,
 )
+from kgfegmcp.services.models import StandardIdentifier
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,7 +102,8 @@ MultigradeGradesInRoomArgument = Annotated[
     Field(
         description=(
             "Two to eight distinct grades or stages sharing the classroom. MCP prompt "
-            "clients send complex arguments as JSON strings, so enter a JSON array such "
+            "clients send complex arguments as JSON strings, so enter a JSON "
+            "array such "
             'as ["4", "5", "6"]. Do not enter a comma-separated prose string.'
         )
     ),
@@ -214,6 +216,19 @@ PromptFocusTextArgument = Annotated[
         )
     ),
 ]
+PromptStandardIdentifierArgument = Annotated[
+    StandardIdentifier,
+    Field(
+        description=(
+            "Exact target standard. Send a JSON object with identifierType and its "
+            "matching field, for example "
+            '{"identifierType":"node_id","nodeId":"exact-node-id"}. '
+            "CASE modes use caseIdentifierUuid or caseIdentifierUri. Selector text "
+            "is at most 512 characters. Preserve namespaces; topic/code discovery "
+            "must happen before invoking this exact-target workflow."
+        )
+    ),
+]
 StudyDifficultyArgument = Annotated[
     StudyDifficulty,
     BeforeValidator(_BlankPromptArgumentDefault(default=StudyDifficulty.ON_LEVEL)),
@@ -242,5 +257,6 @@ __all__ = [
     "ProgressionNormalizedGradesArgument",
     "PromptFocusModeArgument",
     "PromptFocusTextArgument",
+    "PromptStandardIdentifierArgument",
     "StudyDifficultyArgument",
 ]
