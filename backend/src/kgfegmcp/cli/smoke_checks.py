@@ -27,6 +27,10 @@ from typing import Final, cast
 from fastmcp import Client
 
 # Package Library
+from kgfegmcp.cli.smoke_progressions import (
+    progression_schema_identities,
+    verify_progression_queries,
+)
 from kgfegmcp.domain.identifiers import (
     ArtifactName,
     FrameworkId,
@@ -42,7 +46,9 @@ from kgfegmcp.resources.uri import (
     interpretation_profile_uri,
     learning_component_provenance_uri,
     learning_component_uri,
+    learning_progressions_uri,
     manifest_uri,
+    relationship_provenance_uri,
     relationship_uri,
     standard_learning_components_uri,
     standard_provenance_uri,
@@ -50,18 +56,20 @@ from kgfegmcp.resources.uri import (
     unresolved_uri,
     validation_uri,
 )
+from kgfegmcp.services.models import GetCapabilitiesResult
 
 _EXPECTED_PROMPT_NAMES = (
     "administrator_alignment_review",
     "cross_framework_comparison",
-    "inferred_progression_hypothesis",
+    "learning_progression_curriculum_review",
+    "learning_progression_support_plan",
+    "learning_progression_teaching_sequence",
     "multigrade_lesson_plan",
     "student_handbook_section",
     "student_study_support",
     "teacher_guide_draft",
 )
 _EXPECTED_TOOL_NAMES = (
-    "collect_progression_evidence",
     "compare_framework_evidence",
     "get_capabilities",
     "get_framework",
@@ -69,11 +77,16 @@ _EXPECTED_TOOL_NAMES = (
     "get_learning_component",
     "get_learning_component_context",
     "get_learning_components_for_standard",
+    "get_learning_progression",
+    "get_learning_progression_paths",
     "get_standard",
     "get_standard_context",
+    "get_standard_progressions",
     "list_frameworks",
     "search_learning_components",
+    "search_learning_progressions",
     "search_standards",
+    "traverse_learning_progressions",
 )
 
 _SMOKE_ARTIFACT_NAME: Final[ArtifactName] = cast(ArtifactName, "validationReport")
@@ -84,12 +97,15 @@ _SMOKE_LEARNING_COMPONENT_ID: Final[NodeId] = cast(
     NodeId, "29bb3662-7e9c-5d44-83c4-084e4fb57323"
 )
 _SMOKE_NODE_ID: Final[NodeId] = cast(NodeId, "aa4cdccd-e5d9-589c-8094-e10d7ac0c754")
+_SMOKE_PROGRESSION_ID: Final[RelationshipId] = cast(
+    RelationshipId, "005ac615-94a7-5fb0-83c7-948bcffcc188"
+)
 _SMOKE_RELATIONSHIP_ID: Final[RelationshipId] = cast(
     RelationshipId, "72a98493-9a16-58b6-9a80-e53012bfa4c1"
 )
 _SMOKE_SNAPSHOT_ID: Final[SnapshotId] = cast(
     SnapshotId,
-    "ghana-nacca-primary-english-language-basic-1-3@2019+c33ab5a379fb",
+    "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
 )
 _SMOKE_UNRESOLVED_NODE_ID: Final[NodeId] = cast(
     NodeId, "4f5d76cf-3242-52e4-8c16-7b569f84588a"
@@ -451,7 +467,7 @@ def _resource_read_targets() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
     -------
     tuple[tuple[str, str, tuple[str, ...]], ...]
         Stable label, canonical URI, and expected identity tokens for the fixed catalog
-        and all twelve resource templates.
+        and all fourteen resource templates.
     """
 
     framework_id = _SMOKE_FRAMEWORK_ID
@@ -462,6 +478,30 @@ def _resource_read_targets() -> tuple[tuple[str, str, tuple[str, ...]], ...]:
     unresolved_node_id = _SMOKE_UNRESOLVED_NODE_ID
     return (
         ("catalog", CATALOG_URI, (str(framework_id), str(snapshot_id))),
+        (
+            "learningProgressions",
+            learning_progressions_uri(
+                framework_id=framework_id, snapshot_id=snapshot_id
+            ),
+            (
+                str(framework_id),
+                "buildsTowardsRelationships",
+                "structural",
+            ),
+        ),
+        (
+            "relationshipProvenance",
+            relationship_provenance_uri(
+                framework_id=framework_id,
+                relationship_id=_SMOKE_PROGRESSION_ID,
+                snapshot_id=snapshot_id,
+            ),
+            (
+                str(_SMOKE_PROGRESSION_ID),
+                "provenance",
+                "candidate_artifact_byte_hashes",
+            ),
+        ),
         (
             "framework",
             framework_uri(framework_id),
@@ -678,6 +718,26 @@ async def verify_server_surface(client: Client) -> dict[str, object]:
 
     inventory = await _listed_inventory(client)
     _require_approved_inventory(inventory)
+    capabilities = GetCapabilitiesResult.model_validate(
+        (
+            await client.call_tool(name="get_capabilities", arguments={})
+        ).structured_content
+    )
+    _require_approved_inventory(
+        {
+            "prompt": tuple(sorted(capabilities.prompt_names)),
+            "tool": tuple(sorted(capabilities.tool_names)),
+            "resource-template": tuple(sorted(capabilities.resource_uri_templates)),
+            "fixed-resource": tuple(sorted(capabilities.resource_uris)),
+        }
+    )
+    schemas = await progression_schema_identities(client)
+    progressions = await verify_progression_queries(
+        client=client,
+        framework_id=_SMOKE_FRAMEWORK_ID,
+        relationship_id=_SMOKE_PROGRESSION_ID,
+        snapshot_id=_SMOKE_SNAPSHOT_ID,
+    )
     resource_reads = await _resource_reads(client)
 
     # Every family key is guaranteed present: _require_approved_inventory has already
@@ -685,6 +745,9 @@ async def verify_server_surface(client: Client) -> dict[str, object]:
     return {
         "fixedResourceCount": len(inventory["fixed-resource"]),
         "promptCount": len(inventory["prompt"]),
+        "inventory": inventory,
+        "progressions": progressions,
+        "toolSchemaIdentities": schemas,
         "resourceReadCount": len(resource_reads),
         "resourceReads": resource_reads,
         "resourceTemplateCount": len(inventory["resource-template"]),

@@ -6,13 +6,21 @@ on:
     branches: [ "**" ]
     paths:
       - ".github/workflows/tests.yml"
-      - "**.py"
+      - "backend/**"
+      - "config/**"
+      - "data/**"
+      - "packaging/**"
+      - "Dockerfile"
 
   push:
     branches: ["main"]
     paths:
       - ".github/workflows/tests.yml"
-      - "**.py"
+      - "backend/**"
+      - "config/**"
+      - "data/**"
+      - "packaging/**"
+      - "Dockerfile"
 
 env:
   CHAT_ENV: testing
@@ -37,11 +45,16 @@ jobs:
           # Define what is "backend" changes.
           filters: |
             backend:
-              - "**.py"
+              - ".github/workflows/tests.yml"
+              - "backend/**"
+              - "config/**"
+              - "data/**"
+              - "packaging/**"
+              - "Dockerfile"
 
   backend-tests:
     needs: changes
-    if: ${{ needs.changes.outputs.backend == 'true' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.changes.outputs.backend == 'true' }}
 
     runs-on: ubuntu-latest
 
@@ -70,12 +83,9 @@ jobs:
 
       # Install the pinned tool versions.
       - name: Sync dev dependencies
-        run: uv sync --extra dev
+        run: uv sync --locked --extra dev
 
       # Run Pytest with coverage for the backend.
       - name: Run Pytest with coverage
         run: |
-          code=0
-          uv run pytest -rsPQ -m "not alembic" --cov-report term-missing --cov-config=./pyproject.toml --cov=. tests || code=$?
-          if [ "$code" -eq 5 ]; then echo "✅  Pytest collected no tests – treating as pass"; exit 0; fi
-          exit "$code"
+          uv run --locked --no-sync pytest -rsPQ -m "not costs-money" --cov-report term-missing --cov-config=./pyproject.toml --cov=kgfegmcp tests

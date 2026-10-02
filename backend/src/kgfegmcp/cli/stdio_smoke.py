@@ -132,6 +132,7 @@ async def _run_smoke(bundle_root: Path | None) -> dict[str, object]:
             str(runtime_root),
             "--locked",
             "--no-dev",
+            "--offline",
             "python",
             "-m",
             "kgfegmcp.mcpb_server",
@@ -204,6 +205,7 @@ def _stdio_environment(project_root: Path) -> dict[str, str]:
         "KGFEGMCP_PROFILE_ROOT": str(project_root / "config" / "profiles"),
         "KGFEGMCP_PROMPT_ROOT": str(project_root / "config" / "prompts"),
         "PATHS_PROJECT_DIR": str(project_root),
+        "PYTHONDONTWRITEBYTECODE": "1",
     }
 
 

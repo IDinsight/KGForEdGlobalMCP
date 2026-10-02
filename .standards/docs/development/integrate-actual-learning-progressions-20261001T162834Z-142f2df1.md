@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Implementation Contract
@@ -1410,7 +1410,7 @@ DEV-021 is DONE. Suggested Conventional Commit: `feat(prompts)!: replace progres
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `PENDING` `Depends On`: `DEV-021`
+`Status`: `DONE` `Depends On`: `DEV-021`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025`
 
 **Goal**
@@ -1425,14 +1425,79 @@ cli/smoke_checks.py, stdio_smoke.py/http_smoke.py as needed, build_mcpb.py, pack
 
 Shared exact inventory is 17 tools, nine prompts, one fixed resource and 14 templates. Smoke identities resolve replacement snapshots and inspect representative LP evidence. CI includes data/config/package changes and rejects pytest no-collection success. Retained MCPB stage contains complete active runtime evidence and no source-preparation/external/retired inputs. Local transports and staged runtime run without model/paid calls or deployment.
 
-**Self-Check**
+**Implementation**
 
-Run applicable established formatting/lint/type/docstring checks, all six read-only package revalidations, STDIO and local HTTP smoke, MCPB build/retained-stage smoke and stage closure inspection. Run existing tests if present; record absent tests as a Tester-owned gap, never as passing verification. Record actual commands/content identities/results/limitations before workflow check and independent Tester handoff. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+Updated shared smoke inventory to the final 17 tools/nine prompts and the replacement Ghana English snapshot, retaining the original standard/component/unresolved representative identities. Added sanitized LP summary and exact per-edge provenance reads so one fixed resource plus all 14 templates are exercised. Capabilities must agree with the listed inventory. The focused smoke_progressions helper compares each of the five nested request schemas with its existing service model after FastMCP's own schema compression, fingerprints all 17 input/output schemas, executes the five bounded stored-edge operations and an expected missing-edge error, and retains exact query/result content identities. The same shared checker runs in repository STDIO, loopback HTTP and retained-stage STDIO; no parallel server/service implementation was introduced.
+
+STDIO smoke now passes `--offline` to its locked uv child and suppresses Python bytecode writes. MCPB retains its established copy/validate/pack/byte-verify mechanism and required paths. Its manifest version now matches the existing backend 0.3.1 (previous stale value 0.1.0); public prompt version remains 1.3.0. Source copying now excludes generated .egg-info alongside existing caches, because editable installation otherwise rewrites development metadata that the old copy recipe included. Runtime source and all declared original/provenance-partition data remain included. No active package/profile/prompt version or source evidence changed.
+
+CI trigger and job filters now include backend, data, configuration, packaging, Dockerfile and the workflow itself; manual dispatch is eligible even without detected changes. Dependency installation is locked. Pytest failures—including exit 5—propagate directly instead of being converted to success; the configured command excludes costs-money cases. This selection is not a substitute for Tester mocking any model/paid boundary.
+
+**Self-Check — Actual Developer Feedback**
+
+PASS for DEV-022 implementation checks; formal test coverage remains pending with Tester. Working directory `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; assessed HEAD `3a11ded38a3ad666487207e79c14f31012ec6fa7`, clean entry. No commit was created. Full argv, cwd, results and logs are retained in checks/commands.json, operational.json, http-command.json and static.json. Actual commands include:
+
+```sh
+python3 /tmp/kgfegmcp-dev022/operational.py
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-stdio-smoke
+python3 /tmp/kgfegmcp-dev022/http.py
+UV_OFFLINE=1 PYTHONDONTWRITEBYTECODE=1 /Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-build-mcpb --output /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/dev022/kgfegmcp-0.3.1-dev022.mcpb --stage-output /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/dev022/bundle
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-stdio-smoke --bundle-root /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/dev022/bundle
+python3 /tmp/kgfegmcp-dev022/static.py
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev022/final_checks.py
+node .standards/bin/check.mjs
+git diff --check
+```
+
+- All six exact `kgfegmcp-validate-packages one --framework-id … --snapshot-id … --read-only` commands exited 0 with isValid=true, terminalRevalidation=true, readOnly=true and persisted=false. They select the DEV-017 activated/DEV-023 rebuilt identities recorded in operational.json. No activation or validation-state persistence was repeated.
+- Repository STDIO, local Streamable HTTP and final retained-stage STDIO exited 0. Each actual factory/bootstrap accepted all six packages with zero exclusions. Each run reports 17 tools, nine prompts, one fixed resource, 14 templates, and 15 representative JSON resource reads. All three inventories, 17 input/output-schema fingerprints, five query payload/result identities, expected learning_progression_not_found error and resource summaries agree exactly. Each performs five successful LP queries, one expected failed lookup and one capabilities query (21 tool calls/attempts and 45 resource reads across the three final runs). This is representative transport evidence, not exhaustive domain acceptance.
+- HTTP used only `http://127.0.0.1:51290/mcp` in this run. The bounded harness starts the existing create_mcp factory with stateless HTTP, runs the actual HTTP smoke CLI and terminates its own server process group; the log confirms application shutdown and server completion. No deployed endpoint was contacted or changed. STDIO logs remain on stderr and child shutdown completed.
+- Official installed MCPB validate/pack plus existing builder archive verification passed. Final archive contains exactly 650 files, 82,154,022 bytes, with SHA-256 `9fd1bc9c4c03d8c9460388c70f2bdb5b231eda1de693910b76f8dfc5a43866a1`. Every archived file equals the current intended copy input and retained-stage content. All six accepted package trees, full original LP provenance maps, indices and all 64 shards per framework are present. No preparation, raw-copy, retired, external-source, .egg-info or cache tree is archived. Stage startup installs 74 cached dependencies offline into its own .venv and creates local .egg-info; these post-build environment outputs are not archived, and every originally staged distribution file remains byte-exact.
+- Final ad hoc final_checks.py passed 3,953 checks, mostly exact file-identity/preservation assertions. It establishes 3,129 protected entry files unchanged (data/config and the existing dist archive), exact archive/stage closure and transport agreement, matching CI YAML trigger/job filters, a shell stub proving exit 5 propagates, and focused copy-boundary exclusion/symlink-rejection behavior. Active source/config searches find no old hypothesis/tool/heuristic/overlay symbols. Historical evidence and Documenter-owned obsolete user references are deliberately retained for the appropriate phase.
+- Four changed Python modules pass Black, isort, Ruff E/F/C90, mypy, pylint 10.00/10 and interrogate 100%. Final exact argv/outputs/content hashes are recorded in static.json. Workflow and diff whitespace checks pass and are rerun at handoff.
+- Actual offline pytest was run with `pytest -rsPQ -m "not costs-money" --cov-report term-missing --cov-config=./pyproject.toml --cov=kgfegmcp tests -o cache_dir=/tmp/kgfegmcp-dev022/pytest-cache`. It collected zero cases and exited 5. This is NOT passing verification or meaningful coverage; the emitted coverage table is not accepted evidence. There are no test modules to run yet. Tester owns creating the missing meaningful offline cases and AC-023–AC-025 formal evidence; CI now honestly fails until such cases exist. Developer did not create or change formal test artifacts.
+- Early smoke assertions incorrectly assumed a referenced instead of inlined FastMCP schema and wrong summary/provenance field names; corrected to the actual typed/public contracts, with failed logs retained. Initial archive passed the old recipe but post-start stage comparison exposed generated .egg-info/SOURCES.txt drift; metadata exclusion corrected the recipe and the rebuilt final stage passes. The initial archive/stage remain retained separately for evidence. Initial relative build paths resolved beneath backend due to uv --directory; only those newly created outputs were moved into the intended ignored DEV-022 evidence directory, and the final build used absolute paths. No existing distribution was overwritten.
+
+**Content Identities**
+
+- `.github/workflows/tests.yml`: `sha256:c42265cbf123f9f840a78daf9e382e0a463fc95175652940103ee405d048a9b8`.
+- `backend/src/kgfegmcp/cli/build_mcpb.py`: `sha256:3676404a4a96f5c19c7642f96470128033c634d2c16d9b9417a130c5bc27a97b`.
+- `backend/src/kgfegmcp/cli/smoke_checks.py`: `sha256:400aef1c340c8ff931e279a7bcb2fd74bdba6372b12f5a3686901668213ab217`.
+- `backend/src/kgfegmcp/cli/smoke_progressions.py`: `sha256:a690a3a0bfb7c298fbb1e60ae887ee45449c06d866269d86aa0de25fc1f7dcc4`.
+- `backend/src/kgfegmcp/cli/stdio_smoke.py`: `sha256:60aa908529d9ca7263b81ff9e47561f70275099d8a4e2b75634746435add1227`.
+- `packaging/mcpb/manifest.json`: `sha256:76d543a754a1c66f78f7c49dbdfeba2e1480bdca2cc168f2e76deb1de5cad825`.
+
+**Retained Evidence and Limits**
+
+Local scripts/results and identities are in ignored `data/source_artifacts/learning_progressions/dev022/checks/`. Final retained stage: `data/source_artifacts/learning_progressions/dev022/bundle`; final archive: `data/source_artifacts/learning_progressions/dev022/kgfegmcp-0.3.1-dev022.mcpb`. The source/input tree remains sealed. Receipt identities:
+
+- `commands.json`: `sha256:3536272e89d2e2a42bef90750c9bb485034ab3c4b76cb7a2aa66663c38e04283`.
+- `entry.json`: `sha256:89cede30f7a52127af42dd30d8d24fab06055bd4dfb3214d930b08906cd2f461`.
+- `evidence-index.json`: `sha256:984b371a09565aef9c93765102a1e06bd5931d03202ec28be7cd9bf7f5164857`.
+- `operational.py`: `sha256:d2d255443d59d12ce39a29f3e5997b26e450076ee72a0d24b8f0e8734b33b6f4`.
+- `operational.json`: `sha256:a13a9211836dad67b8cf15821ecfabe1e032f65e32f33b74ec7f289d0a3fa5cf`.
+- `stdio.json`: `sha256:03478cfb7e90e1c7932a0763ff23179af3e413636f207347981dcb2f7ac33929`.
+- `http-command.json`: `sha256:02f94936185a3c8581cb17c3a3abc14799ca64b0a67799e2798f327cb53e7289`.
+- `http.json`: `sha256:c84831060feb924cd6e1b620dd7b7eab54297cb1bcbdfdae1eb12cf9e27de731`.
+- `stage-stdio.json`: `sha256:e79cfd83ad3f5fd4ed93ba3ad11d36d272f5d5ba0b584aaffb4ab3ed93497e2e`.
+- `static.py`: `sha256:fc4e77f3d481c0425affb198fe8697374d6b34d80b3edae03532013f0e46a0e4`.
+- `static.json`: `sha256:23dcfefb8f1c60557d972a02d4096b1bfd418a04d03bfbdeba04ea1aaed1b431`.
+- `final_checks.py`: `sha256:d812d6cdebb1b56efe4f35af0491ecfb22ba0d77254a29c89669fcd7ad313d4f`.
+- `final-checks.json`: `sha256:2ed6557e9e04361974530eb1494cb65e4c23f994506526665fb8e4155830482c`.
+- `protected-inputs.json`: `sha256:83c35c3880cd9230997180b057b62198c34271de4e4ae63230c5e66d815981a7`.
+
+These are Developer implementation-level checks, not independent Tester acceptance, semantic/pedagogical certification, remote GitHub Actions execution, or deployment. No LLM/paid API, source/checker regeneration, activation, publication or deployment occurred. Formal offline tests are absent; independent Tester must establish meaningful collected behavioral/package/protocol/regression evidence against final content. Documentation replacement and strict documentation build remain Documenter dependencies (AC-026/AC-027). Prior step receipts support reconstruction but cannot substitute for current independent assessment. Prompt client composition/cap compliance remains instruction-level behavior, not executed model output.
+
+**Full Developer Completion and Handoff**
+
+All 17 approved DEV steps are DONE with current-cycle provenance, unchanged locked tony style, AFTER_IMPLEMENTATION and Current Increment NONE. Relevant Developer self-checks passed; no implementation deviation, owned obligation, recovery frame or user blocker remains. Missing formal tests are the explicitly assigned Tester outcome, not a claimed passing suite. The plan is COMPLETE and the workflow proceeds to TESTING for full independent assessment. Suggested Conventional Commit: `build: align progression smoke, CI and MCPB distribution`.
+
+Tester must use the same checkout, reload STATE/context/scope/architecture/development and all relevant retained receipts, and assess HEAD plus the six implementation-content hashes above. Test meaningful positive/negative/bounded contracts across the cycle, rerun applicable static/package/STDIO/HTTP/stage checks, and preserve all input evidence. Keep mock-only model/paid boundaries and do not activate, regenerate, deploy or publish. Use an independent Tester chat separate from this implementation conversation; Developer stops after this handoff.
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019, DEV-020 and DEV-021. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019, DEV-020 and DEV-021 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-022; DEV-022 has not started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019, DEV-020, DEV-021 and DEV-022. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017, DEV-018, DEV-019, DEV-020, DEV-021 and DEV-022 are DONE with persisted implementation feedback; full Developer completion is established for independent Tester handoff.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -1441,5 +1506,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005, DEV-023 and DEV-012 through DEV-021 are DONE. Next dependency-ready step is DEV-022; explicit user continuation is required. Keep STEPWISE, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE and DEVELOPING. Public prompt version is 1.3.0 with the final nine prompt registrations and 17 tools; obsolete runtime hypothesis logic is removed. DEV-022 aligns the intentionally stale CLI smoke inventories with current exact names/schemas, CI and retained MCPB distribution, then runs its offline transport/package checks. Reuse shared route/rights/guidance/metadata/byte policies and exact selector/facet/endpoint_scope contracts. All six accepted rebuilt runtimes remain active; all 3,112 DEV-021 entry data/config files and prior receipts are byte-exact. Preserve raw/prepared/rebuilt copies and retired config/graph_packages under data/source_artifacts/learning_progressions/dev017/retired. Do not rerun activation or regenerate source evidence. No live LLM/paid services; deployment/publication remain user-owned.
+- Resume / full assessment: All approved steps (DEV-001–DEV-005, DEV-023 and DEV-012–DEV-022) are DONE. Plan COMPLETE, locked tony, STEPWISE, AFTER_IMPLEMENTATION, Current Increment NONE. Workflow advances to TESTING, with no Developer continuation blocker, recovery or obligations. Final public surface is 17 tools/nine prompts/one fixed resource/14 templates; prompt version 1.3.0, package/MCPB version 0.3.1. Assessed HEAD `3a11ded38a3ad666487207e79c14f31012ec6fa7` plus six DEV-022 changed-content identities and local receipts establish the handoff input. All six accepted rebuilt runtimes remain active; all 3,129 entry protected files are byte-exact. The final retained bundle/archive are under dev022; initial build evidence is separate. Actual pytest exit 5 reflects absent formal cases and is not acceptance; Tester owns those cases and full verification. Documenter owns remaining user-reference cleanup and strict docs checks. Do not rerun activation, regenerate original evidence, call live LLM/paid APIs, deploy or publish. Use an independent Tester session on this checkout; Developer must not continue implementation concurrently.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
