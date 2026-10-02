@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Implementation Contract
@@ -1410,7 +1410,7 @@ DEV-021 is DONE. Suggested Conventional Commit: `feat(prompts)!: replace progres
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `PENDING` `Depends On`: `DEV-021`
+`Status`: `DONE` `Depends On`: `DEV-021`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025`
 
 **Goal**
@@ -1549,3 +1549,72 @@ DEV-014 correction is DONE; these are ad hoc Developer checks, not independent T
 STEPWISE stops here with plan IN_PROGRESS, locked tony, AFTER_IMPLEMENTATION, Current Increment NONE, workflow DEVELOPING. Active recovery frame 1 and FAILURE handoff are preserved; no pop/RESUME or formal Tester handoff yet. Next authorized step after user continuation is DEV-022: build a new distinctly named recovery archive and stage preserving both dev022 archives/stages, rerun applicable offline repository/staged transport checks, verify distribution source/data closure and unchanged protected bytes, then record identities and apply the full Developer gate. No production build recipe change is currently required. Return to TESTING with RESUME and pop the frame only after that gate passes; restore Tester's Suspended Assignment 1 (FULL/NONE), reconcile changed implementation/distribution inputs and rerun affected byte boundaries plus remaining full verification. Independent Tester must allocate missing formal coverage and assess all outstanding obligations itself. Do not edit its tests/report or certify its acceptance. Documenter dependencies AC-026/AC-027 persist.
 
 Suggested Conventional Commit: `fix(progressions): reject individually oversized later traversal edges`.
+
+### Recovery distribution refresh — DEV-022, 2026-10-02
+
+User authorized the next STEPWISE step. Entry HEAD `168a2a8970b976664dad8cfa32bb3751c01c52d4`, clean tree; committed DEV-014 traversal hash `sha256:d5b079569f638eb1be011d987b00101c23b775654bc7f9c8d393eed36135aeb9` reconciles the preceding correction evidence after comment-only wrapping before commit (earlier tested hash `sha256:b6a7982dae8a76b420bd33c2af0e7499d28b88f82039ff80c9a43970070ac577`). DEV-022 IN_PROGRESS; unchanged approved scope/style/cadence. Active frame 1 and Tester FULL/NONE suspended assignment remain authoritative. Clear only its DEV-022 continuation blocker. Build new `data/source_artifacts/learning_progressions/recovery-dev022/kgfegmcp-0.3.1-recovery.mcpb` and `recovery-dev022/bundle`, preserving all old distributions and evidence. Relevant recipe/CI/schema/domain sources are unchanged since their accepted Developer checks; no production source change anticipated. New archive/stage and transport feedback must bind the corrected source before return to Tester.
+
+**DEV-022 refreshed outcome — actual Developer feedback**
+
+PASS. Existing production recipe was reused unchanged, with a fresh recovery output root; no source/configuration/CI changes made by Developer during this step. Retained stage is `data/source_artifacts/learning_progressions/recovery-dev022/bundle`; current recovery archive is `data/source_artifacts/learning_progressions/recovery-dev022/kgfegmcp-0.3.1-recovery.mcpb`. These supersede earlier retained builds for current assessment, while both earlier stages/archives and receipts remain exact historical evidence. Package/MCPB version stays 0.3.1, public prompt version 1.3.0, profile and prompt configuration versions unchanged.
+
+Actual command execution on 2026-10-02 used repository root `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`. Python tools used `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync` (Python cwd backend), explicitly setting UV_OFFLINE=1, PYTHONDONTWRITEBYTECODE=1 and PATHS_PROJECT_DIR to the repository. `checks/run_command.py` captures exact argv/cwd/environments/exits/stdout/stderr for each command; full child-server paths, port and termination are in http-command.json. Actual commands, all final exit 0:
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-build-mcpb --output /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/recovery-dev022/kgfegmcp-0.3.1-recovery.mcpb --stage-output /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/recovery-dev022/bundle
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-stdio-smoke
+python3 data/source_artifacts/learning_progressions/recovery-dev022/checks/http.py
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync kgfegmcp-stdio-smoke --bundle-root /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/recovery-dev022/bundle
+/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/recovery-dev022/bundle/.venv/bin/python /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/recovery-dev022/checks/stage_feedback.py
+python3 data/source_artifacts/learning_progressions/recovery-dev022/checks/final_checks.py
+python3 data/source_artifacts/learning_progressions/recovery-dev022/checks/static.py
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider tests/kgfegmcp/test_progression_traversal.py
+node .standards/bin/check.mjs
+git diff --check
+```
+
+- Official installed MCPB validate/pack plus the existing builder verification passed. Archive **650 files, 82,154,373 bytes**, SHA-256 `bf065f7247646c187988a92014cfad423c6842ac53e8615aae8a2932bbe10517`. Independent final_checks.py verifies exact recipe closure and every archive member byte against both current source and retained stage, including after startup/byte feedback. All six active immutable packages, original LP provenance maps and all 64 declared partitions per framework are included. Raw/prepared/retired/input_artifacts/cache/.egg-info trees are excluded from the archive. Stage startup installed 74 already-cached locked runtime dependencies offline into the new stage's own .venv; environment outputs are outside archive closure.
+- Repository STDIO, loopback HTTP and fresh-stage STDIO each passed and accepted all six current packages with zero exclusions. Each reports 17 tools, nine prompts, one fixed resource, 14 templates and 15 representative resource reads. Inventories, all 17 input/output schema fingerprints, five successful LP query identities, expected missing-edge error and resource evidence agree exactly across all three. Transport checks use the existing shared smoke implementation and ordinary factory/bootstrap, without any live LLM/client composition.
+- HTTP ran only at `http://127.0.0.1:50274/mcp`; actual client exited 0. Harness sent SIGTERM to its own process group, wrapper exit 143 as expected for that signal. Server log confirms application shutdown complete and finished server process; no SIGKILL fallback, remote endpoint or running deployed service. STDIO clients closed normally.
+- Stage feedback explicitly verifies the imported traversal module is under the **new staged** src tree, exact module bytes match current repository source, and all application/config/package roots select the stage. Reuses the unchanged Developer feedback.py from recovery-dev014 with socket connections forbidden: six packages/twelve package-direction combinations, 24 required individually oversized first/later errors, twelve combination-only truncation outcomes with 600,000-byte UTF-8 fields, deterministic repeats, exact edge/endpoint rollback, counters/frontier/completeness and final <=1 MiB checks. No sealed evidence mutated by these synthetic projection patches.
+- Unchanged Tester regressions rerun as Developer feedback against the actual committed source: **2 passed in 7.82s**, exit 0. Prior warning about pytest-asyncio loop scope remains; no formal coverage or report edits by Developer.
+- Current lp_traversal.py and smoke_progressions.py pass Black --check, isort --check-only, Ruff E/F/C90, mypy (no issues in two files), pylint 10.00/10 and interrogate 100%. Exact arguments/outputs in static.json; cache/badge paths outside project sources. Workflow and diff checks pass. Other recipe/CI/domain source, configuration, data and schema bytes remain unchanged; prior applicable Developer checks remain reconstruction evidence, without adopting them as formal Tester acceptance. Separate six-package CLI revalidation and broader formal scenarios remain Tester's full assignment.
+- Final preservation comparison: **4,647 protected files byte-identical**, covering data/config/dist, backend/src, packaging, maintained build inputs, all original/raw/prepared/rebuilt/retired evidence, prior receipts/archives/stages, Tester test/report, context/scope/design, pyproject/lock and CI. Protected inventory excludes .venv and __pycache__ environment caches. Only new local data is the fresh recovery-dev022 output root.
+
+**Input reconciliation and diagnostic limits**
+
+Two early final-check attempts failed due to overly narrow ad hoc expectations; neither was a runtime/test failure. Preserved initial/second scripts, commands and stdout/stderr record them. Archive comparison found current smoke_progressions.py differs from the prior archive by one already committed blank line; AST equality verifies no semantic difference. Prior tested traversal hash b6a7982d… differs from committed d5b07956… only in rewrapping three comment lines. Reconstructing those comment bytes yields the exact prior full hash and identical AST; source-reconciliation.json records the proof. Current staged byte tests, current repository regression and static checks bind the actual committed source. The HTTP SIGTERM wrapper exit is 143, matching historical harness behavior, with graceful server shutdown confirmed by logs. Final checks explicitly accept these established facts and retain every prior diagnostic attempt; no runtime contract was weakened.
+
+**Assessed content and persistent receipts**
+
+Assessed implementation HEAD `168a2a8970b976664dad8cfa32bb3751c01c52d4`, clean implementation at entry. No production source change or Git commit made this step; only Developer plan/state changes are tracked. Current exact source identities:
+
+- `backend/src/kgfegmcp/services/lp_traversal.py`: `sha256:d5b079569f638eb1be011d987b00101c23b775654bc7f9c8d393eed36135aeb9`.
+- `backend/src/kgfegmcp/cli/smoke_progressions.py`: `sha256:7bafeac9828b9f6f9ff2acd08b9f76d5af7f19589404e22b4f614c4dc0b4ebbc`.
+- `backend/src/kgfegmcp/cli/build_mcpb.py`: `sha256:3676404a4a96f5c19c7642f96470128033c634d2c16d9b9417a130c5bc27a97b`.
+- `backend/src/kgfegmcp/cli/stdio_smoke.py`: `sha256:60aa908529d9ca7263b81ff9e47561f70275099d8a4e2b75634746435add1227`.
+- `.github/workflows/tests.yml`: `sha256:c42265cbf123f9f840a78daf9e382e0a463fc95175652940103ee405d048a9b8`.
+- `packaging/mcpb/manifest.json`: `sha256:76d543a754a1c66f78f7c49dbdfeba2e1480bdca2cc168f2e76deb1de5cad825`.
+
+Receipts below are relative to `data/source_artifacts/learning_progressions/recovery-dev022/checks/`; evidence-index.json binds all local scripts/logs/attempts, and final-checks.json contains the full 650-member source/archive/stage hash map.
+
+- `protected-inputs.json`: `sha256:81833db0d269e113c06d730f81779f6f129b37cf5161415ed183ddfd047f5fd7`.
+- `source-reconciliation.json`: `sha256:f402046150492601e3bf3e4e115d17c832eab223d8d559632dddfea57c5ba3d6`.
+- `build-command.json`: `sha256:11d81385ef4b77f4b76f23734061191ce43a958c0b1ada4c08859ba7c8a5c80e`.
+- `stdio-command.json`: `sha256:04fa5d6c32f1523d8fa5c6203d726a235eef1ec8efa636a75dc855c688b510fe`.
+- `http-command.json`: `sha256:9ce4f1eb70a280185078c99cc10ff960f36c219a3bd23a290857cd14119af5ec`.
+- `stage-stdio-command.json`: `sha256:ff7f28adfbb94f3a7bf2e455e3d9b392375f514f1875c680b24583912a406fcc`.
+- `stage-source-identity.json`: `sha256:7964bcf8b67a9ceaf3729e3f6439ae15ea3d85c0c31f95ff30b81b0efc62fd1f`.
+- `stage-feedback-command.json`: `sha256:9dd7834647e4f6a6f139e0042697946baa91f569fb3e9e7196363b0f49a090f6`.
+- `final-checks.json`: `sha256:10925f28e4a27d532ba3fb22c9e00662bad493e46641d11e9f7c00ef6c96ac3a`.
+- `static.json`: `sha256:b4d9e83bc0c44179704c209169340bbeb243f9b13ce2cf249823e27bdb2d85ae`.
+- `pytest-command.json`: `sha256:ff43b73c0fdf6b3efad85ac30cc301b6e88ff0c986412b5df9be93301c47bc07`.
+- `evidence-index.json`: `sha256:37907aaf331d5cc526999744a463d183033a80e9a29c0dfb8a08b011930e77dd`.
+
+**Completion gate and recovery resumption**
+
+DEV-014 correction and DEV-022 refreshed distribution are DONE; all 17 approved steps are DONE, plan COMPLETE, locked tony unchanged, STEPWISE/AFTER_IMPLEMENTATION/Current Increment NONE. No material deviation, blocking user question or Developer-owned obligation remains. Current relevant implementation feedback passes, and full Developer gate is restored. There is no affected intermediate downstream role before ResumeAt TESTING; pop frame 1 and persist DEVELOPING -> TESTING with RESUME, FailureType NONE, recovery inactive, BlockedOn NONE. Do not take FORWARD/CHECKPOINT or add another Developer continuation blocker.
+
+Restore Tester's Suspended Assignment 1 (FULL/NONE) associated with reason `Traversal silently omits a later individually oversized edge instead of raising progression_result_too_large (AC-009).` Tester must independently reconcile the committed comment-only/source differences, corrected traversal and new current archive/stage identities; select REVERIFY under its own rules and rerun its preserved regression and related byte boundaries, then finish all remaining required formal package/service/rights/prompt/regression/static/STDIO/HTTP/stage evidence. Current target distribution is recovery-dev022/bundle and kgfegmcp-0.3.1-recovery.mcpb, not either old retained build. Tester owns any finding disposition and its report/tests; their prior failure record was preserved unchanged. No prior pass or Developer feedback supplies independent acceptance. Existing separate Tester chat may resume only if it contains no Developer authoring history; otherwise use a fresh independent chat on this same checkout. No simultaneous implementation/assessment work.
+
+Limits persist: no exhaustive acceptance or semantic/pedagogical certification, remote Actions execution, Claude Desktop installation/use, live model/client composition, deployment or publication was performed. No activation or producer/checker/source regeneration occurred. AC-026/AC-027 and obsolete user-facing documentation remain Documenter-owned phase dependencies. Prior no-test exit-5 evidence is historical; two retained regression cases now exist and pass as Developer feedback, while comprehensive independent verification remains unfinished. Suggested Conventional Commit: `docs(development): record MCPB recovery verification`.
