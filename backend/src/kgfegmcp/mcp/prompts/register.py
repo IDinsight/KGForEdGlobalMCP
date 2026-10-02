@@ -7,6 +7,7 @@ explicitly:
 * ``teacher_guide_draft``;
 * ``student_handbook_section``;
 * ``inferred_progression_hypothesis``;
+* ``learning_progression_curriculum_review``;
 * ``learning_progression_support_plan``;
 * ``learning_progression_teaching_sequence``;
 * ``multigrade_lesson_plan``;
@@ -33,6 +34,7 @@ from fastmcp.prompts import Prompt
 from kgfegmcp.mcp.prompts.administrator import administrator_alignment_review
 from kgfegmcp.mcp.prompts.comparison import cross_framework_comparison
 from kgfegmcp.mcp.prompts.learning_progressions import (
+    learning_progression_curriculum_review,
     learning_progression_support_plan,
     learning_progression_teaching_sequence,
 )
@@ -141,6 +143,16 @@ def register_prompt_components(server: FastMCP[dict[str, AppState]]) -> None:
         server=server,
         title="Inferred Progression Hypothesis",
         workflow_kind="role_oriented",
+    )
+    _register_prompt(
+        description=PROMPT_DESCRIPTIONS[
+            PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW
+        ],
+        function=learning_progression_curriculum_review,
+        name="learning_progression_curriculum_review",
+        server=server,
+        title="Learning Progression Curriculum Review",
+        workflow_kind="stored_learning_progressions",
     )
     _register_prompt(
         description=PROMPT_DESCRIPTIONS[PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN],

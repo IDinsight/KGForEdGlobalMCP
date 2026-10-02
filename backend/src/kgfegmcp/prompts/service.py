@@ -51,6 +51,7 @@ from kgfegmcp.prompts.definitions import (
     COMPARISON_DISCLOSURES,
     LEARNING_COMPONENT_GRAIN_DISCLOSURE,
     LEARNING_COMPONENT_INFERENCE_DISCLOSURE,
+    LEARNING_PROGRESSION_CURRICULUM_REVIEW_OUTPUT,
     LEARNING_PROGRESSION_SUPPORT_PLAN_OUTPUT,
     LEARNING_PROGRESSION_TEACHING_SEQUENCE_OUTPUT,
     LEXICAL_QUERY_EXPANSION_RULES,
@@ -60,7 +61,10 @@ from kgfegmcp.prompts.definitions import (
     SHARED_DEFAULT_GUIDANCE,
 )
 from kgfegmcp.prompts.learning_progressions import (
+    CurriculumReviewSelectors,
+    LearningProgressionCurriculumReviewRequest,
     LearningProgressionSupportPlanRequest,
+    render_curriculum_review_workflow,
     render_support_plan_workflow,
     render_teaching_sequence_workflow,
 )
@@ -74,6 +78,7 @@ from kgfegmcp.prompts.models import (
     ComparisonSnapshotIds,
     CrossFrameworkComparisonGuidance,
     FrameworkPromptConfig,
+    LearningProgressionCurriculumReviewGuidance,
     LearningProgressionSupportPlanGuidance,
     LearningProgressionTeachingSequenceGuidance,
     LearningProgressionTeachingSequenceRequest,
@@ -100,6 +105,7 @@ from kgfegmcp.prompts.models import (
     TeacherGuideDraftGuidance,
 )
 from kgfegmcp.prompts.policy import PromptPolicy
+from kgfegmcp.services.lp_models import EndpointScope, FacetValues
 from kgfegmcp.services.models import StandardIdentifier
 
 
@@ -362,11 +368,12 @@ def _prompt_context_evidence(context: _SelectedPromptContext) -> PromptContextEv
     )
 
 
-def _prompt_overlay(  # pylint: disable=R0911
+def _prompt_overlay(
     *, config: FrameworkPromptConfig | None, prompt_name: PromptName
 ) -> (
     AdministratorAlignmentReviewGuidance
     | CrossFrameworkComparisonGuidance
+    | LearningProgressionCurriculumReviewGuidance
     | LearningProgressionSupportPlanGuidance
     | LearningProgressionTeachingSequenceGuidance
     | MultigradeLessonPlanGuidance
@@ -387,6 +394,7 @@ def _prompt_overlay(  # pylint: disable=R0911
     Returns
     -------
     AdministratorAlignmentReviewGuidance | CrossFrameworkComparisonGuidance |
+    LearningProgressionCurriculumReviewGuidance |
     LearningProgressionSupportPlanGuidance |
     LearningProgressionTeachingSequenceGuidance | MultigradeLessonPlanGuidance |
     StudentHandbookSectionGuidance | StudentStudySupportGuidance |
@@ -394,34 +402,36 @@ def _prompt_overlay(  # pylint: disable=R0911
         Matching immutable prompt-specific guidance aggregate, or ``None``.
     """
 
-    if config is None or prompt_name is PromptName.INFERRED_PROGRESSION_HYPOTHESIS:
+    if config is None:
         return None
 
-    if prompt_name is PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW:
-        return config.prompts.administrator_alignment_review
+    overlays = {
+        PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW: (
+            config.prompts.administrator_alignment_review
+        ),
+        PromptName.CROSS_FRAMEWORK_COMPARISON: (
+            config.prompts.cross_framework_comparison
+        ),
+        PromptName.INFERRED_PROGRESSION_HYPOTHESIS: None,
+        PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW: (
+            config.prompts.learning_progression_curriculum_review
+        ),
+        PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN: (
+            config.prompts.learning_progression_support_plan
+        ),
+        PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE: (
+            config.prompts.learning_progression_teaching_sequence
+        ),
+        PromptName.MULTIGRADE_LESSON_PLAN: config.prompts.multigrade_lesson_plan,
+        PromptName.STUDENT_HANDBOOK_SECTION: config.prompts.student_handbook_section,
+        PromptName.STUDENT_STUDY_SUPPORT: config.prompts.student_study_support,
+        PromptName.TEACHER_GUIDE_DRAFT: config.prompts.teacher_guide_draft,
+    }
 
-    if prompt_name is PromptName.CROSS_FRAMEWORK_COMPARISON:
-        return config.prompts.cross_framework_comparison
+    if prompt_name not in overlays:
+        raise ValueError(f"Unsupported prompt name: {prompt_name.value}.")
 
-    if prompt_name is PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN:
-        return config.prompts.learning_progression_support_plan
-
-    if prompt_name is PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE:
-        return config.prompts.learning_progression_teaching_sequence
-
-    if prompt_name is PromptName.MULTIGRADE_LESSON_PLAN:
-        return config.prompts.multigrade_lesson_plan
-
-    if prompt_name is PromptName.STUDENT_HANDBOOK_SECTION:
-        return config.prompts.student_handbook_section
-
-    if prompt_name is PromptName.STUDENT_STUDY_SUPPORT:
-        return config.prompts.student_study_support
-
-    if prompt_name is PromptName.TEACHER_GUIDE_DRAFT:
-        return config.prompts.teacher_guide_draft
-
-    raise ValueError(f"Unsupported prompt name: {prompt_name.value}.")
+    return overlays[prompt_name]
 
 
 def _render_comparison_contexts(
@@ -1968,6 +1978,103 @@ class PromptService:
             output_contract=output_contract,
             prompt_name=prompt_name,
             request_data=request_data,
+        )
+
+    def learning_progression_curriculum_review(
+        self,
+        *,
+        endpoint_scope: EndpointScope = "either",
+        framework_id: FrameworkId,
+        local_context: PromptLocalContext | None = None,
+        local_grade_labels: FacetValues = (),
+        normalized_grades: FacetValues = (),
+        normalized_statement_types: FacetValues = (),
+        output_language: LanguageTag | None = None,
+        snapshot_id: SnapshotId | None = None,
+        standard_identifiers: CurriculumReviewSelectors = (),
+        statement_types: FacetValues = (),
+    ) -> PromptRenderResult:
+        """Render a bounded single-package curriculum relationship review.
+
+        Parameters
+        ----------
+        endpoint_scope
+            Whole-conjunction endpoint matching: either, both, source or target.
+        framework_id
+            Exact framework family to route once.
+        local_context
+            Optional unverified caller observations, at most 4,000 characters.
+        local_grade_labels
+            Up to 32 unique profile-valid local grade values.
+        normalized_grades
+            Up to 32 unique normalized retrieval facets.
+        normalized_statement_types
+            Up to 32 unique normalized statement-type facets.
+        output_language
+            Optional output language tag.
+        snapshot_id
+            Optional exact snapshot; omission pins unique-current once.
+        standard_identifiers
+            Up to 20 exact node/CASE/profile-enabled code selectors.
+        statement_types
+            Up to 32 unique profile-valid source statement-type values.
+
+        Returns
+        -------
+        PromptRenderResult
+            Deterministic instructions; evidence retrieval runs on the client.
+
+        Raises
+        ------
+        InvalidProgressionRequestError
+            If a bounded input or profile-supported facet is invalid.
+        """
+
+        try:
+            request = LearningProgressionCurriculumReviewRequest(
+                endpoint_scope=endpoint_scope,
+                framework_id=framework_id,
+                local_context=local_context,
+                local_grade_labels=local_grade_labels,
+                normalized_grades=normalized_grades,
+                normalized_statement_types=normalized_statement_types,
+                output_language=output_language,
+                snapshot_id=snapshot_id,
+                standard_identifiers=standard_identifiers,
+                statement_types=statement_types,
+            )
+        except ValidationError as error:
+            raise InvalidProgressionRequestError(
+                message="Curriculum-review prompt inputs are invalid.",
+                recovery_hint="Use the published exact selectors, facets and bounds.",
+            ) from error
+
+        prompt_name = PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW
+        focus_mode = (
+            PromptFocusMode.STATEMENT_CODE
+            if any(
+                item.identifier_type == "statement_code"
+                for item in request.standard_identifiers
+            )
+            else PromptFocusMode.TOPIC
+        )
+        context = self._select_context(
+            focus_mode=focus_mode,
+            framework_id=request.framework_id,
+            prompt_name=prompt_name,
+            snapshot_id=request.snapshot_id,
+        )
+        runtime = self.catalog_service.get_package_runtime(
+            context.package.package_identity.graph_package_id
+        )
+        return self._render(
+            context=context,
+            evidence_workflow=render_curriculum_review_workflow(
+                request=request, runtime=runtime
+            ),
+            output_contract=LEARNING_PROGRESSION_CURRICULUM_REVIEW_OUTPUT,
+            prompt_name=prompt_name,
+            request_data=request.model_dump(by_alias=True, mode="json"),
         )
 
     def learning_progression_support_plan(

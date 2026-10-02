@@ -21,6 +21,7 @@ from pydantic import BeforeValidator, Field
 
 # Package Library
 from kgfegmcp.domain.identifiers import LanguageTag, SnapshotId
+from kgfegmcp.prompts.learning_progressions import CurriculumReviewSelectors
 from kgfegmcp.prompts.models import (
     ComparisonFrameworkIds,
     ComparisonGradeFilters,
@@ -42,6 +43,7 @@ from kgfegmcp.prompts.models import (
     PromptMaterials,
     StudyDifficulty,
 )
+from kgfegmcp.services.lp_models import EndpointScope, FacetValues
 from kgfegmcp.services.models import StandardIdentifier
 
 
@@ -94,6 +96,34 @@ ComparisonGradeFiltersArgument = Annotated[
             "Shared exact local or normalized grade/stage filters. Enter a JSON array "
             'such as ["Grade 1", "Grade 2"]. Leave blank to apply no grade filter; '
             "these values are retrieval facets and do not establish equivalence."
+        )
+    ),
+]
+CurriculumReviewEndpointScopeArgument = Annotated[
+    EndpointScope,
+    BeforeValidator(_BlankPromptArgumentDefault(default="either")),
+    Field(description="Whole endpoint conjunction: either, both, source or target."),
+]
+CurriculumReviewFacetValuesArgument = Annotated[
+    FacetValues,
+    BeforeValidator(_BlankPromptArgumentDefault(default=())),
+    Field(
+        description=(
+            "Up to 32 unique profile-valid facet values, each at most 512 characters. "
+            "Send a JSON array; blank means no filter. Values within a field are OR; "
+            "different fields are AND on the same endpoint."
+        )
+    ),
+]
+CurriculumReviewSelectorsArgument = Annotated[
+    CurriculumReviewSelectors,
+    BeforeValidator(_BlankPromptArgumentDefault(default=())),
+    Field(
+        description=(
+            "Up to 20 unique exact selectors as a JSON array of objects with "
+            "identifierType and nodeId, caseIdentifierUuid, caseIdentifierUri or "
+            "profile-enabled statementCode. Each selector text is at most 512 "
+            "characters. Blank means the entire filtered framework scope."
         )
     ),
 ]
@@ -240,6 +270,9 @@ __all__ = [
     "ComparisonMatchLimitArgument",
     "ComparisonSearchModeArgument",
     "ComparisonSnapshotIdsArgument",
+    "CurriculumReviewEndpointScopeArgument",
+    "CurriculumReviewFacetValuesArgument",
+    "CurriculumReviewSelectorsArgument",
     "HandbookWordCountArgument",
     "IncludeContextPathsArgument",
     "LessonDurationMinutesArgument",

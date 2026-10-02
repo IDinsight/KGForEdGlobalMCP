@@ -1,14 +1,14 @@
-"""Render bounded client retrieval of stored teaching and support evidence."""
+"""Render bounded client retrieval of stored curriculum and teaching evidence."""
 
 # Standard Library
 import hashlib
 import json
 
 from collections.abc import Mapping
-from typing import Self
+from typing import Annotated, Self
 
 # Third Party Library
-from pydantic import TypeAdapter, ValidationError, model_validator
+from pydantic import Field, TypeAdapter, ValidationError, model_validator
 
 # Package Library
 from kgfegmcp.catalog.models import CatalogPackageRuntime
@@ -22,8 +22,55 @@ from kgfegmcp.prompts.models import (
 from kgfegmcp.resources.uri import learning_progressions_uri
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.services.lp_discovery import normalize_progression_filters
-from kgfegmcp.services.lp_models import ProgressionFilters
+from kgfegmcp.services.lp_models import (
+    EndpointScope,
+    ProgressionFilters,
+    ProgressionStandardIdentifier,
+)
 from kgfegmcp.services.models import StandardIdentifier
+
+CurriculumReviewSelectors = Annotated[
+    tuple[ProgressionStandardIdentifier, ...], Field(max_length=20)
+]
+
+
+class LearningProgressionCurriculumReviewRequest(ProgressionFilters):
+    """Reuse exact discovery selectors and facets for a bounded client review."""
+
+    endpoint_scope: EndpointScope = "either"
+    framework_id: FrameworkId
+    local_context: PromptLocalContext | None = None
+    output_language: LanguageTag | None = None
+    snapshot_id: SnapshotId | None = None
+    standard_identifiers: CurriculumReviewSelectors = ()
+
+    @model_validator(mode="after")
+    def validate_selectors(self) -> Self:
+        """Reject duplicate selectors and overlong selector text before rendering.
+
+        Returns
+        -------
+        Self
+            Bounded request preserving exact namespaces for client resolution.
+
+        Raises
+        ------
+        ValueError
+            If a selector repeats or any selector text exceeds 512 characters.
+        """
+
+        keys = [item.model_dump_json() for item in self.standard_identifiers]
+
+        if len(keys) != len(set(keys)):
+            raise ValueError("Curriculum-review standard selectors must be unique.")
+
+        for item in self.standard_identifiers:
+            values = item.model_dump(exclude={"identifier_type"}).values()
+
+            if any(len(value) > 512 or not value.strip() for value in values):
+                raise ValueError("Selector text must contain 1 through 512 characters.")
+
+        return self
 
 
 class LearningProgressionSupportPlanRequest(FrozenSchema):
@@ -275,6 +322,133 @@ def _tool_call(request: Mapping[str, object]) -> str:
     """
 
     return json.dumps({"request": request}, ensure_ascii=False, sort_keys=True)
+
+
+def render_curriculum_review_workflow(
+    *,
+    request: LearningProgressionCurriculumReviewRequest,
+    runtime: CatalogPackageRuntime,
+) -> str:
+    """Render pinned discovery and provenance inspection without executing queries.
+
+    Parameters
+    ----------
+    request
+        Strict bounded selectors, endpoint scope, facets and caller context.
+    runtime
+        Shared accepted runtime already routed and derivative-rights checked.
+
+    Returns
+    -------
+    str
+        Deterministic client retrieval sequence with explicit review limits.
+    """
+
+    identity = runtime.catalog_package.package_identity
+    filters = normalize_progression_filters(request=request, runtime=runtime)
+    route: dict[str, object] = {
+        "frameworkId": str(identity.framework_id),
+        "snapshotId": str(identity.snapshot_id),
+    }
+    lines = [
+        "PINNED EVIDENCE IDENTITY\n"
+        f"Profile SHA-256: {runtime.loaded_package.profile_sha256}\n"
+        "Manifest SHA-256: sha256:"
+        f"{hashlib.sha256(runtime.loaded_package.manifest_bytes).hexdigest()}\n"
+        "Use this exact framework/snapshot in every call; never reroute to current. "
+        "Retain source-artifact hashes, rights and attribution separately from "
+        "caller observations and generated review questions.",
+        "1. Call get_framework_statistics once for package-wide structural and "
+        "separate stored LP counts; these are not filtered review counts:",
+        _tool_call(route),
+    ]
+
+    if not runtime.catalog_package.capabilities.has_learning_progressions:
+        lines.append(
+            "STORED LP CAPABILITY UNAVAILABLE in this pinned package. Skip all LP "
+            "tools/resources and dependent relationship review. Report unavailable "
+            "evidence alongside permitted package statistics; do not equate this "
+            "with zero relationships, infer curriculum omission or use an "
+            "inferred-edge fallback."
+        )
+        return "\n".join(lines)
+
+    lines.extend(
+        (
+            "2. Read the sanitized LP summary and its validation, unresolved and "
+            "generation-summary artifact links within resource policy:",
+            learning_progressions_uri(
+                framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
+            ),
+            "Read linked learningProgressionValidation, learningProgressionUnresolved "
+            "and learningProgressionSummary only when permitted and within byte "
+            "limits. The raw generation summary is bulk content and may be denied; "
+            "keep the public sanitized summary and disclose denied evidence. Do not "
+            "read bulk provenance maps, raise limits or retry to bypass policy. "
+            "Retain warnings, needs_review/no_relation exclusions, selected candidate "
+            "coverage, unknown eligibility denominators and structural-only "
+            "validation. Zero incidents do not erase individual edge warnings.",
+            "3. Call search_learning_progressions with this exact nested request. "
+            "Scan at most 3 pages of 25 relationships in this entire workflow:",
+            _tool_call(
+                {
+                    **route,
+                    **filters.model_dump(by_alias=True, mode="json"),
+                    "endpointScope": request.endpoint_scope,
+                    "limit": 25,
+                    "standardIdentifiers": [
+                        item.model_dump(by_alias=True, mode="json")
+                        for item in request.standard_identifiers
+                    ],
+                }
+            ),
+            "Pass every exact supplied selector through standardIdentifiers; never "
+            "replace it with topic search or silently skip unresolved/ambiguous "
+            "selectors. Retain resolvedStandardNodeIds and effective filters from "
+            "the result. A failed selection stops dependent review. For pages 2 "
+            "and 3 only, copy this identical request and add cursor equal to the "
+            "preceding page.nextCursor. Stop on null; never follow a fourth page, "
+            "restart pagination or change filters/limit to bypass the cap. A "
+            "zero-match work-limited page still consumes one page and may continue.",
+            "Values within each field are OR; different fields and selector "
+            "membership are AND on one endpoint. either means at least one endpoint "
+            "satisfies the whole conjunction; both means each does; source/target "
+            "mean stored orientation. Never mix grade/type criteria across "
+            "endpoints. For relatesTo, source/target is canonical order, not "
+            "instructional direction. Keep per-endpoint matched facets.",
+            "4. Deduplicate returned relationships by exact ID. Select at most 10 "
+            "distinct relationships from these pages for full inspection, explaining "
+            "selection, type balance, warnings and excluded items. For each selected "
+            "relationship call get_learning_progression once:",
+            _tool_call({**route, "relationshipId": "<selected-relationship-id>"}),
+            "Replace the placeholder only with a returned relationship ID. Read its "
+            "exact relationshipUri and full provenanceUri under resource policy. "
+            "Inspect at most 10 distinct full edge-provenance resources across the "
+            "entire workflow. Preserve exact endpoint standard URIs/IDs, stored "
+            "direction, rationale, model-judgment confidence, all warnings, candidate "
+            "references, producer/checker trace and source/config/content hashes. "
+            "Returned excerpts or clipped warnings are not full provenance. Every "
+            "edge used in a recommendation must be fully inspected; reduce or "
+            "clearly defer recommendations beyond the cap or with denied/oversized "
+            "evidence. Do not substitute uninspected links as recommendations.",
+            "5. Before composition, report package-wide per-type totals separately "
+            "from filtered matching counts, distinct returned relationships and "
+            "fully inspected subset counts. Retain each page's examinedCount, "
+            "returnedCount, totalMatchingCount, nextCursor, isComplete and "
+            "stoppingReason. Do not sum candidateCount or package totals across "
+            "pages. Null totals/unknown denominators stay unknown; at most 75 "
+            "returned relationships is a bounded sample, not global coverage. "
+            "A remaining cursor after page 3 means incomplete review. Explain "
+            "unavailable, empty, sparse, clipped, incomplete and policy-denied "
+            "evidence; absence never implies curriculum omission or alignment.",
+            "Compose evidence-linked review questions only after permitted "
+            "retrieval. Keep caller observations, source standards, stored "
+            "generated judgments and generated suggestions distinct. Never invent "
+            "a missing edge or cross-framework/snapshot alignment, certify "
+            "curriculum quality, or turn structural validation into pedagogy.",
+        )
+    )
+    return "\n".join(lines)
 
 
 def render_support_plan_workflow(
