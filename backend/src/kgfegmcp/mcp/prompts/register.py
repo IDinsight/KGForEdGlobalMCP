@@ -1,12 +1,14 @@
 """This module registers the approved FastMCP prompt components explicitly.
 
-This module constructs and registers the six approved prompt components in canonical
-public order:
+This module constructs and registers the currently implemented prompt components
+explicitly:
 
 * ``student_study_support``;
 * ``teacher_guide_draft``;
 * ``student_handbook_section``;
 * ``inferred_progression_hypothesis``;
+* ``learning_progression_teaching_sequence``;
+* ``multigrade_lesson_plan``;
 * ``administrator_alignment_review``;
 * ``cross_framework_comparison``.
 
@@ -29,6 +31,9 @@ from fastmcp.prompts import Prompt
 # Package Library
 from kgfegmcp.mcp.prompts.administrator import administrator_alignment_review
 from kgfegmcp.mcp.prompts.comparison import cross_framework_comparison
+from kgfegmcp.mcp.prompts.learning_progressions import (
+    learning_progression_teaching_sequence,
+)
 from kgfegmcp.mcp.prompts.multigrade import multigrade_lesson_plan
 from kgfegmcp.mcp.prompts.progression import inferred_progression_hypothesis
 from kgfegmcp.mcp.prompts.student import (
@@ -134,6 +139,16 @@ def register_prompt_components(server: FastMCP[dict[str, AppState]]) -> None:
         server=server,
         title="Inferred Progression Hypothesis",
         workflow_kind="role_oriented",
+    )
+    _register_prompt(
+        description=PROMPT_DESCRIPTIONS[
+            PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE
+        ],
+        function=learning_progression_teaching_sequence,
+        name="learning_progression_teaching_sequence",
+        server=server,
+        title="Learning Progression Teaching Sequence",
+        workflow_kind="stored_learning_progressions",
     )
     _register_prompt(
         description=PROMPT_DESCRIPTIONS[PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW],

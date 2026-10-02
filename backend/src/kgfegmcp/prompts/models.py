@@ -34,6 +34,7 @@ from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import (
     FrameworkId,
     GraphPackageId,
+    LanguageTag,
     ProfileId,
     ProfileVersion,
     SchemaVersion,
@@ -242,7 +243,7 @@ PromptInstruction = Annotated[
     AfterValidator(_require_non_whitespace),
 ]
 PROMPT_CONFIG_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.1")
-PROMPT_VERSION: Final[str] = "1.2.0"
+PROMPT_VERSION: Final[str] = "1.3.0"
 MAX_PROMPT_CONFIG_BYTES: Final[int] = 64 * 1_024
 MAX_RENDERED_PROMPT_BYTES: Final[int] = 64 * 1_024
 
@@ -253,6 +254,7 @@ class PromptName(StrEnum):
     ADMINISTRATOR_ALIGNMENT_REVIEW = "administrator_alignment_review"
     CROSS_FRAMEWORK_COMPARISON = "cross_framework_comparison"
     INFERRED_PROGRESSION_HYPOTHESIS = "inferred_progression_hypothesis"
+    LEARNING_PROGRESSION_TEACHING_SEQUENCE = "learning_progression_teaching_sequence"
     MULTIGRADE_LESSON_PLAN = "multigrade_lesson_plan"
     STUDENT_HANDBOOK_SECTION = "student_handbook_section"
     STUDENT_STUDY_SUPPORT = "student_study_support"
@@ -264,6 +266,7 @@ PROMPT_NAMES: Final[tuple[str, ...]] = (
     PromptName.TEACHER_GUIDE_DRAFT.value,
     PromptName.STUDENT_HANDBOOK_SECTION.value,
     PromptName.INFERRED_PROGRESSION_HYPOTHESIS.value,
+    PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE.value,
     PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW.value,
     PromptName.CROSS_FRAMEWORK_COMPARISON.value,
     PromptName.MULTIGRADE_LESSON_PLAN.value,
@@ -309,6 +312,19 @@ class StudyDifficulty(StrEnum):
     EXTENSION = "extension"
     FOUNDATIONAL = "foundational"
     ON_LEVEL = "on_level"
+
+
+class LearningProgressionTeachingSequenceRequest(FrozenSchema):
+    """Validate bounded teaching-sequence inputs at the ordinary service boundary."""
+
+    focus_mode: PromptFocusMode = PromptFocusMode.TOPIC
+    framework_id: FrameworkId
+    local_context: PromptLocalContext | None = None
+    local_grade_labels: ProgressionGradeFilters = ()
+    normalized_grades: ProgressionGradeFilters = ()
+    output_language: LanguageTag | None = None
+    snapshot_id: SnapshotId | None = None
+    topic_or_standard: PromptFocusText
 
 
 class PromptGuidanceBlock(FrozenSchema):
@@ -493,7 +509,8 @@ class FrameworkPromptConfig(FrozenSchema):
 
         if self.prompt_config_schema_version != PROMPT_CONFIG_SCHEMA_VERSION:
             raise ValueError(
-                f"prompt_config_schema_version must equal {PROMPT_CONFIG_SCHEMA_VERSION}."
+                f"prompt_config_schema_version must equal "
+                f"{PROMPT_CONFIG_SCHEMA_VERSION}."
             )
 
         framework_ids = tuple(str(value) for value in self.framework_ids)
@@ -527,12 +544,14 @@ class FrameworkPromptConfig(FrozenSchema):
 
         if any(count > 60 for count in prompt_counts):
             raise ValueError(
-                "Each prompt-specific guidance section may contain at most 60 instructions."
+                "Each prompt-specific guidance section may contain at most 60 "
+                "instructions."
             )
 
         if shared_count + sum(prompt_counts) == 0:
             raise ValueError(
-                "A framework prompt configuration must contain at least one guidance instruction."
+                "A framework prompt configuration must contain at least one guidance "
+                "instruction."
             )
 
         return self

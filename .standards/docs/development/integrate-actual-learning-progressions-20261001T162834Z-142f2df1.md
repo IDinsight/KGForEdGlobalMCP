@@ -1106,7 +1106,7 @@ DEV-017 is DONE. Suggested Conventional Commit: `feat(mcp)!: activate stored lea
 
 ### DEV-018 — Add the teaching-sequence prompt workflow
 
-`Status`: `PENDING` `Depends On`: `DEV-017`
+`Status`: `DONE` `Depends On`: `DEV-017`
 `Acceptance`: `AC-010, AC-013, AC-021`
 
 **Goal**
@@ -1123,7 +1123,59 @@ Topic or exact-standard selection pins the package, retains up to three standard
 
 **Self-Check**
 
-Static/type checks and local prompt rendering for topic/exact selection, grade filters, language/context bounds, unavailable capability and rights. Inspect exact tool arguments, retrieval/provenance caps, citations and disclosures. Evidence not yet run. At execution, persist actual commands, repository working directory, assessed HEAD/changed-content hashes, outcomes and limitations here.
+PASS — offline Developer implementation feedback completed from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`, assessed HEAD `8d56cb73e2b99df1707b0a5938f31b1734a7ad99` and the six dirty-tree Python content identities below. Final commands exited 0:
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /tmp/kgfegmcp-dev018-feedback.py
+python3 /tmp/kgfegmcp-dev018-static.py
+python3 /tmp/kgfegmcp-dev018-preserve.py
+```
+
+- Real `create_mcp()` factory/lifespan and default unpatched settings/bootstrap accepted all six active replacements. A bootstrap observer delegates to the real constructor once and captures the shared state; no state-lookup or settings mock. 1,358 named checks passed, including 47 actual local MCP prompt calls, 30 tool calls executing rendered templates, one capabilities tool call and 12 actual summary/per-edge provenance reads. Saved script/results/log identify every scenario and rendered-message byte hash.
+- 28 focus render cases cover topic, node ID, CASE UUID, CASE URI for all six and statement-code focus for the four coded profiles. Ordinary and protocol render results agree, repeated renders are deterministic, exact snapshot/package/config identities agree, and every nested-request template validates against its actual request model and pins the same framework/snapshot. Topic/code discovery uses one first page of 10, direct links one page of 25, downstream depth/nodes/edges 8/30/40 and conditional paths depth/paths 6/3. One of each template executes per curriculum using real accepted builds endpoints; this validates call contracts rather than claiming a complete client planning session. Exact focus results are reused; statement-code focus uses existing code search then namespaced lookup because `get_standard` does not accept a code selector.
+- Invalid/oversized/blank required focus, unknown focus mode, language, 4,001-character context, 513-character focus, duplicate/33-item/unsupported grade arrays, semantic alias duplicates and unsafe exact selectors are rejected. All available profile grades and canonical aliases are supported. Uncoded statement-code focus, unknown route and framework/snapshot mismatch fail; adapter blank optional values use established defaults. Boundary 512-character focus/4,000-character context fits; lower prompt byte policy raises `prompt_rendering_error` rather than clipping. Ordinary request validation maps to `invalid_progression_request`; existing route/capability errors remain typed.
+- Actual derivative policy denies prohibited/review-required derivatives and unreviewed rights through temporary projected catalog metadata. No-LP capability projection skips LP calls/resources, retains standards/components and explicitly avoids inferred-edge fallback. A local teaching-sequence soft-guidance replacement merges only its declared slot; mandatory retrieval caps and output disclosures remain. Unexpected adapter faults are masked as `internal_error` without private paths in the client error. These projections do not mutate accepted packages or claim acceptance of synthetic replacement data.
+- Rendered instructions require up to three identified selected standards, up to five retained supporting components per selected standard and at most ten distinct full used-edge provenance reads, deduplicated across direct/traversal/path results. They distinguish component retention from LC tool output limits, require every used path hop to have its original direction/ID and inspect full provenance before recommendation, and reduce/defer recommendations beyond the provenance cap. Related concepts remain separate. Scope, excerpt/omission, warning/needs_review, selected coverage/unknown denominators, limits/counters/cursors/completeness, unavailable/empty/incomplete/denied evidence, origin/rights/license/attribution and exact evidence citations remain explicit. Activity/order choices are generated pedagogy; no new edge, prerequisite, learner diagnosis or certification is asserted.
+- Current implemented inventory is 17 tools and eight prompts, with the new teaching-sequence prompt and exact names agreeing with capabilities. Prompt listing requires only framework_id/topic_or_standard; prompt metadata/rendered identity uses public version 1.3.0. The two other new workflows remain unregistered. Six useful old prompt registrations remain; representative teacher-guide rendering still works with its established retrieval/output. AST comparison against entry HEAD confirms 45 existing functions/methods unchanged (excluding the intentionally extended overlay selector), and existing guidance constants unchanged outside expanded registration/default maps. No existing teaching/study LP integration was performed.
+- Six-module Black, isort, Ruff `E,F,C90`, mypy, pylint and interrogate passed (pylint 10.00/10, docstrings 100%); workflow and `git diff --check` passed. Exact locked offline argv, cwd, exit codes/stdout/stderr and hashes are in `static.json`. Initial Ruff findings required line splitting of existing strings in the three touched prompt modules plus two new strings; existing literals/functions have identical AST values. Initial feedback fixtures were corrected to the established opaque identifier contract and actual rights enum names; these were checker corrections, not product contract changes.
+- All 3,062 entry data/config files retain exact hashes and the same inventory: source artifacts, copied/prepared/rebuilt inputs, sealed retired packages/configs, current 522 accepted-package files, 12 current configuration files and prior receipts are untouched. Preservation receipt and original-input map record every protected path/hash. No package activation, configuration update, source regeneration, model/paid-service call, formal test edit, deployment or publication occurred.
+
+**Content Identities**
+
+- `backend/src/kgfegmcp/prompts/models.py`: `sha256:1720218d16e1a20f025ca09b9349e27cac382f7196ef48768bacf0debaa67390`.
+- `backend/src/kgfegmcp/prompts/definitions.py`: `sha256:942efb39d0945ce647459484078642dd9f709d436895aaf6ae5ee08098b518c8`.
+- `backend/src/kgfegmcp/prompts/service.py`: `sha256:5a963757265153c29ccf466de53f945f5ba215cd158f550531c5ce5ae6418129`.
+- `backend/src/kgfegmcp/prompts/learning_progressions.py`: `sha256:cbac23d011c70852d97085e81fc6a72ed7a0b757d3a4a04a9b87830c9c90d103`.
+- `backend/src/kgfegmcp/mcp/prompts/register.py`: `sha256:b1b9b313cfa819499f03a6a8ef454695797996c59d469d1a53223728cb28ffbf`.
+- `backend/src/kgfegmcp/mcp/prompts/learning_progressions.py`: `sha256:69ded8d8cd0cdb22381f9084e6668b0a1e46064245439252952f7e8047d0bc48`.
+
+Retained local Developer receipts (ignored by `/data/source_artifacts/`) live at `data/source_artifacts/learning_progressions/dev018/checks/`. The evidence index links every exact receipt and assessed source identity; archived scripts preserve actual check code, and `commands.json` preserves commands, results, initial findings and replay limits. Receipt identities:
+
+- `commands.json`: `sha256:6430c0d09c633c2f8d4e72146d34d0f23d0285417729658d9e79bc66c458deb0`.
+- `entry.json`: `sha256:4fd8cc8ad4313f11810141f137d6cf4dfbdca144da3e2e27628a8ec33af5a3aa`.
+- `evidence-index.json`: `sha256:0a2449c8a9802d184ab65c76aa434f610da7fbba3b2cb42badf79fdeb30656ce`.
+- `feedback.json`: `sha256:112bfdfd467c63834e505509b6f9d3169e0f955446f58be4fc8707db8b26cae3`.
+- `feedback.log`: `sha256:6f9fe301de205e16dbe6f5756c420dc80842b5a451003ce25c70af86014c7562`.
+- `feedback.py`: `sha256:b6b488061b003e64e5d194ad53315c662d8e8e4921881f3b607dfbd0b5687275`.
+- `initial-static.json`: `sha256:faf9b92f8d7ba2348586e2c24887fc2e206068c874382670a3fd6ebdff9b6b32`.
+- `initial-static.log`: `sha256:52276fd8b606aa89e8372c55212e01a83f5c59690f4fd76701e9b706e74e0771`.
+- `preservation.json`: `sha256:dd8f2a600127473523f8f025cbcc0eab3e15ba394ccac9a5b7bd934031304182`.
+- `preservation.log`: `sha256:c4b47dc2d3847dde002b6de4da7c585c058c0acb04b1b5c537d4e91834a3521f`.
+- `preservation.py`: `sha256:115b2115c817d668bcb8c695585e8e9716bfb3d0abed82244415cb581618fc5a`.
+- `protected-inputs.json`: `sha256:960152f4f26093a75d61b593d28da98a82f53bde3249b210b45b05806c7c6fbb`.
+- `static.json`: `sha256:bcf0f58bc95403d3dc9c48c19158312781c2e23a730eeb85d358a6140548fde9`.
+- `static.log`: `sha256:0751d0df19e80aa99c61b30f0a58cccd390ee43afd840919602204237ff7ec98`.
+- `static.py`: `sha256:6e508773238aaf22c84a5fd3c7b73ccd7533f383455d29818b7097b750210a61`.
+
+**Implementation Notes and Limitations**
+
+The focused `prompts/learning_progressions.py` renders client retrieval templates and reuses existing profile-governed LP facet normalization and exact selector models. `PromptService` retains route selection, derivative-rights checks, configuration merging, shared disclosures and prompt-size policy; the new MCP adapter only delegates and converts the result. No orchestration engine, new graph/index, model invocation or server-side evidence search was introduced. Version-2.0 prompt configuration bytes stay immutable; the previously introduced teaching-sequence guidance slots now have generic defaults and renderer dispatch, without writing new overlays.
+
+These checks are ad hoc Developer feedback, not independent Tester acceptance or certification of educational output. The server returns instructions; client composition, compliance with evidence-retention caps, and every eventual recommended-edge provenance inspection were not executed by a model. MCP calls are in-process local protocol checks, not STDIO/HTTP/MCPB smoke. No formal pytest cases were created/run. The obsolete hypothesis prompt adapter/renderer/registration remains explicitly pending DEV-021 and is not a usable workflow or fallback for this prompt; six useful existing prompts receive shared LP integration in that later step. Support planning and curriculum review remain DEV-019/DEV-020; final smoke/CI/distribution inventory remains DEV-022. The full Developer gate remains unmet while future approved steps are unfinished.
+
+**Continuation**
+
+DEV-018 is DONE. Suggested Conventional Commit: `feat(prompts): add stored progression teaching sequence`. Next STEPWISE continuation is DEV-019 (support-planning prompt workflow), which remains PENDING. Reuse the shared route/rights/guidance/render helpers and exact nested-request tool shapes; preserve active/retired/source/package/config bytes. No later step was started. Wait for explicit user continuation.
 
 ### DEV-019 — Add the support-planning prompt workflow
 
@@ -1211,8 +1263,8 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 
 ## Plan Notes
 
-- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016 and DEV-017. Style is locked for this cycle; STEPWISE pauses remain in effect.
-- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016 and DEV-017 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-018; no later step has started.
+- Approval: user approved the revised 17-step plan and persisted tony style, explicitly directed DEV-001, and subsequently authorized DEV-002, DEV-003, DEV-004, DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017 and DEV-018. Style is locked for this cycle; STEPWISE pauses remain in effect.
+- Entry: STANDARD/BROWNFIELD, DEVELOPING from Architect; no recovery frames, baseline-reconciliation entries or outstanding obligations. Initial workflow check passed. DEV-001 through DEV-005, DEV-023, DEV-012, DEV-013, DEV-014, DEV-015, DEV-016, DEV-017 and DEV-018 are DONE with persisted implementation feedback; STEPWISE is paused before DEV-019; no later step has started.
 - Sufficiency: scope/design establish LP meanings, attribution, eligibility, package/profile revisions, normalization/partition algorithm, five query schemas, selectors/facets, bounds/cursors/completeness/errors, rights/resources, prompt workflows, removal and operational boundaries. Existing package/catalog/GraphStore/standard selection/resource/prompt/CLI machinery supports the chosen boundaries. Helper/module factoring remains reversible Developer work.
 - STEPWISE: explicit approval covers this plan and user style tony. First approval locks that style. Execute exactly one dependency-ready step, record its outcome/self-check, then persist a continuation blocker and wait. Verification remains AFTER_IMPLEMENTATION, independent of these pauses.
 - Preflight: all 23 required files are present for each of six source mappings (138 files, 933,392,640 bytes total), with no selected source symlinks. Copy-time exact hashes and edge reconciliation remain DEV-001 work; this preflight is not copy/acceptance evidence. The local backend Python environment exists.
@@ -1221,5 +1273,5 @@ Run applicable established formatting/lint/type/docstring checks, all six read-o
 - Developer owns production implementation and executable integration/CI commands, not formal test suites or user documentation. Use local temporary/ad hoc implementation sanity checks; Tester creates meaningful offline formal cases and owns AC-023 through AC-025 evidence. Architecture requests for synthetic cases are exercised as implementation feedback here and independently formalized by Tester. AC-020 is established by Architect; AC-026/AC-027 remain Documenter-owned, supported by these persisted contracts/receipts/actual evidence.
 - Identifier gaps are retained: the ID tool reserved numbers referenced in the draft before those headings were written. Preserve existing step identities; dependency order is the heading order, not an assumption of contiguous numbering.
 - No live LLM/paid-service calls, producer/checker regeneration, model sampling, deployed endpoint changes or publication. Existing LC/comparison generated-origin evidence stays intact.
-- Resume: DEV-001 through DEV-005, DEV-023 and DEV-012 through DEV-017 are DONE. Next approved dependency-ready step is DEV-018; user continuation is required before starting it. All six accepted replacements and version-2.0 configs are now active, and default repository bootstrap is usable. Re-read teaching-sequence selection/topic/exact identifier/grade/language/context policy, retrieval caps, generated-origin/coverage/partialness and provenance/LC limits; advance public prompt version to 1.3.0 in that step. Use the shared active LearningProgressionsService and exact nested request/camel-case tool schemas from DEV-017. Keep raw/prepared/rebuilt accepted source copies and byte-exact retired config/graph_packages trees under data/source_artifacts/learning_progressions/dev017/retired intact. Do not rerun one-time cutover scripts or revive old service/tool aliases. The obsolete hypothesis prompt renderer/registration remains explicitly pending DEV-021; transport inventory/CI/distribution remains DEV-022. No later step has started; deployment/publication remain user-owned.
+- Resume: DEV-001 through DEV-005, DEV-023 and DEV-012 through DEV-018 are DONE. Next approved dependency-ready step is DEV-019; user continuation is required before starting it. Public prompt version is 1.3.0, and eight implemented prompts currently agree with capabilities; the final nine-prompt inventory awaits support/curriculum additions and hypothesis removal. Re-read exact target/context/language policy and designed incoming/related/upstream/LC/provenance caps for support planning. Reuse current shared PromptService routing/derivative/guidance/byte policy, new focused renderer helpers, profile facet normalization and DEV-017 nested request/camel-case tool schemas. All six accepted replacements and version-2.0 configurations remain active and unchanged; keep raw/prepared/rebuilt copies and byte-exact retired config/graph_packages under data/source_artifacts/learning_progressions/dev017/retired intact. Do not rerun one-time activation scripts or revive old service/tool aliases. The obsolete hypothesis prompt removal and existing prompt integration remain DEV-021; transport inventory/CI/distribution remains DEV-022. No later step has started; deployment/publication remain user-owned.
 - Full handoff requires all steps DONE, locked style, satisfactory self-checks, resolved owned blockers/obligations and workflow check. Save current identities and actual evidence for a separate independent Tester chat. Do not fabricate tests or claim formal acceptance based on Developer checks.
