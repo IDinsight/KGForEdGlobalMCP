@@ -1,0 +1,27 @@
+[10/03/26 11:17:29] INFO     Application state construction     bootstrap.py:316
+                             completed:                                         
+                             accepted_package_count=6,                          
+                             discovered_package_count=6,                        
+                             elapsed_milliseconds=5970,                         
+                             excluded_package_count=0,                          
+                             operation=application_bootstrap.                   
+[10/03/26 11:17:30] INFO     Application lifespan shutdown completed:  app.py:59
+                             accepted_package_count=6,                          
+                             operation=application_shutdown.                    
+Traceback (most recent call last):
+  File "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/check-final-examples.py", line 189, in <module>
+    asyncio.run(check())
+    ~~~~~~~~~~~^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.9_1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.9_1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.9_1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/check-final-examples.py", line 107, in check
+    assert cells[0] == label
+           ^^^^^^^^^^^^^^^^^
+AssertionError

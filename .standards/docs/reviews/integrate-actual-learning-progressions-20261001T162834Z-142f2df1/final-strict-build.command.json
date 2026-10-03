@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/Users/tzz/.local/bin/uv",
+    "--directory",
+    "backend",
+    "run",
+    "--locked",
+    "--offline",
+    "--no-sync",
+    "mkdocs",
+    "build",
+    "--strict",
+    "--config-file",
+    "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/mkdocs.yml",
+    "--site-dir",
+    "/tmp/kgfegmcp-final-review-site"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "environment": {
+    "UV_OFFLINE": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+  },
+  "exitCode": 0,
+  "seconds": 1.485,
+  "logs": {
+    "stdout": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-strict-build.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-strict-build.stderr",
+      "sha256": "803003b34425af1c577a089663af8f676991b315256f59b502be07b2caca982e"
+    }
+  }
+}

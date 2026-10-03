@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/Users/tzz/.local/bin/uv",
+    "--directory",
+    "backend",
+    "run",
+    "--locked",
+    "--offline",
+    "--no-sync",
+    "python",
+    "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/check-final-current-examples.py"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "environment": {
+    "UV_OFFLINE": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+  },
+  "exitCode": 0,
+  "seconds": 8.242,
+  "logs": {
+    "stdout": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-current-examples.stdout",
+      "sha256": "59bf5405baf11431fcc488d437f9e7b23f820e362564e60c689d6efba36792e6"
+    },
+    "stderr": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-current-examples.stderr",
+      "sha256": "17d8530d37fb9db393e7847f2cc2b3545efe5c0f24ea394dd445e3c3fbb0e10f"
+    }
+  }
+}
