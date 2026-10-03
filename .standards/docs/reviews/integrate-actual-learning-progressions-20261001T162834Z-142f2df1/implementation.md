@@ -11,6 +11,93 @@ ReviewKind: IMPLEMENTATION
 
 ## Assessed Inputs and Scope
 
+Current recovery assessment: 2026-10-03, STANDARD / BROWNFIELD, AC-001 through AC-027 and corresponding design criteria, no retired IDs. Original audit baseline 9d5c9a0 remains the scope baseline. This rerun reconciles the earlier implementation assessment at 95bd607 with current entry HEAD db061ed and the recovery commits a8cfe92/db061ed. Entry tree was clean; only this report, its diagnostic/receipt and the eventual STATE handoff are Reviewer changes.
+
+Read current state, context, scope, architecture, Developer plan and appended correction, Tester verification/evidence, Documenter record, final-review findings and active frame. Context/scope/design/protocol identities still match the historical assessment; the current exact hashes and changed owner records are in `implementation-recovery-results.json` alongside this report. The full original assessment is retained below as history, not as a claim about current documentation or recovery state.
+
+This is the earlier independent Reviewer conversation. It has no Developer/Tester/Documenter artifact-authoring history; reading and explaining Documenter's responsibilities did not execute that role. Client freshness and author-model metadata are unavailable; no machine-certified independence/model ranking is inferred. Equal-or-higher-capability different-model review remains advisory when known. User Style NONE; Developer's style is not applied to Reviewer.
+
+Current distribution is `data/source_artifacts/learning_progressions/recovery-final-dev022/kgfegmcp-0.3.1-final-recovery.mcpb` with sibling `bundle/`, SHA256 `adb10a43258a1115bfd74732c7d85af367f75e082a50c73f91b75e67a6cd5e04`, 82,154,417 bytes. The old recovery-dev022 archive is historical and no longer the designated candidate. Runtime/dependency/configuration identities remain unchanged: package 0.3.1, Python 3.13, FastMCP 3.4.4, prompt library 1.3.0, profiles 2.0.
+
+`E` means `data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/reverify`; `R` means its sibling `final-recovery`, replacing integrate-actual-learning-progressions-20261001T162834Z-142f2df1 with this report's cycle ID. Rehashed E's 823 assessed inputs: 819 unchanged, with only STATE, the appended Developer plan and two READMEs changed. Before reopening this report, 826/827 R inputs matched with only STATE changed. After reopening, the two expected coordination differences are STATE and this implementation report; all 825 remaining identities match. The receipt records this in-progress report identity; its subsequent completion text and STATE handoff are intentionally outside evidence reuse.
+
+## Contract and Evidence Assessment
+
+Full Verification Boundary independently reconciled: Developer COMPLETE, all 17 approved steps DONE, AFTER_IMPLEMENTATION, Current Increment NONE; Tester COMPLETE, FULL/NONE. The correction changes assembled README bytes only. Current source/test/configuration/graph-package/lock/CI/contract trees have no changes since 95bd607. The earlier inspected assertions and 78-case behavioral results, static checks, package validations and repository transports therefore remain applicable. Fresh independent Tester assembly/stage execution, source identity and Reviewer archive inspection cover the changed distribution. A completion label alone was not accepted.
+
+Each row revalidates the historical detailed technical assessment under the same AC. Reused tests are prior executions, not new Reviewer runs. All relevant design criteria remain covered; source-copy history and exclusion boundaries retain their earlier limits.
+
+| Obligation / design criterion | Current assessed evidence | Current disposition |
+| --- | --- | --- |
+| AC-001 / Local copy before implementation | Prior 138-file copy/hash/history assessment; copied-input identities unchanged. | Supported; historical ordering evidence, not continuous monitoring. |
+| AC-002 / Six exact normalized packages | Same package bytes, all-edge reconciliation and 3,039 buildsTowards / 5,041 relatesTo tests; six complete packages in current archive. | Supported. |
+| AC-003 / Independent acceptance | Unchanged validator/negative-case tests; retained six read-only valid/no-findings receipts. | Supported; no acceptance activation. |
+| AC-004 / Notices and excluded claims | Unchanged provenance, summary, validation/coverage and unresolved evidence. | Supported; needs_review remains excluded from accepted edges. |
+| AC-005 / Exact query | Unchanged lookup/selectors/errors and every-edge tests; new stage exact result parity. | Supported. |
+| AC-006 / Direct connections | Same stored direction/symmetric relates implementation and exhaustive adjacency assertions. | Supported. |
+| AC-007 / Filtered discovery | Same facets/scope/cursor code and pagination assertions; stage output/schema parity. | Supported. |
+| AC-008 / Bounded traversal/paths | Same BFS/simple-path algorithms, branching/cycle/limit assertions and stage outputs. | Supported. |
+| AC-009 / Bounds, bytes, continuation/errors | Corrected traversal and retained first/later oversized regressions unchanged; prior 78-pass suite and stage boundary receipts; current stage code/lock/import identity. | Supported; no regression-triggering executable change. |
+| AC-010 / Identity/origin/semantics | Same wire metadata, original trace and deterministic renderer disclosures. | Supported; no pedagogical certification. |
+| AC-011 / Exact resources/provenance | Same resource/partition assertions; current six packages each retain all 64 provenance shards and identical resource reads. | Supported. |
+| AC-012 / Rights/safe artifacts/bytes | Same policy/source-byte checks and positive/negative tests; current archive closure excludes raw preparation/cache files. | Supported. |
+| AC-013 / Teaching sequence | Same bounded renderer and deterministic workflow test; fresh prompt inventory parity. | Supported. |
+| AC-014 / Support plan | Same target/incoming/upstream/LC caps and no-diagnosis disclosure tests. | Supported. |
+| AC-015 / Curriculum review | Same scope/page/provenance budgets, coverage and generated-output distinction tests. | Supported. |
+| AC-016 / Four existing workflows | Same optional enrichment, unavailable-helper and AS/LC fallback assertions. | Supported. |
+| AC-017 / Obsolete removal | Runtime/config deletion assessment remains valid; new shipped README removes old operation/counts. | Supported for implementation; remaining documentation correction belongs to AC-026/027. |
+| AC-018 / AS/LC preservation | Same portable baseline fixture, all-six identities and regression suite. | Supported. |
+| AC-019 / Inventory/statistics | Fresh stage: 17 tools, 9 prompts, 1 fixed resource, 14 templates; prior STDIO/HTTP/stage inventory/schema/results exactly equal. | Supported. |
+| AC-020 / Prior proportionate architecture | Contract/design unchanged, original chronology/alternatives assessment retained. | Supported. |
+| AC-021 / STDIO/HTTP parity | Fresh stage result equals prior successful STDIO/HTTP/stage inventories, schemas, progression/error/resource results; log hashes and shutdown evidence verified. | Supported; repository transports not needlessly rerun. |
+| AC-022 / MCPB closure/stage | Independent current source/stage/archive 650-member equality, README-only delta; new Tester stage run/import identity and 15 resource reads. | Supported for current final-recovery candidate. |
+| AC-023 / Meaningful tests | Earlier assertions/fixtures reviewed; current test/implementation identities equal; independent Tester suite 78 passed in 99.01s, prior Reviewer suite 78 passed in 57.71s. | Supported; both are prior executions. |
+| AC-024 / Offline verification | Retained guarded suite and current offline/no-sync local stage commands; Reviewer uses filesystem/hash/ZIP inspection only. | Supported; no model/paid calls. |
+| AC-025 / Independent full verification | Current FULL/NONE report, input rehash, 15 passing command receipts/30 log hashes and three evidence indices. | Supported; no present-phase evidence gap. |
+| AC-026 / User documentation | New shipped README correct; final-review documentation count/checker/current-identity defect remains. | Permitted later dependency: Documenter correction, strict build, saved checker re-execution and current final-input binding required. |
+| AC-027 / Maintainer documentation | Existing substantive documentation available; saved completion evidence needs refresh after final formatting and new bundle binding. | Permitted later dependency: Documenter must reconcile reproducible checks and provenance/maintenance guidance. |
+
+## Checks and Results
+
+All new checks ran 2026-10-03 from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP` using system Python 3.11 for standard-library inspection. No source/test/fixture/package or other role's record changed. The new diagnostic is Reviewer supporting evidence, not formal Tester verification.
+
+- Exact successful command: `python3 .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/check-implementation-recovery.py > .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation-recovery-results.json` (integrate-actual-learning-progressions-20261001T162834Z-142f2df1 is this cycle ID). Exit 0, 2.724s. Receipt SHA256 `6a4529a5c97623517baa088d1a4b17480fa8a6c77acb6f0472cb8d0362d6a630`.
+- Independently constructed the builder's expected source set from its recipe. All 650 unique safe non-symlink archive files equal current source and stage exactly; no missing/unexpected files. All 649 non-README members equal the old archive. New README SHA256 `197db6b11bdc6ad24988dd525dc7d8abca84c4632db0e9c249b9339076723b56` equals current backend README. The old archive contains the removed call; the current one does not, and names the actual five query tools and correct 17/9/14 inventory. Thus the original shipped-instruction failure has correction evidence.
+- Independently rehashed all 17 current and 132 + 34 prior evidence-index entries. Verified 12 retained and 3 new successful command receipts, all 30 referenced logs, 78-pass suite output and HTTP graceful shutdown. Current stage inventory/schema/progression/resource data equal all three prior transport results. Four staged module paths/hashes resolve to current bundle src, with matching dependency versions. No receipt was overwritten or adopted from Developer as independent evidence.
+- Read Tester diagnostic/stage identity code and recorded commands; checked their behavior against current bytes. Fresh Tester stage smoke exit 0 (9.930s), stage identity exit 0 (1.817s), distribution exit 0 (3.356s). Reviewer did not repeat those runtime commands or the behavioral suite because unchanged executable inputs and current fresh stage evidence cover this README assembly correction.
+- `git diff --name-only 95bd607 HEAD -- backend/src backend/tests config data/graph_packages backend/pyproject.toml backend/uv.lock .github .standards/CONTEXT.md .standards/docs/scope .standards/docs/specs`: exit 0, no changes. Git status showed only owned review changes before handoff. Sandbox temporary-cache warnings did not prevent Git read results.
+- `node .standards/bin/check.mjs`: passed at entry and while review was in progress. Final gate and `git diff --check` are checked before transition, followed by the workflow checker after transition.
+- Diagnostic development had three exit-1 harness issues: prior index uses a nested `files` mapping; reopened review is an expected coordination delta; an assertion initially guessed `find_learning_progression_paths` instead of registered `get_learning_progression_paths`. Corrected the Reviewer diagnostic against observed evidence and reran successfully. These were Reviewer harness errors, not implementation failures or altered acceptance criteria. A sandbox read attempt with a shell heredoc also failed to create its temporary file; later reads used non-heredoc or authorized execution.
+
+## Findings
+
+**No material findings in this implementation rerun.** No current implementation-owned defect, material assessment gap, blocking question or Reviewer-owned obligation remains.
+
+The original failure in `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-001` is independently checked above: replacement archive/stage ships corrected source README and current executable evidence. Its final-review finding status is preserved for reassessment in that review kind after the recovery boundary. This report does not rewrite the other kind's report or claim the final gate passed.
+
+The documentation defect in `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-002` remains OPEN: the prompt-config guide still says seven, and saved checker/current-identity evidence needs correction. It is an explicit later Documenter dependency for this IMPLEMENTATION gate, not a deferred implementation or formal-verification gap. The final report's hash is unchanged in this review's receipt.
+
+## Questions, Limitations, and Later Dependencies
+
+- AC-026 / Documenter: correct `docs/data/prompt-configs.md:3`, fix the saved table parser to handle separator formatting, run the saved example/catalog checks and strict build against final files, and refresh exact-content identities after final formatting. Reconcile current 17/9/14/1 inventory and original removal/semantics requirements. Existing COMPLETE documentation label is stale and is not accepted as completion evidence.
+- AC-027 / Documenter: refresh its record, preserve superseded evidence as history, and bind current maintenance/preparation/provenance guidance and check results to the new final-recovery bundle. If Documenter changes backend README or another recipe input, source/stage/archive equality must be restored through its owner route before final acceptance.
+- Final Reviewer must recheck the original failure cases and owner corrections, assess every AC and change the final finding statuses only when supported. Neither final finding was erased, duplicated into an obligation, or assumed closed here.
+- No user input needed; BlockedOn NONE. Current input/evidence inspections are local and do not validate deployment/publication/external-client installation, remote CI, live-model teaching quality, pedagogical correctness or external-link availability. These are not required guarantees at this gate. Retained raw stage/command evidence is intentionally local/ignored; this report and diagnostic are committable. Unchanged copy/history limits remain as recorded below.
+
+## Progress and Conclusion
+
+Current implementation assessment is **COMPLETE** and this gate **passes**: the changed archive has independently verified correction evidence, and all unchanged present-phase contract/technical criteria retain valid evidence on matching inputs. No material present-phase defect or gap remains. Immediately before completion, the entire diagnostic reran successfully (exit 0, 2.592s, output discarded to preserve the first receipt), and all receipt-bound context/contract/owner-record/final-review/documentation/diagnostic identities matched. Workflow checker and git diff --check passed. Only this report and the following legal STATE handoff change after that recheck. The earlier current-distribution and no-recovery conclusions below are historical only.
+
+Work can move forward to Documenter. The replacement bundle now gives instructions that match its runtime; the remaining work is to correct and revalidate documentation and its saved evidence. Passing implementation review does not finish the cycle or resolve the final documentation gate.
+
+Preserve Frame 1 unchanged: From REVIEWING_FINAL, Owner DEVELOPING, FailureType IMPLEMENTATION, ResumeAt REVIEWING_FINAL, RerunThrough DOCUMENTING. Reviewer is a downstream rerun, not frame owner or boundary. After this gate passes, FORWARD from REVIEWING_IMPLEMENTATION to DOCUMENTING; do not pop the frame or jump to final review. Documenter must reopen/reconcile its owned artifacts and satisfy AC-026/027; at its successful boundary the canonical recovery algorithm returns to REVIEWING_FINAL. No publication/deployment or sign-off is authorized by this gate.
+
+## Previous Assessment — 2026-10-02 (historical)
+
+The remainder records the earlier implementation gate and its then-current distribution, documentation state and recovery state. Those temporal conclusions do not describe the current recovery.
+
+### Assessed Inputs and Scope
+
 STANDARD / BROWNFIELD; AC-001 through AC-027, no retired IDs. Audit baseline 9d5c9a0 through review entry HEAD 95bd607; entry tree clean. Includes committed additions/removals, affected unchanged graph/catalog/rights boundaries and local retained evidence. No prior implementation report existed. No authoring history is visible in this conversation; client freshness and author-model metadata cannot be independently certified. Different equal-or-higher-capability model is advisory when known; no identity is guessed.
 
 - `.standards/CONTEXT.md` SHA256 `64d9b6d529b092773943fb3eb8ee5b9b56f9cde4b94427926a7557ce1c7be4f5`.
@@ -26,7 +113,7 @@ STANDARD / BROWNFIELD; AC-001 through AC-027, no retired IDs. Audit baseline 9d5
 - Current retained distribution is `data/source_artifacts/learning_progressions/recovery-dev022/kgfegmcp-0.3.1-recovery.mcpb`, SHA256 `bf065f7247646c187988a92014cfad423c6842ac53e8615aae8a2932bbe10517`, with sibling `bundle/`. Reviewer verified all 650 archive members, their uniqueness and exact hash equality to stage and current source. Previous dev022 distributions are historical.
 - Dependency/configuration versions remain Python 3.13, locked FastMCP 3.4.4, pytest 8.2.0, package 0.3.1, prompt library 1.3.0, profiles 2.0. The user-selected Developer style remains Developer-owned; Reviewer style is NONE.
 
-## Contract and Evidence Assessment
+### Contract and Evidence Assessment
 
 Full Verification Boundary independently reconciled: Developer plan COMPLETE, AFTER_IMPLEMENTATION, Current Increment NONE, all 17 approved steps DONE; Tester COMPLETE, FULL/NONE after correction and fixture relocation. Current acceptance inventory is AC-001–AC-027, with no retired IDs. Upstream scope/design are consistent about generated provenance, preserved AS/LC identity, immutable replacement packages, bounded local retrieval and later documentation. Context describes the original baseline; planned replacement does not invalidate it.
 
@@ -62,7 +149,7 @@ Tester evidence remains independently authored formal evidence. The Reviewer sui
 | AC-026 / User documentation | Existing guides/reference/README still describe old surface; scope explicitly assigns this work after implementation review. | Permitted later dependency: Documenter must update all required guides/examples/reference and provide strict-build evidence under AC-026. |
 | AC-027 / Maintainer documentation | Copy/build/normalization/package/verification mechanisms and receipts are available for documentation; documentation record not yet produced. | Permitted later dependency: Documenter must explain retained inputs, local preparation, validation/provenance, mock-only tests and user-owned deployment under AC-027. |
 
-## Checks and Results
+### Checks and Results
 
 All Reviewer work occurred on 2026-10-02 from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; uv changes Python tool cwd to `backend`. No application, test, fixture, contract, Developer/Tester record or accepted package was edited.
 
@@ -117,11 +204,11 @@ for method,request in [('search_learning_progressions',search),('get_standard_pr
                 raise AssertionError(label+' unexpectedly succeeded')
 ```
 
-## Findings
+### Findings
 
 **No material findings.** No open P0/P1/P2 finding, material assessment gap, Reviewer-owned obligation or blocking user question remains.
 
-## Questions, Limitations, and Later Dependencies
+### Questions, Limitations, and Later Dependencies
 
 - **AC-026 — Documenter:** update user guides/reference/examples for all three workflows and revised queries/resources/inventory; replace obsolete hypotheses and document identity, semantics, filters, limits, continuation, provenance/confidence/warnings, rights and coverage. Persist actual strict documentation build evidence. Existing old prose is expected later-phase work, not proof of documentation completion.
 - **AC-027 — Documenter:** document source inventory, verified copy/normalization/immutable acceptance, LP evidence, local commands, mock-only tests, significant changes and user-owned deployment. Persist the documentation record and supporting checks under the same AC.
@@ -130,7 +217,7 @@ for method,request in [('search_learning_progressions',search),('get_standard_pr
 - Formal command receipts and raw copy/stage evidence remain in intentionally ignored local directories. Their current bytes were inspected; repository tests and the report are committable. This review does not claim those local receipts exist in a fresh clone; required runtime data do exist in the tracked/distributed package set.
 - Session/model metadata limitation is recorded above. No user action is needed; Active Work.BlockedOn remains NONE.
 
-## Progress and Conclusion
+### Progress and Conclusion
 
 Implementation review is **COMPLETE** and this gate **passes**. Every current present-phase AC and relevant technical criterion has a supported disposition; no material finding or evidence gap remains. Inputs were rehashed immediately before this conclusion. The independent 78-test rerun, current evidence/receipt reconciliation and source inspection support the result; labels alone were not relied upon.
 
