@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `AWAITING_USER_SIGNOFF` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
-`Independent FINAL_DELIVERABLE re-review passed: both original findings resolved, current bundle and saved documentation checks verified, all acceptance evidence reconciled. Proceed to Synchronizer.`
+`Kind`: `FORWARD` `From`: `SYNCHRONIZING` `FailureType`: `NONE` `Reason`:
+`Synchronization passed for the current contracts, complete assessments, documentation and retained distribution; every current acceptance/design criterion has applicable evidence, with no discrepancy, blocker, recovery or outstanding obligation. Await explicit user sign-off, rework or cancellation.`
 
 ## Recovery
 

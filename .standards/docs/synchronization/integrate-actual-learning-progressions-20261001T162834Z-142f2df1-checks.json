@@ -1,0 +1,582 @@
+{
+  "cycle": "integrate-actual-learning-progressions-20261001T162834Z-142f2df1",
+  "status": "passed",
+  "assessmentDate": "2026-10-03 America/Detroit",
+  "head": "c39e8971bbcb4f7264802d7e982312b1f9a7fa4c",
+  "finalInputs": {
+    "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-final-inputs.json",
+    "sha256": "73e67b0b69f0edb437691d316bacafe37416025de78849cdb4cf3c832743759d",
+    "files": 1346
+  },
+  "finalReviewEvidenceIndex": {
+    "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/evidence-index.json",
+    "sha256": "7ac6ac8d14500d5369674e51a1e81423bb909acd734157373f52c035966e1270",
+    "entriesVerified": 27
+  },
+  "acceptanceReferenceInspection": {
+    "scope": {
+      "path": ".standards/docs/scope/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+      "sha256": "d604267de108f65290536f19be9eb4548b1f8b293e6febbab942c55adaf30f8c",
+      "currentAcceptanceIdsReferenced": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ]
+    },
+    "architecture": {
+      "path": ".standards/docs/specs/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+      "sha256": "8278cc29f0b7c79130c7bdf11ba91b22f401509576598a4f8266aacc321f6527",
+      "currentAcceptanceIdsReferenced": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ]
+    },
+    "development": {
+      "path": ".standards/docs/development/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+      "sha256": "a731edb15358e769c2e95d7e14ba44baaf66e92c95be0cdbcfba6e4cd1eddd8b",
+      "currentAcceptanceIdsReferenced": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ]
+    },
+    "verification": {
+      "path": ".standards/docs/verification/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+      "sha256": "1efdb0d1a9b131a91ae3de314e73cc9612dfbe7e1d95ab6137e61fd53256829c",
+      "currentAcceptanceIdsReferenced": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ]
+    },
+    "implementationReview": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md",
+      "sha256": "8abf0709eb3b71afc31b32b2fa701be685418d17aee59994233c08dd98cc6ede",
+      "currentAcceptanceIdsReferenced": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ]
+    },
+    "documentation": {
+      "path": ".standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+      "sha256": "8f34149a35fd1c69471581977785acad3e4da0eacfcb2ac16649634b266193fb",
+      "currentAcceptanceIdsReferenced": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ]
+    },
+    "finalReview": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md",
+      "sha256": "e835234de4a3516fd5db6f48786185e5970383d2c4992635be5e8a0495340922",
+      "currentAcceptanceIdsReferenced": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ]
+    }
+  },
+  "approvedDeveloperStepsDone": [
+    "DEV-001",
+    "DEV-002",
+    "DEV-003",
+    "DEV-004",
+    "DEV-005",
+    "DEV-023",
+    "DEV-012",
+    "DEV-013",
+    "DEV-014",
+    "DEV-015",
+    "DEV-016",
+    "DEV-017",
+    "DEV-018",
+    "DEV-019",
+    "DEV-020",
+    "DEV-021",
+    "DEV-022"
+  ],
+  "finalReviewFindings": [
+    [
+      "F-001",
+      "RESOLVED"
+    ],
+    [
+      "F-002",
+      "RESOLVED"
+    ]
+  ],
+  "copyReceipt": {
+    "path": "data/source_artifacts/learning_progressions/copy_receipt.json",
+    "sha256": "e61d67b053a237e8fce6be86842f32ed5b398a145fb223410443d475419ae8ea",
+    "localCopiesVerified": 138,
+    "externalSourceInspection": "Not rerun; before/after copy claim retained as historical owner evidence."
+  },
+  "checks": [
+    {
+      "name": "evidence",
+      "argv": [
+        "python3",
+        ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/check-current-evidence.py"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 3.506,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-evidence.stdout",
+          "sha256": "75016fd3a703f704f6853b96631fad48ad830869bba47b97632600ccc53803e0"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-evidence.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "boundary",
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "--find-renames",
+        "9d5c9a0",
+        "HEAD"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 3.197,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-boundary.stdout",
+          "sha256": "f1dd017bac021c4a78e7a6a2710ffeb4dd62786d8167c8226feb8c5edde09f97"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-boundary.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "unmerged",
+      "argv": [
+        "git",
+        "ls-files",
+        "--unmerged"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 0.017,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-unmerged.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-unmerged.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "staged",
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "--cached"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 0.018,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-staged.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-staged.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "unstaged",
+      "argv": [
+        "git",
+        "diff",
+        "--name-status"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 0.017,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-unstaged.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-unstaged.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "unchanged-runtime",
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "95bd607",
+        "HEAD",
+        "--",
+        "backend/src",
+        "backend/tests",
+        "config",
+        "data/graph_packages",
+        "backend/pyproject.toml",
+        "backend/uv.lock",
+        ".github",
+        ".standards/CONTEXT.md",
+        ".standards/docs/scope",
+        ".standards/docs/specs"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 0.018,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-unchanged-runtime.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-unchanged-runtime.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "obsolete-scan",
+      "argv": [
+        "rg",
+        "-n",
+        "-U",
+        "-i",
+        "\\b(seven|7|six|6|thirteen|13|twelve|12)\\s+(generic\\s+)?(prompt workflows|tools|prompts|resource templates)|collect_progression_evidence|inferred_progression_hypothesis|progressionHeuristics|inferredProgressionHypothesis",
+        "README.md",
+        "backend/README.md",
+        "docs",
+        "examples",
+        "packaging/mcpb/README.md",
+        "mkdocs.yml"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "durationSeconds": 0.013,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-obsolete-scan.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-obsolete-scan.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "runtime-removal",
+      "argv": [
+        "rg",
+        "-n",
+        "collect_progression_evidence|inferred_progression_hypothesis|progressionHeuristics|inferredProgressionHypothesis",
+        "backend/src",
+        "config"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "durationSeconds": 0.011,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-runtime-removal.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-runtime-removal.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "workflow",
+      "argv": [
+        "node",
+        ".standards/bin/check.mjs"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 0.177,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-workflow.stdout",
+          "sha256": "578e7438bcb31b0092772cc9fe689470d9a071b33ef33b24d9b6b03ece38745c"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-workflow.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "diff",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1",
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+      },
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "durationSeconds": 0.017,
+      "logs": {
+        "stdout": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-diff.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-diff.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  ],
+  "formalEvidenceReuse": "78-case suite, static/package/repository transport and stage executions remain owner evidence on matching runtime/test/data/config/dependency inputs; this run is reconciliation only."
+}
