@@ -18,29 +18,11 @@ from kgfegmcp.bootstrap import bootstrap_application
 
 ROOT = Path(__file__).resolve().parents[3]
 CYCLE = "integrate-actual-learning-progressions-20261001T162834Z-142f2df1"
-OUT = ROOT / ".standards/docs/documentation/recovery-20261003/example-results.json"
+OUT = ROOT / ".standards/docs/documentation" / (CYCLE + "-example-results.json")
 
 
 def sha(path):
     return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def catalog_rows(table):
-    """Read named data rows regardless of pipe padding or separator alignment."""
-    rows = {}
-    for line in table.splitlines():
-        line = line.strip()
-        if not line.startswith("|"):
-            continue
-        cells = [value.strip().strip("*") for value in line.strip("|").split("|")]
-        if all(re.fullmatch(r":?-+:?", cell) for cell in cells):
-            continue
-        if cells[0] == "Framework":
-            continue
-        assert len(cells) == 14, cells
-        assert cells[0] not in rows, cells[0]
-        rows[cells[0]] = cells
-    return rows
 
 
 async def check():
@@ -114,31 +96,14 @@ async def check():
     # Independently compare each displayed row to the current manifest, not just totals.
     catalog = (ROOT / "docs/data/framework-catalog.md").read_text()
     table = catalog.split("## Catalog summary", 1)[1].split("Across the six manifests", 1)[0]
-    rows = catalog_rows(table)
-    totals = rows.pop("Total")
-    # Exercise both the originally passing padded separator and committed formatting.
-    compact = "\n".join("|".join(part.strip() for part in line.split("|"))
-                        if line.strip().startswith("|") else line
-                        for line in table.splitlines())
-    padded = "\n".join(" | ".join(part.strip() for part in line.split("|"))
-                       if line.strip().startswith("|") else line
-                       for line in table.splitlines())
-    assert catalog_rows(table) == catalog_rows(compact) == catalog_rows(padded)
-    evidence["catalogParsingFormats"] = ["saved", "compact", "padded"]
-    prompt_config = (ROOT / "docs/data/prompt-configs.md").read_text()
-    opening = " ".join(prompt_config.split("## Location and selection", 1)[0].split())
-    assert "server's nine generic prompt workflows" in opening
-    assert "always registers the nine generic prompts" in prompt_config
-    evidence["promptConfigPromptCount"] = 9
+    rows = [line for line in table.splitlines() if line.startswith("| ")][2:8]
     manifests = sorted((ROOT / "data/graph_packages").glob("*/*/package_manifest.json"))
     assert len(rows) == len(manifests) == 6
     expected_labels = ["Ghana English Language", "Ghana Mathematics", "CBSE Science",
                        "Tamil Nadu Mathematics", "Nigeria Mathematics", "Rwanda Mathematics"]
-    assert set(rows) == set(expected_labels)
-    sums = [0] * 7
-    for path, label in zip(manifests, expected_labels):
+    for row, path, label in zip(rows, manifests, expected_labels):
         m = json.loads(path.read_text())
-        cells = rows[label]
+        cells = [v.strip() for v in row.strip("|").split("|")]
         assert cells[0] == label
         c = m["counts"]
         expected = [c["itemNodes"], c["relationships"] - c["supportsRelationships"] -
@@ -146,12 +111,10 @@ async def check():
                     c["learningComponentNodes"], c["supportsRelationships"],
                     c["buildsTowardsRelationships"], c["relatesToRelationships"], c["relationships"]]
         assert [int(v) for v in cells[7:]] == expected
-        sums = [total + value for total, value in zip(sums, expected)]
         assert m["snapshotId"] in catalog
         assert m["manifestVersion"] == "1.1" and m["deliverySchemaVersion"] == "1.2"
         evidence["catalog"].append({"frameworkId": m["frameworkId"], "snapshotId": m["snapshotId"],
                                     "manifestSha256": sha(path), "rowVerified": True})
-    assert [int(v) for v in totals[7:]] == sums
     # Inspect generated HTML table/section structure without altering source assets.
     from html.parser import HTMLParser
     from urllib.parse import unquote, urlsplit

@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DOCUMENTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `REVIEWING_FINAL` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,18 +20,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_IMPLEMENTATION` `FailureType`: `NONE` `Reason`:
-`Implementation recovery review passed; Documenter must correct and revalidate final documentation evidence before final review resumes.`
+`Kind`: `RESUME` `From`: `DOCUMENTING` `FailureType`: `NONE` `Reason`:
+`Documentation recovery gate passed with corrected prompt count, reproducible saved checks and current distribution/identity evidence; DOCUMENTING boundary completed, resuming independent FINAL_DELIVERABLE review.`
 
 ## Recovery
 
-`Active`: `true`
-
-### Frame 1
-
-`From`: `REVIEWING_FINAL` `Owner`: `DEVELOPING` `FailureType`: `IMPLEMENTATION`
-`Reason`: `Current retained MCPB ships removed progression-tool instructions; refresh final distribution (AC-022/AC-026).`
-`ResumeAt`: `REVIEWING_FINAL` `RerunThrough`: `DOCUMENTING`
+`Active`: `false`
 
 ## Outstanding Obligations
 

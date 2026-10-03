@@ -1,6 +1,6 @@
 # Prompt configurations
 
-Framework-local prompt configurations add optional soft guidance to the server's seven
+Framework-local prompt configurations add optional soft guidance to the server's nine
 generic prompt workflows. They provide terminology, context, warnings, pedagogy, and
 presentation guidance without changing tool behavior or executing an LLM.
 
