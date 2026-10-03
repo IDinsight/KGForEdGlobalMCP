@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FAILURE` `From`: `REVIEWING_FINAL` `FailureType`: `IMPLEMENTATION` `Reason`:
-`Current retained MCPB ships removed progression-tool instructions; refresh final distribution (AC-022/AC-026).`
+`Kind`: `FORWARD` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
+`Refreshed shipped README; re-establish verification and documentation before final review.`
 
 ## Recovery
 
@@ -31,7 +31,7 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 `From`: `REVIEWING_FINAL` `Owner`: `DEVELOPING` `FailureType`: `IMPLEMENTATION`
 `Reason`: `Current retained MCPB ships removed progression-tool instructions; refresh final distribution (AC-022/AC-026).`
-`ResumeAt`: `REVIEWING_FINAL` `RerunThrough`: `NONE`
+`ResumeAt`: `REVIEWING_FINAL` `RerunThrough`: `DOCUMENTING`
 
 ## Outstanding Obligations
 
