@@ -228,7 +228,7 @@ Then move to the task-specific guides for more complete workflows:
 - [Search and retrieve standards](../guides/standards-search.md)
 - [Navigate hierarchies](../guides/hierarchy-context.md)
 - [Compare framework evidence](../guides/comparison.md)
-- [Collect progression evidence](../guides/progression.md)
+- [Use stored learning progressions](../guides/progression.md)
 - [Use prompt workflows](../guides/prompts.md)
 
 ---

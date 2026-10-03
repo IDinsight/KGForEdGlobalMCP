@@ -215,20 +215,22 @@ Returns deterministic structural statistics for one Academic Standards package.
 
 ### Result fields
 
-The result contains `package`, `sourceMetadata`, and `statistics`. `package` identifies the package the record comes from and carries its rights:
-`packageIdentity` and `rights`. The package's counts, capabilities, and profile facets
-are reported by `get_framework`; build metadata and the artifact table are in the
-`package_manifest` resource.
+The result contains `package`, `sourceMetadata`, and `statistics`. `package` identifies 
+the package the record comes from and carries its rights: `packageIdentity` and 
+`rights`. The package's counts, capabilities, and profile facets are reported by 
+`get_framework`; build metadata and the artifact table are in the `package_manifest` 
+resource.
 
 `statistics` includes:
 
 - `totalFrameworkNodes`, `totalItemNodes`, `totalNodes`, and `totalRelationships`.
   These count the standards hierarchy only: `totalNodes` is the framework root plus
-  the framework items, and `totalRelationships` excludes `supports` edges. Learning
-  components and their edges are counted in the `learningComponents` block below;
+  the framework items, and `totalRelationships` excludes `supports`, `buildsTowards` 
+  and `relatesTo` edges. Learning components and their edges are counted in the 
+  `learningComponents` block below;
 - local grade, node grade-level, normalized grade, statement-type, normalized
   statement-type, and relationship-type counts, all over the standards hierarchy only,
-  so `supports` edges never appear in the relationship-type or resolution counts;
+  so `supports` or LP edges never appear in the relationship-type or resolution counts;
 - `codePresence` counts;
 - `maximumStructuralDepth` and `minimumStructuralDepthCounts`;
 - `multiParent` cardinality statistics;
@@ -263,9 +265,12 @@ learning_progressions
 reviewed_alignment
 ```
 
-Recognition in the enum is not the same as availability in the accepted catalog. Use
-`get_capabilities.availableGraphTypes` to determine what the running server actually
-serves.
+Recognition in the enum is not the same as availability in the accepted catalog. 
+`availableGraphTypes` reports primary package routing types; these mixed packages still 
+route as `academic_standards`. Check `includedGraphTypes` and package flags 
+`hasLearningProgressions`/`hasLearningProgressionProvenance` for LP availability.
+`statistics.learningProgressions` separately reports `buildsTowardsRelationships` and 
+`relatesToRelationships` plus those flags; hierarchy/LC blocks retain their meanings.
 
 ## Common errors
 

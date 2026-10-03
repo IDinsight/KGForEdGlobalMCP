@@ -142,6 +142,12 @@ After successful decoding, validation checks include:
 A tree-shaped profile and a multi-parent DAG are validated against different profile
 rules rather than against one hard-coded hierarchy assumption.
 
+## Learning progression validation
+
+LP acceptance checks stored ID/type/endpoint agreement, standard-only CASE endpoints, no self edges, duplicate IDs/typed edges or conflicting pair judgments, canonical relates ordering, per-type counts and separate buildsTowards cycle detection. It does not use relatesTo as ancestry. Original split evidence, final claims, provenance/report/unresolved data, sanitized normalization receipt and validated 64-partition index/union must agree with exported edges and hashes. Mandatory missing evidence is an error, not a fallback. Retained AS/LC report counts are compared to the AS/LC subgraph; LP report counts are compared to LP edges.
+
+Warnings, eligibility limits and unresolved/needs-review claims remain inspectable but are not accepted edges. A valid zero-edge declared LP package is available with empty results; an undeclared LP capability is unavailable. Passed structural/process validation does not certify pedagogy or publisher endorsement.
+
 ## Count and capability reconciliation
 
 The validator derives graph facts independently:

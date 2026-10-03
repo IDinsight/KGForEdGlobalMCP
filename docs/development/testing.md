@@ -56,10 +56,17 @@ Use normal pytest selectors for focused iteration, for example:
 uv --directory backend run --locked pytest tests/path/to/test_module.py -q
 ```
 
-The supplied snapshot used to prepare these docs does not contain `backend/tests/`, even
-though the project configuration and backend README describe that directory. If a
-checkout lacks the test suite, record that limitation explicitly rather than reporting
-pytest as a completed acceptance layer.
+The current suite contains real collected LP acceptance, algorithm, lookup/discovery, traversal/path, resource/rights, prompt, protocol and AS/LC regression cases under `backend/tests/kgfegmcp/`. Shared helpers and the portable pre-change hash fixture live under `backend/tests/fixtures/`. Empty collection (pytest exit 5) is failure, not acceptance.
+
+Tests must never call live LLM APIs or paid services. Mock those boundaries, including negative/error paths; the `costs-money` marker does not waive this rule. The current suite guards network connections; local protocol checks require no model. With the locked environment already installed, run without synchronization/network access:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 UV_OFFLINE=1 \
+  uv --directory backend run --locked --offline --no-sync \
+  pytest -q -p no:cacheprovider -m 'not costs-money' tests
+```
+
+Do not treat an offline environment flag alone as proof that test code cannot call a service; retain mocks/network guards and inspect actual assertions. Formal acceptance also needs current inputs, commands/results and limitations.
 
 ## What to test by subsystem
 
@@ -126,8 +133,12 @@ Test exact documented semantics rather than fuzzy expectations:
 ### Services
 
 Prefer service-level tests for framework discovery, standard retrieval, comparison, and
-progression evidence. Assert that services share package-local identities and do not
+stored progression evidence. Assert that services share package-local identities and do not
 invent alignment/progression relationships.
+
+### Stored learning progressions
+
+Cover original edge identity and per-edge provenance equality, directed builds and symmetric relates lookup, endpoint-scope facet conjunction, deterministic request-bound paging, branches/merges/alternative simple paths, cycles, depth/node/edge/work/queue/byte limits, complete empty versus unavailable/missing/incomplete cases, rights/hash failures and obsolete-surface refusal. Test an individually oversized entry both first and later; noncontinuable traversal must not silently drop it. Controlled negative fixtures must not mutate terminal packages or call models.
 
 ### MCP adapters
 
@@ -232,8 +243,8 @@ Because both commands share one set of checks, the STDIO and HTTP transports can
 accepted against different inventories. See
 [Hosted deployment](../operations/deployment.md).
 
-A successful current server reports thirteen tools, one fixed resource, twelve resource
-templates, and seven prompts.
+A successful current server reports seventeen tools, one fixed resource, fourteen resource
+templates, and nine prompts.
 
 ## Public-surface change checklist
 
@@ -255,7 +266,9 @@ Install the documentation extra and build strictly:
 
 ```bash
 uv --directory backend sync --locked --extra docs
-uv --directory backend run --locked mkdocs build --strict
+project_root="$PWD"
+uv --directory backend run --locked mkdocs build --strict \
+  --config-file "$project_root/mkdocs.yml"
 ```
 
 For documentation that embeds machine-derived catalog facts, also verify those facts

@@ -217,9 +217,7 @@ or:
 Does this standard represent the next instructional step?
 ```
 
-Those are stronger interpretations that require separate evidence. The server's
-progression workflow therefore uses explicit grade-scoped candidate collection and
-still labels any resulting progression as inferred rather than source-asserted.
+Those are stronger interpretations that require separate evidence. Stored progression tools retrieve explicit `buildsTowards` and `relatesTo` edges with their generated origin and provenance; they do not turn a `hasChild` path into a progression.
 
 ## Natural-language example
 
@@ -235,9 +233,8 @@ structure and do not infer a prerequisite or learning progression.
 
 Use `get_standard_context` after a specific search hit when hierarchy placement matters.
 Use `compare_framework_evidence` instead when the question requires symmetric bounded
-retrieval from several frameworks. Use `collect_progression_evidence` only when the
-question explicitly asks for grade-scoped candidate evidence for a later inferred
-progression review.
+retrieval from several frameworks. Use `get_standard_progressions` for stored incoming/outgoing builds and related concepts,
+or the bounded traversal/path tools to follow actual builds edges.
 
 ---
 

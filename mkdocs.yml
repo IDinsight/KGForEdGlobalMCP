@@ -35,7 +35,7 @@ nav:
       - Search and retrieve standards: guides/standards-search.md
       - Navigate hierarchies: guides/hierarchy-context.md
       - Compare framework evidence: guides/comparison.md
-      - Collect progression evidence: guides/progression.md
+      - Use stored learning progressions: guides/progression.md
       - Use prompt workflows: guides/prompts.md
       - Read resources and provenance: guides/resources.md
 
@@ -45,7 +45,7 @@ nav:
       - Standards tools: reference/standards-tools.md
       - Learning component tools: reference/learning-component-tools.md
       - Comparison tool: reference/comparison-tool.md
-      - Progression tool: reference/progression-tool.md
+      - Learning progression tools: reference/progression-tool.md
       - Resources and URI templates: reference/resources.md
       - Prompts: reference/prompts.md
       - Errors, cursors, and limits: reference/protocol-behavior.md

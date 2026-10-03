@@ -42,10 +42,10 @@ remain configuration-driven rather than curriculum-specific.
 
 The server exposes:
 
-- **13 tools**
+- **17 tools**
 - **1 fixed resource**
-- **12 resource templates**
-- **7 prompts**
+- **14 resource templates**
+- **9 prompts**
 
 ### Tools
 
@@ -61,7 +61,11 @@ The server exposes:
 - `get_framework_statistics`
 - `get_capabilities`
 - `compare_framework_evidence`
-- `collect_progression_evidence`
+- `get_learning_progression`
+- `get_standard_progressions`
+- `search_learning_progressions`
+- `traverse_learning_progressions`
+- `get_learning_progression_paths`
 
 ### Prompts
 
@@ -69,7 +73,9 @@ The server exposes:
 - `teacher_guide_draft`
 - `student_handbook_section`
 - `multigrade_lesson_plan`
-- `inferred_progression_hypothesis`
+- `learning_progression_teaching_sequence`
+- `learning_progression_support_plan`
+- `learning_progression_curriculum_review`
 - `administrator_alignment_review`
 - `cross_framework_comparison`
 
@@ -91,14 +97,14 @@ its own bounds, scores, `has_more` value, and cursor; a zero-match result does n
 curriculum absence. Once a relevant branch is found, bounded hierarchy context is
 preferred over unlimited synonym generation.
 
-`inferred_progression_hypothesis` accepts `local_grade_labels` and
-`normalized_grades` as typed arrays rather than a combined grade string. At the MCP
-prompt boundary, enter these complex values as JSON arrays, for example
-`["Grade 1", "Grade 2"]`; do not enter comma-separated prose. Its workflow
-calls `collect_progression_evidence` once; that tool validates the grade
-scope, canonicalizes grade sets in package-declared order, deduplicates standard-item
-candidates, balances selection across requested scopes, reports uncovered scopes, and
-enforces the requested candidate limit before Claude generates a hypothesis.
+Stored progression queries retrieve `buildsTowards` and `relatesTo` evidence in one 
+exact framework/snapshot. The three new prompts support teaching sequences, support 
+planning and curriculum review using standards, relationships, provenance and 
+supporting Learning Components. Grade arrays are entered as JSON arrays at the prompt 
+boundary. Stored edges are IDinsight-generated judgments, without publisher 
+endorsement; confidence is not a calibrated learner-success probability. Missing edges 
+do not prove absence of a pedagogical relationship. See [the progression guide](docs/guides/progression.md) 
+and [maintainer update process](docs/development/framework-package.md#learning-progression-inputs-and-updates).
 
 ## Prerequisites
 
@@ -299,7 +305,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.1.0.mcpb
+dist/kgfegmcp-0.3.1.mcpb
 ```
 
 Retain the exact staging directory for review:
@@ -381,7 +387,8 @@ stderr, and production code should not use uncontrolled `print()` calls.
 
 ## Project documentation
 
-- `instructions.md` is the architectural and implementation source of truth.
+- `AGENTS.md` supplies project agent instructions; `docs/architecture.md` describes the 
+  maintained architecture.
 - `backend/README.md` contains backend-specific operational notes.
 - `packaging/mcpb/README.md` describes the MCP Bundle packaging workflow.
 

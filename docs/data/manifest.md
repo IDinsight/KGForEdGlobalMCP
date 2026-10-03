@@ -3,7 +3,7 @@
 `package_manifest.json` is the package-level contract that binds identity, artifacts,
 checksums, profile semantics, capabilities, rights, counts, and validation state.
 
-The current manifest version, delivery schema version, and source schema version are all
+The current manifest version is `1.1`, delivery schema is `1.2`, and source schema is
 `1.0`. The supported package revision is `1`.
 
 ## Top-level fields
@@ -17,7 +17,7 @@ The current manifest version, delivery schema version, and source schema version
 | `graphType`             | Primary graph domain                                              |
 | `includedGraphTypes`    | Graph domains included in the package                             |
 | `packageRevision`       | Package-format revision, currently `1`                            |
-| `deliverySchemaVersion` | Delivery JSONL schema version. The supported version is `1.1` |
+| `deliverySchemaVersion` | Delivery JSONL schema version. The supported version is `1.2`     |
 | `sourceSchemaVersion`   | Detailed-source schema version                                    |
 | `createdAt`             | Timezone-aware package creation timestamp                         |
 | `framework`             | Source-faithful and normalized framework metadata                 |
@@ -47,12 +47,12 @@ A valid manifest must satisfy several identity invariants:
 6. A snapshot relation may not target the same snapshot or duplicate the same
    `(relationType, targetSnapshotId)` pair.
 
-A package including learning components declares
-`includedGraphTypes: [academic_standards, learning_components]`. Because an initial
+The current packages including learning components and progressions declare
+`includedGraphTypes: [academic_standards, learning_components, learning_progressions]`. Because an initial
 `graphPackageId` may declare only its primary graph type, such a package uses the
 deterministic graph-type/package-revision form instead, and its `graphPackageId` is
-therefore longer than its `snapshotId`. The `snapshotId` is unchanged, so the package
-directory name is unaffected.
+therefore longer than its `snapshotId`. Adding LP artifacts changes the artifact-set snapshot hash and package directory;
+it does not create a new curriculum edition or change standard/component identifiers.
 
 ## Framework metadata
 
@@ -80,8 +80,8 @@ The profile binding is deliberately small and exact:
 {
   "profile": {
     "profileId": "ghana-nacca-primary-english-language-basic-1-3",
-    "profileVersion": "1.0",
-    "sha256": "sha256:90192597bd54321e27f26877497a03315df734bada8fa024778329c6358c6081"
+    "profileVersion": "2.0",
+    "sha256": "sha256:fe2b269f7e76d0abf89d00799857602e17c8e76b6d1b4055797c662629ce7212"
   }
 }
 ```
@@ -100,19 +100,21 @@ The `artifacts` object always requires:
 
 It can also declare these built-in artifacts:
 
-| Logical name              | Typical retained artifact               |
-|---------------------------|-----------------------------------------|
-| `academicStandardsBundle` | Detailed Academic Standards bundle JSON |
-| `entityProvenance`        | Detailed provenance JSON                |
-| `relationshipsHasChild`   | Detailed hierarchy relationship JSONL   |
-| `standardsFramework`      | Detailed framework JSON                 |
-| `standardsFrameworkItems` | Detailed item JSONL                     |
-| `unresolvedItems`         | Unresolved-evidence report JSON         |
-| `validationReport`        | Detailed validation report JSON         |
-| `learningComponentsBundle`   | Detailed learning-component bundle JSON      |
-| `learningComponentSummary`   | Learning-component generation summary JSON   |
-| `learningComponentProvenance`| Learning-component provenance JSON           |
-| `learningComponentDedupGroups`| Learning-component dedup groups JSON        |
+| Logical name                   | Typical retained artifact                  |
+|--------------------------------|--------------------------------------------|
+| `academicStandardsBundle`      | Detailed Academic Standards bundle JSON    |
+| `entityProvenance`             | Detailed provenance JSON                   |
+| `relationshipsHasChild`        | Detailed hierarchy relationship JSONL      |
+| `standardsFramework`           | Detailed framework JSON                    |
+| `standardsFrameworkItems`      | Detailed item JSONL                        |
+| `unresolvedItems`              | Unresolved-evidence report JSON            |
+| `validationReport`             | Detailed validation report JSON            |
+| `learningComponentsBundle`     | Detailed learning-component bundle JSON    |
+| `learningComponentSummary`     | Learning-component generation summary JSON |
+| `learningComponentProvenance`  | Learning-component provenance JSON         |
+| `learningComponentDedupGroups` | Learning-component dedup groups JSON       |
+
+LP adds nine dedicated artifacts: `learningProgressionBuildsTowards`, `learningProgressionRelatesTo`, `learningProgressionProvenance`, `learningProgressionValidation`, `learningProgressionUnresolved`, `learningProgressionSummary`, `learningProgressionFinalClaims`, `learningProgressionProvenanceIndex`, `learningProgressionNormalization`. All 64 provenance partitions are explicitly declared additional artifacts. See the [preparation/update contract](../development/framework-package.md#learning-progression-inputs-and-updates).
 
 `additionalArtifacts` can represent other logical artifacts, but names reserved by the
 built-in fields are forbidden. Every declared artifact path must be unique.
@@ -145,6 +147,8 @@ The version-1 count contract contains:
     "learningComponentNodes": 0,
     "relationships": 430,
     "supportsRelationships": 0,
+    "buildsTowardsRelationships": 0,
+    "relatesToRelationships": 0,
     "additionalCounts": {
       "codedItems": 319,
       "multiParentTargets": 0,
@@ -157,9 +161,10 @@ The version-1 count contract contains:
 `itemNodes` counts standards framework items only and `learningComponentNodes` counts
 generated learning components; the two are never combined. `relationships` counts every
 relationship in the package, of which `supportsRelationships` are learning-component
-edges. `learningComponentNodes` and `supportsRelationships` both default to `0`, so a
-package built before delivery schema `1.1` remains valid. Both are checked against the
-decoded package content.
+edges. `buildsTowardsRelationships` and `relatesToRelationships` separately count LP
+edges. Those four component/LP counts default to zero for packages without the declared
+domains; all packages must still use current supported schemas. Counts are checked
+against decoded content. Hierarchy/unresolved counts retain their original meaning.
 
 `frameworkNodes` is exactly `1`. Version 1 requires `additionalCounts` to contain
 exactly these three names:
@@ -184,6 +189,10 @@ The `capabilities` object declares package-level behavior:
 | `hasUnresolvedRelationships`    | Package retains unresolved relationship evidence        |
 | `hasOfficialActivities`         | Official activity-role nodes are represented            |
 | `hasOfficialAssessmentGuidance` | Official assessment-guidance role nodes are represented |
+
+`hasLearningProgressions` and `hasLearningProgressionProvenance` report accepted
+declarations/evidence, including a valid zero-edge LP package. They do not follow
+from a global enum or a nonzero count alone.
 
 Capabilities must agree with independently observed graph/profile facts. They are not
 free-form feature flags.

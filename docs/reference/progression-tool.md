@@ -1,170 +1,90 @@
-# Progression tool
+# Learning progression tools
 
-`collect_progression_evidence` returns a bounded, deterministic candidate set for
-reviewing possible progression across explicit grade scopes in one framework.
+Five read-only tools retrieve accepted, stored `buildsTowards` and `relatesTo` edges between standards in one framework/snapshot. They do not infer missing relationships. See the [guide and examples](../guides/progression.md) for educational use.
 
-It collects evidence only. It does not assert a prerequisite, learning sequence, or
-learning progression.
+## Routing and selectors
 
-For workflow guidance, see [Collect progression evidence](../guides/progression.md).
+Every call uses a nested `request` object with lower-camel-case fields. `frameworkId` is required; `snapshotId` is optional. Omission resolves the unique current package once. Pin the returned snapshot for subsequent calls and citations. A route cannot span packages or frameworks.
 
-## Request
+`identifier`, `sourceIdentifier`, `targetIdentifier` and discovery's `standardIdentifiers` accept these exact selectors:
 
-| Field              | Type           | Default / bound            | Meaning                                                  |
-|--------------------|----------------|----------------------------|----------------------------------------------------------|
-| `frameworkId`      | string         | required                   | Exact framework family                                   |
-| `snapshotId`       | string or null | null                       | Exact snapshot or unique-current routing                 |
-| `topicOrStandard`  | string         | required; 1-512 characters | Topic, code, or exact identifier selected by `focusMode` |
-| `focusMode`        | enum           | `topic`                    | How to interpret `topicOrStandard`                       |
-| `localGradeLabels` | array[string]  | empty; max 32              | Exact source-facing grade/stage scopes                   |
-| `normalizedGrades` | array[string]  | empty; max 32              | Normalized grade retrieval facets                        |
-| `candidateLimit`   | integer        | 8; 2-20                    | Hard maximum retained candidate count                    |
+| `identifierType`       | Value field          | Meaning                                            |
+|------------------------|----------------------|----------------------------------------------------|
+| `node_id`              | `nodeId`             | Exact outer standard node ID                       |
+| `case_identifier_uuid` | `caseIdentifierUuid` | Exact CASE UUID                                    |
+| `case_identifier_uri`  | `caseIdentifierUri`  | Exact CASE URI                                     |
+| `statement_code`       | `statementCode`      | Exact profile-enabled code, at most 512 characters |
 
-At least one `localGradeLabels` or `normalizedGrades` value is required. Values must be
-unique and nonblank.
+Ambiguous codes are rejected; codes are not globally unique identities. All selected endpoints must resolve to standards in the same package.
 
-### Focus modes
+## Operations
 
-```text
-topic
-statement_code
-node_id
-case_identifier_uuid
-case_identifier_uri
-```
+| Tool                             | Required selection                                 | Optional fields and defaults                                                                                                                           |
+|----------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `get_learning_progression`       | `relationshipId`                                   | Exact LP ID; returns one edge and both endpoints                                                                                                       |
+| `get_standard_progressions`      | `identifier`                                       | `connectionKind`: `all`, `incoming_builds`, `outgoing_builds`, `related`; default `all`. `limit`: 25; `cursor`: null                                   |
+| `search_learning_progressions`   | Framework route                                    | `relationshipTypes`: empty means both types; `standardIdentifiers`: empty; facet arrays: empty; `endpointScope`: `either`; `limit`: 25; `cursor`: null |
+| `traverse_learning_progressions` | `identifier`                                       | `direction`: `downstream` or `upstream`, default downstream; `maxDepth`: 8; `maxNodes`: 100; `maxEdges`: 100                                           |
+| `get_learning_progression_paths` | Distinct `sourceIdentifier` and `targetIdentifier` | Directed builds-only paths; `maxDepth`: 6; `maxPaths`: 3                                                                                               |
 
-`statement_code` remains subject to the selected package's code policy.
+Incoming builds support the selected target; outgoing builds describe what it supports. Related links are accessible from either endpoint, deduplicated by original relationship ID. Their source/target retain canonical stored orientation and imply no instructional direction. Traversal and paths use only `buildsTowards`, preserving each stored edge direction even when traversing upstream. `hasChild`, `supports` and `relatesTo` never become progression hops.
 
-### Topic example
+## Discovery filters
 
-```json
-{
-  "request": {
-    "frameworkId": "ghana-nacca-primary-english-language-basic-1-3",
-    "focusMode": "topic",
-    "topicOrStandard": "story structure",
-    "localGradeLabels": ["BASIC 1", "BASIC 2", "BASIC 3"],
-    "candidateLimit": 8
-  }
-}
-```
+Arrays `localGradeLabels`, `normalizedGrades`, `statementTypes`, and `normalizedStatementTypes` each accept at most 32 unique, nonblank profile-valid values (each at most 512 characters). `relationshipTypes` permits `buildsTowards` and `relatesTo`; `standardIdentifiers` accepts at most 20 unique selectors. Unsupported facets, duplicates and missing/ambiguous selectors fail explicitly.
 
-### Exact-anchor example
+Values within a field are OR; fields and selected-standard membership are AND on one endpoint. `endpointScope` applies that whole conjunction:
 
-```json
-{
-  "request": {
-    "frameworkId": "<framework-id>",
-    "focusMode": "node_id",
-    "topicOrStandard": "<node-id>",
-    "normalizedGrades": ["1", "2", "3"],
-    "candidateLimit": 8
-  }
-}
-```
+- `either`: at least one endpoint matches;
+- `both`: each endpoint matches;
+- `source` or `target`: the stored endpoint matches.
 
-## Scope validation and canonicalization
+Grade and type criteria cannot be split between endpoints to satisfy one conjunction. Results report effective filters, `resolvedStandardNodeIds`, and per-endpoint `sourceMatch`/`targetMatch`. Local grades preserve curriculum terminology; normalized grades are retrieval facets, not international equivalence. For `relatesTo`, source/target filtering uses canonical storage order.
 
-Requested grade values are validated against the selected accepted package. Retained
-scope values are then placed in package-declared canonical order rather than caller
-input order.
+## Evidence and result fields
 
-The response preserves both local source-facing labels and normalized retrieval facets.
-Normalized grades remain discovery aids, not assertions of grade equivalence.
+All results contain `request`, `metadata`, deduplicated `nodes` and `relationships`. `metadata.package.packageIdentity` pins framework/snapshot/package/profile identity and profile hash. The remaining `metadata` fields identify manifest/artifact hashes, stored per-type totals, coverage notices, and summary/validation/unresolved URIs. Edge rows retain IDs, author, provider, attribution, license and exact endpoints; `relationshipUri` and `provenanceUri` link to retained evidence.
 
-## Candidate discovery
+Endpoint `statementExcerpt` is capped at 2,048 characters, with `statementExcerpted` and `standardUri`. Judgment rationale is an excerpt of at most 512 characters; up to five warning excerpts of 512 characters retain total/omitted indicators. Read full provenance for rationale, confidence, warnings, candidate references and producer/checker hashes. Confidence is a model judgment, not a calibrated probability of learner success.
 
-The service can discover candidates through the selected focus plus grade-scoped search
-and hierarchy evidence. It deduplicates candidates by exact node identity before applying
-the hard retained-candidate bound.
+Stored edges have `epistemicStatus: llm_inferred`: IDinsight-generated evidence, without publisher endorsement or certified pedagogy. `buildsTowards` means directional support for success, not a mandatory prerequisite. `relatesTo` means a conceptual or skill link without sequence or dependency. Derived traversals/paths have `deterministic_derived` status and cite original generated edges; they assert no new direct edge or compulsory teaching order.
 
-Every retained candidate records its `discoveryMethods`, so downstream reasoning can see
-how the node entered the candidate set instead of treating all candidates as equivalent
-in provenance.
+## Bounds and continuation
 
-## Result contract
+| Budget                                        | Default | Maximum |
+|-----------------------------------------------|---------|---------|
+| Direct/discovery returned edges               | 25      | 100     |
+| Direct/discovery examined candidates per page | 5,000   | 5,000   |
+| Traversal depth                               | 8       | 12      |
+| Traversal nodes                               | 100     | 250     |
+| Traversal edges                               | 100     | 100     |
+| Path depth                                    | 6       | 12      |
+| Returned paths                                | 3       | 20      |
+| Traversal/path examined adjacency edges       | 5,000   | 5,000   |
+| Path cumulative queue admissions              | 5,000   | 5,000   |
+| Tool text plus structured result              | 1 MiB   | 1 MiB   |
 
-The result contains:
+Caller bounds are strict positive integers; booleans, fractions and numeric strings are rejected. Work, queue and byte ceilings are fixed.
 
-| Field                      | Meaning                                                        |
-|----------------------------|----------------------------------------------------------------|
-| `package`                  | Exact accepted graph package                                   |
-| `sourceMetadata`           | Exact snapshot source metadata                                 |
-| `request`                  | Canonical resolved request summary                             |
-| `discoveredCandidateCount` | Unique candidates discovered before selection                  |
-| `retainedCandidateCount`   | Candidates retained after deterministic selection              |
-| `excludedCandidateCount`   | Candidates omitted by the bound                                |
-| `excludedCandidateNodeIds` | Exact IDs of excluded candidates                               |
-| `candidateLimitApplied`    | Whether the candidate bound excluded any discovered candidates |
-| `discoveryComplete`        | Whether evidence discovery completed without limiting warnings |
-| `scopeCoverage`            | Discovered and retained counts for every requested grade scope |
-| `selectionPolicy`          | Deterministic selection-policy evidence                        |
-| `retainedCandidates`       | Up to 20 selected candidate records                            |
-| `warnings`                 | Progression-evidence warnings                                  |
+Collections are ordered by `(relationship type, relationship ID)`. `page` reports `returnedCount`, `examinedCount`, `candidateCount`, `hasMore`, `isComplete`, `stoppingReason` and `nextCursor`. `candidateCount` is not a filtered match count. `totalMatchingCount` is exact only when the entire candidate stream was examined in the current page; otherwise it is null. Package stored totals are separate from page/subset counts.
 
-Each retained candidate includes:
+Replay `page.nextCursor` with the same request, including limit and resolved route. Tokens are opaque, at most 4,096 characters, checksum protected and bound to package/manifest/profile and effective operation/filters/bounds. Changed or stale requests yield `invalid_cursor`. Page/work/byte limits can leave more results; a work-limited page may contain zero matches and still have continuation. A collection that reaches its byte budget preserves the unconsumed entry for the next page.
 
-- `node`, the standard's `nodeId`, `statementCode`, and `description`; the complete
-  record is one `get_standard` call away;
-- local and normalized `facets`;
-- `retrievalStatus: retrieval_candidate`;
-- `selectionRank`;
-- `matchedLocalGradeLabels` and `matchedNormalizedGrades`;
-- one or more `discoveryMethods`;
-- optional `searchHit`, the match evidence of the search hit that found it (matched
-  fields and terms, score, code evidence, warnings); and
-- compact bounded hierarchy `context`.
+Traversal is breadth-first with relationship-ID neighbor ordering and preserves branching/merging edges. Paths are directed simple paths ordered by hop count then relationship-ID tuple, with per-path cycle protection so alternatives survive. Results expose `scopeComplete`, `graphExhausted`, `truncationReasons`, counters and frontier. Requested-depth completeness does not mean the whole graph is exhausted. These operations have no cursor: change bounded inputs and rerun. Do not retry indefinitely to evade service ceilings.
 
-The compact context reports ancestor and root-path completion independently and retains
-non-empty relationship-resolution statuses. Its `rootPaths` are lists of node IDs from
-the framework root to the candidate. Every node those paths name appears once, for the
-whole result, in the top-level `contextNodes` table with its label, statement code,
-statement type, and source order. The relationship records along each path are one
-`get_standard_context` call away.
+## Empty, unavailable and failed requests
 
-## Warning codes
+Valid complete empty results succeed. Zero paths in an incomplete search do not establish disconnection. Even exhausted absence means no stored connection, not no pedagogical relationship: candidate coverage is limited. Unresolved, rejected, `no_relation` and `needs_review` claims are not accepted edges.
 
-```text
-context_incomplete
-discovery_incomplete
-no_candidates
-scope_not_retained
-scope_without_candidates
-search_warning
-```
+| Error                                        | Meaning                                                                        |
+|----------------------------------------------|--------------------------------------------------------------------------------|
+| `framework_not_found`, `ambiguous_framework` | Route missing or unique-current selection ambiguous                            |
+| `standard_not_found`, `ambiguous_graph_node` | Exact endpoint missing or ambiguous                                            |
+| `learning_progression_not_found`             | ID missing or belongs to a non-LP edge                                         |
+| `capability_unavailable`                     | Package does not declare LP, or selected code capability unavailable           |
+| `invalid_progression_request`                | Invalid semantic filters/selection, including identical path endpoints         |
+| `invalid_cursor`                             | Invalid, stale or mismatched continuation                                      |
+| `progression_result_too_large`               | Exact result or individual entry cannot fit; follow resource recovery guidance |
+| `resource_access_denied`                     | Reviewed/full-text/standard exposure policy denies query evidence              |
 
-A warning does not authorize the client to fill missing evidence by inference. Preserve
-it in any downstream progression review.
-
-## Candidate limit
-
-`candidateLimit` is a hard server-enforced retained-candidate maximum from 2 through 20.
-The response records whether the limit was applied and names excluded node IDs.
-
-Increasing the bound changes the requested evidence set and should be treated as a new
-request, not as continuation pagination.
-
-## No progression assertion
-
-!!! danger "Evidence order is not a source-authored progression"
-    Grade-scoped candidate collection does not prove that one standard is prerequisite
-    to another, that a learner should encounter them in a particular order, or that the
-    framework defines a learning progression across them.
-
-Use the `inferred_progression_hypothesis` prompt when you want the host model to perform
-an explicitly labeled model inference over this evidence.
-
-## Common errors
-
-| Error code               | Typical cause                                    |
-|--------------------------|--------------------------------------------------|
-| `framework_not_found`    | Selected framework or snapshot is unavailable    |
-| `standard_not_found`     | Exact focus identifier cannot be resolved        |
-| `capability_unavailable` | Requested focus/search capability is unavailable |
-
-Invalid grade scopes or missing required scope values can also fail strict request or
-domain validation before evidence collection begins.
-
----
-
-**Next:** [Resources and URI templates](resources.md)
+Malformed protocol types/enums/bounds are rejected by MCP validation. The tool's 1 MiB ceiling and resource source/return limits are distinct; resources can also deny or exceed limits. See [resources](resources.md) and [protocol behavior](protocol-behavior.md).

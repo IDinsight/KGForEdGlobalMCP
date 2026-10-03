@@ -306,7 +306,7 @@ for example:
 ```text
 dist/
 ├── kgfegmcp-stage/
-└── kgfegmcp-0.1.0.mcpb
+└── kgfegmcp-0.3.1.mcpb
 ```
 
 If a previous output file exists, the builder removes it before packing; ordinary parent
@@ -348,7 +348,7 @@ Inspect:
 
 ```bash
 find ./dist/kgfegmcp-stage -maxdepth 2 -type f -print
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 ## Claude Desktop recognizes the `.mcpb` but will not install it
@@ -360,7 +360,7 @@ following pass:
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 then treat the disabled/failed install control as a client installation-path issue before

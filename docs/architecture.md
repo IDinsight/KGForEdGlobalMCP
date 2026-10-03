@@ -60,16 +60,16 @@ flowchart TB
         FRAMEWORK[Framework services]
         STANDARDS[Standards and graph context]
         COMPARE[Comparison evidence]
-        PROGRESSION[Progression evidence]
+        PROGRESSION[Stored learning progressions]
         RESOURCE[Rights-aware resources]
         PROMPTS[Prompt service]
         CAPS[Capabilities and statistics]
     end
 
     subgraph MCP[FastMCP boundary]
-        TOOLS[13 tools]
-        RESOURCES[1 resource + 12 templates]
-        MCPPROMPTS[7 prompts]
+        TOOLS[17 tools]
+        RESOURCES[1 resource + 14 templates]
+        MCPPROMPTS[9 prompts]
     end
 
     HOST[MCP client / host model]
@@ -173,7 +173,7 @@ sequenceDiagram
 ```
 
 `AppState` retains the accepted catalog, settings, search service, comparison service,
-progression-evidence service, prompt service, and resource service for one server
+learning-progressions service, prompt service, and resource service for one server
 lifespan. Its invariants require those services to share the same catalog and runtime
 objects rather than mixing independently constructed state.
 
@@ -245,17 +245,17 @@ See [Search and retrieve standards](guides/standards-search.md) for search seman
 The MCP adapters are thin and ordinary Python services own the application behavior 
 beneath the protocol boundary.
 
-| Service area                | Responsibility                                                                                     |
-|-----------------------------|----------------------------------------------------------------------------------------------------|
-| Catalog and frameworks      | Framework-family discovery, exact snapshot routing, unique-current routing, and framework metadata |
-| Standards                   | Search orchestration, exact standard retrieval, and source-grounded standard results               |
-| Graph context               | Direct relationships, bounded ancestors and descendants, and bounded complete root paths           |
-| Comparison                  | Deterministic, independently bounded cross-framework retrieval                                     |
-| Progression evidence        | Grade-scoped, deduplicated, balanced candidate collection without asserting a progression          |
-| Resources                   | Deterministic and retained artifact access under rights and size policy                            |
-| Prompts                     | Generic workflows plus optional framework-specific guidance overlays                               |
+| Service area                | Responsibility                                                                                       |
+|-----------------------------|------------------------------------------------------------------------------------------------------|
+| Catalog and frameworks      | Framework-family discovery, exact snapshot routing, unique-current routing, and framework metadata   |
+| Standards                   | Search orchestration, exact standard retrieval, and source-grounded standard results                 |
+| Graph context               | Direct relationships, bounded ancestors and descendants, and bounded complete root paths             |
+| Comparison                  | Deterministic, independently bounded cross-framework retrieval                                       |
+| Progression evidence        | Exact stored links, filtered pages and bounded directed builds paths with provenance                 |
+| Resources                   | Deterministic and retained artifact access under rights and size policy                              |
+| Prompts                     | Generic workflows plus optional framework-specific guidance overlays                                 |
 | Learning components         | Component search, exact component retrieval, and traversal of the `supports` edge in both directions |
-| Capabilities and statistics | Truthful server/package feature reporting and framework statistics                                 |
+| Capabilities and statistics | Truthful server/package feature reporting and framework statistics                                   |
 
 This split allows service behavior to be tested independently of MCP transport concerns.
 
@@ -290,7 +290,7 @@ and [Resources and URI templates](reference/resources.md).
 
 ## Prompt architecture
 
-The seven MCP prompts are deterministic instruction renderers, not server-side generation
+The nine MCP prompts are deterministic instruction renderers, not server-side generation
 endpoints.
 
 Generic workflow logic is shared across frameworks. Versioned prompt configurations can
@@ -306,7 +306,9 @@ This separation is especially important for workflows such as:
 - `teacher_guide_draft`;
 - `student_handbook_section`;
 - `multigrade_lesson_plan`;
-- `inferred_progression_hypothesis`;
+- `learning_progression_teaching_sequence`;
+- `learning_progression_support_plan`;
+- `learning_progression_curriculum_review`;
 - `administrator_alignment_review`; and
 - `cross_framework_comparison`.
 
@@ -319,11 +321,21 @@ Cross-framework operations do not create edges between source graphs.
 
 `compare_framework_evidence` performs bounded retrieval independently within each
 selected framework and returns candidate evidence for downstream review.
-`collect_progression_evidence` similarly assembles candidates across requested grade
-scopes while preserving package-local identity and grade terminology.
+Stored progression tools operate within one exact package; they retrieve accepted
+relationships and do not create cross-framework links.
 
 The host model may reason over those results, but the server does not persist an
 alignment, grade equivalence, prerequisite, or progression relationship.
+
+## LP integration and immutable evidence
+
+Stored LP shares each curriculum's accepted graph/runtime and existing selectors, 
+rights policy, resources and thin MCP adapters. Separate labels preserve hasChild 
+ancestry and LC supports. New immutable artifact-set snapshots and profile version 2.0 
+replaced the sealed old packages; standard/component identity and source text stay 
+intact. The original provenance map plus 64 validated partitions lets clients open one 
+relationship's evidence within existing byte limits. No second database or mutable 
+graph is needed. See [local copy and update process](development/framework-package.md#learning-progression-inputs-and-updates).
 
 ## Determinism and immutability
 

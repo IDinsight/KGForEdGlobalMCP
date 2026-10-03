@@ -97,7 +97,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.1.0.mcpb
+dist/kgfegmcp-0.3.1.mcpb
 ```
 
 The command:
@@ -160,14 +160,17 @@ uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 This starts the real server in a separate STDIO subprocess, completes the MCP handshake,
 and verifies the exact public inventory:
 
-- 13 tools;
+- 17 tools;
 - 1 fixed resource;
-- 12 resource templates; and
-- 7 prompts.
+- 14 resource templates; and
+- 9 prompts.
 
 A successful command returns a JSON result with `"status": "passed"`. The inventory
-includes the deterministic `collect_progression_evidence` tool used by the
-`inferred_progression_hypothesis` prompt to enforce multi-grade candidate limits.
+includes five stored-LP query tools and three teaching/support/curriculum-review prompts.
+All six active packages include original LP provenance and 64 verified partitions;
+raw source/preparation inputs and retired packages stay outside the distribution.
+See [LP preparation and acceptance](../../docs/development/framework-package.md#learning-progression-inputs-and-updates).
+Local staging/smoke verification does not publish or deploy; deployment is user-owned.
 
 ## Smoke-test the staged runtime
 
@@ -197,7 +200,7 @@ uv --directory backend run --locked --no-dev   kgfegmcp-build-mcpb --stage-outpu
 
 uv --directory backend run --locked --no-dev   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 The completed local acceptance baseline is:
@@ -224,25 +227,25 @@ This option can be combined with `--output` and `--stage-output`.
 List archive members:
 
 ```bash
-unzip -l ./dist/kgfegmcp-0.1.0.mcpb
+unzip -l ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 Read the packaged manifest:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.1.0.mcpb manifest.json | jq .
+unzip -p ./dist/kgfegmcp-0.3.1.mcpb manifest.json | jq .
 ```
 
 Confirm the module launcher:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.1.0.mcpb manifest.json   | jq '.server'
+unzip -p ./dist/kgfegmcp-0.3.1.mcpb manifest.json   | jq '.server'
 ```
 
 Confirm ZIP integrity:
 
 ```bash
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 ## Claude Desktop

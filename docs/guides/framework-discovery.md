@@ -136,7 +136,7 @@ For an exact version:
 {
   "request": {
     "frameworkId": "ghana-nacca-primary-mathematics-basic-4-6",
-    "snapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+43d21a2cb010"
+    "snapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9"
   }
 }
 ```

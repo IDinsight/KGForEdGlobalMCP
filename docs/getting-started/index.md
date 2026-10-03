@@ -88,10 +88,10 @@ uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 The smoke command starts the real module entry point in a separate process, completes an
 MCP handshake, and checks the fixed public inventory:
 
-- 13 tools;
+- 17 tools;
 - 1 fixed resource;
-- 12 resource templates; and
-- 7 prompts.
+- 14 resource templates; and
+- 9 prompts.
 
 A successful run returns JSON containing:
 

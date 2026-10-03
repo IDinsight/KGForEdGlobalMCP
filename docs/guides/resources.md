@@ -20,7 +20,13 @@ flowchart LR
     E --> F[Return exact or deterministic resource document]
 ```
 
-The server exposes **one fixed resource** and **twelve resource templates**.
+The server exposes **one fixed resource** and **fourteen resource templates**.
+
+## Stored progression evidence
+
+From LP query results, follow `relationshipUri` for the edge and `provenanceUri` for its full original judgment and trace. Keep framework/snapshot/package/profile and returned/source-artifact hashes with the citation. Rationale/confidence/warnings in tools are bounded projections; the per-edge resource retains the complete available evidence. Confidence is a model judgment, not a learner-success probability.
+
+`metadata.summaryUri`, `validationUri` and `unresolvedUri` expose stored counts, candidate/eligibility limits and structural-only validation scope. Denied or oversized resources remain explicit failures. A stored edge is generated evidence without publisher endorsement; an absent edge is not proof of no pedagogical relationship. See [LP workflow guide](progression.md) and [resource policies](../reference/resources.md#learning-progression-resources).
 
 ## Fixed catalog resource
 
@@ -260,7 +266,7 @@ particular client does not expose them in its UI.
 ## Choosing tools versus resources
 
 Use tools when the task requires filtering, search, routing, traversal, comparison,
-progression candidate collection, or structured continuation behavior. Use resources
+stored progression queries, or structured continuation behavior. Use resources
 when you already know the exact identity and need an auditable retained or deterministic
 document such as a manifest, profile, validation report, standard, provenance entry, or
 relationship.

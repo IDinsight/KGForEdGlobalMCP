@@ -28,6 +28,15 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
 ```
 
+## Prepare Learning Progression inputs
+
+```bash
+uv --directory backend run --locked kgfegmcp-prepare-learning-progressions --help
+uv --directory backend run --locked kgfegmcp-prepare-learning-progressions
+```
+
+The command reads verified repository-local copies and their copy receipt, normalizes split stored LP records while preserving AS/LC delivery, reconciles combined/provenance evidence, and writes deterministic partitions/index/receipt in a separate preparation root. Defaults: receipt `data/source_artifacts/learning_progressions/copy_receipt.json`; output `data/source_artifacts/learning_progressions/prepared`. Optional `--framework-id`, `--receipt`, `--output-root` select safe inputs/output. It neither regenerates judgments nor builds/accepts/activates packages. Identical outputs are reusable; conflicting or unsafe output is rejected. See [source inventory and update process](../development/framework-package.md#learning-progression-inputs-and-updates).
+
 ## Recommended operator flow
 
 ```mermaid
@@ -63,7 +72,7 @@ in a separate STDIO process. It then:
 
 1. completes the MCP handshake;
 2. lists and requires the exact approved inventory;
-3. verifies 13 tools, 1 fixed resource, 12 resource templates, and 7 prompts;
+3. verifies 17 tools, 1 fixed resource, 14 resource templates, and 9 prompts;
 4. reads one known-good JSON resource from the fixed catalog and every resource-template
    family; and
 5. closes the client and proves the subprocess exits cleanly.
@@ -330,7 +339,7 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
 # 5. Confirm ZIP-level integrity.
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 The exact archive name follows the version in `packaging/mcpb/manifest.json`.

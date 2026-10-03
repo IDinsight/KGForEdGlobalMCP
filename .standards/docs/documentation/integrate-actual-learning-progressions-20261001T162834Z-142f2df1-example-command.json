@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/Users/tzz/.local/bin/uv",
+    "--directory",
+    "backend",
+    "run",
+    "--locked",
+    "--offline",
+    "--no-sync",
+    "python",
+    "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-check-examples.py"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_OFFLINE": "1"
+  },
+  "exit": 0,
+  "stderr": "[10/02/26 21:07:53] INFO     Application state construction     bootstrap.py:316\n                             completed:                                         \n                             accepted_package_count=6,                          \n                             discovered_package_count=6,                        \n                             elapsed_milliseconds=5782,                         \n                             excluded_package_count=0,                          \n                             operation=application_bootstrap.                   \n                    INFO     Application lifespan shutdown completed:  app.py:59\n                             accepted_package_count=6,                          \n                             operation=application_shutdown.                    \n",
+  "stdout": "{\"status\": \"passed\", \"toolExamples\": 5, \"promptExamples\": 3, \"resourceReads\": 5, \"catalogRows\": 6, \"renderedResourceTemplateRows\": 14, \"receipt\": \"/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-example-results.json\", \"receiptSha256\": \"sha256:2f067c8acf91c711a0a67cae1a020f5333c47b6fceeaeb50583149ca36a094fd\"}\n"
+}

@@ -108,10 +108,10 @@ From the repository root:
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 ```
 
-For version `0.1.0`, the default output is:
+For version `0.3.1`, the default output is:
 
 ```text
-dist/kgfegmcp-0.1.0.mcpb
+dist/kgfegmcp-0.3.1.mcpb
 ```
 
 The command removes an existing file at the selected output path before packing a new
@@ -224,25 +224,25 @@ paths.
 List members:
 
 ```bash
-unzip -l ./dist/kgfegmcp-0.1.0.mcpb
+unzip -l ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 Inspect the packaged manifest:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.1.0.mcpb manifest.json | jq .
+unzip -p ./dist/kgfegmcp-0.3.1.mcpb manifest.json | jq .
 ```
 
 Inspect the server declaration:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.1.0.mcpb manifest.json | jq '.server'
+unzip -p ./dist/kgfegmcp-0.3.1.mcpb manifest.json | jq '.server'
 ```
 
 Test ZIP integrity:
 
 ```bash
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 ## Recommended acceptance sequence
@@ -261,7 +261,7 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
 # Archive-level sanity check
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.3.1.mcpb
 ```
 
 A strong release baseline requires all four steps to pass.

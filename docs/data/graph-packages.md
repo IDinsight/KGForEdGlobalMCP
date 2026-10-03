@@ -23,20 +23,26 @@ A supplied package has this shape:
 <snapshot-id>/
 ├── package_manifest.json
 ├── delivery/
-│   ├── as_lc_nodes_*.jsonl
-│   └── as_lc_relationships_*.jsonl
-└── detailed/
-    ├── as_entity_provenance.json
-    ├── as_kg_bundle.json
-    ├── as_lc_kg_bundle.json
-    ├── as_relationships_has_child.jsonl
-    ├── as_standards_framework.json
-    ├── as_standards_framework_items.jsonl
-    ├── as_unresolved_items.json
-    ├── as_validation_report.json
-    ├── lc_dedup_groups.json
-    ├── lc_entity_provenance.json
-    └── lc_generation_summary.json
+│   ├── as_lc_lp_nodes_*.jsonl
+│   └── as_lc_lp_relationships_*.jsonl
+├── detailed/
+│   ├── as_entity_provenance.json
+│   ├── as_kg_bundle.json
+│   ├── as_lc_kg_bundle.json
+│   ├── as_lc_validation_report.json
+│   ├── as_relationships_has_child.jsonl
+│   ├── as_standards_framework.json
+│   ├── as_standards_framework_items.jsonl
+│   ├── as_unresolved_items.json
+│   ├── lc_dedup_groups.json
+│   ├── lc_entity_provenance.json
+│   ├── lc_generation_summary.json
+│   ├── lp_relationship_provenance.json
+│   ├── lp_relationship_provenance_index.json
+│   ├── lp_normalization_receipt.json
+│   └── remaining lp_*.json / lp_*.jsonl evidence
+└── additional/
+    └── lp_relationship_provenance_shard_00.json … shard_63.json
 ```
 
 Artifact basenames differ by framework, but logical roles are declared by the manifest.
@@ -54,7 +60,7 @@ The server's primary graph runtime is built from the manifest-declared `nodes` a
 
 ## Delivery JSONL envelope
 
-Delivery schema version `1.1` uses one JSON object per physical line.
+Delivery schema version `1.2` uses one JSON object per physical line.
 
 A node record has this outer shape:
 
@@ -99,7 +105,7 @@ relationship properties:
 The external delivery `properties` object deliberately preserves source values as
 strings. The decoder is the boundary that interprets a small set of known encodings.
 
-For schema `1.1`:
+For schema `1.2`:
 
 - booleans are decoded only from the exact strings `"true"` and `"false"`;
 - array-valued properties such as `gradeLevel` and `tags` are JSON arrays encoded inside
@@ -119,7 +125,7 @@ those are later validation stages.
 
 ## Node labels
 
-Delivery schema `1.1` recognizes these Learning Commons-shaped labels:
+Delivery schema `1.2` recognizes these Learning Commons-shaped labels:
 
 ```text
 StandardsFramework
@@ -146,17 +152,17 @@ taxonomy. Those belong to published standards and are recovered by following the
 component's `supports` relationships to the standards items it was decomposed from.
 
 Delivery artifacts carry standards and learning components together, and take the
-`as_lc_` filename prefix:
+`as_lc_lp_` filename prefix:
 
 ```text
-delivery/as_lc_nodes_<subject>.jsonl
-delivery/as_lc_relationships_<subject>.jsonl
+delivery/as_lc_lp_nodes_<subject>.jsonl
+delivery/as_lc_lp_relationships_<subject>.jsonl
 detailed/as_lc_validation_report.json
 ```
 
 ## Relationship representation
 
-The current hierarchy relationship type is `hasChild`. Delivery schema `1.1` adds
+The current hierarchy relationship type is `hasChild`. Delivery schema `1.2` retains
 `supports`, which runs from a learning component to the standards framework item it was
 decomposed from, and carries a `supportConfidence` between zero and one.
 
@@ -178,6 +184,12 @@ Every learning component must be reachable by at least one `supports` relationsh
 A relationship can also carry a supported unresolved status such as
 `unresolvedRootFallback`. Such evidence remains explicitly unresolved rather than being
 silently repaired.
+
+## Stored learning progression relationships
+
+Delivery schema `1.2` also accepts `buildsTowards` and `relatesTo` between standard items. Both endpoints preserve CASE identity. Builds is directional support for success; relates is nonsequential conceptual/skill relatedness, stored once in canonical CASE order. Their generated author/provider/attribution is validated against LP evidence independently of hierarchy authorship. Rich judgments remain in retained provenance with validated query projections, rather than being flattened into wire string properties.
+
+Each mixed package declares `academic_standards`, `learning_components` and `learning_progressions` in `includedGraphTypes`, with primary `graphType: academic_standards`. It has one GraphStore/runtime; label-specific operations keep hasChild ancestry, LC supports and LP separate. LP creates no new node kind. See [LP input/update process](../development/framework-package.md#learning-progression-inputs-and-updates).
 
 ## Closed package tree
 

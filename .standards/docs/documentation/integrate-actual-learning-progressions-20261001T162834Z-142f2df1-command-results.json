@@ -1,0 +1,72 @@
+[
+  {
+    "argv": [
+      "/Users/tzz/.local/bin/uv",
+      "--directory",
+      "backend",
+      "run",
+      "--locked",
+      "--offline",
+      "--no-sync",
+      "kgfegmcp-prepare-learning-progressions",
+      "--help"
+    ],
+    "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "UV_OFFLINE": "1"
+    },
+    "exit": 0,
+    "stderr": "",
+    "stdout": "                                                                                \n Usage: kgfegmcp-prepare-learning-progressions [OPTIONS]                        \n                                                                                \n Prepare stored LP delivery, unchanged evidence and deterministic provenance    \n partitions.                                                                    \n                                                                                \n\u256d\u2500 Options \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e\n\u2502 --framework-id              <str>   Exact copied framework ID; omitted       \u2502\n\u2502                                     prepares all.                            \u2502\n\u2502 --output-root               <path>  Separate preparation root; runtime roots \u2502\n\u2502                                     are protected.                           \u2502\n\u2502                                     [default:                                \u2502\n\u2502                                     data/source_artifacts/learning_progress\u2026 \u2502\n\u2502 --receipt                   <path>  Verified repository-local copy receipt.  \u2502\n\u2502                                     [default:                                \u2502\n\u2502                                     data/source_artifacts/learning_progress\u2026 \u2502\n\u2502 --install-completion                Install completion for the current       \u2502\n\u2502                                     shell.                                   \u2502\n\u2502 --show-completion                   Show completion for the current shell,   \u2502\n\u2502                                     to copy it or customize the              \u2502\n\u2502                                     installation.                            \u2502\n\u2502 --help                              Show this message and exit.              \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\n\n"
+  },
+  {
+    "argv": [
+      "/Users/tzz/.local/bin/uv",
+      "--directory",
+      "backend",
+      "run",
+      "--locked",
+      "--offline",
+      "--no-sync",
+      "kgfegmcp-build-manifest",
+      "--spec",
+      "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/input_artifacts/nigeria_math/package_build.json",
+      "--dry-run"
+    ],
+    "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "UV_OFFLINE": "1"
+    },
+    "exit": 1,
+    "stderr": "{\n  \"code\": \"manifest_build_error\",\n  \"message\": \"The graph-package destination contains a terminal package and may not be reused or overwritten.\"\n}\n",
+    "stdout": ""
+  },
+  {
+    "argv": [
+      "/Users/tzz/.local/bin/uv",
+      "--directory",
+      "backend",
+      "run",
+      "--locked",
+      "--offline",
+      "--no-sync",
+      "mkdocs",
+      "build",
+      "--strict",
+      "--config-file",
+      "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/mkdocs.yml",
+      "--site-dir",
+      "/tmp/kgfegmcp-documenter-site"
+    ],
+    "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "UV_OFFLINE": "1"
+    },
+    "exit": 0,
+    "stderr": "\n\u001b[31m \u2502  \u26a0  Warning from the Material for MkDocs team\u001b[0m\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502\u001b[0m  MkDocs 2.0, the underlying framework of Material for MkDocs,\n\u001b[31m \u2502\u001b[0m  will introduce backward-incompatible changes, including:\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502  \u00d7 \u001b[0mAll plugins will stop working \u2013 the plugin system has been removed\n\u001b[31m \u2502  \u00d7 \u001b[0mAll theme overrides will break \u2013 the theming system has been rewritten\n\u001b[31m \u2502  \u00d7 \u001b[0mNo migration path exists \u2013 existing projects cannot be upgraded\n\u001b[31m \u2502  \u00d7 \u001b[0mClosed contribution model \u2013 community members can't report bugs\n\u001b[31m \u2502  \u00d7 \u001b[0mCurrently unlicensed \u2013 unsuitable for production use\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502\u001b[0m  Our full analysis:\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502\u001b[0m  \u001b[4mhttps://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/\u001b[0m\n\u001b[0m\nINFO    -  Cleaning site directory\nINFO    -  Building documentation to directory: /tmp/kgfegmcp-documenter-site\nINFO    -  Documentation built in 0.82 seconds\n",
+    "stdout": ""
+  }
+]

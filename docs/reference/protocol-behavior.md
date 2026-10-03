@@ -61,6 +61,9 @@ blindly at MCP boundaries.
 | `framework_not_found`              | Framework or snapshot route unavailable                   |
 | `graph_node_not_found`             | Graph node unavailable                                    |
 | `invalid_comparison_selection`     | Cross-framework selection is inconsistent                 |
+| `learning_progression_not_found`   | Exact LP ID missing or non-LP                             |
+| `invalid_progression_request`      | LP semantic filters/selection invalid                     |
+| `progression_result_too_large`     | Individual LP result/entry exceeds byte ceiling           |
 | `invalid_cursor`                   | Pagination cursor malformed, stale, or request-mismatched |
 | `jsonl_parsing_error`              | Package JSONL record invalid                              |
 | `manifest_build_error`             | Pending manifest cannot be built safely                   |
@@ -93,8 +96,10 @@ the MCP surface.
 
 ## Cursor behavior
 
-Only `list_frameworks`, `search_standards`, and `search_learning_components` expose
-caller-visible continuation cursors.
+`list_frameworks`, `search_standards`, `search_learning_components`,
+`get_standard_progressions` and `search_learning_progressions` expose continuation cursors.
+LP collections use `page.nextCursor`; replay it with the same selection/filters/limits.
+Their concise text does not provide the catalog/search `nextRequest` block described below.
 
 Cursors are:
 
@@ -147,16 +152,7 @@ no_matches
 unresolved_evidence_present
 ```
 
-Progression warning codes:
-
-```text
-context_incomplete
-discovery_incomplete
-no_candidates
-scope_not_retained
-scope_without_candidates
-search_warning
-```
+Stored progression results retain judgment warnings and coverage notices, plus explicit page stopping and traversal/path truncation reasons. They do not use the obsolete candidate-collection warning taxonomy. Preserve total/omitted warning indicators and inspect full provenance.
 
 A warning is part of the evidence contract. Clients should preserve it rather than
 silently converting uncertainty or capability limits into a confident conclusion.
@@ -219,34 +215,31 @@ cross-framework ranking limit.
 
 ## Progression limits
 
-| Field              | Bound            |
-|--------------------|------------------|
-| `candidateLimit`   | 2-20; default 8  |
-| `topicOrStandard`  | 1-512 characters |
-| `localGradeLabels` | max 32           |
-| `normalizedGrades` | max 32           |
+See [the five-tool bounds table](progression-tool.md#bounds-and-continuation). Direct/discovery pages default to 25 and cap at 100, with 5,000 examined candidates. Traversal defaults to depth 8/nodes 100/edges 100 and caps at 12/250/100. Paths default to depth 6/three paths, capped at 12/20. Work and path queue admissions cap at 5,000; tool text plus structured content caps at 1 MiB.
 
-At least one local or normalized grade scope is required.
+Traversal/paths have no cursor. `scopeComplete`, `graphExhausted`, frontier/counters and `truncationReasons` distinguish requested-depth completion from full exhaustion. Complete empty evidence is successful; bounded empty results do not prove global disconnection. An individually oversized entry raises `progression_result_too_large` with resource recovery guidance.
 
 ## Prompt limits
 
-| Argument                             | Bound / default       |
-|--------------------------------------|-----------------------|
-| `practice_count`                     | 1-10; default 5       |
-| `lesson_duration_minutes`            | 10-240; default 45    |
-| `target_word_count`                  | 150-1500; default 500 |
-| Prompt progression `candidate_limit` | 2-20; default 8       |
-| Comparison `matches_per_framework`   | 1-10; default 5       |
-| `local_context`                      | max 4000 characters   |
-| `available_materials`                | max 2000 characters   |
-| `learner_context`                    | max 2000 characters   |
+| Argument                           | Bound / default           |
+|------------------------------------|---------------------------|
+| `practice_count`                   | 1-10; default 5           |
+| `lesson_duration_minutes`          | 10-240; default 45        |
+| `target_word_count`                | 150-1500; default 500     |
+| LP topic/selector text             | max 512 characters        |
+| LP prompt facet arrays             | max 32 unique values each |
+| Curriculum-review selectors        | max 20 unique selectors   |
+| Comparison `matches_per_framework` | 1-10; default 5           |
+| `local_context`                    | max 4000 characters       |
+| `available_materials`              | max 2000 characters       |
+| `learner_context`                  | max 2000 characters       |
 
 Complex prompt collection arguments are entered as JSON arrays by MCP prompt clients.
 
 ## Tool result compatibility
 
 Every tool result contains machine-readable `structuredContent` plus a deterministic
-text summary. Paginated tools add model-visible continuation data. Some tools also add
+text summary. Catalog/search pages add a model-visible continuation block; LP collections expose continuation in `page`. Some tools also add
 optional `resource_link` content blocks.
 
 The structured result is authoritative for programmatic use. Human-readable text and

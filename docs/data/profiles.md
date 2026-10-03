@@ -20,12 +20,12 @@ For example:
 ```text
 config/profiles/
 └── ghana-nacca-primary-english-language-basic-1-3/
-    └── 1.0/
+    └── 2.0/
         └── profile.json
 ```
 
 The document must declare the same `profileId` and `profileVersion` selected by its
-path. The supported `profileSchemaVersion` is currently `1.0`.
+path. The supported `profileSchemaVersion` is currently `1.1`.
 
 ## What a profile defines
 
@@ -40,7 +40,7 @@ path. The supported `profileSchemaVersion` is currently `1.0`.
 | Language                | `languagePolicy`                                                                                        | Preserves source terminology and declares supported source languages                                           |
 | Source roles            | `sourceRoleCapabilities`                                                                                | Reports whether official activities, assessment guidance, or resources are represented                         |
 | Rights                  | `rights`                                                                                                | Carries the framework-local rights policy used when validating package agreement                               |
-| Interpretation guidance | `comparisonDimensions`, `progressionHeuristics`                                                         | Supplies configuration-level dimensions/heuristics without asserting derived relationships                     |
+| Interpretation guidance | `comparisonDimensions`                                                                                  | Supplies configuration-level comparison dimensions without asserting derived relationships                     |
 | Caveats                 | `knownSourceAnomalies`, `requiredDisclosures`                                                           | Preserves known source issues and mandatory interpretation warnings                                            |
 
 ## Grade mappings are retrieval facets
@@ -168,6 +168,10 @@ The profile loader also:
 3. requires a real `<profile-id>/<version>/profile.json` file;
 4. verifies the declared identity; and
 5. computes the exact-byte SHA-256 later compared with the package manifest.
+
+## Stored progression configuration
+
+The six active profiles use version `2.0`, schema `1.1`. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
 
 ## Versioning rule
 
