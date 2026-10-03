@@ -1,0 +1,10 @@
+[10/03/26 12:53:51] INFO     Application state construction     bootstrap.py:316
+                             completed:                                         
+                             accepted_package_count=6,                          
+                             discovered_package_count=6,                        
+                             elapsed_milliseconds=6393,                         
+                             excluded_package_count=0,                          
+                             operation=application_bootstrap.                   
+[10/03/26 12:53:52] INFO     Application lifespan shutdown completed:  app.py:59
+                             accepted_package_count=6,                          
+                             operation=application_shutdown.                    

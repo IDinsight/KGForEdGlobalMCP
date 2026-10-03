@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/check-current-evidence.py", line 54, in <module>
+    assert set(changed) == allowed, changed
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'.standards/STATE.md': '3e64be7c76d4feaeea799c1f8bd9200c0860fc550225734ef045c85cfdb0bfb0', '.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md': '46f7a7fad7b0e33b74f9531e72811731759149494cf747d4c1511e2224e23e19', '.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md': '8abf0709eb3b71afc31b32b2fa701be685418d17aee59994233c08dd98cc6ede', '.standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md': '8f34149a35fd1c69471581977785acad3e4da0eacfcb2ac16649634b266193fb', 'docs/data/prompt-configs.md': '84145d82190bae5cbe733628ffb34535fa16bba1b8d8d294a19ea817cea580a6'}

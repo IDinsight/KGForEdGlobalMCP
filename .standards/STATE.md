@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `REVIEWING_FINAL` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `DOCUMENTING` `FailureType`: `NONE` `Reason`:
-`Documentation recovery gate passed with corrected prompt count, reproducible saved checks and current distribution/identity evidence; DOCUMENTING boundary completed, resuming independent FINAL_DELIVERABLE review.`
+`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
+`Independent FINAL_DELIVERABLE re-review passed: both original findings resolved, current bundle and saved documentation checks verified, all acceptance evidence reconciled. Proceed to Synchronizer.`
 
 ## Recovery
 

@@ -1,0 +1,33 @@
+{
+  "cycle": "integrate-actual-learning-progressions-20261001T162834Z-142f2df1",
+  "exclusions": "Self, current final report, and STATE: final report points here, while completion/handoff mutate their own coordination content.",
+  "files": {
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/check-current-evidence-initial.py": "014d7f4311473c6f7f7521d386ed228ecaa20490cdd1ec801fcf5e3497bd3e6d",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/check-current-evidence.py": "3c16ef5f9b1f27742b7e56c94ef68cdaec2088a0159723fd3028c71189da7acb",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/check-saved-examples.py": "d393978d5d4d935e6914c490ffa56fb6c582cdce64074eaee449e37bf7ccfee4",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/current-evidence-rechecked.command.json": "1c0261cf8888ef0926ce8ea7ba78ca28b8ad27901fa1885782dcc69256ba3a1e",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/current-evidence-rechecked.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/current-evidence-rechecked.stdout": "f26e52160cfcc0c0d8ead850c4a05b5c58c1bd7ea96edc4fcac4cfb9be2403d1",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/current-evidence.command.json": "5b39f3d4e5aefd7349193ed5b36c64d3b57e8afaa5c74a5eb752b2db71e05251",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/current-evidence.stderr": "37aec0de66a7aaec411a50ac370c0d4aaaf2e8a060a0b9b15f2befe897c30cb7",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/current-evidence.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/entry-inputs.json": "5c8c4618d2753f42fda26bfd34b8a952cb2330b252ab284ef2a740896715375a",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/example-checker-binding.json": "9656a5177ff2d1e928714d672f1358647f9d79b66649baf922a8c6c44a975ba4",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/example-results.json": "36c98a165efa687c86c4802ff3268230b19878f23bde31de036627751b73eb5c",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-check.json": "1abcb0b1d51ebd777297d067f71dcc21c4303e552137b6c232ee79de51c1dc2b",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-diff.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-diff.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-evidence.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-evidence.stdout": "07539b433f0ca5a029bf8568f623e99fe166d5d803233ab27d16bb3fb80928ce",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-workflow.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-workflow.stdout": "578e7438bcb31b0092772cc9fe689470d9a071b33ef33b24d9b6b03ece38745c",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/prior-final-review.json": "6f16fdeaae702befc951c224faefc2b01b12c5705ee3cdc1e11b68611bd028da",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/run-checks.py": "5012f0681fc5ba0823c31be51be2319adb6d58a79e548f2f5261dd4b90e6feb3",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/saved-examples.command.json": "a37e04e8788d88f6cda918a89739fe2f312916b1af900c378f12e53c6fea1344",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/saved-examples.stderr": "d54f8eeafe2a63f17db5bc98d4da6907c0991ff390a2e8bdc669a3238e54ffea",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/saved-examples.stdout": "d37e00e3a43aa5dec099e07e5f7d8c71f44b901d608ed63f93ffd6e6c6b3f81f",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/strict-build.command.json": "7a12350a3d73a52611276dfcaadd6002ea835e7e9980ad59bcb7d7792c353c75",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/strict-build.stderr": "3ff94db538ccf2916d013c2f9787bb6d942e6f122e9de718573e73f0a7847061",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/strict-build.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "allowedOwnedChange": {
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md": "1551ed2befe48e7e3a23a3c03ed48dc4c8ca6f11b5363b6b11ffda17bf98c2d3"
+  },
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/check-current-evidence.py"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "durationSeconds": 3.722,
+      "environment": {
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1"
+      },
+      "exitCode": 0,
+      "logs": {
+        "stderr": {
+          "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-evidence.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-evidence.stdout",
+          "sha256": "07539b433f0ca5a029bf8568f623e99fe166d5d803233ab27d16bb3fb80928ce"
+        }
+      },
+      "name": "gate-evidence"
+    },
+    {
+      "argv": [
+        "node",
+        ".standards/bin/check.mjs"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "durationSeconds": 0.17,
+      "environment": {
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1"
+      },
+      "exitCode": 0,
+      "logs": {
+        "stderr": {
+          "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-workflow.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-workflow.stdout",
+          "sha256": "578e7438bcb31b0092772cc9fe689470d9a071b33ef33b24d9b6b03ece38745c"
+        }
+      },
+      "name": "gate-workflow"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+      "durationSeconds": 0.02,
+      "environment": {
+        "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "UV_OFFLINE": "1"
+      },
+      "exitCode": 0,
+      "logs": {
+        "stderr": {
+          "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-diff.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stdout": {
+          "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/gate-diff.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "name": "gate-diff"
+    }
+  ],
+  "cycle": "integrate-actual-learning-progressions-20261001T162834Z-142f2df1",
+  "entryFiles": 1318,
+  "entryReceiptSha256": "5c8c4618d2753f42fda26bfd34b8a952cb2330b252ab284ef2a740896715375a",
+  "exampleResultEqualsOwner": true,
+  "head": "2bb4b29c8d86b2f4ab0b79a7b4f5dce4c9705d90",
+  "outputOwnership": "Reviewer-only files; report completion and subsequent legal STATE handoff intentionally occur after these checks.",
+  "status": "passed",
+  "unchangedEntryFiles": 1317
+}

@@ -1,0 +1,21 @@
+{
+  "source": ".standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1-check-examples.py",
+  "sourceSha256": "bf3ba2b860d7a7bb2893d44cf7af41e53fca59d40b0a240a3f484fb89faf1b2c",
+  "reviewerCopy": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/check-saved-examples.py",
+  "copySha256": "d393978d5d4d935e6914c490ffa56fb6c582cdce64074eaee449e37bf7ccfee4",
+  "onlyChanges": [
+    [
+      "ROOT = Path(__file__).resolve().parents[3]",
+      "ROOT = Path(\"/Users/tzz/Projects/private/idi/KGForEdGlobalMCP\")"
+    ],
+    [
+      "OUT = ROOT / \".standards/docs/documentation/recovery-20261003/example-results.json\"",
+      "OUT = ROOT / \".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-recovery/example-results.json\""
+    ],
+    [
+      "/tmp/kgfegmcp-documenter-site",
+      "/tmp/kgfegmcp-final-recovery-review-site"
+    ]
+  ],
+  "reverseExactlyEqualsSource": true
+}
