@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Frame 2 Size-Correction Revision — approved 2026-10-06
@@ -1551,7 +1551,7 @@ Share validation/adaptation below MCP rather than invoke decorated native handle
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-021, DEV-025`
+`Status`: `DONE` `Depends On`: `DEV-021, DEV-025`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
 
 **Current Recovery Assignment — proposed 2026-10-06**
@@ -2337,3 +2337,11 @@ Frame 2 rebuild progress (data/source_artifacts/learning_progressions/client-rec
 - checks/closure.py exit 0 (10 checks): archive equals stage (except the packer-omitted .mcpbignore); every member maps to a repository input (backend/fastmcp.json now mapped too) and equals both the working tree and the committed HEAD blob; smoke_access.py is the committed cad4ce04… version; all six package trees and all 522 graph-package files present; no caches, environments, preparation or test trees.
 - in-process shared smoke on committed code: exit 0, summary byte-identical to the earlier run (the reformatting changed no behavior). Static on the four smoke/capabilities modules: all exit 0 (pylint 10.00/10). pytest tests/: exit 0, 103 passed (includes Tester's new cases).
 - Pending user-run (sandbox blocks the uv cache and local port binding): repository STDIO, staged STDIO for the rebuilt bundle, and loopback HTTP, so all transport receipts are bound to committed source.
+
+### Frame 2 correction for DEV-022 — completed 2026-10-06
+
+User ran the three transport commands outside the sandbox against the rebuilt candidate: stdio-repo exit 0 (10.4 s), stdio-stage with --bundle-root client-recovery-dev022-frame2/bundle exit 0 (14.8 s), http-harness exit 0 (10.5 s, loopback only, server stopped). checks/transport_agreement.py exit 0: repository STDIO, staged STDIO, loopback HTTP and in-process runs agree exactly on inventory (19/9/1/14), all 19 tool schema identities, LP query identities, the 12-read access suite and 15 native resource reads; all 657 archived files remain byte-identical in the stage, whose only additions are its own .venv and src/kgfegmcp.egg-info.
+
+The user then committed the plan/state only (HEAD dcd1b2431fa7d98869aac352f3b7b3293c4629e7). checks/closure.py rerun at that HEAD: exit 0 — build inputs equal HEAD, archive equals the stage apart from startup-created environment/metadata, and every member equals both the working tree and the committed HEAD blob; archive SHA256 unchanged 170ba6fd9df70ef27e29480c406ecbcab174c0d0c539530fc3e232db0b9e52e4. Retained nonpassing iteration: closure-post-startup-additions (my check had not excluded the stage's startup-created .venv/.egg-info). Pre-commit closure receipts are kept as closure-pre-commit.*. Evidence index SHA256 d3ed30a95bb71f686cbaef714a9ab2b2d0167e379dbf68fc6b585765bd2b9c40; smoke/capabilities source identities unchanged.
+
+The defect is corrected: the retained 0.4.0 candidate is data/source_artifacts/learning_progressions/client-recovery-dev022-frame2/kgfegmcp-0.4.0-client-recovery-frame2.mcpb, built from and bound to committed source; the earlier client-recovery-dev022 candidate is superseded history. DEV-022 DONE; all nineteen steps DONE; full Developer gate passes again (unchanged locked style, no obligations, no open questions). Plan COMPLETE. As owner of IMPLEMENTATION Frame 2 (ResumeAt TESTING, RerunThrough NONE), no other state needs a rerun: pop Frame 2 and RESUME TESTING; Frame 1 continues through SYNCHRONIZING.
