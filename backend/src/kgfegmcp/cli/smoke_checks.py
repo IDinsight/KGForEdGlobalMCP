@@ -27,6 +27,7 @@ from typing import Final, cast
 from fastmcp import Client
 
 # Package Library
+from kgfegmcp.cli.smoke_access import verify_client_access
 from kgfegmcp.cli.smoke_progressions import (
     progression_schema_identities,
     verify_progression_queries,
@@ -82,7 +83,9 @@ _EXPECTED_TOOL_NAMES = (
     "get_standard",
     "get_standard_context",
     "get_standard_progressions",
+    "get_workflow_instructions",
     "list_frameworks",
+    "read_evidence",
     "search_learning_components",
     "search_learning_progressions",
     "search_standards",
@@ -739,10 +742,12 @@ async def verify_server_surface(client: Client) -> dict[str, object]:
         snapshot_id=_SMOKE_SNAPSHOT_ID,
     )
     resource_reads = await _resource_reads(client)
+    access = await verify_client_access(client)
 
     # Every family key is guaranteed present: _require_approved_inventory has already
     # matched all four labels against the approved surface.
     return {
+        "access": access,
         "fixedResourceCount": len(inventory["fixed-resource"]),
         "promptCount": len(inventory["prompt"]),
         "inventory": inventory,

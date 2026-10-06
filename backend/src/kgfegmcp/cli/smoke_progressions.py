@@ -140,7 +140,13 @@ async def _read_query(
     if result.is_error:
         raise RuntimeError(f"Progression smoke tool failed: {name}.")
 
-    return _RESULT_MODELS[name].model_validate(result.structured_content)
+    # Tool-only clients read the text block; it must be the complete result.
+    text = json.loads(getattr(result.content[0], "text", ""))
+
+    if text != result.structured_content:
+        raise RuntimeError(f"Progression text differs from structured content: {name}.")
+
+    return _RESULT_MODELS[name].model_validate(text)
 
 
 def _require_edge(

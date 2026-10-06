@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Frame 2 Size-Correction Revision — approved 2026-10-06
@@ -33,7 +33,7 @@ Formal tests: some Tester-owned cases encode the superseded contract and are exp
 
 This section supersedes historical completion, next-action, surface and recovery-route claims below. Recovery Frame 1 is SCOPING-owned, from/resuming at AWAITING_USER_SIGNOFF, with RerunThrough SYNCHRONIZING. Developer is a downstream rerun and does not change that frame. The revised scope has 37 current acceptance IDs; architecture establishes the new text, evidence and workflow contracts.
 
-User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. User authorized DEV-014; Tester corrected the scoped traversal/shared-path fixtures, popped only nested Frame 2 and RESUMED Developer. Developer restored Suspended Assignment 2, reconciled that return and reran the affected checks; DEV-014 is DONE. User authorized DEV-015; real data disproved the path size design, so ARCHITECTURE Frame 2 was routed and returned with the user-selected size correction (see Frame 2 Size-Correction Revision). DEV-012 (reopened) and DEV-015 are DONE under it. Tester corrected the superseded formal cases, verified the Frame 2 contracts, popped VERIFICATION Frame 2 and RESUMED Developer; Developer restored Suspended Assignment 4. DEV-024 and DEV-025 are DONE; a scoped VERIFICATION Frame 2 routes their superseded formal cases to TESTING and Suspended Assignment 5 preserves the remaining DEVELOPMENT/NONE work. DEV-022 remains PENDING. Current feedback and resume directions are recorded in Plan Notes.
+User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. User authorized DEV-014; Tester corrected the scoped traversal/shared-path fixtures, popped only nested Frame 2 and RESUMED Developer. Developer restored Suspended Assignment 2, reconciled that return and reran the affected checks; DEV-014 is DONE. User authorized DEV-015; real data disproved the path size design, so ARCHITECTURE Frame 2 was routed and returned with the user-selected size correction (see Frame 2 Size-Correction Revision). DEV-012 (reopened) and DEV-015 are DONE under it. Tester corrected the superseded formal cases, verified the Frame 2 contracts, popped VERIFICATION Frame 2 and RESUMED Developer; Developer restored Suspended Assignment 4. DEV-024 and DEV-025 are DONE; Tester corrected their superseded formal cases, verified both tools, popped VERIFICATION Frame 2 and RESUMED Developer, who restored Suspended Assignment 5. DEV-022 remains PENDING. Current feedback and resume directions are recorded in Plan Notes.
 
 | Order | Step | Observable recovery outcome |
 |---|---|---|
@@ -1551,7 +1551,7 @@ Share validation/adaptation below MCP rather than invoke decorated native handle
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `PENDING` `Depends On`: `DEV-021, DEV-025`
+`Status`: `DONE` `Depends On`: `DEV-021, DEV-025`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
 
 **Current Recovery Assignment — proposed 2026-10-06**
@@ -1560,7 +1560,7 @@ Reconcile capabilities, explicit registration, descriptions and exact input/outp
 
 Use the existing builder for a distinct candidate under data/source_artifacts/learning_progressions/client-recovery-dev022/: kgfegmcp-0.4.0-client-recovery.mcpb and bundle/. If that destination already exists with different content, retain it and choose another distinct preparation path rather than overwrite history. Bind current source/archive/stage member bytes, versions, complete active evidence closure and stage-root imports; preserve all historical candidates/receipts. Refresh the final candidate again through this same step if later Documenter-owned shipped input changes require it. Developer does not edit user documentation; shipped instruction consistency remains an explicit Documenter/Reviewer reconciliation dependency, never a passing claim for stale 17-tool prose.
 
-Current self-check: NOT RUN. Established offline repository STDIO and loopback HTTP smoke, official MCPB build/validate/pack/closure checks and retained-stage smoke under its own roots; measure actual text/structured envelope sizes and retain exact schema/resource/result/receipt identities. Run relevant existing offline tests and static checks as implementation feedback. No public connector/Desktop workflow pass, deployment, publication or semantic certification is claimed. Full Developer handoff waits for all current steps and the applicable gate; Tester independently establishes every current AC.
+Current self-check: PASS — implementation, MCPB build/closure, static checks, 98 tests, and user-run repository STDIO, staged STDIO and loopback HTTP smoke all pass and agree with the in-process run. See "Client-access recovery for DEV-022 — in progress" in Plan Notes. Planned: established offline repository STDIO and loopback HTTP smoke, official MCPB build/validate/pack/closure checks and retained-stage smoke under its own roots; measure actual text/structured envelope sizes and retain exact schema/resource/result/receipt identities. Run relevant existing offline tests and static checks as implementation feedback. No public connector/Desktop workflow pass, deployment, publication or semantic certification is claimed. Full Developer handoff waits for all current steps and the applicable gate; Tester independently establishes every current AC.
 
 The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
@@ -2262,3 +2262,65 @@ DEV-025 DONE. Route the agreed single scoped VERIFICATION correction before DEV-
 `Next Action`: `On Tester RESUME, reload STATE/frame/plan/report, reconcile corrected formal tests and the scoped assessment, rerun affected checks, and stop before DEV-022 under STEPWISE. DEV-024 and DEV-025 are DONE; restore the approved remaining DEV-022 assignment with no duplicate plan approval.`
 
 Save the interrupted overall Developer assignment before routing. Push nested Frame 2, From/ResumeAt DEVELOPING, Owner TESTING, FailureType VERIFICATION, RerunThrough NONE; preserve SCOPING-owned Frame 1. Tester decides the bounded correction and whether new formal cases for read_evidence and get_workflow_instructions belong in this assessment. Suggested commit: feat(prompts): add get_workflow_instructions and evidence access guidance.
+
+### Developer resumption after DEV-024/025 Tester correction — 2026-10-06
+
+User explicitly invoked Developer after Tester RESUME (From TESTING, FailureType NONE). Restored Suspended Assignment 5 (DEVELOPMENT/NONE, former VERIFICATION Frame 2 and its exact reason). Entry HEAD 1f4390d283f0d70fb371528f549e05a39b058d44, clean tree; only SCOPING Frame 1 remains; STEPWISE, locked tony, AFTER_IMPLEMENTATION/NONE unchanged. Workflow check passed; no conditional protocol chapter applies.
+
+Reconciliation: all DEV-025 runtime and version files equal their assessed identities. Tester changed only its own tests (new test_progression_evidence.py and test_progression_workflow_tools.py; test_progression_prompts/protocol now expect 1.4.0, 19 tools including both new tools, and the EVIDENCE ACCESS section) and its report. No assertion was weakened.
+
+Record discrepancy, as Tester also noted: the DEV-024 note and client-recovery-dev024 evidence index list resources/evidence.py 79fb8193… and mcp/tools/evidence.py 988e3fa0…, but the delivered bytes (commit 5e54e54, unchanged since) are 8542c9e9… and 38bc036d…. The delivered files contain the final implementation (aligned-offset binary search helper, empty-document return), so the difference is not a different design; the exact cause (most likely formatting applied at commit time) cannot be reconstructed because the earlier bytes were not retained. Rather than rely on the unbound DEV-024 evidence, Developer reran it on the delivered bytes.
+
+Rerun on delivered bytes (data/source_artifacts/learning_progressions/client-recovery-dev025-resume/checks, evidence index SHA256 6025a6d9ff4b91b7538ee2ec52b2706930b4e066b818583a160e81f3bfa0e3cc): DEV-024 feedback exit 0 (169 checks), artifact sweep exit 0 (516 artifacts, outcomes identical to native: 8 readable and 78 denied per package), DEV-025 feedback exit 0 (567 checks); static on the ten DEV-024/025 modules (black, isort, ruff, mypy, pylint 10.00/10, interrogate 100%) exit 0; pytest tests/ exit 0, 98 passed. These supersede the DEV-024 evidence bindings for those two files.
+
+DEV-024 and DEV-025 remain DONE. Plan IN_PROGRESS; DEV-022 is the last PENDING approved step. Persist only the STEPWISE continuation request for DEV-022 and stop.
+
+User explicitly authorized DEV-022 on 2026-10-06; cleared only its STEPWISE blocker. DEV-022 IN_PROGRESS.
+
+### Client-access recovery for DEV-022 — in progress 2026-10-06
+
+**Implemented outcome**
+
+- services/capabilities.py and cli/smoke_checks.py list the final 19 tools (added get_workflow_instructions and read_evidence); prompts (9), the fixed resource and 14 templates were already final. The shared smoke still requires listed inventory and get_capabilities to agree exactly.
+- cli/smoke_progressions.py: each LP smoke query now parses the ordinary text block independently, requires it to equal structuredContent and validates the typed result from the text.
+- cli/smoke_access.py (new, called by verify_server_surface so repository STDIO, loopback HTTP and staged STDIO all run it): text-only parsing of every call with envelope-ceiling checks; the pinned Nigeria diagnostic edge 0129f5d5-42fd-52cb-bcf2-ec07c47103e7 and target e399b510-48bb-58ee-abda-61460a5a853b; complete read_evidence reads (4096-byte windows replayed from text nextRequest, compared with native resource bytes and contentSha256) of the edge provenance, target standard provenance, a supporting LC provenance, and the LP summary/validation/unresolved reports of CBSE (needsReviewClaims 1), Ghana Mathematics (unresolvedWarningPairs 141) and Ghana English (10); LP discovery cursor replay over 3 pages; get_workflow_instructions/native prompt message equality for learning_progression_support_plan and teacher_guide_draft; typed invalid_evidence_uri, resource_access_denied and unknown-workflow validation failures.
+- CI (.github/workflows/tests.yml) already triggers on backend/config/data/packaging/Dockerfile/workflow changes, installs locked dependencies and propagates pytest failures including exit 5; with 98 formal offline tests it is now meaningful. No change needed.
+- Identities: smoke_access b6b1a68cff82f0433ce61c17b41b6becc3cbcf2c244410d2f251bac2b2d92da3; smoke_checks 1cac37c1e2804141283c530af6296c883119b7ebc625741ad7b9240a4520c749; smoke_progressions 3b3d5748ce6034138617d0c633163361ee1d9c744949a977aa399dd1c6063a8d; capabilities b59f42124f0e761a0ace00fea12766084829717ec455d2e18dd630b0ac159144.
+
+**Distribution candidate**
+
+Built with the existing builder to the new distinct destination data/source_artifacts/learning_progressions/client-recovery-dev022/ (did not exist before): kgfegmcp-0.4.0-client-recovery.mcpb (82176664 bytes, SHA256 50189fe91f22776e461a02f7bb4d2d4c2438a56a028ddeb2f4690ab4fd613038, 657 files, manifest version 0.4.0) and bundle/. Official mcpb validate/pack ran inside the builder (exit 0). checks/closure.py (exit 0, 13 checks): archive members equal the stage (except the stage's own .mcpbignore, which the packer omits by design) byte-for-byte; every mapped member equals its current repository input (src, config, data/graph_packages, pyproject, uv.lock, README, manifest; backend/fastmcp.json is the only member not mapped by the script); all six package trees and all 522 active graph-package files (including provenance maps, indexes and shards) are present; the six new runtime modules are present; no egg-info, caches, environments, source preparation, raw or test trees. Historical candidates and receipts are untouched.
+
+**Actual implementation feedback**
+
+R = data/source_artifacts/learning_progressions/client-recovery-dev022/checks (UV_CACHE_DIR in the session temp directory). R/evidence-index.json SHA256 5f1894557178172cc8f18031cb0ac1bc6b8ac7f3570d5288280fcdc266178775; protected inputs unchanged.
+
+- inprocess-smoke (R/inprocess_smoke.py; the real create_mcp app through an in-memory FastMCP client, network blocked): exit 0; 19 tools, 9 prompts, 1 fixed resource, 14 templates, 15 native resource reads, capabilities agreement, five LP queries with text-only parsing, and the full access suite above (12 complete evidence reads, largest tool result 18992 characters; workflow messages 25558 and 30529 bytes). Results in R/inprocess-smoke.json.
+- regression: pytest tests/ exit 0, 98 passed.
+- Static on the four changed modules: black, isort, ruff, mypy, pylint 10.00/10, interrogate 100% — exit 0.
+- Blocked by the sandbox, not by the implementation: stdio-repo failed because the smoke child (deliberately given a clean desktop-like environment) uses the default uv cache, which the sandbox cannot write ("failed to open file ~/.cache/uv/sdists-v9/.git: Operation not permitted"); http-harness failed because the sandbox forbids binding a loopback port. Staged STDIO needs the same uv cache to install the stage's dependencies offline. These receipts are retained and count as not run.
+- Other retained nonpassing iterations: closure-mcpbignore (my check did not exclude .mcpbignore) and inprocess-smoke-http-shadow (harness file named http.py shadowed the standard library; renamed http_harness.py).
+
+DEV-022 stays IN_PROGRESS until the user runs repository STDIO, staged STDIO and loopback HTTP smoke outside the sandbox and Developer reconciles their receipts.
+
+### Transport runs for DEV-022 — completed 2026-10-06
+
+The user ran the three blocked commands outside the sandbox from the repository root, each through checks/run_command.py (receipts overwrite the earlier sandbox-failed receipts with the same labels; their hashes are retained in evidence-index.json under supersededSandboxReceiptHashes):
+
+- stdio-repo: kgfegmcp-stdio-smoke — exit 0 (10.6 s), status passed. The three logged "Expected backend error translated" lines are the smoke's deliberate typed-failure checks (invalid_evidence_uri, resource_access_denied, learning_progression_not_found); no tracebacks; clean application shutdown.
+- stdio-stage: kgfegmcp-stdio-smoke --bundle-root …/client-recovery-dev022/bundle — exit 0 (13.4 s), status passed, using the stage's own roots.
+- http-harness: checks/http_harness.py — exit 0 (10.7 s); loopback http://127.0.0.1:55498/mcp only, server stopped afterwards (http-command.json, http.json, http.log, http-server.log). No deployed endpoint was contacted.
+
+checks/transport_agreement.py (exit 0): repository STDIO, staged STDIO, loopback HTTP and the in-process run agree exactly on inventory (19 tools, 9 prompts, 1 fixed resource, 14 templates), all 19 tool input/output schema identities, LP query identities, the full access suite (12 complete evidence reads, reports, cursor replay, workflow parity, typed failures) and all 15 native resource reads. After stage startup, all 657 archived files in bundle/ are still byte-identical; the only additions are the stage's own .venv and src/kgfegmcp.egg-info (installed environment, not archived). Archive SHA256 50189fe91f22776e461a02f7bb4d2d4c2438a56a028ddeb2f4690ab4fd613038. Evidence index SHA256 06171b1e88796f0ed6f12a312577b1977565caf98107a1afd9b3f0a5931ac0d9; DEV-022 source identities unchanged since its static checks.
+
+DEV-022 DONE.
+
+### Full Developer completion — 2026-10-06
+
+Gate: all nineteen current approved steps are DONE (DEV-001–005, 012–025, 022); the plan carries current-cycle DEVELOPMENT provenance and Active Work.Development points to it; implemented behavior conforms to the revised scope and the Frame 2-corrected architecture; User Style tony is locked and unchanged, with universal, Python and tony styles followed for changed code; every step's implementation-level self-check passed (exceptions were routed and resolved: ARCHITECTURE Frame 2 for path sizes, three scoped VERIFICATION corrections, and the sandbox-blocked transport runs completed by the user); no unapproved deviation; no Developer-owned outstanding obligation; no blocking question. Status COMPLETE, Current Increment NONE.
+
+Claims for independent full Tester verification (Assessment FULL/NONE): the 19-tool/9-prompt/1-resource/14-template surface; five LP tools with complete canonical text equal to structuredContent under both envelope ceilings, compact derivation-artifact metadata and the path size stop with nextUnreturnedPath; read_evidence over Catalog and the fourteen native templates with exact UTF-8 windows, checksum-bound cursors and unchanged native rights/limits; get_workflow_instructions with seven typed variants identical to native prompts and the shared EVIDENCE ACCESS guidance; versions 0.4.0 (server/MCPB) and 1.4.0 (prompts); CI triggers/exit handling; the retained 0.4.0 candidate under data/source_artifacts/learning_progressions/client-recovery-dev022/. Evidence for each step is in its Plan Notes and the client-recovery-* receipt folders.
+
+Limitations and dependencies, not passing claims: user documentation (guides, references, README counts, packaging/mcpb/README.md still naming 0.3.1, Desktop walkthrough, remote checklist) is Documenter-owned and not updated by Developer; no model call, client composition, Desktop UI workflow, public claude.ai connector acceptance, deployment or publication was performed; Developer checks are implementation feedback, not formal acceptance.
+
+Handoff: forward DEVELOPING -> TESTING for full verification as the downstream rerun of SCOPING-owned Frame 1 (RerunThrough SYNCHRONIZING); the frame stays on the stack. Suggested commit: feat(smoke): verify 19-tool surface, text-only evidence access and 0.4.0 bundle.

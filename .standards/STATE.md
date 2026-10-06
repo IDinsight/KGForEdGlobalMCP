@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
-`Frame 2 scoped correction verified: 19-tool/1.4.0 cases corrected; read_evidence windows, rights, cursor/URI boundaries and text-only replay plus seven workflow-instruction variants' native parity independently verified; 98 offline cases and static checks pass. Resume Developer Suspended Assignment 5 and stop before DEV-022 under STEPWISE.`
+`Kind`: `FORWARD` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
+`Developer full gate passed for the Frame 1 rerun: all nineteen steps DONE (19 tools/9 prompts/1 resource/14 templates, read_evidence, get_workflow_instructions, 0.4.0 bundle; repository/staged STDIO, loopback HTTP and in-process smoke agree). Request FULL verification of all current ACs; Frame 1 continues through SYNCHRONIZING.`
 
 ## Recovery
 
