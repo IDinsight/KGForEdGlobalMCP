@@ -6,19 +6,88 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 # Verification Report
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `IN_PROGRESS` `User Style`: `NONE`
-`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Correct Frame 2 superseded lookup/discovery cases; assess compact LP metadata and the path size stop (nextUnreturnedPath)`
+`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Correct superseded 17-tool/1.3.0 cases; assess DEV-024 read_evidence and DEV-025 seven workflow-instruction variants`
 
-## Current Scoped Recovery — Frame 2 size correction, 2026-10-06
+## Current Scoped Recovery — Frame 2 access tools, 2026-10-06
+
+REVERIFY/CORRECTION for active Tester-owned Frame 2, from/resuming DEVELOPING, RerunThrough NONE. Exact reason: Tester-owned formal cases assert the superseded interim surface (17 tools) and prompt library version 1.3.0; read_evidence and get_workflow_instructions make 19 tools and prompts are 1.4.0. Correct them and assess read_evidence and the seven workflow-instruction variants before Developer resumes DEV-022. Developer Suspended Assignment 5 preserves DEVELOPMENT/NONE under this reason. SCOPING-owned Frame 1 (from/resuming AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified session claim. User Style NONE.
+
+## Assessed Inputs
+
+Entry HEAD 7a0c897 (DEV-024 5e54e54 and DEV-025 committed), clean tree, empty index. E = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-access; E/entry-inputs.json hashes 268 tracked source/test/config/packaging/workflow inputs; E/prior-verification.md preserves the previous report. Assessed implementation: resources/evidence.py 8542c9e9…, resources/evidence_models.py a2030346…, mcp/tools/evidence.py 38bc036d…, prompts/workflow_instructions.py 65f6202e…, mcp/tools/workflows.py 79d9a06f…, mcp/register.py 568869c2…, errors.py a3146fe8…, prompts/definitions.py 9e6f1f5b…, prompts/service.py 410a124e…, prompts/models.py 8fc34cee…, pyproject 84193301…, uv.lock fedd1863…, MCPB manifest 3b40f967…; LP services unchanged since the size-correction assessment. Contract: architecture "Tool-accessible evidence contract", "Targeted workflow-instruction contract" and technical criteria for AC-029/030/031 (spec 52dbfa4f…); scope 2eabb26b… and context 64d9b6d5… unchanged; plan 0aabc300… (DEV-024/025 DONE, DEV-022 PENDING, STEPWISE, AFTER_IMPLEMENTATION/NONE). Developer feedback is diagnostic input only.
+
+Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR in session temp (sandbox blocks default cache). Autouse socket guard. No model/paid service, package mutation, deployment or application edit.
+
+## Acceptance Evidence
+
+| AC / technical criterion | Evidence | Disposition |
+| --- | --- | --- |
+| AC-029, AC-031 / read_evidence lossless windows (Tool-accessible evidence contract) | test_progression_evidence: diagnostic Nigeria edge provenance (12275 bytes) in 1000-byte windows — contiguous offsets, chunk hashes, unchanged native metadata per window, partial status incl. last window, nextRequest = unchanged request + cursor; join equals native bytes and contentSha256; one default window is full/complete. | VERIFIED for scoped correction. |
+| AC-012, AC-029 / native rights not bypassed | Natively denied `nodes` artifact gives the same resource_access_denied message through read_evidence; a continuation after a later native denial is refused (policy re-applied each call). | VERIFIED. |
+| AC-029 / cursor and URI boundaries | Cursor from the provenance record replayed on the relationship URI → invalid_cursor; encoded separator `%2F..` in an identifier segment → invalid_evidence_uri; synthetic "a€😀" at 3 bytes yields "a", "€", then evidence_result_too_large (no zero-progress cursor). | VERIFIED. |
+| AC-028, AC-029, AC-031, AC-034 (local in-process MCP) / text-only route | Real FastMCP: provenance URI parsed from get_learning_progression ordinary text; read_evidence windows replayed from ordinary text nextRequest only; text equals structuredContent; joined text equals native read_resource and its hash. Query-string URI → invalid_evidence_uri in error text; extra `offset` field rejected by the strict schema. | VERIFIED; shared STDIO/HTTP parity remains DEV-022. |
+| AC-030, AC-031 / seven typed variants share native renderer | test_progression_workflow_tools: each of seven variants via real FastMCP with non-default inputs and exact snapshot — tool text equals structuredContent, rendered message equals native get_prompt message, effectiveRequest equals validated request with defaults, package identity/profileSha256/manifestSha256 match the runtime, message contains EVIDENCE ACCESS and read_evidence, native promptVersion 1.4.0. Obsolete inferred_progression_hypothesis name rejected; lowered adapter character ceiling yields workflow_instructions_too_large without clipped text. E/equality-probe shows every variant's message changes when an input changes (equality is discriminating). | VERIFIED for scoped correction. Rights denial through the tool relies on the identical renderer path plus existing test_prompt_rights_are_enforced (inspection + shared path), not a separate tool case. |
+| AC-013, AC-014, AC-015, AC-016 / workflows retain caps and add evidence access | Corrected test_teaching_sequence_workflow (1.4.0, EVIDENCE ACCESS, at most 32 windows) and test_shared_legacy_enrichment (EVIDENCE ACCESS in all four legacy workflows); support/curriculum cases unchanged and pass. administrator/comparison absence of EVIDENCE ACCESS established by inspection of the multi-framework builder (service.py diff adds the section only to the single-framework builder). | VERIFIED scoped; Documenter walkthrough later. |
+| AC-017, AC-019 / surface | Corrected protocol case: 19 tools including read_evidence and get_workflow_instructions, 9 prompts; removed tool/prompt refusals retained; three native LP prompts report 1.4.0. | VERIFIED intermediate surface; final discovery/capabilities/smoke counts AWAITING_IMPLEMENTATION DEV-022. |
+| AC-001, AC-002, AC-003, AC-004 / immutable copy/data/acceptance/coverage | Accepted package bytes unchanged; full suite reruns exact-edge reconciliation. | Prior evidence retained; full reconciliation future FULL/NONE. |
+| AC-005, AC-006, AC-007, AC-008, AC-009, AC-028, AC-033 / LP operations | LP services unchanged since size-correction assessment; all LP cases rerun in final-suite. | Scoped regression VERIFIED; full reconciliation future FULL/NONE. |
+| AC-010, AC-011, AC-018 / identity/provenance/AS-LC | Exact/provenance/regression cases rerun; read_evidence returns unchanged native metadata. | Scoped regression VERIFIED. |
+| AC-020, AC-032 / design/client assessment | Architecture read as input. | Inspected; full independent reconciliation remains. |
+| AC-021, AC-022, AC-034, AC-035 / transports/distribution | Shared STDIO/local HTTP, 0.4.0 archive/stage. | AWAITING_IMPLEMENTATION DEV-022. |
+| AC-023, AC-024 / meaningful offline cases | 98 offline cases, socket guard, no model/paid call. | Scoped VERIFIED. |
+| AC-025 / independent full acceptance | Scoped correction cannot pass FULL/NONE. | AWAITING_IMPLEMENTATION and subsequent full assessment. |
+| AC-026, AC-027, AC-036, AC-037 / docs/walkthrough/checklist | Documenter final content (packaging/mcpb/README.md still says 0.3.1). | PENDING later-role dependencies (Documenter). |
+
+## Scenario Budget
+
+All historical allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8; others 5). User explicitly approved on 2026-10-06: `prompts/workflow_instructions.py` 5→8, `mcp/tools/workflows.py` 5→8, `resources/evidence.py` 5→6; all other ceilings unchanged.
+
+| Source file | Allocations (this assessment) | Ceiling |
+| --- | --- | --- |
+| `resources/evidence.py` | 6: lossless reassembly, native denial parity, continuation re-applies policy, cursor bound to record, encoded-separator URI, Unicode boundaries/indivisible scalar | 6 (approved) |
+| `mcp/tools/evidence.py` | 3: text-only replay vs native read, invalid URI error text, extra-field rejection | 5 |
+| `prompts/workflow_instructions.py` | 8: seven variant parity rows, obsolete-name rejection | 8 (approved) |
+| `mcp/tools/workflows.py` | 8: seven variant parity rows, oversized instructions error | 8 (approved) |
+
+Charged once per materially verified source; evidence_models.py, register.py, errors.py and definitions.py are exercised as schema/registration/constants within those scenarios and not separately charged. Corrections (1.4.0 versions, 19-tool listing, EVIDENCE ACCESS assertions) reuse existing prompt/protocol scenarios; service.py's one-line section composition is observed by those existing scenarios and stays at its recorded 5. No random generator; the seven variants are an explicit finite set.
+
+## Execution Evidence
+
+All via E/run_check.py from the repository root with the environment above; receipts E/<label>.command.json with stdout/stderr hashes.
+- entry-suite: full configured tests, exit 1, 75 passed/5 failed (86.98 s) — exactly the five superseded cases Developer reported.
+- evidence-draft: exit 0, 9 passed. workflow-draft: exit 1, 7 failed on a Tester assertion mistake (package reference shape `snapshotId` vs `packageIdentity`), all prior assertions in each row had passed; corrected, workflow-draft2 exit 0, 9 passed.
+- Controls (E/controls/5e54e54: DEV-024-only git-archived source + current tests, main venv, PYTHONPATH to archived src): exit 1, 6 failed/14 passed — failures are exactly the corrected assertions (1.3.0 vs 1.4.0, 18 vs 19 tools, missing EVIDENCE ACCESS); all evidence cases pass there (evidence.py unchanged). E/equality-probe.json: changing localContext changes every variant's message.
+- Static on the four changed/new test files: initial Black exit 1 (retained initial-black.*), formatted (format.*), then Black, isort, Ruff, mypy (4 files), interrogate 100% all exit 0. Per-file Pylint reported R1735/W0640 on unchanged pre-existing lines (also present at HEAD; retained initial-pylint.*); CI-equivalent `pylint tests/` and `pylint src/` (linting.yml) both exit 0, 10.00/10.
+- final-suite: `uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider -m 'not costs-money' tests`, exit 0, **98 passed in 58.94 s** (80 prior + 18 new). Pre-existing pytest-asyncio warning unchanged.
+- E/preservation.json: 266/268 entry inputs unchanged; changed only test_progression_prompts.py and test_progression_protocol.py; new test_progression_evidence.py and test_progression_workflow_tools.py. No application, package, contract, plan, STATE (blocker set and cleared) or other owner edit; index empty.
+
+## Open Findings and Dependencies
+
+- Targeted budget question resolved (approved); BlockedOn cleared. Active correction VERIFIED. New implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned obligation: NONE.
+- Developer record discrepancy (for Developer reconciliation on resume, not a behavior defect): DEV-024 plan notes and client-recovery-dev024 evidence-index record resources/evidence.py 79fb8193… and mcp/tools/evidence.py 988e3fa0…, but committed 5e54e54/HEAD bytes are 8542c9e9… and 38bc036d…. Developer feedback therefore is not bound to the delivered bytes; this Tester evidence is on the delivered bytes.
+- Remaining full-gate gaps are only approved unfinished DEV-022 (discovery/capabilities/smoke counts, shared STDIO/HTTP, 0.4.0 archive/stage) and the later FULL/NONE assessment; Documenter dependencies AC-026/027/036/037 (including MCPB README version) unchanged.
+
+## Resume or Handoff
+
+Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. Associated with Frame 2's exact reason and Developer Suspended Assignment 5 (DEVELOPMENT/NONE). No Tester assignment was suspended. No downstream role precedes unfinished Developer work, so RerunThrough NONE stands.
+
+After the passing workflow check, pop only Frame 2 and RESUME DEVELOPING, From TESTING, FailureType NONE; preserve SCOPING Frame 1. Developer restores Suspended Assignment 5, reconciles the four test-file hashes (E/preservation.json), these results and the evidence-module identity discrepancy above, and stops before DEV-022 under STEPWISE. No CHECKPOINT, full completion or Reviewer handoff. Future FULL/NONE must cover all 37 ACs including final 19/9/1/14 surface and 0.4.0 distribution.
+
+## Historical Scoped Frame 2 Size-Correction Assessment
+
+Superseded by the section above; retained as history.
+
+### Prior Current Scoped Recovery — Frame 2 size correction, 2026-10-06
 
 REVERIFY/CORRECTION for active Tester-owned Frame 2, from/resuming DEVELOPING, RerunThrough NONE. Exact reason: Tester-owned formal cases encode superseded Frame 2 contracts: test_every_exact_edge_preserves_accepted_evidence expects all 86 artifacts in LP metadata and test_discovery_combination_bytes_preserve_continuation uses a fixture calibrated to the old metadata size; correct them and assess compact metadata and the path size stop (nextUnreturnedPath) before Developer resumes. Developer Suspended Assignment 4 preserves DEVELOPMENT/NONE under this reason. SCOPING-owned Frame 1 (from/resuming AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified session claim. User Style NONE.
 
-## Assessed Inputs
+#### Size-correction Assessed Inputs
 
 Entry HEAD 172a2c8 (compact metadata committed) plus dirty DEV-015 path stop in lp_paths/lp_models/learning_progressions, index empty. E = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-frame2. E/entry-inputs.json hashes 260 tracked source/test/config/workflow inputs; E/entry-worktree.diff saves the dirty tree; E/prior-verification.md preserves the previous report. Entry source identities equal Suspended Assignment 4 exactly: lp_paths f5a1523f…, lp_models 2e3c4ff2…, learning_progressions e49b9f9d…; lp_traversal 41c6d8a4…, lp_discovery 56649b61…, tool_results 88a02e2e… unchanged since the DEV-014 assessment. Contract: architecture "Result-size correction (recovery Frame 2)", Query tools metadata, Bounds and Ordinary-text path size stop paragraphs and the Frame 2 technical criterion for AC-008/009/028/031 (spec 52dbfa4f…); scope 2eabb26b… and context 64d9b6d5… unchanged. Plan c15b2a0c… (IN_PROGRESS, STEPWISE, AFTER_IMPLEMENTATION/NONE; DEV-012/015 DONE under the revision; DEV-024/025/022 PENDING). Developer feedback is diagnostic input only.
 
 Environment: existing locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR set to session temp (sandbox blocks default uv cache). Socket guard autouse. No model/paid service, package mutation, deployment or application edit.
 
-## Acceptance Evidence
+#### Size-correction Acceptance Evidence
 
 | AC / technical criterion | Evidence and remaining scope | Disposition |
 | --- | --- | --- |
@@ -40,13 +109,13 @@ Environment: existing locked Python 3.13 backend via uv --locked --offline --no-
 | AC-033 / partialness | Path partial results and discovery continuation covered by the rows above. | Scoped evidence above; whole five-operation contract AWAITING_IMPLEMENTATION DEV-024/025. |
 | AC-034, AC-035 / transport/stage | DEV-022 final shared STDIO/HTTP/staged runtime. | AWAITING_IMPLEMENTATION. |
 
-## Scenario Budget
+#### Size-correction Scenario Budget
 
 All historical allocations and approved ceilings are carried (traversal 8, paths 10, discovery 13, shared service 7; others 5). Corrections reuse existing scenarios: lookup exact evidence (reused DEV-012 coverage), discovery combination continuation (discovery allocation), path combination bytes, path individual bytes, path count and alternative merges (paths allocations) — added assertions observe the same setups/outcomes. Removing the Topology artifact truncation is fixture reconciliation, not a scenario. Calibration sizes 15000–40000 in E/fixture_probe.py are calibration, not partitions.
 
 User explicitly approved targeted ceilings on 2026-10-06: `services/lp_paths.py` 10→12 and `services/learning_progressions.py` 7→8; all other ceilings unchanged. New allocations: (A) later individually oversized alternative → partial result naming nextUnreturnedPath — lp_paths 11/12; (B) six-package shortest-path reach — lp_paths 12/12 and learning_progressions 8/8 (compact metadata and precomputed PathIdBound). lp_models/tool_results are incidental to B (schema field, shared encoder already allocated), not charged. Generation in B is the bounded finite set of all connected pairs of the six immutable packages, one property (complete shortest path fits), not 6522 scenarios.
 
-## Execution Evidence
+#### Size-correction Execution Evidence
 
 - entry-suite: full configured tests, exit 1, 76 passed/2 failed (50.99 s) — reproduces exactly the two superseded cases claimed by Developer.
 - fixture-probe (scratch, E/fixture_probe.py): compact metadata four artifacts; traversal/path combination fixtures still behave with real metadata (controls 63008/71438 chars, combos roll back and name (c,d)); later oversized alternative yields partial result; first oversized raises with relationship_ids; discovery 20000–30000 gives one entry per cursored page, 35000 fits only as a final page. Independent BFS oracle: 6522 connected pairs (472/500/1395/990/355/2810, 1–8 hops) all return complete shortest paths, largest 86159 chars, 9.3 s. First probe run had a scratch staticmethod-restore bug (TypeError on every reach query), retained as fixture-probe-staticmethod-bug.*; not an application result.
@@ -57,14 +126,14 @@ User explicitly approved targeted ceilings on 2026-10-06: `services/lp_paths.py`
 - final-suite: `uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider -m 'not costs-money' tests`, exit 0, **80 passed in 54.84 s** (78 prior + A + B). A first loop invocation mis-split the marker argument (exit 4, no tests ran) and is retained as final-suite-argv-split.*; it is not a result. Pre-existing pytest-asyncio loop-scope warning unchanged.
 - E/preservation.json: 255/260 entry inputs unchanged; only this report and the four owned test/fixture files differ. Application/plan/STATE diff is byte-identical to entry; index empty. No application, package, contract, plan or other owner edit.
 
-## Open Findings and Dependencies
+#### Size-correction Open Findings and Dependencies
 
 - Targeted budget question resolved: user approved paths 10→12 and shared service 7→8; BlockedOn cleared. Active correction: VERIFIED. New implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned obligation: NONE.
 - Observation for Reviewer (not routed): when a completed path fails conservative reservation but its actual envelope fits, lp_paths keeps it and stops with byte_limit (if a frontier remains) and null nextUnreturnedPath, even if it is also the max_paths-th path; this is honest partialness within the design, recorded by Developer as a local choice.
 - Remaining full-gate gaps are only approved unfinished DEV-024/025/022 and the later FULL/NONE assessment; Documenter dependencies AC-026/027/036/037 unchanged.
 - Developer plan note says 6527 pairs; Developer's own per-package counts and this oracle give 6522. Record-keeping slip only, not a contract defect.
 
-## Resume or Handoff
+#### Size-correction Resume or Handoff
 
 Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. Associated with Frame 2's exact reason and Developer Suspended Assignment 4 (DEVELOPMENT/NONE). No Tester assignment was suspended. Owned corrections, compact metadata and the path size stop are independently verified with controlled failures; affected completed discovery/traversal/lookup behavior passes in the full suite. No downstream role precedes unfinished Developer work, so RerunThrough NONE stands.
 

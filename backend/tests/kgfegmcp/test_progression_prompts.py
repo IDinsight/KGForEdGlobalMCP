@@ -76,6 +76,7 @@ def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
             and "at most 5 returned supporting" in message
         )
         assert "at most 10 distinct full provenance" in message
+        assert "EVIDENCE ACCESS" in message and "at most 32" in message
         assert (
             "scopeComplete" in message
             and "graphExhausted" in message
@@ -86,7 +87,7 @@ def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
         )
         assert (
             result.snapshot_id == identity.snapshot_id
-            and result.prompt_version == "1.3.0"
+            and result.prompt_version == "1.4.0"
         )
         assert str(identity.profile_sha256) in message
         for call in calls:
@@ -224,6 +225,7 @@ def test_shared_legacy_enrichment(accepted_state: AppState) -> None:
             and "inferred_progression_hypothesis" not in result.message
         )
         assert "get_standard_context" in result.message
+        assert "EVIDENCE ACCESS" in result.message
     assert len({result.prompt_name for result in results}) == 4
 
 

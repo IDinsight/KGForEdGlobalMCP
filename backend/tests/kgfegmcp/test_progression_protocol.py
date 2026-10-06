@@ -57,7 +57,7 @@ async def test_new_prompt_protocol_retrieval(
         and "[LLM-INFERRED / GENERATED]" in result.messages[0].content.text
     )
     assert result.meta["snapshotId"] == str(identity.snapshot_id)
-    assert result.meta["promptVersion"] == "1.3.0"
+    assert result.meta["promptVersion"] == "1.4.0"
 
 
 async def test_reused_mcp_error_and_removed_surface_contracts(
@@ -88,7 +88,10 @@ async def test_reused_mcp_error_and_removed_surface_contracts(
         ),
     }
     async with Client(create_mcp()) as client:
-        assert len(await client.list_tools()) == 17
+        tools = {tool.name for tool in await client.list_tools()}
+        # read_evidence and get_workflow_instructions join the 17 prior tools.
+        assert len(tools) == 19
+        assert {"read_evidence", "get_workflow_instructions"} <= tools
         assert len(await client.list_prompts()) == 9
         for name, request in samples.items():
             payload = request.model_dump(by_alias=True, mode="json")

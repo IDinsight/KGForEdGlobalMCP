@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FAILURE` `From`: `DEVELOPING` `FailureType`: `VERIFICATION` `Reason`:
-`Tester-owned formal cases assert the superseded interim surface (17 tools) and prompt library version 1.3.0; read_evidence and get_workflow_instructions make 19 tools and prompts are 1.4.0. Correct them and assess read_evidence and the seven workflow-instruction variants before Developer resumes DEV-022.`
+`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
+`Frame 2 scoped correction verified: 19-tool/1.4.0 cases corrected; read_evidence windows, rights, cursor/URI boundaries and text-only replay plus seven workflow-instruction variants' native parity independently verified; 98 offline cases and static checks pass. Resume Developer Suspended Assignment 5 and stop before DEV-022 under STEPWISE.`
 
 ## Recovery
 
@@ -32,12 +32,6 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
-
-### Frame 2
-
-`From`: `DEVELOPING` `Owner`: `TESTING` `FailureType`: `VERIFICATION`
-`Reason`: `Tester-owned formal cases assert the superseded interim surface (17 tools) and prompt library version 1.3.0; read_evidence and get_workflow_instructions make 19 tools and prompts are 1.4.0. Correct them and assess read_evidence and the seven workflow-instruction variants before Developer resumes DEV-022.`
-`ResumeAt`: `DEVELOPING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 
