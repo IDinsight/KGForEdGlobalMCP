@@ -7,9 +7,107 @@ ReviewKind: IMPLEMENTATION
 # Review Report
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `ReviewKind`: `IMPLEMENTATION`
-`Status`: `COMPLETE` `User Style`: `NONE`
+`Status`: `BLOCKED` `User Style`: `NONE`
 
 ## Assessed Inputs and Scope
+
+Current assessment: Frame 1 client-access rerun, 2026-10-06, STANDARD / BROWNFIELD. Entered by FORWARD from TESTING (full Tester gate) inside SCOPING-owned Frame 1 (ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING). Current acceptance inventory: AC-001..AC-037, no retired IDs. Prior 2026-10-03/2026-10-02 assessments below are history for AC-001..AC-027 only.
+
+- Contract identities (SHA256): CONTEXT `64d9b6d5…c7be4f5`; scope `2eabb26b03463cb85dbd93464f26a8fbd5e9b6ebf0aa805699b4a2f3e313ea71`; architecture `52dbfa4f5cfb1caac98047e3cc6a39c5e0b2c1080555c4653709f122a018daa1` (incl. Frame 2 size correction and Technical Acceptance Criteria); plan `1c7aca5252738fd14229f4f59e1f5c700820fd54ada3e951b1f725ba045b6f39` (COMPLETE, 19 steps DONE, AFTER_IMPLEMENTATION, Current Increment NONE); verification `400e333ad87c40f82b0a9a461840d9246583cd1d70e3bd162dacc8342320979c` (COMPLETE, FULL/NONE); documentation record `8f34149a…` (2026-10-03, stale for this frame); final review `e835234d…`; STATE at entry `9909e0b0…`. Scope/design hashes equal the identities Tester assessed.
+- Repository: entry HEAD `bc6dd216121792ec8467f23993b0724e752f3ba5`, clean tree. Rework range `19f47ae..bc6dd21` (19f47ae is the AWAITING_USER_SIGNOFF commit before REPLAN): 35 non-workflow files changed (runtime: tool_results.py, resources/evidence*.py, mcp/tools/{evidence,workflows,learning_progressions}.py, prompts/{workflow_instructions,definitions,service,models}.py, services/{learning_progressions,lp_discovery,lp_paths,lp_traversal,lp_models,capabilities}.py, errors.py, mcp/register.py, cli/smoke_*.py; versions pyproject/uv.lock/MCPB manifest 0.4.0; tests/fixtures). No change to data/graph_packages or config since 19f47ae. Tracked backend/src, tests, config, graph packages, packaging and .github: 683 files, combined listing hash `ce26a585…`.
+- Affected unchanged boundaries inspected: AS/LC tools `mcp/tools/{standards,learning_components,frameworks}.py` (`9168ea10…`, `4b0161e3…`, `8faa49a5…`), ResourceService/URI constructors, native prompt adapters.
+- Distribution: `data/source_artifacts/learning_progressions/client-recovery-dev022-frame2/kgfegmcp-0.4.0-client-recovery-frame2.mcpb`, SHA256 `170ba6fd9df70ef27e29480c406ecbcab174c0d0c539530fc3e232db0b9e52e4`, 657 members; earlier client-recovery-dev022 candidate is superseded history.
+- Tester evidence: E1 `…/tester/<cycle>/full-verification`, E2 `…/tester/<cycle>/full-verification-resume` (ci-suite, stdio-stage, closure, regressions receipts exit 0; `progression_baseline-byte-hash-original.json`).
+- Session: fresh Reviewer conversation that began with this /reviewer invocation; it contains no scope/design/implementation/test/documentation authoring history. Client freshness and author-model metadata are unavailable; no independence or model-ranking attestation is inferred. User Style NONE.
+
+## Contract and Evidence Assessment
+
+Full Verification Boundary independently reconciled at entry: plan COMPLETE with all 19 approved steps DONE and Current Increment NONE; verification report COMPLETE, FULL/NONE, with only Documenter dependencies. Labels were not relied on; dispositions below rest on inspection and the Reviewer checks in the next section.
+
+| Obligation / criterion | Assessed evidence | Current disposition |
+| --- | --- | --- |
+| AC-001, AC-002, AC-003, AC-004 | Copy/package/data unchanged since 19f47ae (git diff empty for data/config); Tester E2 closure re-hashed 138 copies; 8,080-edge reconciliation and acceptance negatives in suite (103 passed, Reviewer run). Reviewer full discovery replay compares every stored edge (see Checks). | Supported. |
+| AC-005, AC-006, AC-007, AC-008, AC-009 (incl. Frame 2 criteria) | Inspected compact `metadata.artifacts` (4 derivation artifacts + inventory notice), path size stop/nextUnreturnedPath reservation, whole-entry rollback and `_require_entry_size`, cursor fingerprint binding both ceilings and encoding. Tester all-pairs shortest-path case; Reviewer full replay/oracle, max-bound traversal/path and empty-result checks. | Supported. |
+| AC-010, AC-011, AC-012 | Generated-origin/semantic notices and judgment excerpt flags in text; per-edge provenance via read_evidence equals native bytes; bulk original map denied through read_evidence. | Supported. |
+| AC-013, AC-014, AC-015, AC-016 | Workflow caps/disclosures unchanged plus shared EVIDENCE ACCESS section; native/tool message parity. AS/LC evidence steps depend on the link gap in F-001. | Supported for LP evidence; AS/LC evidence steps affected by F-001. |
+| AC-017 | Obsolete names absent from runtime/config; rejected as workflow variants. | Supported. |
+| AC-018 | Tester semantic baseline (user-approved replacement) plus Reviewer recheck: current AS/LC delivery bytes still satisfy the stricter retained byte baseline for all six packages. | Supported. |
+| AC-019 | 19 tools / 9 prompts / 1 fixed resource / 14 templates; capabilities list updated. | Supported. |
+| AC-020, AC-032 | Architecture decision, client support matrix, Frame 2 correction, alternatives inspected; separates observed Desktop behavior, documented remote capability and untested acceptance. | Supported by inspection. |
+| AC-021 | Shared factory/registration; Tester repository STDIO + loopback HTTP (E1, unchanged runtime source) and staged STDIO (E2) agree. | Supported (local). |
+| AC-022, AC-035 | Reviewer: all 657 archive members equal committed HEAD blobs; every tracked runtime/config/package file archived; manifest 0.4.0. Shipped backend README still says 17 tools / 0.3.1. Any F-001 runtime change also changes archived src. | Runtime closure supported for the assessed HEAD; must be refreshed after F-001 correction. Shipped-README accuracy: permitted later dependency (Documenter content, then archive refresh through Developer and Tester re-verification under AC-035). |
+| AC-023, AC-024, AC-025 | Reviewer reran exact offline suite: 103 passed. Socket guard; no model/paid call. Tester report accounts for all 37 IDs. | Supported, except the AC-029 evidence gap in F-002. |
+| AC-028, AC-031, AC-033 | Canonical text mirror used by all five LP tools and both new tools; one conservative envelope measure at selection and on the emitted envelope; explicit no-continuation notices; nextRequest replay. Text-only tests, service envelope cases, Reviewer wire-size maxima and adversarial/cursor checks. | Supported. |
+| AC-029 | read_evidence dispatcher/paging inspected and exercised; LP links in text are usable. AS/LC provenance, LC content/provenance, interpretation profile and dedicated AS/LC validation/unresolved URIs are not exposed in ordinary text, and instructions give no construction rule. | **Finding F-001 (IMPLEMENTATION); evidence gap F-002 (VERIFICATION).** |
+| AC-030 | Seven typed variants dispatch to native renderers; identical messages; nine native prompts registered; administrator/comparison/obsolete names rejected. The supplied retrieval steps for AS/LC evidence are not usable text-only (F-001). | Affected by F-001. |
+| AC-034 | Local STDIO/HTTP/stage receipts include the Nigeria diagnostic, CBSE/Ghana reports, cursor replay. AS/LC provenance reads in smoke use server-side URI constructors, not client-visible links. | Affected by F-002. |
+| AC-026, AC-027, AC-036, AC-037 | Documentation not yet reconciled in this frame; documentation record dated 2026-10-03; READMEs stale (17 tools / 0.3.1). | Permitted later dependencies (Documenter). |
+
+## Checks and Results
+
+All from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP` on 2026-10-06 against HEAD bc6dd21, offline locked backend environment (`uv --directory backend run --locked --offline --no-sync`, `UV_OFFLINE=1`, `PYTHONDONTWRITEBYTECODE=1`, `UV_CACHE_DIR` in session temp). No application, test, fixture, package or other owner record was changed. Reviewer diagnostics support review only; they are not formal Tester evidence.
+
+- `pytest -q -p no:cacheprovider -m 'not costs-money' tests`: exit 0, **103 passed in 58.29s** (existing pytest-asyncio deprecation warning only).
+- `ruff check`, `black --check`, `isort --check-only`, `mypy` on the 11 rework modules: all exit 0.
+- `node .standards/bin/check.mjs`: at entry it reported 10 problems, all in this Reviewer-owned report (it was `COMPLETE` without AC-028..AC-037); reopening as IN_PROGRESS cleared them.
+- Archive closure (python3 zipfile + `git show HEAD:<path>`): 657/657 members equal committed blobs under the builder recipe mapping; 0 tracked runtime/config/package files missing.
+- AS/LC byte recheck against `E2/progression_baseline-byte-hash-original.json`: nodes SHA256 and edge-prefix SHA256 equal for all six packages.
+- Link-exposure inspection (in-memory FastMCP client, real `create_mcp`): `get_framework`, `get_standard` and `get_learning_components_for_standard` for the Nigeria diagnostic target return 0 `kgfegmcp://` URIs in ordinary text and 0 in structuredContent; their URIs appear only as `resource_link` blocks (framework, interpretation-profile, manifest, validation; standard, standard provenance; standard learning-components). Learning-component and learning-component-provenance URIs are emitted only as `resource_link` blocks by `get_learning_component` (`mcp/tools/learning_components.py:654-684`); `get_learning_components_for_standard` text lists component node IDs without URIs, and native `standard`, `standard/learning-components` and `framework` resource content carries no `kgfegmcp://` URI. LP results expose only `standardUri`, edge `relationshipUri`/`provenanceUri`, manifest, LP summary and LP artifact URIs. Rendered `teacher_guide_draft` step 5 says to read "standard-provenance resources, linked from the get_framework and get_standard results", and EVIDENCE ACCESS says to call read_evidence with the "exact URI copied from a tool result"; no URI construction rule appears. Receipt: `check-asl-c-uri-review.py` (SHA256 `8ba215c8…`) -> `asl-c-link-exposure-results.json` (`f778319c…`), exit 1 by design: `get_framework` 4, `get_standard` 3, `get_learning_components_for_standard` 4 and `get_learning_component` 2 URIs, each present only as `resource_link` (0 in text, 0 in structuredContent). The dedicated `unresolved` resource is not linked by any of them. Two earlier runs of this script were harness iterations (first collected only structuredContent URIs; second used a wrong get_learning_component request shape).
+- `uv --directory backend run --locked --offline --no-sync python ../<review dir>/check-client-access-review.py` (SHA256 `3c6bcfe5…`): **exit 0, no failures**, 10 m 03 s; receipt `client-access-review-results.json` (`ceb2b984…`). Real `create_mcp` app over an in-memory FastMCP client, sockets blocked, 19,870 tool calls. Established:
+  - Inventory 19/9/1/14. Exact diagnostic edge text carries endpoints, statements, confidence 0.72, 9 warnings, 4 derivation artifacts and an explicit no-continuation notice.
+  - Every successful call: ordinary text parses to exactly structuredContent; maximum actual wire envelope 98,584 characters (search), conservative 99,980 — both ceilings hold.
+  - Full text-only discovery replay at limit 100 for all six packages: 1,259 pages, 8,080 unique IDs equal to the independent stored-edge oracle, no duplicates or zero-progress pages (all intermediate stops `byte_limit`). Direct replay for each package's highest-degree standard equals its incoming/outgoing/relates oracle. Isolated standards return complete empty pages.
+  - Traversal at maximum bounds returns only stored builds edges in stored direction; downstream hub traversals stop honestly at ~9 edges with `byte_limit`/scopeComplete false (design-accepted density). Paths at maximum bounds return each package's longest real shortest path (5–8 hops, Rwanda 8) complete and contiguous; four packages stop with `byte_limit` plus nextUnreturnedPath.
+  - All 18,525 unique URIs returned by LP results are usable by read_evidence: 18,507 readable, 18 explicit `resource_access_denied` (bulk artifacts); none invalid or internal.
+  - Full text-only reads (nextRequest replay at 4,096-byte windows) equal native resources/read bytes and contentSha256 for diagnostic edge provenance (3 windows; rationale/warnings/confidence/producer/checker present), target standard, its provenance and LC list, supporting LC and its provenance, Nigeria validation/unresolved/LP summary/manifest; CBSE summary shows needs-review.
+  - 17 adversarial URIs (case, empty/extra segments, dot/encoded separators, double encoding, NUL, invalid UTF-8, port, userinfo, query, foreign scheme) -> `invalid_evidence_uri`; percent-escaped valid spelling canonicalizes; original provenance map denied; forged/other-size/other-URI evidence cursors and an altered-limit LP cursor -> `invalid_cursor`.
+  - Workflow parity for curriculum review (arrays/selectors), multigrade and support plan (Unicode context): tool message equals native prompt; administrator/comparison/obsolete names rejected.
+  - Two earlier runs exited 1 from Reviewer harness errors (native raw artifacts arrive as base64 blobs; a `None` key broke final JSON sorting); outputs were lost, harness corrected, no implementation failure involved.
+
+- User-requested triple check (2026-10-06, same HEAD bc6dd21, clean apart from Reviewer files and STATE): re-surveyed all 19 tool descriptions/schemas, `get_capabilities` text and structuredContent, the catalog resource, protocol resource templates, `list_frameworks`, `get_framework_statistics`, `search_standards`, `get_standard_context` and `get_learning_component_context`, and re-rendered all seven affected native workflows. Result: F-001 and F-002 confirmed; two precision corrections recorded in their Evidence/Reference (get_capabilities exposes templates in structuredContent only; formal tests do not read AS/LC provenance at all, smoke uses constructors). No finding was withdrawn or changed in severity or owner.
+
+## Findings
+
+### F-001 — Tool-only clients cannot obtain AS/LC evidence links
+
+`Severity`: `P2` `Status`: `OPEN` `Owner`: `DEVELOPER` `FailureType`: `IMPLEMENTATION`
+
+- **Reference:** `backend/src/kgfegmcp/prompts/definitions.py` `EVIDENCE_ACCESS_STEPS` (`9e6f1f5b…`); `backend/src/kgfegmcp/prompts/service.py:628` step 5 (`410a124e…`); unchanged AS/LC adapters `mcp/tools/standards.py`, `learning_components.py`, `frameworks.py`. Architecture "Tool-accessible evidence contract", final paragraph: practical access includes endpoint standards, LC content and its full node provenance, manifest/profile and dedicated AS/LC validation/unresolved; "Copy all these links into ordinary workflow instructions or show how to construct them from pinned identities. ResourceLink-only exposure is insufficient." AC-029, AC-030 (also AC-016 workflow evidence steps).
+- **Failure case:** A client that consumes only tool text (the verified Desktop situation that motivated this rework) calls `get_workflow_instructions` for `teacher_guide_draft` or `learning_progression_support_plan` with the Nigeria target, then `get_standard` and `get_learning_components_for_standard`. The instructions tell it to read standard provenance and component provenance and to pass read_evidence "the exact URI copied from a tool result". Those results' text and structuredContent contain no URI; standard provenance/profile/validation links, and LC/LC-provenance links from `get_learning_component`, exist only as `resource_link` blocks. The client must guess the URI template (which the workflows forbid) or skip the evidence.
+- **Impact:** AC-029's supported route to full permitted standard/component provenance and dedicated AS/LC validation/unresolved records is not usable without native resource links, so affected workflows cannot satisfy their own "finish each relied-on provenance record" rule for AS/LC evidence. LP edge provenance is unaffected.
+- **Evidence:** Link-exposure inspection and rendered-message inspection in Checks above, plus the user-requested triple check: `get_framework_statistics` and `get_standard_context` (even with includeUnresolved) also emit these links only as `resource_link` blocks; `search_standards` and `list_frameworks` emit none. `get_capabilities` structuredContent lists all 15 URI templates, but its ordinary text lists none and no workflow refers clients to it, while EVIDENCE ACCESS says to copy exact URIs rather than construct them; so a text-only client has no template, and a structured-content client would have to infer an undocumented construction step. None of the seven rendered workflows contains a template or construction rule (their only `/provenance` mentions are relationshipUri/provenanceUri citation wording). Transport smoke (`cli/smoke_access.py:386-387`) reaches these records only through server-side constructors.
+- **Smallest correction:** Give tool-only clients a usable link for each listed evidence family without guessing, within the design's two permitted options: emit the exact URIs in ordinary text (for example in the AS/LC tool text, or in rendered instructions for pinned identities), or render explicit construction rules from pinned framework/snapshot/node identities with correct segment encoding. Keep native resource links, rights and limits unchanged. Rebuild the retained 0.4.0 candidate if runtime source changes (AC-035).
+- **Reassessment:** —
+
+### F-002 — AC-029/AC-034 evidence does not observe client-visible AS/LC links
+
+`Severity`: `P2` `Status`: `OPEN` `Owner`: `TESTER` `FailureType`: `VERIFICATION`
+
+- **Reference:** `.standards/docs/verification/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md` (`400e333a…`), AC-028..AC-031/AC-034 rows marked VERIFIED. Formal tests (`backend/tests/kgfegmcp/test_progression_evidence.py`, `4878c85e…`) read only relationship/artifact URIs through read_evidence and never read standard/LC provenance or LC content that way; the transport smoke receipts Tester relies on reach those records only through server-side URI constructors (`smoke_access.py:386-387`).
+- **Failure case:** The verified text-only/evidence suites pass while a tool-only client has no client-visible route to standard/LC provenance (F-001), so AC-029/AC-034 are recorded as verified without observing the required consumption path.
+- **Impact:** The formal evidence cannot detect regressions or absence of the AS/LC tool-only evidence route.
+- **Evidence:** Same inspection as F-001; `smoke_access.py:386-387`.
+- **Smallest correction:** After F-001 is corrected, add offline cases that derive AS/LC evidence URIs only from ordinary tool text and rendered instructions (no server-side constructors) and read them through read_evidence for the Nigeria target, a supporting LC, and dedicated validation/unresolved; re-establish affected transport/stage evidence.
+- **Reassessment:** —
+
+## Questions, Limitations, and Later Dependencies
+
+- Routing: F-001 is routed first: FAILURE REVIEWING_IMPLEMENTATION -> DEVELOPING, FailureType IMPLEMENTATION, pushing Frame 2 (From/ResumeAt REVIEWING_IMPLEMENTATION, Owner DEVELOPING, RerunThrough NONE) above SCOPING-owned Frame 1, which is unchanged. As Frame 2 owner, Developer decides the rerun; the corrected runtime and refreshed candidate need Tester re-verification, where F-002 is corrected, before RESUME to this review. Neither finding is an obligation; both stay OPEN here until Reviewer rechecks them.
+- The dedicated AS/LC `unresolved` resource is not linked by any AS/LC tool, even as a resource link; the correction must cover it as well as standard provenance, interpretation profile, validation, LC content and LC provenance.
+- AC-026, AC-027, AC-036, AC-037 — Documenter: update READMEs (17 tools/0.3.1 -> current surface/0.4.0), guides, Desktop walkthrough and remote checklist; strict build and saved-content evidence. AC-035 — shipped README accuracy depends on that change, then an archive refresh by Developer and Tester re-verification before final review/synchronization.
+- No blocking user question; BlockedOn NONE. Local evidence does not establish Desktop UI behavior, end-to-end composed teaching output or deployed claude.ai acceptance (user-owned follow-up).
+
+## Progress and Conclusion
+
+**BLOCKED.** The implementation gate does not pass: F-001 (P2, Developer) and F-002 (P2, Tester) are open.
+
+Checked: rework diff and affected boundaries, encoder/envelope accounting, LP text mirror and continuation, path size stop, read_evidence routing/cursors/paging, workflow dispatch, versions, archive closure, AS/LC byte preservation, full offline suite and static checks. Reviewer diagnostics completed with no further defects (Checks). Next action after F-001/F-002 corrections: on RESUME, recheck the original failure case (text-only AS/LC link route for teacher_guide_draft/support_plan), rerun `check-asl-c-uri-review.py` and relevant parts of `check-client-access-review.py` against the corrected HEAD and refreshed candidate, reconcile changed inputs, then reassess every current AC.
+
+Plain-language summary: the work cannot move forward yet. The new tools return full progression results as readable text and let clients read full relationship evidence, and the bundle matches the committed code. But for standards and learning components, the tools only offer their evidence links in a form some clients never show to the model, and the workflow instructions don't explain how to build those links. A text-only client therefore cannot reach full standard or component provenance, which the rework requires. Developer needs to fix that; Tester then needs to add checks that use only what a client can see.
+
+## Historical Assessment — 2026-10-03 recovery
+
+### Assessed Inputs and Scope
 
 Current recovery assessment: 2026-10-03, STANDARD / BROWNFIELD, AC-001 through AC-027 and corresponding design criteria, no retired IDs. Original audit baseline 9d5c9a0 remains the scope baseline. This rerun reconciles the earlier implementation assessment at 95bd607 with current entry HEAD db061ed and the recovery commits a8cfe92/db061ed. Entry tree was clean; only this report, its diagnostic/receipt and the eventual STATE handoff are Reviewer changes.
 
@@ -21,7 +119,7 @@ Current distribution is `data/source_artifacts/learning_progressions/recovery-fi
 
 `E` means `data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/reverify`; `R` means its sibling `final-recovery`, replacing integrate-actual-learning-progressions-20261001T162834Z-142f2df1 with this report's cycle ID. Rehashed E's 823 assessed inputs: 819 unchanged, with only STATE, the appended Developer plan and two READMEs changed. Before reopening this report, 826/827 R inputs matched with only STATE changed. After reopening, the two expected coordination differences are STATE and this implementation report; all 825 remaining identities match. The receipt records this in-progress report identity; its subsequent completion text and STATE handoff are intentionally outside evidence reuse.
 
-## Contract and Evidence Assessment
+### Contract and Evidence Assessment
 
 Full Verification Boundary independently reconciled: Developer COMPLETE, all 17 approved steps DONE, AFTER_IMPLEMENTATION, Current Increment NONE; Tester COMPLETE, FULL/NONE. The correction changes assembled README bytes only. Current source/test/configuration/graph-package/lock/CI/contract trees have no changes since 95bd607. The earlier inspected assertions and 78-case behavioral results, static checks, package validations and repository transports therefore remain applicable. Fresh independent Tester assembly/stage execution, source identity and Reviewer archive inspection cover the changed distribution. A completion label alone was not accepted.
 
@@ -57,7 +155,7 @@ Each row revalidates the historical detailed technical assessment under the same
 | AC-026 / User documentation | New shipped README correct; final-review documentation count/checker/current-identity defect remains. | Permitted later dependency: Documenter correction, strict build, saved checker re-execution and current final-input binding required. |
 | AC-027 / Maintainer documentation | Existing substantive documentation available; saved completion evidence needs refresh after final formatting and new bundle binding. | Permitted later dependency: Documenter must reconcile reproducible checks and provenance/maintenance guidance. |
 
-## Checks and Results
+### Checks and Results
 
 All new checks ran 2026-10-03 from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP` using system Python 3.11 for standard-library inspection. No source/test/fixture/package or other role's record changed. The new diagnostic is Reviewer supporting evidence, not formal Tester verification.
 
@@ -69,7 +167,7 @@ All new checks ran 2026-10-03 from `/Users/tzz/Projects/private/idi/KGForEdGloba
 - `node .standards/bin/check.mjs`: passed at entry and while review was in progress. Final gate and `git diff --check` are checked before transition, followed by the workflow checker after transition.
 - Diagnostic development had three exit-1 harness issues: prior index uses a nested `files` mapping; reopened review is an expected coordination delta; an assertion initially guessed `find_learning_progression_paths` instead of registered `get_learning_progression_paths`. Corrected the Reviewer diagnostic against observed evidence and reran successfully. These were Reviewer harness errors, not implementation failures or altered acceptance criteria. A sandbox read attempt with a shell heredoc also failed to create its temporary file; later reads used non-heredoc or authorized execution.
 
-## Findings
+### Findings
 
 **No material findings in this implementation rerun.** No current implementation-owned defect, material assessment gap, blocking question or Reviewer-owned obligation remains.
 
@@ -77,14 +175,14 @@ The original failure in `.standards/docs/reviews/integrate-actual-learning-progr
 
 The documentation defect in `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-002` remains OPEN: the prompt-config guide still says seven, and saved checker/current-identity evidence needs correction. It is an explicit later Documenter dependency for this IMPLEMENTATION gate, not a deferred implementation or formal-verification gap. The final report's hash is unchanged in this review's receipt.
 
-## Questions, Limitations, and Later Dependencies
+### Questions, Limitations, and Later Dependencies
 
 - AC-026 / Documenter: correct `docs/data/prompt-configs.md:3`, fix the saved table parser to handle separator formatting, run the saved example/catalog checks and strict build against final files, and refresh exact-content identities after final formatting. Reconcile current 17/9/14/1 inventory and original removal/semantics requirements. Existing COMPLETE documentation label is stale and is not accepted as completion evidence.
 - AC-027 / Documenter: refresh its record, preserve superseded evidence as history, and bind current maintenance/preparation/provenance guidance and check results to the new final-recovery bundle. If Documenter changes backend README or another recipe input, source/stage/archive equality must be restored through its owner route before final acceptance.
 - Final Reviewer must recheck the original failure cases and owner corrections, assess every AC and change the final finding statuses only when supported. Neither final finding was erased, duplicated into an obligation, or assumed closed here.
 - No user input needed; BlockedOn NONE. Current input/evidence inspections are local and do not validate deployment/publication/external-client installation, remote CI, live-model teaching quality, pedagogical correctness or external-link availability. These are not required guarantees at this gate. Retained raw stage/command evidence is intentionally local/ignored; this report and diagnostic are committable. Unchanged copy/history limits remain as recorded below.
 
-## Progress and Conclusion
+### Progress and Conclusion
 
 Current implementation assessment is **COMPLETE** and this gate **passes**: the changed archive has independently verified correction evidence, and all unchanged present-phase contract/technical criteria retain valid evidence on matching inputs. No material present-phase defect or gap remains. Immediately before completion, the entire diagnostic reran successfully (exit 0, 2.592s, output discarded to preserve the first receipt), and all receipt-bound context/contract/owner-record/final-review/documentation/diagnostic identities matched. Workflow checker and git diff --check passed. Only this report and the following legal STATE handoff change after that recheck. The earlier current-distribution and no-recovery conclusions below are historical only.
 
@@ -92,11 +190,11 @@ Work can move forward to Documenter. The replacement bundle now gives instructio
 
 Preserve Frame 1 unchanged: From REVIEWING_FINAL, Owner DEVELOPING, FailureType IMPLEMENTATION, ResumeAt REVIEWING_FINAL, RerunThrough DOCUMENTING. Reviewer is a downstream rerun, not frame owner or boundary. After this gate passes, FORWARD from REVIEWING_IMPLEMENTATION to DOCUMENTING; do not pop the frame or jump to final review. Documenter must reopen/reconcile its owned artifacts and satisfy AC-026/027; at its successful boundary the canonical recovery algorithm returns to REVIEWING_FINAL. No publication/deployment or sign-off is authorized by this gate.
 
-## Previous Assessment — 2026-10-02 (historical)
+### Previous Assessment — 2026-10-02 (historical)
 
 The remainder records the earlier implementation gate and its then-current distribution, documentation state and recovery state. Those temporal conclusions do not describe the current recovery.
 
-### Assessed Inputs and Scope
+#### Assessed Inputs and Scope
 
 STANDARD / BROWNFIELD; AC-001 through AC-027, no retired IDs. Audit baseline 9d5c9a0 through review entry HEAD 95bd607; entry tree clean. Includes committed additions/removals, affected unchanged graph/catalog/rights boundaries and local retained evidence. No prior implementation report existed. No authoring history is visible in this conversation; client freshness and author-model metadata cannot be independently certified. Different equal-or-higher-capability model is advisory when known; no identity is guessed.
 
@@ -113,7 +211,7 @@ STANDARD / BROWNFIELD; AC-001 through AC-027, no retired IDs. Audit baseline 9d5
 - Current retained distribution is `data/source_artifacts/learning_progressions/recovery-dev022/kgfegmcp-0.3.1-recovery.mcpb`, SHA256 `bf065f7247646c187988a92014cfad423c6842ac53e8615aae8a2932bbe10517`, with sibling `bundle/`. Reviewer verified all 650 archive members, their uniqueness and exact hash equality to stage and current source. Previous dev022 distributions are historical.
 - Dependency/configuration versions remain Python 3.13, locked FastMCP 3.4.4, pytest 8.2.0, package 0.3.1, prompt library 1.3.0, profiles 2.0. The user-selected Developer style remains Developer-owned; Reviewer style is NONE.
 
-### Contract and Evidence Assessment
+#### Contract and Evidence Assessment
 
 Full Verification Boundary independently reconciled: Developer plan COMPLETE, AFTER_IMPLEMENTATION, Current Increment NONE, all 17 approved steps DONE; Tester COMPLETE, FULL/NONE after correction and fixture relocation. Current acceptance inventory is AC-001–AC-027, with no retired IDs. Upstream scope/design are consistent about generated provenance, preserved AS/LC identity, immutable replacement packages, bounded local retrieval and later documentation. Context describes the original baseline; planned replacement does not invalidate it.
 
@@ -149,7 +247,7 @@ Tester evidence remains independently authored formal evidence. The Reviewer sui
 | AC-026 / User documentation | Existing guides/reference/README still describe old surface; scope explicitly assigns this work after implementation review. | Permitted later dependency: Documenter must update all required guides/examples/reference and provide strict-build evidence under AC-026. |
 | AC-027 / Maintainer documentation | Copy/build/normalization/package/verification mechanisms and receipts are available for documentation; documentation record not yet produced. | Permitted later dependency: Documenter must explain retained inputs, local preparation, validation/provenance, mock-only tests and user-owned deployment under AC-027. |
 
-### Checks and Results
+#### Checks and Results
 
 All Reviewer work occurred on 2026-10-02 from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; uv changes Python tool cwd to `backend`. No application, test, fixture, contract, Developer/Tester record or accepted package was edited.
 
@@ -204,11 +302,11 @@ for method,request in [('search_learning_progressions',search),('get_standard_pr
                 raise AssertionError(label+' unexpectedly succeeded')
 ```
 
-### Findings
+#### Findings
 
 **No material findings.** No open P0/P1/P2 finding, material assessment gap, Reviewer-owned obligation or blocking user question remains.
 
-### Questions, Limitations, and Later Dependencies
+#### Questions, Limitations, and Later Dependencies
 
 - **AC-026 — Documenter:** update user guides/reference/examples for all three workflows and revised queries/resources/inventory; replace obsolete hypotheses and document identity, semantics, filters, limits, continuation, provenance/confidence/warnings, rights and coverage. Persist actual strict documentation build evidence. Existing old prose is expected later-phase work, not proof of documentation completion.
 - **AC-027 — Documenter:** document source inventory, verified copy/normalization/immutable acceptance, LP evidence, local commands, mock-only tests, significant changes and user-owned deployment. Persist the documentation record and supporting checks under the same AC.
@@ -217,7 +315,7 @@ for method,request in [('search_learning_progressions',search),('get_standard_pr
 - Formal command receipts and raw copy/stage evidence remain in intentionally ignored local directories. Their current bytes were inspected; repository tests and the report are committable. This review does not claim those local receipts exist in a fresh clone; required runtime data do exist in the tracked/distributed package set.
 - Session/model metadata limitation is recorded above. No user action is needed; Active Work.BlockedOn remains NONE.
 
-### Progress and Conclusion
+#### Progress and Conclusion
 
 Implementation review is **COMPLETE** and this gate **passes**. Every current present-phase AC and relevant technical criterion has a supported disposition; no material finding or evidence gap remains. Inputs were rehashed immediately before this conclusion. The independent 78-test rerun, current evidence/receipt reconciliation and source inspection support the result; labels alone were not relied upon.
 

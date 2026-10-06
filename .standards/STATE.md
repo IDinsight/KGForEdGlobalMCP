@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `REVIEWING_IMPLEMENTATION` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
-`Full Tester verification passed for all present-phase ACs on the rebuilt 0.4.0 candidate (170ba6fd): 103 offline cases, CI static, packages, three transports and closure agree; AC-026/027/036/037 pending Documenter. Request IMPLEMENTATION review; Frame 1 continues through SYNCHRONIZING.`
+`Kind`: `FAILURE` `From`: `REVIEWING_IMPLEMENTATION` `FailureType`: `IMPLEMENTATION` `Reason`:
+`Implementation review F-001: AS/LC evidence links (standard/LC provenance, LC, profile, validation, unresolved) reach tool-only clients only as resource_link blocks or not at all, and instructions give no construction rule (AC-029/AC-030). F-002 Tester evidence gap follows in the rerun.`
 
 ## Recovery
 
@@ -32,6 +32,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
+
+### Frame 2
+
+`From`: `REVIEWING_IMPLEMENTATION` `Owner`: `DEVELOPING` `FailureType`: `IMPLEMENTATION`
+`Reason`: `Tool-only clients cannot obtain AS/LC evidence links: get_framework/get_standard/get_learning_component(s) expose them only as resource_link blocks (unresolved not at all) and workflow instructions say to copy URIs from tool results without a construction rule (review F-001, AC-029/AC-030).`
+`ResumeAt`: `REVIEWING_IMPLEMENTATION` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 
