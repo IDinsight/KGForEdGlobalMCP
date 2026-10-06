@@ -7,9 +7,13 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 ## Context
 
-Feature architecture for the completed scope in
+Evolution architecture, revised on 2026-10-03 for the completed REPLAN scope in
 `.standards/docs/scope/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md`.
-The active-cycle baseline is `.standards/CONTEXT.md`; there is no recovery frame.
+The active-cycle baseline remains `.standards/CONTEXT.md`. Recovery Frame 1 is
+owned by SCOPING, resumes at AWAITING_USER_SIGNOFF and reruns through SYNCHRONIZING.
+Architect is a downstream rerun and preserves that frame. The original package
+integration is implemented; its valid contracts below remain binding. This revision
+changes client delivery and access, not stored graph judgments or accepted data.
 The existing Python/FastMCP application is immutable, deterministic, read-only,
 profile-driven, and local-data-only. Reuse its accepted-package lifecycle,
 GraphStore, catalog routing, standard selectors/search, component links, resource
@@ -38,7 +42,7 @@ summary resource. Keep rich provenance outside GraphRelationship: the graph hold
 edges; small validated projections support queries; resources expose the complete
 retained judgment.
 
-Two packaging changes are necessary:
+The original integration required two packaging changes, retained as contracts:
 
 - Build new immutable snapshots and profile versions. Old accepted packages are
   sealed envelopes: adding evidence changes their checksum identity. Prepare and
@@ -54,10 +58,59 @@ Two packaging changes are necessary:
   teachers can open one relationship's evidence without opening the whole binder.
   Resource limits and rights remain enforced, including for the original binder.
 
-The user impact is new snapshot/profile identities and an expanded public surface;
+The original integration introduced new snapshot/profile identities and an expanded
+public surface;
 standard/component IDs, source text, useful services, hierarchy, and LC supports
 remain intact. Module names, helper factoring, test organization, and reversible
 local implementation details are Developer choices within these contracts.
+
+### Recovery decision and client support assessment
+
+Keep the five query methods, existing useful result fields, nine native prompts and all
+native resources. Add only compatible effective-budget metadata to LP results.
+Mirror each bounded LP result as canonical JSON ordinary text.
+Add only two read-only tools: `read_evidence` reuses ResourceService, and
+`get_workflow_instructions` reuses the seven affected PromptService renderers.
+The second tool is a targeted alternate invocation route, not seven separate
+wrappers or a workflow executor. No server model calls, sampling or new edges.
+
+The support assessment separates observations, source contracts and inference:
+
+| Surface | Evidence at design time | Supported design route |
+|---|---|---|
+| Local Desktop tools | User verified discovery of six frameworks; exact/search ordinary text contained summaries only. Source confirms all five LP adapters omit their detailed tables from text. | All five return complete bounded JSON text plus unchanged useful structured results, including real continuation tokens. |
+| Local Desktop native prompts | User saw all nine under Add from curriculum-knowledge-graph; exact support-plan attachment rendered and prompts/get was logged. No teaching workflow ran end-to-end. | Preserve native selection/attachment and existing arguments. Render the same revised evidence-access instructions for native and alternate invocation. |
+| Local Desktop native resources | Catalog attachment/read worked. Inspected resource menu offered only Catalog; searching the LP summary URI returned No results. This is one access-path gap. | Retain native reads; model-invoked read_evidence accepts the returned canonical URI and exposes full permitted content without composer URI search. |
+| Intended claude.ai remote connector | No deployment/client acceptance evidence. Anthropic's current connector documentation describes tools, prompts and resources, Streamable HTTP, and an approximate 150,000-character tool-result ceiling. | Preserve advertised native capabilities. Provide an independently exercisable tools route for results, evidence and the seven affected workflows, with conservative result limits. Native remote attachment behavior remains an acceptance-checklist item. |
+
+Sources read on 2026-10-03: [Anthropic connector server contract](https://claude.com/docs/connectors/building),
+[remote connector connection boundary](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp),
+and [MCP structured-content compatibility](https://modelcontextprotocol.io/specification/2025-11-25/server/tools).
+The MCP contract recommends a serialized JSON text block alongside structured data.
+Remote connections originate in Anthropic's cloud, distinct from local Desktop STDIO.
+These references establish design assumptions, not acceptance of this deployment.
+
+Native prompts are working and documented as a remote capability. The alternate
+instruction tool is justified by the requirement for a practical model-callable
+workflow route alongside the evidence tool when attachments are unavailable in a
+particular access path, or when users deliberately use tool-only consumption.
+It exposes only the three LP and four affected teaching/study workflows, whose
+full evidence route this rework must support. Administrator/comparison native
+prompts remain useful and unchanged except shared evidence-access wording; no
+alternate wrapper is added for them. Documentation should recommend Desktop's
+verified native prompt route first and explain the alternate tool explicitly.
+Do not assert remote native prompts/resources are absent or universally broken.
+
+The rework preserves the current six accepted snapshots, their manifest/profile/
+artifact hashes, copied source receipts, original stored judgments, and rights.
+Do not repeat initial copy, normalization, partition generation or package cutover
+merely because they appear in the original design. Change generic server instructions
+and adapters only; keep accepted profile and framework prompt configuration bytes.
+Advance server/MCPB version 0.3.1 to 0.4.0 for the additive public tools and global
+prompt library 1.3.0 to 1.4.0 for revised instructions. Existing package source,
+delivery, manifest, profile and configuration versions remain unchanged. Version
+metadata and retained archive identity distinguish the revised runtime from the
+previous 0.3.1 candidate; no deployed endpoint is changed.
 
 ## Acceptance Coverage
 
@@ -92,6 +145,17 @@ local implementation details are Developer choices within these contracts.
 - `AC-027`: No architectural impact on Documenter's maintainer record; the copy,
   normalization, acceptance and distribution boundaries below govern its instructions.
 
+- `AC-028`: Canonical text mirror, shared envelope budgets, whole-entry pagination/truncation and explicit full-evidence links.
+- `AC-029`: Allowlisted URI dispatch into ResourceService and deterministic content paging preserve the complete permitted evidence and its identity.
+- `AC-030`: Native renderer preservation, seven-workflow typed alternate invocation and shared evidence-access instructions.
+- `AC-031`: Common transport/result budgets, existing rights and safe repositories, exact hashes, original semantics and explicit errors.
+- `AC-032`: Recovery decision/client support matrix, documented assumptions, alternatives and tool-access contracts fix the assessment before implementation.
+- `AC-033`: Text/structured equivalence, real cursors, size-driven continuation and bounded nonempty operations provide meaningful offline verification targets.
+- `AC-034`: Shared factory/registration and concrete exact evidence/regression targets; independent Tester owns executions and claims.
+- `AC-035`: Versioned retained MCPB refresh and staged runtime contracts, with historical source/archive/stage evidence retained.
+- `AC-036`: No architectural impact on Documenter's user-run walkthrough execution or status; invocation/evidence/composition boundaries below define what it must exercise.
+- `AC-037`: No architectural impact on prose, strict-build results or user deployment/sign-off; the client support matrix and concrete surface govern documentation and the later remote checklist.
+
 ## Components
 
 | Existing boundary                                      | Change and responsibility                                                                                                                                                 |
@@ -105,11 +169,18 @@ local implementation details are Developer choices within these contracts.
 | bootstrap, mcp registration, capabilities/statistics   | Shared service wiring, truthful package flags/counts, explicit inventory and stable protocol errors.                                                                      |
 | CLI, distribution, tests/CI                            | Revised shared smoke contracts, retained-stage data closure and meaningful offline verification.                                                                          |
 
+Recovery additions reuse these boundaries: ordinary resource URI dispatch/paging
+owns evidence retrieval; PromptService owns all rendering/authorization; typed
+workflow request dispatch owns only selection and validated argument adaptation;
+a shared result encoder owns canonical text and total-envelope budgets. MCP
+adapters remain thin and use one AppState for STDIO and HTTP. Reversible module
+factoring is Developer-owned; no transport-specific graph, rights or prompt logic.
+
 ## Interfaces and Contracts
 
 ### Local copy, normalization and immutable packages
 
-Developer's first action before implementation changes is to copy all six
+For the original integration, Developer's required first action was to copy all six
 CONTEXT-mapped `<doc-key>/kgs/` input sets into
 `data/source_artifacts/learning_progressions/<doc-key>/kgs/`. This directory is an
 operator preparation/evidence boundary, outside graph-package discovery and MCPB
@@ -168,7 +239,8 @@ Use the old source version token: new artifact-set hashes distinguish the replac
 without implying a new curriculum edition. New profile schema `1.1`, profile version
 `2.0`, removes progressionHeuristics from model/validation/JSON. New prompt config
 schema `1.1` and profile version `2.0` remove the hypothesis overlay and permit the
-three new overlays; public prompt version advances from `1.2.0` to `1.3.0`.
+three new overlays; the original public prompt version advanced from `1.2.0` to
+`1.3.0` (the client rework advances the generic library to `1.4.0`).
 Preserve source current status; active distribution contains one current replacement
 per framework, avoiding ambiguous-current routing. Retire old directories only after
 all six replacements pass acceptance in a separate preparation root.
@@ -295,13 +367,16 @@ read the 40 MB original on each query or create a second mutable graph store.
 | traversal/path examined adjacency edges              | 5,000   | 5,000        |
 | path queue states                                    | 5,000   | 5,000        |
 | encoded LP tool result, text plus structured content | 1 MiB   | 1 MiB        |
+| serialized compatibility tool-result characters      | 100,000 | 100,000      |
 
 Caller-selectable limits are positive integers within these bounds and enforced in
 service models as well as MCP schema. Queue/work/byte ceilings are server constants;
-report them. A finite output limit alone is insufficient. Tool text is a concise
-summary/link list, not a second copy of full tables. If one exact result or one entry
-cannot fit, return `progression_result_too_large` with a resource-access recovery
-hint; do not produce a zero-progress continuation loop or silently drop that entry.
+report them. A finite output limit alone is insufficient. Tool text mirrors the
+complete bounded public result as canonical JSON, including tables and actual cursors.
+Use the same encoder/budget for service candidate selection and the final adapter.
+If one exact result or one entry cannot fit, return `progression_result_too_large`
+with a usable read_evidence recovery hint; do not produce a zero-progress
+continuation loop or silently drop that entry.
 
 Direct/discovery ordering is `(relationship type, relationship ID)` independent of
 file order. A cursor is opaque bounded base64url (at most 4,096 characters), contains
@@ -310,7 +385,7 @@ fingerprint, and the next candidate position. Bind page limit and other semantic
 bounds to that fingerprint. Validate shape, identity, fingerprint, range and checksum
 before use, using the existing cursor conventions; no process-local session state.
 Advance through examined nonmatches as well as emitted matches. Stop before an entry
-that would exceed page/byte budget and resume there. Return nextCursor while candidates
+that would exceed page/byte/character budget and resume there. Return nextCursor while candidates
 remain, even when a work-limited page has zero matches; reject stale/mismatched cursors
 as `invalid_cursor`. Report examined/returned counts, page/byte/work stopping reason
 and isComplete for the entire requested selection. A page is not the entire result
@@ -432,6 +507,167 @@ Administrator/comparison disclosures acknowledge stored generated LP without
 reclassifying comparisons as official equivalence or creating cross-framework links.
 No new heuristic-profile or hypothesis-guidance blocks are permitted.
 
+### Ordinary text and total result accounting
+
+For the five LP tools and the two new tools, serialize the exact validated public
+result object with aliases, sorted object keys, compact separators, ensure_ascii=False
+and original array order into one ordinary TextContent JSON block. Parsing that
+block yields the structuredContent object exactly; do not omit tables, warnings,
+effective request/bounds, identifiers or continuation values to save space. No
+resource-link block or client structured-content behavior is required for correctness.
+LP excerpt/omission flags and full standard/provenance URIs remain explicit. A
+complete bounded result can still contain clearly disclosed source excerpts.
+
+Use one serialized CallToolResult budget calculation, including ordinary text,
+structuredContent, escaping, all extra content/metadata and isError fields emitted
+by the adapter. Require both <=1,048,576 UTF-8 bytes and <=100,000 Unicode code points
+of the serialized envelope. Use conservative serialization overhead consistently
+at candidate-selection time and final emission; serialization must never grow past
+the reserved budget. JSON-RPC/HTTP framing is transport-owned. This conservative
+character limit stays below Anthropic's approximate client limit but is not a
+claim about its exact counting/truncation algorithm. Test actual local wire results.
+Other retained tools keep their useful existing text/continuation contracts; they
+already expose selectable standards/components IDs. No blanket text rewrite.
+
+Direct/search pages roll back the next whole edge and dependent table rows before
+either ceiling, then return the actual bound cursor and honest stopping reason.
+Report the character ceiling in effective limits and distinguish size truncation
+from work/page exhaustion; preserve existing stopping-reason semantics when the
+common output-size reason covers both ceilings. The indivisible-entry check uses
+both ceilings and must precede a zero-progress continuation. Traversal/path results
+remain coherent whole-edge/whole-path bounded results; partial frontier/reasons
+must reflect either ceiling. They have no continuation cursor: disclose this and
+let clients issue a narrower new request. Do not drop identity/disclosures or clip
+a JSON string, edge, node or path after service selection. Error messages are
+bounded ordinary text with stable domain codes, public safe identity/details and
+usable recovery hints; unexpected failures keep the current masking boundary.
+
+### Tool-accessible evidence contract
+
+Register `read_evidence` with the ordinary nested `request` object pattern:
+`uri` (1..4096 characters), `maxContentBytes` (positive integer, default 16,384,
+maximum 32,768), optional `cursor` (1..4096 characters). Additional fields fail.
+A dedicated ordinary dispatcher accepts exactly Catalog and the existing fourteen
+kgfegmcp URI templates, and calls the corresponding ResourceService method directly.
+No internal MCP client, network fetch, caller path, package reload or policy clone.
+The URI is the practical selector: copy returned URIs from LP text, or use native
+URI constructors with exact discovered framework/snapshot/node/artifact identifiers.
+
+Require the exact scheme/authority and path shape; reject query/fragment/userinfo/
+port, malformed escaping, empty/extra segments, encoded separators, traversal,
+double decoding and unsupported templates. Decode each segment once, validate
+with existing identifier types, and canonicalize through the existing URI constructor.
+Noncanonical spelling may be normalized only if the validated decoded identifiers
+round-trip exactly; return the canonical URI. No permissive filesystem/prefix route.
+Every snapshot-bearing URI requires that exact snapshot. Catalog/framework resources
+retain their existing identity semantics and bind continuation to their content hash.
+
+ResourceService and ResourceRepository first apply existing rights, artifact
+allowlists, manifest membership, safe reads, source hash/size and complete-document
+return-size checks, unchanged. Per-edge LP provenance reads the validated index and
+one partition. Standards/components/provenance and relationship content use their
+existing reviewed/full-text/single-standard rules. Dedicated validation/unresolved
+resources and generic artifact logical names preserve the distinction between
+AS/LC and LP reports. Bulk-denied summary/final-claim/raw-map/shard artifacts remain
+denied; the sanitized LP summary exposes allowed coverage/eligibility notices and
+counts. Full permitted artifacts, including full generation/coverage records when
+bulk rights allow, remain reachable through this same route. No excerpt-only substitute
+for a permitted original record. Do not use paging to bypass native source or
+complete-document limits or to read the oversized original CBSE map.
+
+After a complete ResourceDocument is authorized and produced, expose deterministic
+UTF-8 content windows. Bytes must decode as UTF-8; other representations produce a
+stable unsupported-evidence-format error. Windows end on Unicode boundaries and
+may be smaller than maxContentBytes to fit the shared envelope ceilings. The typed
+result contains `metadata` (the unchanged ResourceMetadata, including canonical URI,
+resource kind/representation, exact package/profile/snapshot/source/content hashes
+and complete byteLength), `content` (faithful decoded content window), and `page`:
+`startByte`, `endByteExclusive`, `returnedBytes`, `totalBytes`, `maxContentBytes`,
+`isComplete`, `nextCursor`, `nextRequest` (the complete unchanged tool request
+with that cursor, or null when finished), `chunkSha256`, plus effective envelope
+ceilings.
+Offsets count the original UTF-8 resource bytes; the resource content hash remains
+that of the whole original content. Also return contentStatus=full only when startByte=0
+and endByteExclusive=totalBytes; otherwise contentStatus=partial, including a
+last continuation window. Reassembling ordered content windows yields
+exact bytes and that hash; chunk hash covers only the returned bytes. isComplete
+means no content remains after this window, not that the last window alone is the
+entire record. An empty authorized document is complete; absence is an explicit
+resource-not-found error. Source evidence may be raw-source or derived as recorded;
+paging never relabels an excerpt as a full original judgment.
+
+Cursor conventions: stateless opaque versioned base64url with checksum, <=4096
+characters, bound to canonical URI, complete content hash, exact metadata identity,
+maxContentBytes and next UTF-8 byte position. Validate identity/shape/range/boundaries
+and fingerprint on every call and reapply rights/native limits. Reject altered,
+stale, mismatched, out-of-range or non-boundary cursors as invalid_cursor. Never
+accept arbitrary initial offsets; do not expose cursor internals as instructions.
+Return a real nextCursor and an unchanged request replay hint in text. If the next
+Unicode scalar plus metadata cannot fit, fail with evidence_result_too_large rather
+than a no-progress cursor. Do not maintain sessions or combine windows from different
+hashes. Retain the resource error codes, including resource_access_denied with
+actual/maximum size details for native oversized results, and use distinct stable
+invalid_evidence_uri/unsupported_evidence_format/evidence_result_too_large errors
+for the new boundary. No denied content or local paths appear in errors.
+
+The diagnostic contract uses frameworkId=nigeria-nerdc-mathematics-primary-1-3,
+snapshotId=nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f,
+relationshipId=0129f5d5-42fd-52cb-bcf2-ec07c47103e7, and support-plan target
+nodeId=e399b510-48bb-58ee-abda-61460a5a853b. Use existing constructors to encode
+snapshot/identifier path segments; never substitute a new current snapshot.
+
+Practical access includes the diagnostic exact relationship/provenance and endpoint
+standards; LC content and its full node provenance; manifest/profile; LP summary;
+LP validation and unresolved artifact logical names from summary links; and dedicated
+AS/LC validation/unresolved. Copy all these links into ordinary workflow instructions
+or show how to construct them from pinned identities. ResourceLink-only exposure is
+insufficient. A permitted page is explicit partial content until continuation is
+finished; workflows must finish the used original provenance before relying on it.
+
+### Targeted workflow-instruction contract
+
+Register only `get_workflow_instructions`, using a nested `request` discriminated
+union with `workflowName`. The seven literal variants are:
+learning_progression_teaching_sequence, learning_progression_support_plan,
+learning_progression_curriculum_review, teacher_guide_draft, student_study_support,
+student_handbook_section and multigrade_lesson_plan. Each variant has exactly the
+corresponding current ordinary PromptService renderer's inputs, camel-case public
+aliases, defaults, constraints and extra-field rejection. Reuse existing typed
+identifiers/enums/facet/local-context/duration/grade limits and request validation;
+arrays/selector objects are typed JSON here, while native prompt arguments retain
+their current string adaptation. Do not accept arbitrary prompt names, free-form
+argument maps, serialized request JSON strings or caller-provided instruction text.
+The MCP schema must enumerate and explain the variant contracts, not leave dispatch
+requirements implicit. Unknown or mismatched variants/inputs fail validation.
+
+Dispatch to the same ordinary renderer used by native prompts; share any required
+validated adaptation below the MCP boundary rather than calling decorated handlers.
+The result contains the complete `rendered` PromptRenderResult, `effectiveRequest`
+with validated defaults, and the pinned `package` PackageReference, `profileSha256`
+and `manifestSha256` from the same catalog runtime resolved by the rendered exact
+snapshot/package. Keep prompt/configuration identity and hashes, attribution,
+request-data separation, rights checks, finite rendering limits and full message.
+Canonical JSON text mirrors this entire result. Preserve the existing <=64 KiB
+PromptPolicy limit and any lower configured limit, then enforce the shared tool
+byte/character ceilings; report a bounded workflow_instructions_too_large error
+if the complete instructions cannot fit. Do not return clipped instructions or a
+cursor, execute their retrieval, invoke a client model, or claim the workflow ran.
+
+All affected renderers instruct clients to use native resource reads when accessible
+or read_evidence with the exact URI and continuation until full permitted used
+provenance is obtained. The tools-only path begins with get_workflow_instructions,
+then follows its bounded retrieval calls, reads supporting evidence, and composes
+cited output in the client. Keep the original workflow caps in the workflow table above, including at
+most ten distinct used-edge full provenance reads: finishing several content windows
+for one record still counts as one distinct record, but cap evidence continuation
+at 32 windows per workflow invocation (16,384-byte requested windows). If the required
+record is still incomplete, denied or oversized, disclose/defer the evidence-dependent
+claim rather than substitute summaries or claim a completed evidence check. No
+automatic unbounded cursor following, larger source limits or server orchestration.
+Native and alternate invocation must render identical messages for identical validated
+requests and exact context; only their protocol envelopes differ. The two unaffected
+native workflows can use shared evidence wording without receiving wrappers.
+
 ### Surface removal and operational contract
 
 Remove collect_progression_evidence and inferred_progression_hypothesis, their
@@ -443,7 +679,8 @@ Preserve llm_inferred vocabulary, generated LC metadata and useful comparison
 inference. Historical upstream text saying inferred is truthful provenance and
 must not be rewritten by a blanket replacement.
 
-The revised surface is 17 tools (12 retained + 5), 9 prompts (6 retained + 3),
+The final revised surface is 19 tools (12 retained + 5 LP + 2 access tools),
+9 native prompts (6 retained + 3 LP),
 1 fixed resource and 14 resource templates (12 retained + 2). Explicit registration,
 capabilities and shared smoke expectations agree on exact names/schemas, not just
 counts. Per-package discovery differentiates included LP from the primary
@@ -470,6 +707,9 @@ Documenter dependency rather than an unexecuted passing check.
 
 ## Data and Control Flow
 
+The original integration lifecycle remains a data acceptance contract; recovery
+starts from its already accepted runtime and follows the additional flow below.
+
 1. Copy/verify external artifacts locally first; retain the exact-byte receipt.
 2. Local normalization reuses AS/LC delivery, resolves LP endpoints, reconciles all
    exported edges and creates provenance partitions/index plus a sanitized receipt.
@@ -490,6 +730,13 @@ Documenter dependency rather than an unexecuted passing check.
    stored evidence; client composition produces labeled pedagogy, never server edges.
 8. Shared smoke and MCPB staging exercise the same accepted contracts through local
    transports and the retained distribution boundary. User handles later deployment.
+
+Recovery flow adds no data preparation: query -> canonical bounded result ->
+copy its exact evidence URI -> ResourceService-authorized full document -> content
+window and hash-bound continuation -> client evidence inspection. Native prompt
+selection or get_workflow_instructions -> the same pinned renderer -> client
+bounded queries/evidence reads -> client composition with citations and disclosures.
+Rendering, retrieval, and composed teaching output are distinct evidence states.
 
 ## Technical Acceptance Criteria
 
@@ -524,28 +771,60 @@ Documenter dependency rather than an unexecuted passing check.
   contracts and affected regressions; no-test success and live model/paid calls cannot
   count as verification. Local protocol checks require no model.
 
+- `AC-028`, `AC-031`, `AC-033`: Parsing ordinary LP text alone recovers every returned table/identifier/statement excerpt/judgment/path/completeness/actual cursor field in structuredContent. Both shared envelope ceilings govern selection and emission, including indivisible exact/edge failures and truthful traversal/path partialness.
+- `AC-029`, `AC-031`: read_evidence invokes the native resource service and produces the same complete authorized content/metadata across deterministic windows; hashes/offsets/cursors reconstruct original bytes without loss, duplication, stale mixing or rights/source-limit bypass. Missing, denied, oversized and partial outcomes are distinct from full permitted evidence.
+- `AC-030`, `AC-031`: The seven typed instruction variants and native prompts share exact deterministic renderer output, pinned package/configuration identity and rights/size enforcement. No arbitrary instructions, execution, server model call, sampling, inferred edge or obsolete hypothesis route exists. All nine native prompts remain registered.
+- `AC-032`: The persisted support assessment distinguishes observed Desktop behavior, source-documented remote capabilities, design choices and untested acceptance. The public connector has a complete tool-access route, without depending on an unverified attachment UX or claiming it lacks native capabilities.
+- `AC-034`: Local STDIO and local HTTP emit the same five LP text contracts and two access-tool schemas/content/errors. Offline meaningful checks include the Nigeria diagnostic relationship and full original provenance, exact endpoint standards, representative LC/full provenance, CBSE needs-review, Ghana warnings, coverage and both LP and AS/LC validation/unresolved; rights/native reads/prompts/affected searches/context/supports and size/cursor regressions remain assessable.
+- `AC-035`: The final source and freshly retained 0.4.0 archive/stage expose 19 tools, nine native prompts, one fixed resource and fourteen templates with exact matching schemas, current rendered/shipped instructions and permitted evidence closure. Record new archive/source/stage identities; earlier 0.3.1 pass/hash claims remain historical.
+
 ## Build Plan
 
-1. FIRST: help make and verify the six repository-local input copies and receipt
-   before editing implementation. Reconcile source drift; do not modify the external
-   project. This is required by AC-001 and the persisted user request.
-2. Extend package/profile contracts, deterministic local normalization and evidence
-   declarations/partitions; add meaningful synthetic acceptance checks before
-   producing six replacement accepted packages in a separate preparation root.
-3. Reuse GraphStore/catalog and implement the five bounded service contracts,
-   projections, errors and resource policies/URIs. Establish branching/filter/limit/
-   rights behavior with offline cases; preserve affected AS/LC behavior.
-4. Remove obsolete service/models/configuration and wire new thin adapters,
-   capabilities/statistics and shared prompt evidence rules/three workflows. Publish
-   fresh profiles/prompts and switch active roots only after all six packages pass.
-5. Update shared transport inventories, relevant CI expectations and distribution
-   evidence closure. Run appropriate static/offline/package/STDIO/local HTTP and
-   retained-stage checks, recording input identities and any real limitations.
-6. Hand off through the prescribed independent Tester/Reviewer/Documenter stages;
-   Documenter replaces old guides/reference/examples and documents local copy/build
-   commands. No production deployment or publication occurs in this cycle.
+1. Developer reconciles its same-cycle completed plan with this recovery design,
+   retaining valid increments/history, selected style and approval/cadence records.
+   Preserve accepted package/profile/configuration bytes and first-copy receipts;
+   do not recopy sources, regenerate judgments or repeat the original cutover.
+2. Implement the shared canonical text/envelope budget and integrate it into all
+   five LP selection/size checks. Preserve structured contracts, whole-entry
+   pagination, cursor replay and honest no-cursor traversal/path partial results.
+3. Add allowlisted ordinary URI dispatch and read_evidence content paging around
+   ResourceService. Keep policy/repository authoritative, then add the thin shared
+   MCP adapter, typed contracts and stable safe errors.
+4. Add the seven-variant typed get_workflow_instructions adapter/ordinary dispatch
+   into existing PromptService methods; revise generic evidence-access wording
+   shared by native and alternate invocation. Advance global prompt/server/bundle
+   versions while preserving sealed package/configuration identities.
+5. Reconcile exact discovery/counts/schemas, shared smoke and appropriate offline
+   checks. Refresh a distinct retained MCPB candidate with current instructions,
+   inventory and evidence; establish current source/archive/stage correspondence.
+6. Hand off through independent Tester and both reviews, Documenter, then
+   Synchronizer. Tester re-establishes current behavior; Documenter prepares the
+   exact-ID Desktop walkthrough and post-deployment remote checklist, marks actual
+   execution status honestly and checks strict/current shipped content. Actual
+   user deployment, public-client acceptance and sign-off remain user follow-up.
+
+The original copy/normalization/package production sequence and its executed
+receipts remain in the existing development/verification history. Existing
+AC-001..AC-027 stay binding and must be reconciled by their owners alongside the
+ten new conditions; this plan neither erases history nor certifies prior results
+against the revised client contracts.
 
 ## Risks and Follow-up
+
+- Canonical text duplicates structured evidence and may return fewer edges per page.
+  Conservative character accounting protects the intended client surface; honest
+  cursors/partial results preserve selection rather than quietly dropping evidence.
+- Current documentation advertises remote native prompts/resources; their deployed
+  UI path and text consumption are untested here. The tool route is a designed
+  server contract that Developer and independent Tester must validate locally;
+  user-run remote acceptance follows deployment.
+  No localhost HTTP result or prompt attachment is proof of public-client behavior.
+- Full provenance can span windows. Workflow continuation is finite; deferred claims
+  disclose unfinished evidence. Resource source/whole-return limits can still deny
+  content even when one window would be small. Do not raise limits to hide this.
+- Prepared walkthroughs are not executed workflows. Record prompt rendering,
+  resource reads, tool-only consumption and actual cited composition separately.
+  User-run Desktop or remote observations may motivate further explicit rework.
 
 - Producer/checker judgments may be wrong or incomplete. Keep generated origin,
   rationale, warnings and structural-only scope visible; this feature does not
@@ -565,6 +844,24 @@ Documenter dependency rather than an unexecuted passing check.
 
 ## Alternatives
 
+- Summary-only text plus structuredContent: rejected by verified Desktop output and
+  AC-028. Separate hand-written text tables would duplicate model/schema logic;
+  canonical JSON gives one contract and predictable accounting.
+- Resource-menu URI search, ResourceLinks or embedded attachments as the sole evidence
+  path: rejected because the inspected Desktop path could not open returned LP links.
+  Retain native resources and reuse their service through one paged tool instead.
+- One unpaged evidence tool with a larger result limit: rejected because it risks
+  client truncation or makes permitted large documents unusable. Bounded content
+  windows retain exact full permitted bytes under existing native source limits.
+- Nine separate workflow wrappers or replacing native prompts: rejected because
+  Desktop prompts work, current remote docs advertise them, and only seven affected
+  workflows need this alternate model-callable route. A single typed dispatch keeps
+  those renderers authoritative without an orchestration layer.
+- Rely solely on native remote prompts/resources: possible after actual client
+  acceptance, but insufficient as the only declared practical access path before
+  user deployment; a narrow alternate tool route covers text-only invocation without
+  asserting a native client defect.
+
 - Directly substitute combined AS/LC/LP exports: rejected because five curricula
   use incompatible flat records and replacement could disturb AS/LC delivery bytes.
 - Separate LP graph packages/runtime or global graph database: rejected because
@@ -575,3 +872,23 @@ Documenter dependency rather than an unexecuted passing check.
   reuse the existing safe artifact/resource boundary and keep rich evidence intact.
 - Keep hypothesis aliases/heuristics or infer missing links: rejected by the explicit
   replacement scope and would confuse stored judgments with new client speculation.
+
+### Architect recovery gate and handoff record
+
+Revised in EVOLUTION mode for the same cycle and the SCOPING-owned Frame 1. All
+37 current scope identifiers are covered; AC-001..AC-027 retain valid technical
+contracts, AC-028..AC-037 have explicit dispositions. This record fixes public
+interfaces, budgets, policy reuse, invocation paths, coexistence/version boundaries,
+implementation sequence and verification targets; no blocking design question
+remains. Production code, tests, owned downstream completion statuses, audit/context,
+user documentation and public deployment are not changed by Architect.
+
+The Architect checker and diff whitespace checks passed; all required template
+sections and the 37-ID coverage were checked. These are design/workflow checks,
+not new runtime verification. Forward to DEVELOPING and preserve Frame 1
+unchanged through SYNCHRONIZING. Developer owns reconciliation of the existing plan
+and invalidated implementation/checkpoint evidence; Tester, both Reviewers,
+Documenter and Synchronizer reopen their own same-cycle records as prescribed by
+the revised scope. At the successful synchronization boundary only, RESUME to
+AWAITING_USER_SIGNOFF. A newly discovered scope/context/design defect follows nested
+failure mechanics instead of bypassing an owner.

@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `ARCHITECTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `SCOPING` `FailureType`: `NONE` `Reason`:
-`Scoper REPLAN gate passed; preserve AC-001 through AC-027 and add AC-028 through AC-037 for client text/evidence/workflow access, support assessment, local verification/distribution and walkthroughs. Architect is the earliest required rerun; preserve Frame 1 through SYNCHRONIZING before RESUME to AWAITING_USER_SIGNOFF.`
+`Kind`: `FORWARD` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
+`Architect EVOLUTION recovery gate passed with all 37 acceptance IDs covered. Developer must reconcile its same-cycle plan/history against the revised canonical text, paged ResourceService evidence access and seven-workflow instruction route, preserving accepted data and native prompts/resources. Frame 1 remains SCOPING-owned through SYNCHRONIZING; deployment and sign-off remain user-owned.`
 
 ## Recovery
 
