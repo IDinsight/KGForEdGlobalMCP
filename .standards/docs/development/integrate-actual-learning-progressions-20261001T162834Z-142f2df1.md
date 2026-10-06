@@ -14,7 +14,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 This section supersedes historical completion, next-action, surface and recovery-route claims below. Recovery Frame 1 is SCOPING-owned, from/resuming at AWAITING_USER_SIGNOFF, with RerunThrough SYNCHRONIZING. Developer is a downstream rerun and does not change that frame. The revised scope has 37 current acceptance IDs; architecture establishes the new text, evidence and workflow contracts.
 
-User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. The five remaining recovery assignments are DEV-014/015/024/025/022. User authorized DEV-014; its implementation assessment is PARTIAL pending a scoped Tester-owned fixture correction. Nested Frame 2 routes VERIFICATION to TESTING and Suspended Assignment 2 preserves Developer's remaining DEVELOPMENT/NONE work. DEV-014 remains IN_PROGRESS; DEV-015/024/025/022 remain PENDING. Current feedback and resume directions are recorded in Plan Notes.
+User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. User authorized DEV-014; Tester corrected the scoped traversal/shared-path fixtures, popped only nested Frame 2 and RESUMED Developer. Developer restored Suspended Assignment 2, reconciled that return and reran the affected checks; DEV-014 is DONE. User authorized DEV-015; its implementation assessment is PARTIAL because real accepted data disproves the approved path size/maxima design. Nested Frame 2 routes ARCHITECTURE to ARCHITECTING and Suspended Assignment 3 preserves Developer's remaining DEVELOPMENT/NONE work. DEV-015 remains IN_PROGRESS; DEV-024/025/022 remain PENDING. Current feedback and resume directions are recorded in Plan Notes.
 
 | Order | Step | Observable recovery outcome |
 |---|---|---|
@@ -728,14 +728,14 @@ User explicitly authorized DEV-013 after committed DEV-012. This step changes on
 
 ### DEV-014 — Implement bounded upstream and downstream traversal
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-013`
+`Status`: `DONE` `Depends On`: `DEV-013`
 `Acceptance`: `AC-008, AC-009, AC-010, AC-018, AC-028, AC-031, AC-033`
 
 **Current Recovery Assignment — approved 2026-10-06**
 
 Reconcile traversal whole-edge admission and final output against both shared envelope ceilings. Preserve the corrected individually oversized-edge failure, breadth-first branch/merge retention, distances, stored upstream orientation, work/depth/node/edge limits and pending frontier bookkeeping. Include compatible character limits and an explicit noncontinuation notice: clients may narrow bounded inputs and rerun. A size-limited result remains coherent and accurately reports scopeComplete, graphExhausted and truncation reasons; never clip a JSON string or drop an edge after service selection.
 
-Current self-check: PARTIAL. Current offline feedback passes 3510 assertions, 406 accepted-package queries and 20 synthetic outcomes, including nonempty upstream/downstream canonical text and actual serialized envelopes. Eight traversal/protocol/AS/LC regressions and all six changed-module static checks pass. The additional formal traversal algorithm selection has two fixture failures and four passes; route a scoped VERIFICATION correction to Tester before finalizing this step. See the current DEV-014 implementation assessment and Suspended Assignment 2 in Plan Notes. Preserve historical checks and all prior correction evidence.
+Current self-check: PASS after Tester's scoped fixture correction — all 16 formal algorithm cases, eight traversal/protocol/AS/LC regressions and 3510 rerun feedback assertions pass on unchanged runtime identities; see "Developer resumption after DEV-014 Tester correction" in Plan Notes. Earlier assessment, retained as history: PARTIAL. Offline feedback passed 3510 assertions, 406 accepted-package queries and 20 synthetic outcomes, including nonempty upstream/downstream canonical text and actual serialized envelopes. Eight traversal/protocol/AS/LC regressions and all six changed-module static checks pass. The additional formal traversal algorithm selection has two fixture failures and four passes; route a scoped VERIFICATION correction to Tester before finalizing this step. See the current DEV-014 implementation assessment and Suspended Assignment 2 in Plan Notes. Preserve historical checks and all prior correction evidence.
 
 The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
@@ -819,14 +819,14 @@ DEV-014 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded
 
 ### DEV-015 — Implement bounded connecting paths without losing alternatives
 
-`Status`: `PENDING` `Depends On`: `DEV-014`
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-014`
 `Acceptance`: `AC-008, AC-009, AC-010, AC-028, AC-031, AC-033`
 
 **Current Recovery Assignment — proposed 2026-10-06**
 
 Reconcile connecting-path admission and final output with both shared envelope ceilings, keeping whole paths/edge and node tables, alternative-path order, per-path cycle protection, fixed work/queue/depth/path limits and truthful incomplete absence/frontier counters. Expose effective character ceiling and explicit lack of continuation. Reject unreturnable indivisible evidence rather than silently dropping it or returning a misleading exhausted result.
 
-Current self-check: NOT RUN. Offline ad hoc nonempty directed multi-hop/path text-only consumption at pinned identities, synthetic branching/merging/Unicode/whole-path-size boundaries and existing path/algorithm checks as implementation feedback; measure actual emission and run changed-module static checks. No new formal test suite or pedagogical acceptance claim.
+Current self-check: PARTIAL — wording/standalone-size reconciliation is implemented and its offline feedback, 39 regression cases and six static checks pass, but measured real-package envelopes show the approved path maxima and oversized-later-path failure cannot serve longer real connections; ARCHITECTURE failure routed. See "Client-access recovery for DEV-015 — implementation assessed" and Suspended Assignment 3 in Plan Notes. Originally planned self-check: offline ad hoc nonempty directed multi-hop/path text-only consumption at pinned identities, synthetic branching/merging/Unicode/whole-path-size boundaries and existing path/algorithm checks as implementation feedback; measure actual emission and run changed-module static checks. No new formal test suite or pedagogical acceptance claim.
 
 The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
@@ -2007,3 +2007,79 @@ R/feedback-results.json SHA256 1bfd047ab999812efdd81c5d72ef77055c714d37191f8fa3e
 Save the interrupted overall Developer assignment before routing the scoped VERIFICATION defect to TESTING. Push only nested Frame 2, From/ResumeAt DEVELOPING, Owner TESTING, RerunThrough NONE; preserve the exact SCOPING-owned Frame 1 and its SYNCHRONIZING route. No CHECKPOINT/full verification request or frame pop is appropriate. All older suspended assignments and receipts remain intact. Suggested commit for current wording: feat(progressions): clarify bounded traversal outcomes.
 
 Final routing receipts: the first pre-handoff-workflow run found escaped Markdown field delimiters in the new suspended assignment; corrected only those delimiters. pre-handoff-workflow-corrected then passed. After persisting the legal scoped TESTING/FAILURE/VERIFICATION handoff and nested Frame 2, handoff-workflow and handoff-turn-end (runCheck atTurnEnd=true) both passed with no problems. Tester still must reconcile its existing CORRECTION target/report to the new traversal assignment; mechanical gate success is not that assessment. Protected-input, current source/test/report hashes and staged-index comparison passed again after routing. Final evidence-index.json SHA256 6bfbad9975fb1ea60161d1f420ad4f1f363a4ff2ff3d2b8601e18ee23c850078. All full command/output receipts are retained; failed iterations remain explicitly nonpassing.
+
+### Developer resumption after DEV-014 Tester correction — 2026-10-06
+
+User explicitly invoked Developer after Tester RESUME (From TESTING, FailureType NONE). Restored Suspended Assignment 2 (DEVELOPMENT/NONE, former Frame 2 and its exact traversal VERIFICATION reason) to the unchanged approved recovery plan. Entry HEAD bd7c83ba0204e9d25a3d2611403a1fefef843ad7, clean tracked tree and empty index. Only SCOPING-owned Frame 1 remains, from/resuming AWAITING_USER_SIGNOFF with RerunThrough SYNCHRONIZING. Locked tony, STEPWISE, AFTER_IMPLEMENTATION and Current Increment NONE are unchanged. Entry workflow check passed; no conditional protocol chapter applies.
+
+**Input reconciliation**
+
+R = data/source_artifacts/learning_progressions/client-recovery-dev014-resume/checks. R/entry-inputs.json rehashes the same 1175 protected inputs as the suspended entry: exactly three changed, all Tester-owned — the verification report, backend/tests/kgfegmcp/test_progression_algorithms.py (cb17b350ad7d4225509f6b6b1c1cbe230b254ade6861685b2b5d4073f277117b) and backend/tests/fixtures/progression_fixtures.py (060ec5316c8304203ddc3e7e4db06c9a307fecd04b24738aba237716cb1c3486). Commits since c1cbf15 touch only those plus STATE. All six assessed runtime identities (lp_models, lp_traversal, learning_progressions, lp_discovery, MCP LP tools, tool_results) equal Suspended Assignment 2.
+
+Independent review of Tester's diff: the shared synthetic Topology keeps one representative accepted artifact descriptor instead of the full 86-artifact inventory; real-package tests keep full metadata. The diamond BFS branch/merge assertions are unchanged. Both combination fixtures are recalibrated (20000/10000 emoji) so each single-entry control is individually complete and fitting, then assert whole-entry rollback, original-reference identity, distances, counters, frontier and both complete-envelope ceilings. Individually oversized rejection cases are unchanged; no production ceiling is relaxed. This preserves the approved contract and needs no plan revision or new implementation authority.
+
+**Resumed DEV-014 step gate — PASS**
+
+No production code change was needed on this return. Commands ran via R/run_command.py from the repository root with UV_OFFLINE=1, PYTHONDONTWRITEBYTECODE=1, PATHS_PROJECT_DIR and uv --locked --offline --no-sync. UV_CACHE_DIR pointed at the session temp directory because the sandbox blocks the default uv cache; the first three attempts failed for that reason and are retained as R/sandbox-denied-*. A first wire-feedback attempt failed only because the copied script needs a resume entry-inputs.json; retained as R/missing-entry-*. Neither failed iteration counts as a pass.
+
+- algorithms: pytest -q -p no:cacheprovider -m 'not costs-money' tests/kgfegmcp/test_progression_algorithms.py — exit 0, 16 passed (6.38 s), including both corrected traversal cases and the reconciled shared path fixtures.
+- regression: same pytest prefix on test_progression_traversal.py, test_progression_protocol.py and test_progression_regressions.py — exit 0, 8 passed (14.55 s).
+- final-wire-feedback: python R/feedback.py (byte-identical copy of the suspended script, 105d93db0b03a971a0f84d30c55270ec4c812db1175445b944485f8b20e68281) — exit 0 (10.83 s); 3510 assertions, 406 accepted-package queries, 20 synthetic outcomes, all 1175 protected inputs match the resume entry. Upstream/downstream wire envelopes again measure 92748/92457 bytes and characters with unchanged SHA256 2ac79eb4…/0fef1979…; R/feedback-results.json is byte-identical to the suspended run (1bfd047ab999812efdd81c5d72ef77055c714d37191f8fa3e63326dabffdf1f6).
+- Static: the six changed-module passes (black, isort, ruff, mypy, pylint 10.00/10, interrogate 100%) are reused from the suspended root for the same runtime hashes; this is evidence reuse, not a new run.
+
+R/evidence-index.json (SHA256 716831640714a5fdce1a7b764bba97dd57795c08f5abb13f5dc99261601a6897) binds the receipts, assessed source/test identities, reused static receipts and the prior evidence index. Pre-existing pytest-asyncio loop-scope warning remains nonblocking. These are Developer feedback, not formal Tester acceptance.
+
+DEV-014 DONE. Plan remains IN_PROGRESS; DEV-015/024/025/022 are PENDING approved work. Full Developer gate remains unmet solely because that work is unfinished. Preserve the Tester report CORRECTION/IN_PROGRESS and its historical target, the latest TESTING RESUME handoff and exact Frame 1. No new handoff, frame or pop applies. Persist only the STEPWISE continuation request for DEV-015 and stop; this return does not authorize DEV-015.
+
+### Recovery continuation for DEV-015 — 2026-10-06
+
+User explicitly authorized DEV-015 after DEV-014 completion. Cleared only the matching STEPWISE blocker; DEV-015 IN_PROGRESS. Entry HEAD bd7c83ba0204e9d25a3d2611403a1fefef843ad7 with clean index; Frame 1, locked tony, STEPWISE, AFTER_IMPLEMENTATION/NONE unchanged. Entry workflow check passed; no conditional protocol chapter applies. R = data/source_artifacts/learning_progressions/client-recovery-dev015/checks; R/entry-inputs.json records the same 1175 protected inputs and the intended edit set (lp_paths, lp_models, learning_progressions).
+
+### Client-access recovery for DEV-015 — implementation assessed 2026-10-06
+
+**Implemented outcome**
+
+- Reconciliation found connecting paths already use the DEV-012 shared complete-envelope guard (canonical text plus structured content, both ceilings) for reservation, first-path fallback, whole-path rollback and the final result; the tool adapter already emits canonical text; metadata.limits already reports maxResultCharacters 100000. No parallel encoder was added.
+- lp_models path_notice now states that no continuation exists, to narrow bounded inputs and rerun after truncation, and that byte_limit covers either complete-envelope ceiling (same wording as traversal).
+- lp_paths standalone oversized-path check now measures the path alone with the byte_limit reason it carries while a frontier remains (traversal does the same), so returnable and unreturnable paths are distinguished consistently. Docstrings/comments describe both ceilings. require_paths_result_size docstring documents both ceilings and its error.
+- Current identities: lp_paths 2aaa5d04fb0a8d036caff0630b9913e2e07fce5ab67048b61db504f48e4d1f1a; lp_models 68619102e50634262c51798f4daf19974dc0442a3b468ff51162b93d3fbb56c1; learning_progressions 50e204c735d3c8c2e08ec680e488b1d701a15cde77de053a52f778eb6dfb798c. lp_traversal, tool_results and the MCP LP tools are unchanged.
+
+**Actual implementation feedback**
+
+Commands ran via R/run_command.py from the repository root (UV_OFFLINE=1, PYTHONDONTWRITEBYTECODE=1, PATHS_PROJECT_DIR; uv --locked --offline --no-sync; UV_CACHE_DIR in the session temp directory because the sandbox blocks the default uv cache). Developer feedback, not Tester acceptance.
+
+- feedback (python R/feedback.py, SHA256 72f9b61f88226053ab7d4ebeba624251571c7d4419245f7feac58376ad226a34): exit 0; 897 named checks, 412 accepted-package path queries, 27 synthetic outcomes; R/feedback-results.json SHA256 342e1a8fe0c13c9d209cde1439897305924e01b80a78e2ef564c836e1d63630f. Real paths equal the sorted prefix of an independent DFS oracle across all six packages; complete scopes return every oracle path; canonical text equals structured output; no cursor fields; both ceilings hold; selectors, same-standard, missing/root, unavailable-code, rights and exact-evidence agreement pass. Synthetic: merging alternatives in hop/edge-tuple order, export-order independence, reverse absence, per-path cycles, depth 6/12 frontier, path caps 1/3 (20 under scratch-relaxed size), work/queue 5000 boundaries, random DAG/cyclic oracle, Unicode character-ceiling whole-path rollback, oversized first/later failure with recovery, exact first-path fits at the character ceiling (complete and with pending frontier), and byte-only boundaries with the character constant relaxed in scratch. Real FastMCP calls: Nigeria two-hop result 84794 characters (SHA256 97d33663…), direct diagnostic edge 0129f5d5-42fd-52cb-bcf2-ec07c47103e7 result 75921 characters (SHA256 251fcde8…); ordinary text alone carries the full result. Retained nonpassing iterations: feedback-abort-oversized (real oversized path aborted the scratch run), -path20-expectation and -combination-expectation (my scratch expectations were wrong; code behavior correct), -wire-pair/-diagnostic-pair (diagnostic edge has no returnable two-hop extension), -receipt-serialization (read-only mapping in receipt).
+- regression: pytest on test_progression_algorithms/traversal/protocol/regressions/acceptance — exit 0, 39 passed (14.67 s).
+- Static on the three changed modules: black, isort, ruff, mypy (no issues), pylint 10.00/10, interrogate 100% — all exit 0. First attempts (unsplit-args-*) failed only because zsh did not split the file list.
+- R/evidence-index.json SHA256 17227f17c6720d1fc3e350709a9a1475a7f56e09c9265b6b71ed4512fe134823 binds receipts, entry/current source identities and probes.
+
+**Architecture defect discovered**
+
+R/size-probe.json (SHA256 af50b6d28c92b3c91841b50da17028ee66fe87e0ea66496ee3cdf76ab9213dec): an empty LP result already measures 66093–72375 envelope characters because the required metadata (≈30–33k characters, 86 artifact identities, notices) appears in both canonical text and structuredContent. Each path hop adds ≈8.4k (edge evidence ≈3.4k and endpoint summary ≈0.8k, twice). Only 2–3 hops fit under 100000 characters in any package, far below the approved path depth default 6/maximum 12.
+
+R/reach-probe.json (SHA256 4fe712c1110d300cd3e4b52e5e1053573786c3b51c6fdeb73227572847686dab): ordered pairs whose shortest stored builds connection is 4+ hops can never be returned by any request — 13/472 Ghana English, 36/500 Ghana Mathematics, 31/1395 CBSE, 114/990 Tamil Nadu, 21/355 Nigeria, 604/2810 Rwanda (21.5%). Some 3-hop paths also exceed the ceiling (Tamil Nadu, CBSE).
+
+The approved oversized-path rule then fails a whole request that found shorter answers: Tamil Nadu b536c540-4b5d-5255-81e9-b061abfd42c6 → 4061ea8e-a99e-5043-a2d4-b6a0e537dd6f has oracle paths of 2, 3, 3 and 4 hops; with defaults (depth 6, paths 3) and with depth 6/paths 20 it returns progression_result_too_large (100437/100439 characters) instead of the 2-hop path. The actual MCP error text is explicit and recovers through read_evidence and narrowing, but the default request and the approved teaching-sequence workflow parameters (depth 6, at most 3 paths) fail on real data.
+
+Resolving this requires a consequential design choice owned by Architect, for example: a compact per-result identity/metadata projection that links full metadata through read_evidence; a different text/structured duplication budget; byte_limit stopping before an individually oversized later path instead of failing the whole request; or path maxima/defaults that real envelopes can satisfy. Each changes approved contracts ("do not drop identity", "individually oversized entry fails", 6/12 maxima), so Developer does not choose one. The same metadata cost limits traversal to ≈3–4 edges and direct/search pages to ≈3–4 edges per page; those remain honest partial/paged results already accepted as a design risk, but Architect should account for them in the same decision. No accepted data, ceiling or formal test was changed.
+
+### Suspended Assignment 3
+
+`Recovery Frame`: `2` `Recovery Reason`: `Real accepted envelopes spend 66-72k of 100000 characters on duplicated metadata, so connecting paths beyond 2-3 hops (4+ hop pairs: 2-22% per package) can never be returned and an oversized later alternative fails default requests that found shorter paths; resolve metadata/size/oversized-path handling or path maxima.`
+`Purpose`: `DEVELOPMENT`
+`Target`: `NONE`
+`Assessed Inputs`: `HEAD bd7c83ba0204e9d25a3d2611403a1fefef843ad7; lp_paths 2aaa5d04fb0a8d036caff0630b9913e2e07fce5ab67048b61db504f48e4d1f1a; lp_models 68619102e50634262c51798f4daf19974dc0442a3b468ff51162b93d3fbb56c1; learning_progressions 50e204c735d3c8c2e08ec680e488b1d701a15cde77de053a52f778eb6dfb798c; lp_traversal 41c6d8a4ed5327d0bfcaa34a1b868da1e7cd9f5d8745a8c4b8610442b2d51dc3; tool_results 88a02e2e114a6df0ce8b165886b76d6f31ee22e366755b846654830403532eea; receipts and probes in client-recovery-dev015/checks/evidence-index.json.`
+`Next Action`: `On Architect return, reload STATE/frames/design/plan, reconcile the corrected size/metadata/path contract into DEV-015 and any affected completed steps (DEV-012/013/014) under plan approval rules, rerun affected feedback, finalize DEV-015 only if satisfactory and stop before DEV-024 under STEPWISE.`
+
+Save the interrupted overall Developer assignment before routing. Push nested Frame 2, From/ResumeAt DEVELOPING, Owner ARCHITECTING, FailureType ARCHITECTURE, RerunThrough NONE; preserve SCOPING-owned Frame 1 and its SYNCHRONIZING route. DEV-015 stays IN_PROGRESS with its current source edits, which conform to the present design and pass their checks. Suggested commit for the current changes: feat(progressions): clarify bounded path outcomes.
+
+### Architecture-finding triple check for DEV-015 — 2026-10-06
+
+At the user's request the finding was re-verified exhaustively against the real service rather than estimated. R/triple-check.py (SHA256 388a5c4791ec0c4ba5885f31a3decdf2b164c5e288e4c3f66f87620e4c2e2d92) called get_learning_progression_paths for every ordered pair whose shortest stored builds connection is 3+ hops, using the most favourable request (max_paths 1, max_depth equal to that length). For each failure it reran with ceilings relaxed in scratch only and measured both the conservative shared envelope and the actual compact wire shape (text block plus structuredContent). Results in R/triple-check.json (SHA256 ea063650cab0c64a4ac2300cce806b01d38d0f65ee18ad9ec41b5aab2cecc4cc).
+
+- Confirmed: every 4+ hop pair fails in all six packages (13, 36, 31, 114, 21, 604). The smallest failing compact wire is 101566 characters, so this is not an artifact of the conservative whitespace reserve.
+- Correction (worse than first reported): all 138 three-hop Tamil Nadu pairs and 8/85 three-hop CBSE pairs also fail. Unreturnable totals: Tamil Nadu 252/990 (25.5%), Rwanda 604/2810 (21.5%), Ghana Mathematics 36/500 (7.2%), Nigeria 21/355 (5.9%), CBSE 39/1395 (2.8%), Ghana English 13/472 (2.8%). Nuance: the smallest failing three-hop compact wires are 99302 (Tamil Nadu) and 98976 (CBSE) characters, so some three-hop failures exceed only the conservative ~1000-character measurement reserve, not the compact wire itself.
+- Correction: in the Tamil Nadu example b536c540… → 4061ea8e…, max_paths 1 returns the 2-hop path; max_paths 2 and 3 fail because the second path (3 hops) is individually oversized, not the third/fourth.
+- Calibration: that returned 2-hop result has 44486 text characters, 90782 compact wire and 91736 conservative characters; its metadata alone is 33466 compact characters and is carried twice.
+
+Frame 2's persisted reason remains accurate (4+ hop pairs are 2.8–21.5% per package; paths beyond 2–3 hops fail). Architect should use these corrected totals.

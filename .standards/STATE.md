@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `ARCHITECTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
-`Scoped DEV-014 traversal fixture correction and shared path reconciliation verified: 24 offline cases and six static checks pass. Resume Developer Suspended Assignment 2, reconcile corrected fixtures/results and rerun affected DEV-014 feedback before finalizing; preserve STEPWISE and remaining approved work.`
+`Kind`: `FAILURE` `From`: `DEVELOPING` `FailureType`: `ARCHITECTURE` `Reason`:
+`Real accepted envelopes spend 66-72k of 100000 characters on duplicated metadata, so connecting paths beyond 2-3 hops (4+ hop pairs: 2-22% per package) can never be returned and an oversized later alternative fails default requests that found shorter paths; resolve metadata/size/oversized-path handling or path maxima.`
 
 ## Recovery
 
@@ -32,6 +32,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
+
+### Frame 2
+
+`From`: `DEVELOPING` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
+`Reason`: `Real accepted envelopes spend 66-72k of 100000 characters on duplicated metadata, so connecting paths beyond 2-3 hops (4+ hop pairs: 2-22% per package) can never be returned and an oversized later alternative fails default requests that found shorter paths; resolve metadata/size/oversized-path handling or path maxima.`
+`ResumeAt`: `DEVELOPING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 

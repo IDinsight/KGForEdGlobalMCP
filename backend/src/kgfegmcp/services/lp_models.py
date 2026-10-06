@@ -394,8 +394,9 @@ class GetLearningProgressionPathsResult(ProgressionEvidenceResult):
         "hop count then relationship-ID tuple. Completed target paths are terminal. "
         "Exhaustion refers to this simple-path search; requested-depth completeness "
         "does not imply global exhaustion. Derived paths assert no new direct edge "
-        "or compulsory teaching order. No continuation is offered; callers can "
-        "change bounded inputs and rerun. Even exhausted absence means no stored "
+        "or compulsory teaching order. No continuation is offered; narrow bounded "
+        "inputs and rerun after truncation. The byte_limit reason covers either "
+        "complete-envelope ceiling. Even exhausted absence means no stored "
         "connection, not no pedagogical connection."
     )
     paths: tuple[ProgressionPath, ...]

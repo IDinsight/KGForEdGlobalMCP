@@ -85,12 +85,12 @@ class _PathRows:
 
 
 def _admit_path(*, context: _PathContext, rows: _PathRows, state: _PathState) -> bool:
-    """Admit a completed path and reserve final counter/frontier envelope bytes.
+    """Admit a completed path and reserve final counter/frontier envelope size.
 
     Parameters
     ----------
     context
-        Pinned runtime and shared byte/evidence policy.
+        Pinned runtime and shared byte/character evidence policy.
     rows
         Bounded local evidence tables and counters.
     state
@@ -99,7 +99,7 @@ def _admit_path(*, context: _PathContext, rows: _PathRows, state: _PathState) ->
     Returns
     -------
     bool
-        True after admission; False on a whole-path byte stop.
+        True after admission; False on a whole-path output-size stop.
     """
 
     previous_nodes = set(rows.nodes)
@@ -137,6 +137,8 @@ def _admit_path(*, context: _PathContext, rows: _PathRows, state: _PathState) ->
     except ProgressionResultTooLargeError:
         if len(rows.paths) == 1:
             # Reservation must not reject an actually fitting first complete path.
+            # Keep it with its exact final frontier, or fail if it exceeds either
+            # shared ceiling. No further work is attempted.
             if rows.queue:
                 rows.reasons.add("byte_limit")
 
@@ -223,22 +225,25 @@ def _expand_state(*, context: _PathContext, rows: _PathRows, state: _PathState) 
 def _require_path_size(
     *, context: _PathContext, rows: _PathRows, state: _PathState
 ) -> None:
-    """Reject an individually oversized path rather than hiding it behind a byte stop.
+    """Reject an individually oversized path rather than hiding it behind a size stop.
 
     Parameters
     ----------
     context
-        Shared byte policy and pinned route.
+        Shared byte/character policy and pinned route.
     rows
         Projected path tables and actual final metadata.
     state
         Completed path whose standalone envelope must fit.
     """
 
+    # Measure the path alone with the byte_limit reason it carries while a frontier
+    # remains, so a returnable path is distinguished from one no request can return.
     single = replace(
         rows,
         nodes={node_id: rows.nodes[node_id] for node_id in state.node_ids},
         paths=[rows.paths[-1]],
+        reasons=rows.reasons | {"byte_limit"},
         relationships={
             edge.relationship_id: rows.relationships[edge.relationship_id]
             for edge in state.edges
@@ -253,7 +258,7 @@ def _require_size(*, context: _PathContext, reserve: bool, rows: _PathRows) -> N
     Parameters
     ----------
     context
-        Existing service byte encoder.
+        Existing service encoder for both complete-envelope ceilings.
     reserve
         Reserve counter/frontier/reason growth before more work occurs.
     rows

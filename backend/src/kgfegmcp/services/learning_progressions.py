@@ -539,7 +539,7 @@ class LearningProgressionsService:
     def require_paths_result_size(
         self, *, result: GetLearningProgressionPathsResult
     ) -> int:
-        """Measure path text and structured evidence under the shared byte ceiling.
+        """Measure path text and structured evidence under both envelope ceilings.
 
         Parameters
         ----------
@@ -550,6 +550,11 @@ class LearningProgressionsService:
         -------
         int
             Encoded result bytes.
+
+        Raises
+        ------
+        ProgressionResultTooLargeError
+            If the complete envelope exceeds the byte or character ceiling.
         """
 
         return require_progression_result_size(
