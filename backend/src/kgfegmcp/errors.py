@@ -140,6 +140,18 @@ class DeliveryPropertyDecodingError(KGFEGMCPError):
     error_code = "delivery_property_decoding_error"
 
 
+class EvidenceResultTooLargeError(KGFEGMCPError):
+    """Raised when not even one Unicode scalar of evidence fits a tool result.
+
+    Examples
+    --------
+    >>> EvidenceResultTooLargeError(message="Unavailable.").error_code
+    'evidence_result_too_large'
+    """
+
+    error_code = "evidence_result_too_large"
+
+
 class FrameworkNotFoundError(KGFEGMCPError):
     """Raised when a requested framework or snapshot is unavailable."""
 
@@ -162,6 +174,18 @@ class InvalidCursorError(KGFEGMCPError):
     """Raised when a pagination cursor is malformed or no longer valid."""
 
     error_code = "invalid_cursor"
+
+
+class InvalidEvidenceUriError(KGFEGMCPError):
+    """Raised when an evidence URI is not one exact supported resource address.
+
+    Examples
+    --------
+    >>> InvalidEvidenceUriError(message="Unavailable.").error_code
+    'invalid_evidence_uri'
+    """
+
+    error_code = "invalid_evidence_uri"
 
 
 class InvalidProgressionRequestError(KGFEGMCPError):
@@ -264,6 +288,18 @@ class StandardNotFoundError(KGFEGMCPError):
     """Raised when a requested standard identifier cannot be resolved."""
 
     error_code = "standard_not_found"
+
+
+class UnsupportedEvidenceFormatError(KGFEGMCPError):
+    """Raised when authorized resource bytes cannot be paged as UTF-8 text.
+
+    Examples
+    --------
+    >>> UnsupportedEvidenceFormatError(message="Unavailable.").error_code
+    'unsupported_evidence_format'
+    """
+
+    error_code = "unsupported_evidence_format"
 
 
 class UnsupportedSearchModeError(KGFEGMCPError):
