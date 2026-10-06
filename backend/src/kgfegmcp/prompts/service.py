@@ -48,6 +48,7 @@ from kgfegmcp.prompts.definitions import (
     COMMON_EVIDENCE_STATUS_RULES,
     COMMON_UNSUPPORTED_CLAIMS,
     COMPARISON_DISCLOSURES,
+    EVIDENCE_ACCESS_STEPS,
     LEARNING_COMPONENT_GRAIN_DISCLOSURE,
     LEARNING_COMPONENT_INFERENCE_DISCLOSURE,
     LEARNING_PROGRESSION_CURRICULUM_REVIEW_OUTPUT,
@@ -1079,6 +1080,7 @@ class PromptService:
             f"evidence that cannot be used because full-text, standard-resource, bulk-"
             f"resource, or size policy blocks access.",
             f"MANDATORY EVIDENCE RETRIEVAL\n{evidence_workflow}",
+            _render_list(title="EVIDENCE ACCESS", values=EVIDENCE_ACCESS_STEPS),
             _render_list(
                 title="EVIDENCE STATUS RULES", values=COMMON_EVIDENCE_STATUS_RULES
             ),

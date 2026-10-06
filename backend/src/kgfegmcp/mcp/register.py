@@ -24,6 +24,7 @@ from kgfegmcp.mcp.tools.learning_components import register_learning_component_t
 from kgfegmcp.mcp.tools.learning_progressions import register_learning_progression_tools
 from kgfegmcp.mcp.tools.standards import register_standard_tools
 from kgfegmcp.mcp.tools.statistics import register_statistics_tools
+from kgfegmcp.mcp.tools.workflows import register_workflow_tools
 
 if TYPE_CHECKING:
     # Third Party Library
@@ -51,5 +52,6 @@ def register_components(server: FastMCP[dict[str, AppState]]) -> None:
     register_learning_progression_tools(server)
     register_standard_tools(server)
     register_statistics_tools(server)
+    register_workflow_tools(server)
     register_resource_components(server)
     register_prompt_components(server)

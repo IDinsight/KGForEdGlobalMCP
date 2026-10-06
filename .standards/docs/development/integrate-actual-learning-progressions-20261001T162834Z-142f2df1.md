@@ -33,7 +33,7 @@ Formal tests: some Tester-owned cases encode the superseded contract and are exp
 
 This section supersedes historical completion, next-action, surface and recovery-route claims below. Recovery Frame 1 is SCOPING-owned, from/resuming at AWAITING_USER_SIGNOFF, with RerunThrough SYNCHRONIZING. Developer is a downstream rerun and does not change that frame. The revised scope has 37 current acceptance IDs; architecture establishes the new text, evidence and workflow contracts.
 
-User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. User authorized DEV-014; Tester corrected the scoped traversal/shared-path fixtures, popped only nested Frame 2 and RESUMED Developer. Developer restored Suspended Assignment 2, reconciled that return and reran the affected checks; DEV-014 is DONE. User authorized DEV-015; real data disproved the path size design, so ARCHITECTURE Frame 2 was routed and returned with the user-selected size correction (see Frame 2 Size-Correction Revision). DEV-012 (reopened) and DEV-015 are DONE under it. Tester corrected the superseded formal cases, verified the Frame 2 contracts, popped VERIFICATION Frame 2 and RESUMED Developer; Developer restored Suspended Assignment 4. DEV-024/025/022 remain PENDING. Current feedback and resume directions are recorded in Plan Notes.
+User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. User authorized DEV-014; Tester corrected the scoped traversal/shared-path fixtures, popped only nested Frame 2 and RESUMED Developer. Developer restored Suspended Assignment 2, reconciled that return and reran the affected checks; DEV-014 is DONE. User authorized DEV-015; real data disproved the path size design, so ARCHITECTURE Frame 2 was routed and returned with the user-selected size correction (see Frame 2 Size-Correction Revision). DEV-012 (reopened) and DEV-015 are DONE under it. Tester corrected the superseded formal cases, verified the Frame 2 contracts, popped VERIFICATION Frame 2 and RESUMED Developer; Developer restored Suspended Assignment 4. DEV-024 and DEV-025 are DONE; a scoped VERIFICATION Frame 2 routes their superseded formal cases to TESTING and Suspended Assignment 5 preserves the remaining DEVELOPMENT/NONE work. DEV-022 remains PENDING. Current feedback and resume directions are recorded in Plan Notes.
 
 | Order | Step | Observable recovery outcome |
 |---|---|---|
@@ -1522,7 +1522,7 @@ Reuse the same immutable AppState services and resource constructors. Keep accep
 
 ### DEV-025 — Share native workflows through seven typed instruction variants
 
-`Status`: `PENDING` `Depends On`: `DEV-024`
+`Status`: `DONE` `Depends On`: `DEV-024`
 `Acceptance`: `AC-010, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-021, AC-030, AC-031, AC-034, AC-035`
 
 **Goal**
@@ -1541,7 +1541,9 @@ Generic shared instructions show native reads when accessible or read_evidence w
 
 **Self-Check**
 
-NOT RUN. Offline ad hoc native/alternate message equality for all seven variants at pinned accepted identities, effective defaults and schema discrimination/extra-field/type/rights/size failures; inspect practical LP and AS/LC evidence steps, finite continuation/record caps and retained administrator/comparison messages. Measure complete actual MCP text/structured envelopes and prompt policy limits; reconcile version metadata/locked environment locally with no dependency upgrade. Run relevant existing prompt/protocol tests as implementation feedback and changed-module static checks; record commands, cwd, content identities and limits. No LLM call or client composition/end-to-end workflow acceptance.
+PASS — see "get_workflow_instructions for DEV-025 — completed" in Plan Notes. Superseded version/count formal cases are routed to Tester.
+
+Planned: offline ad hoc native/alternate message equality for all seven variants at pinned accepted identities, effective defaults and schema discrimination/extra-field/type/rights/size failures; inspect practical LP and AS/LC evidence steps, finite continuation/record caps and retained administrator/comparison messages. Measure complete actual MCP text/structured envelopes and prompt policy limits; reconcile version metadata/locked environment locally with no dependency upgrade. Run relevant existing prompt/protocol tests as implementation feedback and changed-module static checks; record commands, cwd, content identities and limits. No LLM call or client composition/end-to-end workflow acceptance.
 
 **Implementation Notes**
 
@@ -2220,3 +2222,43 @@ R = data/source_artifacts/learning_progressions/client-recovery-dev024/checks (e
 Limitations: evidence content windows are Developer feedback over Nigeria plus an all-package artifact sweep; operator-lowered native limits were exercised only through patched denial. Discovery/capabilities/smoke counts and documentation are DEV-022/Documenter work.
 
 DEV-024 DONE. DEV-025 is next under STEPWISE; DEV-022 remains PENDING. Suggested commit: feat(evidence): add read_evidence bounded native resource windows.
+
+User explicitly authorized DEV-025 on 2026-10-06, accepting the proposal to route the interim tool-count formal test correction to Tester once after DEV-025. Cleared only the STEPWISE blocker; DEV-025 IN_PROGRESS.
+
+### get_workflow_instructions for DEV-025 — completed 2026-10-06
+
+**Implemented outcome**
+
+- prompts/workflow_instructions.py: seven typed request variants discriminated by workflowName. The three LP variants extend the existing LearningProgressionTeachingSequenceRequest, LearningProgressionSupportPlanRequest and LearningProgressionCurriculumReviewRequest (their validators included); the four AS/LC variants mirror the native prompt arguments exactly (names, domain types, constraints, defaults: focusMode topic, lessonDurationMinutes 45, practiceCount 5, difficulty on_level, targetWordCount 500). The shared strict schema rejects extra fields; arrays and selector objects are typed JSON. render_workflow_instructions passes the validated typed values to the same PromptService renderer the native prompt uses, and returns rendered (complete PromptRenderResult), effectiveRequest, and the package, profileSha256 and manifestSha256 of the runtime the renderer selected.
+- mcp/tools/workflows.py + mcp/register.py: thin get_workflow_instructions tool whose description enumerates the seven names; canonical JSON text equals structuredContent; the emitted envelope must fit both ceilings or the call fails with workflow_instructions_too_large (errors.py). Instructions are never clipped, paged or executed.
+- prompts/definitions.py + service.py: EVIDENCE_ACCESS_STEPS, rendered as an "EVIDENCE ACCESS" section by the single-framework builder used by exactly the seven affected workflows: native read when available, otherwise read_evidence with the exact URI at 16384-byte windows and unchanged nextRequest replay; at most 32 windows per workflow; windows of one record count once toward record caps (including the existing 10 distinct provenance records); finish relied-on provenance or disclose and defer. administrator_alignment_review and cross_framework_comparison use the multi-framework builder and are unchanged apart from the version.
+- Versions: PROMPT_VERSION 1.4.0; backend/pyproject.toml, the kgfegmcp entry in backend/uv.lock and packaging/mcpb/manifest.json 0.4.0. uv lock --check --offline exit 0 ("Resolved 147 packages"); only the version line changed in the lock; no dependency change. Sealed packages, profiles and prompt configurations are unchanged. packaging/mcpb/README.md still names 0.3.1 and is Documenter-owned.
+- Identities: workflow_instructions.py 65f6202ec2863496019e34c726ce99a7a91e6fcaaef2fbe50e81ee49768a5cdc; mcp/tools/workflows.py 79d9a06f5bcd0030d3b6d16bf813a6e3f98f787bdeae6170e975ba8157752a7f; mcp/register.py 568869c25f2f376bfbf3acb88ee4e56744e5a983ddcb5cc94f6dc0c6d95743a0; errors.py a3146fe83f23a077fb6e17c8612708bc2219872961d22657f50e0eb11158f4a1; definitions.py 9e6f1f5b7a57c4080dd3940a768e2bb42f801371ae7558e73785ca45a02963b0; service.py 410a124ea06d0f6b6c2e3c23c4946a28bf0b957a29cfcf58c52f434a1b2c8ca7; prompts/models.py 8fc34cee21a18e15d640387f3616b8724e0b85b6ffc47af9ccb6053a69fa015d; pyproject.toml 8419330190c71242eda9b9e008de27c7112b3a7941663c3d2457e71b30d9305e; uv.lock fedd18633ffbb7336c62bda269bc3d649b273be2c588d7ed73950b21619a6fd3; manifest.json 3b40f967deee21edffb04df15b7c23e44bca4838eb6aa5ba3fc9e953588f6f46.
+
+**Actual implementation feedback**
+
+R = data/source_artifacts/learning_progressions/client-recovery-dev025/checks (established offline environment; UV_CACHE_DIR in the session temp directory). Developer feedback, not Tester acceptance. R/evidence-index.json SHA256 e2de8106de6c6bc52a5a24136a3d9874d6c596b3989f147a7810c27be0bb5e91; protected inputs and other entry sources unchanged.
+
+- feedback (R/feedback.py SHA256 7e7998ae712732536eb03419bab3c7f18a55c4cabf83a218977600869e2e2f58): exit 0, 567 checks; R/feedback-results.json SHA256 ab9f500eee47e0f1488e06d7e9da18aaca1838f9305c9360979532610457a505.
+  - Real FastMCP lists 19 tools and all nine prompts; the tool input schema names all seven variants.
+  - For all six packages and 13 request shapes per package (defaults and non-default inputs, including exact selectors, snapshots, facets, languages and caller context), the native prompt message, the tool's rendered.message and the ordinary dispatch are identical; ordinary text equals structuredContent; effectiveRequest equals the validated request with defaults; package, profileSha256, manifestSha256 and snapshot match the selected runtime; every message contains the EVIDENCE ACCESS steps and Version 1.4.0. Largest tool envelope 69431 characters; largest message 30936 bytes (≤64 KiB policy).
+  - Rejected at validation: unknown or obsolete names (including inferred_progression_hypothesis), administrator_alignment_review, missing workflowName, extra fields, fields from another variant, serialized JSON-string arrays, a serialized request string, out-of-range duration, unknown enum.
+  - Prohibited derivative rights deny both the tool and the native prompt with prompt_access_denied. Lowered character and byte ceilings yield workflow_instructions_too_large; a lowered prompt policy limit yields prompt_rendering_error through the tool. cross_framework_comparison has no EVIDENCE ACCESS section.
+  - Retained nonpassing iterations: feedback-frozen-policy-patch (scratch tried to patch a frozen policy) and feedback-comparison-arguments (scratch used a wrong argument name).
+- lock-check: uv lock --check --offline exit 0.
+- regression: pytest tests/ — 75 passed, 5 failed, all superseded approved values in Tester-owned cases: test_progression_prompts::test_teaching_sequence_workflow and three test_progression_protocol::test_new_prompt_protocol_retrieval cases expect prompt version 1.3.0; test_reused_mcp_error_and_removed_surface_contracts expects 17 tools (now 19). Not edited.
+- Static on the seven changed modules: black, isort, ruff, mypy, pylint 10.00/10, interrogate 100% — exit 0.
+
+Limitations: no model call or client composition; native/tool identity was checked for the requests above, not every input combination. Discovery/capabilities/smoke counts, STDIO/HTTP and MCPB staging are DEV-022; prose documentation is Documenter's.
+
+DEV-025 DONE. Route the agreed single scoped VERIFICATION correction before DEV-022.
+
+### Suspended Assignment 5
+
+`Recovery Frame`: `2` `Recovery Reason`: `Tester-owned formal cases assert the superseded interim surface (17 tools) and prompt library version 1.3.0; read_evidence and get_workflow_instructions make 19 tools and prompts are 1.4.0. Correct them and assess read_evidence and the seven workflow-instruction variants before Developer resumes DEV-022.`
+`Purpose`: `DEVELOPMENT`
+`Target`: `NONE`
+`Assessed Inputs`: `HEAD 5e54e540bc28e46adc2f68877315ce2577f2cc1a plus working tree; DEV-024 identities in client-recovery-dev024/checks/evidence-index.json; DEV-025 identities in client-recovery-dev025/checks/evidence-index.json (workflow_instructions 65f6202ec2863496019e34c726ce99a7a91e6fcaaef2fbe50e81ee49768a5cdc, service 410a124ea06d0f6b6c2e3c23c4946a28bf0b957a29cfcf58c52f434a1b2c8ca7).`
+`Next Action`: `On Tester RESUME, reload STATE/frame/plan/report, reconcile corrected formal tests and the scoped assessment, rerun affected checks, and stop before DEV-022 under STEPWISE. DEV-024 and DEV-025 are DONE; restore the approved remaining DEV-022 assignment with no duplicate plan approval.`
+
+Save the interrupted overall Developer assignment before routing. Push nested Frame 2, From/ResumeAt DEVELOPING, Owner TESTING, FailureType VERIFICATION, RerunThrough NONE; preserve SCOPING-owned Frame 1. Tester decides the bounded correction and whether new formal cases for read_evidence and get_workflow_instructions belong in this assessment. Suggested commit: feat(prompts): add get_workflow_instructions and evidence access guidance.

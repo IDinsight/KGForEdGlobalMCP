@@ -306,3 +306,15 @@ class UnsupportedSearchModeError(KGFEGMCPError):
     """Raised when a requested deterministic search mode is unsupported."""
 
     error_code = "unsupported_search_mode"
+
+
+class WorkflowInstructionsTooLargeError(KGFEGMCPError):
+    """Raised when complete workflow instructions cannot fit one tool result.
+
+    Examples
+    --------
+    >>> WorkflowInstructionsTooLargeError(message="Unavailable.").error_code
+    'workflow_instructions_too_large'
+    """
+
+    error_code = "workflow_instructions_too_large"

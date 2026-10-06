@@ -60,6 +60,25 @@ ADMINISTRATOR_ALIGNMENT_REVIEW_DEFAULT_GUIDANCE: Final[
     ),
 )
 
+# Shared by the seven single-framework workflows; native prompts and
+# get_workflow_instructions render the same text. Caps bound continuation following.
+EVIDENCE_ACCESS_STEPS: Final[tuple[str, ...]] = (
+    "Read each resource URI you rely on natively when this client can read MCP "
+    "resources. Otherwise call read_evidence with "
+    '{"request":{"maxContentBytes":16384,"uri":"<exact URI copied from a tool '
+    'result>"}}.',
+    "Replay page.nextRequest unchanged until page.isComplete is true, then join the "
+    "content windows in order; together they reproduce metadata.contentSha256. A "
+    "single window is the whole record only when contentStatus is full.",
+    "Use at most 32 read_evidence windows in this workflow. Several windows of one "
+    "record count as one record toward every record cap, including the limit on "
+    "distinct full provenance records.",
+    "Finish each original provenance record a claim relies on. If it stays "
+    "incomplete, denied or oversized, disclose that and defer the dependent claim; "
+    "do not substitute excerpts, summaries or clipped warnings, and never raise "
+    "limits or retry to bypass rights or size policy.",
+)
+
 COMMON_EVIDENCE_STATUS_RULES: Final[tuple[str, ...]] = (
     "Use [SOURCE-ASSERTED] only for facts directly supported by retained source or "
     "profile evidence.",
@@ -653,6 +672,7 @@ __all__ = [
     "COMMON_UNSUPPORTED_CLAIMS",
     "COMPARISON_DISCLOSURES",
     "CROSS_FRAMEWORK_COMPARISON_DEFAULT_GUIDANCE",
+    "EVIDENCE_ACCESS_STEPS",
     "LEARNING_COMPONENT_GRAIN_DISCLOSURE",
     "LEARNING_COMPONENT_INFERENCE_DISCLOSURE",
     "LEARNING_PROGRESSION_CURRICULUM_REVIEW_DEFAULT_GUIDANCE",
