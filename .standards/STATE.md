@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `ARCHITECTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FAILURE` `From`: `DEVELOPING` `FailureType`: `ARCHITECTURE` `Reason`:
-`Real accepted envelopes spend 66-72k of 100000 characters on duplicated metadata, so connecting paths beyond 2-3 hops (4+ hop pairs: 2-22% per package) can never be returned and an oversized later alternative fails default requests that found shorter paths; resolve metadata/size/oversized-path handling or path maxima.`
+`Kind`: `RESUME` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
+`User-selected Frame 2 correction: LP metadata lists only derivation artifacts plus manifest identity, and paths stop with byte_limit instead of failing on a later oversized path; pop Frame 2, resume DEVELOPING.`
 
 ## Recovery
 
@@ -32,12 +32,6 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
-
-### Frame 2
-
-`From`: `DEVELOPING` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
-`Reason`: `Real accepted envelopes spend 66-72k of 100000 characters on duplicated metadata, so connecting paths beyond 2-3 hops (4+ hop pairs: 2-22% per package) can never be returned and an oversized later alternative fails default requests that found shorter paths; resolve metadata/size/oversized-path handling or path maxima.`
-`ResumeAt`: `DEVELOPING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 

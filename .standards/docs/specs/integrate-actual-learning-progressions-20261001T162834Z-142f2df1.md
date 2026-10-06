@@ -112,6 +112,38 @@ delivery, manifest, profile and configuration versions remain unchanged. Version
 metadata and retained archive identity distinguish the revised runtime from the
 previous 0.3.1 candidate; no deployed endpoint is changed.
 
+### Result-size correction (recovery Frame 2, 2026-10-06)
+
+Developer measured real accepted results (receipts in
+`data/source_artifacts/learning_progressions/client-recovery-dev015/checks/`:
+size-probe, reach-probe, triple-check). An empty LP result already used 66,093–72,375
+of the 100,000 envelope characters. The cause is one field: `metadata.artifacts`
+listed all 86 package artifacts (64 of them provenance partitions), about 27,200
+characters, and it appears twice (text mirror and structuredContent). Each path hop
+adds about 8,400 characters. Only 2–3 hops fit, so 2.8–25.5% of connected standard
+pairs per package could never be returned, although real shortest stored paths reach
+8 hops (Rwanda; Tamil Nadu 7). A later oversized path also failed requests that had
+already found shorter paths.
+
+The user selected this correction on 2026-10-06:
+
+- **Reference the artifact inventory instead of repeating it.** LP query metadata
+  keeps exact package, snapshot, profile and manifest identity, but lists only the
+  artifacts its content is derived from. The full checksum inventory stays in the
+  manifest, one evidence read away. In plain terms: each answer names the binder
+  and the pages it quoted, instead of reprinting the binder's whole table of
+  contents every time.
+- **Paths stop early instead of failing.** When a later path does not fit, return
+  the paths already selected as an honest partial result and name the path that did
+  not fit by its IDs, the same way traversal already reports truncation.
+
+Text/structured duplication, the 1 MiB and 100,000-character ceilings, combined
+accounting, page/traversal/path defaults and maxima, the exact-result and traversal
+oversized-entry errors, cursors and all other contracts stay unchanged. Estimated
+effect: an empty result drops to about 15,000 characters, every real shortest path
+(≤8 hops) fits with max_paths 1, and direct/search pages hold roughly 8–10 edges
+instead of 3–4. These are design estimates; Developer measures actual envelopes.
+
 ## Acceptance Coverage
 
 - `AC-001`: First-step local copy boundary and exact-byte receipt; Build Plan step 1.
@@ -121,8 +153,8 @@ previous 0.3.1 candidate; no deployed endpoint is changed.
 - `AC-005`: get_learning_progression exact lookup and linked evidence contract.
 - `AC-006`: get_standard_progressions with directional builds and symmetric relates semantics.
 - `AC-007`: search_learning_progressions with explicit endpoint and profile facet filters.
-- `AC-008`: traverse_learning_progressions and get_learning_progression_paths.
-- `AC-009`: Service/protocol budgets, deterministic pagination/traversal, completeness and errors.
+- `AC-008`: traverse_learning_progressions and get_learning_progression_paths, with the Frame 2 path size stop.
+- `AC-009`: Service/protocol budgets, compact derivation-artifact metadata, deterministic pagination/traversal, completeness and errors.
 - `AC-010`: Generated edge origin, exact identity, and relationship semantics in all evidence.
 - `AC-011`: Existing relationship URI plus new per-edge provenance URI and verified partitions.
 - `AC-012`: Closed artifact policy, existing resource rights/limits, and source/content hashes.
@@ -334,8 +366,17 @@ is handled by the established standard facet machinery, including structural gra
 context where it already applies; never infer a grade from an LP edge.
 
 Every result carries resolved PackageReference plus profile hash/version, manifest
-byte hash, source artifact hashes, request/limits, generated-origin and semantic
-notices, and LP summary/validation/unresolved links. Edges keep exact IDs, author,
+byte hash and manifest URI, derivation artifact identities, request/limits,
+generated-origin and semantic notices, and LP summary/validation/unresolved links.
+`metadata.artifacts` (Frame 2 correction) contains exactly the accepted identities
+(logical name, sha256, artifact URI) of `nodes`, `relationships`,
+`learningProgressionProvenance` and `learningProgressionProvenanceIndex`, sorted by
+logical name, never the full package inventory or partition list. Add a fixed
+`artifactInventoryNotice` stating that the manifest at manifestUri records every
+accepted artifact checksum and is readable through native resources or
+read_evidence. Per-edge provenance resources keep reporting their selected partition
+and index hashes. The manifest hash binds the complete inventory; do not repeat it
+per result. Edges keep exact IDs, author,
 provider, attribution/license, endpoint node/CASE IDs, edge/provenance/standard URIs,
 and epistemicStatus=`llm_inferred`. Paths/subgraphs have
 `deterministic_derived` status with every hop referencing those generated edges.
@@ -376,7 +417,11 @@ complete bounded public result as canonical JSON, including tables and actual cu
 Use the same encoder/budget for service candidate selection and the final adapter.
 If one exact result or one entry cannot fit, return `progression_result_too_large`
 with a usable read_evidence recovery hint; do not produce a zero-progress
-continuation loop or silently drop that entry.
+continuation loop or silently drop that entry. Connecting paths differ only after
+the first path (Frame 2 correction): a later path that does not fit, alone or with
+earlier paths, ends selection with a successful partial result (below). Only a first
+path that cannot fit returns `progression_result_too_large`; its bounded details
+then include that path's ordered relationship IDs.
 
 Direct/discovery ordering is `(relationship type, relationship ID)` independent of
 file order. A cursor is opaque bounded base64url (at most 4,096 characters), contains
@@ -537,7 +582,19 @@ common output-size reason covers both ceilings. The indivisible-entry check uses
 both ceilings and must precede a zero-progress continuation. Traversal/path results
 remain coherent whole-edge/whole-path bounded results; partial frontier/reasons
 must reflect either ceiling. They have no continuation cursor: disclose this and
-let clients issue a narrower new request. Do not drop identity/disclosures or clip
+let clients issue a narrower new request.
+
+Path size stop (Frame 2 correction): paths are admitted whole in the existing
+hop-count/relationship-ID order. When the next complete path would exceed either
+ceiling after at least one path is selected, stop examining further paths. Return
+the selected paths and their tables, add `byte_limit` to truncationReasons, set
+scopeComplete and graphExhausted false, and set `nextUnreturnedPath` to that path's
+ordered node and relationship IDs only (ProgressionPath shape). It is null
+otherwise. Its edges are not in the relationship table; clients inspect them through
+get_learning_progression or their evidence URIs. Reserve its maximum ID-only size
+during selection so emission cannot grow past the budget. The path notice says
+that later paths may exist beyond the stop and that narrower depth/path limits or
+per-edge lookup are the recovery routes. Never clip or partially return a path. Do not drop identity/disclosures or clip
 a JSON string, edge, node or path after service selection. Error messages are
 bounded ordinary text with stable domain codes, public safe identity/details and
 usable recovery hints; unexpected failures keep the current masking boundary.
@@ -772,6 +829,7 @@ Rendering, retrieval, and composed teaching output are distinct evidence states.
   count as verification. Local protocol checks require no model.
 
 - `AC-028`, `AC-031`, `AC-033`: Parsing ordinary LP text alone recovers every returned table/identifier/statement excerpt/judgment/path/completeness/actual cursor field in structuredContent. Both shared envelope ceilings govern selection and emission, including indivisible exact/edge failures and truthful traversal/path partialness.
+- `AC-008`, `AC-009`, `AC-028`, `AC-031` (Frame 2): LP query metadata lists only the four derivation artifacts plus manifest hash/URI and the inventory notice. On all six accepted packages, the shortest stored path for every connected ordered pair, up to the real maximum of 8 hops, is returned as a complete path by a max_paths 1 request with sufficient depth under both ceilings. A later path that does not fit yields a successful partial result with byte_limit, scopeComplete false and its IDs in nextUnreturnedPath, never a failure of earlier paths or a clipped path. Only an unfittable first path raises progression_result_too_large.
 - `AC-029`, `AC-031`: read_evidence invokes the native resource service and produces the same complete authorized content/metadata across deterministic windows; hashes/offsets/cursors reconstruct original bytes without loss, duplication, stale mixing or rights/source-limit bypass. Missing, denied, oversized and partial outcomes are distinct from full permitted evidence.
 - `AC-030`, `AC-031`: The seven typed instruction variants and native prompts share exact deterministic renderer output, pinned package/configuration identity and rights/size enforcement. No arbitrary instructions, execution, server model call, sampling, inferred edge or obsolete hypothesis route exists. All nine native prompts remain registered.
 - `AC-032`: The persisted support assessment distinguishes observed Desktop behavior, source-documented remote capabilities, design choices and untested acceptance. The public connector has a complete tool-access route, without depending on an unverified attachment UX or claiming it lacks native capabilities.
@@ -787,6 +845,10 @@ Rendering, retrieval, and composed teaching output are distinct evidence states.
 2. Implement the shared canonical text/envelope budget and integrate it into all
    five LP selection/size checks. Preserve structured contracts, whole-entry
    pagination, cursor replay and honest no-cursor traversal/path partial results.
+   Frame 2 correction: compact the shared LP metadata artifact list (affects all
+   five tools via DEV-012) and add the path size stop (DEV-015), then re-measure
+   real envelopes and rerun affected DEV-012/013/014 feedback; their algorithms
+   and cursor contracts are otherwise unchanged.
 3. Add allowlisted ordinary URI dispatch and read_evidence content paging around
    ResourceService. Keep policy/repository authoritative, then add the thin shared
    MCP adapter, typed contracts and stable safe errors.
@@ -814,6 +876,13 @@ against the revised client contracts.
 - Canonical text duplicates structured evidence and may return fewer edges per page.
   Conservative character accounting protects the intended client surface; honest
   cursors/partial results preserve selection rather than quietly dropping evidence.
+  After the Frame 2 correction a single path of roughly 10 or more hops may still
+  exceed the ceiling; no real shortest path is that long, and a first oversized path
+  fails explicitly with its relationship IDs. The default path depth 6 leaves real
+  7–8-hop shortest connections (35 pairs) as honest incomplete results until the
+  caller raises depth; maxima already allow them.
+- Clients that relied on per-result artifact hashes must read the manifest. This is
+  an intentional local contract change before any deployment of this surface.
 - Current documentation advertises remote native prompts/resources; their deployed
   UI path and text consumption are untested here. The tool route is a designed
   server contract that Developer and independent Tester must validate locally;
@@ -862,6 +931,14 @@ against the revised client contracts.
   user deployment; a narrow alternate tool route covers text-only invocation without
   asserting a native client defect.
 
+- Frame 2 size alternatives, rejected: also hoisting repeated per-edge attribution
+  into a shared table (more schema change for about one extra hop that real data does
+  not need); counting only the text block against the character ceiling (rests on
+  untested client counting and weakens AC-031 combined accounting); lowering path
+  maxima to about 3 hops (leaves 3–25% of real connections unreachable); dropping
+  the duplicated structured or text copy (contradicts AC-028/AC-031 and would need
+  Scoper rework).
+
 - Directly substitute combined AS/LC/LP exports: rejected because five curricula
   use incompatible flat records and replacement could disturb AS/LC delivery bytes.
 - Separate LP graph packages/runtime or global graph database: rejected because
@@ -875,20 +952,23 @@ against the revised client contracts.
 
 ### Architect recovery gate and handoff record
 
-Revised in EVOLUTION mode for the same cycle and the SCOPING-owned Frame 1. All
-37 current scope identifiers are covered; AC-001..AC-027 retain valid technical
-contracts, AC-028..AC-037 have explicit dispositions. This record fixes public
-interfaces, budgets, policy reuse, invocation paths, coexistence/version boundaries,
-implementation sequence and verification targets; no blocking design question
-remains. Production code, tests, owned downstream completion statuses, audit/context,
-user documentation and public deployment are not changed by Architect.
+Revised in EVOLUTION mode for the same cycle. All 37 current scope identifiers are
+covered; AC-001..AC-027 retain valid technical contracts, AC-028..AC-037 have explicit
+dispositions. No blocking design question remains. Production code, tests, owned
+downstream completion statuses, audit/context, user documentation and public
+deployment are not changed by Architect.
 
-The Architect checker and diff whitespace checks passed; all required template
-sections and the 37-ID coverage were checked. These are design/workflow checks,
-not new runtime verification. Forward to DEVELOPING and preserve Frame 1
-unchanged through SYNCHRONIZING. Developer owns reconciliation of the existing plan
-and invalidated implementation/checkpoint evidence; Tester, both Reviewers,
-Documenter and Synchronizer reopen their own same-cycle records as prescribed by
-the revised scope. At the successful synchronization boundary only, RESUME to
-AWAITING_USER_SIGNOFF. A newly discovered scope/context/design defect follows nested
-failure mechanics instead of bypassing an owner.
+Frame 1 (SCOPING-owned, 2026-10-03): this design was revised as its downstream rerun
+and forwarded to DEVELOPING; Frame 1 continues unchanged through SYNCHRONIZING and
+RESUMES to AWAITING_USER_SIGNOFF only at that boundary.
+
+Frame 2 (ARCHITECTING-owned, 2026-10-06): the user selected the result-size
+correction recorded above (compact derivation-artifact metadata plus the path size
+stop). It changes only LP metadata composition and later-path handling; scope,
+context, accepted data, ceilings, maxima, cursor and other tool contracts are
+unchanged. The affected implementation and feedback (DEV-012/013/014/015) belong to
+the interrupted DEVELOPING assignment, so no other state needs a rerun: pop Frame 2
+and RESUME at DEVELOPING. Developer restores Suspended Assignment 3, reconciles the
+plan under its approval rules and re-establishes affected evidence. Tester's formal
+coverage of these contracts follows in Frame 1's existing route. A newly discovered
+scope/context/design defect follows nested failure mechanics.
