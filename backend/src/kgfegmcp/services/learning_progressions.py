@@ -85,10 +85,16 @@ from kgfegmcp.services.models import (
     NodeIdStandardIdentifier,
     package_reference,
 )
+from kgfegmcp.tool_results import (
+    MAX_TOOL_RESULT_CHARACTERS,
+    canonical_result_text,
+    text_result_envelope,
+    tool_result_size,
+)
 
 
 def progression_result_text(result: ProgressionEvidenceResult) -> str:
-    """Format a concise tool summary without duplicating the evidence tables.
+    """Mirror every bounded public field as canonical ordinary JSON text.
 
     Parameters
     ----------
@@ -98,96 +104,77 @@ def progression_result_text(result: ProgressionEvidenceResult) -> str:
     Returns
     -------
     str
-        Summary suitable for the future MCP adapter and byte-budget calculation.
+        JSON text whose parsed value equals the aliased structured result.
     """
 
-    identity = result.metadata.package.package_identity
-    page_notice = ""
-
-    if isinstance(result, ProgressionCollectionResult):
-        page_notice = (
-            f"\nPage: {result.page.returned_count} returned, "
-            f"{result.page.examined_count} examined. "
-            f"Selection complete: {result.page.is_complete}. "
-            f"Stopping reason: {result.page.stopping_reason or 'exhausted'}. "
-            f"Counts describe this page; package coverage is separate metadata. "
-            f"A continuation cursor requires unchanged route, filters and limits. "
-            f"Absence of a stored match does not establish absence of a "
-            f"pedagogical connection."
-        )
-
-    if isinstance(result, TraverseLearningProgressionsResult):
-        page_notice = (
-            f"\nRequested depth complete: {result.scope_complete}. "
-            f"Reachable graph exhausted: {result.graph_exhausted}. "
-            f"Truncation reasons: {', '.join(result.truncation_reasons) or 'none'}. "
-            f"Examined: {result.counters.examined_relationship_count} adjacency edges. "
-            f"{result.traversal_notice}"
-        )
-
-    if isinstance(result, GetLearningProgressionPathsResult):
-        page_notice = (
-            f"\nReturned paths: {len(result.paths)}. "
-            f"Requested depth complete: {result.scope_complete}. "
-            f"Simple-path search exhausted: {result.graph_exhausted}. "
-            f"Truncation reasons: {', '.join(result.truncation_reasons) or 'none'}. "
-            f"Examined: {result.counters.examined_relationship_count} adjacency edges. "
-            f"{result.path_notice}"
-        )
-
-    return (
-        f"Stored learning progressions: {len(result.relationships)} relationships, "
-        f"{len(result.nodes)} standards. Snapshot: {identity.snapshot_id}.\n"
-        f"{result.metadata.generated_origin_notice}\n"
-        f"{result.metadata.semantic_notice}\n"
-        f"Summary: {result.metadata.summary_uri}{page_notice}"
-    )
+    return canonical_result_text(result)
 
 
 def require_progression_result_size(
-    *, result: ProgressionEvidenceResult, text: str | tuple[str, ...]
+    *,
+    envelope: Mapping[str, object] | None = None,
+    result: ProgressionEvidenceResult,
+    text: str | tuple[str, ...],
 ) -> int:
-    """Enforce the fixed UTF-8 ceiling on tool text plus structured evidence.
+    """Enforce both ceilings on the complete text and structured tool envelope.
 
     Parameters
     ----------
+    envelope
+        Actual adapter envelope when checking final content and metadata.
     result
-        Complete evidence serialized with the public schema aliases.
+        Complete evidence serialized with public schema aliases.
     text
-        Single tool text block or the complete tuple of adapter text blocks.
+        Single text block or every adapter text block for candidate selection.
 
     Returns
     -------
     int
-        Encoded envelope bytes, including JSON escaping and conservative whitespace.
+        Conservative encoded envelope bytes, including escaping and whitespace.
 
     Raises
     ------
     ProgressionResultTooLargeError
-        If the complete result exceeds the fixed ceiling.
+        If the complete envelope exceeds either byte or character ceiling.
     """
 
-    # Include envelope/escaping overhead; Unicode characters are measured as bytes.
-    envelope = {
-        "content": [
-            {"text": block, "type": "text"}
-            for block in ((text,) if isinstance(text, str) else text)
-        ],
-        "structuredContent": result.model_dump(by_alias=True, mode="json"),
-    }
-    size = len(json.dumps(ensure_ascii=False, obj=envelope).encode("utf-8"))
+    size = tool_result_size(
+        envelope
+        if envelope is not None
+        else text_result_envelope(result=result, text=text)
+    )
 
-    if size > MAX_PROGRESSION_RESULT_BYTES:
+    if (
+        size.byte_length > MAX_PROGRESSION_RESULT_BYTES
+        or size.character_length > MAX_TOOL_RESULT_CHARACTERS
+    ):
+        uri = (
+            result.relationships[0].provenance_uri
+            if result.relationships
+            else result.metadata.summary_uri
+        )
+        request = json.dumps(
+            ensure_ascii=False, obj={"uri": uri}, separators=(",", ":"), sort_keys=True
+        )
         raise ProgressionResultTooLargeError(
-            message="The stored progression result exceeds the 1 MiB tool ceiling.",
+            details={
+                "actual_bytes": size.byte_length,
+                "actual_characters": size.character_length,
+                "max_bytes": MAX_PROGRESSION_RESULT_BYTES,
+                "max_characters": MAX_TOOL_RESULT_CHARACTERS,
+            },
+            message=(
+                "The stored progression result exceeds the 1 MiB or "
+                "100,000-character tool envelope ceiling."
+            ),
             recovery_hint=(
-                f"Read the exact relationship, standard and provenance resource URIs "
-                f"under the package rights and resource-size policy. "
-                f"Package manifest: {result.metadata.manifest_uri}"
+                f"Call read_evidence with request={request} for the linked resource "
+                "evidence under native rights and source/document limits. "
+                "Narrow collection, traversal or path inputs before rerunning."
             ),
         )
 
-    return size
+    return size.byte_length
 
 
 @dataclass(frozen=True, slots=True)

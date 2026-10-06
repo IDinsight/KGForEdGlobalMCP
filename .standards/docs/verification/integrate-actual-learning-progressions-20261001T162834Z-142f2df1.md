@@ -5,10 +5,80 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 # Verification Report
 
-`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `COMPLETE` `User Style`: `NONE`
-`Assessment Purpose`: `FULL` `Assessment Target`: `NONE`
+`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `IN_PROGRESS` `User Style`: `NONE`
+`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Correct DEV-013 discovery replay bounds and combination-envelope fixture`
 
-## Current Final-Review Recovery — verified
+## Current Scoped Recovery — 2026-10-06
+
+This section supersedes all historical full-completion, acceptance, candidate and handoff conclusions below. At entry, active Frame 2 was Tester-owned VERIFICATION from/resuming at DEVELOPING, RerunThrough NONE. Its exact reason is persisted in STATE and Developer Suspended Assignment 1. Frame 1 remains SCOPING-owned, resumes AWAITING_USER_SIGNOFF and reruns through SYNCHRONIZING. This assessment selects REVERIFY because the contract, implementation and test assumptions changed; it is CORRECTION, not full verification. No Developer authoring history is present in this conversation; client freshness/model metadata is unavailable, so no machine-certified independence is claimed.
+
+## Assessed Inputs
+
+Entry HEAD `327439a6818ee6a66ff4f2c6ceaa2c1120fb5769`; seven staged files from DEV-012/013 and coordination are preserved, with no index write. E = `data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-dev013`. `E/entry-inputs.json` records exact source/test/package/configuration/contract/runtime hashes; `E/entry-index.diff` preserves the entry staged content. `E/prior-verification.md` preserves the original report unchanged (SHA256 `1efdb0d1a9b131a91ae3de314e73cc9612dfbe7e1d95ab6137e61fd53256829c`). Entry input-map SHA256 is `b7b7de3d68ca682329be708613a9a5390c45e1dbff2465a0cb3fa681aca1d97f`. Current corrected test SHA256 is `f8065e90c6aed3be94a77bd1bb97a91cb1e9971a94a063111d36e1c24a813844`; shared encoder `88a02e2e114a6df0ce8b165886b76d6f31ee22e366755b846654830403532eea`, discovery `56649b6160c048fb1da22f1df0f5c033134610913018730519cce7a6de8cbe56`, models `abf62dd32493729cf041441016156996fecfb172470ce1c24710abaaefece0fb`. Accepted packages and context remain the active-cycle immutable inputs, not a new audited baseline. Developer plan is IN_PROGRESS, AFTER_IMPLEMENTATION/NONE, approved STEPWISE; DEV-013 awaits this correction, while DEV-014/015/024/025/022 are unfinished approved work. Read scope, current design contracts, context, plan's current recovery and DEV-013 outcomes/self-checks/suspended assignment, source/cached discovery boundaries, reusable fixtures, project/CI configuration, and prior independent report. Developer feedback is diagnostic input, not formal evidence.
+
+Environment uses the existing locked Python 3.13 backend, uv offline/no-sync, PYTHONDONTWRITEBYTECODE and explicit PATHS_PROJECT_DIR. Unit/integration techniques exercise real accepted in-memory runtimes with socket connections forbidden. No model/paid service, deployment, archive refresh or upstream source mutation. A first read-only Python heredoc attempt was prevented by sandbox temporary-file restrictions before execution; owned persistence and checks use authorized escalation.
+
+## Acceptance Evidence
+
+| AC / technical criterion | Current evidence or remaining work | Disposition |
+| --- | --- | --- |
+| AC-001, AC-002, AC-003, AC-004 / copy, accepted data | Prior report/package identities retained; current bounded replay and exact evidence reconcile all 8080 stored IDs. | Historical evidence only; full rework reconciliation remains assigned to the future full assessment. |
+| AC-005, AC-006, AC-007, AC-009 / exact/direct/discovery, cursor/filter/bounds | Final 26-case discovery/exact/AS-LC suite. | VERIFIED for completed scoped behavior: full original ordered replay, directional/symmetric adjacency, all four scopes/facet conjunction, cursor/oversized/zero-match boundaries and exact lookup pass. Full contract reconciliation remains future work. |
+| AC-008 / traversal/path bounds | DEV-014/015 followed by independent assessment. | AWAITING_IMPLEMENTATION; prior one-MiB evidence does not establish the new character contract. |
+| AC-010, AC-011, AC-012 / identity, retained judgments, rights | Current exact/original-judgment and rights-denial regression passes; native-resource evidence remains historical. | Full access-route reconciliation AWAITING_IMPLEMENTATION (DEV-024/025). |
+| AC-013, AC-014, AC-015, AC-016 / workflows | Existing native renderers/history preserved; revised instructions/access pending DEV-025. | AWAITING_IMPLEMENTATION. |
+| AC-017, AC-018 / removal and AS/LC | Retained removal/source evidence; affected AS/LC suite passes. | Scoped AS/LC regression PASSED; full rework reconciliation remains. |
+| AC-019, AC-021, AC-022 / surface, transports, distribution | Current intermediate 17/9/1/14 inventory and old 0.3.1 stages are historical. DEV-022 must establish revised 19/9/1/14 and 0.4.0. | AWAITING_IMPLEMENTATION. |
+| AC-020, AC-032 / design/client-support assessment | Revised architecture, decisions and alternatives exist before implementation. | Inspected input; full independent reconciliation deferred to preserved full assessment. |
+| AC-023, AC-024 / meaningful offline tests | Existing reusable suite, autouse socket guard, no external service. | 26 actual offline cases PASS; later required new-surface coverage AWAITING_IMPLEMENTATION. |
+| AC-025 / independent full verification | Current assignment explicitly corrects owned fixtures during unfinished development. | AWAITING_IMPLEMENTATION and subsequent FULL/NONE verification. No full gate claimed. |
+| AC-026, AC-027, AC-036, AC-037 / documentation, walkthrough, checklist | Documenter must reconcile final schemas/counts/identities, strict build and honest walkthrough/remote status after implementation. | PENDING later-role dependencies; old final-review findings are historical owner dispositions. |
+| AC-028, AC-031, AC-033 / canonical text, shared limits, loss-free replay | Reuse discovery scenarios; correct fixture and dataset-derived finite bounds; measure text plus structured envelope against both ceilings. | Scoped combination canonical text equality, both-ceiling measurements and complete replay PASS. Whole five-operation contract AWAITING_IMPLEMENTATION (DEV-014/015/024/025). |
+| AC-029 / supported full evidence | read_evidence is not implemented; exact permitted windows/URI/policy/hash tests remain assigned after DEV-024. | AWAITING_IMPLEMENTATION. |
+| AC-030 / alternate/native workflows | get_workflow_instructions and revised shared renderers remain DEV-025. | AWAITING_IMPLEMENTATION. |
+| AC-034, AC-035 / shared transport and retained 0.4.0 stage | Final source/text/access/schema/smoke and stage refresh remain DEV-022 plus future independent full execution. | AWAITING_IMPLEMENTATION. |
+
+## Scenario Budget
+
+Carry every allocation and explicit user ceiling in the historical Scenario Budget below (discovery 13, shared service 7, traversal 8, paths 10; other ceilings 5). Before editing, reserve replacements of exhaustive pagination, reused profile/code-grade property and combination continuation: no new behavioral partition or increased ceiling. Discovery pagination helper changes also apply to existing direct/scope scenarios. Shared service's existing discovery combination reservation is reused. Test helpers and test files create no allowance. Envelope assertions apply to the same combination-continuation outcome only; `tool_results.py` is charged once for its canonical-text/size property in that existing scenario, within its five-scenario ceiling. `lp_models.py` existing reservations are unchanged; no new independent model scenario is added. Deterministic generation remains all six finite original datasets, four existing scopes, three existing direct meanings, and three synthetic combination entries. No random/unbounded generator.
+
+## Execution Evidence
+
+All new commands run from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`; uv selects backend cwd. Exact expanded argv, environment names/values (no secrets), UTC start/duration/exit and stdout/stderr hashes are retained in `E/<label>.command.json` with matching stream files. Common runtime prefix is `/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync`. Environment: UV_OFFLINE=1, PYTHONDONTWRITEBYTECODE=1, PATHS_PROJECT_DIR set to this checkout; existing Python 3.13.9, pytest 8.2.0, FastMCP 3.4.4. No dependency synchronization/network/model API.
+
+| Check / exact suffix | Actual outcome | Receipt |
+| --- | --- | --- |
+| `pytest -q -p no:cacheprovider -m 'not costs-money' tests/kgfegmcp/test_progression_discovery.py tests/kgfegmcp/test_progression_lookup.py tests/kgfegmcp/test_progression_regressions.py` | Exit 0, **26 passed in 67.74s** pytest / 68.288s outer. Includes complete 17-case discovery file, seven exact cases and two existing AS/LC regression cases. Exhaustive ordered discovery and exact evidence independently reconcile all 8080 LP records; code/grade aliases, direction/symmetric adjacency, scopes/cursor/error/policy and standards/components outcomes pass. | `final-scoped-suite`; stdout SHA256 `894771a0b2aad513fbb5f09464321b8b79f76b86568d631dc56bb8943fa6dc69` |
+| `black --check tests/kgfegmcp/test_progression_discovery.py` | Exit 0; unchanged | `final-black` |
+| `isort --check-only tests/kgfegmcp/test_progression_discovery.py` | Exit 0 | `final-isort` |
+| `ruff check --no-cache tests/kgfegmcp/test_progression_discovery.py` | Exit 0 | `final-ruff` |
+| `mypy --cache-dir ../data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-dev013/mypy-cache --explicit-package-bases --ignore-missing-imports --show-error-codes tests/kgfegmcp/test_progression_discovery.py` | Exit 0, one file | `final-mypy` |
+| `pylint --persistent=n tests/kgfegmcp/test_progression_discovery.py` | Exit 0, 10.00/10 | `final-pylint` |
+| `interrogate --generate-badge ../data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-dev013/badge tests/kgfegmcp/test_progression_discovery.py` | Exit 0, 100% | `final-interrogate` |
+
+Correction validity: replay bound is independent original LP candidate count plus one, permitting one-entry pages while detecting nontermination; repeat-cursor, uniqueness, ordering, original-ID equality, work/page counts and exhaustion assertions remain. The combination fixture projects 3000 attribution characters, with three individually complete positive controls measuring 85598, 85688 and 85472 envelope characters. Actual combination replay returns one entry per page, reasons byte_limit/byte_limit/exhaustion, the same original ordered three IDs once, and no repeated cursor. Each resulting envelope is independently serialized from actual canonical service text plus the structured object, _meta/content/error overhead, and measured against both <=100000 characters and <=1048576 UTF-8 bytes; JSON text equals structured fields. This common size reason is triggered by the character ceiling here, not isolated byte pressure. Existing individual-oversize rejection remains unchanged. Service text/envelope evidence is not claimed as new actual transport execution.
+
+Initial execution `scoped-suite` exit 1 had 25 passes and one invalid 15000-character combination fixture, superseded by the complete final rerun. The owned fixture's positive controls caught the invalid replacement; application rejection was correct. `fixture-measurement` runs the existing fixture through six bounded calibration sizes, not new independent behavioral scenarios; it identifies individually/resumed-returnable 3000-character content and preserves actual result/error sizes. Scratch probe first failed on missing tests import path, then nonserializable mappingproxy diagnostics; both were fixed in scratch only and their receipts retained (`fixture-probe`, `fixture-probe-final`). No application source was changed or ceiling weakened. Initial Black and Pylint failures were corrected with formatting, removal of the nested duplicate json import, explicit terminal assertion, stable loop-selector capture, and fixture package-identity assertion. All final configured checks pass; earlier receipts remain historical. The pre-existing pytest-asyncio loop-scope warning remains a warning and did not affect these synchronous/local tests.
+
+`E/preservation.json` independently rehashes all 811 entry inputs: 809 unchanged, changes only this report and the owned discovery test file. Accepted package/configuration/preparation runtime boundaries, all application source, dependencies, protocol/context/scope/design/Developer and other owner records remain byte-identical. Entry staged diff is byte-identical; no index write/commit. `E/final-assessed-inputs.json` and `E/evidence-index.json` bind final content and local receipts/scripts. Earlier whole-output/cursor/transport/archive full-completion evidence is historical; this scoped pass does not replace later required full verification. Entry check exit 1's twelve owned stale-report problems were corrected; reopening check passes. Final workflow/diff gate receipts are recorded before the transition.
+
+## Open Findings and Dependencies
+
+- Active three-case correction: VERIFIED, resolved. New implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned outstanding obligation: NONE. Blocking user question: NONE.
+- Remaining full-gate gaps are only the unfinished approved implementation and subsequent assessment in the preserved route: Developer must finalize DEV-013, then DEV-014/015 (traversal/paths), DEV-024 (full evidence), DEV-025 (workflow access/versions) and DEV-022 (surface/shared transports/refreshed 0.4.0 archive/stage). Future independent FULL/NONE Tester assessment must cover all 37 current ACs, five-operation text-only results, exact evidence/access/policy/cursor/schema/native regressions, static/package/STDIO/HTTP/staged execution and final content identities. No required present scoped evidence is deferred by these gaps.
+- Documenter dependencies remain AC-026/027/036/037: final saved guides/maintainer evidence, practical Desktop walkthrough with honest run status, remote checklist and strict build/shipped agreement. Reviewer owns its finding dispositions and subsequent independent reviews; this report does not close another owner's finding. Local HTTP and rendered instructions cannot prove an end-to-end teaching workflow or deployed claude.ai acceptance. User-owned deployment/remote acceptance/sign-off remain separate.
+
+## Resume or Handoff
+
+Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. This assessment is associated with Frame 2's exact VERIFICATION reason and interrupted Developer DEVELOPMENT/NONE in Developer Suspended Assignment 1. No active unfinished Tester assignment was suspended: prior completed FULL assessment is historical after rework. Owned tests and current evidence are satisfactory; affected completed exact/AS-LC behavior passes, all historical allocations/user increases remain carried, no new defect/question/obligation is deferred. No affected downstream assessment precedes unfinished Developer work, so RerunThrough NONE remains appropriate.
+
+After passing the workflow checker, pop only the active Tester-owned Frame 2 and RESUME DEVELOPING, From TESTING, FailureType NONE. Preserve the exact SCOPING-owned Frame 1, its ResumeAt AWAITING_USER_SIGNOFF and RerunThrough SYNCHRONIZING. Developer restores its saved assignment, reconciles corrected test hash and actual scoped results, reruns affected feedback and finalizes DEV-013 if satisfactory, then honors STEPWISE before DEV-014. Do not use CHECKPOINT, mark full completion, advance the Developer plan/increment, or hand off to Reviewer on this scoped result. Future full implementation/verification/reviews/documentation/synchronization remain required.
+
+## Historical Assessments and Allocation History
+
+All content below is retained history, not a current full-completion conclusion or handoff instruction.
+
+### Historical Final-Review Recovery — verified
 
 Assessment date 2026-10-03 (America/Detroit), HEAD `a8cfe924ca283d03e135a43fb0af2e36f2a5b4d6`, clean tree at entry. REVERIFY retains FULL/NONE and all prior scenario allocations. Active Developer-owned frame from REVIEWING_FINAL has reason `Current retained MCPB ships removed progression-tool instructions; refresh final distribution (AC-022/AC-026).`, ResumeAt REVIEWING_FINAL and RerunThrough DOCUMENTING. Tester is an affected downstream rerun, not the frame owner; preserve it through IMPLEMENTATION review and Documenter. No suspended Tester assignment is being replaced or restored in this new route.
 
@@ -59,7 +129,7 @@ Input SHA256 identities (paths relative to repository):
 
 Evidence root `E` below means `data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/reverify`. The pre-relocation `E/assessed-files-current.json` binds 824 assessed files, including current tests/fixtures, source, configuration, packages, copied inputs and workflow/CI inputs; SHA256 `071d48525ec29f28a227a7cdee6ee3a02a12be25024bbe7c8902f110c7990234`. `E/evidence-index.json` binds command receipts, logs, scripts and history; SHA256 `ad01f6784d1a9ebc79b1cfb50aa84d8a179c5660a226feb8058031f51383db07`. These are retained local evidence, not installed runtime dependencies. Their STATE identity precedes this report's forward transition.
 
-## Acceptance Evidence
+## Historical Acceptance Evidence
 
 Collected references below are under `backend/tests/kgfegmcp/`. The 78-pass independent suite is reused on byte-identical executable/test inputs; new current archive/stage evidence is identified above. Inspection remains distinct from runtime evidence.
 
@@ -93,7 +163,7 @@ Collected references below are under `backend/tests/kgfegmcp/`. The 78-pass inde
 | AC-026 / Usable replacement documentation | Documenter recovery and final-review findings | PENDING — shipped README correction has current byte/inventory evidence; Documenter must correct the remaining seven-versus-nine count, repair/re-execute its saved catalog/example checker against final formatting, rebuild strictly and bind current documentation/new distribution identities. Final Reviewer independently reassesses the original findings. |
 | AC-027 / Maintainer process documentation | Documenter recovery | PENDING — existing maintainer material/commands are reported but current completion evidence is invalidated by the final-review documentation finding. Documenter must re-establish saved-source checker/identity/strict-build evidence and reconcile the new candidate. Tester does not certify that gate. |
 
-## Scenario Budget
+## Historical Scenario Budget
 
 Allocations were persisted before authoring and carried across recovery. No reset from fixture/test correction or collection into separate files. Each independent parameter row is counted. User explicitly approved targeted ceilings on 2026-10-02: traversal 8, paths 10, discovery 13 and shared progression service 7. Other source ceilings remain 5. Full pre-reconciliation allocation history is retained at `E/assessment-history.md` (SHA256 `3adc61a22784ecdaffeb8d7b5a4ec58bf7c21fcadccf7506a603c4c0dd69aed1`); the table below preserves those reservations and clarifies reuse.
 
@@ -125,7 +195,7 @@ Unchanged DEV-017 AS/LC regression and MCP error/removal assertions consume no n
 
 Deterministic property generation is bounded and explicit: all six package records for original equality/pagination/provenance, every finite cursor field mutation, selected same-property scope/facet records, and documented strict integer mutations for six fields (`True`, `False`, zero, maximum+1, float, string), plus valid maximum controls/error locations. Invalid integer behavioral partitions reuse existing DEV-013/014/015 coverage; finite arrays/enums/cursor/default properties retain their recorded reservations. No random or unlimited generator obscures independent outcomes. Synthetic graphs supply original evidence shapes and real algorithms/encoder without claiming package acceptance. Portable `backend/tests/fixtures/progression_baseline.json` derives fixed pre-change node/edge identities independently from retained original packages; CI tests do not require ignored historical directories.
 
-## Execution Evidence
+## Historical Execution Evidence
 
 The following executions are prior independent Tester evidence, selectively reused as explained in Current Final-Review Recovery; new executions are listed there. Developer scripts/receipts supplied assertions and input reconstruction only. Commands run from `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`, with uv's `--directory backend` setting Python tool cwd. Environment names: `UV_OFFLINE`, `PYTHONDONTWRITEBYTECODE`, `PATHS_PROJECT_DIR`; final coverage additionally `COVERAGE_FILE=/tmp/kgfegmcp-tester-final.coverage`. HTTP/stage wrappers set local project/package/profile/prompt roots explicitly; exact values/argv are retained in their scripts/receipts. Existing offline environment used after authorized sandbox escalation; no install/network dependency synchronization.
 
@@ -159,13 +229,13 @@ New reusable assets: `conftest.py`, `backend/tests/fixtures/progression_fixtures
 - Initial sandbox-denied uv cache access was infrastructure failure, followed by authorized offline execution. Intermediate Tester harness/fixture issues (incorrect validation-result field, too-short framework fixture, optional-helper assertion expecting a tool name from the later normal workflow, wrong validator method, test lint/type mistakes) were diagnosed and corrected within the same allocations. Earlier partial/failing suite logs remain historical; current exact source/tests are bound by the final 78-pass run. No implementation assertion was weakened and no required case was skipped to pass.
 - Supplemental nonconfigured Ruff `--select E,F,C90` returned exit 1 with 113 E501 line-length findings and no other rule codes. This is outside configured CI Ruff rules; Black and configured Ruff/Pylint pass (Pylint disables line-too-long). It is a disclosed nonblocking analyzer result, not a suppressed configured check or unresolved behavioral defect.
 
-## Open Findings and Dependencies
+## Historical Open Findings and Dependencies
 
 - Unresolved present-phase implementation/verification defects: NONE. Required present-phase unrun, blocked, flaky or uncovered checks: NONE. Blocking user questions: NONE; targeted scenario increase was explicitly approved and incorporated.
 - AC-026/027 remain PENDING with Documenter under final-review `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-002`: remaining prompt count, saved example/catalog checker and current exact-content completion evidence must be corrected/re-executed, with strict build and fresh distribution binding. Existing COMPLETE documentation label does not discharge that finding. Final-review `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-001` has correction evidence above but remains OPEN until Reviewer reassesses it. No owner finding is closed by Tester. Pending is not final acceptance or sign-off.
 - Evidence covers local immutable inputs, tests, transports and retained distribution, not a deployed endpoint, publication, live model quality, calibrated confidence or pedagogical correctness. Historical-copy immutability is supported by receipt/hash/history evidence rather than continuous instrumentation. Local evidence receipts are retained under ignored source_artifacts; collected tests/fixture and this report are committable.
 
-## Resume or Handoff
+## Historical Resume or Handoff
 
 Current recovery rerun is COMPLETE, FULL/NONE. Present-phase implementation/distribution evidence is sufficient; no new unresolved Tester/implementation defect, required gap, obligation or blocking question. Historical evidence and scenario allocations remain preserved. Current candidate is recovery-final-dev022, not recovery-dev022. Both final-review finding statuses are preserved for their owners; Documenter dependencies remain explicit.
 

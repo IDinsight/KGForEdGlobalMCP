@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 # Third Party Library
 from fastmcp import Context
 from fastmcp.tools.base import ToolResult
+from mcp.types import CallToolResult
 
 # Package Library
 from kgfegmcp.mcp.errors import tool_error_boundary
@@ -44,7 +45,7 @@ if TYPE_CHECKING:
 
 
 def _build_progression_result(result: ProgressionEvidenceResult) -> ToolResult:
-    """Use the service's exact text and byte ceiling for the complete MCP payload.
+    """Use shared canonical text and both ceilings for the complete MCP payload.
 
     Parameters
     ----------
@@ -54,12 +55,24 @@ def _build_progression_result(result: ProgressionEvidenceResult) -> ToolResult:
     Returns
     -------
     ToolResult
-        One concise text block and the full structured evidence, within 1 MiB.
+        Canonical JSON text and structured evidence within both envelope ceilings.
     """
 
     text = progression_result_text(result=result)
     require_progression_result_size(result=result, text=text)
-    return build_tool_result(content=text, result=result)
+    tool_result = build_tool_result(content=text, result=result)
+    emitted = CallToolResult(
+        _meta=tool_result.meta,
+        content=tool_result.content,
+        isError=tool_result.is_error,
+        structuredContent=tool_result.structured_content,
+    )
+    require_progression_result_size(
+        envelope=emitted.model_dump(by_alias=True, exclude_none=True, mode="json"),
+        result=result,
+        text=text,
+    )
+    return tool_result
 
 
 async def get_learning_progression(

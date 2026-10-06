@@ -159,12 +159,12 @@ def _admit_edge(
     node_id
         Current BFS node.
     rows
-        Bounded local tables; speculative entry is removed on a byte stop.
+        Bounded local tables; speculative entry is removed on an output-size stop.
 
     Returns
     -------
     TraversalTruncationReason | None
-        Byte stop, or None after admission.
+        Output-size stop, or None after admission.
     """
 
     is_new = adjacent not in rows.nodes
@@ -189,7 +189,7 @@ def _admit_edge(
         if len(rows.relationships) == 1:
             # Conservative reservation must not reject an actually fitting first entry.
             # Stop here with its exact final frontier, or fail if it too exceeds the
-            # shared ceiling. No further work is attempted.
+            # shared byte or character ceiling. No further work is attempted.
             rows.positions[node_id] += 1
             rows.reasons.add("byte_limit")
             _require_size(
@@ -275,7 +275,7 @@ def _require_edge_size(
     adjacent
         Neighbor endpoint in the requested direction.
     context
-        Shared byte policy and pinned query metadata.
+        Shared byte/character policy and pinned query metadata.
     edge
         Speculative original edge whose complete evidence must fit individually.
     node_id
@@ -305,12 +305,12 @@ def _require_edge_size(
 def _require_size(
     *, context: _TraversalContext, result: TraverseLearningProgressionsResult
 ) -> None:
-    """Use the shared service encoder for text plus structured-content bytes.
+    """Use the shared encoder for complete text/structured envelope bytes and characters.
 
     Parameters
     ----------
     context
-        Existing evidence service owning the byte policy.
+        Existing evidence service owning both complete-envelope ceilings.
     result
         Candidate or final complete envelope.
     """

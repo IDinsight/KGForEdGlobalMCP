@@ -9,7 +9,7 @@ import hashlib
 import json
 import unicodedata
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import TYPE_CHECKING, Annotated, Literal, cast
 
 # Third Party Library
@@ -42,6 +42,7 @@ from kgfegmcp.services.lp_models import (
     ProgressionRelationshipEvidence,
     ProgressionStandardSummary,
 )
+from kgfegmcp.tool_results import MAX_TOOL_RESULT_BYTES, MAX_TOOL_RESULT_CHARACTERS
 
 if TYPE_CHECKING:
     # Package Library
@@ -105,7 +106,7 @@ def collection_result(
     runtime: CatalogPackageRuntime,
     service: LearningProgressionsService,
 ) -> ProgressionCollectionResult:
-    """Scan at most 5,000 candidates and assemble a byte-bounded direct/discovery page.
+    """Scan at most 5,000 candidates and assemble an output-bounded direct/discovery page.
 
     Parameters
     ----------
@@ -178,6 +179,7 @@ def collection_result(
             if len(rows.relationships) == 1:
                 raise
 
+            _require_entry_size(context=context, position=position, rows=rows)
             _remove_last(rows=rows)
             reason = "byte_limit"
             break
@@ -320,6 +322,9 @@ def _build_result(
     """
 
     remaining = position < len(context.candidates)
+    next_cursor = (
+        _encode_cursor(context=context, position=position) if remaining else None
+    )
     used_nodes = {
         node_id
         for item in rows.relationships
@@ -339,8 +344,9 @@ def _build_result(
             examined_count=examined,
             has_more=remaining,
             is_complete=not remaining,
-            next_cursor=(
-                _encode_cursor(context=context, position=position)
+            next_cursor=next_cursor,
+            next_request=(
+                context.request.model_copy(update={"cursor": next_cursor})
                 if remaining
                 else None
             ),
@@ -712,6 +718,43 @@ def _remove_last(*, rows: _PageRows) -> int:
     return rows.positions.pop()
 
 
+def _require_entry_size(
+    *, context: _PageContext, position: int, rows: _PageRows
+) -> None:
+    """Reject a whole entry that cannot fit even on its real resumed page.
+
+    Parameters
+    ----------
+    context
+        Exact accepted selection and original page request.
+    position
+        Candidate position of the most recently admitted entry.
+    rows
+        Trial buffers containing that entry and its complete endpoint evidence.
+    """
+
+    single = _PageRows(
+        connections=[rows.connections[-1]],
+        nodes=rows.nodes,
+        positions=[position],
+        relationships=[rows.relationships[-1]],
+    )
+    cursor = _encode_cursor(context=context, position=position)
+    resumed = replace(
+        context,
+        request=context.request.model_copy(update={"cursor": cursor}),
+    )
+    trial = _build_result(
+        context=resumed,
+        examined=1,
+        position=position + 1,
+        reason="byte_limit",
+        rows=single,
+        start=position,
+    )
+    context.service.require_collection_result_size(result=trial)
+
+
 def _resolve_selection(
     *,
     request: ProgressionCollectionRequest,
@@ -805,7 +848,9 @@ def _selection_hash(
             "filters": selection.filters.model_dump(mode="json"),
             "limit": request.limit,
             "max_examined_relationships": 5000,
-            "max_result_bytes": 1048576,
+            "max_result_bytes": MAX_TOOL_RESULT_BYTES,
+            "max_result_characters": MAX_TOOL_RESULT_CHARACTERS,
+            "result_encoding": "canonical_full_text_v1",
             "node_ids": selection.node_ids,
             "operation": (
                 "direct"

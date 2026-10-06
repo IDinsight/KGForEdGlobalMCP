@@ -1,6 +1,8 @@
 """Stored LP pagination, exact adjacency, endpoint filtering and byte boundaries."""
 
 # Standard Library
+import json
+
 from typing import Any
 
 # Third Party Library
@@ -12,7 +14,10 @@ from kgfegmcp.catalog.models import CatalogPackageRuntime
 from kgfegmcp.errors import InvalidCursorError, ProgressionResultTooLargeError
 from kgfegmcp.graph.models import GraphRelationship
 from kgfegmcp.search.service import SearchService
-from kgfegmcp.services.learning_progressions import LearningProgressionsService
+from kgfegmcp.services.learning_progressions import (
+    LearningProgressionsService,
+    progression_result_text,
+)
 from kgfegmcp.services.lp_discovery import collection_result
 from kgfegmcp.services.lp_models import (
     GetStandardProgressionsRequest,
@@ -35,12 +40,35 @@ def ordered(runtime: CatalogPackageRuntime) -> tuple[GraphRelationship, ...]:
     )
 
 
-def pages(service: Any, request: Any, method: str) -> tuple[list[str], Any]:
+def assert_envelope_bounds(result: Any) -> None:
+    """Measure complete canonical text and structured JSON independently."""
+    text = progression_result_text(result=result)
+    structured = result.model_dump(by_alias=True, mode="json")
+    assert json.loads(text) == structured
+    serialized = json.dumps(
+        {
+            "_meta": None,
+            "content": [{"text": text, "type": "text"}],
+            "isError": False,
+            "structuredContent": structured,
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+    )
+    assert len(serialized) <= 100000
+    assert len(serialized.encode("utf-8")) <= 1048576
+
+
+def pages(
+    service: Any, request: Any, method: str, *, max_candidates: int
+) -> tuple[list[str], Any]:
     """Follow unchanged requests, bounding continuation and forbidding duplicates."""
     found: list[str] = []
     cursors: set[str] = set()
     result = None
-    for _ in range(400):
+    # Every continuing page must consume an entry or advance examined nonmatches.
+    # The independent original dataset bounds even one-entry size-limited pages.
+    for _ in range(max_candidates + 1):
         result = getattr(service, method)(request=request)
         found.extend(e.relationship.relationship_id for e in result.relationships)
         assert result.page.returned_count == len(result.relationships) <= request.limit
@@ -50,10 +78,13 @@ def pages(service: Any, request: Any, method: str) -> tuple[list[str], Any]:
         if result.page.next_cursor is None:
             assert len(found) == len(set(found))
             return found, result
+        assert result.relationships or result.page.examined_count > 0
         assert result.page.next_cursor not in cursors
         cursors.add(result.page.next_cursor)
         request = request.model_copy(update={"cursor": result.page.next_cursor})
-    pytest.fail("Continuation did not terminate within the bounded accepted dataset.")
+    raise AssertionError(
+        "Continuation did not terminate within the bounded accepted dataset."
+    )
 
 
 def test_complete_pagination_matches_original_edges(accepted_state: AppState) -> None:
@@ -70,6 +101,7 @@ def test_complete_pagination_matches_original_edges(accepted_state: AppState) ->
             accepted_state.learning_progressions_service,
             request,
             "search_learning_progressions",
+            max_candidates=len(ordered(runtime)),
         )
         assert found == [e.relationship_id for e in ordered(runtime)]
         assert (
@@ -107,6 +139,7 @@ def test_direct_adjacency_matches_original_records(
             accepted_state.learning_progressions_service,
             request,
             "get_standard_progressions",
+            max_candidates=len(edges),
         )
         expected = [
             e.relationship_id
@@ -151,13 +184,14 @@ def test_endpoint_scope_exact_selection(accepted_state: AppState, scope: str) ->
             accepted_state.learning_progressions_service,
             request,
             "search_learning_progressions",
+            max_candidates=len(ordered(runtime)),
         )
 
-        def match(edge: GraphRelationship) -> bool:
+        def match(edge: GraphRelationship, selected_node: str = selected) -> bool:
             """Evaluate the selected endpoint predicate independently."""
             source, target = (
-                edge.source_node_id == selected,
-                edge.target_node_id == selected,
+                edge.source_node_id == selected_node,
+                edge.target_node_id == selected_node,
             )
             return {
                 "either": source or target,
@@ -194,6 +228,7 @@ def test_facets_cannot_mix_across_endpoints(
 
     def facets(*, graph_package_id: Any, node_id: str) -> Any:
         """Supply individually valid but opposite-endpoint facet evidence."""
+        assert graph_package_id == identity.graph_package_id
         index = int(node_id != edge.source_node_id)
         return evidence.model_copy(
             update={
@@ -323,16 +358,30 @@ def test_discovery_oversized_entry_rejected(
 def test_discovery_combination_bytes_preserve_continuation(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Byte overflow resumes at the whole omitted entry without skipping IDs."""
-    project_large(monkeypatch, 600000)
+    """Envelope overflow replays whole individually returnable entries once."""
+    project_large(monkeypatch, 3000)
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
     candidates = ordered(runtime)[:3]
     request = SearchLearningProgressionsRequest(
         framework_id=runtime.catalog_package.package_identity.framework_id, limit=100
     )
+    # Positive controls establish that the fixture is oversized only in combination.
+    for candidate in candidates:
+        single = collection_result(
+            candidates=(candidate,),
+            request=request,
+            runtime=runtime,
+            service=accepted_state.learning_progressions_service,
+        )
+        assert [e.relationship.relationship_id for e in single.relationships] == [
+            candidate.relationship_id
+        ]
+        assert single.page.is_complete and single.page.next_cursor is None
+        assert_envelope_bounds(single)
     found: list[str] = []
     reasons: list[str | None] = []
-    for _ in range(3):
+    cursors: set[str] = set()
+    for _ in range(len(candidates) + 1):
         result = collection_result(
             candidates=candidates,
             request=request,
@@ -341,6 +390,8 @@ def test_discovery_combination_bytes_preserve_continuation(
         )
         found.extend(e.relationship.relationship_id for e in result.relationships)
         reasons.append(result.page.stopping_reason)
+        assert_envelope_bounds(result)
+        assert result.page.returned_count == len(result.relationships) == 1
         assert (
             accepted_state.learning_progressions_service.require_collection_result_size(
                 result=result
@@ -348,8 +399,17 @@ def test_discovery_combination_bytes_preserve_continuation(
             <= 1048576
         )
         if result.page.next_cursor is None:
+            assert result.page.is_complete
             break
+        assert result.page.has_more and not result.page.is_complete
+        assert result.page.next_cursor not in cursors
+        cursors.add(result.page.next_cursor)
         request = request.model_copy(update={"cursor": result.page.next_cursor})
+    else:
+        pytest.fail(
+            "Combination continuation exceeded its independent candidate bound."
+        )
+    assert len(found) == len(set(found))
     assert found == [e.relationship_id for e in candidates]
     assert reasons == ["byte_limit", "byte_limit", None]
 
@@ -362,7 +422,6 @@ def test_reused_cursor_integrity_boundaries(
     # Standard Library
     import base64
     import hashlib
-    import json
 
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
     service = accepted_state.learning_progressions_service
@@ -486,7 +545,12 @@ def test_reused_profile_code_and_grade_facets(accepted_state: AppState) -> None:
             local_grade_labels=(mapping.local_label,),
             limit=100,
         )
-        found, _ = pages(service, request, "search_learning_progressions")
+        found, _ = pages(
+            service,
+            request,
+            "search_learning_progressions",
+            max_candidates=len(ordered(runtime)),
+        )
         expected = [
             candidate.relationship_id
             for candidate in ordered(runtime)
@@ -504,5 +568,6 @@ def test_reused_profile_code_and_grade_facets(accepted_state: AppState) -> None:
                     update={"local_grade_labels": (mapping.aliases[0],)}
                 ),
                 "search_learning_progressions",
+                max_candidates=len(ordered(runtime)),
             )
             assert aliases == found

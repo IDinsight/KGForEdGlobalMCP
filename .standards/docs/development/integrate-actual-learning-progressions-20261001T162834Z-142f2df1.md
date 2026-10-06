@@ -7,14 +7,14 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `PROPOSED` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
-## Current Recovery Plan — proposed 2026-10-06
+## Current Recovery Plan — approved 2026-10-06
 
 This section supersedes historical completion, next-action, surface and recovery-route claims below. Recovery Frame 1 is SCOPING-owned, from/resuming at AWAITING_USER_SIGNOFF, with RerunThrough SYNCHRONIZING. Developer is a downstream rerun and does not change that frame. The revised scope has 37 current acceptance IDs; architecture establishes the new text, evidence and workflow contracts.
 
-The current material revision requires approval before project implementation. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Twelve original steps remain DONE. Reopen DEV-012, DEV-013, DEV-014, DEV-015 and DEV-022; add DEV-024 and DEV-025. Their old self-checks are historical evidence, not results for these new assignments.
+User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. The five remaining recovery assignments are DEV-014/015/024/025/022. User authorized DEV-014; its implementation assessment is PARTIAL pending a scoped Tester-owned fixture correction. Nested Frame 2 routes VERIFICATION to TESTING and Suspended Assignment 2 preserves Developer's remaining DEVELOPMENT/NONE work. DEV-014 remains IN_PROGRESS; DEV-015/024/025/022 remain PENDING. Current feedback and resume directions are recorded in Plan Notes.
 
 | Order | Step | Observable recovery outcome |
 |---|---|---|
@@ -554,16 +554,16 @@ DEV-023 is DONE. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMEN
 
 ### DEV-012 — Implement exact LP selection and shared evidence results
 
-`Status`: `PENDING` `Depends On`: `DEV-023`
+`Status`: `DONE` `Depends On`: `DEV-023`
 `Acceptance`: `AC-005, AC-009, AC-010, AC-012, AC-018, AC-028, AC-031, AC-033`
 
-**Current Recovery Assignment — proposed 2026-10-06**
+**Current Recovery Assignment — approved 2026-10-06**
 
 Implement the shared ordinary encoder below MCP, canonical alias-keyed JSON (sorted keys, compact separators, ensure_ascii=False, original array order), conservative complete CallToolResult byte/character accounting including isError/metadata and escaping, and the thin five-LP adapter text path. Add compatible effective character-ceiling/continuation metadata while retaining useful public result fields. Exact lookup and shared candidate/indivisible-entry checks must enforce both <=1,048,576 UTF-8 bytes and <=100,000 Unicode code points; failure is progression_result_too_large with a usable read_evidence URI hint. Preserve rights, exact identities, excerpts/disclosures and safe error masking. No unrelated retained-tool text rewrite.
 
 Affected area additionally includes mcp/tools/learning_progressions.py and a focused ordinary encoder helper reused by later access tools. Direct/search/traversal/path size hooks start using the shared encoder here; their detailed outcome reconciliation belongs to the next three steps.
 
-Current self-check: NOT RUN. Use offline ad hoc exact Nigeria diagnostic lookup and real in-process MCP emission; parse ordinary text and compare with structuredContent, measure the actual serialized envelope, check Unicode/escaping and indivisible-result failures, and run the established static checks on changed Python modules. Existing tests may be run as implementation feedback; do not rewrite Tester-owned cases. Record commands, cwd, content hashes, results and limitations before DONE.
+Current self-check: PASS. See Plan Notes, Client-access recovery for DEV-012 — completed 2026-10-06, for actual final commands, 64 ad hoc checks, 13 existing tests, configured static checks, assessed content/receipt hashes and limitations.
 
 The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
@@ -635,14 +635,14 @@ User explicitly authorized DEV-012 after DEV-023. Only DEV-012 implementation an
 
 ### DEV-013 — Implement direct connections and filtered paged discovery
 
-`Status`: `PENDING` `Depends On`: `DEV-012`
+`Status`: `DONE` `Depends On`: `DEV-012`
 `Acceptance`: `AC-006, AC-007, AC-009, AC-010, AC-012, AC-028, AC-031, AC-033`
 
-**Current Recovery Assignment — proposed 2026-10-06**
+**Current Recovery Assignment — approved 2026-10-06**
 
 Reconcile direct/discovery selection against the shared encoder's byte and character ceilings. Roll back the next whole edge and dependent node/match rows before either ceiling; resume at its real candidate position. Preserve deterministic type/ID order, bound cursor fingerprint (route, identity, selection and semantic limits), examined nonmatch advancement, work/page limits, counts and truthful output-size stopping reason. Reject an individually unreturnable entry before a zero-progress cursor; no silent edge loss. Text includes actual cursor and complete replay request/how to use it, and distinguishes complete empty pages from incomplete work-limited pages.
 
-Current self-check: NOT RUN. Offline ad hoc nonempty direct/search text-only consumption and multi-page replay at the pinned Nigeria diagnostic snapshot; synthetic Unicode/large-entry/metadata boundaries exercise both ceilings and loss/duplication/no-progress rejection. Reconcile selector/facet/symmetry behavior and existing targeted discovery checks; run changed-module static checks. Preserve existing formal test files and prior receipts.
+Current self-check: PASS — Tester-owned correction reconciled on RESUME; Developer reran the affected 26 discovery/exact/AS-LC cases successfully. Runtime text-only/boundary/static evidence remains applicable to unchanged source hashes. See Plan Notes, Developer resumption after DEV-013 Tester correction, for current commands/results, evidence reuse, preservation and next STEPWISE continuation.
 
 The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
@@ -728,14 +728,14 @@ User explicitly authorized DEV-013 after committed DEV-012. This step changes on
 
 ### DEV-014 — Implement bounded upstream and downstream traversal
 
-`Status`: `PENDING` `Depends On`: `DEV-013`
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-013`
 `Acceptance`: `AC-008, AC-009, AC-010, AC-018, AC-028, AC-031, AC-033`
 
-**Current Recovery Assignment — proposed 2026-10-06**
+**Current Recovery Assignment — approved 2026-10-06**
 
 Reconcile traversal whole-edge admission and final output against both shared envelope ceilings. Preserve the corrected individually oversized-edge failure, breadth-first branch/merge retention, distances, stored upstream orientation, work/depth/node/edge limits and pending frontier bookkeeping. Include compatible character limits and an explicit noncontinuation notice: clients may narrow bounded inputs and rerun. A size-limited result remains coherent and accurately reports scopeComplete, graphExhausted and truncation reasons; never clip a JSON string or drop an edge after service selection.
 
-Current self-check: NOT RUN. Offline ad hoc nonempty upstream/downstream text parsing, real serialized envelope measurement, synthetic merging/frontier/Unicode/individually oversized cases, and existing traversal/regression tests as Developer feedback; configured static checks on changed modules. Preserve the historical Tester regression and all prior correction evidence.
+Current self-check: PARTIAL. Current offline feedback passes 3510 assertions, 406 accepted-package queries and 20 synthetic outcomes, including nonempty upstream/downstream canonical text and actual serialized envelopes. Eight traversal/protocol/AS/LC regressions and all six changed-module static checks pass. The additional formal traversal algorithm selection has two fixture failures and four passes; route a scoped VERIFICATION correction to Tester before finalizing this step. See the current DEV-014 implementation assessment and Suspended Assignment 2 in Plan Notes. Preserve historical checks and all prior correction evidence.
 
 The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
@@ -1801,3 +1801,209 @@ Existing package preparation/activation, accepted provenance resources, native p
 Recovery Frame 1 remains exactly SCOPING-owned through SYNCHRONIZING. The frame-specific reason is User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements. It resumes AWAITING_USER_SIGNOFF. No Developer assignment was interrupted here, so do not fabricate a suspended assignment or choose/pop/reroute that owner's frame. After full current Developer completion, hand off FORWARD to independent TESTING under the preserved route; full Developer/Tester gates must hold before review.
 
 Next action after explicit current-plan approval: set APPROVED with locked tony unchanged, clear only the plan-approval blocker, start DEV-012 and perform exactly that STEPWISE step. Persist actual evidence and then the next-step continuation blocker unless an assignment gate passes. No source copy, partition generation, cutover, formal test edits, user-documentation edit, upstream judgment rewrite, publication, deployment or sign-off has occurred in this reconciliation.
+
+### Recovery approval for DEV-012 — 2026-10-06
+
+User explicitly approved the current seven-assignment material recovery plan and directed DEV-012. Locked tony remains true, STEPWISE/AFTER_IMPLEMENTATION/Current Increment NONE unchanged. Clear only the matching plan-approval blocker; DEV-012 IN_PROGRESS. Preserve the SCOPING-owned recovery frame, all other role records and all later PENDING steps. Current approved assignment ends after DEV-012 checks and evidence; do not start DEV-013 without continuation.
+
+### Client-access recovery for DEV-012 — completed 2026-10-06
+
+Approved assignment completed within unchanged locked tony, STEPWISE, AFTER_IMPLEMENTATION and Current Increment NONE. Entry HEAD 327439a6818ee6a66ff4f2c6ceaa2c1120fb5769; existing dirty files were only the Developer plan/state. The earlier proposed-plan reconciliation records HEAD 75fa26fc1e0349112a99b0113c005b69932959a5; the user committed that proposal before this approved step. No commit is created here.
+
+**Implementation and current outcome**
+
+- Added ordinary kgfegmcp/tool_results.py below MCP: canonical alias-keyed compact JSON with sorted keys, ensure_ascii=False, original array order and nonfinite JSON rejection; shared typed byte/character limits and conservative complete-envelope measurement. Candidate accounting reserves text blocks, structuredContent, isError, metadata slot, JSON escaping and whitespace. The adapter additionally measures the actual SDK CallToolResult fields/content/metadata before return.
+- All five LP adapters use the same canonical text as their complete bounded structured result. No retained non-LP tool text was rewritten. Existing query size hooks now enforce <=1,048,576 UTF-8 bytes AND <=100,000 Unicode code points; exact/single-entry overflow raises progression_result_too_large with an exact read_evidence request URI and unchanged native policy guidance. Unexpected-error masking and rights checks remain intact.
+- Compatible result metadata reports maxResultCharacters; continuationNotice supplies actual page.nextCursor replay instructions for direct/search and explicit noncontinuation/full-evidence guidance for exact/traversal/paths. Collection absence-as-pedagogical-disconnection disclosure is preserved. Existing tables, requests, identities, judgments, disclosures, excerpt/omission flags and useful structuredContent remain intact. DEV-013..015 still own their operation-specific cursor/admission/frontier reconciliation; their files were not edited.
+- The Nigeria diagnostic exact route uses the unchanged framework nigeria-nerdc-mathematics-primary-1-3, snapshot nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f and relationship 0129f5d5-42fd-52cb-bcf2-ec07c47103e7. Ordinary text alone yields the accepted edge, both standard statements/IDs, stored judgment/warnings/evidence links and exact package/profile/manifest/artifact identities.
+
+**Actual Developer self-checks**
+
+All final commands exited 0 from /Users/tzz/Projects/private/idi/KGForEdGlobalMCP, using the existing locked/offline/no-sync Python environment (uv sets the Python tools' cwd to backend). No dependency install, formal test edit or model/paid/network call occurred. Local command recorder R/run_command.py retains exact argv, cwd, permitted environment settings, UTC start, duration, exit, stdout and stderr. R is data/source_artifacts/learning_progressions/client-recovery-dev012/checks/.
+
+- /Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync python /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/client-recovery-dev012/checks/feedback.py: 64 named ad hoc checks passed; R/final-feedback.command.json/stdout/stderr and feedback-results.json. Uses actual accepted data and real in-process FastMCP Client/SDK results. Ordinary JSON text equals structuredContent for nonempty exact/direct/search/traversal/path samples; real cursors and replay wording appear in ordinary direct/search text. Original edge object, judgment, snapshot and evidence identities match. Raw successful tool envelopes are retained with content hashes in wire-results.json.
+- Actual compact wire sizes (UTF-8 bytes/Unicode code points; diagnostic text is ASCII): exact 73033/73033, direct 77591/77591, search 77593/77593, traversal 83999/83999 and paths 75815/75815. Each has exactly one text block, nonempty relationships/standards, effective character limit and a matching structured object. Shared conservative measurement is at least actual compact wire size. Exact missing-edge and synthetic oversized exact errors are bounded safe domain messages, with exact resource recovery URI and no private path.
+- Independent synthetic envelope checks cover Unicode/non-BMP/control/quote/backslash escaping, array/alias/canonical equality, multiple text blocks, metadata/error-flag overhead, exactly 100000 characters and +1 rejection, and a character failure while bytes are below 1 MiB. The character ceiling normally dominates valid UTF-8 output; scratch temporarily relaxes only that constant to isolate exactly 1048576 bytes and +1 rejection, restoring it afterwards. No production limit is changed. Injected actual adapter metadata and extra text are counted and refused. Oversized Unicode projected content is refused.
+- /Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider tests/kgfegmcp/test_progression_lookup.py tests/kgfegmcp/test_progression_protocol.py tests/kgfegmcp/test_progression_traversal.py: 13 passed in 24.41 seconds; R/final-pytest.command.json/stdout/stderr. Existing exact test iterates all 8080 accepted LP edges across six curricula, checks source/hash/judgment/facet identity with source reopening forbidden, and now passes under both ceilings. Existing selectors/missing/unavailable/denied, MCP schemas/errors/masking/obsolete refusal/native prompts and first/later oversized traversal regressions pass. The existing pytest-asyncio unset fixture-loop warning is retained; it did not fail checks.
+- For each static command the exact prefix is /Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync; the exact module list is src/kgfegmcp/tool_results.py src/kgfegmcp/services/learning_progressions.py src/kgfegmcp/services/lp_models.py src/kgfegmcp/mcp/tools/learning_progressions.py. black --check and isort --check-only passed; ruff check passed; mypy --cache-dir ../data/source_artifacts/learning_progressions/client-recovery-dev012/checks/mypy-cache passed (four files); pylint --persistent=n passed (10.00/10); interrogate --generate-badge ../data/source_artifacts/learning_progressions/client-recovery-dev012/checks/badge passed (100%). R/final-black, final-isort, final-ruff, final-mypy, final-pylint and final-interrogate command/stdout/stderr files preserve all executions. Earlier format/import runs are also retained; no hidden failed final check.
+- Protected input verification passes for 1175 entry files in config, accepted packages, maintained preparation inputs, formal tests/fixtures, scope/design/context/protocol and other role records. R/protected-inputs.json holds exact entry hashes; feedback verifies every one unchanged. Required native resources and original judgment/configuration/package data remain untouched. New scratch data is confined to this separate ignored DEV-012 root.
+
+**Limits and next assignment**
+
+These are Developer implementation-level checks, not independent Tester acceptance for AC-028..037. No formal cases/reports or user documentation changed. Public inventory remains 17 tools/nine native prompts/one fixed resource/fourteen templates in this intermediate checkout; read_evidence and get_workflow_instructions are planned DEV-024/025 routes, not registered yet. No STDIO/local HTTP/MCPB refresh, Desktop model composition, public claude.ai acceptance, deployment, publication, activation, source copy or producer/checker regeneration is claimed here. DEV-013 must reconcile the character ceiling in cursor fingerprints and size-driven page replay; DEV-014/015 must re-establish affected frontier/path outcomes before full completion. Existing historical receipts/archives/stages are preserved.
+
+DEV-012 DONE, plan IN_PROGRESS, six recovery assignments still PENDING (DEV-013, DEV-014, DEV-015, DEV-024, DEV-025, DEV-022). The full Developer gate does not pass; do not hand off to Tester or pop/change the SCOPING-owned Frame 1. Persist only the STEPWISE continuation blocker for DEV-013, then stop. Next step requires explicit user continuation; no duplicate plan approval. Suggested commit: feat(progressions): expose canonical bounded tool text.
+
+**Assessed source and persistent receipt identities**
+
+- backend/src/kgfegmcp/tool_results.py: sha256:6a81d1762f0c2c1241202c7630662bd4e5cadce817d224851217ffaac392b6a8
+- backend/src/kgfegmcp/services/learning_progressions.py: sha256:e28e7e761b9902b90347b9c8458a718dd2da98d0df2f82f33d03d5c5c7a881ae
+- backend/src/kgfegmcp/services/lp_models.py: sha256:516be82f72ce1b3f0574e62e6d677c7444b555c987665fa813487d490c7d2564
+- backend/src/kgfegmcp/mcp/tools/learning_progressions.py: sha256:9e19246d5cd0a37656e36e2f277a168bc97a58333886b2c607d0da55ec72f445
+- R/protected-inputs.json: sha256:ba254b893ba9637c2267a8da80d1e8283dc73d00d46464c4b236fd03828c7fc6
+- R/feedback.py: sha256:d0d429cc71dcbc78075c518f7b82f0cbed6b63b2feb546375ea35bb23d3ffe3d
+- R/feedback-results.json: sha256:34f2144101a0d232e8679408b5ffd61f40ab9ac4c87eabf98b56f41006cc4c8a
+- R/wire-results.json: sha256:74cf127c5521efabdd86944b27e59db5433ec8612102bbe10a011d3f2b5dc089
+- R/final-feedback.command.json: sha256:8f4dad82a1987eb86ba12f747f2cb31451aa021f1a088a0f0aef840cf0d87fac
+- R/final-pytest.command.json: sha256:86735530967fff9845b98a6f3503c00e9b1bdd2995f273273344247667665f23
+- R/evidence-index.json: sha256:fce19060c2c9da255b26dcda6808eb4bdbfe53bf6102b7bb14ef259edaba1acc
+
+The final workflow check initially interpreted two DEV-012-prefixed Plan Notes headings as duplicate build-step definitions. Renamed only those notes headings to distinguish them from the single canonical step. No implementation/status/ownership was changed by that repair. Runtime/static/test results remain those recorded above; workflow and whitespace checks are rerun after repair.
+
+### Recovery continuation for DEV-013 — 2026-10-06
+
+User explicitly directed continuation with DEV-013. Locked tony, STEPWISE, AFTER_IMPLEMENTATION and Current Increment NONE remain unchanged. DEV-012 and its source changes are staged by the user but not committed at entry HEAD 327439a6818ee6a66ff4f2c6ceaa2c1120fb5769; preserve index and those exact bytes. Clear only the matching DEV-013 continuation blocker, mark DEV-013 IN_PROGRESS and do not start DEV-014. Keep the SCOPING-owned recovery frame and all other owners' artifacts intact.
+
+### Client-access recovery for DEV-013 — implementation assessed 2026-10-06
+
+User authorized only DEV-013. Entry HEAD 327439a6818ee6a66ff4f2c6ceaa2c1120fb5769, with the previous DEV-012 source/records staged by the user. Preserve that index; no commit or index write was performed. STEPWISE, locked tony, AFTER_IMPLEMENTATION and Current Increment NONE remain unchanged. DEV-013 remains IN_PROGRESS because three existing formal checks require Tester-owned correction before a satisfactory step gate. This section supersedes its historical PASS/DONE/next-step claims above. DEV-014 is not authorized or started.
+
+**Implemented outcome**
+
+- services/lp_discovery.py binds the common byte and character ceilings and canonical_full_text_v1 encoding identity into the normalized selection fingerprint. Existing strict cursor shape/checksum/canonical base64url, exact package/profile/manifest identity, route/operation/meaning/filter/limit matching and candidate-position checks remain. Correctly signed old summary/budget cursors are refused with restart guidance.
+- services/lp_models.py adds compatible page.nextRequest: the original typed request with only cursor replaced by page.nextCursor, or null on exhaustion. Canonical ordinary text and structuredContent contain the complete replay request, actual cursor, bound limits and truthful stopping/completeness/count metadata. continuationNotice explains replay and that retained byte_limit terminology covers either output ceiling.
+- Existing conservative trial/final assembly counts both text and structured tables plus all cursor/request/count metadata through the shared encoder. Aggregate overflow rewinds whole entries and dependent output rows. The new private single-entry check measures the deferred entry with its real resumed cursor/request overhead before returning continuation; an individually unreturnable later entry fails progression_result_too_large with its exact evidence URI instead of creating a no-progress chain. Existing whole-endpoint conjunctions, directional builds, canonical symmetric relates, deterministic stored order, nonmatch advancement, 5000 work/100 edge limits and rights routing are retained.
+
+**Actual Developer feedback**
+
+All commands use repository cwd /Users/tzz/Projects/private/idi/KGForEdGlobalMCP. R = data/source_artifacts/learning_progressions/client-recovery-dev013/checks/. R/run_command.py persists exact argv/cwd/environment/start/duration/exit/stdout/stderr per label. Existing environment only: /Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync; Python tool cwd becomes backend. Network connects/connect_ex are forbidden by scratch feedback. No source generation, package/configuration mutation, model/paid call or formal test edit occurred.
+
+- final-independent-feedback: uv prefix plus python /Users/tzz/Projects/private/idi/KGForEdGlobalMCP/R/feedback.py (replace R with its stated repository-relative root). Exit 0, 303 named checks, 83.912073 seconds. Independent original accepted-record sort and endpoint/facet oracles verify all 8080 LP edges across six snapshots, exactly once and in stored type/ID order. 6084 exhaustive discovery pages, 2581 grade-filter pages and 40 directional/symmetric direct pages = 8705 complete service pages, each within both normal ceilings. Ordinary canonical text alone reconstructs every page and nextRequest; replay changes only cursor, terminates and preserves each whole edge. CBSE complete discovery needs 3193 pages; its grade selection needs 1634. These are finite advancing results, not looping cursors.
+- Actual in-process FastMCP Client.call_tool_mcp at pinned Nigeria snapshot nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f: search returns all 486 original edges over 243 pages, direct support target e399b510-48bb-58ee-abda-61460a5a853b returns all eight incident edges over four pages. Every ordinary text block equals structuredContent; successful complete serialized SDK envelopes remain within 100000 characters/1048576 bytes. Maximum actual compact sizes are 94430/94430 search and 92298/92298 direct (characters/bytes). Per-page ordered IDs and wire envelope hashes are retained in feedback-results.json.
+- Unicode projected attribution (non-BMP/CJK/accent/quote/backslash/newline) forces four whole-entry pages without loss; actual conservative sizes distinguish bytes from characters. Individually oversized later entry is rejected before returning a cursor, with the exact linked evidence URI. Mutating either semantic ceiling invalidates an otherwise valid cursor; a correctly checksummed pre-full-text fingerprint is also rejected.
+- Final metadata boundary: two initial matches followed by 5000 nonmatches grow cursor/examination/stopping metadata beyond a scratch character ceiling. Whole-entry rewind produces pages of 81348, 83433 and 67311 characters, examination counts 5000, 5000, 1; reasons byte_limit, work_limit, exhaustion. Both matching edges are returned once. The final complete empty page truthfully reports exhaustion; nonmatch work advancement is preserved.
+- boundary-feedback independently passes 271 checks (a subset of the final full feedback). byte-feedback adds five named checks with only scratch byte ceiling 95000 and character ceiling 2000000: two entries at 92468 bytes stop with byte_limit, then the last entry completes at 78540 bytes; no loss/duplicate/no-progress. Production ceilings are unchanged; this isolates the UTF-8 byte predicate, while ordinary feedback exercises the normal character predicate.
+- Formal existing command: uv prefix plus pytest -q -p no:cacheprovider tests/kgfegmcp/test_progression_discovery.py. Exit 1: 14 passed, three failed in 35.67 seconds. Passing outcomes cover incoming/outgoing/related records, all four endpoint scopes, no cross-endpoint facet mixing, normalized request/cursor identity, zero-match work advancement, individually oversized first entry and checksum/range/stale boundaries. The failures are recorded below and are not hidden by a selected passing subset.
+- Final static commands against src/kgfegmcp/services/lp_discovery.py and src/kgfegmcp/services/lp_models.py all exit 0: black --check; isort --check-only; ruff check; mypy --cache-dir ../R/mypy-cache; pylint --persistent=n (10.00/10); interrogate --generate-badge ../R/badge (100%). Replace R with its stated root. Exact expanded paths/argv are in final-black/isort/ruff/mypy/pylint/interrogate command receipts.
+- All 1175 protected entry files remain byte-identical: accepted packages, config, preparation inputs, formal tests/fixtures, scope/design/context/protocol and other role artifacts. preservation-results.json records current staged source hashes; this assignment never writes the index. The shared encoder is currently staged/worktree sha256:88a02e2e114a6df0ce8b165886b76d6f31ee22e366755b846654830403532eea, unlike its historical DEV-012 receipt 6a81d1762f0c2c1241202c7630662bd4e5cadce817d224851217ffaac392b6a8. A historical-hash comparison exposed this discrepancy; DEV-013 did not edit that file, and all current feedback assessed the current staged bytes. The other three staged DEV-012 source identities still match their persisted receipts. Do not assert the historical encoder hash identifies this current input.
+- Initial scratch attempts failed on a misnamed ordered helper, the wrong service byte-constant name and a scratch ceiling too small for a later single entry; fixed only scratch code. Earlier isolated-byte trial at 100000 admitted the full three-entry final page, so the separate 95000-byte check establishes actual byte stopping. Initial static isort check failed and was corrected; the first formatting recorder invocations had missing-label/path errors before mutation. Final source/runtime/static checks above pass. Existing pytest-asyncio fixture-loop warning is retained and did not cause failures.
+
+**Corrective ownership and return**
+
+Three Tester-owned cases in backend/tests/kgfegmcp/test_progression_discovery.py are incompatible with the approved full-text envelope, not evidence of lost edges:
+1. test_complete_pagination_matches_original_edges uses pages() with a fixed 400-iteration cap; Ghana English already requires 526 pages and CBSE 3193. Replace the obsolete cap with a finite dataset/work-derived bound while retaining ordering, uniqueness, cursor advancement and exhaustion assertions.
+2. test_reused_profile_code_and_grade_facets uses the same obsolete cap; CBSE Class IX completes in 1634 pages. Preserve independent alias/code/facet and complete-selection assertions.
+3. test_discovery_combination_bytes_preserve_continuation projects 600000 characters into each entry. Canonical text plus structured evidence now exceeds both ceilings for even one entry, so rejection is correct. Re-establish a genuinely individually returnable fixture that exceeds the envelope only in combination, retaining whole-entry replay assertions and both-ceiling checks. Keep the existing oversized-entry rejection case.
+
+The formal file hash remains sha256:2918295e9e4a09674e29e2c608e8a23e53e1bda72787e83d30f1b804b54563e1. Developer may not alter formal tests/report or weaken the approved implementation to satisfy obsolete fixtures. Route VERIFICATION -> TESTING as a scoped correction, not CHECKPOINT/full assessment. Tester independently reconciles its historical COMPLETE report, preserves future approved implementation as awaiting implementation, corrects these affected tests, runs relevant regressions and selects the scoped return under the protocol. Full Developer/Tester acceptance is not claimed.
+
+Persist nested Frame 2 while retaining the exact SCOPING-owned Frame 1 and its route through SYNCHRONIZING. No public inventory/version/stage refresh is claimed; it remains intermediate 17 tools/9 prompts/1 resource/14 templates. read_evidence/get_workflow_instructions and later DEV-014/015/024/025/022 remain future work. After Tester RESUME, Developer must reconcile corrected files/results, rerun the affected self-check and finalize DEV-013 only if satisfactory; STEPWISE then pauses before DEV-014. Suggested commit for the actual implementation: feat(progressions): add bounded replay requests and cursor budgets.
+
+**Current assessed identities**
+
+- backend/src/kgfegmcp/services/lp_discovery.py: sha256:56649b6160c048fb1da22f1df0f5c033134610913018730519cce7a6de8cbe56
+- backend/src/kgfegmcp/services/lp_models.py: sha256:abf62dd32493729cf041441016156996fecfb172470ce1c24710abaaefece0fb
+- R/feedback-results.json: sha256:3950039afa3dd59163c13803a934d05e6c4f52663a91d2f9c923e02018013c72
+- R/evidence-index.json: sha256:7f292ca067edd3e010be0e317d835aaee07316a35185f19094eeb6dcbc8de8c8
+
+### Suspended Assignment 1
+
+`Recovery Frame`: `2` `Recovery Reason`: `Tester-owned discovery tests retain obsolete 400-page and 600000-character fixture assumptions under the approved canonical full-text 100000-character envelope; correct the three affected cases and re-establish bounded complete replay before Developer finalizes DEV-013.`
+`Purpose`: `DEVELOPMENT`
+`Target`: `NONE`
+`Assessed Inputs`: `HEAD 327439a6818ee6a66ff4f2c6ceaa2c1120fb5769; DEV-013 discovery 56649b6160c048fb1da22f1df0f5c033134610913018730519cce7a6de8cbe56 and models abf62dd32493729cf041441016156996fecfb172470ce1c24710abaaefece0fb; test file 2918295e9e4a09674e29e2c608e8a23e53e1bda72787e83d30f1b804b54563e1; current shared encoder 88a02e2e114a6df0ce8b165886b76d6f31ee22e366755b846654830403532eea; full identities/commands in client-recovery-dev013/checks/evidence-index.json.`
+`Next Action`: `On Tester RESUME, reload STATE/frame/plan/report, reconcile the corrected discovery tests and actual scoped assessment, rerun affected checks, finalize DEV-013 if satisfactory and stop before DEV-014 under STEPWISE. Restore the approved remaining implementation assignment; no additional plan approval for unchanged intent.`
+
+This saves the interrupted overall approved DEVELOPMENT assignment, not a full verification request or a completed DEV-013 claim. It is associated with nested Frame 2 and its exact reason; Frame 1 remains intact.
+
+Final handoff receipts: recorded-pre-handoff-workflow passed before transition. After the legal VERIFICATION handoff, the ordinary receiving-state check reports twelve problems solely in the unchanged Tester-owned historical report: reconcile COMPLETE/FULL into the assigned scoped correction and account for current AC-028..037. Those are explicitly part of this receiving Tester reconciliation, not deferred Developer fixes or new frames. The protocol turn-end runCheck(atTurnEnd=true), holding the handing-off Developer records, passes with no problems. Receipts handoff-workflow and handoff-turn-end retain actual outputs. Frame 1 and all other role files remain unchanged; Tester owns the active Frame 2.
+
+### Developer resumption after DEV-013 Tester correction — 2026-10-06
+
+User explicitly invoked Developer after Tester RESUME. Restore Suspended Assignment 1 (DEVELOPMENT/NONE, former Frame 2 and its exact persisted reason) to the unchanged approved seven-assignment recovery plan. Its next action is to finalize DEV-013 after satisfactory current checks, then honor STEPWISE before DEV-014. Tester corrected only its discovery test file and verification report; both are staged by the user. The current test is f8065e90c6aed3be94a77bd1bb97a91cb1e9971a94a063111d36e1c24a813844. All five assessed runtime hashes equal the previous DEV-013 evidence index, and all prior runtime/static receipt hashes still match. Comparing 1175 protected original inputs finds exactly the two authorized Tester-owned changes; all other protected inputs retain their identities. Current entry HEAD remains 327439a6818ee6a66ff4f2c6ceaa2c1120fb5769; preserve staged diff and existing source bytes.
+
+Independent reconciliation: the finite original-candidate-count-plus-one replay bound supports one-edge pages and retains progress/repeated-cursor/order/uniqueness/exhaustion assertions; the 3000-character combination fixture proves all three individual entries returnable before asserting whole-entry continuation and full canonical text/structured envelope limits. Oversized-first-entry rejection remains. This preserves the approved contract and required assertions; it is not a material plan revision or new implementation authority. Tester reports CORRECTION/IN_PROGRESS with all 37 ACs accounted for, 26 offline cases and six test-static checks passing. Read the actual report/receipts and test diff; the independent scoped correction is applicable to current runtime identities. Preserve its historical target and records.
+
+Developer now reruns that same affected 26-case discovery/exact/AS-LC suite. Reuse the previous 303-check text-only/runtime feedback, five isolated-byte checks and six production static passes only for their unchanged runtime identities; this is evidence reuse, not a claim of a new run. No full gate, future five-operation/access/distribution acceptance, later-step implementation, deployment or sign-off is asserted. SCOPING-owned Frame 1, its exact reason/resumption route, AFTER_IMPLEMENTATION/NONE and locked tony remain unchanged. Entry workflow check passed; no conditional protocol chapter applies.
+
+**Resumed DEV-013 step gate — PASS**
+
+No production code change was needed on this return. Developer's actual command, from /Users/tzz/Projects/private/idi/KGForEdGlobalMCP, was:
+
+```sh
+/Users/tzz/.local/bin/uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider -m 'not costs-money' tests/kgfegmcp/test_progression_discovery.py tests/kgfegmcp/test_progression_lookup.py tests/kgfegmcp/test_progression_regressions.py
+```
+
+Exit 0: 26 passed in 67.36s; recorder outer duration 67.876627 seconds. R = data/source_artifacts/learning_progressions/client-recovery-dev013-resume/checks/. R/scoped-regression.command.json/stdout/stderr retain exact argv, repository cwd, UV_OFFLINE=1, PYTHONDONTWRITEBYTECODE=1, PATHS_PROJECT_DIR, start/duration/exit and full outputs. This is Developer implementation feedback, not a new formal Tester assessment. The pre-existing fixture-loop deprecation warning remains nonblocking. Pre-completion workflow and whitespace commands passed; final workflow checks run after persistence.
+
+The corrected full discovery module passes, including all 8080 original ordered IDs, finite whole-entry replay without loss/duplication, directional/symmetric adjacency, four endpoint scopes, whole-endpoint facets, normalized selectors/grade/code aliases, exact snapshot/cursor integrity, work-limited empty advancement and oversized-entry rejection. The combination fixture remains individually returnable, returns all three edges exactly once and independently counts canonical text plus structured envelope under both ceilings. Exact and AS/LC regressions also pass. Tester-owned test/report content and their scoped evidence remain untouched. The previous 303 named runtime/text-only checks, five isolated-byte checks and six source static checks are explicitly reused for the same five runtime hashes; all old command/stream/script/result hashes still match.
+
+R/entry-inputs.json reconciles the Tester test/report changes; R/preservation-results.json verifies all 1175 resumed protected files, all six assessed runtime/test hashes and the user-staged diff remain unchanged. R/evidence-index.json hashes new receipts and references the unchanged prior DEV-013 evidence index. Current corrected test SHA256 f8065e90c6aed3be94a77bd1bb97a91cb1e9971a94a063111d36e1c24a813844; runtime identities remain the ones listed above. No new source/test/configuration/package edits, commits, dependency synchronization, network/model/paid calls or archive/client acceptance claims.
+
+DEV-013 DONE; restore and retain the approved overall DEVELOPMENT/NONE assignment. Plan remains IN_PROGRESS; DEV-014/015/024/025/022 are PENDING. Full Developer gate remains unmet solely because this authorized future implementation remains. Preserve Tester report CORRECTION/IN_PROGRESS and its historical assessment target, the latest TESTING RESUME handoff and the exact SCOPING-owned Frame 1/route. No new handoff/frame/pop is appropriate. Persist only the STEPWISE continuation request for DEV-014 and stop. No duplicate plan approval is needed; this return does not authorize DEV-014.
+
+Final persistence gates passed: final-workflow (node .standards/bin/check.mjs), final-whitespace (git diff --check), each exit 0. Their full command/stream receipts are included in the resumed evidence index, SHA256 1f7b125dfe1f90b53ad68037223664c6115687e750d3b7941a86f0910f949214. DEV-013 completion and the DEV-014 STEPWISE continuation remain authoritative.
+
+### Recovery continuation for DEV-014 — 2026-10-06
+
+User explicitly authorized DEV-014 after DEV-013 completion. Preserve all user-staged prior source/test/report/state/plan bytes and index, locked tony, STEPWISE, AFTER_IMPLEMENTATION/NONE and the exact SCOPING-owned Frame 1. Clear only DEV-014 continuation blocker; DEV-014 IN_PROGRESS. DEV-015/024/025/022 remain unstarted. Shared DEV-012 encoder already applies both ceilings through the existing traversal hook; reconcile whole-entry/final metadata admission and frontier behavior against that current envelope rather than add a parallel size policy. Update traversal size/noncontinuation wording only as necessary and re-establish current offline feedback. Entry workflow check passed; current protocol/context/scope/design/styles were read in this continuing session and no conditional chapter applies. New retained scratch root is data/source_artifacts/learning_progressions/client-recovery-dev014/checks; entry-inputs.json records protected inputs, source/state/index identity.
+
+### Client-access recovery for DEV-014 — implementation assessed 2026-10-06
+
+User authorized only DEV-014. Current HEAD 327439a6818ee6a66ff4f2c6ceaa2c1120fb5769; the previous source/test/report/state/plan index staged by the user is preserved byte-for-byte, with staged-diff SHA256 e04aebc0d04b80a31effeb818873ec5dde41729a44969298694debf31a6e364c. Locked tony, STEPWISE, AFTER_IMPLEMENTATION and Current Increment NONE remain unchanged. DEV-014 stays IN_PROGRESS with a PARTIAL self-check pending the two formal fixture corrections below. This section supersedes historical DEV-014 PASS/DONE/readiness claims. DEV-015/024/025/022 remain future approved implementation, not deferred defects.
+
+**Implemented outcome and preservation**
+
+- The existing traversal whole-edge admission, conservative final-metadata reservation, exact-first-entry fallback and later-entry rollback already use the shared DEV-012 complete-envelope guard, including canonical text plus structured output. No executable traversal algorithm or parallel encoder was needed. Updated its comments/docstrings to describe both byte and character ceilings and updated traversal_notice to explain narrowing bounded inputs after truncation and byte_limit covering either complete-envelope ceiling.
+- Preserve BFS branch/merge/cycle retention, minimum distances, original upstream edge orientation, no continuation, actual pending frontier/counters, individual oversize errors and exact immutable package/judgment/rights identities. The production 1,048,576-byte and 100,000-character complete serialized envelope ceilings are unchanged.
+- All 1175 protected entry inputs retain exact bytes: six accepted packages and maintained inputs, configuration/profile/prompt configuration, formal tests/fixtures/report and other owners' records. No index, commit, package/source preparation, dependency, native prompt/resource, role-owned prose/test/report or distribution edit was made. Only models/traversal wording, Developer plan/state and new ignored scratch receipts changed.
+
+**Actual implementation feedback**
+
+R = data/source_artifacts/learning_progressions/client-recovery-dev014/checks. run_command.py records exact argv/cwd/environment/start/duration/exit and full stdout/stderr for every command. UV_OFFLINE=1, PYTHONDONTWRITEBYTECODE=1 and PATHS_PROJECT_DIR point at this checkout; uv uses locked/offline/no-sync. Runtime feedback blocks sockets and query-time source reads. These are Developer checks, not independent Tester acceptance.
+
+- final-wire-feedback: exit 0; 3510 named assertions, 406 accepted-package queries across all six current runtimes, 20 synthetic outcomes. Independent reachable/induced-edge/distance oracles cover complete scopes; partial results verify whole-edge/node coherence, stored originals, exact counts, scopeComplete/graphExhausted, actual pending adjacency and examined work, canonical text equality, no continuation and both complete-envelope measurements.
+- Compact in-memory synthetic metadata isolates topology without changing accepted records: both directions of the four-edge diamond, cycles/depth-only scope, node/edge/work budgets (including exact 5000 exhaustion), whole-entry Unicode combination stops, first/later individually oversized errors with provenance recovery, and exact-first-entry fallback. Normal character-limit checks include a fitting complete first envelope of 99999 characters and a fitting partial first envelope of 100000 characters; the next calibrated complete envelope is rejected. Byte-only diagnostic checks temporarily relax the character constant in scratch: 1048575 bytes fits and 1048577 is rejected; later whole-edge/node rollback remains coherent. Supplemental depth-12 and exact-100-edge checks use scratch-only nonbinding character limits. These supplemental isolated checks do not claim that every such topology fits normal production limits.
+- Real FastMCP call_tool_mcp upstream/downstream results expose nonempty parseable canonical JSON equal to structuredContent and exact snapshot/evidence identity. Nigeria diagnostic snapshot nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f and original edge 0129f5d5-42fd-52cb-bcf2-ec07c47103e7 are checked. Downstream actual wire envelope: 92457 bytes/characters, SHA256 0fef197939bcec1a4bb55cc0a56141be19b55abcd1e713ce0546b4d40e085a70; upstream: 92748 bytes/characters, SHA256 2ac79eb44bc1dd54ef6798b7ad00821c0081a40bd00f2a97be09c8a23832c28f.
+- regression: eight existing traversal/protocol/Academic Standards/Learning Components cases pass in 13.86 seconds, including both oversized-edge rejection cases and existing tool/native prompt/schema/error/masking behavior.
+- Six changed-module static checks pass: black, isort, ruff, mypy, pylint (10.00/10), interrogate (100 percent). No dependency install or paid/live model calls.
+- Iteration receipts feedback, feedback-corrected and final-feedback failed respectively on scratch section extraction syntax, attribution-overhead calibration and an incorrect object-identity assertion for MCP-deserialized models. Only scratch feedback was corrected; current service original-reference assertions still use identity, while serialized wire results use value equality. Those failed iterations are retained and are not counted as passes.
+
+**Required Tester-owned correction**
+
+algorithm-regression ran all six formal traversal algorithm cases: four pass, two fail, ten nontraversal cases deselected, exit 1 in 18.06 seconds. Full failure streams are preserved. No formal test/fixture/report was edited.
+
+1. test_traversal_combination_only_bytes in backend/tests/kgfegmcp/test_progression_algorithms.py uses two projections of 150000 emoji characters. Even its first complete entry exceeds the canonical text plus structured 100000-character ceiling, so the current individually oversized error is correct. Tester must independently construct/calibrate a genuinely individually fitting combination-only overflow fixture and assert whole-entry rollback, both ceilings and honest frontier/counters; preserve individually oversized rejection.
+2. test_traversal_keeps_merging_edges uses shared Topology with copied full accepted metadata (86 artifact descriptors). That synthetic four-edge envelope exceeds the current character ceiling, yielding three whole edges plus truthful byte_limit. Tester must retain the full BFS branch/merge assertions using a returnable synthetic fixture, assess the size-stop case independently and avoid weakening the production ceiling or original evidence. Current compact synthetic diamond feedback preserves all four edges in both directions.
+
+Topology is shared with path tests; if Tester changes it, assess affected shared-fixture regressions and reconcile the known similar test_paths_combination_only_bytes fixture (75000 emoji characters per path edge) under current ceilings as needed. This is fixture-dependency reconciliation, not Developer DEV-015 implementation or a full path acceptance claim. Tester independently chooses the appropriate bounded correction target and relevant regression set; its historical discovery CORRECTION report must be reconciled to this new assignment. No full Developer completion, Tester acceptance, Desktop model workflow, STDIO/HTTP/stage refresh, remote connector acceptance or deployment is claimed.
+
+**Current command and assessed identities**
+
+- final-wire-feedback: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "python", "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/client-recovery-dev014/checks/feedback.py"]; 10.51 seconds.
+- regression: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "pytest", "-q", "-p", "no:cacheprovider", "-m", "not costs-money", "tests/kgfegmcp/test_progression_traversal.py", "tests/kgfegmcp/test_progression_protocol.py", "tests/kgfegmcp/test_progression_regressions.py"]; 14.53 seconds.
+- algorithm-regression: exit 1; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "pytest", "-q", "-p", "no:cacheprovider", "-m", "not costs-money", "tests/kgfegmcp/test_progression_algorithms.py", "-k", "traversal"]; 18.65 seconds.
+- black: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "black", "--check", "src/kgfegmcp/services/lp_traversal.py", "src/kgfegmcp/services/lp_models.py"]; 0.18 seconds.
+- isort: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "isort", "--check-only", "src/kgfegmcp/services/lp_traversal.py", "src/kgfegmcp/services/lp_models.py"]; 0.11 seconds.
+- ruff: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "ruff", "check", "src/kgfegmcp/services/lp_traversal.py", "src/kgfegmcp/services/lp_models.py"]; 0.02 seconds.
+- mypy: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "mypy", "--cache-dir", "../data/source_artifacts/learning_progressions/client-recovery-dev014/checks/mypy-cache", "src/kgfegmcp/services/lp_traversal.py", "src/kgfegmcp/services/lp_models.py"]; 3.19 seconds.
+- pylint: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "pylint", "--persistent=n", "src/kgfegmcp/services/lp_traversal.py", "src/kgfegmcp/services/lp_models.py"]; 2.99 seconds.
+- interrogate: exit 0; argv ["/Users/tzz/.local/bin/uv", "--directory", "backend", "run", "--locked", "--offline", "--no-sync", "interrogate", "--generate-badge", "../data/source_artifacts/learning_progressions/client-recovery-dev014/checks/badge", "src/kgfegmcp/services/lp_traversal.py", "src/kgfegmcp/services/lp_models.py"]; 0.1 seconds.
+
+- backend/src/kgfegmcp/services/lp_models.py: sha256:919a377f7e273e3ccf3826958b5053b2fdd344827c8aed753a35c11a1dd9ce90
+- backend/src/kgfegmcp/services/lp_traversal.py: sha256:41c6d8a4ed5327d0bfcaa34a1b868da1e7cd9f5d8745a8c4b8610442b2d51dc3
+- backend/src/kgfegmcp/services/learning_progressions.py: sha256:e28e7e761b9902b90347b9c8458a718dd2da98d0df2f82f33d03d5c5c7a881ae
+- backend/src/kgfegmcp/services/lp_discovery.py: sha256:56649b6160c048fb1da22f1df0f5c033134610913018730519cce7a6de8cbe56
+- backend/src/kgfegmcp/mcp/tools/learning_progressions.py: sha256:9e19246d5cd0a37656e36e2f277a168bc97a58333886b2c607d0da55ec72f445
+- backend/src/kgfegmcp/tool_results.py: sha256:88a02e2e114a6df0ce8b165886b76d6f31ee22e366755b846654830403532eea
+- backend/tests/kgfegmcp/test_progression_algorithms.py: sha256:5687abe0a023bbdd374d5b052eac00328232c9ae8b287237222c3b73675dec39
+- backend/tests/fixtures/progression_fixtures.py: sha256:4ff30f0446940b280fcbcf660f4c506875fd44674f28a89090d7b5a7bcda7170
+- backend/tests/kgfegmcp/test_progression_traversal.py: sha256:188026117bfc0f91db12a9a2df613deee53cfff209a4bc02790a03abddda1af6
+- backend/tests/kgfegmcp/test_progression_protocol.py: sha256:e3ccfcb143ed160c5294e1d4b1b91feb9fb30e4ca81a140aad20a9da2a95cc93
+- backend/tests/kgfegmcp/test_progression_regressions.py: sha256:82865893b9983afcd2b929bdc9edf0f419cc7cc844ff56a602a594eb308bc611
+- backend/tests/kgfegmcp/test_progression_discovery.py: sha256:f8065e90c6aed3be94a77bd1bb97a91cb1e9971a94a063111d36e1c24a813844
+- .standards/docs/verification/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md: sha256:50ea8b36c1e58b3a491a25be50c57e706b31d9a04ee9a64ff104d4963eb0a105
+
+R/feedback-results.json SHA256 1bfd047ab999812efdd81c5d72ef77055c714d37191f8fa3e63326dabffdf1f6; R/evidence-index.json initially SHA256 fdefbadde364ff578a9c3ee7cc310708d50205e582ff34a9aee62696490dd8a3. The evidence index binds all current runtime/test/report identities, exact package identities in feedback-results.json, command/stream receipts and protected/index preservation. It will include final workflow receipts after persistence.
+
+### Suspended Assignment 2
+
+`Recovery Frame`: `2` `Recovery Reason`: `Tester-owned traversal tests assume a full four-edge diamond with copied package metadata and a 150000-character combination fixture; correct those DEV-014 fixtures for canonical full-text 100000-character envelopes while preserving whole-edge BFS/frontier assertions.`
+`Purpose`: `DEVELOPMENT`
+`Target`: `NONE`
+`Assessed Inputs`: `HEAD 327439a6818ee6a66ff4f2c6ceaa2c1120fb5769; models 919a377f7e273e3ccf3826958b5053b2fdd344827c8aed753a35c11a1dd9ce90; traversal 41c6d8a4ed5327d0bfcaa34a1b868da1e7cd9f5d8745a8c4b8610442b2d51dc3; algorithm tests 5687abe0a023bbdd374d5b052eac00328232c9ae8b287237222c3b73675dec39; shared fixture 4ff30f0446940b280fcbcf660f4c506875fd44674f28a89090d7b5a7bcda7170; shared encoder 88a02e2e114a6df0ce8b165886b76d6f31ee22e366755b846654830403532eea; all current sources/tests/receipts/package identities in client-recovery-dev014/checks/evidence-index.json and feedback-results.json.`
+`Next Action`: `On Tester RESUME, reload STATE/frame/plan/report, restore DEVELOPMENT/NONE and reconcile the corrected traversal/shared-fixture inputs and actual scoped results. Rerun affected DEV-014 checks, finalize DEV-014 only if satisfactory and stop before DEV-015 under STEPWISE. Restore the unchanged approved remaining implementation assignment; no duplicate plan approval is needed.`
+
+Save the interrupted overall Developer assignment before routing the scoped VERIFICATION defect to TESTING. Push only nested Frame 2, From/ResumeAt DEVELOPING, Owner TESTING, RerunThrough NONE; preserve the exact SCOPING-owned Frame 1 and its SYNCHRONIZING route. No CHECKPOINT/full verification request or frame pop is appropriate. All older suspended assignments and receipts remain intact. Suggested commit for current wording: feat(progressions): clarify bounded traversal outcomes.
+
+Final routing receipts: the first pre-handoff-workflow run found escaped Markdown field delimiters in the new suspended assignment; corrected only those delimiters. pre-handoff-workflow-corrected then passed. After persisting the legal scoped TESTING/FAILURE/VERIFICATION handoff and nested Frame 2, handoff-workflow and handoff-turn-end (runCheck atTurnEnd=true) both passed with no problems. Tester still must reconcile its existing CORRECTION target/report to the new traversal assignment; mechanical gate success is not that assessment. Protected-input, current source/test/report hashes and staged-index comparison passed again after routing. Final evidence-index.json SHA256 6bfbad9975fb1ea60161d1f420ad4f1f363a4ff2ff3d2b8601e18ee23c850078. All full command/output receipts are retained; failed iterations remain explicitly nonpassing.

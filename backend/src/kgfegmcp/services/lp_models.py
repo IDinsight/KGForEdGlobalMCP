@@ -27,8 +27,9 @@ from kgfegmcp.services.models import (
     NodeIdStandardIdentifier,
     PackageReference,
 )
+from kgfegmcp.tool_results import MAX_TOOL_RESULT_BYTES, ToolResultLimits
 
-MAX_PROGRESSION_RESULT_BYTES: Final[int] = 1024 * 1024
+MAX_PROGRESSION_RESULT_BYTES: Final[int] = MAX_TOOL_RESULT_BYTES
 MAX_STATEMENT_EXCERPT_CHARACTERS: Final[int] = 2048
 
 
@@ -78,10 +79,9 @@ class ProgressionArtifactIdentity(FrozenSchema):
     uri: str
 
 
-class ProgressionLimits(FrozenSchema):
+class ProgressionLimits(ToolResultLimits):
     """Report fixed service ceilings independently of caller-selected query limits."""
 
-    max_result_bytes: Literal[1048576] = MAX_PROGRESSION_RESULT_BYTES  # type: ignore[assignment]
     max_statement_excerpt_characters: Literal[2048] = MAX_STATEMENT_EXCERPT_CHARACTERS  # type: ignore[assignment]
 
 
@@ -139,6 +139,11 @@ class ProgressionStandardSummary(FrozenSchema):
 class ProgressionEvidenceResult(FrozenSchema):
     """Share deduplicated endpoint and original edge tables across LP operations."""
 
+    continuation_notice: str = (
+        "No continuation is offered for this operation. Read full evidence through "
+        "read_evidence with the returned standard/provenance URIs under native rights "
+        "and limits; content windows do not extend the progression search."
+    )
     metadata: ProgressionMetadata
     nodes: tuple[ProgressionStandardSummary, ...]
     relationships: tuple[ProgressionRelationshipEvidence, ...]
@@ -234,6 +239,7 @@ class ProgressionPage(FrozenSchema):
     is_complete: bool
     max_examined_relationships: Literal[5000] = 5000
     next_cursor: ProgressionCursor | None
+    next_request: ProgressionCollectionRequest | None = None
     returned_count: Annotated[StrictInt, Field(ge=0, le=100)]
     stopping_reason: Literal["byte_limit", "page_limit", "work_limit"] | None
     total_matching_count: Annotated[StrictInt, Field(ge=0)] | None
@@ -243,6 +249,15 @@ class ProgressionCollectionResult(ProgressionEvidenceResult):
     """Share bounded deduplicated tables, normalized filters and page continuation."""
 
     connections: tuple[ProgressionConnection, ...]
+    continuation_notice: str = (
+        "If page.nextCursor is present, replay page.nextRequest unchanged; it preserves "
+        "the route, filters and limits and sets cursor to that exact value. "
+        "The byte_limit stopping reason covers either output ceiling. A returned page is "
+        "not the complete selection while a cursor remains. Read full evidence via "
+        "read_evidence using the linked standard/provenance URIs under native policy. "
+        "Absence of a stored match does not establish absence of a pedagogical "
+        "connection."
+    )
     endpoint_scope: EndpointScope
     filters: ProgressionFilters
     page: ProgressionPage
@@ -312,7 +327,8 @@ class TraverseLearningProgressionsResult(ProgressionEvidenceResult):
         "Edges between returned nodes retain their stored orientation, including "
         "branching, merging and cycle-closing edges. This derived subgraph asserts "
         "no new direct relationship or compulsory teaching order. No continuation "
-        "is offered; callers can change bounded inputs and rerun. Even exhausted "
+        "is offered; narrow bounded inputs and rerun after truncation. The byte_limit "
+        "reason covers either complete-envelope ceiling. Even exhausted "
         "absence means no stored connection, not no pedagogical connection."
     )
     truncation_reasons: tuple[TraversalTruncationReason, ...]

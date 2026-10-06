@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -8,7 +8,7 @@
 `Id`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1`
 `Request`: `Integrate actual Learning Progressions (buildsTowards and relatesTo) relationships between Academic Standards into the existing read-only MCP server, including useful query tools, prompts/workflows/resources and synergy with existing Academic Standards and Learning Components functionality, with equivalent provenance, traceability and explainability. Completely remove obsolete inferred progression behavior and any other outdated progression implementations. End users are teachers, education ministry officials and ed-tech organizations including EIDU, Pratham, Madhi, Trackosaurus and Funda Wande. Scoper should recommend useful capabilities; prefer adapting existing machinery and explain significant structural changes in simple terms if needed. Deployment is user-owned and outside this work; backwards compatibility for obsolete behavior is unnecessary, while useful standards/components functionality remains. No tests may call live LLM APIs or paid services; mock them. Developer must first help copy the relevant Academic Standards, Learning Components and Learning Progressions files from /Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed into this project, to a temporary or permanent location. Ontology reference: https://docs.learningcommons.org/knowledge-graph/understanding-knowledge-graph/introduction. Start a STANDARD cycle, audit and save project context, then hand off to Scoper. Rework this same cycle in Scoper REPLAN mode: ordinary text from all five progression tools must expose complete bounded results and actual continuation information; provide a practical supported route to full permitted progression and affected Academic Standards/Learning Components provenance, supporting evidence, coverage, validation and unresolved records. Preserve working Desktop native prompts/resources, useful structuredContent, deterministic read-only retrieval/rendering, exact package/snapshot identity, stored judgments/semantics/disclosures, rights and finite limits with explicit partial/denied/oversized outcomes. Architect assesses least-disruptive reuse, text payloads, evidence access and only justified workflow fallback for local Claude Desktop and public claude.ai remote connector, without predetermined public names or blanket wrappers. Align discovery/schemas/counts/docs/retained MCPB; verify text-only consumption, shared STDIO/local HTTP, specific evidence, regressions/distribution and provide a practical user-run Desktop walkthrough. No teaching workflow was inspected end-to-end and public deployment/client behavior is untested. Actual claude.ai acceptance follows user deployment; neither deployment nor remote acceptance is a local completion prerequisite. Deployment and sign-off remain user-owned; no fixes in this Scoper session. Verified diagnostic evidence and exact IDs are preserved in the revised scope.` `Scope`: `.standards/docs/scope/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md` `Architecture`: `.standards/docs/specs/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md`
 `Development`: `.standards/docs/development/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md` `PromotionReason`: `NONE` `AuditTarget`: `NONE`
-`BlockedOn`: `Approve the revised Developer recovery plan with locked tony style, STEPWISE and AFTER_IMPLEMENTATION before implementation.` `PendingVerificationCadence`: `NONE`
+`BlockedOn`: `NONE` `PendingVerificationCadence`: `NONE`
 
 `BaselineReconciliation`: `NONE`
 
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
-`Architect EVOLUTION recovery gate passed with all 37 acceptance IDs covered. Developer must reconcile its same-cycle plan/history against the revised canonical text, paged ResourceService evidence access and seven-workflow instruction route, preserving accepted data and native prompts/resources. Frame 1 remains SCOPING-owned through SYNCHRONIZING; deployment and sign-off remain user-owned.`
+`Kind`: `FAILURE` `From`: `DEVELOPING` `FailureType`: `VERIFICATION` `Reason`:
+`Tester-owned traversal tests assume a full four-edge diamond with copied package metadata and a 150000-character combination fixture; correct those DEV-014 fixtures for canonical full-text 100000-character envelopes while preserving whole-edge BFS/frontier assertions.`
 
 ## Recovery
 
@@ -32,6 +32,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
+
+### Frame 2
+
+`From`: `DEVELOPING` `Owner`: `TESTING` `FailureType`: `VERIFICATION`
+`Reason`: `Tester-owned traversal tests assume a full four-edge diamond with copied package metadata and a 150000-character combination fixture; correct those DEV-014 fixtures for canonical full-text 100000-character envelopes while preserving whole-edge BFS/frontier assertions.`
+`ResumeAt`: `DEVELOPING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 
