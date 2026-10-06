@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Frame 2 Size-Correction Revision — approved 2026-10-06
@@ -1551,7 +1551,7 @@ Share validation/adaptation below MCP rather than invoke decorated native handle
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-021, DEV-025`
+`Status`: `DONE` `Depends On`: `DEV-021, DEV-025`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
 
 **Current Recovery Assignment — proposed 2026-10-06**
@@ -2377,3 +2377,9 @@ User explicitly authorized the DEV-022 part of the evidence-links correction on 
 - cli/smoke_access.py now builds every evidence URI from client-visible text: the AS/LC links (standard provenance, LC provenance, interpretation profile, AS/LC validation, AS/LC unresolved) from the rendered EVIDENCE LINKS of learning_progression_support_plan, with the Node ID read from get_standard text and the LC ID from get_learning_components_for_standard text; LP summary/validation/unresolved links from LP result metadata text; the denied "nodes" link from LP metadata artifacts. Server-side URI constructors are no longer used. SHA256 7a18f2508e85294f058c6b1ad6aec335a6328735b4f2e1586d09f929f0821232.
 - R = data/source_artifacts/learning_progressions/client-recovery-f001-dev022/checks: inprocess-smoke exit 0 (19/9/1/14, 15 native reads, 15 complete evidence reads all from text-derived URIs); pytest tests/ exit 0, 103 passed; static on smoke_access black/isort/ruff/mypy/pylint 10.00 exit 0.
 - Next: the user commits; Developer then rebuilds the 0.4.0 candidate from that clean HEAD into client-recovery-f001-dev022/ and binds closure to HEAD; the user runs repository STDIO, staged STDIO and loopback HTTP.
+- User committed f57640de3a69289c9742b89b88a6bb391fa1ecac; committed smoke_access.py equals the tested 7a18f250… bytes. build-mcpb from that clean HEAD: exit 0; data/source_artifacts/learning_progressions/client-recovery-f001-dev022/kgfegmcp-0.4.0-client-recovery-f001.mcpb, 82178314 bytes, SHA256 15c80166f186ce08628fd7ee170b095d9c6fe32730d19eed15818e1673885d72, 657 files, version 0.4.0. checks/closure.py exit 0 (9 checks): build inputs equal HEAD; archive equals stage; every member equals the working tree and committed HEAD; six package trees and all 522 graph-package files; no excluded trees. Pending user-run: repository STDIO, staged STDIO and loopback HTTP.
+- User-run transports against the rebuilt candidate: stdio-repo exit 0 (10.7 s), stdio-stage exit 0 (13.1 s), http-harness exit 0 (11.0 s, loopback only); no tracebacks. checks/transport_agreement.py exit 0: repository STDIO, staged STDIO, loopback HTTP and in-process runs agree exactly (19/9/1/14, all schema identities, LP queries, 15 native reads, 15 complete evidence reads whose AS/LC URIs come only from rendered EVIDENCE LINKS and AS/LC tool text); all 657 archived files unchanged in the stage after startup (only .venv and src/kgfegmcp.egg-info added). checks/closure.py rerun at unchanged HEAD f57640d: exit 0, archive SHA256 unchanged 15c80166…. Evidence index SHA256 df382caf9d8ad79e26bbef50c53a3d10c422b63a3a052dcf714c2f8fd84f1194.
+
+DEV-022 DONE. All nineteen steps DONE; the full Developer gate passes (locked style unchanged, no obligations, no open questions). Plan COMPLETE. The retained candidate is client-recovery-f001-dev022/kgfegmcp-0.4.0-client-recovery-f001.mcpb; earlier candidates are history.
+
+Frame 2 resolution: .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001 is corrected by Developer for Reviewer recheck (Reviewer owns its status). As Frame 2 owner, Developer requires a TESTING rerun before returning to implementation review: the runtime and candidate changed, and .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 asks Tester for offline cases that derive AS/LC links only from client-visible text and for refreshed transport/stage evidence. Set Frame 2 RerunThrough TESTING and hand forward DEVELOPING -> TESTING (full verification); at that boundary Tester pops Frame 2 and RESUMES REVIEWING_IMPLEMENTATION. Frame 1 is unchanged. Suggested commit: chore(dist): rebuild 0.4.0 candidate with text-derived evidence smoke.
