@@ -16,6 +16,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 
 from typing import Any, Final, cast
 
@@ -23,14 +24,7 @@ from typing import Any, Final, cast
 from fastmcp import Client
 
 # Package Library
-from kgfegmcp.domain.identifiers import ArtifactName, FrameworkId, NodeId, SnapshotId
-from kgfegmcp.resources.uri import (
-    artifact_uri,
-    learning_component_provenance_uri,
-    learning_progressions_uri,
-    standard_learning_components_uri,
-    standard_provenance_uri,
-)
+from kgfegmcp.domain.identifiers import FrameworkId, NodeId, SnapshotId
 from kgfegmcp.tool_results import MAX_TOOL_RESULT_BYTES, MAX_TOOL_RESULT_CHARACTERS
 
 _DIAGNOSTIC_EDGE_ID: Final[str] = "0129f5d5-42fd-52cb-bcf2-ec07c47103e7"
@@ -337,8 +331,126 @@ async def _workflow_parity(client: Client) -> dict[str, int]:
     return lengths
 
 
+async def _plain_text(*, client: Client, name: str, request: object) -> str:
+    """Return the ordinary text of a human-readable AS/LC tool result.
+
+    Parameters
+    ----------
+    client
+        Connected transport client.
+    name
+        Tool name.
+    request
+        Nested request body.
+
+    Returns
+    -------
+    str
+        First text block, exactly as a text-only client sees it.
+
+    Raises
+    ------
+    RuntimeError
+        If the call fails.
+    """
+
+    result = await client.call_tool_mcp(name=name, arguments={"request": request})
+    text = str(getattr(result.content[0], "text", "")) if result.content else ""
+
+    if result.isError:
+        raise RuntimeError(f"Access smoke tool failed: {name}: {text[:200]}")
+
+    return text
+
+
+def _text_match(*, label: str, pattern: str, text: str) -> str:
+    """Extract one value a text-only client would read from tool or prompt text.
+
+    Parameters
+    ----------
+    label
+        Human-readable name for error reporting.
+    pattern
+        Regular expression with one capture group.
+    text
+        Ordinary text.
+
+    Returns
+    -------
+    str
+        Captured value.
+
+    Raises
+    ------
+    RuntimeError
+        If the text does not show the value.
+    """
+
+    match = re.search(pattern, text, re.MULTILINE)
+
+    if match is None:
+        raise RuntimeError(f"Tool-only text does not show {label}.")
+
+    return match.group(1)
+
+
+async def _text_evidence_links(client: Client) -> dict[str, str]:
+    """Build AS/LC evidence URIs only from instructions and ordinary tool text.
+
+    Parameters
+    ----------
+    client
+        Connected transport client.
+
+    Returns
+    -------
+    dict[str, str]
+        Exact URIs a text-only client can read, keyed by evidence family.
+    """
+
+    target = {"identifierType": "node_id", "nodeId": _DIAGNOSTIC_TARGET_ID}
+    route = {"frameworkId": _DIAGNOSTIC_FRAMEWORK_ID, "identifier": target}
+    instructions, _size = await _call_text(
+        client=client,
+        name="get_workflow_instructions",
+        request={**route, "workflowName": "learning_progression_support_plan"},
+    )
+    message = str(instructions["rendered"]["message"])
+    links = dict(
+        re.findall(
+            r"^- ([A-Za-z ]+): (kgfegmcp://\S+)$",
+            message[message.index("EVIDENCE LINKS") :],
+            re.MULTILINE,
+        )
+    )
+    node_id = _text_match(
+        label="the standard Node ID",
+        pattern=r"^Node ID: (\S+)$",
+        text=await _plain_text(client=client, name="get_standard", request=route),
+    )
+    component_id = _text_match(
+        label="a learning-component ID",
+        pattern=r"Learning component: (\S+)",
+        text=await _plain_text(
+            client=client, name="get_learning_components_for_standard", request=route
+        ),
+    )
+    return {
+        "interpretationProfile": links["Interpretation profile"],
+        "learningComponentProvenance": links["Learning component provenance"].replace(
+            "{nodeId}", component_id
+        ),
+        "standardProvenance": links["Standard provenance"].replace("{nodeId}", node_id),
+        "unresolved": links["Unresolved items"],
+        "validation": links["Validation report"],
+    }
+
+
 async def verify_client_access(client: Client) -> dict[str, object]:
     """Verify text-only LP, evidence and workflow access on one connected server.
+
+    Every evidence URI is taken from ordinary tool text or rendered instructions,
+    never from server-side constructors, so the check follows a tool-only client.
 
     Parameters
     ----------
@@ -356,10 +468,6 @@ async def verify_client_access(client: Client) -> dict[str, object]:
         If any text-only, continuation, evidence, parity or typed-failure check fails.
     """
 
-    pinned = {
-        "framework_id": _DIAGNOSTIC_FRAMEWORK_ID,
-        "snapshot_id": _DIAGNOSTIC_SNAPSHOT_ID,
-    }
     exact, _size = await _call_text(
         client=client,
         name="get_learning_progression",
@@ -369,46 +477,30 @@ async def verify_client_access(client: Client) -> dict[str, object]:
             "snapshotId": _DIAGNOSTIC_SNAPSHOT_ID,
         },
     )
-    components, _size = await _call_text(
-        client=client,
-        name="read_evidence",
-        request={
-            "uri": standard_learning_components_uri(
-                node_id=_DIAGNOSTIC_TARGET_ID, **pinned
-            )
-        },
-    )
-    component_id = cast(
-        NodeId, json.loads(components["content"])["components"][0]["node"]["nodeId"]
-    )
-    uris = [
-        str(exact["relationships"][0]["provenanceUri"]),
-        standard_provenance_uri(node_id=_DIAGNOSTIC_TARGET_ID, **pinned),
-        learning_component_provenance_uri(node_id=component_id, **pinned),
-    ]
+    text_links = await _text_evidence_links(client)
+    uris = [str(exact["relationships"][0]["provenanceUri"]), *text_links.values()]
     reports: dict[str, object] = {}
 
     for framework_id, snapshot_id, field, expected in _REPORT_EXPECTATIONS:
-        route = {
-            "framework_id": cast(FrameworkId, framework_id),
-            "snapshot_id": cast(SnapshotId, snapshot_id),
-        }
-        summary_uri = learning_progressions_uri(**route)
+        page, _size = await _call_text(
+            client=client,
+            name="search_learning_progressions",
+            request={
+                "frameworkId": framework_id,
+                "limit": 1,
+                "snapshotId": snapshot_id,
+            },
+        )
+        metadata = page["metadata"]
         uris.extend(
             (
-                summary_uri,
-                artifact_uri(
-                    artifact_name=cast(ArtifactName, "learningProgressionValidation"),
-                    **route,
-                ),
-                artifact_uri(
-                    artifact_name=cast(ArtifactName, "learningProgressionUnresolved"),
-                    **route,
-                ),
+                metadata["summaryUri"],
+                metadata["validationUri"],
+                metadata["unresolvedUri"],
             )
         )
         summary, _size = await _call_text(
-            client=client, name="read_evidence", request={"uri": summary_uri}
+            client=client, name="read_evidence", request={"uri": metadata["summaryUri"]}
         )
 
         if json.loads(summary["content"])[field] != expected:
@@ -423,16 +515,17 @@ async def verify_client_access(client: Client) -> dict[str, object]:
         name="read_evidence",
         request={"uri": "kgfegmcp://framework/x?y"},
     )
+    # The bulk "nodes" artifact link comes from LP metadata text and is policy-denied.
+    nodes_uri = next(
+        item["uri"]
+        for item in exact["metadata"]["artifacts"]
+        if item["logicalName"] == "nodes"
+    )
     await _expect_error(
         client=client,
         code="resource_access_denied",
         name="read_evidence",
-        request={
-            "uri": artifact_uri(
-                artifact_name=cast(ArtifactName, "nodes"),
-                **pinned,
-            )
-        },
+        request={"uri": nodes_uri},
     )
     await _expect_error(
         client=client,
@@ -445,6 +538,7 @@ async def verify_client_access(client: Client) -> dict[str, object]:
         "evidence": evidence,
         "reports": reports,
         "search": await _replay_search(client),
+        "textEvidenceLinks": sorted(text_links),
         "typedFailures": 3,
         "workflowMessageBytes": await _workflow_parity(client),
     }

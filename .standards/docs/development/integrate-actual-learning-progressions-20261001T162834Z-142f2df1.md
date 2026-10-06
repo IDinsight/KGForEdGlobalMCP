@@ -2368,3 +2368,12 @@ R = data/source_artifacts/learning_progressions/client-recovery-f001/checks (est
 - regression: pytest tests/ exit 0, 103 passed. Static on both changed modules: black, isort, ruff, mypy, pylint 10.00/10, interrogate 100% — exit 0.
 
 DEV-025 DONE. DEV-022 (smoke derivation from client-visible text, rebuilt 0.4.0 candidate and user-run transports) is next under STEPWISE.
+
+User explicitly authorized the DEV-022 part of the evidence-links correction on 2026-10-06; cleared only its STEPWISE blocker.
+
+### Evidence-links correction for DEV-022 — in progress 2026-10-06
+
+- Commit f0ed2dd re-wrapped _render_evidence_links in prompts/service.py (an extra blank line after the pinned mapping; definitions.py unchanged). The DEV-025 checks were rerun on the committed bytes: text-links-committed exit 0 (223 checks), dev025-feedback-committed exit 0 (567 checks), and black, isort, ruff, mypy, pylint, interrogate exit 0 (receipts *-committed in client-recovery-f001/checks).
+- cli/smoke_access.py now builds every evidence URI from client-visible text: the AS/LC links (standard provenance, LC provenance, interpretation profile, AS/LC validation, AS/LC unresolved) from the rendered EVIDENCE LINKS of learning_progression_support_plan, with the Node ID read from get_standard text and the LC ID from get_learning_components_for_standard text; LP summary/validation/unresolved links from LP result metadata text; the denied "nodes" link from LP metadata artifacts. Server-side URI constructors are no longer used. SHA256 7a18f2508e85294f058c6b1ad6aec335a6328735b4f2e1586d09f929f0821232.
+- R = data/source_artifacts/learning_progressions/client-recovery-f001-dev022/checks: inprocess-smoke exit 0 (19/9/1/14, 15 native reads, 15 complete evidence reads all from text-derived URIs); pytest tests/ exit 0, 103 passed; static on smoke_access black/isort/ruff/mypy/pylint 10.00 exit 0.
+- Next: the user commits; Developer then rebuilds the 0.4.0 candidate from that clean HEAD into client-recovery-f001-dev022/ and binds closure to HEAD; the user runs repository STDIO, staged STDIO and loopback HTTP.
