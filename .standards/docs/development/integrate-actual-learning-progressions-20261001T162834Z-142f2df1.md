@@ -7,14 +7,32 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `PROPOSED` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
+
+## Current Recovery Plan — proposed 2026-10-06
+
+This section supersedes historical completion, next-action, surface and recovery-route claims below. Recovery Frame 1 is SCOPING-owned, from/resuming at AWAITING_USER_SIGNOFF, with RerunThrough SYNCHRONIZING. Developer is a downstream rerun and does not change that frame. The revised scope has 37 current acceptance IDs; architecture establishes the new text, evidence and workflow contracts.
+
+The current material revision requires approval before project implementation. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Twelve original steps remain DONE. Reopen DEV-012, DEV-013, DEV-014, DEV-015 and DEV-022; add DEV-024 and DEV-025. Their old self-checks are historical evidence, not results for these new assignments.
+
+| Order | Step | Observable recovery outcome |
+|---|---|---|
+| 1 | DEV-012 | Canonical JSON text equals structured output; one shared encoder counts the entire tool envelope against 1 MiB and 100,000 characters; exact results disclose limits and usable evidence recovery. |
+| 2 | DEV-013 | Direct/search pages admit whole entries under both ceilings and return real replayable cursors without lost edges or zero-progress loops. |
+| 3 | DEV-014 | Traversal preserves coherent branches, stored direction and honest frontier/completeness under both ceilings; no continuation is offered. |
+| 4 | DEV-015 | Paths preserve complete ordered alternatives and honest partialness under both ceilings; no continuation is offered. |
+| 5 | DEV-024 | read_evidence dispatches only Catalog/the fourteen native URI families to ResourceService, then returns faithful UTF-8 windows with exact hashes, identity and bound continuation. |
+| 6 | DEV-025 | get_workflow_instructions supports exactly seven typed variants through the native renderers; generic instructions explain bounded evidence reads; versions become server/MCPB 0.4.0 and prompt library 1.4.0. |
+| 7 | DEV-022 | Discovery and shared STDIO/local HTTP smoke agree on 19 tools/9 prompts/1 fixed resource/14 templates; a distinct retained 0.4.0 archive/stage matches current inputs and exercises all access routes. |
+
+Do not repeat copying, preparation, partition generation, package acceptance mutation or cutover. Preserve all six accepted snapshots, config/profile/prompt-configuration bytes, original judgments/rights, prior receipts and archives/stages. Developer owns runtime/executable smoke integration and ad hoc implementation feedback; Tester owns formal cases/full acceptance, Documenter owns prose/strict builds/Desktop walkthrough/remote checklist. No model/paid API call, publication, deployment or sign-off is authorized.
 
 ## Implementation Contract
 
 - `Scope`: `.standards/docs/scope/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md`
 - `Architecture`: `.standards/docs/specs/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md`
-- `Request`: Integrate all six curricula's stored buildsTowards/relatesTo relationships with exact provenance, bounded queries, resources and educational workflows; remove obsolete hypothesis machinery and preserve useful standards/components behavior. Deployment remains user-owned.
+- `Request`: Preserve the implemented six-curriculum stored LP integration and revise client access with complete bounded canonical query text, paged native ResourceService evidence, seven typed shared workflow instruction variants, both envelope ceilings and a retained 0.4.0 distribution. Preserve native prompts/resources, immutable accepted identities, stored semantics and rights. Formal verification/documentation remain with their owners; deployment and sign-off remain user-owned.
 
 ## Build Steps
 
@@ -536,8 +554,18 @@ DEV-023 is DONE. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMEN
 
 ### DEV-012 — Implement exact LP selection and shared evidence results
 
-`Status`: `DONE` `Depends On`: `DEV-023`
-`Acceptance`: `AC-005, AC-009, AC-010, AC-012, AC-018`
+`Status`: `PENDING` `Depends On`: `DEV-023`
+`Acceptance`: `AC-005, AC-009, AC-010, AC-012, AC-018, AC-028, AC-031, AC-033`
+
+**Current Recovery Assignment — proposed 2026-10-06**
+
+Implement the shared ordinary encoder below MCP, canonical alias-keyed JSON (sorted keys, compact separators, ensure_ascii=False, original array order), conservative complete CallToolResult byte/character accounting including isError/metadata and escaping, and the thin five-LP adapter text path. Add compatible effective character-ceiling/continuation metadata while retaining useful public result fields. Exact lookup and shared candidate/indivisible-entry checks must enforce both <=1,048,576 UTF-8 bytes and <=100,000 Unicode code points; failure is progression_result_too_large with a usable read_evidence URI hint. Preserve rights, exact identities, excerpts/disclosures and safe error masking. No unrelated retained-tool text rewrite.
+
+Affected area additionally includes mcp/tools/learning_progressions.py and a focused ordinary encoder helper reused by later access tools. Direct/search/traversal/path size hooks start using the shared encoder here; their detailed outcome reconciliation belongs to the next three steps.
+
+Current self-check: NOT RUN. Use offline ad hoc exact Nigeria diagnostic lookup and real in-process MCP emission; parse ordinary text and compare with structuredContent, measure the actual serialized envelope, check Unicode/escaping and indivisible-result failures, and run the established static checks on changed Python modules. Existing tests may be run as implementation feedback; do not rewrite Tester-owned cases. Record commands, cwd, content hashes, results and limitations before DONE.
+
+The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
 **Goal**
 
@@ -607,8 +635,16 @@ User explicitly authorized DEV-012 after DEV-023. Only DEV-012 implementation an
 
 ### DEV-013 — Implement direct connections and filtered paged discovery
 
-`Status`: `DONE` `Depends On`: `DEV-012`
-`Acceptance`: `AC-006, AC-007, AC-009, AC-010, AC-012`
+`Status`: `PENDING` `Depends On`: `DEV-012`
+`Acceptance`: `AC-006, AC-007, AC-009, AC-010, AC-012, AC-028, AC-031, AC-033`
+
+**Current Recovery Assignment — proposed 2026-10-06**
+
+Reconcile direct/discovery selection against the shared encoder's byte and character ceilings. Roll back the next whole edge and dependent node/match rows before either ceiling; resume at its real candidate position. Preserve deterministic type/ID order, bound cursor fingerprint (route, identity, selection and semantic limits), examined nonmatch advancement, work/page limits, counts and truthful output-size stopping reason. Reject an individually unreturnable entry before a zero-progress cursor; no silent edge loss. Text includes actual cursor and complete replay request/how to use it, and distinguishes complete empty pages from incomplete work-limited pages.
+
+Current self-check: NOT RUN. Offline ad hoc nonempty direct/search text-only consumption and multi-page replay at the pinned Nigeria diagnostic snapshot; synthetic Unicode/large-entry/metadata boundaries exercise both ceilings and loss/duplication/no-progress rejection. Reconcile selector/facet/symmetry behavior and existing targeted discovery checks; run changed-module static checks. Preserve existing formal test files and prior receipts.
+
+The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
 **Goal**
 
@@ -692,8 +728,16 @@ User explicitly authorized DEV-013 after committed DEV-012. This step changes on
 
 ### DEV-014 — Implement bounded upstream and downstream traversal
 
-`Status`: `DONE` `Depends On`: `DEV-013`
-`Acceptance`: `AC-008, AC-009, AC-010, AC-018`
+`Status`: `PENDING` `Depends On`: `DEV-013`
+`Acceptance`: `AC-008, AC-009, AC-010, AC-018, AC-028, AC-031, AC-033`
+
+**Current Recovery Assignment — proposed 2026-10-06**
+
+Reconcile traversal whole-edge admission and final output against both shared envelope ceilings. Preserve the corrected individually oversized-edge failure, breadth-first branch/merge retention, distances, stored upstream orientation, work/depth/node/edge limits and pending frontier bookkeeping. Include compatible character limits and an explicit noncontinuation notice: clients may narrow bounded inputs and rerun. A size-limited result remains coherent and accurately reports scopeComplete, graphExhausted and truncation reasons; never clip a JSON string or drop an edge after service selection.
+
+Current self-check: NOT RUN. Offline ad hoc nonempty upstream/downstream text parsing, real serialized envelope measurement, synthetic merging/frontier/Unicode/individually oversized cases, and existing traversal/regression tests as Developer feedback; configured static checks on changed modules. Preserve the historical Tester regression and all prior correction evidence.
+
+The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
 **Goal**
 
@@ -775,8 +819,16 @@ DEV-014 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded
 
 ### DEV-015 — Implement bounded connecting paths without losing alternatives
 
-`Status`: `DONE` `Depends On`: `DEV-014`
-`Acceptance`: `AC-008, AC-009, AC-010`
+`Status`: `PENDING` `Depends On`: `DEV-014`
+`Acceptance`: `AC-008, AC-009, AC-010, AC-028, AC-031, AC-033`
+
+**Current Recovery Assignment — proposed 2026-10-06**
+
+Reconcile connecting-path admission and final output with both shared envelope ceilings, keeping whole paths/edge and node tables, alternative-path order, per-path cycle protection, fixed work/queue/depth/path limits and truthful incomplete absence/frontier counters. Expose effective character ceiling and explicit lack of continuation. Reject unreturnable indivisible evidence rather than silently dropping it or returning a misleading exhausted result.
+
+Current self-check: NOT RUN. Offline ad hoc nonempty directed multi-hop/path text-only consumption at pinned identities, synthetic branching/merging/Unicode/whole-path-size boundaries and existing path/algorithm checks as implementation feedback; measure actual emission and run changed-module static checks. No new formal test suite or pedagogical acceptance claim.
+
+The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
 **Goal**
 
@@ -1408,10 +1460,74 @@ These are ad hoc Developer checks, not independent Tester acceptance or formal A
 
 DEV-021 is DONE. Suggested Conventional Commit: `feat(prompts)!: replace progression hypotheses with stored evidence`. STEPWISE now waits for explicit DEV-022 continuation. Keep DEVELOPING, locked tony, AFTER_IMPLEMENTATION and Current Increment NONE; no full Developer/Tester handoff gate passes while DEV-022 is unfinished. Preserve all source/package/configuration evidence and do not rerun activation.
 
+### DEV-024 — Retrieve complete permitted evidence through bounded content windows
+
+`Status`: `PENDING` `Depends On`: `DEV-015`
+`Acceptance`: `AC-004, AC-010, AC-011, AC-012, AC-018, AC-021, AC-029, AC-031, AC-034`
+
+**Goal**
+
+Expose the native resource content through one deterministic read-only model-callable route, preserving its policy and exact byte identity.
+
+**Affected Area**
+
+resources/uri.py constructors, service.py, models.py and repository/policy contracts; focused ordinary URI dispatcher/paging models/helper; errors.py, bootstrap.py/AppState and mcp/register.py plus a thin read_evidence adapter.
+
+**Expected Outcome**
+
+The nested request has uri (1..4096), maxContentBytes (default 16384, positive maximum 32768) and optional bounded cursor, with extra fields rejected. Dispatch accepts exactly Catalog and the fourteen existing URI templates: validate scheme/authority/path/encoding/typed segments, reject query/fragment/userinfo/port/traversal/encoded separators/double decoding, decode once and return constructor-canonical URI. Snapshot routes stay exact. Call ResourceService directly; no internal MCP client or new policy clone.
+
+Authorize and produce the complete native ResourceDocument before UTF-8 paging: preserve rights, safe manifest reads, 32 MiB source/8 MiB whole-return ceilings and lower operator limits. Return unchanged ResourceMetadata, faithful content window and full/partial contentStatus; original-byte offsets, chunk/whole hashes, total bytes, actual nextCursor/unchanged nextRequest and effective envelope limits distinguish last-window completion from a full original record. Windows end on Unicode boundaries and fit the shared encoder ceilings. Stateless checksum-bound cursors bind canonical URI, complete content/metadata identity, maxContentBytes and next boundary; reapply policy each call. Reject stale/mismatched/nonboundary/no-progress cursors. Missing, denied/native-oversized, unsupported UTF-8 and evidence_result_too_large have safe distinct errors; paging never bypasses native limits or bulk denial.
+
+**Self-Check**
+
+NOT RUN. Offline ad hoc dispatch coverage for all fifteen URI shapes; diagnostic exact edge/full original provenance/endpoint standards and representative LC content/full provenance; concatenate ordered Unicode windows and verify exact original bytes/hash and metadata. Exercise invalid URI/encoding/extra inputs, altered/stale/range cursors, rights/source/whole-return denial, empty document/format/indivisible output failure and both serialized envelope ceilings. Compare with native ResourceService and actual in-process MCP output; run configured changed-module Python checks and relevant existing resource/protocol tests without editing Tester-owned cases. Persist exact commands, cwd, input/output identities and limitations.
+
+**Implementation Notes**
+
+Reuse the same immutable AppState services and resource constructors. Keep accepted artifacts/configuration bytes and existing native registrations unchanged. Full evidence is permitted native content, including clearly identified derived representations; no missing trace is synthesized.
+
+### DEV-025 — Share native workflows through seven typed instruction variants
+
+`Status`: `PENDING` `Depends On`: `DEV-024`
+`Acceptance`: `AC-010, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-021, AC-030, AC-031, AC-034, AC-035`
+
+**Goal**
+
+Expose exactly the seven affected deterministic workflows through get_workflow_instructions and make their native/shared instructions explain the practical evidence route.
+
+**Affected Area**
+
+prompts/models.py, service.py, learning_progressions.py, definitions.py and focused ordinary dispatch/typed models; mcp/prompts argument adaptation and new thin tool adapter/registration; bootstrap.py as needed; generic prompt-library version, backend project/lock metadata and packaging/mcpb/manifest.json.
+
+**Expected Outcome**
+
+A nested request discriminated by workflowName permits only the three LP workflows plus teacher_guide_draft, student_study_support, student_handbook_section and multigrade_lesson_plan. Each variant reuses current renderer inputs/defaults/constraints with camel-case aliases, typed arrays/selectors and extra-field rejection; reject arbitrary names/maps/serialized request strings. Ordinary dispatch reaches the same renderer as native prompts. Return complete rendered PromptRenderResult, validated effectiveRequest and matching pinned PackageReference/profileSha256/manifestSha256; canonical JSON text equals structuredContent. Preserve request-data separation, derivative rights, configuration identity, <=64 KiB/lower PromptPolicy and shared tool ceilings; workflow_instructions_too_large is explicit, with no clipped instructions/cursor/execution.
+
+Generic shared instructions show native reads when accessible or read_evidence with exact returned/constructor URIs; finish used original provenance within at most ten distinct used-edge records and 32 continuation windows (16384-byte requests) per workflow invocation, disclosing/deferring incomplete/denied/oversized claims. Retain every existing retrieval/inspection cap and all nine native prompts; administrator/comparison receive only appropriate shared evidence wording. Native and tool variants render identical messages for identical validated requests/exact context. Server/MCPB advances to 0.4.0 and generic prompt library to 1.4.0; sealed package/source/delivery/manifest/profile/prompt-configuration bytes and versions remain unchanged.
+
+**Self-Check**
+
+NOT RUN. Offline ad hoc native/alternate message equality for all seven variants at pinned accepted identities, effective defaults and schema discrimination/extra-field/type/rights/size failures; inspect practical LP and AS/LC evidence steps, finite continuation/record caps and retained administrator/comparison messages. Measure complete actual MCP text/structured envelopes and prompt policy limits; reconcile version metadata/locked environment locally with no dependency upgrade. Run relevant existing prompt/protocol tests as implementation feedback and changed-module static checks; record commands, cwd, content identities and limits. No LLM call or client composition/end-to-end workflow acceptance.
+
+**Implementation Notes**
+
+Share validation/adaptation below MCP rather than invoke decorated native handlers. Framework-specific prompt configuration is an immutable input. Runtime generic workflow messages are Developer implementation; user-facing guides, Desktop walkthrough and remote checklist remain Documenter-owned.
+
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `DONE` `Depends On`: `DEV-021`
-`Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025`
+`Status`: `PENDING` `Depends On`: `DEV-021, DEV-025`
+`Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
+
+**Current Recovery Assignment — proposed 2026-10-06**
+
+Reconcile capabilities, explicit registration, descriptions and exact input/output schemas with the completed five LP text contracts and two access tools: 19 tools, nine native prompts, one fixed resource, fourteen templates. Extend the existing shared smoke implementation for repository STDIO, local loopback HTTP and stage STDIO to parse ordinary JSON text independently, replay actual LP/evidence cursors, exercise the pinned Nigeria diagnostic edge/target and representative AS/LC full content/provenance, LP summary/validation/unresolved (including CBSE needs_review and Ghana warnings), workflow/native-message equivalence, retained native resources and safe typed failures. Existing CI remains meaningful/offline; reconcile changed triggers only if needed, without owning formal cases.
+
+Use the existing builder for a distinct candidate under data/source_artifacts/learning_progressions/client-recovery-dev022/: kgfegmcp-0.4.0-client-recovery.mcpb and bundle/. If that destination already exists with different content, retain it and choose another distinct preparation path rather than overwrite history. Bind current source/archive/stage member bytes, versions, complete active evidence closure and stage-root imports; preserve all historical candidates/receipts. Refresh the final candidate again through this same step if later Documenter-owned shipped input changes require it. Developer does not edit user documentation; shipped instruction consistency remains an explicit Documenter/Reviewer reconciliation dependency, never a passing claim for stale 17-tool prose.
+
+Current self-check: NOT RUN. Established offline repository STDIO and loopback HTTP smoke, official MCPB build/validate/pack/closure checks and retained-stage smoke under its own roots; measure actual text/structured envelope sizes and retain exact schema/resource/result/receipt identities. Run relevant existing offline tests and static checks as implementation feedback. No public connector/Desktop workflow pass, deployment, publication or semantic certification is claimed. Full Developer handoff waits for all current steps and the applicable gate; Tester independently establishes every current AC.
+
+The prior definition and execution evidence below remain history where superseded by this recovery assignment.
 
 **Goal**
 
@@ -1423,7 +1539,7 @@ cli/smoke_checks.py, stdio_smoke.py/http_smoke.py as needed, build_mcpb.py, pack
 
 **Expected Outcome**
 
-Shared exact inventory is 17 tools, nine prompts, one fixed resource and 14 templates. Smoke identities resolve replacement snapshots and inspect representative LP evidence. CI includes data/config/package changes and rejects pytest no-collection success. Retained MCPB stage contains complete active runtime evidence and no source-preparation/external/retired inputs. Local transports and staged runtime run without model/paid calls or deployment.
+Shared exact inventory is 19 tools, nine prompts, one fixed resource and 14 templates. Smoke identities resolve replacement snapshots and inspect representative LP evidence. CI includes data/config/package changes and rejects pytest no-collection success. Retained MCPB stage contains complete active runtime evidence and no source-preparation/external/retired inputs. Local transports and staged runtime run without model/paid calls or deployment.
 
 **Implementation**
 
@@ -1671,3 +1787,17 @@ Active frame 1 stays on the stack. Set RerunThrough DOCUMENTING and transition D
 Next Tester assignment: reload current Active Work, context/scope/design, this plan, COMPLETE FULL/NONE verification record and active recovery frame. Independently select REVERIFY, assess the fresh recovery-final-dev022 archive/stage and README byte closure, run applicable staged/assembly checks and justify unchanged behavior/static/package/transport reuse by current identities. This is a full-gate downstream rerun; do not overwrite old receipts or adopt Developer checks as Tester execution. Subsequent implementation review and Documenter correction must preserve the active frame until the DOCUMENTING boundary returns to FINAL_DELIVERABLE review. Use the existing independent Tester chat or a fresh chat separate from Developer authoring on this same checkout; no concurrent role work.
 
 Limits: no remote/deployed endpoint, publication, external source reads, activation, producer/checker/evidence regeneration, live LLM/paid API or Claude Desktop installation/use. No semantic/pedagogical certification, external-link audit or client-model composition. Current documentation gate remains affected by Documenter-owned .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-002; sign-off and synchronization are not authorized. This Developer outcome does not resolve Reviewer finding statuses or another owner's evidence. Suggested Conventional Commit: `docs(development): record final MCPB distribution recovery`.
+
+### Client-access recovery reconciliation — 2026-10-06
+
+Entry HEAD 75fa26fc1e0349112a99b0113c005b69932959a5; clean tree before Developer records. Read protocol, persisted Active Work/frame, Auditor baseline, complete revised scope/design, relevant prior plan definitions/execution/recovery history, locked tony and STEPWISE instructions, current result encoder/query budget/resource/URI/renderer/registration/version/smoke boundaries and prior Tester report. Initial node .standards/bin/check.mjs passed. No conditional protocol chapter applies (STANDARD, no promotion/obligations/pending cadence/control-plane request).
+
+Sufficiency: revised upstream contracts establish the two public tool names/schemas, canonical text encoding, both total-envelope ceilings, native source/whole-return policy before paging, exact URI allowlist/cursor binding/UTF-8 semantics, seven-workflow limits and renderer reuse, immutable identities, version boundaries, 19/9/1/14 inventory and local distribution targets. Existing ordinary services and thin adapters support them; focused helper/module factoring is a reversible Developer detail. No new design/scope/context decision is inferred.
+
+This is a material plan revision: new typed evidence/workflow routes, character-bound whole-entry result selection and generic evidence instructions require explicit user approval. The earlier approval covers prior intent, not this added implementation. Status PROPOSED, User Style tony remains Locked true; collaboration STEPWISE and cadence AFTER_IMPLEMENTATION remain unchanged. Reopened only DEV-012/013/014/015/022. DEV-001..005, DEV-023, DEV-016..021 retain DONE for their still-valid original outcomes; added DEV-024/025 cover the additional evidence/workflow outcomes rather than relabel their old checks as new results. No recovery implementation self-check is asserted yet.
+
+Existing package preparation/activation, accepted provenance resources, native prompt renderers and obsolete-surface removal remain reusable inputs. Historical 0.3.1/1.3.0/17-tool completion and distribution results below do not establish the revised 0.4.0/1.4.0/19-tool contract. Prior Tester report/tests/receipts remain untouched and are independent historical evidence; their owner must reconcile expanded acceptance and behavior. AC-020/032 are Architect-owned design prerequisites; AC-023..025/033..034 independent formal evidence is Tester-owned; AC-026/027/036/037 prose/walkthrough/strict/shipped-content outcomes are Documenter-owned. DEV-022 supports the current AC-037 distribution correspondence without owning those documents.
+
+Recovery Frame 1 remains exactly SCOPING-owned through SYNCHRONIZING. The frame-specific reason is User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements. It resumes AWAITING_USER_SIGNOFF. No Developer assignment was interrupted here, so do not fabricate a suspended assignment or choose/pop/reroute that owner's frame. After full current Developer completion, hand off FORWARD to independent TESTING under the preserved route; full Developer/Tester gates must hold before review.
+
+Next action after explicit current-plan approval: set APPROVED with locked tony unchanged, clear only the plan-approval blocker, start DEV-012 and perform exactly that STEPWISE step. Persist actual evidence and then the next-step continuation blocker unless an assignment gate passes. No source copy, partition generation, cutover, formal test edits, user-documentation edit, upstream judgment rewrite, publication, deployment or sign-off has occurred in this reconciliation.
