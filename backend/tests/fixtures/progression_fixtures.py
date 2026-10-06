@@ -36,12 +36,9 @@ class Topology:
             if e.label == "buildsTowards"
         )
         node = runtime.loaded_package.item_nodes[0]
-        metadata = self.service.evidence_metadata(runtime=runtime)
-        # Synthetic topology needs one representative artifact, not the full
-        # accepted package inventory; real-package tests retain that coverage.
-        self.metadata = metadata.model_copy(
-            update={"artifacts": metadata.artifacts[:1]}
-        )
+        # Production metadata is compact (four derivation artifacts), so synthetic
+        # topology now carries it unchanged.
+        self.metadata = self.service.evidence_metadata(runtime=runtime)
         self.summary = self.service.standard_summary(node=node, runtime=runtime)
         self.evidence = self.service.relationship_evidence(
             relationship=base, runtime=runtime

@@ -25,6 +25,14 @@ from kgfegmcp.services.models import (
 )
 from tests.fixtures.progression_fixtures import selector
 
+# Independent oracle for the Frame 2 compact metadata contract, sorted by name.
+DERIVATION_ARTIFACTS = [
+    "learningProgressionProvenance",
+    "learningProgressionProvenanceIndex",
+    "nodes",
+    "relationships",
+]
+
 
 def test_every_exact_edge_preserves_accepted_evidence(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
@@ -41,9 +49,14 @@ def test_every_exact_edge_preserves_accepted_evidence(
     monkeypatch.setattr(Path, "read_bytes", reject)
     for runtime in accepted_state.catalog_load_result.package_runtimes:
         identity = runtime.catalog_package.package_identity
+        # Results list only their derivation artifacts; the manifest binds the rest.
         expected_hashes = sorted(
-            (ref.logical_name, ref.sha256) for ref in runtime.loaded_package.artifacts
+            (ref.logical_name, ref.sha256)
+            for ref in runtime.loaded_package.artifacts
+            if ref.logical_name in DERIVATION_ARTIFACTS
         )
+        assert [name for name, _ in expected_hashes] == DERIVATION_ARTIFACTS
+        assert len(runtime.loaded_package.artifacts) > len(DERIVATION_ARTIFACTS)
         for edge in runtime.loaded_package.relationships:
             if edge.label not in {"buildsTowards", "relatesTo"}:
                 continue
@@ -68,6 +81,11 @@ def test_every_exact_edge_preserves_accepted_evidence(
             assert [
                 (ref.logical_name, ref.sha256) for ref in result.metadata.artifacts
             ] == expected_hashes
+            route = result.metadata.manifest_uri.removesuffix("/manifest")
+            assert [ref.uri for ref in result.metadata.artifacts] == [
+                f"{route}/artifact/{name}" for name in DERIVATION_ARTIFACTS
+            ]
+            assert "manifestUri" in result.metadata.artifact_inventory_notice
             assert [node.node_id for node in result.nodes] == [
                 edge.source_node_id,
                 edge.target_node_id,

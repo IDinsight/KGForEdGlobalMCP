@@ -33,7 +33,7 @@ Formal tests: some Tester-owned cases encode the superseded contract and are exp
 
 This section supersedes historical completion, next-action, surface and recovery-route claims below. Recovery Frame 1 is SCOPING-owned, from/resuming at AWAITING_USER_SIGNOFF, with RerunThrough SYNCHRONIZING. Developer is a downstream rerun and does not change that frame. The revised scope has 37 current acceptance IDs; architecture establishes the new text, evidence and workflow contracts.
 
-User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. User authorized DEV-014; Tester corrected the scoped traversal/shared-path fixtures, popped only nested Frame 2 and RESUMED Developer. Developer restored Suspended Assignment 2, reconciled that return and reran the affected checks; DEV-014 is DONE. User authorized DEV-015; its implementation assessment is PARTIAL because real accepted data disproves the approved path size/maxima design. Nested Frame 2 routes ARCHITECTURE to ARCHITECTING and Suspended Assignment 3 preserves Developer's remaining DEVELOPMENT/NONE work. DEV-015 remains IN_PROGRESS; DEV-024/025/022 remain PENDING. Current feedback and resume directions are recorded in Plan Notes.
+User explicitly approved this material revision and directed DEV-012 on 2026-10-06. Preserve STEPWISE, locked User Style tony, AFTER_IMPLEMENTATION and Current Increment NONE. Fourteen original steps are DONE after DEV-013 recovery. DEV-013/014/015/022 were reopened for recovery; DEV-024 and DEV-025 are added. Their old self-checks remain historical evidence. Tester corrected the scoped discovery cases, popped only nested Frame 2 and RESUMED Developer. Developer reconciled that return and reran the affected checks; DEV-013 is DONE. User authorized DEV-014; Tester corrected the scoped traversal/shared-path fixtures, popped only nested Frame 2 and RESUMED Developer. Developer restored Suspended Assignment 2, reconciled that return and reran the affected checks; DEV-014 is DONE. User authorized DEV-015; real data disproved the path size design, so ARCHITECTURE Frame 2 was routed and returned with the user-selected size correction (see Frame 2 Size-Correction Revision). DEV-012 (reopened) and DEV-015 are DONE under it. A scoped VERIFICATION Frame 2 now routes the superseded formal cases to TESTING; Suspended Assignment 4 preserves the remaining DEVELOPMENT/NONE work. DEV-024/025/022 remain PENDING. Current feedback and resume directions are recorded in Plan Notes.
 
 | Order | Step | Observable recovery outcome |
 |---|---|---|
@@ -844,12 +844,14 @@ DEV-014 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded
 
 ### DEV-015 — Implement bounded connecting paths without losing alternatives
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-014, DEV-012`
+`Status`: `DONE` `Depends On`: `DEV-014, DEV-012`
 `Acceptance`: `AC-008, AC-009, AC-010, AC-028, AC-031, AC-033`
 
 **Frame 2 revision — approved 2026-10-06**
 
 Replace whole-request failure on a later oversized path with the path size stop and nextUnreturnedPath; only an unfittable first path fails, with its relationship IDs in details. Depends on the compact metadata from reopened DEV-012 so real envelopes can be measured. See the Frame 2 Size-Correction Revision.
+
+Frame 2 self-check: PASS — see "Frame 2 path size stop for DEV-015 — completed" in Plan Notes. Superseded formal cases go to Tester in the combined correction now routed.
 
 **Current Recovery Assignment — proposed 2026-10-06**
 
@@ -2139,3 +2141,41 @@ R = data/source_artifacts/learning_progressions/client-recovery-dev012-frame2/ch
 - Static on both changed modules: black, isort (after applying import order; first run retained as isort-unsorted-import), ruff, mypy, pylint 10.00/10, interrogate 100% — exit 0. Feedback suites were rerun after the import reorder; pre-isort runs retained as pre-isort-*.
 
 DEV-012 DONE. DEV-015 is next under STEPWISE and needs explicit continuation; DEV-024/025/022 remain PENDING. Suggested commit: feat(progressions): compact LP result metadata to derivation artifacts.
+
+User explicitly authorized revised DEV-015 on 2026-10-06; cleared only its STEPWISE blocker. DEV-015 remains IN_PROGRESS.
+
+### Frame 2 path size stop for DEV-015 — completed 2026-10-06
+
+**Implemented outcome**
+
+- lp_models: GetLearningProgressionPathsResult gains nextUnreturnedPath (ProgressionPath IDs only, default null); the path notice explains the size stop, that later paths may exist, and the recovery routes (get_learning_progression per edge, narrower maxDepth/maxPaths).
+- lp_paths: when a completed path fails conservative reservation, the actual final envelope decides. If it fits, the path is kept and selection stops (byte_limit only while a frontier remains). Otherwise a later path is rolled back with its exclusive evidence, named in nextUnreturnedPath, kept in the queued frontier, and byte_limit is set; an unfittable first path raises progression_result_too_large whose details and recovery hint carry its ordered relationship IDs. Reservation includes a worst-case nextUnreturnedPath built from the package's longest JSON-encoded builds node/relationship IDs (PathIdBound), so emission cannot outgrow the budget. The former later-path standalone oversize check is removed.
+- learning_progressions: PathIdBound per package is precomputed once at service construction beside the existing adjacency and passed to paths_result; paths_result derives it from adjacency when omitted (synthetic callers).
+- Identities: lp_paths f5a1523fc60578cc383cfe396d1c86334b3073855df5787f0013bb217442abaf; lp_models 2e3c4ff225345812a56e76cba2aa1ac4a667aaa73feb60c8dfc2532142c4790e; learning_progressions e49b9f9d3c1e14dafd0cf759dfa1b82553705489dc89142b6e549a1cd341d20a.
+
+**Actual implementation feedback**
+
+R = data/source_artifacts/learning_progressions/client-recovery-dev015-frame2/checks (established offline environment; UV_CACHE_DIR in the session temp directory). Developer feedback, not Tester acceptance. R/evidence-index.json SHA256 93d8261f18d308d06a52d2d4b48b0191629a8a92721f6ffb112f52ec937e092a; all 1175 protected inputs unchanged.
+
+- feedback (R/feedback.py SHA256 bd25673804ff6e9b5814b2c8d39bf3647a81337db8e006d1b1aaf8773788df92): exit 0; 955 checks, 6935 real queries, 29 synthetic outcomes; R/feedback-results.json SHA256 8d56dcd13ff0a044ec7f07ce4b3d7dc787c54d3464c2820072d7b67d235156f6.
+  - Architect target met: every connected ordered pair in all six packages (6527 pairs, 1–8 hops) returns its complete shortest path with max_paths 1 and depth equal to that length; largest envelope 86045 characters (Rwanda 8 hops). Zero sampled real requests fail as oversized (was 2).
+  - Sampled real requests match the sorted independent DFS prefix; whenever nextUnreturnedPath is present it equals the next oracle path. Size stops occurred in 10 sampled requests, 9 naming the next path.
+  - Tamil Nadu b536c540… → 4061ea8e…: defaults return 2/3/3-hop paths with path_limit; depth 6/paths 20 returns all four paths (2/3/3/4 hops) complete in 91296 characters through MCP.
+  - Real MCP size stop (Ghana Mathematics 0f38dcc7… → 6c083da5…, depth 6/paths 20): six paths returned, nextUnreturnedPath names the 3-hop path 7ea083dc…/176a5a58…/70fda556…, 94408 characters; ordinary text equals structuredContent.
+  - Synthetic: whole-path combination rollback names ('b','c'); unfittable first path fails with details relationship_ids ('a',) and the IDs plus get_learning_progression/read_evidence in the hint; individually oversized later path is a partial result; binary-search boundary keeps a later path whole when its actual envelope fits and names it one character later; first-path fallback at the character ceiling keeps the pending frontier with no nextUnreturnedPath; isolated byte combination names the rolled-back path; existing topology/budget/random-oracle cases unchanged.
+  - Retained nonpassing iterations: feedback-synthetic-metadata-assertion (verifier wrongly required four artifacts for empty synthetic metadata) and feedback-tamil-nadu-expectation (the request no longer stops on size).
+- compact: rerun on final bytes, exit 0 (58 checks).
+- regression: pytest tests/ — 76 passed, 2 failed: the same two superseded-contract cases recorded under DEV-012; all existing path algorithm cases pass unchanged.
+- Static on the three changed modules: black, isort, ruff, mypy, pylint 10.00/10, interrogate 100% — exit 0.
+
+DEV-015 DONE. Both Frame 2 steps are implemented; route the approved combined scoped VERIFICATION correction.
+
+### Suspended Assignment 4
+
+`Recovery Frame`: `2` `Recovery Reason`: `Tester-owned formal cases encode superseded Frame 2 contracts: test_every_exact_edge_preserves_accepted_evidence expects all 86 artifacts in LP metadata and test_discovery_combination_bytes_preserve_continuation uses a fixture calibrated to the old metadata size; correct them and assess compact metadata and the path size stop (nextUnreturnedPath) before Developer resumes.`
+`Purpose`: `DEVELOPMENT`
+`Target`: `NONE`
+`Assessed Inputs`: `HEAD 172a2c85f7d9dca5157bb958976cdd1f54e5f587 plus working tree; lp_paths f5a1523fc60578cc383cfe396d1c86334b3073855df5787f0013bb217442abaf; lp_models 2e3c4ff225345812a56e76cba2aa1ac4a667aaa73feb60c8dfc2532142c4790e; learning_progressions e49b9f9d3c1e14dafd0cf759dfa1b82553705489dc89142b6e549a1cd341d20a; receipts in client-recovery-dev012-frame2/checks and client-recovery-dev015-frame2/checks evidence indexes.`
+`Next Action`: `On Tester RESUME, reload STATE/frame/plan/report, reconcile the corrected formal tests and scoped assessment, rerun affected checks, and stop before DEV-024 under STEPWISE. DEV-012 and DEV-015 are DONE; restore the approved remaining DEV-024/025/022 assignment with no duplicate plan approval.`
+
+Save the interrupted overall Developer assignment before routing. Push nested Frame 2, From/ResumeAt DEVELOPING, Owner TESTING, FailureType VERIFICATION, RerunThrough NONE; preserve SCOPING-owned Frame 1. Tester decides the bounded correction and whether new formal cases for nextUnreturnedPath, the first-path error IDs and compact metadata belong in this assessment. Suggested commit: feat(progressions): stop paths at size limit with next unreturned path.

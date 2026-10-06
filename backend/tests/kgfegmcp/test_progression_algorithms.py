@@ -3,6 +3,7 @@
 # Standard Library
 import json
 
+from collections import defaultdict, deque
 from typing import Any
 
 # Third Party Library
@@ -15,7 +16,8 @@ from kgfegmcp.errors import (
     ProgressionResultTooLargeError,
 )
 from kgfegmcp.services.learning_progressions import progression_result_text
-from tests.fixtures.progression_fixtures import Topology, builds
+from kgfegmcp.services.lp_models import GetLearningProgressionPathsRequest
+from tests.fixtures.progression_fixtures import Topology, builds, selector
 
 DIAMOND = [("z", "a", "b"), ("a", "a", "c"), ("b", "b", "t"), ("c", "c", "t")]
 
@@ -142,6 +144,7 @@ def test_paths_preserve_alternative_merges(accepted_state: AppState) -> None:
         (("z", "b"), ("a", "b", "t")),
     ]
     assert result.scope_complete and result.graph_exhausted
+    assert result.next_unreturned_path is None
     assert len(result.nodes) == 4 and len(result.relationships) == 4
     assert result.epistemic_status == "deterministic_derived"
 
@@ -192,6 +195,7 @@ def test_paths_count_boundary(accepted_state: AppState) -> None:
     assert [p.relationship_ids for p in result.paths] == [("a", "c")]
     assert result.truncation_reasons == ("path_limit",)
     assert not result.scope_complete and result.frontier.queued_state_count > 0
+    assert result.next_unreturned_path is None
 
 
 def test_paths_work_boundary(accepted_state: AppState) -> None:
@@ -219,14 +223,17 @@ def test_paths_cumulative_queue_boundary(accepted_state: AppState) -> None:
 
 
 def test_paths_oversized_entry_rejected(accepted_state: AppState) -> None:
-    """An unreturnable complete path requires typed resource recovery."""
+    """An unreturnable first path fails and names its ordered relationship IDs."""
     with pytest.raises(ProgressionResultTooLargeError) as failure:
         Topology(accepted_state, builds([("a", "a", "t")], "x" * 1048577)).paths()
-    assert "resource" in failure.value.recovery_hint.lower()
+    assert failure.value.details["relationship_ids"] == ("a",)
+    hint = failure.value.recovery_hint
+    assert '["a"]' in hint and "get_learning_progression" in hint
+    assert "resource" in hint.lower()
 
 
 def test_paths_combination_only_bytes(accepted_state: AppState) -> None:
-    """Roll back the whole second alternative and all speculative evidence."""
+    """Roll back the whole second alternative, name it, and drop its evidence."""
     pairs = [("a", "a", "b"), ("b", "b", "t"), ("c", "a", "c"), ("d", "c", "t")]
     text = "😀" * 10000
     for branch in (pairs[:2], pairs[2:]):
@@ -251,5 +258,84 @@ def test_paths_combination_only_bytes(accepted_state: AppState) -> None:
     assert result.counters.returned_path_count == 1
     assert not result.scope_complete and not result.graph_exhausted
     assert result.frontier.queued_state_count > 0
+    unreturned = result.next_unreturned_path
+    assert unreturned is not None
+    assert (unreturned.node_ids, unreturned.relationship_ids) == (
+        ("a", "c", "t"),
+        ("c", "d"),
+    )
     assert graph.require_paths_result_size(result=result) <= 1048576
     assert_envelope_bounds(result)
+
+
+def test_paths_later_oversized_alternative_is_partial(accepted_state: AppState) -> None:
+    """A later path too large even alone stops selection without failing earlier ones."""
+    large = builds([("c", "a", "c")], "x" * 1048577)
+    # Positive control: the later alternative alone is an unreturnable first path.
+    with pytest.raises(ProgressionResultTooLargeError) as failure:
+        Topology(accepted_state, builds([("d", "c", "t")]) + large).paths()
+    assert failure.value.details["relationship_ids"] == ("c", "d")
+    graph = Topology(
+        accepted_state,
+        builds([("a", "a", "b"), ("b", "b", "t"), ("d", "c", "t")]) + large,
+    )
+    result = graph.paths()
+    assert [p.relationship_ids for p in result.paths] == [("a", "b")]
+    unreturned = result.next_unreturned_path
+    assert unreturned is not None
+    assert (unreturned.node_ids, unreturned.relationship_ids) == (
+        ("a", "c", "t"),
+        ("c", "d"),
+    )
+    assert {e.relationship.relationship_id for e in result.relationships} == {"a", "b"}
+    assert {n.node_id for n in result.nodes} == {"a", "b", "t"}
+    assert result.truncation_reasons == ("byte_limit",)
+    assert not result.scope_complete and not result.graph_exhausted
+    assert result.frontier.queued_state_count > 0
+    assert_envelope_bounds(result)
+
+
+def test_paths_every_real_shortest_connection_fits(accepted_state: AppState) -> None:
+    """Each connected stored pair returns its complete shortest path in one result."""
+    service = accepted_state.learning_progressions_service
+    lengths: dict[int, int] = defaultdict(int)
+    for runtime in accepted_state.catalog_load_result.package_runtimes:
+        identity = runtime.catalog_package.package_identity
+        downstream: dict[str, list[str]] = defaultdict(list)
+        for edge in runtime.loaded_package.relationships:
+            if edge.label == "buildsTowards":
+                downstream[edge.source_node_id].append(edge.target_node_id)
+        # Independent BFS oracle over original accepted edges, not service adjacency.
+        for source in sorted(downstream):
+            distance = {source: 0}
+            queue = deque([source])
+            while queue:
+                node = queue.popleft()
+                for following in downstream[node]:
+                    if following not in distance:
+                        distance[following] = distance[node] + 1
+                        queue.append(following)
+            for target, hops in sorted(distance.items()):
+                if not hops:
+                    continue
+                result = service.get_learning_progression_paths(
+                    request=GetLearningProgressionPathsRequest(
+                        framework_id=identity.framework_id,
+                        snapshot_id=identity.snapshot_id,
+                        source_identifier=selector(source),
+                        target_identifier=selector(target),
+                        max_depth=hops,
+                        max_paths=1,
+                    )
+                )
+                assert len(result.paths) == 1
+                path = result.paths[0]
+                assert len(path.relationship_ids) == hops
+                assert (path.node_ids[0], path.node_ids[-1]) == (source, target)
+                assert {
+                    e.relationship.relationship_id for e in result.relationships
+                } == set(path.relationship_ids)
+                assert_envelope_bounds(result)
+                lengths[hops] += 1
+    # Accepted packages are immutable: 6522 connected pairs, longest shortest path 8.
+    assert sum(lengths.values()) == 6522 and max(lengths) == 8

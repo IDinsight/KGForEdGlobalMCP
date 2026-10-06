@@ -403,15 +403,19 @@ class GetLearningProgressionPathsResult(ProgressionEvidenceResult):
     epistemic_status: Literal["deterministic_derived"] = "deterministic_derived"
     frontier: ProgressionPathFrontier
     graph_exhausted: bool
+    next_unreturned_path: ProgressionPath | None = None
     path_notice: str = (
         "Paths follow stored buildsTowards edges from source to target, ordered by "
         "hop count then relationship-ID tuple. Completed target paths are terminal. "
         "Exhaustion refers to this simple-path search; requested-depth completeness "
         "does not imply global exhaustion. Derived paths assert no new direct edge "
-        "or compulsory teaching order. No continuation is offered; narrow bounded "
-        "inputs and rerun after truncation. The byte_limit reason covers either "
-        "complete-envelope ceiling. Even exhausted absence means no stored "
-        "connection, not no pedagogical connection."
+        "or compulsory teaching order. No continuation is offered. The byte_limit "
+        "reason covers either complete-envelope ceiling; later paths may exist "
+        "beyond that stop. nextUnreturnedPath, when present, names the next "
+        "complete path by IDs only and its edges are not in the tables: inspect "
+        "them with get_learning_progression, or narrow maxDepth or maxPaths and "
+        "rerun. Even exhausted absence means no stored connection, not no "
+        "pedagogical connection."
     )
     paths: tuple[ProgressionPath, ...]
     request: GetLearningProgressionPathsRequest

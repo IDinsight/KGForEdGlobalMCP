@@ -74,7 +74,7 @@ from kgfegmcp.services.lp_models import (
     TraverseLearningProgressionsRequest,
     TraverseLearningProgressionsResult,
 )
-from kgfegmcp.services.lp_paths import paths_result
+from kgfegmcp.services.lp_paths import PathIdBound, path_id_bound, paths_result
 from kgfegmcp.services.lp_traversal import (
     TraversalAdjacency,
     traversal_adjacency,
@@ -186,6 +186,9 @@ class LearningProgressionsService:
     framework_service: FrameworkService
     resource_policy: ResourcePolicy
     search_service: SearchService
+    _path_id_bounds_by_package: Mapping[GraphPackageId, PathIdBound | None] = field(
+        init=False, repr=False
+    )
     _progressions_by_package: Mapping[GraphPackageId, tuple[GraphRelationship, ...]] = (
         field(init=False, repr=False)
     )
@@ -220,6 +223,11 @@ class LearningProgressionsService:
             for package in packages
         }
         object.__setattr__(self, "_traversal_by_package", MappingProxyType(adjacency))
+        bounds = {
+            graph_package_id: path_id_bound(adjacency=package_adjacency)
+            for graph_package_id, package_adjacency in adjacency.items()
+        }
+        object.__setattr__(self, "_path_id_bounds_by_package", MappingProxyType(bounds))
 
     @staticmethod
     def evidence_metadata(*, runtime: CatalogPackageRuntime) -> ProgressionMetadata:
@@ -386,10 +394,10 @@ class LearningProgressionsService:
             framework_id=request.framework_id, snapshot_id=request.snapshot_id
         )
         self.require_content_access(runtime=runtime)
+        graph_package_id = runtime.catalog_package.package_identity.graph_package_id
         return paths_result(
-            adjacency=self._traversal_by_package[
-                runtime.catalog_package.package_identity.graph_package_id
-            ],
+            adjacency=self._traversal_by_package[graph_package_id],
+            id_bound=self._path_id_bounds_by_package[graph_package_id],
             request=request,
             runtime=runtime,
             service=self,

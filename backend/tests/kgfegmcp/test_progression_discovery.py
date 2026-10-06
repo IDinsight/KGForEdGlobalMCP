@@ -359,7 +359,9 @@ def test_discovery_combination_bytes_preserve_continuation(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Envelope overflow replays whole individually returnable entries once."""
-    project_large(monkeypatch, 3000)
+    # Calibrated to compact metadata: one projected entry fits even with a cursor,
+    # while any two exceed the 100000-character envelope.
+    project_large(monkeypatch, 25000)
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
     candidates = ordered(runtime)[:3]
     request = SearchLearningProgressionsRequest(

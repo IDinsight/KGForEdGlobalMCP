@@ -6,19 +6,85 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 # Verification Report
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `IN_PROGRESS` `User Style`: `NONE`
-`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Correct DEV-014 traversal topology and combination-envelope fixtures; reconcile shared path fixtures`
+`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Correct Frame 2 superseded lookup/discovery cases; assess compact LP metadata and the path size stop (nextUnreturnedPath)`
 
-## Current Scoped Recovery — DEV-014, 2026-10-06
+## Current Scoped Recovery — Frame 2 size correction, 2026-10-06
+
+REVERIFY/CORRECTION for active Tester-owned Frame 2, from/resuming DEVELOPING, RerunThrough NONE. Exact reason: Tester-owned formal cases encode superseded Frame 2 contracts: test_every_exact_edge_preserves_accepted_evidence expects all 86 artifacts in LP metadata and test_discovery_combination_bytes_preserve_continuation uses a fixture calibrated to the old metadata size; correct them and assess compact metadata and the path size stop (nextUnreturnedPath) before Developer resumes. Developer Suspended Assignment 4 preserves DEVELOPMENT/NONE under this reason. SCOPING-owned Frame 1 (from/resuming AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified session claim. User Style NONE.
+
+## Assessed Inputs
+
+Entry HEAD 172a2c8 (compact metadata committed) plus dirty DEV-015 path stop in lp_paths/lp_models/learning_progressions, index empty. E = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-frame2. E/entry-inputs.json hashes 260 tracked source/test/config/workflow inputs; E/entry-worktree.diff saves the dirty tree; E/prior-verification.md preserves the previous report. Entry source identities equal Suspended Assignment 4 exactly: lp_paths f5a1523f…, lp_models 2e3c4ff2…, learning_progressions e49b9f9d…; lp_traversal 41c6d8a4…, lp_discovery 56649b61…, tool_results 88a02e2e… unchanged since the DEV-014 assessment. Contract: architecture "Result-size correction (recovery Frame 2)", Query tools metadata, Bounds and Ordinary-text path size stop paragraphs and the Frame 2 technical criterion for AC-008/009/028/031 (spec 52dbfa4f…); scope 2eabb26b… and context 64d9b6d5… unchanged. Plan c15b2a0c… (IN_PROGRESS, STEPWISE, AFTER_IMPLEMENTATION/NONE; DEV-012/015 DONE under the revision; DEV-024/025/022 PENDING). Developer feedback is diagnostic input only.
+
+Environment: existing locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR set to session temp (sandbox blocks default uv cache). Socket guard autouse. No model/paid service, package mutation, deployment or application edit.
+
+## Acceptance Evidence
+
+| AC / technical criterion | Evidence and remaining scope | Disposition |
+| --- | --- | --- |
+| AC-008, AC-009, AC-028, AC-031 / Frame 2 compact metadata | Corrected test_every_exact_edge_preserves_accepted_evidence: all 8080 edges in six packages list exactly the four derivation artifacts (independent name oracle) with accepted hashes, route-derived URIs and the inventory notice; full package inventory remains larger. Synthetic Topology now uses unchanged production metadata. | VERIFIED for scoped correction: passes in final-suite; fails against pre-compact source 0f9c5b3 (controlled failure). |
+| AC-007, AC-009, AC-031 / whole-entry discovery continuation | test_discovery_combination_bytes_preserve_continuation recalibrated 3000→25000 projected characters from measured compact envelopes. | VERIFIED for scoped correction: one whole entry per cursored page, byte_limit/byte_limit/exhaustion, lossless replay; fails against 0f9c5b3. |
+| AC-008, AC-009, AC-028, AC-031 / Frame 2 path size stop | Strengthened existing scenarios: combination rollback names nextUnreturnedPath (a,c,t)/(c,d) with its edges/nodes excluded; first unfittable path error carries relationship_ids ("a",) and an ID/get_learning_progression hint; complete and path_limit results keep it null. New test_paths_later_oversized_alternative_is_partial: a later path too large even alone (control: alone it fails with IDs ("c","d")) yields the earlier path, byte_limit, scopeComplete/graphExhausted false, queued frontier and its IDs. New test_paths_every_real_shortest_connection_fits: independent BFS oracle over original edges; all 6522 connected pairs in six packages (1–8 hops) return their complete shortest path with max_paths 1, matching endpoints/edge table, under both independently measured ceilings. | VERIFIED for scoped correction. Controls: at HEAD 172a2c8 (compact metadata, old path stop) five path assertions fail (missing nextUnreturnedPath/relationship_ids, later-path error); at 0f9c5b3 reach and lookup also fail. Whole five-operation/access contract AWAITING_IMPLEMENTATION DEV-024/025/022. |
+| AC-001, AC-002, AC-003, AC-004 / immutable copy/data/acceptance/coverage | Accepted package bytes unchanged; corrected exact-edge case still reconciles all 8080 original IDs/judgments/hashes. | Prior evidence retained; full rework reconciliation remains future FULL/NONE. |
+| AC-005, AC-006 / exact and direct | Exact lookup case (8080 edges) passes with compact metadata; direct adjacency cases rerun in within-budget-suite. | Scoped regression VERIFIED; full reconciliation future FULL/NONE. |
+| AC-010, AC-011, AC-012 / identity/judgments/provenance/policy | Package/snapshot/profile/manifest identity and per-edge provenance unchanged; manifest remains the full checksum inventory. | Scoped regression VERIFIED; full access-route work AWAITING_IMPLEMENTATION DEV-024/025. |
+| AC-013, AC-014, AC-015, AC-016 / workflows | Revised workflow/access instructions remain DEV-025. | AWAITING_IMPLEMENTATION. |
+| AC-017, AC-018 / removal, AS/LC | Affected regression files rerun with full suite before handoff. | Prior scoped VERIFIED; full rework reconciliation remains. |
+| AC-019, AC-021, AC-022 / surface/transports/distribution | Final 19/9/1/14/0.4.0 remains DEV-022. | AWAITING_IMPLEMENTATION. |
+| AC-020, AC-032 / design/client assessment | Frame 2 architecture correction read as input. | Inspected; full independent reconciliation remains. |
+| AC-023, AC-024 / meaningful offline cases | Offline locked execution, socket guard, no model/paid call. | Scoped VERIFIED; later surface tests AWAITING_IMPLEMENTATION. |
+| AC-025 / independent full acceptance | Scoped correction cannot pass FULL/NONE. | AWAITING_IMPLEMENTATION and subsequent full assessment. |
+| AC-026, AC-027, AC-036, AC-037 / docs/walkthrough/checklist | Documenter final content after implementation. | PENDING later-role dependencies (Documenter). |
+| AC-029 / full supported evidence | DEV-024 read_evidence windows. | AWAITING_IMPLEMENTATION. |
+| AC-030 / workflow alternate/native route | DEV-025 seven typed variants. | AWAITING_IMPLEMENTATION. |
+| AC-033 / partialness | Path partial results and discovery continuation covered by the rows above. | Scoped evidence above; whole five-operation contract AWAITING_IMPLEMENTATION DEV-024/025. |
+| AC-034, AC-035 / transport/stage | DEV-022 final shared STDIO/HTTP/staged runtime. | AWAITING_IMPLEMENTATION. |
+
+## Scenario Budget
+
+All historical allocations and approved ceilings are carried (traversal 8, paths 10, discovery 13, shared service 7; others 5). Corrections reuse existing scenarios: lookup exact evidence (reused DEV-012 coverage), discovery combination continuation (discovery allocation), path combination bytes, path individual bytes, path count and alternative merges (paths allocations) — added assertions observe the same setups/outcomes. Removing the Topology artifact truncation is fixture reconciliation, not a scenario. Calibration sizes 15000–40000 in E/fixture_probe.py are calibration, not partitions.
+
+User explicitly approved targeted ceilings on 2026-10-06: `services/lp_paths.py` 10→12 and `services/learning_progressions.py` 7→8; all other ceilings unchanged. New allocations: (A) later individually oversized alternative → partial result naming nextUnreturnedPath — lp_paths 11/12; (B) six-package shortest-path reach — lp_paths 12/12 and learning_progressions 8/8 (compact metadata and precomputed PathIdBound). lp_models/tool_results are incidental to B (schema field, shared encoder already allocated), not charged. Generation in B is the bounded finite set of all connected pairs of the six immutable packages, one property (complete shortest path fits), not 6522 scenarios.
+
+## Execution Evidence
+
+- entry-suite: full configured tests, exit 1, 76 passed/2 failed (50.99 s) — reproduces exactly the two superseded cases claimed by Developer.
+- fixture-probe (scratch, E/fixture_probe.py): compact metadata four artifacts; traversal/path combination fixtures still behave with real metadata (controls 63008/71438 chars, combos roll back and name (c,d)); later oversized alternative yields partial result; first oversized raises with relationship_ids; discovery 20000–30000 gives one entry per cursored page, 35000 fits only as a final page. Independent BFS oracle: 6522 connected pairs (472/500/1395/990/355/2810, 1–8 hops) all return complete shortest paths, largest 86159 chars, 9.3 s. First probe run had a scratch staticmethod-restore bug (TypeError on every reach query), retained as fixture-probe-staticmethod-bug.*; not an application result.
+- within-budget-suite: lookup/discovery/algorithms/traversal, exit 0, 42 passed (39.20 s), before scenarios A/B.
+- algorithms-new: algorithms file, exit 0, 18 passed (16.00 s); reach scenario 9.77 s.
+- Controlled failures (E/controls/<rev>, git-archived application source with current tests, main venv, PYTHONPATH to the archived src; import path printed): 172a2c8 exit 1, 5 failed/37 passed; 0f9c5b3 exit 1, 11 failed/31 passed (also traversal Topology fixtures, which now carry real compact metadata). Logs control-<rev>.stdout.
+- Static on the four changed test/fixture files: initial Black --check exit 1 (retained initial-black.*), formatted with Black (format.*), then Black --check, isort --check-only, Ruff --no-cache, mypy (4 files, no issues), Pylint --persistent=n 10.00/10, interrogate 100% — all exit 0 on final bytes.
+- final-suite: `uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider -m 'not costs-money' tests`, exit 0, **80 passed in 54.84 s** (78 prior + A + B). A first loop invocation mis-split the marker argument (exit 4, no tests ran) and is retained as final-suite-argv-split.*; it is not a result. Pre-existing pytest-asyncio loop-scope warning unchanged.
+- E/preservation.json: 255/260 entry inputs unchanged; only this report and the four owned test/fixture files differ. Application/plan/STATE diff is byte-identical to entry; index empty. No application, package, contract, plan or other owner edit.
+
+## Open Findings and Dependencies
+
+- Targeted budget question resolved: user approved paths 10→12 and shared service 7→8; BlockedOn cleared. Active correction: VERIFIED. New implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned obligation: NONE.
+- Observation for Reviewer (not routed): when a completed path fails conservative reservation but its actual envelope fits, lp_paths keeps it and stops with byte_limit (if a frontier remains) and null nextUnreturnedPath, even if it is also the max_paths-th path; this is honest partialness within the design, recorded by Developer as a local choice.
+- Remaining full-gate gaps are only approved unfinished DEV-024/025/022 and the later FULL/NONE assessment; Documenter dependencies AC-026/027/036/037 unchanged.
+- Developer plan note says 6527 pairs; Developer's own per-package counts and this oracle give 6522. Record-keeping slip only, not a contract defect.
+
+## Resume or Handoff
+
+Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. Associated with Frame 2's exact reason and Developer Suspended Assignment 4 (DEVELOPMENT/NONE). No Tester assignment was suspended. Owned corrections, compact metadata and the path size stop are independently verified with controlled failures; affected completed discovery/traversal/lookup behavior passes in the full suite. No downstream role precedes unfinished Developer work, so RerunThrough NONE stands.
+
+After the passing workflow check, pop only Frame 2 and RESUME DEVELOPING, From TESTING, FailureType NONE; preserve SCOPING Frame 1 (ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING). Developer restores Suspended Assignment 4, reconciles the four changed test/fixture hashes (E/preservation.json) and these results, and stops before DEV-024 under STEPWISE. No CHECKPOINT, full completion or Reviewer handoff. Future FULL/NONE must cover all 37 ACs including final 19/9/1/14 surface and 0.4.0 distribution.
+
+## Historical Scoped DEV-014 Assessment
+
+Superseded by the section above; retained as history.
+
+### Prior Current Scoped Recovery — DEV-014, 2026-10-06
 
 REVERIFY/CORRECTION targets the active Tester-owned Frame 2, from/resuming at DEVELOPING, RerunThrough NONE. Exact reason: Tester-owned traversal tests assume a full four-edge diamond with copied package metadata and a 150000-character combination fixture; correct those DEV-014 fixtures for canonical full-text 100000-character envelopes while preserving whole-edge BFS/frontier assertions. Developer Suspended Assignment 2 preserves DEVELOPMENT/NONE under this reason; the earlier Frame 2/reason was resolved and is history. Preserve SCOPING-owned Frame 1, from/resuming AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING. This independent Tester conversation has no Developer authoring history; client freshness/model metadata is unavailable, so no machine-certified session claim. User Style NONE remains selected.
 
-## Assessed Inputs
+#### DEV-014 Assessed Inputs
 
 Entry HEAD c1cbf15, clean tracked tree. E = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-dev014. E/entry-inputs.json records 811 exact source/test/config/package/protocol/contract/dependency hashes; E/entry-index.diff saves the index, E/prior-verification.md preserves the previous report unchanged and E/prior-input-reconciliation.json identifies differences since the prior scoped assessment. Current Developer plan is IN_PROGRESS/STEPWISE/AFTER_IMPLEMENTATION/NONE; DEV-013 DONE, DEV-014 IN_PROGRESS pending owned fixture correction, DEV-015/024/025/022 PENDING. This is not a full verification request. Read current state, plan current recovery/outcomes/self-checks and Suspended Assignment 2, owned report, topology/algorithm/traversal/protocol/regression fixtures, actual traversal/model sources and current architectural acceptance/bounds. Reconcile unchanged scope/design/context/tooling bytes against previously read whole inputs; Auditor's pre-implementation baseline is not treated as final runtime identity. No conditional protocol chapter applies. Developer feedback is diagnostic input, not independent Tester evidence.
 
 Environment uses existing Python 3.13/locked uv offline/no-sync, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR, local accepted data and test socket guards. Techniques are synthetic algorithm integration, actual accepted traversal/protocol/AS-LC regression and owned-test static checks. No application, accepted package, scope/design/context, Developer plan, review or user documentation edits. No model/paid service, package acceptance mutation, external source access, deployment or refreshed distribution.
 
-## Acceptance Evidence
+#### DEV-014 Acceptance Evidence
 
 | AC / technical criterion | Evidence and remaining scope | Disposition |
 | --- | --- | --- |
@@ -38,11 +104,11 @@ Environment uses existing Python 3.13/locked uv offline/no-sync, PYTHONDONTWRITE
 | AC-030 / workflow alternate/native route | DEV-025 typed seven variants/shared native renderers. | AWAITING_IMPLEMENTATION. |
 | AC-034, AC-035 / transport/stage | DEV-022 final source/access/text/shared STDIO/HTTP/staged runtime evidence. | AWAITING_IMPLEMENTATION. |
 
-## Scenario Budget
+#### DEV-014 Scenario Budget
 
 Carry all historical allocations and explicit ceilings (traversal 8, paths 10, discovery 13, shared service 7; other sources 5). Reserve existing traversal branching/merging and combination scenarios for corrected compact metadata/returnable input; shared Topology dependency affects existing path scenarios, with the existing path-combination reservation retained for fixture repair. No new topology/outcome, parameter row, relaxed production ceiling or scenario increase. Helpers are not source allowances. Shared service traversal/path combination allocations are already carried; their stronger positive controls/output counters remain the same outcomes. tool_results.py carries prior discovery-combination allocation 1 and is charged for the two existing traversal/path combination outcomes, total 3 of 5. Keep original individually oversized cases. Full copied-metadata size stopping will be independently observed through original failing fixture execution before correction; compact fixture algorithm tests do not claim accepted-package metadata coverage. Reusable real-package/protocol tests retain that boundary. Bounded calibration adjusts only the same invalidated fixtures, not new independent partitions.
 
-## Execution Evidence
+#### DEV-014 Execution Evidence
 
 Exact argv, repository working directory, explicit offline/no-bytecode/project-dir environment, UTC start/duration, exit and hashed stdout/stderr are in E/<label>.command.json. uv uses backend's existing locked Python 3.13 environment, --locked --offline --no-sync. No live model/paid service. Current scoped suite uses pytest -q -p no:cacheprovider -m 'not costs-money' on tests/kgfegmcp/test_progression_algorithms.py, test_progression_traversal.py, test_progression_protocol.py and test_progression_regressions.py. Final outcome: exit 0, 24 passed in 14.38 s (16 algorithms, 2 retained traversal oversized placements, 4 in-process prompt/schema/error/removal cases, 2 actual AS/LC regressions). No skips/flakes/unrun scoped cases. Intermediate 17-tool/9-prompt surface is regression evidence, not the final 19-tool/0.4.0 obligation.
 
@@ -54,13 +120,13 @@ Scratch fixture-measurement initially misserialized tuple traversal frontier as 
 
 Entry workflow check passes. E/dependency-reconciliation.json proves prior models hash is restored exactly by reversing only the traversal notice; selector AST is unchanged. Prior DEV-013 independent 26-case discovery/exact pass remains valid for those unchanged tested dependencies; current Topology consumers are only the newly rerun algorithm suite. E/pre-handoff-assessed-inputs.json binds corrected tests/report; E/final-assessed-inputs.json binds handoff state as well. E/preservation.json rehashes all 811 entry inputs: 807 unchanged after handoff, only the two owned test/fixture files, this report and legal STATE change differ. All application/accepted package/configuration/dependency/protocol/context/scope/design/Developer and other owner artifacts are byte-identical to entry. Saved staged diff remains byte-identical; no index write/commit. E/evidence-index.json binds local receipts/scripts and assessed identities; gate-before/handoff-check/diff-check record workflow and diff gates. Prior full transport/archive completion conclusions remain historical; this pass is scoped service/in-process regression evidence.
 
-## Open Findings and Dependencies
+#### DEV-014 Open Findings and Dependencies
 
 - Active traversal/shared-fixture correction: VERIFIED, resolved. Newly discovered implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned outstanding obligation: NONE. Blocking user question: NONE.
 - Developer must restore DEVELOPMENT/NONE under Suspended Assignment 2, reconcile these test hashes and independent results, rerun affected DEV-014 feedback and finalize only if satisfactory. Then honor STEPWISE before DEV-015; DEV-015/024/025/022 remain unfinished approved work. Future FULL/NONE assessment must cover all 37 ACs and five-operation text-only/evidence/policy/cursor/schema/native regressions, final static/package/shared STDIO/HTTP/staged execution, 19/9/1/14 surface and refreshed 0.4.0 distribution identities. Shared path-fixture reconciliation here does not finish DEV-015 or establish the entire future path/access contract.
 - Documenter dependencies remain AC-026/027/036/037: final saved guides/maintainer evidence, practical Desktop walkthrough with honest run status, remote checklist and strict build/shipped agreement. Reviewer owns finding dispositions and subsequent independent reviews; no other owner's finding is closed. Local HTTP/instructions cannot prove an end-to-end teaching workflow or deployed claude.ai acceptance. Deployment/remote acceptance/sign-off remain user-owned.
 
-## Resume or Handoff
+#### DEV-014 Resume or Handoff
 
 Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. Current assessment is associated with Frame 2's exact traversal VERIFICATION reason and interrupted Developer DEVELOPMENT/NONE under Suspended Assignment 2. No unfinished Tester assignment was suspended; previous completed discovery correction and older full assessments remain history. Owned corrections and affected completed behavior are independently satisfactory; budgets/user increases remain carried. Remaining full-gate gaps are only approved unfinished implementation and subsequent assessment in the preserved route. No independent defect, required scoped check, owned obligation or question is deferred. No intervening downstream role must rerun before unfinished Developer work, so RerunThrough NONE remains appropriate.
 

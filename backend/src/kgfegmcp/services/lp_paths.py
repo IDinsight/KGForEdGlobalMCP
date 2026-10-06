@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 # Standard Library
+import json
+
 from collections import deque
 from dataclasses import dataclass, field, replace
 from typing import TYPE_CHECKING
@@ -45,10 +47,23 @@ _REASONS: tuple[PathTruncationReason, ...] = (
 
 
 @dataclass(frozen=True, slots=True)
+class PathIdBound:
+    """Longest JSON-encoded builds relationship and endpoint IDs in one package.
+
+    Reserving a worst-case nextUnreturnedPath from these real IDs keeps emission
+    within the size budget without charging the 1,024-character type maxima.
+    """
+
+    node_id: NodeId
+    relationship_id: RelationshipId
+
+
+@dataclass(frozen=True, slots=True)
 class _PathContext:
     """Pin shared evidence helpers and original adjacency to one exact route."""
 
     adjacency: TraversalAdjacency
+    id_bound: PathIdBound | None
     metadata: ProgressionMetadata
     request: GetLearningProgressionPathsRequest
     runtime: CatalogPackageRuntime
@@ -73,6 +88,7 @@ class _PathRows:
     depth_limited: int = 0
     enqueued: int = 1
     examined: int = 0
+    next_unreturned: ProgressionPath | None = None
     nodes: dict[NodeId, ProgressionStandardSummary] = field(default_factory=dict)
     paths: list[ProgressionPath] = field(default_factory=list)
     peak_queue: int = 1
@@ -135,33 +151,35 @@ def _admit_path(*, context: _PathContext, rows: _PathRows, state: _PathState) ->
     try:
         _require_size(context=context, reserve=True, rows=rows)
     except ProgressionResultTooLargeError:
-        if len(rows.paths) == 1:
-            # Reservation must not reject an actually fitting first complete path.
-            # Keep it with its exact final frontier, or fail if it exceeds either
-            # shared ceiling. No further work is attempted.
-            if rows.queue:
-                rows.reasons.add("byte_limit")
-
-            _require_size(context=context, reserve=False, rows=rows)
-            return False
-
-        _require_path_size(context=context, rows=rows, state=state)
-        rows.paths.pop()
-        rows.nodes = {
-            key: value for key, value in rows.nodes.items() if key in previous_nodes
-        }
-        rows.relationships = {
-            key: value
-            for key, value in rows.relationships.items()
-            if key in previous_edges
-        }
-
-        # Include the rejected completed state in the unexplored frontier.
-        rows.queue.appendleft(state)
-        rows.reasons.add("byte_limit")
+        _stop_on_size(
+            context=context,
+            previous_edges=previous_edges,
+            previous_nodes=previous_nodes,
+            rows=rows,
+            state=state,
+        )
         return False
 
     return True
+
+
+def _encoded_cost(value: str) -> tuple[int, int]:
+    """Measure one ID as emitted inside the text mirror within the tool envelope.
+
+    Parameters
+    ----------
+    value
+        Original node or relationship identifier.
+
+    Returns
+    -------
+    tuple[int, int]
+        UTF-8 bytes then characters of the doubly JSON-encoded value, its most
+        expensive emitted form; ordinary accepted IDs are ASCII so both agree.
+    """
+
+    encoded = json.dumps(json.dumps(value, ensure_ascii=False), ensure_ascii=False)
+    return len(encoded.encode("utf-8")), len(encoded)
 
 
 def _expand_state(*, context: _PathContext, rows: _PathRows, state: _PathState) -> bool:
@@ -222,34 +240,34 @@ def _expand_state(*, context: _PathContext, rows: _PathRows, state: _PathState) 
     return True
 
 
-def _require_path_size(
-    *, context: _PathContext, rows: _PathRows, state: _PathState
-) -> None:
-    """Reject an individually oversized path rather than hiding it behind a size stop.
+def _first_path_error(
+    *, error: ProgressionResultTooLargeError, state: _PathState
+) -> ProgressionResultTooLargeError:
+    """Name the unreturnable first path so clients can inspect its stored edges.
 
     Parameters
     ----------
-    context
-        Shared byte/character policy and pinned route.
-    rows
-        Projected path tables and actual final metadata.
+    error
+        Shared size failure for the complete first-path envelope.
     state
-        Completed path whose standalone envelope must fit.
+        First completed path, which no request with these endpoints can return.
+
+    Returns
+    -------
+    ProgressionResultTooLargeError
+        Same failure with the path's ordered relationship IDs in details and hint.
     """
 
-    # Measure the path alone with the byte_limit reason it carries while a frontier
-    # remains, so a returnable path is distinguished from one no request can return.
-    single = replace(
-        rows,
-        nodes={node_id: rows.nodes[node_id] for node_id in state.node_ids},
-        paths=[rows.paths[-1]],
-        reasons=rows.reasons | {"byte_limit"},
-        relationships={
-            edge.relationship_id: rows.relationships[edge.relationship_id]
-            for edge in state.edges
-        },
+    relationship_ids = [str(edge.relationship_id) for edge in state.edges]
+    return ProgressionResultTooLargeError(
+        details={**error.details, "relationship_ids": tuple(relationship_ids)},
+        message=error.message,
+        recovery_hint=(
+            "The first connecting path does not fit. Its ordered relationship IDs "
+            f"are {json.dumps(relationship_ids, ensure_ascii=False)}; inspect each "
+            f"with get_learning_progression. {error.recovery_hint or ''}"
+        ),
     )
-    _require_size(context=context, reserve=False, rows=single)
 
 
 def _require_size(*, context: _PathContext, reserve: bool, rows: _PathRows) -> None:
@@ -267,6 +285,30 @@ def _require_size(*, context: _PathContext, reserve: bool, rows: _PathRows) -> N
 
     context.service.require_paths_result_size(
         result=_result(context=context, reserve=reserve, rows=rows)
+    )
+
+
+def _reserved_path(*, context: _PathContext) -> ProgressionPath | None:
+    """Build the largest ID-only path this request could later report as unreturned.
+
+    Parameters
+    ----------
+    context
+        Requested depth and the package's longest real builds IDs.
+
+    Returns
+    -------
+    ProgressionPath | None
+        Worst-case nextUnreturnedPath, or None when the package has no builds edges.
+    """
+
+    if context.id_bound is None:
+        return None
+
+    return ProgressionPath(
+        node_ids=(context.id_bound.node_id,) * (context.request.max_depth + 1),
+        relationship_ids=(context.id_bound.relationship_id,)
+        * context.request.max_depth,
     )
 
 
@@ -316,6 +358,9 @@ def _result(
         ),
         graph_exhausted=not reasons,
         metadata=context.metadata,
+        next_unreturned_path=(
+            _reserved_path(context=context) if reserve else rows.next_unreturned
+        ),
         nodes=tuple(rows.nodes.values()),
         paths=tuple(rows.paths),
         relationships=tuple(rows.relationships.values()),
@@ -327,9 +372,114 @@ def _result(
     )
 
 
+def _stop_on_size(
+    *,
+    context: _PathContext,
+    previous_edges: set[RelationshipId],
+    previous_nodes: set[NodeId],
+    rows: _PathRows,
+    state: _PathState,
+) -> None:
+    """Keep a fitting path, or roll back a later one and name it, then stop.
+
+    Parameters
+    ----------
+    context
+        Shared encoder and pinned route.
+    previous_edges
+        Relationship-table keys before this path's speculative evidence.
+    previous_nodes
+        Node-table keys before this path's speculative evidence.
+    rows
+        Evidence tables including the path that failed conservative reservation.
+    state
+        Completed path that failed reservation.
+
+    Raises
+    ------
+    ProgressionResultTooLargeError
+        If the first path cannot fit, with its ordered relationship IDs.
+    """
+
+    # Reservation is conservative; keep the path if the actual final envelope fits.
+    # No room is then guaranteed for another path, so selection stops either way.
+    stop_reasons = rows.reasons | ({"byte_limit"} if rows.queue else set())
+
+    try:
+        _require_size(
+            context=context, reserve=False, rows=replace(rows, reasons=stop_reasons)
+        )
+    except ProgressionResultTooLargeError as error:
+        if len(rows.paths) == 1:
+            raise _first_path_error(error=error, state=state) from error
+
+        # Earlier paths passed reservation, which covered this outcome's final
+        # counters, reasons and a worst-case nextUnreturnedPath.
+        rows.paths.pop()
+        rows.nodes = {
+            key: value for key, value in rows.nodes.items() if key in previous_nodes
+        }
+        rows.relationships = {
+            key: value
+            for key, value in rows.relationships.items()
+            if key in previous_edges
+        }
+        rows.next_unreturned = ProgressionPath(
+            node_ids=state.node_ids,
+            relationship_ids=tuple(edge.relationship_id for edge in state.edges),
+        )
+
+        # The stopped path stays counted in the queued frontier.
+        rows.queue.appendleft(state)
+        rows.reasons.add("byte_limit")
+        return
+
+    rows.reasons = stop_reasons
+
+
+def path_id_bound(*, adjacency: TraversalAdjacency) -> PathIdBound | None:
+    """Select one package's longest builds IDs once, outside query work.
+
+    Parameters
+    ----------
+    adjacency
+        Immutable builds-only adjacency for one accepted package.
+
+    Returns
+    -------
+    PathIdBound | None
+        Longest emitted node and relationship IDs, or None without builds edges.
+    """
+
+    edges = tuple(
+        edge
+        for (direction, _), entries in adjacency.items()
+        if direction == "downstream"
+        for edge in entries
+    )
+
+    if not edges:
+        return None
+
+    return PathIdBound(
+        node_id=max(
+            (
+                node
+                for edge in edges
+                for node in (edge.source_node_id, edge.target_node_id)
+            ),
+            key=_encoded_cost,
+        ),
+        relationship_id=max(
+            (edge.relationship_id for edge in edges), key=_encoded_cost
+        ),
+    )
+
+
 def paths_result(
     *,
     adjacency: TraversalAdjacency,
+    id_bound: PathIdBound | None = None,
     request: GetLearningProgressionPathsRequest,
     runtime: CatalogPackageRuntime,
     service: LearningProgressionsService,
@@ -340,6 +490,8 @@ def paths_result(
     ----------
     adjacency
         DEV-014 immutable builds-only sorted original references.
+    id_bound
+        Precomputed longest package IDs; derived from adjacency when omitted.
     request
         Exact source/target selectors and bounded depth/path request.
     runtime
@@ -372,6 +524,9 @@ def paths_result(
 
     context = _PathContext(
         adjacency=adjacency,
+        id_bound=(
+            id_bound if id_bound is not None else path_id_bound(adjacency=adjacency)
+        ),
         metadata=service.evidence_metadata(runtime=runtime),
         request=request,
         runtime=runtime,
