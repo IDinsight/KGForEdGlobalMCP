@@ -27,6 +27,7 @@ import json
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
+from typing import cast
 
 # Third Party Library
 from pydantic import ValidationError
@@ -38,7 +39,7 @@ from kgfegmcp.catalog.models import (
 )
 from kgfegmcp.catalog.service import CatalogService
 from kgfegmcp.domain.enums import GraphType
-from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, SnapshotId
+from kgfegmcp.domain.identifiers import FrameworkId, LanguageTag, NodeId, SnapshotId
 from kgfegmcp.errors import (
     InvalidComparisonSelectionError,
     InvalidProgressionRequestError,
@@ -104,6 +105,18 @@ from kgfegmcp.prompts.models import (
     TeacherGuideDraftGuidance,
 )
 from kgfegmcp.prompts.policy import PromptPolicy
+from kgfegmcp.resources.uri import (
+    interpretation_profile_uri,
+    learning_component_provenance_uri,
+    learning_component_uri,
+    learning_progressions_uri,
+    manifest_uri,
+    standard_learning_components_uri,
+    standard_provenance_uri,
+    standard_uri,
+    unresolved_uri,
+    validation_uri,
+)
 from kgfegmcp.services.lp_models import EndpointScope, FacetValues
 from kgfegmcp.services.models import StandardIdentifier
 
@@ -484,6 +497,67 @@ def _render_comparison_profile_context(context: _SelectedPromptContext) -> str:
         ),
     }
     return _canonical_compact_json(_without_empty_values(profile_context))
+
+
+def _render_evidence_links(context: _SelectedPromptContext) -> str:
+    """Render exact pinned evidence URIs and per-record templates for text clients.
+
+    Tool-only clients receive AS/LC links only as resource-link blocks, which some
+    clients never show to the model. The workflow therefore states each link with
+    the existing constructors, so no client has to guess a URI shape.
+
+    Parameters
+    ----------
+    context
+        Exact pinned package whose framework and snapshot identify every link.
+
+    Returns
+    -------
+    str
+        Bulleted fixed URIs, then templates with a ``{nodeId}`` placeholder.
+    """
+
+    identity = context.package.package_identity
+    pinned = {
+        "framework_id": identity.framework_id,
+        "snapshot_id": identity.snapshot_id,
+    }
+
+    # The sentinel survives percent-encoding unchanged (identifiers are lowercase),
+    # then becomes the documented placeholder.
+    sentinel = cast(NodeId, "NODEIDPLACEHOLDER")
+    templates = (
+        ("Standard", standard_uri(node_id=sentinel, **pinned)),
+        ("Standard provenance", standard_provenance_uri(node_id=sentinel, **pinned)),
+        (
+            "Standard learning components",
+            standard_learning_components_uri(node_id=sentinel, **pinned),
+        ),
+        ("Learning component", learning_component_uri(node_id=sentinel, **pinned)),
+        (
+            "Learning component provenance",
+            learning_component_provenance_uri(node_id=sentinel, **pinned),
+        ),
+    )
+    lines = [
+        "EVIDENCE LINKS for this pinned framework snapshot. Read them natively or "
+        "with read_evidence; rights and size limits still apply:",
+        f"- Manifest: {manifest_uri(**pinned)}",
+        f"- Interpretation profile: {interpretation_profile_uri(**pinned)}",
+        f"- Validation report: {validation_uri(**pinned)}",
+        f"- Unresolved items: {unresolved_uri(**pinned)}",
+        f"- Learning progression summary: {learning_progressions_uri(**pinned)}",
+        "Per-record links: replace {nodeId} with the exact outer Node ID or "
+        "learning-component ID shown in tool results, percent-encoded as one path "
+        "segment (returned UUIDs need no change):",
+        *(
+            f"- {label}: {uri.replace(sentinel, '{nodeId}')}"
+            for label, uri in templates
+        ),
+        "Learning progression relationships: use relationshipUri and provenanceUri "
+        "exactly as returned by the progression tools.",
+    ]
+    return "\n".join(lines)
 
 
 def _render_focus_workflow(
@@ -1080,7 +1154,9 @@ class PromptService:
             f"evidence that cannot be used because full-text, standard-resource, bulk-"
             f"resource, or size policy blocks access.",
             f"MANDATORY EVIDENCE RETRIEVAL\n{evidence_workflow}",
-            _render_list(title="EVIDENCE ACCESS", values=EVIDENCE_ACCESS_STEPS),
+            _render_list(title="EVIDENCE ACCESS", values=EVIDENCE_ACCESS_STEPS)
+            + "\n"
+            + _render_evidence_links(context),
             _render_list(
                 title="EVIDENCE STATUS RULES", values=COMMON_EVIDENCE_STATUS_RULES
             ),

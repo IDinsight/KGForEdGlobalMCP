@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Frame 2 Size-Correction Revision — approved 2026-10-06
@@ -1551,7 +1551,7 @@ Share validation/adaptation below MCP rather than invoke decorated native handle
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `DONE` `Depends On`: `DEV-021, DEV-025`
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-021, DEV-025`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
 
 **Current Recovery Assignment — proposed 2026-10-06**
@@ -2345,3 +2345,26 @@ User ran the three transport commands outside the sandbox against the rebuilt ca
 The user then committed the plan/state only (HEAD dcd1b2431fa7d98869aac352f3b7b3293c4629e7). checks/closure.py rerun at that HEAD: exit 0 — build inputs equal HEAD, archive equals the stage apart from startup-created environment/metadata, and every member equals both the working tree and the committed HEAD blob; archive SHA256 unchanged 170ba6fd9df70ef27e29480c406ecbcab174c0d0c539530fc3e232db0b9e52e4. Retained nonpassing iteration: closure-post-startup-additions (my check had not excluded the stage's startup-created .venv/.egg-info). Pre-commit closure receipts are kept as closure-pre-commit.*. Evidence index SHA256 d3ed30a95bb71f686cbaef714a9ab2b2d0167e379dbf68fc6b585765bd2b9c40; smoke/capabilities source identities unchanged.
 
 The defect is corrected: the retained 0.4.0 candidate is data/source_artifacts/learning_progressions/client-recovery-dev022-frame2/kgfegmcp-0.4.0-client-recovery-frame2.mcpb, built from and bound to committed source; the earlier client-recovery-dev022 candidate is superseded history. DEV-022 DONE; all nineteen steps DONE; full Developer gate passes again (unchanged locked style, no obligations, no open questions). Plan COMPLETE. As owner of IMPLEMENTATION Frame 2 (ResumeAt TESTING, RerunThrough NONE), no other state needs a rerun: pop Frame 2 and RESUME TESTING; Frame 1 continues through SYNCHRONIZING.
+
+### Implementation recovery Frame 2 for the client-access review finding — 2026-10-06
+
+Implementation review routed IMPLEMENTATION Frame 2 (From/ResumeAt REVIEWING_IMPLEMENTATION, Owner DEVELOPING, RerunThrough NONE) for .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001: tool-only clients cannot obtain AS/LC evidence links (standard/LC provenance, LC, interpretation profile, validation, unresolved), because AS/LC tools expose them only as resource_link blocks (unresolved not at all) and the workflow instructions give no construction rule. User explicitly invoked Developer. Entry HEAD b53325e, clean tree; workflow check passed; no conditional chapter applies.
+
+Reconciliation: DEV-025's approved outcome already requires instructions to show "read_evidence with exact returned/constructor URIs", so the smallest design-permitted correction is within approved intent: render, in the shared EVIDENCE ACCESS section of the seven single-framework workflows, the exact pinned URIs for the manifest, interpretation profile, AS/LC validation, AS/LC unresolved and LP summary, plus exact per-record templates (standard, standard provenance, standard learning components, LC, LC provenance) built with the existing URI constructors from the pinned framework/snapshot, where the client substitutes the outer nodeId shown in AS/LC tool text (get_standard "Node ID", get_learning_components_for_standard "Learning component" IDs). LP relationship/provenance URIs remain copied from LP results. AS/LC tool outputs, native resource links, rights and limits stay unchanged (no blanket tool-text rewrite). Reopened DEV-025 (instruction rendering) and DEV-022 (smoke derivation from client-visible text and a rebuilt candidate, AC-035); plan IN_PROGRESS. No new plan approval: unchanged approved intent. .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 belongs to Tester in the rerun.
+
+### Evidence-links correction for DEV-025 — completed 2026-10-06
+
+**Implemented outcome** (for .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001)
+
+- prompts/service.py: new _render_evidence_links appends an EVIDENCE LINKS block to the EVIDENCE ACCESS section rendered by the single-framework builder used by exactly the seven affected workflows. It lists exact pinned URIs (manifest, interpretation profile, AS/LC validation, AS/LC unresolved, LP summary) and per-record templates (standard, standard provenance, standard learning components, LC, LC provenance) built with the existing URI constructors from the pinned framework/snapshot, with a {nodeId} placeholder for the exact outer Node ID or learning-component ID shown in AS/LC tool text, percent-encoded as one segment. LP relationship links stay copied from LP results. prompts/definitions.py: the first EVIDENCE ACCESS step now also points to the EVIDENCE LINKS. AS/LC tool output, native resource links, rights and limits are unchanged; administrator and comparison prompts unchanged.
+- Identities: service.py 2b6331b0d0884c401c87e5bb134c38e01a48e1eaa2f11bdecc54ba6ae9bf5852; definitions.py 4178566391b0dbdd71320e68fc8beaec0ec3498c10c84de1bf8e8ba4780d9606.
+
+**Actual implementation feedback**
+
+R = data/source_artifacts/learning_progressions/client-recovery-f001/checks (established offline environment). Evidence index SHA256 ace6b73af0e68ccabeb49172438129a9e4b9bdc695bd85da6378e11cbeb419bc; protected inputs unchanged apart from the recorded Reviewer/Tester changes since the DEV-022 entry.
+
+- text-links (R/text_links.py): exit 0, 223 checks. For each of the six packages, a text-only client reads a standard's Node ID from get_standard text and a supporting LC ID from get_learning_components_for_standard text, renders all seven workflows through get_workflow_instructions, finds every evidence family in EVIDENCE LINKS (identical across the seven), substitutes the IDs and reads each of the ten links completely through read_evidence by replaying text-only nextRequest. All 60 reads succeed and equal the native MCP resource bytes and contentSha256 (for example Nigeria standard provenance 3325 bytes, LC provenance 540, unresolved 167, profile 14482; Ghana Mathematics unresolved 42831 bytes).
+- dev025-feedback (rerun of the DEV-025 parity suite): exit 0, 567 checks; native prompt, tool and ordinary dispatch messages identical on all six packages; largest tool envelope 74291 characters, largest message 33383 bytes.
+- regression: pytest tests/ exit 0, 103 passed. Static on both changed modules: black, isort, ruff, mypy, pylint 10.00/10, interrogate 100% — exit 0.
+
+DEV-025 DONE. DEV-022 (smoke derivation from client-visible text, rebuilt 0.4.0 candidate and user-run transports) is next under STEPWISE.

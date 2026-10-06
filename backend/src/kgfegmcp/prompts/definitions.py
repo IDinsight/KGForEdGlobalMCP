@@ -66,7 +66,7 @@ EVIDENCE_ACCESS_STEPS: Final[tuple[str, ...]] = (
     "Read each resource URI you rely on natively when this client can read MCP "
     "resources. Otherwise call read_evidence with "
     '{"request":{"maxContentBytes":16384,"uri":"<exact URI copied from a tool '
-    'result>"}}.',
+    'result or built from EVIDENCE LINKS below>"}}.',
     "Replay page.nextRequest unchanged until page.isComplete is true, then join the "
     "content windows in order; together they reproduce metadata.contentSha256. A "
     "single window is the whole record only when contentStatus is full.",
