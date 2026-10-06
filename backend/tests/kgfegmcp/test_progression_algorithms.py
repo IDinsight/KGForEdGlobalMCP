@@ -1,5 +1,10 @@
 """Independent bounded traversal and directed simple-path acceptance scenarios."""
 
+# Standard Library
+import json
+
+from typing import Any
+
 # Third Party Library
 import pytest
 
@@ -9,9 +14,29 @@ from kgfegmcp.errors import (
     InvalidProgressionRequestError,
     ProgressionResultTooLargeError,
 )
+from kgfegmcp.services.learning_progressions import progression_result_text
 from tests.fixtures.progression_fixtures import Topology, builds
 
 DIAMOND = [("z", "a", "b"), ("a", "a", "c"), ("b", "b", "t"), ("c", "c", "t")]
+
+
+def assert_envelope_bounds(result: Any) -> None:
+    """Independently measure complete text and structured evidence under both ceilings."""
+    text = progression_result_text(result=result)
+    structured = result.model_dump(by_alias=True, mode="json")
+    assert json.loads(text) == structured
+    serialized = json.dumps(
+        {
+            "_meta": None,
+            "content": [{"text": text, "type": "text"}],
+            "isError": False,
+            "structuredContent": structured,
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+    )
+    assert len(serialized) <= 100000
+    assert len(serialized.encode("utf-8")) <= 1048576
 
 
 def test_traversal_keeps_merging_edges(accepted_state: AppState) -> None:
@@ -83,15 +108,29 @@ def test_traversal_depth_frontier_consumes_work(accepted_state: AppState) -> Non
 
 def test_traversal_combination_only_bytes(accepted_state: AppState) -> None:
     """Omit the whole fitting second entry when only the combination is large."""
-    graph = Topology(
-        accepted_state, builds([("a", "a", "b"), ("b", "a", "c")], "😀" * 150000)
-    )
+    pairs = [("a", "a", "b"), ("b", "a", "c")]
+    text = "😀" * 20000
+    for pair in pairs:
+        control = Topology(accepted_state, builds([pair], text)).walk()
+        assert control.scope_complete and control.graph_exhausted
+        assert not control.truncation_reasons
+        assert [e.relationship.relationship_id for e in control.relationships] == [
+            pair[0]
+        ]
+        assert_envelope_bounds(control)
+    graph = Topology(accepted_state, builds(pairs, text))
     result = graph.walk()
     assert result.truncation_reasons == ("byte_limit",)
     assert [e.relationship.relationship_id for e in result.relationships] == ["a"]
+    assert result.relationships[0].relationship is graph.edges["a"]
     assert {n.node_id for n in result.nodes} == {"a", "b"}
+    assert {d.node_id: d.depth for d in result.distances} == {"a": 0, "b": 1}
+    assert result.counters.examined_relationship_count == 2
+    assert result.counters.returned_relationship_count == 1
+    assert result.counters.returned_node_count == 2
     assert not result.scope_complete and not result.graph_exhausted and result.frontier
     assert graph.require_traversal_result_size(result=result) <= 1048576
+    assert_envelope_bounds(result)
 
 
 def test_paths_preserve_alternative_merges(accepted_state: AppState) -> None:
@@ -188,17 +227,29 @@ def test_paths_oversized_entry_rejected(accepted_state: AppState) -> None:
 
 def test_paths_combination_only_bytes(accepted_state: AppState) -> None:
     """Roll back the whole second alternative and all speculative evidence."""
-    graph = Topology(
-        accepted_state,
-        builds(
-            [("a", "a", "b"), ("b", "b", "t"), ("c", "a", "c"), ("d", "c", "t")],
-            "😀" * 75000,
-        ),
-    )
+    pairs = [("a", "a", "b"), ("b", "b", "t"), ("c", "a", "c"), ("d", "c", "t")]
+    text = "😀" * 10000
+    for branch in (pairs[:2], pairs[2:]):
+        control = Topology(accepted_state, builds(branch, text)).paths()
+        assert control.scope_complete and control.graph_exhausted
+        assert not control.truncation_reasons
+        assert [p.relationship_ids for p in control.paths] == [
+            tuple(pair[0] for pair in branch)
+        ]
+        assert_envelope_bounds(control)
+    graph = Topology(accepted_state, builds(pairs, text))
     result = graph.paths()
     assert [p.relationship_ids for p in result.paths] == [("a", "b")]
     assert {n.node_id for n in result.nodes} == {"a", "b", "t"}
     assert {e.relationship.relationship_id for e in result.relationships} == {"a", "b"}
+    assert all(
+        e.relationship is graph.edges[e.relationship.relationship_id]
+        for e in result.relationships
+    )
     assert result.truncation_reasons == ("byte_limit",)
-    assert not result.scope_complete and result.frontier.queued_state_count > 0
+    assert result.counters.examined_relationship_count == 4
+    assert result.counters.returned_path_count == 1
+    assert not result.scope_complete and not result.graph_exhausted
+    assert result.frontier.queued_state_count > 0
     assert graph.require_paths_result_size(result=result) <= 1048576
+    assert_envelope_bounds(result)

@@ -36,7 +36,12 @@ class Topology:
             if e.label == "buildsTowards"
         )
         node = runtime.loaded_package.item_nodes[0]
-        self.metadata = self.service.evidence_metadata(runtime=runtime)
+        metadata = self.service.evidence_metadata(runtime=runtime)
+        # Synthetic topology needs one representative artifact, not the full
+        # accepted package inventory; real-package tests retain that coverage.
+        self.metadata = metadata.model_copy(
+            update={"artifacts": metadata.artifacts[:1]}
+        )
         self.summary = self.service.standard_summary(node=node, runtime=runtime)
         self.evidence = self.service.relationship_evidence(
             relationship=base, runtime=runtime
@@ -81,7 +86,7 @@ class Topology:
         return self.nodes[identifier.node_id]
 
     def evidence_metadata(self, *, runtime: Any) -> Any:
-        """Preserve exact accepted metadata while testing topology only."""
+        """Supply representative synthetic metadata while testing topology only."""
         return self.metadata
 
     def standard_summary(self, *, node: Any, runtime: Any) -> Any:
