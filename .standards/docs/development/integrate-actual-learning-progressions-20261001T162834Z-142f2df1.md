@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Frame 2 Size-Correction Revision — approved 2026-10-06
@@ -1551,7 +1551,7 @@ Share validation/adaptation below MCP rather than invoke decorated native handle
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `DONE` `Depends On`: `DEV-021, DEV-025`
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-021, DEV-025`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
 
 **Current Recovery Assignment — proposed 2026-10-06**
@@ -2324,3 +2324,16 @@ Claims for independent full Tester verification (Assessment FULL/NONE): the 19-t
 Limitations and dependencies, not passing claims: user documentation (guides, references, README counts, packaging/mcpb/README.md still naming 0.3.1, Desktop walkthrough, remote checklist) is Documenter-owned and not updated by Developer; no model call, client composition, Desktop UI workflow, public claude.ai connector acceptance, deployment or publication was performed; Developer checks are implementation feedback, not formal acceptance.
 
 Handoff: forward DEVELOPING -> TESTING for full verification as the downstream rerun of SCOPING-owned Frame 1 (RerunThrough SYNCHRONIZING); the frame stays on the stack. Suggested commit: feat(smoke): verify 19-tool surface, text-only evidence access and 0.4.0 bundle.
+
+### Implementation recovery Frame 2 for DEV-022 — 2026-10-06
+
+Tester routed IMPLEMENTATION Frame 2 (From/ResumeAt TESTING, Owner DEVELOPING): the retained candidate's src/kgfegmcp/cli/smoke_access.py (b6b1a68c…) differs from committed cad4ce04…. User explicitly invoked Developer for the active frame. Entry HEAD 7d7a9a4, clean tree; workflow check passed; no conditional chapter applies. Reopened only DEV-022 (DONE → IN_PROGRESS); plan IN_PROGRESS. Unchanged approved intent; no new plan approval needed.
+
+Cause: commit 2fa83b7 re-wrapped smoke_access.py's module docstring to 88 columns and added three blank lines after the Developer build; executable code is unchanged. The repository's black/isort hooks do not re-wrap docstrings, so the change came from outside the recorded commands (likely an editor formatter or manual edit). Developer's closure check compared archive members with the working tree at build time, not with committed source, so it could not detect a later commit-time change. Comparing every member of the old archive with `git show HEAD:<path>` finds exactly this one differing file; all other 656 members equal HEAD. Correction: rebuild from committed source to a new distinct destination and bind closure to git HEAD as well as the working tree. The old candidate stays as history.
+
+Frame 2 rebuild progress (data/source_artifacts/learning_progressions/client-recovery-dev022-frame2/, new destination; evidence index SHA256 430c8577bd66653cb5bcf27360462f65e95fc55a95fc2200009d81f1422813b5):
+
+- build-mcpb from clean HEAD 7d7a9a43187e864df717d14e9145946caccfc714 (build inputs verified equal to HEAD): exit 0; kgfegmcp-0.4.0-client-recovery-frame2.mcpb, 82176662 bytes, SHA256 170ba6fd9df70ef27e29480c406ecbcab174c0d0c539530fc3e232db0b9e52e4, 657 files, version 0.4.0.
+- checks/closure.py exit 0 (10 checks): archive equals stage (except the packer-omitted .mcpbignore); every member maps to a repository input (backend/fastmcp.json now mapped too) and equals both the working tree and the committed HEAD blob; smoke_access.py is the committed cad4ce04… version; all six package trees and all 522 graph-package files present; no caches, environments, preparation or test trees.
+- in-process shared smoke on committed code: exit 0, summary byte-identical to the earlier run (the reformatting changed no behavior). Static on the four smoke/capabilities modules: all exit 0 (pylint 10.00/10). pytest tests/: exit 0, 103 passed (includes Tester's new cases).
+- Pending user-run (sandbox blocks the uv cache and local port binding): repository STDIO, staged STDIO for the rebuilt bundle, and loopback HTTP, so all transport receipts are bound to committed source.
