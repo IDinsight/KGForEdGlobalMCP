@@ -56,6 +56,7 @@ from kgfegmcp.services.lp_discovery import collection_result, ordered_progressio
 from kgfegmcp.services.lp_models import (
     MAX_PROGRESSION_RESULT_BYTES,
     MAX_STATEMENT_EXCERPT_CHARACTERS,
+    PROGRESSION_DERIVATION_ARTIFACT_NAMES,
     GetLearningProgressionPathsRequest,
     GetLearningProgressionPathsResult,
     GetLearningProgressionRequest,
@@ -232,31 +233,43 @@ class LearningProgressionsService:
         Returns
         -------
         ProgressionMetadata
-            Artifact byte identities, rights, limits, coverage and evidence links.
+            Derivation artifact identities, manifest identity, rights, limits,
+            coverage and evidence links.
+
+        Raises
+        ------
+        CapabilityUnavailableError
+            If stored LP evidence or any derivation artifact is unavailable.
         """
 
         identity = runtime.catalog_package.package_identity
         evidence = runtime.loaded_package.learning_progression_evidence
+        derivation = {
+            str(artifact.logical_name): artifact
+            for artifact in runtime.loaded_package.artifacts
+            if str(artifact.logical_name) in PROGRESSION_DERIVATION_ARTIFACT_NAMES
+        }
 
-        if evidence is None:
+        if evidence is None or len(derivation) != len(
+            PROGRESSION_DERIVATION_ARTIFACT_NAMES
+        ):
             raise CapabilityUnavailableError(
                 message="Stored LP evidence is unavailable."
             )
 
         return ProgressionMetadata(
+            # The manifest hash binds the full inventory; list only what results use.
             artifacts=tuple(
                 ProgressionArtifactIdentity(
-                    logical_name=artifact.logical_name,
-                    sha256=artifact.sha256,
+                    logical_name=derivation[name].logical_name,
+                    sha256=derivation[name].sha256,
                     uri=artifact_uri(
-                        artifact_name=artifact.logical_name,
+                        artifact_name=derivation[name].logical_name,
                         framework_id=identity.framework_id,
                         snapshot_id=identity.snapshot_id,
                     ),
                 )
-                for artifact in sorted(
-                    runtime.loaded_package.artifacts, key=lambda item: item.logical_name
-                )
+                for name in PROGRESSION_DERIVATION_ARTIFACT_NAMES
             ),
             coverage=evidence.coverage,
             manifest_sha256=cast(

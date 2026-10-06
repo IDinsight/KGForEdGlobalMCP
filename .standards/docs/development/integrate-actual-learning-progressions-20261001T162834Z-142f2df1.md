@@ -10,6 +10,25 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 `Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
+## Frame 2 Size-Correction Revision — approved 2026-10-06
+
+Architect returned Frame 2 (RESUME from ARCHITECTING) with the user-selected result-size correction in the architecture's "Result-size correction" section. Restore Suspended Assignment 3 (DEVELOPMENT/NONE). This changes approved behavior of DEV-012 (all five tools' metadata) and DEV-015 (later-path handling), so the plan returns to PROPOSED for explicit approval. STEPWISE, locked style tony, AFTER_IMPLEMENTATION and Current Increment NONE are unchanged. Frame 1 is unchanged.
+
+| Order | Step | Revised observable outcome |
+|---|---|---|
+| 1 | DEV-012 (reopened) | LP query metadata.artifacts lists exactly nodes, relationships, learningProgressionProvenance and learningProgressionProvenanceIndex (logical name, sha256, artifact URI), sorted by logical name, plus a fixed artifactInventoryNotice pointing to manifestUri; manifest hash/URI, package/profile identity and all other fields unchanged. Re-measure real envelopes of all five tools and rerun the DEV-013/014 feedback against the smaller metadata. DEV-013/014 algorithms and cursors do not change and stay DONE unless that rerun shows their outcome unmet. |
+| 2 | DEV-015 (revised) | After at least one selected path, the next path that does not fit (alone or combined) stops selection: return selected paths, add byte_limit, scopeComplete/graphExhausted false, and set nextUnreturnedPath (ProgressionPath shape, IDs only, otherwise null); its edges stay out of the tables. Only an unfittable first path raises progression_result_too_large, now with that path's ordered relationship IDs in bounded details. The path notice explains later paths may exist beyond the stop and the recovery routes. |
+| 3–5 | DEV-024, DEV-025, DEV-022 | Unchanged. |
+
+Local implementation choices (Developer-owned, within the design):
+- Reservation for nextUnreturnedPath uses the pinned package's longest JSON-encoded builds relationship ID and endpoint node ID, precomputed once per package at service construction beside the existing immutable adjacency, times max_depth / max_depth+1. Reserving the 1,024-character type maxima would consume about 51k characters and undo the correction.
+- The stopped path stays counted in frontier.queuedStateCount (existing DEV-015 frontier behavior); nextUnreturnedPath additionally identifies it.
+- The later-path standalone oversize check is removed (it is no longer an error case), superseding the earlier DEV-015 wording edit for that check.
+
+Self-check for both steps: offline Developer feedback at production ceilings, including the Architect's verification target: for every connected ordered pair in all six packages, a max_paths 1 request with depth equal to the shortest stored path length (up to the real 8 hops) returns that complete path under both ceilings; and the known Tamil Nadu default request returns its 2-hop path with byte_limit and nextUnreturnedPath. Plus existing regression tests, changed-module static checks, and real FastMCP text-only calls.
+
+Formal tests: some Tester-owned cases encode the superseded contract and are expected to fail (for example the full artifact list in test_progression_lookup and later-path rejection in test_paths_oversized_entry_rejected). Developer does not edit them. Proposed handling: record each such failure as superseded-contract evidence in the step's self-check, finish DEV-012 and DEV-015, then route one scoped VERIFICATION correction to Tester for both before DEV-024, instead of two separate round trips. Any other formal failure is treated as an implementation defect.
+
 ## Current Recovery Plan — approved 2026-10-06
 
 This section supersedes historical completion, next-action, surface and recovery-route claims below. Recovery Frame 1 is SCOPING-owned, from/resuming at AWAITING_USER_SIGNOFF, with RerunThrough SYNCHRONIZING. Developer is a downstream rerun and does not change that frame. The revised scope has 37 current acceptance IDs; architecture establishes the new text, evidence and workflow contracts.
@@ -557,6 +576,12 @@ DEV-023 is DONE. Plan remains IN_PROGRESS, STEPWISE, locked tony, AFTER_IMPLEMEN
 `Status`: `DONE` `Depends On`: `DEV-023`
 `Acceptance`: `AC-005, AC-009, AC-010, AC-012, AC-018, AC-028, AC-031, AC-033`
 
+**Frame 2 reopening — approved 2026-10-06**
+
+Reopened for the compact derivation-artifact metadata and artifactInventoryNotice described in the Frame 2 Size-Correction Revision. Earlier DEV-012 evidence remains history for the superseded full artifact list.
+
+Frame 2 self-check: PASS — see "Frame 2 compact metadata for DEV-012 — completed" in Plan Notes. Two Tester-owned formal cases encode the superseded contract and fail as expected; they go to Tester in the approved combined correction after DEV-015.
+
 **Current Recovery Assignment — approved 2026-10-06**
 
 Implement the shared ordinary encoder below MCP, canonical alias-keyed JSON (sorted keys, compact separators, ensure_ascii=False, original array order), conservative complete CallToolResult byte/character accounting including isError/metadata and escaping, and the thin five-LP adapter text path. Add compatible effective character-ceiling/continuation metadata while retaining useful public result fields. Exact lookup and shared candidate/indivisible-entry checks must enforce both <=1,048,576 UTF-8 bytes and <=100,000 Unicode code points; failure is progression_result_too_large with a usable read_evidence URI hint. Preserve rights, exact identities, excerpts/disclosures and safe error masking. No unrelated retained-tool text rewrite.
@@ -819,8 +844,12 @@ DEV-014 is DONE. Suggested Conventional Commit: `feat(progressions): add bounded
 
 ### DEV-015 — Implement bounded connecting paths without losing alternatives
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-014`
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-014, DEV-012`
 `Acceptance`: `AC-008, AC-009, AC-010, AC-028, AC-031, AC-033`
+
+**Frame 2 revision — approved 2026-10-06**
+
+Replace whole-request failure on a later oversized path with the path size stop and nextUnreturnedPath; only an unfittable first path fails, with its relationship IDs in details. Depends on the compact metadata from reopened DEV-012 so real envelopes can be measured. See the Frame 2 Size-Correction Revision.
 
 **Current Recovery Assignment — proposed 2026-10-06**
 
@@ -2083,3 +2112,30 @@ At the user's request the finding was re-verified exhaustively against the real 
 - Calibration: that returned 2-hop result has 44486 text characters, 90782 compact wire and 91736 conservative characters; its metadata alone is 33466 compact characters and is carried twice.
 
 Frame 2's persisted reason remains accurate (4+ hop pairs are 2.8–21.5% per package; paths beyond 2–3 hops fail). Architect should use these corrected totals.
+
+### Developer resumption after Frame 2 Architect correction — 2026-10-06
+
+User explicitly invoked Developer after Architect RESUME (From ARCHITECTING). Restored Suspended Assignment 3 (DEVELOPMENT/NONE, former Frame 2 and its exact size reason). Entry HEAD ac0d300ea4e708f978094f73e90949eb6ba39189, clean tree; workflow check passed; no conditional protocol chapter applies. Read the corrected architecture diff, current metadata construction, artifact logical names (all four derivation artifacts exist in every package), ID type bounds (NodeId/RelationshipId up to 1,024 characters) and the domain error details mechanism. The correction materially changes approved DEV-012/DEV-015 behavior, so the plan is PROPOSED with the Frame 2 Size-Correction Revision and awaits explicit approval before implementation. No project implementation was changed in this session.
+
+User explicitly approved the Frame 2 Size-Correction Revision on 2026-10-06, including the combined Tester correction route. Plan APPROVED then IN_PROGRESS; User Style Locked remains true (tony). Cleared only the matching approval blocker. DEV-012 IN_PROGRESS under STEPWISE.
+
+### Frame 2 compact metadata for DEV-012 — completed 2026-10-06
+
+**Implemented outcome**
+
+- lp_models: PROGRESSION_DERIVATION_ARTIFACT_NAMES = learningProgressionProvenance, learningProgressionProvenanceIndex, nodes, relationships (sorted); ProgressionMetadata gains a fixed artifactInventoryNotice pointing to manifestUri/manifestSha256 and native resources/read_evidence.
+- learning_progressions.evidence_metadata lists exactly those four accepted identities (logical name, sha256, artifact URI) in that order and fails with the existing capability_unavailable error if any is missing. Manifest hash/URI, package/profile identity, coverage, limits, notices and links are unchanged. All five tools share this metadata. Accepted packages still hold all 86 artifacts.
+- Identities: lp_models d9dfb855da58a27d5f8c0f45bf874a7ae1f9811b303e23d57f67b5ecc2d0c260; learning_progressions b47a6c341436692f1af654627a6694346942c2a634dbc1070611048e45ab77b1. No other source changed.
+
+**Actual implementation feedback**
+
+R = data/source_artifacts/learning_progressions/client-recovery-dev012-frame2/checks; run via R/run_command.py with the established offline environment (UV_CACHE_DIR in the session temp directory because the sandbox blocks the default uv cache). Developer feedback, not Tester acceptance. R/evidence-index.json SHA256 e390b2cdf21708c37241648f29672c3a5b616f960110802c14bc64990f826602; all 1175 protected inputs unchanged.
+
+- compact (R/compact.py): exit 0, 58 checks. Every package lists exactly the four derivation artifacts with accepted hashes; manifest hash binds the full inventory; notice present. Real FastMCP calls of all five tools (Nigeria) return ordinary text equal to structuredContent with the compact metadata, within both ceilings: exact lookup 20405 characters, direct page 93899 (8 edges), search page 94135 (7 edges), traversal 39829, path 23293.
+- Size probe (R/size-probe.json): metadata now 4512–5182 compact characters (was 30336–33466); empty result envelope 12975–14347 characters (was 66093–72375); single paths of 8–9 hops now fit at maximum per-hop sizes.
+- Reruns of earlier step feedback on the final bytes, copied byte-for-byte into R/dev012, R/dev013, R/dev014 with current protected-input lists: DEV-012 64 checks; DEV-013 121 checks with exhaustive replay of all 8080 edges in 1786 pages plus boundary 89 checks; DEV-014 3510 checks, 406 real queries, traversal wire 39829/55668 characters (was 92457/92748). All exit 0. DEV-013/014 outcomes still hold, so they stay DONE.
+- DEV-013 byte isolation: its fixed 95000-byte scratch ceiling was calibrated to the old metadata, so three edges now fit and no byte stop occurred (retained as dev013-byte-old-calibration); 30000 made a single edge individually oversized (retained as dev013-byte-30000-oversized). The script now derives the ceiling from measured one- and two-edge pages (28146/39342 bytes → 34768) and passes with one whole edge per page and lossless cursor replay.
+- regression: pytest tests/ — 76 passed, 2 failed, both expected superseded-contract cases (Tester-owned, not edited): test_progression_lookup::test_every_exact_edge_preserves_accepted_evidence expects all 86 artifacts in metadata; test_progression_discovery::test_discovery_combination_bytes_preserve_continuation uses a 3000-character projection fixture calibrated so only one edge fit per page under the old metadata (now three fit). Both are queued for the approved combined Tester correction after DEV-015.
+- Static on both changed modules: black, isort (after applying import order; first run retained as isort-unsorted-import), ruff, mypy, pylint 10.00/10, interrogate 100% — exit 0. Feedback suites were rerun after the import reorder; pre-isort runs retained as pre-isort-*.
+
+DEV-012 DONE. DEV-015 is next under STEPWISE and needs explicit continuation; DEV-024/025/022 remain PENDING. Suggested commit: feat(progressions): compact LP result metadata to derivation artifacts.

@@ -32,6 +32,15 @@ from kgfegmcp.tool_results import MAX_TOOL_RESULT_BYTES, ToolResultLimits
 MAX_PROGRESSION_RESULT_BYTES: Final[int] = MAX_TOOL_RESULT_BYTES
 MAX_STATEMENT_EXCERPT_CHARACTERS: Final[int] = 2048
 
+# LP query results are derived from exactly these accepted artifacts; the manifest hash
+# binds the complete inventory, which is not repeated in every result.
+PROGRESSION_DERIVATION_ARTIFACT_NAMES: Final[tuple[str, ...]] = (
+    "learningProgressionProvenance",
+    "learningProgressionProvenanceIndex",
+    "nodes",
+    "relationships",
+)
+
 
 # Selector dependencies precede their discriminated union.
 class StatementCodeStandardIdentifier(FrozenSchema):
@@ -88,6 +97,11 @@ class ProgressionLimits(ToolResultLimits):
 class ProgressionMetadata(FrozenSchema):
     """Carry exact identity, retained coverage and generated-evidence notices."""
 
+    artifact_inventory_notice: str = (
+        "artifacts lists only the accepted artifacts this result is derived from. "
+        "The manifest at manifestUri, bound by manifestSha256, records every accepted "
+        "artifact checksum; read it through native resources or read_evidence."
+    )
     artifacts: tuple[ProgressionArtifactIdentity, ...]
     coverage: CoverageProjection
     generated_origin_notice: str = (
