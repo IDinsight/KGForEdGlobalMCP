@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `REVIEWING_IMPLEMENTATION` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
-`Frame 2 corrected: 0.4.0 candidate rebuilt from committed source (client-recovery-dev022-frame2, archive 170ba6fd); closure binds every member to HEAD; repository/staged STDIO, loopback HTTP and in-process smoke agree. Pop Frame 2; resume full verification.`
+`Kind`: `FORWARD` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
+`Full Tester verification passed for all present-phase ACs on the rebuilt 0.4.0 candidate (170ba6fd): 103 offline cases, CI static, packages, three transports and closure agree; AC-026/027/036/037 pending Documenter. Request IMPLEMENTATION review; Frame 1 continues through SYNCHRONIZING.`
 
 ## Recovery
 

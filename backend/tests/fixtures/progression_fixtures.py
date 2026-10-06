@@ -1,6 +1,9 @@
 """Synthetic topology with accepted evidence shapes and the real byte encoder."""
 
 # Standard Library
+import hashlib
+import json
+
 from collections import defaultdict
 from types import SimpleNamespace
 from typing import Any
@@ -147,3 +150,53 @@ def builds(
         (identifier, source, target, "buildsTowards", text)
         for identifier, source, target in pairs
     ]
+
+
+# Meaning-bearing node properties; serialization, key order and added fields are ignored.
+SEMANTIC_NODE_PROPERTIES = (
+    "caseIdentifierUUID",
+    "description",
+    "gradeLevel",
+    "name",
+    "normalizedStatementType",
+    "statementCode",
+    "statementType",
+)
+
+
+def semantic_baseline(
+    nodes: list[dict[str, Any]], relationships: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Summarize AS/LC identity, text and structural edges independent of bytes."""
+
+    def digest(rows: list[Any]) -> str:
+        """Hash sorted canonical JSON so record order and formatting do not matter."""
+        canonical = json.dumps(sorted(rows), ensure_ascii=False, separators=(",", ":"))
+        return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+    node_rows = [
+        [
+            row["identifier"],
+            sorted(row["labels"]),
+            {
+                key: row["properties"][key]
+                for key in SEMANTIC_NODE_PROPERTIES
+                if key in row["properties"]
+            },
+        ]
+        for row in nodes
+    ]
+    summary: dict[str, Any] = {
+        "nodeCount": len(node_rows),
+        "nodesDigest": digest(node_rows),
+    }
+    # LP edges are excluded: only hierarchy and component support must be preserved.
+    for label in ("hasChild", "supports"):
+        edges = [
+            [row["identifier"], row["source_identifier"], row["target_identifier"]]
+            for row in relationships
+            if row["label"] == label
+        ]
+        summary[f"{label}Count"] = len(edges)
+        summary[f"{label}Digest"] = digest(edges)
+    return summary

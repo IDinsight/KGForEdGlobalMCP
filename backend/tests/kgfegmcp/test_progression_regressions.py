@@ -1,7 +1,6 @@
 """Reused established AS/LC preservation checks, independently executed by Tester."""
 
 # Standard Library
-import hashlib
 import json
 
 from collections import Counter
@@ -21,7 +20,7 @@ from kgfegmcp.services.models import (
     TextStandardsSearchRequest,
 )
 from kgfegmcp.services.statistics import FrameworkStatisticsService
-from tests.fixtures.progression_fixtures import selector
+from tests.fixtures.progression_fixtures import selector, semantic_baseline
 
 
 def test_six_package_standards_components_preserved(accepted_state: AppState) -> None:
@@ -98,21 +97,28 @@ def test_six_package_standards_components_preserved(accepted_state: AppState) ->
         assert all(
             row.value == "hasChild" for row in stats.canonical_relationship_label_counts
         )
+        # Meaning, not bytes: identity/text and hierarchy/support edges equal the
+        # pre-change package; repackaging or appended LP edges do not matter.
         old = baseline[str(identity.framework_id)]
         nodes, edges = runtime.loaded_package.artifact(
             "nodes"
         ), runtime.loaded_package.artifact("relationships")
         assert nodes and edges
-        assert (
-            hashlib.sha256(nodes.resolved_path.read_bytes()).hexdigest()
-            == old["nodesSha256"]
+        current = semantic_baseline(
+            [
+                json.loads(line)
+                for line in nodes.resolved_path.read_text().splitlines()
+                if line
+            ],
+            [
+                json.loads(line)
+                for line in edges.resolved_path.read_text().splitlines()
+                if line
+            ],
         )
-        assert (
-            hashlib.sha256(
-                edges.resolved_path.read_bytes()[: old["edgePrefixBytes"]]
-            ).hexdigest()
-            == old["edgePrefixSha256"]
-        )
+        assert current == {
+            key: value for key, value in old.items() if key != "originalSnapshotId"
+        }
         assert (
             standards.search_standards(
                 TextStandardsSearchRequest(

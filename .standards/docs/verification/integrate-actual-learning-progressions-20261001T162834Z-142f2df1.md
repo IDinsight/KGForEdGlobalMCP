@@ -5,20 +5,78 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 # Verification Report
 
-`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `IN_PROGRESS` `User Style`: `NONE`
+`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `COMPLETE` `User Style`: `NONE`
 `Assessment Purpose`: `FULL` `Assessment Target`: `NONE`
 
-## Current Full Verification — Frame 1 rerun, 2026-10-06
+## Current Full Verification — Frame 1 rerun, completed 2026-10-06
+
+REVERIFY, FULL/NONE. Restored Suspended Assignment 1 on the RESUME from DEVELOPING after Developer corrected IMPLEMENTATION Frame 2 (now popped). Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) remains. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified claim. User Style NONE. Outcome: **FULL Tester gate PASSED**; AC-026/027/036/037 are explicit Documenter dependencies.
+
+## Assessed Inputs
+
+Resume HEAD 4435a9b, clean tree. Since the first attempt's entry (2fa83b7, E1 = …/full-verification/entry-inputs.json, 859 inputs), only STATE, the Developer plan, this report and Tester's committed test_progression_text_only.py (0f3232ba, already assessed) changed; all runtime source, configuration, packages, dependencies and other tests are byte-identical. New candidate: data/source_artifacts/learning_progressions/client-recovery-dev022-frame2/kgfegmcp-0.4.0-client-recovery-frame2.mcpb (SHA256 170ba6fd…, 82176662 bytes, 657 members) and bundle/; client-recovery-dev022 is superseded history. Developer's Frame 2 explanation (post-build docstring re-wrap outside recorded formatters; closure now bound to HEAD blobs) was checked against my own closure below. E2 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/full-verification-resume.
+
+User decision 2026-10-06: replace the brittle byte-hash AS/LC baseline with a semantic one (see Scenario Budget). Tester-changed files: backend/tests/kgfegmcp/test_progression_regressions.py (1ab48342…), backend/tests/fixtures/progression_fixtures.py (95216d66…), backend/tests/fixtures/progression_baseline.json (1417add9…); prior byte baseline retained as E2/progression_baseline-byte-hash-original.json.
+
+## Acceptance Evidence
+
+| AC / technical criterion | Evidence | Disposition |
+| --- | --- | --- |
+| AC-001 | E2/closure.py: 138 copies equal receipt and external originals. | VERIFIED. |
+| AC-002, AC-003, AC-004 | Exact 8080-edge reconciliation; acceptance negatives; six read-only validations (first attempt, unchanged inputs); coverage/needs-review/warnings/validation/unresolved read via resources and read_evidence on all transports. | VERIFIED. |
+| AC-005, AC-006, AC-007, AC-008, AC-009 (incl. Frame 2 criterion) | Lookup/discovery/algorithms/traversal suites, every real shortest connection (6522 pairs), text-only five-tool rows. | VERIFIED. |
+| AC-010, AC-011, AC-012 | Identity/judgment/provenance/policy suites; read_evidence denial parity and continuation re-authorization. | VERIFIED. |
+| AC-013, AC-014, AC-015, AC-016 | Prompt workflow suites, seven-variant native/tool parity, protocol retrieval; administrator/comparison wording by inspection. | VERIFIED (rendering/retrieval; no end-to-end client composition). |
+| AC-017 | Removed surface refusals; obsolete names absent from all transport inventories. | VERIFIED. |
+| AC-018 | test_six_package_standards_components_preserved now compares semantic node identity/text and hasChild/supports edge sets with the pre-change packages, plus existing runtime context/supports/LC/statistics/search/comparison assertions. | VERIFIED. |
+| AC-019 | 19/9/1/14 inventory and capabilities agreement on all transports; separate builds/relates counts in statistics. | VERIFIED. |
+| AC-020, AC-032 | Architecture and client-support assessment inspected. | VERIFIED by inspection. |
+| AC-021, AC-034 | Repository STDIO and loopback HTTP (first attempt, unchanged runtime source) and new staged STDIO on the rebuilt bundle agree on inventory, all tool schema identities, five LP queries, 15 native reads and the full access suite (E2/closure.py). | VERIFIED (local; not end-to-end teaching workflow or public claude.ai). |
+| AC-022, AC-035 | All 657 archive members equal the stage, the working tree and the committed HEAD blobs; stage unchanged by startup; manifest 0.4.0; six packages × 64 shards; staged smoke passes. Shipped README.md still says 17 tools/0.3.1 (Documenter-owned content). | VERIFIED for runtime/evidence/closure; shipped README accuracy PENDING Documenter, after which the archive must be refreshed and closure re-established through the owner route. |
+| AC-023, AC-024, AC-025 | CI suite 103 passed offline, socket guard, no model/paid call; this report accounts for all 37 ACs with executed evidence. | VERIFIED. |
+| AC-028, AC-029, AC-030, AC-031, AC-033 | Text-only five-tool cases; read_evidence and workflow-instruction suites; envelope/combination/oversized cases. | VERIFIED. |
+| AC-026, AC-027, AC-036, AC-037 | Documenter: guides/reference counts (backend and packaging READMEs still 17 tools/0.3.1), maintainer docs, Desktop walkthrough with honest run status, remote checklist, strict build. | PENDING later-role dependencies (Documenter). |
+
+## Scenario Budget
+
+All allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8, evidence.py 6, workflow_instructions.py 8, mcp/tools/workflows.py 8, mcp/tools/learning_progressions.py 5/5; others 5). The semantic AS/LC baseline is a user-approved replacement of the existing preservation scenario (same allocation): the byte check broke on harmless repackaging and assumed LP edges were appended after original bytes. No new scenario or ceiling.
+
+## Execution Evidence
+
+Receipts E2/<label>.command.json (repository cwd).
+- stdio-stage (outside sandbox; sandbox denies the default uv cache to the smoke child, as recorded in the first attempt): exit 0, 19/9/1/14/15.
+- closure: exit 0 — copies, archive/stage/working-tree/HEAD equality for 657 members, stage unchanged after startup, transport agreement (repository STDIO and HTTP from E1, staged STDIO from E2) on five keys.
+- semantic_baseline.py: fixture derived from retired pre-change packages (data/source_artifacts/learning_progressions/dev017/retired/graph_packages), whose nodes bytes equal the old byte baseline. Controls per framework (E2/semantic-baseline-controls.json): reordered/added-field records keep digests; changed text, removed hasChild and contaminating hasChild are each detected.
+- controls/altered-fixture: test fails on an altered hasChild digest (exit 1), passes otherwise.
+- regressions: 2 passed. ci-suite (exact CI command): exit 0, **103 passed** (123.07 s). CI static: isort, black, ruff tests, interrogate, mypy tests, pylint tests 10.00/10 — exit 0; src static results from E1 remain valid (src unchanged).
+- Reused from E1 with unchanged inputs: ci-suite/static src, six package validations, repository STDIO, loopback HTTP.
+- Preservation: no application/config/data/packaging/dependency/owner-artifact change; only the three test/fixture files above and this report.
+
+## Open Findings and Dependencies
+
+- Implementation/upstream/verification defects: NONE. Required present-phase unrun/failed/flaky/uncovered checks: NONE. Blocking question: NONE (budget/baseline decisions recorded).
+- Documenter dependencies AC-026/027/036/037, including the shipped backend/packaging README counts and versions. A README change invalidates archive closure; the final candidate must be refreshed and re-verified before synchronization.
+- Local evidence does not establish an end-to-end teaching workflow, Desktop UI behavior or deployed claude.ai acceptance; those remain user-owned follow-up.
+
+## Resume or Handoff
+
+Full Tester gate passed; report COMPLETE. Hand off TESTING -> REVIEWING_IMPLEMENTATION by FORWARD within Frame 1's rerun route (RerunThrough SYNCHRONIZING); Frame 1 stays on the stack. Reviewer (kind IMPLEMENTATION) should start from this section, E1/E2 receipts, the rebuilt candidate and the routed/corrected history above.
+
+## Historical Full Verification First Attempt
+
+Superseded by the section above; retained as history.
+
+### Prior Full Verification attempt — routed IMPLEMENTATION Frame 2, 2026-10-06
 
 REVERIFY, FULL/NONE, as the downstream rerun of SCOPING-owned Frame 1 (From/ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING), entered by FORWARD from DEVELOPING after Developer's full gate (plan COMPLETE, Current Increment NONE). Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified claim. User Style NONE. Outcome: FULL gate NOT passed — one implementation defect (archive/source closure) routed to Developer; every other current obligation is evidenced or an explicit later-role dependency.
 
-## Assessed Inputs
+#### First-attempt Assessed Inputs
 
 Entry HEAD 2fa83b7, clean tree, empty index. E = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/full-verification. E/entry-inputs.json hashes 859 tracked backend/config/workflow/packaging/docs/graph-package inputs; E/prior-verification.md preserves the previous report. Contract: scope 2eabb26b… (37 current ACs, AC-001..AC-037), architecture 52dbfa4f… incl. Technical Acceptance Criteria and Frame 2 corrections, context 64d9b6d5…, plan (COMPLETE, 19 steps DONE). Candidate distribution data/source_artifacts/learning_progressions/client-recovery-dev022/kgfegmcp-0.4.0-client-recovery.mcpb (SHA256 50189fe9…, 82176664 bytes, 657 members) and sibling bundle/. Developer claims and smoke code are inputs; Tester executions below are independent.
 
 Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR in session temp for in-sandbox runs; COVERAGE_FILE in session temp. Repository STDIO, staged STDIO and loopback HTTP ran outside the sandbox with user approval, because the sandbox denies the default uv cache to the smoke child (E/stdio-sandboxed.* retained: exit 1, `Operation not permitted`) and loopback binding. No model/paid service, deployment, publication or external write; external originals were only read.
 
-## Acceptance Evidence
+#### First-attempt Acceptance Evidence
 
 | AC / technical criterion | Evidence | Disposition |
 | --- | --- | --- |
@@ -42,11 +100,11 @@ Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_
 | AC-025 | This report. | BLOCKED until AC-022/AC-035 closure is re-established. |
 | AC-026, AC-027, AC-036, AC-037 | Documenter: guides/reference counts (backend and packaging READMEs still 17 tools/0.3.1), maintainer docs, Desktop walkthrough, remote checklist, strict build. | PENDING later-role dependencies (Documenter). |
 
-## Scenario Budget
+#### First-attempt Scenario Budget
 
 All historical allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8, evidence.py 6, workflow_instructions.py 8, mcp/tools/workflows.py 8; others 5). New this assessment: `mcp/tools/learning_progressions.py` 5 of 5 (text-only exact, direct, search with cursor replay, traverse, paths); tool_results.py encoder is incidental here (own allocations). No user increase requested. Closure/transport scripts rerun existing distribution allocations.
 
-## Execution Evidence
+#### First-attempt Execution Evidence
 
 Receipts E/<label>.command.json with stdout/stderr hashes; repository cwd.
 - ci-suite: exact CI pytest (`-rsPQ -m "not costs-money" --cov… tests`), exit 0, 98 passed (120.19 s), total coverage 63%.
@@ -58,15 +116,15 @@ Receipts E/<label>.command.json with stdout/stderr hashes; repository cwd.
 - final-suite: exit 0, **103 passed** (60.23 s); mypy tests/ (19 files) and pylint tests/ 10.00/10 rerun after the new file.
 - E/preservation.json: all 859 entry inputs unchanged; only new untracked test_progression_text_only.py.
 
-## Open Findings and Dependencies
+#### First-attempt Open Findings and Dependencies
 
 - **IMPLEMENTATION (Developer), AC-022/AC-035/AC-025:** retained candidate client-recovery-dev022 archive/stage ships src/kgfegmcp/cli/smoke_access.py b6b1a68c… while committed HEAD has cad4ce04…; Developer's plan claims every mapped member equals current input and records b6b1a68c… as the module identity. Reproduce: `python3 E/closure.py`. Required: rebuild a distinct retained candidate from the committed source (this is the second identity drift after commit — DEV-024 had the same pattern — so build/record after the final commit or check the formatter/hook), rerun staged smoke and closure, update records. Behavior is unaffected (AST-equal modulo docstring whitespace), and repository transport/behavior evidence above remains valid for unchanged runtime source.
 - Documenter later dependency: backend and packaging READMEs (shipped in the archive) still state 17 tools/0.3.1; AC-026/027/036/037 pending. Any README change after the rebuild invalidates archive closure again and must be routed so the final candidate matches final shipped instructions (AC-035).
 - No other implementation, upstream or verification defect; no blocking question.
 
-## Resume or Handoff
+#### First-attempt Resume or Handoff
 
-### Suspended Assignment 1
+#### Suspended Assignment 1 (restored and completed)
 
 `Recovery Frame`: `2` `Recovery Reason`: `Retained 0.4.0 candidate is not built from current source: archived/staged src/kgfegmcp/cli/smoke_access.py b6b1a68c differs from committed cad4ce04, contradicting Developer's closure claim (AC-022/AC-035); rebuild from committed source and re-establish closure.`
 `Purpose`: `FULL`
