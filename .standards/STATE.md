@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `REVIEWING_IMPLEMENTATION` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
-`Review F-001 corrected: workflows render exact AS/LC evidence links and per-record templates; smoke derives every link from client-visible text; 0.4.0 candidate rebuilt from HEAD f57640d (15c80166) and all transports agree. Frame 2 RerunThrough TESTING: full re-verification including F-002 text-only AS/LC cases.`
+`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
+`Frame 2 rerun boundary passed: full re-verification on candidate 15c80166 (104 offline cases incl. new text-only AS/LC evidence-link journey for review F-002, CI static, three transports, closure). Resume IMPLEMENTATION review to recheck F-001/F-002; Frame 1 continues.`
 
 ## Recovery
 
@@ -32,12 +32,6 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
-
-### Frame 2
-
-`From`: `REVIEWING_IMPLEMENTATION` `Owner`: `DEVELOPING` `FailureType`: `IMPLEMENTATION`
-`Reason`: `Tool-only clients cannot obtain AS/LC evidence links: get_framework/get_standard/get_learning_component(s) expose them only as resource_link blocks (unresolved not at all) and workflow instructions say to copy URIs from tool results without a construction rule (review F-001, AC-029/AC-030).`
-`ResumeAt`: `REVIEWING_IMPLEMENTATION` `RerunThrough`: `TESTING`
 
 ## Outstanding Obligations
 

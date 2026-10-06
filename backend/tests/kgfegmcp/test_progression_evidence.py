@@ -1,6 +1,7 @@
 """DEV-024 read_evidence windows over native resource content, in process and MCP."""
 
 # Standard Library
+import base64
 import hashlib
 import json
 
@@ -10,6 +11,7 @@ from typing import Any
 import pytest
 
 from fastmcp import Client
+from mcp.types import TextContent, TextResourceContents
 
 # Package Library
 from kgfegmcp.app import create_mcp
@@ -35,6 +37,14 @@ from kgfegmcp.services.lp_models import GetLearningProgressionRequest
 # Architecture diagnostic contract identities (Nigeria package, exact snapshot).
 NIGERIA = "nigeria-nerdc-mathematics-primary-1-3"
 EDGE = "0129f5d5-42fd-52cb-bcf2-ec07c47103e7"
+TARGET = "e399b510-48bb-58ee-abda-61460a5a853b"
+
+
+def text_block(result: Any) -> TextContent:
+    """Return the ordinary text block a tool-only client receives."""
+    block = result.content[0]
+    assert isinstance(block, TextContent)
+    return block
 
 
 def nigeria(state: AppState) -> CatalogPackageRuntime:
@@ -285,3 +295,104 @@ async def test_mcp_rejects_extra_request_fields(
                 {"request": {"offset": 0, "uri": "kgfegmcp://catalog"}},
             )
     assert "offset" in str(failure.value)
+
+
+def evidence_links(message: str) -> dict[str, str]:
+    """Parse the rendered EVIDENCE LINKS block into label -> URI or template."""
+    block = message[message.index("EVIDENCE LINKS") :]
+    return {
+        label: uri
+        for label, _, uri in (
+            line[2:].partition(": ")
+            for line in block.splitlines()
+            if line.startswith("- ") and ": kgfegmcp://" in line
+        )
+    }
+
+
+def text_value(text: str, prefix: str) -> str:
+    """Read one labelled value from ordinary AS/LC tool text."""
+    return next(
+        line.split(":", 1)[1].strip()
+        for line in text.splitlines()
+        if line.strip().startswith(prefix)
+    )
+
+
+async def test_text_only_client_reads_asl_c_evidence_from_links(
+    accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Review F-002: AS/LC evidence is reachable from client-visible text alone."""
+    monkeypatch.setattr("kgfegmcp.app.bootstrap_application", lambda: accepted_state)
+    identity = nigeria(accepted_state).catalog_package.package_identity
+    route = {
+        "frameworkId": str(identity.framework_id),
+        "snapshotId": str(identity.snapshot_id),
+    }
+    target = {"identifierType": "node_id", "nodeId": TARGET}
+    # Both workflows named by the review's failure case.
+    workflows: list[tuple[str, dict[str, Any]]] = [
+        ("learning_progression_support_plan", {"identifier": target}),
+        (
+            "teacher_guide_draft",
+            {"gradeOrStage": "PRIMARY ONE", "topicOrStandard": "numbers"},
+        ),
+    ]
+    async with Client(create_mcp()) as client:
+        messages = []
+        for name, extra in workflows:
+            rendered = await client.call_tool(
+                "get_workflow_instructions",
+                {"request": {**route, **extra, "workflowName": name}},
+            )
+            messages.append(
+                json.loads(text_block(rendered).text)["rendered"]["message"]
+            )
+        links = evidence_links(messages[0])
+        assert links == evidence_links(messages[1])
+        standard = text_block(
+            await client.call_tool(
+                "get_standard", {"request": {**route, "identifier": target}}
+            )
+        ).text
+        components = text_block(
+            await client.call_tool(
+                "get_learning_components_for_standard",
+                {"request": {**route, "identifier": target}},
+            )
+        ).text
+        node_id = text_value(standard, "Node ID:")
+        component_id = text_value(components, "1. Learning component:")
+        uris = [
+            links["Standard provenance"].replace("{nodeId}", node_id),
+            links["Learning component"].replace("{nodeId}", component_id),
+            links["Learning component provenance"].replace("{nodeId}", component_id),
+            links["Interpretation profile"],
+            links["Validation report"],
+            links["Unresolved items"],
+        ]
+        for uri in uris:
+            native = (await client.read_resource(uri))[0]
+            # Native reads return text or base64 blobs; compare original bytes.
+            original = (
+                native.text.encode("utf-8")
+                if isinstance(native, TextResourceContents)
+                else base64.b64decode(native.blob)
+            )
+            request: dict[str, Any] = {"maxContentBytes": 4096, "uri": uri}
+            parts: list[str] = []
+            payload: dict[str, Any] = {}
+            for _ in range(len(original) // 4096 + 2):
+                payload = json.loads(
+                    text_block(
+                        await client.call_tool("read_evidence", {"request": request})
+                    ).text
+                )
+                parts.append(payload["content"])
+                if payload["page"]["nextCursor"] is None:
+                    break
+                request = payload["page"]["nextRequest"]
+            else:
+                pytest.fail(f"Evidence replay did not finish for {uri}")
+            assert "".join(parts).encode("utf-8") == original, uri
+            assert digest(original) == payload["metadata"]["contentSha256"]

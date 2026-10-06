@@ -8,17 +8,65 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `COMPLETE` `User Style`: `NONE`
 `Assessment Purpose`: `FULL` `Assessment Target`: `NONE`
 
-## Current Full Verification — Frame 1 rerun, completed 2026-10-06
+## Current Full Verification — Frame 2 rerun after review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001, 2026-10-06
+
+REVERIFY, FULL/NONE, as the RerunThrough boundary of IMPLEMENTATION Frame 2 (From/ResumeAt REVIEWING_IMPLEMENTATION, Owner DEVELOPING) raised by implementation review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001; also corrects Tester-owned review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002. Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable. User Style NONE. Outcome: **FULL Tester gate PASSED**; .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 corrections are ready for Reviewer recheck (Reviewer owns their status). AC-026/027/036/037 remain Documenter dependencies.
+
+## Assessed Inputs
+
+HEAD a2ee9a0, clean tree at entry. Since the prior full pass (bc6dd21): Developer changed backend/src/kgfegmcp/prompts/service.py (93e05202…, EVIDENCE LINKS rendering), prompts/definitions.py (41785663…), cli/smoke_access.py (7a18f250…, all evidence URIs derived from client-visible text) and rebuilt the candidate data/source_artifacts/learning_progressions/client-recovery-f001-dev022/kgfegmcp-0.4.0-client-recovery-f001.mcpb (SHA256 15c80166…, 82178314 bytes, 657 members); Reviewer added its report/diagnostics. No data/config/packaging/dependency change since 2fa83b7. Review findings read: .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001 and #F-002. E3 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/f002-reverify (entry-inputs.json: 864 inputs). Tester change: backend/tests/kgfegmcp/test_progression_evidence.py (55367197…).
+
+## Acceptance Evidence
+
+| AC / technical criterion | Evidence | Disposition |
+| --- | --- | --- |
+| AC-029, AC-030, AC-016 / review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001 route; .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 correction | New test_text_only_client_reads_asl_c_evidence_from_links: a tool-only client renders learning_progression_support_plan and teacher_guide_draft via get_workflow_instructions (identical EVIDENCE LINKS), reads Node ID from get_standard text and the LC ID from get_learning_components_for_standard text, builds standard provenance, LC, LC provenance links and takes interpretation profile, AS/LC validation and unresolved links from EVIDENCE LINKS, then reads each completely through read_evidence replaying text nextRequest; bytes and contentSha256 equal native MCP reads (text or blob). No server-side constructor used. Control: fails on pre-fix source bc6dd21. Transport smoke now derives all 15 evidence URIs from client-visible text on all three transports. | VERIFIED. |
+| AC-021, AC-034, AC-022, AC-035 | Repository STDIO, staged STDIO (new bundle) and loopback HTTP all pass (19/9/1/14/15, 15 complete evidence reads); E3/closure.py: copies, archive=stage=working tree=HEAD for 657 members, stage unchanged by startup, manifest 0.4.0, transport agreement on inventory/schemas/LP queries/native reads/access. Shipped README still 17 tools/0.3.1. | VERIFIED for runtime/evidence/closure; shipped README accuracy PENDING Documenter, then archive refresh and re-verification. |
+| AC-013, AC-014, AC-015 | Changed rendering re-executed in prompt suites and seven-variant native/tool parity (all pass with the new EVIDENCE LINKS). | VERIFIED. |
+| AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-017, AC-018, AC-019, AC-023, AC-024, AC-025, AC-028, AC-031, AC-033 | Full CI suite 104 passed on current HEAD + Tester test; copies by closure; package validations reused (graph packages/config unchanged since the executed E1 run); prior dispositions in the completed section below otherwise unchanged. | VERIFIED. |
+| AC-020, AC-032 | Architecture and client-support assessment inspected; correction stays within the design's construction-rule option. | VERIFIED by inspection. |
+| AC-026, AC-027, AC-036, AC-037 | Documenter guides/READMEs/walkthrough/checklist/strict build. | PENDING later-role dependencies (Documenter). |
+
+## Scenario Budget
+
+All prior allocations and approved ceilings carried. User explicitly approved on 2026-10-06 `prompts/service.py` 5→6 for the .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 journey; that scenario is charged to prompts/service.py (6/6), mcp/tools/evidence.py (4/5) and definitions.py (1/5). One scenario: one text-only client journey and one outcome (every needed AS/LC evidence record obtainable), with six records read as related assertions. No other increase.
+
+## Execution Evidence
+
+Receipts E3/<label>.command.json (repository cwd).
+- f002-draft: exit 1 on a Tester assumption (interpretation profile is a native blob, not text); corrected to byte comparison; f002-draft2 exit 0 (10 evidence cases).
+- controls/bc6dd21: new test fails (`substring not found`, no EVIDENCE LINKS) on pre-fix source; other evidence cases pass.
+- ci-suite (exact CI command): exit 0, 104 passed (124.55 s). CI static on src and tests: isort, black, ruff, interrogate, mypy src (118) and tests (19), pylint 10.00/10 — all exit 0 after a typing annotation fix in the new test (mypy-tests-initial retained). final-suite: 104 passed (61.70 s).
+- stdio-repo, stdio-stage, http: exit 0 (outside sandbox; uv cache/loopback restrictions as recorded earlier); HTTP server shut down cleanly.
+- closure: exit 0 (sourceDrift empty).
+- Preservation: only test_progression_evidence.py and this report changed; no application/data/config/packaging/owner-artifact edit.
+
+## Open Findings and Dependencies
+
+- Implementation/upstream/verification defects: NONE. Required unrun/failed/flaky/uncovered checks: NONE. Blocking question: NONE.
+- Review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001 (Developer) and .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 (Tester) corrections verified here; Reviewer rechecks and owns their status.
+- Documenter dependencies AC-026/027/036/037, including backend/packaging README counts/versions; a README change requires an archive refresh and closure re-verification before synchronization.
+- Local evidence does not establish Desktop UI behavior, composed teaching output or deployed claude.ai acceptance.
+
+## Resume or Handoff
+
+Full Tester gate passed at Frame 2's RerunThrough boundary: pop Frame 2 and RESUME REVIEWING_IMPLEMENTATION (From TESTING, FailureType NONE); Frame 1 stays. Reviewer (IMPLEMENTATION) rechecks .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 from this section and E3.
+
+## Historical Full Verification Before Review Findings
+
+Superseded by the section above; retained as history.
+
+### Prior Full Verification — completed before review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002, 2026-10-06
 
 REVERIFY, FULL/NONE. Restored Suspended Assignment 1 on the RESUME from DEVELOPING after Developer corrected IMPLEMENTATION Frame 2 (now popped). Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) remains. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified claim. User Style NONE. Outcome: **FULL Tester gate PASSED**; AC-026/027/036/037 are explicit Documenter dependencies.
 
-## Assessed Inputs
+#### Pre-review Assessed Inputs
 
 Resume HEAD 4435a9b, clean tree. Since the first attempt's entry (2fa83b7, E1 = …/full-verification/entry-inputs.json, 859 inputs), only STATE, the Developer plan, this report and Tester's committed test_progression_text_only.py (0f3232ba, already assessed) changed; all runtime source, configuration, packages, dependencies and other tests are byte-identical. New candidate: data/source_artifacts/learning_progressions/client-recovery-dev022-frame2/kgfegmcp-0.4.0-client-recovery-frame2.mcpb (SHA256 170ba6fd…, 82176662 bytes, 657 members) and bundle/; client-recovery-dev022 is superseded history. Developer's Frame 2 explanation (post-build docstring re-wrap outside recorded formatters; closure now bound to HEAD blobs) was checked against my own closure below. E2 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/full-verification-resume.
 
 User decision 2026-10-06: replace the brittle byte-hash AS/LC baseline with a semantic one (see Scenario Budget). Tester-changed files: backend/tests/kgfegmcp/test_progression_regressions.py (1ab48342…), backend/tests/fixtures/progression_fixtures.py (95216d66…), backend/tests/fixtures/progression_baseline.json (1417add9…); prior byte baseline retained as E2/progression_baseline-byte-hash-original.json.
 
-## Acceptance Evidence
+#### Pre-review Acceptance Evidence
 
 | AC / technical criterion | Evidence | Disposition |
 | --- | --- | --- |
@@ -37,11 +85,11 @@ User decision 2026-10-06: replace the brittle byte-hash AS/LC baseline with a se
 | AC-028, AC-029, AC-030, AC-031, AC-033 | Text-only five-tool cases; read_evidence and workflow-instruction suites; envelope/combination/oversized cases. | VERIFIED. |
 | AC-026, AC-027, AC-036, AC-037 | Documenter: guides/reference counts (backend and packaging READMEs still 17 tools/0.3.1), maintainer docs, Desktop walkthrough with honest run status, remote checklist, strict build. | PENDING later-role dependencies (Documenter). |
 
-## Scenario Budget
+#### Pre-review Scenario Budget
 
 All allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8, evidence.py 6, workflow_instructions.py 8, mcp/tools/workflows.py 8, mcp/tools/learning_progressions.py 5/5; others 5). The semantic AS/LC baseline is a user-approved replacement of the existing preservation scenario (same allocation): the byte check broke on harmless repackaging and assumed LP edges were appended after original bytes. No new scenario or ceiling.
 
-## Execution Evidence
+#### Pre-review Execution Evidence
 
 Receipts E2/<label>.command.json (repository cwd).
 - stdio-stage (outside sandbox; sandbox denies the default uv cache to the smoke child, as recorded in the first attempt): exit 0, 19/9/1/14/15.
@@ -52,13 +100,13 @@ Receipts E2/<label>.command.json (repository cwd).
 - Reused from E1 with unchanged inputs: ci-suite/static src, six package validations, repository STDIO, loopback HTTP.
 - Preservation: no application/config/data/packaging/dependency/owner-artifact change; only the three test/fixture files above and this report.
 
-## Open Findings and Dependencies
+#### Pre-review Open Findings and Dependencies
 
 - Implementation/upstream/verification defects: NONE. Required present-phase unrun/failed/flaky/uncovered checks: NONE. Blocking question: NONE (budget/baseline decisions recorded).
 - Documenter dependencies AC-026/027/036/037, including the shipped backend/packaging README counts and versions. A README change invalidates archive closure; the final candidate must be refreshed and re-verified before synchronization.
 - Local evidence does not establish an end-to-end teaching workflow, Desktop UI behavior or deployed claude.ai acceptance; those remain user-owned follow-up.
 
-## Resume or Handoff
+#### Pre-review Resume or Handoff
 
 Full Tester gate passed; report COMPLETE. Hand off TESTING -> REVIEWING_IMPLEMENTATION by FORWARD within Frame 1's rerun route (RerunThrough SYNCHRONIZING); Frame 1 stays on the stack. Reviewer (kind IMPLEMENTATION) should start from this section, E1/E2 receipts, the rebuilt candidate and the routed/corrected history above.
 
