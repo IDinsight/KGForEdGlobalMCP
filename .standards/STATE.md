@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
-`Developer full gate passed for the Frame 1 rerun: all nineteen steps DONE (19 tools/9 prompts/1 resource/14 templates, read_evidence, get_workflow_instructions, 0.4.0 bundle; repository/staged STDIO, loopback HTTP and in-process smoke agree). Request FULL verification of all current ACs; Frame 1 continues through SYNCHRONIZING.`
+`Kind`: `FAILURE` `From`: `TESTING` `FailureType`: `IMPLEMENTATION` `Reason`:
+`Retained 0.4.0 candidate is not built from current source: archived/staged src/kgfegmcp/cli/smoke_access.py b6b1a68c differs from committed cad4ce04, contradicting Developer's closure claim (AC-022/AC-035); rebuild from committed source and re-establish closure.`
 
 ## Recovery
 
@@ -32,6 +32,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
+
+### Frame 2
+
+`From`: `TESTING` `Owner`: `DEVELOPING` `FailureType`: `IMPLEMENTATION`
+`Reason`: `Retained 0.4.0 candidate is not built from current source: archived/staged src/kgfegmcp/cli/smoke_access.py b6b1a68c differs from committed cad4ce04, contradicting Developer's closure claim (AC-022/AC-035); rebuild from committed source and re-establish closure.`
+`ResumeAt`: `TESTING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 

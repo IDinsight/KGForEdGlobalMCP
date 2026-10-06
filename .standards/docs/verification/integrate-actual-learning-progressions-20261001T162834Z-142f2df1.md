@@ -6,19 +6,91 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 # Verification Report
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `IN_PROGRESS` `User Style`: `NONE`
-`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Correct superseded 17-tool/1.3.0 cases; assess DEV-024 read_evidence and DEV-025 seven workflow-instruction variants`
+`Assessment Purpose`: `FULL` `Assessment Target`: `NONE`
 
-## Current Scoped Recovery — Frame 2 access tools, 2026-10-06
+## Current Full Verification — Frame 1 rerun, 2026-10-06
+
+REVERIFY, FULL/NONE, as the downstream rerun of SCOPING-owned Frame 1 (From/ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING), entered by FORWARD from DEVELOPING after Developer's full gate (plan COMPLETE, Current Increment NONE). Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified claim. User Style NONE. Outcome: FULL gate NOT passed — one implementation defect (archive/source closure) routed to Developer; every other current obligation is evidenced or an explicit later-role dependency.
+
+## Assessed Inputs
+
+Entry HEAD 2fa83b7, clean tree, empty index. E = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/full-verification. E/entry-inputs.json hashes 859 tracked backend/config/workflow/packaging/docs/graph-package inputs; E/prior-verification.md preserves the previous report. Contract: scope 2eabb26b… (37 current ACs, AC-001..AC-037), architecture 52dbfa4f… incl. Technical Acceptance Criteria and Frame 2 corrections, context 64d9b6d5…, plan (COMPLETE, 19 steps DONE). Candidate distribution data/source_artifacts/learning_progressions/client-recovery-dev022/kgfegmcp-0.4.0-client-recovery.mcpb (SHA256 50189fe9…, 82176664 bytes, 657 members) and sibling bundle/. Developer claims and smoke code are inputs; Tester executions below are independent.
+
+Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR in session temp for in-sandbox runs; COVERAGE_FILE in session temp. Repository STDIO, staged STDIO and loopback HTTP ran outside the sandbox with user approval, because the sandbox denies the default uv cache to the smoke child (E/stdio-sandboxed.* retained: exit 1, `Operation not permitted`) and loopback binding. No model/paid service, deployment, publication or external write; external originals were only read.
+
+## Acceptance Evidence
+
+| AC / technical criterion | Evidence | Disposition |
+| --- | --- | --- |
+| AC-001 | E/closure.py: all 138 copy-receipt rows (6 frameworks × 23) — destination bytes/size equal receipt and current external originals; source before/after equal. | VERIFIED (current-bytes check, not continuous history). |
+| AC-002 | test_every_exact_edge_preserves_accepted_evidence (8080 IDs: 3039 builds/5041 relates); runtime uses only repository packages (stage runs from its own roots). | VERIFIED. |
+| AC-003 | test_progression_acceptance (count, duplicate, foreign endpoint, builds cycle, identity, malformed summary, missing provenance, strict JSON, checksum); six read-only validations (E/packages.json) valid, no findings, 522 package files unchanged. | VERIFIED. |
+| AC-004 | Coverage/needs-review/unresolved/validation resources and smoke access reports (CBSE needsReviewClaims, Ghana warning pairs) read completely via read_evidence on all three transports; resources tests. | VERIFIED. |
+| AC-005, AC-006, AC-007 | Lookup, discovery (direct/scopes/facets/cursor/zero-match/combination) suites; text-only exact/direct/search rows. | VERIFIED. |
+| AC-008, AC-009 (incl. Frame 2 criterion) | Algorithms suite incl. later-oversized partial and every real shortest connection (6522 pairs, ≤8 hops); traversal oversized cases; text-only traverse/paths rows. | VERIFIED. |
+| AC-010, AC-011, AC-012 | Exact evidence identity/judgments; per-edge trace/hash and resource policy suites; read_evidence denial parity and continuation re-authorization. | VERIFIED. |
+| AC-013, AC-014, AC-015, AC-016 | Prompt workflow suites (caps, disclosures, EVIDENCE ACCESS), native/tool parity for all seven variants, protocol prompt retrieval; administrator/comparison shared wording by inspection. | VERIFIED (rendering/retrieval only; no end-to-end client composition). |
+| AC-017 | Protocol removed-tool/prompt refusals; obsolete workflow name rejected; transport inventories exclude obsolete names. | VERIFIED. |
+| AC-018 | test_progression_regressions (portable pre-change AS/LC identities) and AS/LC smoke reads across transports. | VERIFIED. |
+| AC-019 | Inventory 19/9/1/14 on all transports with capabilities agreement (smoke); separate builds/relates counts in metadata/statistics regressions. | VERIFIED. |
+| AC-020, AC-032 | Architecture decision, alternatives, Frame 2 correction and client-support assessment inspected; implementation reuses existing services/policy. | VERIFIED by inspection. |
+| AC-021, AC-034 | Repository STDIO, staged STDIO and loopback HTTP (E/stdio-repo, stdio-stage, http) all status passed; E/closure.py proves identical inventory, all tool schema identities, five LP queries, 15 native reads and the full access suite (Nigeria diagnostic edge/target provenance, LC provenance, CBSE/Ghana reports, cursor replay, workflow parity, typed errors) across the three. Server stopped; graceful shutdown logged. | VERIFIED (local contracts; not an end-to-end teaching workflow or public claude.ai acceptance). |
+| AC-022, AC-035 | Archive and stage agree on all 657 members; stage unchanged by startup; manifest 0.4.0; six packages × 64 shards; staged smoke passes. **Closure to current source FAILS**: archived/staged src/kgfegmcp/cli/smoke_access.py is b6b1a68c…, committed source is cad4ce04… (E/closure.json sourceDrift). AST-equal apart from docstring whitespace (re-wrap and blank lines), so behavior is unaffected, but the retained candidate is not built from current source and Developer's closure claim is false. Shipped README.md still says 17 tools/0.3.1 (Documenter-owned content). | BLOCKED — IMPLEMENTATION defect routed to Developer; shipped README accuracy PENDING Documenter, which will require another archive refresh. |
+| AC-023, AC-024 | CI command: 98 → final 103 collected passing cases (incl. 5 new text-only), socket guard, no model/paid call; CI workflows trigger and fail on errors. | VERIFIED. |
+| AC-028, AC-031, AC-033 | New test_progression_text_only: five real MCP tools parsed from ordinary text only (identity, statements, judgment confidence/excerpt labels, provenance links, notices, completeness, actual search cursor replay without duplicates, path order/no-continuation); service-level both-ceiling envelope/combination/oversized cases; read_evidence/workflow envelopes. | VERIFIED. |
+| AC-029, AC-030 | read_evidence and get_workflow_instructions formal suites plus three-transport access suite. | VERIFIED. |
+| AC-025 | This report. | BLOCKED until AC-022/AC-035 closure is re-established. |
+| AC-026, AC-027, AC-036, AC-037 | Documenter: guides/reference counts (backend and packaging READMEs still 17 tools/0.3.1), maintainer docs, Desktop walkthrough, remote checklist, strict build. | PENDING later-role dependencies (Documenter). |
+
+## Scenario Budget
+
+All historical allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8, evidence.py 6, workflow_instructions.py 8, mcp/tools/workflows.py 8; others 5). New this assessment: `mcp/tools/learning_progressions.py` 5 of 5 (text-only exact, direct, search with cursor replay, traverse, paths); tool_results.py encoder is incidental here (own allocations). No user increase requested. Closure/transport scripts rerun existing distribution allocations.
+
+## Execution Evidence
+
+Receipts E/<label>.command.json with stdout/stderr hashes; repository cwd.
+- ci-suite: exact CI pytest (`-rsPQ -m "not costs-money" --cov… tests`), exit 0, 98 passed (120.19 s), total coverage 63%.
+- CI static, exact linting.yml commands: isort, black (136 unchanged), ruff src/tests, interrogate 100%, mypy src (118) / tests (18), pylint src/tests 10.00/10 — all exit 0.
+- packages: six read-only validations exit 0; 522 package files unchanged.
+- stdio-repo, stdio-stage (--bundle-root client-recovery-dev022/bundle), http (loopback 127.0.0.1:57193, stopped): exit 0, 19/9/1/14/15.
+- closure-first (assertion stop) then closure: exit 1 solely on smoke_access.py source drift; copies, archive/stage, stage-unchanged, transport agreement all passed before the final assert.
+- text-only-draft: 5 failed on a Tester assertion mistake (wrong judgment field name); corrected; text-only-draft2 5 passed. Initial Black and mypy (TextContent union) failures on the new file corrected (retained text-black-initial, text-mypy-initial).
+- final-suite: exit 0, **103 passed** (60.23 s); mypy tests/ (19 files) and pylint tests/ 10.00/10 rerun after the new file.
+- E/preservation.json: all 859 entry inputs unchanged; only new untracked test_progression_text_only.py.
+
+## Open Findings and Dependencies
+
+- **IMPLEMENTATION (Developer), AC-022/AC-035/AC-025:** retained candidate client-recovery-dev022 archive/stage ships src/kgfegmcp/cli/smoke_access.py b6b1a68c… while committed HEAD has cad4ce04…; Developer's plan claims every mapped member equals current input and records b6b1a68c… as the module identity. Reproduce: `python3 E/closure.py`. Required: rebuild a distinct retained candidate from the committed source (this is the second identity drift after commit — DEV-024 had the same pattern — so build/record after the final commit or check the formatter/hook), rerun staged smoke and closure, update records. Behavior is unaffected (AST-equal modulo docstring whitespace), and repository transport/behavior evidence above remains valid for unchanged runtime source.
+- Documenter later dependency: backend and packaging READMEs (shipped in the archive) still state 17 tools/0.3.1; AC-026/027/036/037 pending. Any README change after the rebuild invalidates archive closure again and must be routed so the final candidate matches final shipped instructions (AC-035).
+- No other implementation, upstream or verification defect; no blocking question.
+
+## Resume or Handoff
+
+### Suspended Assignment 1
+
+`Recovery Frame`: `2` `Recovery Reason`: `Retained 0.4.0 candidate is not built from current source: archived/staged src/kgfegmcp/cli/smoke_access.py b6b1a68c differs from committed cad4ce04, contradicting Developer's closure claim (AC-022/AC-035); rebuild from committed source and re-establish closure.`
+`Purpose`: `FULL`
+`Target`: `NONE`
+`Assessed Inputs`: `HEAD 2fa83b7; E/entry-inputs.json (859 inputs); E/preservation.json; candidate client-recovery-dev022 archive 50189fe9; new test_progression_text_only.py 0f3232ba.`
+`Next Action`: `On RESUME, reload STATE/frames/plan, identify the new candidate and any source changes, rerun closure.py against it plus staged STDIO, reuse ci-suite/static/packages/repository STDIO/HTTP evidence only if runtime source and tests are unchanged, then complete FULL/NONE and hand off to IMPLEMENTATION review.`
+
+Routing: FAILURE TESTING -> DEVELOPING, FailureType IMPLEMENTATION; push Frame 2 (From TESTING, Owner DEVELOPING, ResumeAt TESTING, RerunThrough NONE), preserving Frame 1. Report stays IN_PROGRESS.
+
+## Historical Scoped Frame 2 Access-Tools Assessment
+
+Superseded by the section above; retained as history.
+
+### Prior Current Scoped Recovery — Frame 2 access tools, 2026-10-06
 
 REVERIFY/CORRECTION for active Tester-owned Frame 2, from/resuming DEVELOPING, RerunThrough NONE. Exact reason: Tester-owned formal cases assert the superseded interim surface (17 tools) and prompt library version 1.3.0; read_evidence and get_workflow_instructions make 19 tools and prompts are 1.4.0. Correct them and assess read_evidence and the seven workflow-instruction variants before Developer resumes DEV-022. Developer Suspended Assignment 5 preserves DEVELOPMENT/NONE under this reason. SCOPING-owned Frame 1 (from/resuming AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified session claim. User Style NONE.
 
-## Assessed Inputs
+#### Access-tools Assessed Inputs
 
 Entry HEAD 7a0c897 (DEV-024 5e54e54 and DEV-025 committed), clean tree, empty index. E = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-recovery-access; E/entry-inputs.json hashes 268 tracked source/test/config/packaging/workflow inputs; E/prior-verification.md preserves the previous report. Assessed implementation: resources/evidence.py 8542c9e9…, resources/evidence_models.py a2030346…, mcp/tools/evidence.py 38bc036d…, prompts/workflow_instructions.py 65f6202e…, mcp/tools/workflows.py 79d9a06f…, mcp/register.py 568869c2…, errors.py a3146fe8…, prompts/definitions.py 9e6f1f5b…, prompts/service.py 410a124e…, prompts/models.py 8fc34cee…, pyproject 84193301…, uv.lock fedd1863…, MCPB manifest 3b40f967…; LP services unchanged since the size-correction assessment. Contract: architecture "Tool-accessible evidence contract", "Targeted workflow-instruction contract" and technical criteria for AC-029/030/031 (spec 52dbfa4f…); scope 2eabb26b… and context 64d9b6d5… unchanged; plan 0aabc300… (DEV-024/025 DONE, DEV-022 PENDING, STEPWISE, AFTER_IMPLEMENTATION/NONE). Developer feedback is diagnostic input only.
 
 Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR in session temp (sandbox blocks default cache). Autouse socket guard. No model/paid service, package mutation, deployment or application edit.
 
-## Acceptance Evidence
+#### Access-tools Acceptance Evidence
 
 | AC / technical criterion | Evidence | Disposition |
 | --- | --- | --- |
@@ -38,7 +110,7 @@ Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_
 | AC-025 / independent full acceptance | Scoped correction cannot pass FULL/NONE. | AWAITING_IMPLEMENTATION and subsequent full assessment. |
 | AC-026, AC-027, AC-036, AC-037 / docs/walkthrough/checklist | Documenter final content (packaging/mcpb/README.md still says 0.3.1). | PENDING later-role dependencies (Documenter). |
 
-## Scenario Budget
+#### Access-tools Scenario Budget
 
 All historical allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8; others 5). User explicitly approved on 2026-10-06: `prompts/workflow_instructions.py` 5→8, `mcp/tools/workflows.py` 5→8, `resources/evidence.py` 5→6; all other ceilings unchanged.
 
@@ -51,7 +123,7 @@ All historical allocations and approved ceilings carried (traversal 8, paths 12,
 
 Charged once per materially verified source; evidence_models.py, register.py, errors.py and definitions.py are exercised as schema/registration/constants within those scenarios and not separately charged. Corrections (1.4.0 versions, 19-tool listing, EVIDENCE ACCESS assertions) reuse existing prompt/protocol scenarios; service.py's one-line section composition is observed by those existing scenarios and stays at its recorded 5. No random generator; the seven variants are an explicit finite set.
 
-## Execution Evidence
+#### Access-tools Execution Evidence
 
 All via E/run_check.py from the repository root with the environment above; receipts E/<label>.command.json with stdout/stderr hashes.
 - entry-suite: full configured tests, exit 1, 75 passed/5 failed (86.98 s) — exactly the five superseded cases Developer reported.
@@ -61,13 +133,13 @@ All via E/run_check.py from the repository root with the environment above; rece
 - final-suite: `uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider -m 'not costs-money' tests`, exit 0, **98 passed in 58.94 s** (80 prior + 18 new). Pre-existing pytest-asyncio warning unchanged.
 - E/preservation.json: 266/268 entry inputs unchanged; changed only test_progression_prompts.py and test_progression_protocol.py; new test_progression_evidence.py and test_progression_workflow_tools.py. No application, package, contract, plan, STATE (blocker set and cleared) or other owner edit; index empty.
 
-## Open Findings and Dependencies
+#### Access-tools Open Findings and Dependencies
 
 - Targeted budget question resolved (approved); BlockedOn cleared. Active correction VERIFIED. New implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned obligation: NONE.
 - Developer record discrepancy (for Developer reconciliation on resume, not a behavior defect): DEV-024 plan notes and client-recovery-dev024 evidence-index record resources/evidence.py 79fb8193… and mcp/tools/evidence.py 988e3fa0…, but committed 5e54e54/HEAD bytes are 8542c9e9… and 38bc036d…. Developer feedback therefore is not bound to the delivered bytes; this Tester evidence is on the delivered bytes.
 - Remaining full-gate gaps are only approved unfinished DEV-022 (discovery/capabilities/smoke counts, shared STDIO/HTTP, 0.4.0 archive/stage) and the later FULL/NONE assessment; Documenter dependencies AC-026/027/036/037 (including MCPB README version) unchanged.
 
-## Resume or Handoff
+#### Access-tools Resume or Handoff
 
 Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. Associated with Frame 2's exact reason and Developer Suspended Assignment 5 (DEVELOPMENT/NONE). No Tester assignment was suspended. No downstream role precedes unfinished Developer work, so RerunThrough NONE stands.
 
