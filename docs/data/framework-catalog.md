@@ -14,10 +14,10 @@ For runtime discovery, use `list_frameworks` and `get_framework`.
 | Ghana English Language | Ghana             | BASIC 1–3         | English Language | Adopted        | Partial + prefix    | Tree             |      430 |      430 |      272 |      307 | 0 | 0 | 737 |
 | Ghana Mathematics      | Ghana             | BASIC 4–6         | Mathematics      | Adopted        | Partial + prefix    | Tree             |      302 |      302 |      230 |      273 | 299 | 300 | 1174 |
 | CBSE Science           | India             | Class IX–X        | Science          | Unknown        | Partial, exact only | Multi-parent DAG |      874 |     1109 |      853 |      858 | 0 | 0 | 1967 |
-| Tamil Nadu Mathematics | Tamil Nadu, India | Class-1–5         | Mathematics      | Proposed Draft | Partial + prefix    | Tree             |      255 |      255 |      399 |      419 | 0 | 0 | 674 |
+| Tamil Nadu Mathematics | Tamil Nadu, India | Class-1–5         | Mathematics      | Proposed Draft | Partial + prefix    | Tree             |      255 |      255 |      399 |      419 | 472 | 435 | 1581 |
 | Nigeria Mathematics    | Nigeria           | PRIMARY ONE–THREE | Mathematics      | Adopted        | None                | Tree             |      242 |      242 |      186 |      204 | 189 | 297 | 932 |
 | Rwanda Mathematics     | Rwanda            | P1–P3             | Mathematics      | Adopted        | None                | Tree             |      626 |      626 |      716 |      797 | 0 | 0 | 1423 |
-| **Total**              |                   |                   |                  |                |                     |                  | **2729** | **2964** | **2656** | **2858** | **488** | **597** | **6907** |
+| **Total**              |                   |                   |                  |                |                     |                  | **2729** | **2964** | **2656** | **2858** | **960** | **1032** | **7814** |
 
 Across the six manifests there are **1,439 coded items**, **15 unresolved
 relationships**, and **235 multi-parent targets**. The multi-parent targets are all in
@@ -27,8 +27,8 @@ the CBSE Science package; the unresolved relationships are in the two Ghana pack
     Similar normalized numbers across frameworks do not establish official grade
     equivalence, curricular alignment, or instructional interchangeability.
 
-Nigeria and Ghana Mathematics are migrated, with a combined **488 buildsTowards**
-and **597 relatesTo** edges. The other four packages await migration. The complete rollout targets
+Nigeria, Ghana and Tamil Nadu Mathematics are migrated, with a combined
+**960 buildsTowards** and **1,032 relatesTo** edges. The other three packages await migration. The complete rollout targets
 **3,039 buildsTowards** and **5,041 relatesTo** edges. Update this catalog with each migration;
 `get_capabilities` and `get_framework` remain authoritative at runtime.
 See [rollout and acceptance](../development/lp-migration.md).
@@ -149,7 +149,7 @@ india-tamil-nadu-tnscert-mathematics-classes-1-5
 **Current snapshot**
 
 ```text
-india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+3b9f8f89171e
+india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f
 ```
 
 | Property            | Value                                                           |
@@ -250,8 +250,8 @@ The installed packages use these formats during the staged rollout:
 
 | Packages | Manifest / delivery schema | Profile version / schema | Included domains |
 | --- | --- | --- | --- |
-| Nigeria and Ghana Mathematics | 1.1 / 1.2 | 2.0 / 1.1 | Academic standards, learning components, learning progressions |
-| Other four frameworks | 1.0 / 1.1 | 1.0 / 1.0 | Academic standards, learning components |
+| Nigeria, Ghana and Tamil Nadu Mathematics | 1.1 / 1.2 | 2.0 / 1.1 | Academic standards, learning components, learning progressions |
+| Other three frameworks | 1.0 / 1.1 | 1.0 / 1.0 | Academic standards, learning components |
 
 All six supplied packages currently share these properties:
 
