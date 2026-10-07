@@ -1,0 +1,171 @@
+{
+  "facts": {
+    "final archive unchanged (01df98e1)": {
+      "pass": true,
+      "observed": "01df98e19c8cb89d312bfc9cfccff5f9ce43698000b5f341f212f633d407aec5"
+    },
+    "all 657 archive members still equal the stage": {
+      "pass": true,
+      "observed": []
+    },
+    "E4 closure exit 0": {
+      "pass": true,
+      "observed": 0
+    },
+    "E4 closure stdout hash matches receipt": {
+      "pass": true,
+      "observed": "162a6bd18967de11b33807d51e07e8cd0907355344eeac01da73d3706759847d"
+    },
+    "E4 closure stderr hash matches receipt": {
+      "pass": true,
+      "observed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "E4 stdio-stage exit 0": {
+      "pass": true,
+      "observed": 0
+    },
+    "E4 stdio-stage stdout hash matches receipt": {
+      "pass": true,
+      "observed": "dd221b6448cb11a2f078e71d3f563c56896d17a0bab2f9acfe3632eeac7a8c18"
+    },
+    "E4 stdio-stage stderr hash matches receipt": {
+      "pass": true,
+      "observed": "1753d6a1537c93314b6a5dbfcdc92581913f7995baab05c65dd9ed62028494cd"
+    },
+    "E4 staged run used the final bundle": {
+      "pass": true,
+      "observed": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/data/source_artifacts/learning_progressions/client-recovery-docs-dev022/bundle"
+    },
+    "e4StdioStage passed with 19/9/1/14/15": {
+      "pass": true,
+      "observed": [
+        19,
+        9,
+        1,
+        14,
+        15
+      ]
+    },
+    "e4StdioStage inventory equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e4StdioStage toolSchemaIdentities equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e4StdioStage progressions equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e4StdioStage resourceReads equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e4StdioStage access equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3StdioRepository passed with 19/9/1/14/15": {
+      "pass": true,
+      "observed": [
+        19,
+        9,
+        1,
+        14,
+        15
+      ]
+    },
+    "e3StdioRepository inventory equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3StdioRepository toolSchemaIdentities equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3StdioRepository progressions equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3StdioRepository resourceReads equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3StdioRepository access equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3Http passed with 19/9/1/14/15": {
+      "pass": true,
+      "observed": [
+        19,
+        9,
+        1,
+        14,
+        15
+      ]
+    },
+    "e3Http inventory equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3Http toolSchemaIdentities equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3Http progressions equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3Http resourceReads equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "e3Http access equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "developerStdioStageSameBundle passed with 19/9/1/14/15": {
+      "pass": true,
+      "observed": [
+        19,
+        9,
+        1,
+        14,
+        15
+      ]
+    },
+    "developerStdioStageSameBundle inventory equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "developerStdioStageSameBundle toolSchemaIdentities equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "developerStdioStageSameBundle progressions equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "developerStdioStageSameBundle resourceReads equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "developerStdioStageSameBundle access equals E4 staged run": {
+      "pass": true,
+      "observed": null
+    },
+    "E4 closure binds the final archive with empty drift and README-only delta": {
+      "pass": true,
+      "observed": {
+        "status": "passed",
+        "changedFromVerified15c80166": [
+          "README.md"
+        ],
+        "manifestVersion": "0.4.0"
+      }
+    }
+  },
+  "failures": []
+}

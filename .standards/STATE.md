@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `REVIEWING_FINAL` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
-`Final candidate 01df98e1 independently verified: closure binds all 657 members to HEAD and stage, only README.md differs from verified 15c80166; staged STDIO passes and agrees with repository STDIO/HTTP; unchanged-runtime evidence reused. Resume FINAL_DELIVERABLE review; Frame 1 continues.`
+`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
+`FINAL_DELIVERABLE review COMPLETE for AC-001..AC-037; F-003 resolved (Tester verified final candidate 01df98e1). Request synchronization; Frame 1 continues and pops at the SYNCHRONIZING boundary.`
 
 ## Recovery
 

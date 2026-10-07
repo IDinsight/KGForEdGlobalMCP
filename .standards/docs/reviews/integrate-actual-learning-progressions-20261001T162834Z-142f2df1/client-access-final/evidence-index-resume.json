@@ -1,0 +1,30 @@
+{
+  "HEAD": "5421a22f68a4c89f1f625217c50681d2de686d98",
+  "changedSinceBlockedReport": [
+    ".standards/STATE.md",
+    ".standards/docs/verification/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md"
+  ],
+  "files": {
+    ".standards/STATE.md": "28a8f5823d966af49f2286dc3739d0fa5cab353272c3675468f6b9ed9b37525c",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/check-f003-recheck.py": "c98e1d48011983d0c84d33c2e4e3be6442fa42d2eeb87a72fae3ef3921b64a28",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/f003-recheck-results.json": "42d7bb46a19a3c0cf7f569bfc6c5a2be191d8cf894c974955cb02c4234f3b9d4",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/f003-recheck.command.json": "24c322964429c31fad5f72bd72cca1cb7296d8800757568605505c05346ab67e",
+    ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md": "9b0edb33f7d0abdccf18de94a480ab45bdfcd1655e55e5521a0bf18d04919e82",
+    ".standards/docs/verification/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md": "14aa29263fc8af80660a8a4d4a2d335a8f76643f90056dca0cdbdb930298b444",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/closure.command.json": "096659bb0af0a1a55d6ffc8e1083092a2de35ce8f220263fdb20dcb6a1ae0f75",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/closure.json": "b15365661a4ecc9f7e7de7b94e66c2d4577d7f31a36db3dca8662e35ce2b7555",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/closure.py": "6cb0d5712cb43c1f95d7c49a8cea386bd6ecd92bcce2212bac0da8bcf1426560",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/closure.stdout": "162a6bd18967de11b33807d51e07e8cd0907355344eeac01da73d3706759847d",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/stage-before.json": "5d64e52f508640a4ec6d0c71b632b4c0fb7b7e2e28c8109059adfd023c616568",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/stdio-stage.command.json": "2d4956d0d509da8f4594717841dc8a38296b2c9547b9d458c68a9ee8ca9f439c",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/stdio-stage.stderr": "1753d6a1537c93314b6a5dbfcdc92581913f7995baab05c65dd9ed62028494cd",
+    "data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate/stdio-stage.stdout": "dd221b6448cb11a2f078e71d3f563c56896d17a0bab2f9acfe3632eeac7a8c18"
+  },
+  "reviewerEvidenceChanged": [],
+  "trackedRuntimeTestConfigPackagesListing": {
+    "equalsPrior": true,
+    "files": 683,
+    "sha256": "b1c7f768aa1923a0d8d19c3ce5e535cefbccec7a4eb534c0ac6b46a4958c2ef0"
+  },
+  "trackedTreeClean": "?? .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/check-f003-recheck.py\n?? .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/f003-recheck-results.json\n?? .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/f003-recheck.command.json\n?? .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/f003-recheck.stderr\n?? .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/f003-recheck.stdout\n"
+}
