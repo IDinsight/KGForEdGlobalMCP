@@ -1,6 +1,6 @@
 # Curriculum Knowledge Graph MCP backend
 
-> **LP rollout:** Profile-1.0 packages remain supported. LP examples and full STDIO/HTTP smoke checks require the later dataset. See [rollout and acceptance](../docs/development/lp-migration.md).
+> **LP rollout:** Profile-1.0 packages remain supported. LP examples require the corresponding migrated package; Nigeria is available. Full STDIO/HTTP smoke checks require the completed dataset. See [rollout and acceptance](../docs/development/lp-migration.md).
 
 This package contains the curriculum-agnostic FastMCP application and its ordinary
 domain services. It loads immutable graph packages, builds the accepted catalog and

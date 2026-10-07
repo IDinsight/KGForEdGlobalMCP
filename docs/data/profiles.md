@@ -171,7 +171,7 @@ The profile loader also:
 
 ## Stored progression configuration
 
-The code-first revision retains six active profiles at version `1.0`, schema `1.0`. Each later data PR supplies its matching version `2.0`, schema `1.1` profile. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
+Nigeria Mathematics uses profile version `2.0`, schema `1.1`. The other five active profiles remain at version `1.0`, schema `1.0`; each data PR supplies its matching migrated profile. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
 
 ## Versioning rule
 

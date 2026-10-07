@@ -1,6 +1,6 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** This code-first revision keeps existing standards and learning-component packages. Stored LP queries are registered but report `capability_unavailable` until the corresponding data PR lands. See [rollout and acceptance](docs/development/lp-migration.md).
+> **LP rollout:** Nigeria Mathematics now provides stored LPs. The other five frameworks retain their standards and learning-component packages; stored LP queries report `capability_unavailable` until each corresponding data PR lands. See [rollout and acceptance](docs/development/lp-migration.md).
 
 <!-- Badges -->
 <p align="center">

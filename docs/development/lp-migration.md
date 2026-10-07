@@ -6,6 +6,18 @@ packages. LP tools and prompts are registered, but querying stored LPs on an
 unmigrated package returns capability_unavailable. Existing standards, components,
 comparison, and prompt workflows remain usable.
 
+## Current rollout status
+
+**1 of 6 runtime packages migrated:** Nigeria Mathematics now supplies 189
+buildsTowards and 297 relatesTo relationships, with its matching profile and prompt
+configuration bound to profile version 2.0. The other five runtime packages remain
+on their existing standards and learning-component data. Nigeria's maintained input
+artifacts are deferred to a separate PR.
+
+See the [framework catalog](../data/framework-catalog.md) for the active snapshot
+and installed counts. Dataset acceptance tests still skip until all six migrations
+are complete; package validation and the offline regression suite cover this stage.
+
 ## Current and target formats
 
 | Layer | Code-first checkout | LP package after migration |
