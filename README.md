@@ -1,6 +1,6 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** All six frameworks now provide stored LPs. CBSE Science's maintained input artifacts will follow separately. See [rollout and acceptance](docs/development/lp-migration.md).
+> **LP rollout:** All six frameworks now provide stored LPs. Matching maintained input artifacts are included for all six frameworks. See [rollout and acceptance](docs/development/lp-migration.md).
 
 <!-- Badges -->
 <p align="center">
