@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `AWAITING_USER_SIGNOFF` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,18 +20,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
-`FINAL_DELIVERABLE review COMPLETE for AC-001..AC-037; F-003 resolved (Tester verified final candidate 01df98e1). Request synchronization; Frame 1 continues and pops at the SYNCHRONIZING boundary.`
+`Kind`: `RESUME` `From`: `SYNCHRONIZING` `FailureType`: `NONE` `Reason`:
+`Synchronization COMPLETE for AC-001..AC-037 and final 0.4.0 candidate 01df98e1; Frame 1 rerun boundary passed, popped and resumed. Await explicit user sign-off, rework or cancellation.`
 
 ## Recovery
 
-`Active`: `true`
-
-### Frame 1
-
-`From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
-`Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
-`ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
+`Active`: `false`
 
 ## Outstanding Obligations
 

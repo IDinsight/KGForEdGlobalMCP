@@ -10,6 +10,93 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 ## Assessed Inputs
 
+**Client-access rerun, 2026-10-06 (current).** Entered SYNCHRONIZING by FORWARD from REVIEWING_FINAL (FINAL_DELIVERABLE COMPLETE) inside SCOPING-owned Frame 1 (From/ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING). This role is that frame's rerun boundary, not its owner. STANDARD/BROWNFIELD. No blocker, pending cadence, baseline reconciliation, promotion or outstanding obligation, so no conditional protocol chapter is required; the user-decisions chapter was read only to state the sign-off actions accurately. Current acceptance inventory: AC-001..AC-037, no retired IDs. At entry `node .standards/bin/check.mjs` reported 10 problems, all in this record (COMPLETE without AC-028..AC-037), so it was reopened. The 2026-10-03 conclusion is kept at the end as history; it covered AC-001..AC-027 and the superseded 0.3.1 candidate only.
+
+Read: protocol, MODE and STATE; the scope (37 IDs, REPLAN observations, invalidation route); the architecture (client-support assessment, Frame 2 size correction, text/evidence/workflow contracts, Acceptance Coverage, Technical Acceptance Criteria); the plan header, every step status and the 2026-10-06 notes; the current and historical verification sections; both review reports; the documentation record; `docs/getting-started/claude-clients.md`; the offered candidate and the owner receipts named below.
+
+Comparison basis:
+
+- Rework range `19f47ae` (the pre-REPLAN AWAITING_USER_SIGNOFF commit) to HEAD `93ff0e0cc10547f77647e1101feacfcd20628523`: 59 deliverable paths outside `.standards/` (12 added, 47 modified, no deletions or moves): runtime, tests, versions, documentation, READMEs and `mkdocs.yml`. The final review's count of 60 also includes STATE. Accepted packages, configuration and CONTEXT did not change in this range. The original implementation against Auditor baseline `9d5c9a0` is reconciled in the history below and is unchanged since.
+- Since the final review's entry `e837818`: only STATE, the verification report (Tester correction), the final review and its own evidence changed (42 paths). Since the candidate build HEAD `4fb23fe`: nothing outside `.standards/`. Since the Tester-assessed runtime `a2ee9a0`: runtime, configuration, packages, lock, manifest and CI are unchanged; tests changed only in Tester's assessed `backend/tests/kgfegmcp/test_progression_evidence.py` (`55367197…`); everything else is documentation.
+- Entry tree clean, index empty, no unmerged paths. The only dirty or untracked files are this record and its `client-access-20261006/` receipts.
+- Offered distribution: `data/source_artifacts/learning_progressions/client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb` (SHA256 `01df98e19c8cb89d312bfc9cfccff5f9ce43698000b5f341f212f633d407aec5`, 82,178,548 bytes, 657 members) and its sibling `bundle/`. The Tester-verified `client-recovery-f001-dev022` archive (`15c80166…`) and earlier 0.4.0 and 0.3.1 candidates stay on disk as history and are not offered.
+
+Current identities (SHA256). Each equals the identity its consumers bound:
+
+| Input | SHA256 | Bound by |
+| --- | --- | --- |
+| `.standards/CONTEXT.md` | `64d9b6d529b092773943fb3eb8ee5b9b56f9cde4b94427926a7557ce1c7be4f5` | every rerun owner |
+| [Scope](../scope/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md) | `2eabb26b03463cb85dbd93464f26a8fbd5e9b6ebf0aa805699b4a2f3e313ea71` | Architect, Tester, both reviews, Documenter |
+| [Architecture](../specs/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md) | `52dbfa4f5cfb1caac98047e3cc6a39c5e0b2c1080555c4653709f122a018daa1` | Tester, both reviews, Documenter |
+| [Development plan](../development/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md) | `76eb7b134fdc3d904944c93a1d44b7776c1f41f635c10b553abb3b1c532ef6e3` | Documenter resume, final review |
+| [Verification report](../verification/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md) | `14aa29263fc8af80660a8a4d4a2d335a8f76643f90056dca0cdbdb930298b444` | final review resume |
+| [Implementation review](../reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md) | `e747796689cd2f4717ea22af49d272344c600d95b7b29dff748815de8ff109b6` | Documenter, final review |
+| [Documentation record](../documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md) | `f01b7cf5e87fdb49ec343d780ef07fd20c82f3fe7e098bbecd25300112b99209` | final review |
+| [Final review](../reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md), committed at `93ff0e0` | `b503f53a23629762dbaaf85c468d472fbf1365d3afce5a6dbd18fcad535ac120` | this record |
+| `.standards/STATE.md` at entry | `56151472dad69bf6edb57da9a7abd2a358326b1ef00825f25408ecb6020c4b31` | this record |
+
+Provenance, visible cycle fields and review kinds match Active Work and the fixed paths. The plan is COMPLETE with all 19 approved steps DONE, AFTER_IMPLEMENTATION and Current Increment NONE. The verification report is COMPLETE, FULL/NONE. Both reviews and the documentation record are COMPLETE, and every review finding and documentation entry is RESOLVED.
+
+Dependencies and execution assumptions: server and MCPB 0.4.0, prompt library 1.4.0, profiles 2.0, Python `>=3.13,<3.14` with locked FastMCP 3.4.4. `backend/pyproject.toml` `84193301…`, `backend/uv.lock` `fedd1863…` and `packaging/mcpb/manifest.json` `3b40f967…` are unchanged since the Tester-assessed runtime. Owner executions used the locked offline environment (`uv --locked --offline --no-sync`); transport and staged runs ran outside the sandbox with user approval, as their owners recorded.
+
+Workflow context: SYNCHRONIZING after FORWARD from REVIEWING_FINAL, with only Frame 1 on the stack, outstanding obligations inactive, and BaselineReconciliation, PromotionReason, AuditTarget, BlockedOn and PendingVerificationCadence all NONE. STATE stays authoritative for routing. This record, its receipts and the legal STATE transition are excluded from deliverable identity, so saving them does not invalidate the assessed inputs.
+
+## Completion and Evidence References
+
+The rows refer to existing same-ID evidence and to the architecture's Acceptance Coverage, Interfaces and Contracts and Technical Acceptance Criteria, including the Frame 2 size criteria for AC-008, AC-009, AC-028 and AC-031. They do not restate acceptance meaning or replace formal verification or review. "Applies" means the evidence was produced on inputs byte-identical to the offered deliverable, as the checks below establish.
+
+| Current IDs / design boundary | Completion and evidence references | Why it applies to the offered deliverable |
+| --- | --- | --- |
+| AC-001, AC-002, AC-003, AC-004 / copy, packages, acceptance, notices | DEV-001–DEV-005 and DEV-023; Tester E4 closure (138 copies against the receipt and the external originals), E1 six read-only package validations, the 8,080-edge reconciliation in the 104-case suite; both reviews' rows. | Packages, configuration and copies are unchanged since the original implementation. Synchronizer rehashed the 138 local copies against the receipt (`e61d67b0…`), verified every declared manifest checksum inside the archive and totals of 3,039 buildsTowards and 5,041 relatesTo. The E4 staged access suite reports CBSE `needsReviewClaims` 1 and Ghana unresolved warning pairs 141 and 10. |
+| AC-005, AC-006, AC-007, AC-008, AC-009 / queries, bounds, continuation, Frame 2 size criteria | DEV-012–DEV-015 under the Frame 2 revision; Tester text-only five-tool cases, all 6,522 real shortest connections and cursor replay; implementation review full discovery replay and maximum-bound traversal and path checks; final review walkthrough replays (27 pages of 7 edges). | Runtime and tests are unchanged since those executions, apart from Tester's assessed evidence test; the archive equals HEAD. |
+| AC-010, AC-011, AC-012 / identity, origin, provenance, rights | DEV-016 and DEV-024; Tester evidence suites (lossless windows, denial parity, continuation re-authorization); implementation review (18,507 readable and 18 denied URIs); final review (12,275-byte provenance through `read_evidence`, bulk denial). | Same runtime and packages; all six packages ship 64 provenance shards with matching checksums. |
+| AC-013, AC-014, AC-015, AC-016 / workflows | DEV-018–DEV-021 and DEV-025; Tester prompt suites and seven-variant native/tool parity; implementation review EVIDENCE LINKS checks on all six packages; final review parity rerun. | Renderers unchanged. This is rendering and retrieval evidence; composed output is outside local guarantees and the docs say so. |
+| AC-017, AC-018, AC-019 / removal, AS/LC preservation, inventory | DEV-017, DEV-021 and DEV-022; Tester refusals and the user-approved semantic AS/LC baseline; both reviews; 19 tools, 9 prompts, 1 fixed resource and 14 templates in the E3, E4 and Developer runs. | Synchronizer scan: no removed hypothesis name in tracked runtime or configuration or in maintained docs, except one smoke assertion that `inferred_progression_hypothesis` is rejected (`backend/src/kgfegmcp/cli/smoke_access.py:534`), which is AC-017 evidence. |
+| AC-020, AC-032 / proportionate design and client-support assessment | Architecture Decision, support matrix, alternatives and Frame 2 rationale; inspected by Tester and both reviews. | Commit order shows the support assessment (`75fa26f`) and the Frame 2 correction (`ac0d300`) before the implementation they govern. The architecture is unchanged since. |
+| AC-021, AC-034 / shared STDIO and local HTTP | Tester E3 repository STDIO and loopback HTTP (exit 0, 19/9/1/14/15): diagnostic edge `0129f5d5-42fd-52cb-bcf2-ec07c47103e7` and target `e399b510-48bb-58ee-abda-61460a5a853b`, AS/LC links taken from text, CBSE and Ghana reports, cursor replay, workflow parity, typed errors. | Runtime is byte-identical to HEAD, and the E4 staged run equals both on inventory, schema identities, progression queries, native reads and the access suite. This is local evidence, not public-client acceptance. |
+| AC-022, AC-035 / retained 0.4.0 distribution | DEV-022 documentation-driven rebuild (closure, staged STDIO and stage agreement exit 0; evidence index `03882557…`); Tester E4 closure and staged STDIO; final review Checks 6 and 9 and `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-003`. | Synchronizer checked independently: archive identity; 657 unique, safe members equal to the HEAD blobs, the working tree and the stage; no tracked runtime input missing; stage extras limited to `.mcpbignore` and the startup `.venv` and egg-info; README is the only difference from `15c80166…` and equals `backend/README.md` (`9ce0fc15…`, 19 tools, 0.4.0); manifest 0.4.0. Nothing was published or deployed. |
+| AC-023, AC-024, AC-025 / meaningful, offline, independent verification | Tester E3 CI suite and final suite (104 passed) and CI static checks (isort, black, ruff, interrogate, mypy, pylint), all exit 0; socket guard; verification report COMPLETE FULL/NONE naming the final candidate; final review's independent rerun (104 passed). | Every relied-on receipt exited 0 with matching log hashes, and its test, runtime and lock inputs equal HEAD. |
+| AC-028, AC-029, AC-030, AC-031, AC-033 / client access | DEV-012–DEV-015, DEV-024 and DEV-025; Tester text-only, `read_evidence`, workflow-instruction and text-only AS/LC link-journey cases; `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001` and `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002` resolved; final review walkthrough replays. | Same runtime and tests as assessed. |
+| AC-026, AC-027, AC-036, AC-037 / documentation, walkthrough, remote checklist | Documenter record, its 2026-10-06 sections and `.standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md#DOC-002`; strict build and checker receipts (77 tool calls, 45 pages, 5,098 local links); final review Checks 3–5 and 7 (owner checker byte-identical, 33 walkthrough claims, obsolete scan). | All 51 documentation identities equal the Documenter's binding. The docs state 19 tools and 0.4.0, the walkthrough uses the exact diagnostic IDs, and run status is honest: Desktop 0.4.0 "Prepared; not yet run in Desktop", claude.ai "Untested". |
+
+Final review applicability: the [final review](../reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md) is COMPLETE at `93ff0e0` for this candidate. Its resume identities match current content except its own completion and STATE, all 32 Reviewer receipts in its entry index are unchanged, and its seven command receipts met their expected exits with matching logs. It assessed this candidate, the implementation review (COMPLETE at `b287810`; runtime unchanged since) and the Tester's final-candidate verification, so its conclusion applies.
+
+Earlier later-role dependencies are discharged under the same IDs. The verification report's pending AC-026, AC-027, AC-036 and AC-037 are covered by the Documenter record and the final review. The implementation review's AC-026, AC-027, AC-036 and AC-037, and the shipped-README part of AC-035, are covered by the Documenter, the DEV-022 rebuild, Tester E4 and the final review. The Documenter's open question on Tester coverage of the rebuilt candidate was settled by the `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-003` route. Historical pending markers stay as their owners wrote them.
+
+Synchronizer checks ran on 2026-10-06 at `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP` with system Python 3.11.6 (standard library only), `UV_OFFLINE=1`, `PYTHONDONTWRITEBYTECODE=1` and `PATHS_PROJECT_DIR` set. Receipts in [client-access-20261006/](client-access-20261006/) record argv, cwd, environment, exit, duration and log hashes. No test, server, model or network call was made.
+
+- `python3 .standards/docs/synchronization/client-access-20261006/reconcile.py` (SHA256 `a7e78597408d65e827e5d9d8cb5142491b88fe79632177c8961d06271a43543f`) through `run_check.py`, label `reconcile-final`, immediately before this conclusion: exit 0, 96 checks, no failures ([results](client-access-20261006/reconcile-results.json), `c4014de4…`). It covers Git state and ranges, record provenance, status and findings, STATE and MODE, AC accounting in every current section, the Reviewer, Documenter, Tester and Developer receipt bindings, the candidate closure above, the copy receipt and the obsolete scans. The earlier label `reconcile-2` gave identical results apart from the list of this role's own files ([kept](client-access-20261006/reconcile-2-results.json)).
+- Superseded attempt, label `reconcile`: exit 1 on one check only. My obsolete-name pattern counted the smoke's rejection assertion as a leftover. I changed the harness to report such assertions separately, without loosening any other check. Results kept as [reconcile-initial-results.json](client-access-20261006/reconcile-initial-results.json).
+- `node .standards/bin/check.mjs` and `git diff --check`: exit 0 while in progress (labels `workflow-check-in-progress`, `diff-check-in-progress`). They are rerun on this persisted record as `workflow-check-final` and `diff-check-final` before the STATE transition, which proceeds only if both exit 0.
+
+The 2026-10-03 synchronization receipts beside this record describe the 0.3.1 deliverable only and are not reused as current evidence.
+
+## Discrepancies and Dispositions
+
+NONE. No unresolved material inconsistency, missing artifact, acceptance-coverage gap or reconciliation question was found. No D entry is created for resolved owner findings, permitted historical pending markers or the non-material snapshots listed below.
+
+## Limitations and Remaining Work
+
+- Not repeated by Synchronizer: the formal suite, static, package, transport, strict-build and documentation-checker runs. Their receipts apply because their inputs are byte-identical to the offered deliverable; these reconciliation checks establish consistency, not fresh verification. External source originals were not reread here; Tester E4 closure read and matched them at 2026-10-07T01:33Z.
+- Not validated by anyone yet: the 0.4.0 Claude Desktop walkthrough, the claude.ai connector (the hosted service is not updated), a composed teaching workflow, external links, deployment and pedagogical quality. The scope makes these user-owned follow-ups, and AC-036 and AC-037 require a prepared walkthrough and checklist with honest status, which the docs provide.
+- Non-material snapshots that change no evidence or completion claim: the plan's "Current Recovery Plan" paragraph still says "DEV-022 remains PENDING", while the plan header, all 19 step statuses and the later dated notes record completion (the final review noted the same). The documentation record's 2026-10-06 disposition rows for AC-026, AC-035 and AC-037 still say pending or Open for `.standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md#DOC-002`, which that record resolves in the entry itself and in its dated conclusion. Their owners may tidy them later.
+- The archives, stages and Tester and Developer receipts live in the ignored `data/source_artifacts/` folder, so a fresh clone does not contain them. Keep them until sign-off so these conclusions can be rechecked.
+- Blocking question: NONE. `Active Work.BlockedOn` stays NONE.
+
+## Resume and Synchronization Conclusion
+
+**COMPLETE: work can proceed to user sign-off.** The current contracts, implementation, verification, both reviews, documentation and the offered 0.4.0 bundle agree, and every current AC (AC-001..AC-037) and relevant technical criterion has applicable owner evidence. The full Synchronizer gate passes, and no discrepancy, blocker or Synchronizer obligation remains.
+
+Recovery: SYNCHRONIZING is Frame 1's RerunThrough boundary. Pop Frame 1 and RESUME to AWAITING_USER_SIGNOFF (From SYNCHRONIZING, FailureType NONE) instead of taking a forward handoff. The stack is then empty, outstanding obligations are inactive and BaselineReconciliation is NONE, so Standard Cycle Completion holds. Readiness is not acceptance: the next action is the user's choice to sign off, request rework or cancel. Deployment and remote acceptance stay user-owned.
+
+On resumption or at sign-off: reload STATE, rerun `reconcile.py` through `run_check.py` under a new label and compare with these results (its STATE checks expect SYNCHRONIZING, so they will report the later state by design), then reopen this conclusion and route any newly invalidated owner evidence.
+
+## Historical Synchronization — 2026-10-03 (superseded)
+
+Kept verbatim with demoted headings. It covered AC-001..AC-027 and the 0.3.1 candidate `adb10a43…` and is not a current claim.
+
+### Assessed Inputs
+
 Assessment date 2026-10-03 (America/Detroit), STANDARD/BROWNFIELD. Auditor-established baseline `9d5c9a0` through HEAD `c39e8971bbcb4f7264802d7e982312b1f9a7fa4c` is the comparison range: the initial audit precedes this cycle's implementation. It is not an assumed default branch or HEAD-only diff. [Entry identities](integrate-actual-learning-progressions-20261001T162834Z-142f2df1-inputs.json) preserve 1,318 current inputs and the exact two changes since final-review entry: completion of that owner's final report and the legal STATE handoff. [Final identities](integrate-actual-learning-progressions-20261001T162834Z-142f2df1-final-inputs.json), SHA256 `73e67b0b69f0edb437691d316bacafe37416025de78849cdb4cf3c832743759d`, bind 1,346 deliverable/supporting inputs including the completed final review and its new receipts. All match immediately before this conclusion.
 
 Read Active Work, protocol/reading guide, MODE/STATE, project instructions/context, scope/design, relevant approved Developer steps and recovery/completion evidence, full verification, both review kinds, Documenter's current and superseded evidence, relevant guides/maintainer instructions, implementation adapters/service boundaries, test isolation and CI. No conditional protocol chapter applies. No prior synchronization record existed; safe fixed location was checked and the runtime artifact initializer created matching SYNCHRONIZATION provenance. No selected Synchronizer user style; Developer's locked tony style remains confined to its plan.
@@ -37,7 +124,7 @@ Dependencies/execution assumptions: Python 3.13.9, FastMCP 3.4.4, package 0.3.1,
 
 Workflow context: SYNCHRONIZING, FORWARD from REVIEWING_FINAL, recovery and outstanding obligations inactive; baseline reconciliation, promotion, audit target, user blocker and pending cadence NONE. Documenter completed the earlier Developer-planned DOCUMENTING rerun boundary and resumed final review; the Reviewer reassessed both original findings before handing off here. STATE remains authoritative for routing. Its legal coordination and this record's own progress/log/receipt writes are excluded from recursive deliverable stability; they do not invalidate unchanged owner evidence.
 
-## Completion and Evidence References
+### Completion and Evidence References
 
 The following refers to existing same-ID evidence and the architecture's Acceptance Coverage, detailed Interfaces and Contracts, and Technical Acceptance Criteria. It does not replace scope meaning, formal verification or either review. Current final review's Contract and Evidence Assessment independently covers every ID/design criterion and the assembled bundle. Rehashed owner inputs, receipts and current distribution show that its conclusion and supporting implementation review still apply.
 
@@ -64,11 +151,11 @@ Actual Synchronizer reconciliation checks ran at `/Users/tzz/Projects/private/id
 
 Superseded evidence remains traceable: original traversal failure, fixture lint/relocation evidence, old bundle README and stale documentation parser/hash claims are preserved by their owners. Current corrections have their respective owner evidence/reviews. Earlier documentation/parser receipts and old archive closure are not reused as current passes. This reconciliation creates no replacement tests, review findings or acceptance ledger.
 
-## Discrepancies and Dispositions
+### Discrepancies and Dispositions
 
 NONE. No unresolved material inconsistency, missing required artifact, current-coverage gap or reconciliation question was established. No D entry is manufactured for resolved historical owner findings or permitted historical pending markers.
 
-## Limitations and Remaining Work
+### Limitations and Remaining Work
 
 No required local gate check or unresolved owner/user action remains before sign-off readiness. Actual formal suite/static/package/transport and strict/example documentation executions were not repeated by Synchronizer: their retained receipts and unchanged assessed inputs establish applicability. New checks above establish consistency; they do not certify fresh formal verification or review.
 
@@ -76,7 +163,7 @@ No hosted endpoint/deployment/publication, remote CI, external-client installati
 
 Raw copies/formal logs/retained stage intentionally remain local ignored evidence and were accessible/rehashed in this checkout; a fresh clone contains tracked runtime/rebuild inputs and repeatable tests, not all historical logs or this local archive. Preserve the retained evidence for later sign-off revalidation. No user blocker; Active Work.BlockedOn NONE. Readiness is not deployment approval or user acceptance.
 
-## Resume and Synchronization Conclusion
+### Resume and Synchronization Conclusion
 
 Work can proceed to user sign-off: current-cycle contracts, implementation, verification, both reviews, documentation and assembled distribution agree; every current acceptance/design criterion has sufficient applicable owner evidence. The full Synchronizer gate passes. Both historical final-review findings are resolved by Reviewer, later documentation dependencies are discharged by their owner evidence, and no discrepancy, blocker or Synchronizer obligation remains.
 

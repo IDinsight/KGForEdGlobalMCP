@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "node",
+    ".standards/bin/check.mjs"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "durationSeconds": 0.186,
+  "environment": {
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_OFFLINE": "1"
+  },
+  "exitCode": 0,
+  "expectedExit": 0,
+  "logs": {
+    "stdout": {
+      "path": ".standards/docs/synchronization/client-access-20261006/workflow-check-in-progress.stdout",
+      "sha256": "578e7438bcb31b0092772cc9fe689470d9a071b33ef33b24d9b6b03ece38745c"
+    },
+    "stderr": {
+      "path": ".standards/docs/synchronization/client-access-20261006/workflow-check-in-progress.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "startedAtUtc": "2026-10-07T01:50:12.128173+00:00"
+}
