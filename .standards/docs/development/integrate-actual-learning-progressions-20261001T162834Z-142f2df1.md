@@ -7,10 +7,10 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `PROPOSED` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
-## Frame 1 Desktop Rework Revision — proposed 2026-10-07
+## Frame 1 Desktop Rework Revision — approved 2026-10-07
 
 Recovery Frame 1 (Owner ARCHITECTING, from/resuming at AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) reruns Developer downstream after the Desktop-testing rework. Architecture sections "Desktop rework correction", "Curriculum-review scans", "Per-kind direct calls", "Discovery of included graph types and LP availability" and "Component citation text" (Build Plan 7–10) define the new contracts. They change public text, a catalog/capabilities field, a filter's matching rule and a prompt argument, so this is a material plan change: the plan returns to PROPOSED. STEPWISE, locked style tony, AFTER_IMPLEMENTATION and Current Increment NONE are unchanged. Versions stay server/MCPB 0.4.0 and prompts 1.4.0 (user decision 2026-10-07). D1 (walkthrough wording, AC-036) is Documenter-owned and not in this plan.
 
@@ -1568,7 +1568,7 @@ Share validation/adaptation below MCP rather than invoke decorated native handle
 
 ### DEV-026 — Show included graph types and LP availability in discovery
 
-`Status`: `PENDING` `Depends On`: `DEV-025`
+`Status`: `DONE` `Depends On`: `DEV-025`
 `Acceptance`: `AC-019`
 
 **Goal**
@@ -1587,9 +1587,53 @@ CatalogFrameworkSnapshot, FrameworkSnapshotSummary and GetCapabilitiesResult car
 
 Offline FastMCP text-only feedback over all six snapshots for the three tools and the filter cases above, counts compared with get_framework_statistics; pytest tests/; static checks on changed modules.
 
+PASS — 2026-10-07. Working directory backend/; entry HEAD c3471405a58b11db8379df5d3b427dd3d0a9ff1b plus the seven changed modules below (dirty tree).
+
+- discovery feedback (data/source_artifacts/learning_progressions/frame1-rework-dev026/checks/discovery_feedback.py, sha256 148e47e7…890da, run `.venv/bin/python ../data/.../discovery_feedback.py`, network blocked, real create_mcp app through an in-memory FastMCP client): exit 0, 116 checks; results discovery-feedback.json sha256 77b3e141…663b. Empty, [academic_standards], [learning_progressions] and [learning_components] filters each return the same six snapshots (the first two equal what they returned before, since every snapshot routes academic_standards); text snapshot IDs equal structured. list_frameworks text has Routing/Included graph type lines and no single "Graph types:" line; each package line shows learning_progressions=available and builds_towards/relates_to equal to get_framework_statistics; get_framework shows per-package included types, LP and LP provenance true and learning_progressions[builds_towards, relates_to] equal to statistics; get_capabilities shows server routing academic_standards, included academic_standards/learning_components/learning_progressions, and per-package included types and a Learning progressions block with flags and counts equal to statistics. Six-package totals 3,039 buildsTowards and 5,041 relatesTo.
+- regression: `.venv/bin/pytest tests/ -q -p no:cacheprovider` exit 0, 104 passed. No Tester-owned case encoded the superseded single "Graph types:" line, so no superseded-contract failure arose.
+- static on the seven changed modules: black (unchanged), isort, ruff, mypy (no issues), pylint 10.00/10, interrogate 100% — all exit 0.
+- Identities: catalog/models.py d343b95c…0788; catalog/repository.py e73cad4b…9d38; services/models.py 3206b546…d8fc; services/frameworks.py a8230ba7…2cf0; services/capabilities.py 2ffcae50…c945; mcp/tools/frameworks.py d3c95235…0e8b; mcp/tools/capabilities.py 4793f640…5f35.
+
+**Implementation Notes**
+
+- PackageSummary (list_frameworks/get_framework structured package entries) also gains includedGraphTypes, copied from the accepted catalog package, so the specified per-package "Included graph types" text has a structured counterpart; GetCapabilities per-package entries already had it. This is an additive field needed to render the specified text, not a routing change.
+- Because the catalog and framework native resources serialize CatalogFrameworkSnapshot, they now also carry includedGraphTypes (an additive, deterministic change to those derived documents).
+- The shared helper sorted_included_graph_types (catalog/models.py) builds the union in the repository and enforces it in the snapshot validator.
+- User-requested triple check (2026-10-07), before DEV-027: re-reviewed the whole diff. Confirmed (a) the manifest validator guarantees has_learning_progressions/has_learning_progression_provenance equal the learning_progressions declaration and that undeclared LP has zero counts, so `unavailable` always pairs with zeros; (b) the snapshot union always contains every routing type because each catalog package's included types contain its primary type; (c) routing/capability checks (CapabilityUnavailableError details, comparison/statistics/standards routing) still use available_graph_types; (d) no source, smoke, prompt or test consumer parsed the old single "Graph types:" line (only docs/reference/framework-tools.md describes graph types, which is Documenter-owned). Finding: the repository's mypy invocation (Makefile lint-mypy and pre-commit: `mypy src/ --explicit-package-bases --ignore-missing-imports`) resolves every kgfegmcp import to Any (probe: reveal_type of an imported model is Any), so it cannot catch cross-module attribute errors. A resolved run (`MYPYPATH=src mypy -p kgfegmcp --ignore-missing-imports`) reports 45 errors at HEAD c347140 and the same 45 with DEV-026 applied (diffed line-insensitively in a temporary HEAD worktree), so DEV-026 added none. Four were wrong pre-existing hints in the frameworks.py formatters DEV-026 edits (typed CatalogGraphPackage but given PackageSummary); corrected to PackageSummary, removing exactly those four (now 40 in 11 files; the rest are outside DEV-026 and unchanged). Reran on the final bytes: discovery feedback exit 0, 116 checks, discovery-feedback.json unchanged (77b3e141…663b), so the hint fix changed no output; new filter_pagination.py (sha256 2b17102f…f179) exit 0: empty, [academic_standards], [learning_progressions] and [learning_components, learning_progressions] filters each page through all six snapshots at limit 2 by replaying cursors, equal to one unpaged request; pytest tests/ exit 0, 104 passed; black/isort/ruff/repository mypy/pylint 10.00/interrogate 100% exit 0. Final mcp/tools/frameworks.py sha256 985c6c97…1d72 (supersedes d3c95235…).
+
+### DEV-029 — Make mypy resolve package imports and fix the source type errors
+
+`Status`: `DONE` `Depends On`: `DEV-026`
+`Acceptance`: `AC-025`
+
+**Goal**
+
+Make the repository's static type check meaningful (user direction 2026-10-07, after the DEV-026 triple check): resolve kgfegmcp imports instead of treating them as Any, and correct the type errors this exposes in production source, without changing runtime behavior.
+
+**Affected Area**
+
+backend/pyproject.toml [tool.mypy]; .pre-commit-config.yaml mypy hook; the eleven source modules with resolved-mypy errors (prompts/service.py, prompts/learning_progressions.py, services/standards.py, services/lp_paths.py, services/comparison.py, graph/store.py, packages/lp_graph.py, packages/lp_validation.py, packages/validator.py, cli/smoke_progressions.py, mcp/tools/learning_components.py). Tester-owned tests/ is not edited.
+
+**Expected Outcome**
+
+The existing Makefile, CI and pre-commit mypy commands resolve kgfegmcp (a probe's imported model is no longer Any) and report zero errors on src/. Each fix is the smallest correct annotation/narrowing change; no runtime behavior, public schema, tool/prompt text or output changes. The resolved run on tests/ reports Tester-owned errors (63 at entry); they are recorded and routed to Tester in the scoped VERIFICATION correction already planned before DEV-022, so `mypy tests/` fails until Tester corrects them.
+
+**Self-Check**
+
+Repository mypy commands (Makefile/CI form from backend/ and the pre-commit form from the repository root) on src/; probe for resolved imports; pytest tests/; black/isort/ruff/pylint/interrogate on changed modules; DEV-026 discovery feedback and a native-prompt/text equality rerun to show no output change.
+
+PASS — 2026-10-07. Entry HEAD c3471405a58b11db8379df5d3b427dd3d0a9ff1b plus DEV-026 (dirty tree). Evidence R = data/source_artifacts/learning_progressions/frame1-rework-dev029/checks.
+
+- Configuration: backend/pyproject.toml [tool.mypy] adds `explicit_package_bases = true` and `mypy_path = "$MYPY_CONFIG_FILE_DIR/src"` (sha256 373ed791…fa7f6a26), so the unchanged Makefile `lint-mypy` and CI linting.yml commands resolve kgfegmcp; the pre-commit hook adds `--config-file backend/pyproject.toml` because it runs from the repository root, where no mypy configuration is found (.pre-commit-config.yaml ebade27d…e4a3c10d). Probe: reveal_type of an imported CatalogGraphPackage is now `kgfegmcp.catalog.models.CatalogGraphPackage` in both forms (was Any).
+- Fixes (40 errors, 11 modules), each annotation/narrowing only: prompts/service.py — `_PinnedSnapshot` TypedDict for the pinned evidence-link kwargs, `request_data: Mapping[str, object]` on `_render`/`_render_multi_context` (read-only; serialized only); prompts/learning_progressions.py — annotate the parsed selector; services/standards.py — `query: SearchQuery`, `_require_standard_node` accepts GraphNodeRecord (an LC node already reached it and was rejected the same way; docstring now says so); services/lp_paths.py — typed byte_limit reason set; services/comparison.py — separate `requested_snapshot_id` name and typed warnings tuple; graph/store.py — distinct loop variable; packages/lp_graph.py — Mapping parameter; packages/lp_validation.py — `_DECISIONS` typed with the Decision literal; packages/validator.py — explicit None check before the policy lookup (same skip); cli/smoke_progressions.py — typed request-model mapping; mcp/tools/learning_components.py — `standard.description or '[no description]'`, matching the established line 155 convention (previously a None description would raise; no accepted standard has one, checked on all six packages).
+- Repository mypy (Makefile/CI form) on src/: `Success: no issues found in 118 source files`; pre-commit form from the root over every tracked backend/src file: success. Resolved tests/ run: 63 errors in 9 Tester-owned files (R/mypy-tests-tester-owned.txt, sha256 5307f3a0…a1f1dc85); not edited by Developer — see Plan Notes for routing.
+- No output change: R/output_equality.py (f62df108…8b7f3ed0) captures text and structuredContent of 102 calls on all six packages (get_standard incl. framework-root and LC-ID rejections, components-for-standard, text/prefix/exact search incl. capability-unavailable cases, LP paths, comparison text/prefix, all seven workflow instructions plus node-id teaching sequence, list_frameworks, get_capabilities; 85 succeed, 17 are intended typed failures). Run against a temporary HEAD worktree carrying only the DEV-026 files and against the working tree: outputs-baseline.json and outputs-worktree.json are byte-identical (e3e14097…0badf668); all 102 outputs equal.
+- Regression: pytest tests/ exit 0, 104 passed; DEV-026 discovery feedback exit 0, 116 checks. Static: black (118 unchanged), isort, ruff, pylint src/ 10.00/10, interrogate src/ 100% — exit 0.
+- Identities: cli/smoke_progressions.py 208a2051…5df064c1; graph/store.py 1e8e27de…63fd045b; mcp/tools/learning_components.py 05d7ec6c…034e4f56; packages/lp_graph.py cde6a614…b1c44cb1; packages/lp_validation.py 55a3c98e…4b876388; packages/validator.py 047b7f95…af811a83; prompts/learning_progressions.py eaf70e44…92a647b0; prompts/service.py 0acc01e4…8a89f2b9; services/comparison.py a8c87627…90260fc3; services/lp_paths.py 6c45cbaf…c46021fe; services/standards.py f0bc35ba…1b2d5471.
+
 ### DEV-027 — Print component citation handles in components-for-standard text
 
-`Status`: `PENDING` `Depends On`: `DEV-026`
+`Status`: `PENDING` `Depends On`: `DEV-029`
 `Acceptance`: `AC-016, AC-029`
 
 **Goal**
@@ -2482,3 +2526,13 @@ User explicitly invoked Developer to continue the active recovery after Architec
 Reconciliation: the design adds behavior (new result fields, filter rule, tool text lines, prompt argument and per-kind/per-type workflow calls), so the plan is materially revised: DEV-026, DEV-027 and DEV-028 are added, DEV-022 is reopened (DONE -> PENDING, now also depending on DEV-028), and the plan returns to PROPOSED. Sufficiency: every consequential value (field names, filter semantics, text labels, scan order/caps/selection split, call order/caps, version numbers) is fixed by the architecture; remaining choices (helper factoring, formatter layout within the specified labels) are reversible Developer details. Retained candidate before this rework: client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb (01df98e1…), which becomes history once DEV-022 rebuilds.
 
 Blocked on explicit user approval of this revised plan before implementation; on approval, set APPROVED, then start DEV-026 only under STEPWISE.
+
+User explicitly approved the revised plan on 2026-10-07 (tony stays locked). Plan APPROVED, then IN_PROGRESS; cleared the approval blocker. DEV-026 IN_PROGRESS.
+
+DEV-026 DONE (see its self-check). Under STEPWISE, persisted the continuation request for DEV-027 and stopped.
+
+### Type-check step added by user direction — 2026-10-07
+
+The DEV-026 triple check found that the repository's mypy invocation resolves kgfegmcp imports to Any. The user explicitly directed fixing this before DEV-027, which is their approval of this plan addition (DEV-029, AC-025's static checks; DEV-027 now depends on it). Developer fixes production source and tool configuration only. The 63 resolved-mypy errors in Tester-owned tests/ will join the scoped VERIFICATION correction planned before DEV-022. Cleared the DEV-027 continuation blocker; DEV-029 IN_PROGRESS.
+
+DEV-029 DONE. Consequence for routing: with imports resolved, `mypy tests/` (Makefile lint-mypy, CI linting.yml) now fails on 63 errors in Tester-owned tests/ until Tester corrects them; CI linting will fail on a push in between. Add these to the single scoped VERIFICATION correction planned after DEV-028 and before DEV-022 (with any superseded-contract cases). Under STEPWISE, persisted the continuation request for DEV-027 and stopped.

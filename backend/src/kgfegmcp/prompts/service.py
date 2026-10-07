@@ -27,7 +27,7 @@ import json
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import cast
+from typing import TypedDict, cast
 
 # Third Party Library
 from pydantic import ValidationError
@@ -119,6 +119,13 @@ from kgfegmcp.resources.uri import (
 )
 from kgfegmcp.services.lp_models import EndpointScope, FacetValues
 from kgfegmcp.services.models import StandardIdentifier
+
+
+class _PinnedSnapshot(TypedDict):
+    """Name the exact framework snapshot that evidence-link constructors pin."""
+
+    framework_id: FrameworkId
+    snapshot_id: SnapshotId
 
 
 @dataclass(frozen=True, slots=True)
@@ -518,7 +525,7 @@ def _render_evidence_links(context: _SelectedPromptContext) -> str:
     """
 
     identity = context.package.package_identity
-    pinned = {
+    pinned: _PinnedSnapshot = {
         "framework_id": identity.framework_id,
         "snapshot_id": identity.snapshot_id,
     }
@@ -1097,7 +1104,7 @@ class PromptService:
         evidence_workflow: str,
         output_contract: tuple[str, ...],
         prompt_name: PromptName,
-        request_data: dict[str, object],
+        request_data: Mapping[str, object],
     ) -> PromptRenderResult:
         """Assemble and validate one complete deterministic prompt message.
 
@@ -1241,7 +1248,7 @@ class PromptService:
         contexts: tuple[_SelectedPromptContext, ...],
         output_contract: tuple[str, ...],
         prompt_name: PromptName,
-        request_data: dict[str, object],
+        request_data: Mapping[str, object],
     ) -> MultiContextPromptRenderResult:
         """Assemble one complete deterministic multi-package prompt workflow.
 

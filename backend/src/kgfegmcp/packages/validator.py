@@ -1979,7 +1979,12 @@ def _validate_parent_policy(
             continue
 
         statement_type = target.statement_type
-        policy = policies.get(statement_type) if statement_type is not None else None
+
+        # Untyped items and types without a profile policy have no parent rules.
+        if statement_type is None:
+            continue
+
+        policy = policies.get(statement_type)
 
         if policy is None:
             continue

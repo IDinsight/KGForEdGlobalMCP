@@ -91,6 +91,11 @@ _FRAMEWORK_CURSOR_DESCRIPTION = (
     "field, including limit and all filters, is cursor-bound and must remain "
     "unchanged."
 )
+_GRAPH_TYPES_FILTER_DESCRIPTION = (
+    "Return snapshots that include any listed graph type in includedGraphTypes, "
+    "the graphs their accepted packages contain. availableGraphTypes, the routing "
+    "types tools use to select a package, is unchanged by this filter."
+)
 _SEARCH_CURSOR_DESCRIPTION = (
     "Opaque continuation cursor. When supplied, submit the exact previous "
     "search_standards request and replace only this cursor field. Every other "
@@ -242,7 +247,9 @@ class ListFrameworksRequest(FrozenSchema):
     cursor: FrameworkCursor | None = Field(
         default=None, description=_FRAMEWORK_CURSOR_DESCRIPTION
     )
-    graph_types: tuple[GraphType, ...] = Field(default=(), max_length=16)
+    graph_types: tuple[GraphType, ...] = Field(
+        default=(), description=_GRAPH_TYPES_FILTER_DESCRIPTION, max_length=16
+    )
     is_current: bool | None = None
     issuing_authorities: tuple[CatalogFilterValue, ...] = Field(
         default=(), max_length=64
@@ -340,6 +347,7 @@ class PackageSummary(FrozenSchema):
 
     capabilities: FrameworkCapabilities
     counts: PackageCounts
+    included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
     package_identity: GraphPackageIdentity
     profile_facets: CatalogProfileFacets
     rights: RightsPolicy
@@ -363,6 +371,7 @@ def package_summary(package: CatalogGraphPackage) -> PackageSummary:
     return PackageSummary(
         capabilities=package.capabilities,
         counts=package.counts,
+        included_graph_types=package.included_graph_types,
         package_identity=package.package_identity,
         profile_facets=package.profile_facets,
         rights=package.rights,
@@ -376,6 +385,7 @@ class FrameworkSnapshotSummary(FrozenSchema):
     available_graph_types: tuple[GraphType, ...] = Field(min_length=1)
     framework_id: FrameworkId
     graph_packages: tuple[PackageSummary, ...] = Field(min_length=1)
+    included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
     snapshot_id: SnapshotId
     snapshot_relations: tuple[SnapshotRelation, ...] = ()
     source_metadata: CatalogSourceMetadata
@@ -403,6 +413,7 @@ def framework_snapshot_summary(
         graph_packages=tuple(
             package_summary(package) for package in snapshot.graph_packages
         ),
+        included_graph_types=snapshot.included_graph_types,
         snapshot_id=snapshot.snapshot_id,
         snapshot_relations=snapshot.snapshot_relations,
         source_metadata=snapshot.source_metadata,
@@ -1182,6 +1193,7 @@ class GetCapabilitiesResult(FrozenSchema):
     available_graph_types: tuple[GraphType, ...]
     framework_prompt_overlays_optional: bool
     implemented_features: tuple[str, ...]
+    included_graph_types: tuple[GraphType, ...]
     packages: tuple[PackageCapabilityResult, ...]
     prompt_config_schema_version: SchemaVersion
     prompt_names: tuple[str, ...]

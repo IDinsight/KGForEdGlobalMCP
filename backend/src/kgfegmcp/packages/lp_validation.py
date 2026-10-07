@@ -28,6 +28,7 @@ from kgfegmcp.packages.lp_models import (
     Claim,
     CoverageProjection,
     CycleDiagnostics,
+    Decision,
     FinalClaims,
     JudgmentProjection,
     LearningProgressionEvidence,
@@ -51,7 +52,7 @@ _ATTRIBUTION_TEMPLATE: Final[str] = (
     "{source_attribution_statement}. This inferred relationship was not stated "
     "or endorsed by the source publisher."
 )
-_DECISIONS: Final[tuple[str, ...]] = (
+_DECISIONS: Final[tuple[Decision, ...]] = (
     "buildsTowards",
     "relatesTo",
     "no_relation",

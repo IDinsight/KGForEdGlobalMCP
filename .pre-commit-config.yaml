@@ -65,7 +65,7 @@ repos:
 
     - id: mypy
       name: mypy
-      entry: uv run --project backend mypy --explicit-package-bases --ignore-missing-imports --show-error-codes
+      entry: uv run --project backend mypy --config-file backend/pyproject.toml --explicit-package-bases --ignore-missing-imports --show-error-codes
       language: system
       types: [python]
       files: ^backend/(src|tests)/.*\.py$

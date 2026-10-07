@@ -2,7 +2,7 @@
 
 # Standard Library
 from collections import Counter, defaultdict
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from typing import Final
 
 # Package Library
@@ -80,7 +80,7 @@ def _cycle_witness(edges: tuple[GraphRelationship, ...]) -> tuple[str, ...]:
 
 
 def _edge_findings(
-    *, edge: GraphRelationship, standards: dict[str, str | None]
+    *, edge: GraphRelationship, standards: Mapping[str, str | None]
 ) -> tuple[PackageValidationFinding, ...]:
     """Require standard-only exact CASE endpoints and clean LP identity fields.
 

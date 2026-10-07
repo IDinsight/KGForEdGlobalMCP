@@ -159,12 +159,12 @@ class GraphStore:
         nodes_by_case_identifier_uri: dict[CaseIdentifierUri, GraphNodeRecord] = {}
         nodes_by_case_identifier_uuid: dict[CaseIdentifierUuid, GraphNodeRecord] = {}
 
-        for node in nodes_by_id.values():
-            if node.case_identifier_uri is not None:
-                nodes_by_case_identifier_uri[node.case_identifier_uri] = node
+        for record in nodes_by_id.values():
+            if record.case_identifier_uri is not None:
+                nodes_by_case_identifier_uri[record.case_identifier_uri] = record
 
-            if node.case_identifier_uuid is not None:
-                nodes_by_case_identifier_uuid[node.case_identifier_uuid] = node
+            if record.case_identifier_uuid is not None:
+                nodes_by_case_identifier_uuid[record.case_identifier_uuid] = record
 
         incoming_by_type_and_node: dict[AdjacencyKey, list[GraphRelationship]] = {}
         outgoing_by_type_and_node: dict[AdjacencyKey, list[GraphRelationship]] = {}

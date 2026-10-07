@@ -221,7 +221,7 @@ def _format_components_for_standard(
     lines = [
         f"Standard: {standard.statement_code or '[uncoded]'}",
         f"Node ID: {standard.node_id}",
-        f"Description: {_collapse_whitespace(standard.description)}",
+        f"Description: {_collapse_whitespace(standard.description or '[no description]')}",
         f"Statement type: {standard.statement_type or '[none]'}",
         f"Normalized statement type: {standard.normalized_statement_type or '[none]'}",
         f"Supporting learning components: {len(result.components)}",

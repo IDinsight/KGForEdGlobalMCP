@@ -403,7 +403,8 @@ def _stop_on_size(
 
     # Reservation is conservative; keep the path if the actual final envelope fits.
     # No room is then guaranteed for another path, so selection stops either way.
-    stop_reasons = rows.reasons | ({"byte_limit"} if rows.queue else set())
+    byte_reason: set[PathTruncationReason] = {"byte_limit"} if rows.queue else set()
+    stop_reasons = rows.reasons | byte_reason
 
     try:
         _require_size(

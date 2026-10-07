@@ -48,6 +48,7 @@ from kgfegmcp.catalog.models import (
     catalog_graph_package_order_key,
     catalog_runtime_order_key,
     catalog_snapshot_order_key,
+    sorted_included_graph_types,
 )
 from kgfegmcp.domain.enums import InvalidPackagePolicy, ValidationStatus
 from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
@@ -497,6 +498,7 @@ def _build_snapshot(
         available_graph_types=tuple(available_graph_types),
         framework_id=framework_id,
         graph_packages=tuple(graph_packages),
+        included_graph_types=sorted_included_graph_types(tuple(graph_packages)),
         snapshot_id=snapshot_id,
         snapshot_relations=snapshot_relations,
         source_metadata=source_metadata,

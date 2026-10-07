@@ -15,6 +15,7 @@ from fastmcp.utilities.json_schema import compress_schema
 
 # Package Library
 from kgfegmcp.domain.identifiers import FrameworkId, RelationshipId, SnapshotId
+from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.services.lp_models import (
     GetLearningProgressionPathsRequest,
     GetLearningProgressionPathsResult,
@@ -28,7 +29,7 @@ from kgfegmcp.services.lp_models import (
     TraverseLearningProgressionsResult,
 )
 
-_REQUEST_MODELS = {
+_REQUEST_MODELS: Mapping[str, type[FrozenSchema]] = {
     "get_learning_progression": GetLearningProgressionRequest,
     "get_learning_progression_paths": GetLearningProgressionPathsRequest,
     "get_standard_progressions": GetStandardProgressionsRequest,

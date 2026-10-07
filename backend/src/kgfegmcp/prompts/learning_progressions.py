@@ -168,7 +168,7 @@ def _render_focus(
     }[request.focus_mode]
 
     try:
-        selector = TypeAdapter(StandardIdentifier).validate_python(
+        selector: StandardIdentifier = TypeAdapter(StandardIdentifier).validate_python(
             {
                 "identifierType": request.focus_mode.value,
                 field: request.topic_or_standard,

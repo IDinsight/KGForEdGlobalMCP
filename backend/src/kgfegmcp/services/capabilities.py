@@ -159,6 +159,7 @@ class CapabilitiesService:
         }
         package_results: list[PackageCapabilityResult] = []
         available_graph_types: set[GraphType] = set()
+        included_graph_types: set[GraphType] = set()
 
         for runtime in self.catalog_load_result.package_runtimes:
             package = runtime.catalog_package
@@ -182,6 +183,7 @@ class CapabilitiesService:
                 )
             )
             available_graph_types.add(identity.graph_type)
+            included_graph_types.update(package.included_graph_types)
             package_results.append(
                 PackageCapabilityResult(
                     available_resource_artifacts=resource_artifacts,
@@ -229,6 +231,9 @@ class CapabilitiesService:
             ),
             framework_prompt_overlays_optional=True,
             implemented_features=_IMPLEMENTED_FEATURES,
+            included_graph_types=tuple(
+                sorted(included_graph_types, key=lambda value: value.value)
+            ),
             packages=tuple(package_results),
             prompt_config_schema_version=PROMPT_CONFIG_SCHEMA_VERSION,
             prompt_names=PROMPT_NAMES,

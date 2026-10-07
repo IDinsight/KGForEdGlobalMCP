@@ -76,7 +76,11 @@ profile = "black"
 # mypy
 [tool.mypy]
 disallow_untyped_defs = true
+# Resolve the kgfegmcp package from src/ wherever mypy runs (backend/ or repository
+# root); otherwise ignore_missing_imports silently turns every package import into Any.
+explicit_package_bases = true
 ignore_missing_imports = true
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
 plugins = ["pydantic.mypy"]
 
 # pytest

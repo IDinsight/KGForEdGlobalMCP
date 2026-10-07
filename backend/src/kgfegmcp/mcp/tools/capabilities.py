@@ -56,12 +56,18 @@ def _format_capabilities(result: GetCapabilitiesResult) -> str:
         unavailable features.
     """
 
-    graph_types = ", ".join(value.value for value in result.available_graph_types)
+    routing_graph_types = ", ".join(
+        value.value for value in result.available_graph_types
+    )
+    included_graph_types = ", ".join(
+        value.value for value in result.included_graph_types
+    )
     lines = [
         f"Server: {result.server_name}",
         f"Tools: {', '.join(result.tool_names)}",
         f"Prompts: {', '.join(result.prompt_names)}",
-        f"Graph types: {graph_types}",
+        f"Routing graph types: {routing_graph_types}",
+        f"Included graph types: {included_graph_types}",
         f"Accepted packages: {len(result.packages)}",
         (
             f"Resources: "
@@ -99,9 +105,12 @@ def _format_package_capability(
     Returns
     -------
     tuple[str, ...]
-        Stable readable package identity, implemented modes, and code coverage.
+        Stable readable package identity, included graph types, implemented modes,
+        code coverage, and learning-progression availability and counts.
     """
 
+    capabilities = package.capabilities
+    counts = package.counts
     identity = package.package_identity
     implemented_modes = (
         ", ".join(mode.value for mode in package.implemented_search_modes) or "none"
@@ -117,14 +126,29 @@ def _format_package_capability(
         f"- Graph package ID: {identity.graph_package_id}",
         f"  Framework ID: {identity.framework_id}",
         f"  Snapshot ID: {identity.snapshot_id}",
+        (
+            "  Included graph types: "
+            f"{', '.join(value.value for value in package.included_graph_types)}"
+        ),
         "  Academic standards:",
         f"    implementedSearchModes: {implemented_modes}",
-        f"    codeCoverage: {package.capabilities.code_search.value}",
+        f"    codeCoverage: {capabilities.code_search.value}",
         f"    codedNodes: {package.search_index.coded_node_count}",
         "  Learning components:",
         f"    implementedLearningComponentSearchModes: {implemented_component_modes}",
         f"    learningComponents: {learning_component_count}",
         f"    tagVocabulary: {package.search_index.tag_vocabulary_size}",
+        "  Learning progressions:",
+        (
+            "    hasLearningProgressions: "
+            f"{str(capabilities.has_learning_progressions).lower()}"
+        ),
+        (
+            "    hasLearningProgressionProvenance: "
+            f"{str(capabilities.has_learning_progression_provenance).lower()}"
+        ),
+        f"    buildsTowards: {counts.builds_towards_relationships}",
+        f"    relatesTo: {counts.relates_to_relationships}",
     )
 
 
