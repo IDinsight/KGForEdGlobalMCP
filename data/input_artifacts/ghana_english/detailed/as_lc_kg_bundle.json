@@ -37207,9 +37207,9 @@
       "country": "Ghana",
       "created_at": "2026-08-23T17:35:57.828621+00:00",
       "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
-      "document_ir_fp": "/Users/mustafa/IDinsight/KGForEdGlobal/results/ghana_english/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/stitching/document_ir.json",
+      "document_ir_fp": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/stitching/document_ir.json",
       "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-      "kg_run_dir": "/Users/mustafa/IDinsight/KGForEdGlobal/results/ghana_english/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/kgs",
+      "kg_run_dir": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8/kgs",
       "observed_languages": [
         "en"
       ],
@@ -136723,7 +136723,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f7f757c444417e3d5203b3b210d27cf2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -136796,7 +136796,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f6cc678aa87791474742ae1bc3863dd5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -136869,7 +136869,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1d6084cb4aa6bae31789437777147819",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -136943,7 +136943,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c0d1d3c099e533edc82ccbed76434ab5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137018,7 +137018,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2b31113fa8d3a8c6b571137ffb913bc0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137093,7 +137093,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:87dfd730460c8c457994c3aadada94ca",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137168,7 +137168,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d1365efb58780010ddbc8ec4b9991764",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137242,7 +137242,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:dc805e1216c01a485b339aba177de91b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137316,7 +137316,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:62e0f5b4a1b1fe4d8d17e7eb7a15ff9a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137391,7 +137391,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:82a23d2f1300173a6818151c5aa5764d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137466,7 +137466,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:90c16aa825efcd693f77b51e4a80ab1f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137541,7 +137541,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0b5213c8297c1edbe4883ff3748bf5cb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137616,7 +137616,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:01cbdd3abe5596535766f645779854a0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137691,7 +137691,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7cbbbe7884282078049ef87a357e90d3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137785,7 +137785,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a2ec01252d836f9b0af375a5959b7943",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137865,7 +137865,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0965c5056b94bec14122bef7d0a4e2fb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -137939,7 +137939,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2bf9ab1360566106a704d388cd085c59",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138014,7 +138014,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6afdea273e2a77ca8d63586fbd2fbb3c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138089,7 +138089,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:82fb86dac71aaf614868520ca196dff7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138182,7 +138182,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f0f5555f66e01cf28868aba6c75659db",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138261,7 +138261,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1285aa721519df2b5545e58a032c35b5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138334,7 +138334,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:fba0651fecf698b6e12de53b8998a5b6",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138407,7 +138407,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:eec9a77c573a5b254edeafd217718e27",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138480,7 +138480,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:602d90d263246d2f01b09f9ed768c707",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138571,7 +138571,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8f1a8aeaf91e05311895d92caa144bf4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138669,7 +138669,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8d058454561d2f69baa40714c4797bf0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138748,7 +138748,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0fcf85e4fffca5b13fb827540dc929e7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138822,7 +138822,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:4f903105eb7f8d3b78e2909a7c772cba",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138915,7 +138915,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:5638572e98e5712d93b75f2ea142d45a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -138993,7 +138993,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:eb562d0a62819e9c7fa7c95611538b47",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139067,7 +139067,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1e4bf668d70015642d8a754aec71eff7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139142,7 +139142,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c3dc1c092ea2214f7f1e023e0c6e98f7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139216,7 +139216,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:41d96e39ba561ca977fc8a23a923977a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139289,7 +139289,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:813efcef4896ee6689aaeb730c6b98e9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139362,7 +139362,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6db63351f007c4aec541744e95a36c6e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139436,7 +139436,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:da254bf063b41282c77946bc7b653e27",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139510,7 +139510,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d903dd4da6e7d070aa152e6f2bc06947",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139584,7 +139584,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b2d1f9f0772f45ac6ab02bfc86719aa1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139658,7 +139658,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:531172622dd3b2143ce6ec0c4ef89c38",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139732,7 +139732,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c1625f994161ba9955d3eae9ee4ce870",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139806,7 +139806,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9c9dda0e20933c3b757f2eb06eb181b5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139879,7 +139879,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:680cb23f82ba52f56995486913af508d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -139953,7 +139953,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8d3f7c618645e29eeea7ba93b0bc59bf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140027,7 +140027,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:cd636398a0b63bdbaca74e3ac9707ab5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140101,7 +140101,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8c3905f8103769595e6d9d072f0cd9d1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140176,7 +140176,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:42c3ad6b4cd5f78240d91f9351f9b028",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140251,7 +140251,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1bcf538b67bbb7cbf83baadd0585d256",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140325,7 +140325,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6f097196d94ea690a5a08190bc514ea6",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140399,7 +140399,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:daff20c6259e08b13ed9623ce662e3c5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140474,7 +140474,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9bcb57e2d026f149d7c23ae6f662b268",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140549,7 +140549,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a99bc096a5084e8813d9aa867b5b500c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140623,7 +140623,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9def332f36d3c42ee2f6a1e33f5dbcc8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140696,7 +140696,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:509991b230280fb934fbde53944252a1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140770,7 +140770,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:464739e8a97b37276b0f243a41538ebe",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140844,7 +140844,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0ffbae21ac3328f277a8a1570ac8a86c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140919,7 +140919,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:681d8b32691f0b5c4a8434d55aa4fa0a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -140994,7 +140994,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b851f942dcb9e65685388214d4d91419",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141068,7 +141068,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:4365a046cd5d9d197612b2fddde60789",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141143,7 +141143,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:81d7dfa55ec8b34d757cbbe6ef1829bd",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141218,7 +141218,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:189033889cee75ae0ce169aa390bd1e1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141292,7 +141292,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f79cb74176e97e29ffec3ca59b3566a2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141366,7 +141366,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:e66132f2c741bcf5014255a6c4c9cb05",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141440,7 +141440,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b853788aab392f4a9a0e54ad9c3ce808",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141513,7 +141513,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b60ec56572fa6b493f26683e5cac18a9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141587,7 +141587,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a53882774fe4132fc64bd56d409d612e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141662,7 +141662,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b4c1acfab3db5c7f4445eb3b7f579910",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141736,7 +141736,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:27837806d56f2ee3104712e0bb755a87",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141810,7 +141810,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:93595ffd76e9b120c684ef0910c41196",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141885,7 +141885,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:fbe897b5048c5c62c625d8cce59e11e1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -141977,7 +141977,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6e917dbdba94c557eb64ae32d07115f2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142076,7 +142076,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:37492e8d4c09dcdd4ad6a7aeb98beddc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142155,7 +142155,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6fb30830fd0942e0367be30e7db10533",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142246,7 +142246,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a69c54afad9b937ec5d8d095e7c26381",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142325,7 +142325,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d7e26c2bfe20337cd21da7f5b8d0e760",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142399,7 +142399,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:23c552cd0cca6f333b0b05c9b29fb304",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142472,7 +142472,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f198ccf547bc66b9c8e62089f7f7a49f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142545,7 +142545,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:78bd524c7d1c469e7942d89b3079b162",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142618,7 +142618,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:e097c5b41721d1208467120dbcec4300",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142692,7 +142692,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:011d9152a75207c502663cc6627d46ab",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142768,7 +142768,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:64383a946f512ef9c5bf961b7615f771",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142844,7 +142844,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d53f647c0bbad2798163afc1321681a3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -142919,7 +142919,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:5f4d63b66a183d4394f423b6c664b969",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143013,7 +143013,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8fb25789a216e72e8272a1c461099fef",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143092,7 +143092,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1c4dfb9237416f5036ce87c0158a8e1d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143166,7 +143166,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:05b3142a439b07cf4992ea6e9e54a54b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143240,7 +143240,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:90e944a0874b1e2738c4b64d0352fe3f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143314,7 +143314,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a23c7866a3e283469df125f66f8446df",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143442,7 +143442,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7fa6ae4a49a51b55868e1b12e3f9df14",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143521,7 +143521,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1feccd6138af3a1ff2a87921fad037e5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143595,7 +143595,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:98b58095ee8bf072f26257c0267afd06",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143668,7 +143668,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:446fd264772cbec3e0c64280fc316583",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143742,7 +143742,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:74d825e9fdb4ecdc64ed7acd382b9a52",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143817,7 +143817,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9e89a9e386c32df273764427811ca4a2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143891,7 +143891,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:87184af793b5413f174cbe14f22dfde6",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -143965,7 +143965,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:60390b65baeaedc7551174f2ca1437c1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144039,7 +144039,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:bed5e97e43cfa9d5dc0ac2bd6850bbe1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144132,7 +144132,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:dfe32ec12e77703fbb649eeb9b949d63",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144212,7 +144212,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:fd53d372985d916010c2e122be73a45a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144286,7 +144286,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:07670c465c0a52f4499381630e7b4fb2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144360,7 +144360,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c089bf43b808e1dd4f333f7c7d411ab0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144434,7 +144434,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:17e3998cd50a8f763e85b8584a6dfa98",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144508,7 +144508,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6e8d228b67a97f5ae9e573e6b783729c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144618,7 +144618,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8c3044bd10a5df8a95cc9b4cd0097ab9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144701,7 +144701,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:aa5f006b3e3aa0a8240b082dc416773b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144775,7 +144775,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:bcecc3815db2558064499182ac1ed788",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144849,7 +144849,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1c09197ded028f533156475cc4972b11",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144921,7 +144921,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:48b8a5f3147d3694b3fa90324720589a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144993,7 +144993,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6ad9956a4b8c91b50b3d53acc2110207",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145066,7 +145066,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3aaad7adff6121787bae476b42a2341a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145139,7 +145139,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c35a42b4fc5d6a17ede5afdff3c163d3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145212,7 +145212,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:e424d4aaac62e80bbe48af1d2b64cae5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145286,7 +145286,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:011390cd7e64f04d7df4efaf37d518ce",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145360,7 +145360,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1e9b613c2454742f2d48c9de35a4f3b3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145433,7 +145433,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b7ef905481749add3db4307a26e33731",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145507,7 +145507,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0e8b9e9d03532ca78559242e32c25e19",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145581,7 +145581,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2dc5dde1a02c29340f9e930d4de630cf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145655,7 +145655,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:106cf59c17496bd73b08c646eb619fa7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145728,7 +145728,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c5d0706580b7cb4cf56ad1585d92bb34",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145800,7 +145800,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:78aa1700affaa11fdadd4ce5318fa380",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145874,7 +145874,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f6b9605a03283bf5ad80f47abd9a1dd2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -145949,7 +145949,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:e3cd21d7a887849a8008d266ee70ddde",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146024,7 +146024,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2edd6f5643075364886263855fa7e7a4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146098,7 +146098,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6d3eae2c36dcb6e0e88d3e2cda9f3d9d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146191,7 +146191,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9d0d158b23a962746e4a0cd024a04cbf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146270,7 +146270,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7dd8dc37c3fca59e2bfcf03f4aae3ccc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146343,7 +146343,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8b72c38481924e942c03e74aae19b673",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146417,7 +146417,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:632b1c26612b394ed0da02cd877ec127",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146491,7 +146491,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a1a1753b5a5b4171a24c49d75b19ad21",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146585,7 +146585,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b0dc4d7f1cd3e5fafbf6a033ba49eaeb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146664,7 +146664,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:ffd5b0206a0cc0116354cf508a4143bc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146738,7 +146738,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:cb81e318a5e7ca7a387afaf78acd4bd9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146813,7 +146813,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:4205d2d77461773869b462fdecf64e96",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146887,7 +146887,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:847d93ec45a23ba63275bacb5c6c0dca",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -146978,7 +146978,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b36b292afe4e03e2978abd5f5f9ad40b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147056,7 +147056,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:fa610c9768c9186b380816ee3e5655f7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147129,7 +147129,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:90bee3af2b8914624bffe61de027324b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147202,7 +147202,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c1f7e9be798bd2fad15c180b88131e50",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147275,7 +147275,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:cd11c82c32ba943d6e8306db33bcb621",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147368,7 +147368,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6788c62841967ebb3729372471349ec5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147447,7 +147447,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7fee5b5ae40c70cb817064fe07eb3bbd",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147520,7 +147520,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b208e89a013cc6aca61557776fb534f5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147595,7 +147595,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3b161f12bc0bb486a42d1f49c228bcaa",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147671,7 +147671,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:96eb1342eafb5a22326efc9887990afd",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147745,7 +147745,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:792b172a9f49e5a8552b8f6dff694511",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147819,7 +147819,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f13505d2eca254a65ac2d7abb12e1baf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147893,7 +147893,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b0c0ab99514c4572b48466ca417fe39a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -147966,7 +147966,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9f1a15f78042c7117988716c8390ce93",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148039,7 +148039,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7d68fc2458fd311bf49f50bfcff0cd3a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148132,7 +148132,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:ab4b790fd1ddc739683eca5edb91b25f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148212,7 +148212,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0a9ef756df09ae9e2bac57af6c71f815",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148286,7 +148286,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:e09f576846ab61d490715b75a43c95ab",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148360,7 +148360,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:5584aecb9d854c232419f1d701aa8dde",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148435,7 +148435,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6c7c2b273e4eeeb3dda0152afa46e307",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148510,7 +148510,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6d83114a98a31d76c790c887dc53a0c8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148602,7 +148602,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:52187353596e31034b08a624e06a55b1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148681,7 +148681,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c5b2071762052ff058513065b1e7acc4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148756,7 +148756,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:5cd9eab6c1e485db4681af58c3c6ec1d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148831,7 +148831,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:34d91664135feaace19a77bedc766e6a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148906,7 +148906,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2d6764d2a2d96aa331607e76f6f627cf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -148981,7 +148981,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2965cbd0ce4610600f214624f9468f4d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149056,7 +149056,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:77c53d8d3205e27f126414fa6e7c5da8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149130,7 +149130,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:709eaabae0cfe5bff7fa886776ac15a8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149203,7 +149203,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:76516f974a58aa8b534ff94a1192f96c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149276,7 +149276,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f9f8848e3ab13ca0900ae57b947e8caa",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149350,7 +149350,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f885cdc556fe14956b7e231b5f512a0c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149425,7 +149425,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:31124b09528becdc418f7d5434711070",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149500,7 +149500,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a218a242b5e7c68639cf75fc69ef3150",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149574,7 +149574,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b1d13b8bc7616b8cadd8e39ba71cbafb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149647,7 +149647,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:ac54e27be7e7b541a77fbc00adeb4f44",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149720,7 +149720,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:090fde69662902647755b6fae082cb32",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149793,7 +149793,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d41c04fcb5e64db98de9cf61c78a5622",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149867,7 +149867,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:220193d3fa9f89cd068bb89afb12c720",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -149941,7 +149941,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8dd21607db327ad6354b9039118fdfdd",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150015,7 +150015,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a69ca36d4b4acc7854d729d857a98640",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150090,7 +150090,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:cc5d2e31357aecfc40fc35c62312afc0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150165,7 +150165,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a2cb701f7999fa4ad10a24ea81ff173d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150240,7 +150240,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c8f6363d96539a498d3ceda0ee1762ff",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150315,7 +150315,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b0e333ea508227d5ba0fd839e45bdf9f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150406,7 +150406,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3618035e368f894c0d1830a15d5c6cfb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150482,7 +150482,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:e0792904fab2aaa784457f099934ca43",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150575,7 +150575,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:fc05a62f4f1b6b4afb26b31e33f5d7e2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150655,7 +150655,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0d783870ae591e8c2f00734f4a135599",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150730,7 +150730,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9839e7fe5cb701bd8f4b7dfc4db47e3b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150805,7 +150805,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3d0aa19acf6ad74126326059c5301377",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150880,7 +150880,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2e37128b10677829c014c7d18d3de62f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -150954,7 +150954,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6baed48126d83d2a0b9838c7002e0865",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151028,7 +151028,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:89aa91bc6870c52e0d9b9e5ed9f2e324",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151103,7 +151103,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:29892601059c957a164f8ea633229aaa",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151177,7 +151177,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7588952e997887fc4c34806d4f335252",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151251,7 +151251,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1b5258fc07ea9b8026c16f6cc9287d21",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151326,7 +151326,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7861c94ee92b00d8c93551857bb3af3e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151401,7 +151401,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:86a3d6b38833a8e8b0d52c5d46d09706",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151476,7 +151476,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7cf56b17272b626e76dd0152dbc411ef",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151551,7 +151551,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d8b01eacc525ff0436e0d25195830cd1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151626,7 +151626,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:200c78bfd3fb24117965fd2d57670412",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151701,7 +151701,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:63b64fe209daf462f682ddd31f671c14",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151776,7 +151776,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:4d882fb0f36e6bae9ef8cf3720f4510d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151850,7 +151850,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:73e3094b8a85e99210183704ec6ffbd1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151924,7 +151924,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:31f2e15f3bb681c21bf7ec9d9eed2990",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -151999,7 +151999,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:26423254742fe17e2575611f7579fe7c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152074,7 +152074,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8a3b29faca96af5a02bb56f80c584a6d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152149,7 +152149,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3c044f6f9326c5b1775f19539913648b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152243,7 +152243,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d70ebe8bc814ba93a84314ccd5cae396",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152322,7 +152322,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2daac07316079eb6cb040e834fd35e42",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152396,7 +152396,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a24ab4cdc0cc9b6a0c768ac7cc6f9a60",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152471,7 +152471,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9669b7db7ec4d61c4390be48192b279f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152545,7 +152545,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9d453da8cf04b3a8d87f2818198a2d11",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152618,7 +152618,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3e1542de1f6aa0162ec0db42aae68647",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152692,7 +152692,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:bcf2d6391e916321f48cf91b35adc4fe",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152767,7 +152767,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:8d36c38526c660467f206858ddc61d6d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152842,7 +152842,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1890072bf315d425c31f1acc52cf263a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -152934,7 +152934,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:61c227ff7852491d3c21486758c84378",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153032,7 +153032,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f8e31e2b758149cbc8c8b230db031da9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153131,7 +153131,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a4d9ba0c988a4ff75015158d8d707972",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153211,7 +153211,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:2285521d0ddd811abb9d472e9dbeefd7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153285,7 +153285,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d93bc006c8fd0c3819442d9938456609",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153359,7 +153359,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:ecb429f9d43762d6e55f27972aced2e5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153432,7 +153432,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:469e21cf02e351d6b11b22cd3d1818a0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153506,7 +153506,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:dcbbae6b673542ea43cd0ce61a865541",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153616,7 +153616,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3b895752f73c4958017c9189ca34cf6e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153699,7 +153699,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d89a0c401ea5c8d5c0f884ebc7fe6707",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153790,7 +153790,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:86df8d09d444e85f7d10d006652dc576",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153888,7 +153888,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0da89cd0bcad19f53f9b72a743090c10",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -153967,7 +153967,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:43d3ad1109b349deab18492cf4db997e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154041,7 +154041,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:ec3dd9b2560a113d7494ad7da613d577",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154115,7 +154115,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:308b91598f6a7f8a9ee383ee0db9a9cb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154189,7 +154189,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:7d988912265ed922af9eab22875275bc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154264,7 +154264,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:dab6e750c1beaec4168c714bd381fc08",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154338,7 +154338,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:98e5fac69639d3e13887c44067a8188e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154429,7 +154429,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6b85997f6a04ff109cdb9e9ff44adaaa",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154528,7 +154528,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d06ef4d174a298640e2bb92f50fe4b97",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154608,7 +154608,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3b096c29996c340c2738e0e184ef66c2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154702,7 +154702,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:82360dd21e35fe1d80940f6e210ac195",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154782,7 +154782,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:86527203f6968f7aba6b9ad6e588b6e7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154856,7 +154856,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f17f603852c89cad9baa7767d748511f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -154929,7 +154929,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d234c68d22155055c8fa0323d4fd28c1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155002,7 +155002,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:16f0fd623e21efe82a8e4a135a867e9d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155075,7 +155075,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a990ae90f1d3617eab13a1c656b4ca41",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155168,7 +155168,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:aff5e04cdfa72750b256833be35fca74",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155248,7 +155248,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6307cf69b3dd4fb78db5c4bfca16c21b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155322,7 +155322,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c61983a582841d6cf52ed8af3acc8510",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155395,7 +155395,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1771e7b599f54140fffe893cae8d1bb8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155468,7 +155468,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:adc8a1936502680bbf13870b913826c5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155542,7 +155542,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f53b485e10dac89322d96c6433f53671",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155616,7 +155616,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:3136c8dac6d7034702635fde99c6202d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155690,7 +155690,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d778dc4ea9489bce35162dc53bab9a1c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155764,7 +155764,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:14192387ad72048e723bc24375874874",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155838,7 +155838,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:ebca6daa40ec536485f8a3e3791dcb66",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155912,7 +155912,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:b7bc732407dc43969136b670769e6bd2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -155986,7 +155986,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:652bb6575b81332af0cc70057b2eff9c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156061,7 +156061,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:5889a289e7fd5a47e43ff02eb9055882",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156135,7 +156135,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:cd224b34b3fe78bd507fb692d86d2b68",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156209,7 +156209,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d85b890338b61d663cdae8977c5d61b5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156283,7 +156283,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a1ddec955680b499a5439a919448d7da",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156356,7 +156356,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c704569537c23f36ede5272e0dfa7b57",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156430,7 +156430,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:42c9ae2dd363b5a12785e54b442fab79",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156504,7 +156504,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:1c590cb1a36f310306236613ec8e96b0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156578,7 +156578,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:f1af364d17f5d78dd7cc2f4dedc88729",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156653,7 +156653,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d9d047e65b888c4b4621128756ee28e7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156747,7 +156747,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:389c20eaba40907dbb7b59a578ecd972",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156828,7 +156828,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:177aa048f51a30398a523bca7db57716",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156902,7 +156902,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:0d933ba22227dc69079e25d9ac57731a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -156976,7 +156976,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9e63da0697e41311da620643033d6447",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157051,7 +157051,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:d33154fec8763d557c8c6c38ee068fb7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157125,7 +157125,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:6fa38d924938e359b20b09fb6d077bd8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157218,7 +157218,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c7e5596b9553ef8a4bdc3dc20a7c45c4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157297,7 +157297,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:4eaca55cf21cd3a80525228b35528bc4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157370,7 +157370,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:c6f586e05872f0ef7cf6caea238275d6",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157444,7 +157444,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:4988d1775fb38f27f2f741efca039078",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157518,7 +157518,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:fa56e5c37c11ba225d34fe8cbced63ba",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157592,7 +157592,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:9b43286197a8d092539c656a35a49b22",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -157666,7 +157666,7 @@
         "country": "Ghana",
         "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
         "framework_title": "English Language Curriculum for Primary Schools (Basic 1 - 3)",
-        "generated_from_step10_bundle_fingerprint": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+        "generated_from_step10_bundle_fingerprint": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
         "identity": {
           "identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:framework:a77f34fa820d6aaab57d19230c1b31b4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -201000,12 +201000,12 @@
   "validation_report": {
     "errors": [],
     "input_fingerprints": {
-      "academic_standards_kg_bundle": "ec7a6efd6d948ad9348ad548f828a9609112888181d42356b100cb97d7c4dad8",
+      "academic_standards_kg_bundle": "33acb6e1a7c46aa5b873f515bc555e69143cb3a55ca2b92a15e06f617ae4b16a",
       "lc_entity_provenance": "64e392fe2370a713c7b66e37052b2033983cf7dedff3c6dc16ed15614fd14ddb",
       "lc_generation_failures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "lc_generation_summary": "42efc5922ba7796dc84c7aa1b28d56e971205549b15579fa92b7a252d2a26bb5",
       "lc_supports_edges": "cacfa89ebc8196da675f9e95291ebe74d433dfd8e0acb7f4ba544d9abba5c6f9",
-      "learning_components": "4e2d9b0a673fa713d207ec3fbf83644d860053d86ebf60bdfc4974660ad136a9"
+      "learning_components": "7b5ad43175de81ad5a1fe151c2d58e5cc0a73f99a800509e1e102a3dbe340b62"
     },
     "learning_commons_export_schema_version": "2026-07-09",
     "object_counts": {
