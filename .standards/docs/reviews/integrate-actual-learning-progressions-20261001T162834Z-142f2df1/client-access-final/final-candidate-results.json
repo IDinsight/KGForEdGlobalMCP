@@ -1,0 +1,86 @@
+{
+  "facts": {
+    "head": "e837818766e44b87e14430304cb4a68628599ea3",
+    "finalArchive": {
+      "path": "data/source_artifacts/learning_progressions/client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb",
+      "sha256": "01df98e19c8cb89d312bfc9cfccff5f9ce43698000b5f341f212f633d407aec5",
+      "bytes": 82178548,
+      "members": 657
+    },
+    "testedArchive": {
+      "path": "data/source_artifacts/learning_progressions/client-recovery-f001-dev022/kgfegmcp-0.4.0-client-recovery-f001.mcpb",
+      "sha256": "15c80166f186ce08628fd7ee170b095d9c6fe32730d19eed15818e1673885d72",
+      "members": 657
+    },
+    "final archive sha256 is the designated 01df98e1 candidate": {
+      "pass": true,
+      "observed": "01df98e19c8cb89d312bfc9cfccff5f9ce43698000b5f341f212f633d407aec5"
+    },
+    "every archive member maps to a repository source": {
+      "pass": true,
+      "observed": []
+    },
+    "every archive member equals its committed HEAD blob": {
+      "pass": true,
+      "observed": []
+    },
+    "every archive member equals the working tree": {
+      "pass": true,
+      "observed": []
+    },
+    "no tracked runtime/config/package input is missing from the archive": {
+      "pass": true,
+      "observed": []
+    },
+    "final differs from the Tester-verified f001 archive only in README.md": {
+      "pass": true,
+      "observed": [
+        "README.md"
+      ]
+    },
+    "every archive member equals the retained stage file": {
+      "pass": true,
+      "observed": []
+    },
+    "stage extras are only .mcpbignore and startup-created .venv/egg-info": {
+      "pass": true,
+      "observed": []
+    },
+    "archived manifest version is 0.4.0": {
+      "pass": true,
+      "observed": "0.4.0"
+    },
+    "shipped README states 19 tools and 0.4.0 without 17 tools/0.3.1": {
+      "pass": true,
+      "observed": "9ce0fc15618949b402b2d6d6e3d82e9525369334e742c6f9621c0738043d4365"
+    },
+    "six package trees are shipped": {
+      "pass": true,
+      "observed": [
+        "ghana-nacca-primary-english-language-basic-1-3",
+        "ghana-nacca-primary-mathematics-basic-4-6",
+        "india-cbse-science-learning-framework-classes-9-10",
+        "india-tamil-nadu-tnscert-mathematics-classes-1-5",
+        "nigeria-nerdc-mathematics-primary-1-3",
+        "rwanda-reb-mathematics-lower-primary-1-3"
+      ]
+    },
+    "shardMembersPerPackage": {
+      "ghana-nacca-primary-english-language-basic-1-3": 64,
+      "ghana-nacca-primary-mathematics-basic-4-6": 64,
+      "india-cbse-science-learning-framework-classes-9-10": 64,
+      "india-tamil-nadu-tnscert-mathematics-classes-1-5": 64,
+      "nigeria-nerdc-mathematics-primary-1-3": 64,
+      "rwanda-reb-mathematics-lower-primary-1-3": 64
+    },
+    "developerReceipts": {
+      "build-mcpb.command.json": 0,
+      "closure-pre-stage.command.json": 0,
+      "closure.command.json": 0,
+      "stage-agreement.command.json": 0,
+      "stdio-stage.command.json": 0
+    },
+    "developerEvidenceIndexSha256": "03882557b100852bb957e5a012091012ea23a95adcd4d3e348e8d8e3926be973"
+  },
+  "failures": []
+}

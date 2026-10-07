@@ -1,0 +1,6 @@
+{
+ "checks": 33,
+ "failed": [
+  "step1: capabilities text shows a prompt count or all nine prompt names"
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "failures": [],
+ "final": {
+  "path": "data/source_artifacts/learning_progressions/client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb",
+  "sha256": "01df98e19c8cb89d312bfc9cfccff5f9ce43698000b5f341f212f633d407aec5",
+  "bytes": 82178548,
+  "members": 657
+ },
+ "shards": {
+  "ghana-nacca-primary-english-language-basic-1-3": 64,
+  "ghana-nacca-primary-mathematics-basic-4-6": 64,
+  "india-cbse-science-learning-framework-classes-9-10": 64,
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5": 64,
+  "nigeria-nerdc-mathematics-primary-1-3": 64,
+  "rwanda-reb-mathematics-lower-primary-1-3": 64
+ },
+ "receipts": {
+  "build-mcpb.command.json": 0,
+  "closure-pre-stage.command.json": 0,
+  "closure.command.json": 0,
+  "stage-agreement.command.json": 0,
+  "stdio-stage.command.json": 0
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "/Users/tzz/.local/bin/uv",
+    "--directory",
+    "backend",
+    "run",
+    "--locked",
+    "--offline",
+    "--no-sync",
+    "python",
+    "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/check-walkthrough-claims.py"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "durationSeconds": 11.252,
+  "environment": {
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_CACHE_DIR": "/tmp/claude-501/kgfegmcp-final-review-uv-cache",
+    "UV_OFFLINE": "1"
+  },
+  "exitCode": 0,
+  "expectedExit": 0,
+  "logs": {
+    "stdout": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/walkthrough-claims.stdout",
+      "sha256": "1a23997b4a799dbf7d2b1c4838b740df29f4c598fcdb28585d9e07de84861cb8"
+    },
+    "stderr": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/walkthrough-claims.stderr",
+      "sha256": "8bcc8c1a6effc688ac2fd0a09b07b68510a0d635b4119876cf411ddaab10366c"
+    }
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "results": [
+    {
+      "claim": "step1: capabilities text names read_evidence and get_workflow_instructions",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step1: capabilities text shows a prompt count or all nine prompt names",
+      "pass": false,
+      "observed": [
+        "Prompts: student_study_support, teacher_guide_draft, student_handbook_section, learning_progression_curriculum_review, learning_progression_support_plan, learning_progression_teaching_sequence, administrator_alignment_review, cross_framework_comparison, multigrade_lesson_plan",
+        "Framework prompt overlays: optional, schema 1.1"
+      ]
+    },
+    {
+      "claim": "step1: capabilities text shows 'Resources: 1 fixed, 14 templates'",
+      "pass": true,
+      "observed": [
+        "Resources: 1 fixed, 14 templates"
+      ]
+    },
+    {
+      "claim": "step1: capabilities text tool count line",
+      "pass": true,
+      "observed": [
+        "Tools: compare_framework_evidence, get_capabilities, get_framework, get_framework_statistics, get_learning_component, get_learning_component_context, get_learning_components_for_standard, get_learning_progression, get_learning_progression_paths, get_standard, get_standard_context, get_standard_progressions, get_workflow_instructions, list_frameworks, read_evidence, search_learning_components, search_learning_progressions, search_standards, traverse_learning_progressions",
+        "Package search modes are authoritative per package; generic tool schemas describe possible request variants, not package authorization."
+      ]
+    },
+    {
+      "claim": "step2: relationshipUri and provenanceUri on the edge row",
+      "pass": true,
+      "observed": [
+        "epistemicStatus",
+        "judgment",
+        "provenanceUri",
+        "relationship",
+        "relationshipUri"
+      ]
+    },
+    {
+      "claim": "step2: standardUri for both endpoints",
+      "pass": true,
+      "observed": {
+        "12b603df": true,
+        "e399b510": true
+      }
+    },
+    {
+      "claim": "step2: generated-origin notice present",
+      "pass": true,
+      "observed": [
+        "artifactInventoryNotice",
+        "generatedOriginNotice",
+        "semanticNotice"
+      ]
+    },
+    {
+      "claim": "step2: continuationNotice says no continuation",
+      "pass": true,
+      "observed": "No continuation is offered for this operation. Read full evidence through read_evidence with the returned standard/provenance URIs under native rights and limits; content windows do not extend the progression search."
+    },
+    {
+      "claim": "step2: judgment confidence notice says model judgment",
+      "pass": true,
+      "observed": [
+        "confidence",
+        "confidenceNotice",
+        "rationaleExcerpt",
+        "rationaleExcerpted",
+        "relationshipId",
+        "warningCount",
+        "warningExcerpts",
+        "warningsExcerpted",
+        "warningsOmitted"
+      ]
+    },
+    {
+      "claim": "step2: summaryUri/validationUri/unresolvedUri exist in metadata",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step2: ordinary text equals structuredContent",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step3: c4885674 statement mentions 'Count and read correctly from 1-9'",
+      "pass": true,
+      "observed": "Pupil should be able to:\n3.  Count and read correctly from 1-9;"
+    },
+    {
+      "claim": "step4: second page has seven IDs different from the first",
+      "pass": true,
+      "observed": [
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "claim": "progression reference: 27 pages of seven",
+      "pass": true,
+      "observed": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ]
+    },
+    {
+      "claim": "step5: traversal node statements (deepest supports)",
+      "pass": true,
+      "observed": {
+        "statements": {
+          "e399b510": "Pupil should be able to:\n4.  write correctly number 6-9;",
+          "12b603df": "Pupils should be able to: write correctly number 1-5;",
+          "c4885674": "Pupil should be able to:\n3.  Count and read correctly from 1-9;",
+          "ec0c6a6d": "Pupils should be able to: count correctly up to 5;",
+          "b193d5b5": "Pupils should be able to: sort and classify number of objects in a group or collection;"
+        },
+        "distances": [
+          {
+            "depth": 0,
+            "nodeId": "e399b510-48bb-58ee-abda-61460a5a853b"
+          },
+          {
+            "depth": 1,
+            "nodeId": "12b603df-b6f0-50b3-914d-5d655a2dbaf1"
+          },
+          {
+            "depth": 1,
+            "nodeId": "c4885674-8c8f-5206-97d8-0071c8d7a70e"
+          },
+          {
+            "depth": 2,
+            "nodeId": "ec0c6a6d-0a48-5aa8-bdfe-72260dd3b559"
+          },
+          {
+            "depth": 2,
+            "nodeId": "b193d5b5-5a40-585d-9e88-5407b9f7f80b"
+          }
+        ],
+        "keys": [
+          "continuationNotice",
+          "counters",
+          "distances",
+          "epistemicStatus",
+          "frontier",
+          "graphExhausted",
+          "metadata",
+          "nodes",
+          "originNodeId",
+          "relationships",
+          "request",
+          "scopeComplete",
+          "traversalNotice",
+          "truncationReasons"
+        ]
+      }
+    },
+    {
+      "claim": "step6: paths go through c4885674 then 12b603df",
+      "pass": true,
+      "observed": [
+        [
+          "c4885674"
+        ],
+        [
+          "12b603df"
+        ]
+      ]
+    },
+    {
+      "claim": "step6: paths continuationNotice says no continuation",
+      "pass": true,
+      "observed": "No continuation is offered for this operation. Read full evidence through read_evidence with the returned standard/provenance URIs under native rights and limits; content windows do not extend the progression search."
+    },
+    {
+      "claim": "traversal continuationNotice says no continuation",
+      "pass": true,
+      "observed": "No continuation is offered for this operation. Read full evidence through read_evidence with the returned standard/provenance URIs under native rights and limits; content windows do not extend the progression search."
+    },
+    {
+      "claim": "step8: LC text labels a model-generated decomposition",
+      "pass": true,
+      "observed": [
+        "Interpretation: Model-generated decomposition of published standards, not source-asserted curriculum; its wording, tags, and support confidence do not by themselves establish equivalence, mastery, prerequisites, progression, or difficulty."
+      ]
+    },
+    {
+      "claim": "step9: Nigeria summary has stored counts, eligibility limits, structural-only validation",
+      "pass": true,
+      "observed": [
+        "artifacts",
+        "buildsTowardsRelationships",
+        "confidenceNotice",
+        "coverageNotice",
+        "eligibleSfisPerRelationship",
+        "generatedOriginNotice",
+        "hasLearningProgressionProvenance",
+        "hasLearningProgressions",
+        "needsReviewClaims",
+        "noRelationClaims",
+        "objectCounts",
+        "pedagogicalCorrectnessEstablished",
+        "relatesToRelationships",
+        "relationshipWarningCount",
+        "relationshipsWithWarningsCount",
+        "semanticNotice",
+        "semanticValidationPerformed",
+        "totalSfisConsidered",
+        "totalSfisEligible",
+        "totalSfisExcluded",
+        "unresolvedWarningPairs",
+        "validationPassed",
+        "validationWarningCount"
+      ]
+    },
+    {
+      "claim": "step9: CBSE summary reports needs_review kept out of accepted edges",
+      "pass": true,
+      "observed": {
+        "confidenceNotice": "Confidence is a model judgment, not a calibrated probability of learner success or validated pedagogical correctness.",
+        "coverageNotice": "Candidate selection is not exhaustive. Missing edges do not establish absence of a pedagogical connection. Passed validation covers structural and process integrity only. Warning totals do not erase per-edge warnings.",
+        "generatedOriginNotice": "IDinsight model-generated relationships are not publisher endorsement or certified pedagogy.",
+        "needsReviewClaims": 1,
+        "semanticNotice": "buildsTowards describes support for success, not a mandatory prerequisite. relatesTo is a conceptual or skill link without sequence or dependency. Stored direction and canonical endpoint orientation remain unchanged."
+      }
+    },
+    {
+      "claim": "step11: rendered message contains '[GENERATED-EVIDENCE / llm_inferred]'",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step11: rendered message contains 'NERDC'",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step11: rendered message contains 'ten'",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step11: rendered message contains '32'",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step11: rendered message contains 'EVIDENCE ACCESS'",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step11: rendered message contains 'EVIDENCE LINKS'",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step11: rendered message contains 'nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f'",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step11: observations treated as caller reports, not diagnosis",
+      "pass": true,
+      "observed": [
+        "Teacher observations in local_context are unverified caller reports, not measured mastery/readiness or source statements. If absent, report missing context and offer general optional choices only. Never invent observations, learner deficits or a diagnosis.",
+        "- Separate teacher-reported observations from [SOURCE-ASSERTED] expectations, stored evidence and [LLM-INFERRED / GENERATED] review/practice suggestions. local_context is unverified caller data, not a mastery assessment. If absent, say context was not supplied and offer only general optional support choices; do not fabricate observations or tailor a diagnosis.",
+        "- Propose cited, adaptable review/practice options and alternative next steps, explaining which reported observations motivated each suggestion. Label activities, explanations and ordering choices as generated pedagogy. The teacher chooses how to use them; do not diagnose mastery/readiness, infer learner deficits, or prescribe compulsory prerequisites."
+      ]
+    },
+    {
+      "claim": "step11: related concepts kept separate from incoming builds",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "step12: instructionsNotice says the server has not run it",
+      "pass": true,
+      "observed": "rendered.message holds the complete workflow instructions, identical to the native prompt of the same name. The server has not run them: the client performs each listed tool call and evidence read, then composes the cited output. No cursor or partial instruction text is ever returned."
+    },
+    {
+      "claim": "step12: rendered.message equals native message",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "claim": "access-tools: unknown snapshot reports framework_not_found",
+      "pass": true,
+      "observed": {
+        "error": "framework_not_found"
+      }
+    }
+  ],
+  "failed": [
+    "step1: capabilities text shows a prompt count or all nine prompt names"
+  ]
+}

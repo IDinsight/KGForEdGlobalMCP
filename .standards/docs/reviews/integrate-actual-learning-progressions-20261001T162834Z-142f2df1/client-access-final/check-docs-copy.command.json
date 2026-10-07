@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "/Users/tzz/.local/bin/uv",
+    "--directory",
+    "backend",
+    "run",
+    "--locked",
+    "--offline",
+    "--no-sync",
+    "python",
+    "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/check-docs-copy.py",
+    "/tmp/claude-501/kgfegmcp-final-review-site"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "durationSeconds": 13.034,
+  "environment": {
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_CACHE_DIR": "/tmp/claude-501/kgfegmcp-final-review-uv-cache",
+    "UV_OFFLINE": "1"
+  },
+  "exitCode": 0,
+  "expectedExit": 0,
+  "logs": {
+    "stdout": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/check-docs-copy.stdout",
+      "sha256": "3dbba46afe26ca9dec6c36cdf5e9963a1595dd7ff73c080cf65ece53ee79a8b2"
+    },
+    "stderr": {
+      "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/client-access-final/check-docs-copy.stderr",
+      "sha256": "5c987c0a17b0e2b1c1c75f2a48c1878682c904def5a2d9853793365aec517124"
+    }
+  }
+}
