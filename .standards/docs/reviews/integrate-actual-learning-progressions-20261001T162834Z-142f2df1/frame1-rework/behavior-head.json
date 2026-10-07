@@ -1,0 +1,619 @@
+{
+ "citations": {
+  "ghana-nacca-primary-english-language-basic-1-3": {
+   "componentBlocks": 307,
+   "nativeRelationshipReads": 307,
+   "supportedStandards": 215,
+   "unsupportedChecked": 3
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6": {
+   "componentBlocks": 273,
+   "nativeRelationshipReads": 273,
+   "supportedStandards": 161,
+   "unsupportedChecked": 3
+  },
+  "india-cbse-science-learning-framework-classes-9-10": {
+   "componentBlocks": 858,
+   "nativeRelationshipReads": 858,
+   "supportedStandards": 554,
+   "unsupportedChecked": 3
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5": {
+   "componentBlocks": 419,
+   "nativeRelationshipReads": 419,
+   "supportedStandards": 220,
+   "unsupportedChecked": 3
+  },
+  "nigeria-nerdc-mathematics-primary-1-3": {
+   "componentBlocks": 204,
+   "nativeRelationshipReads": 204,
+   "supportedStandards": 155,
+   "unsupportedChecked": 3
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3": {
+   "componentBlocks": 797,
+   "nativeRelationshipReads": 797,
+   "supportedStandards": 475,
+   "unsupportedChecked": 3
+  }
+ },
+ "discovery": {
+  "academic_standards": {
+   "itemsSha256WithoutIncluded": "67f32c70ba5c05198a9636a5e00f195754b214e446971e13262d5dcaf78f2581",
+   "snapshotIds": [
+    "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
+    "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9",
+    "india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1",
+    "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f",
+    "nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f",
+    "rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13"
+   ]
+  },
+  "lc+lp": {
+   "itemsSha256WithoutIncluded": "67f32c70ba5c05198a9636a5e00f195754b214e446971e13262d5dcaf78f2581",
+   "snapshotIds": [
+    "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
+    "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9",
+    "india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1",
+    "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f",
+    "nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f",
+    "rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13"
+   ]
+  },
+  "learning_components": {
+   "itemsSha256WithoutIncluded": "67f32c70ba5c05198a9636a5e00f195754b214e446971e13262d5dcaf78f2581",
+   "snapshotIds": [
+    "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
+    "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9",
+    "india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1",
+    "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f",
+    "nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f",
+    "rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13"
+   ]
+  },
+  "learning_progressions": {
+   "itemsSha256WithoutIncluded": "67f32c70ba5c05198a9636a5e00f195754b214e446971e13262d5dcaf78f2581",
+   "snapshotIds": [
+    "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
+    "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9",
+    "india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1",
+    "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f",
+    "nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f",
+    "rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13"
+   ]
+  },
+  "none": {
+   "itemsSha256WithoutIncluded": "67f32c70ba5c05198a9636a5e00f195754b214e446971e13262d5dcaf78f2581",
+   "snapshotIds": [
+    "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
+    "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9",
+    "india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1",
+    "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f",
+    "nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f",
+    "rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13"
+   ]
+  },
+  "textChecked": {
+   "ghana-nacca-primary-english-language-basic-1-3": [
+    250,
+    801
+   ],
+   "ghana-nacca-primary-mathematics-basic-4-6": [
+    299,
+    300
+   ],
+   "india-cbse-science-learning-framework-classes-9-10": [
+    891,
+    2315
+   ],
+   "india-tamil-nadu-tnscert-mathematics-classes-1-5": [
+    472,
+    435
+   ],
+   "nigeria-nerdc-mathematics-primary-1-3": [
+    189,
+    297
+   ],
+   "rwanda-reb-mathematics-lower-primary-1-3": [
+    938,
+    893
+   ]
+  }
+ },
+ "failures": [],
+ "source": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/backend/src/kgfegmcp/__init__.py",
+ "workflows": {
+  "ghana-nacca-primary-english-language-basic-1-3": {
+   "hub": "08d2ee7c-a746-5e4b-85d2-2ce01ee9b468",
+   "hubStoredKinds": {
+    "related": 12
+   },
+   "oldAllPageKinds": {
+    "related": 8
+   },
+   "perKindReturned": {
+    "learning_progression_support_plan": {
+     "incoming_builds": 0,
+     "related": 8
+    },
+    "learning_progression_teaching_sequence": {
+     "incoming_builds": 0,
+     "outgoing_builds": 0,
+     "related": 8
+    },
+    "multigrade_lesson_plan": {
+     "incoming_builds": 0,
+     "outgoing_builds": 0,
+     "related": 8
+    },
+    "student_handbook_section": {
+     "incoming_builds": 0,
+     "outgoing_builds": 0,
+     "related": 8
+    },
+    "student_study_support": {
+     "incoming_builds": 0,
+     "outgoing_builds": 0,
+     "related": 8
+    },
+    "teacher_guide_draft": {
+     "incoming_builds": 0,
+     "outgoing_builds": 0,
+     "related": 8
+    }
+   },
+   "review": {
+    "builds": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    },
+    "omitted": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    },
+    "relates": {
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    },
+    "reversed-both": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    }
+   }
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6": {
+   "hub": "2168162b-6e4e-5e47-86a1-1ce19754dfc4",
+   "hubStoredKinds": {
+    "outgoing_builds": 6,
+    "related": 5
+   },
+   "oldAllPageKinds": {
+    "outgoing_builds": 6,
+    "related": 2
+   },
+   "perKindReturned": {
+    "learning_progression_support_plan": {
+     "incoming_builds": 0,
+     "related": 5
+    },
+    "learning_progression_teaching_sequence": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 5
+    },
+    "multigrade_lesson_plan": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 5
+    },
+    "student_handbook_section": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 5
+    },
+    "student_study_support": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 5
+    },
+    "teacher_guide_draft": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 5
+    }
+   },
+   "review": {
+    "builds": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "omitted": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "relates": {
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "reversed-both": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    }
+   }
+  },
+  "india-cbse-science-learning-framework-classes-9-10": {
+   "hub": "015e061d-6ffd-5531-a3c3-5804f6aad039",
+   "hubStoredKinds": {
+    "outgoing_builds": 6,
+    "related": 6
+   },
+   "oldAllPageKinds": {
+    "outgoing_builds": 6,
+    "related": 2
+   },
+   "perKindReturned": {
+    "learning_progression_support_plan": {
+     "incoming_builds": 0,
+     "related": 6
+    },
+    "learning_progression_teaching_sequence": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 6
+    },
+    "multigrade_lesson_plan": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 6
+    },
+    "student_handbook_section": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 6
+    },
+    "student_study_support": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 6
+    },
+    "teacher_guide_draft": {
+     "incoming_builds": 0,
+     "outgoing_builds": 6,
+     "related": 6
+    }
+   },
+   "review": {
+    "builds": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    },
+    "omitted": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    },
+    "relates": {
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    },
+    "reversed-both": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    }
+   }
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5": {
+   "hub": "3fdb1489-8db3-53a5-a2a4-c460d8754e5e",
+   "hubStoredKinds": {
+    "incoming_builds": 6,
+    "related": 6
+   },
+   "oldAllPageKinds": {
+    "incoming_builds": 6,
+    "related": 2
+   },
+   "perKindReturned": {
+    "learning_progression_support_plan": {
+     "incoming_builds": 6,
+     "related": 6
+    },
+    "learning_progression_teaching_sequence": {
+     "incoming_builds": 6,
+     "outgoing_builds": 0,
+     "related": 6
+    },
+    "multigrade_lesson_plan": {
+     "incoming_builds": 6,
+     "outgoing_builds": 0,
+     "related": 6
+    },
+    "student_handbook_section": {
+     "incoming_builds": 6,
+     "outgoing_builds": 0,
+     "related": 6
+    },
+    "student_study_support": {
+     "incoming_builds": 6,
+     "outgoing_builds": 0,
+     "related": 6
+    },
+    "teacher_guide_draft": {
+     "incoming_builds": 6,
+     "outgoing_builds": 0,
+     "related": 6
+    }
+   },
+   "review": {
+    "builds": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     }
+    },
+    "omitted": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 18
+     }
+    },
+    "relates": {
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 18
+     }
+    },
+    "reversed-both": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 19
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 18
+     }
+    }
+   }
+  },
+  "nigeria-nerdc-mathematics-primary-1-3": {
+   "hub": "0ee7c3ae-68a6-5733-8ae2-670ef25f6cfc",
+   "hubStoredKinds": {
+    "incoming_builds": 4,
+    "related": 7
+   },
+   "oldAllPageKinds": {
+    "incoming_builds": 4,
+    "related": 4
+   },
+   "perKindReturned": {
+    "learning_progression_support_plan": {
+     "incoming_builds": 4,
+     "related": 7
+    },
+    "learning_progression_teaching_sequence": {
+     "incoming_builds": 4,
+     "outgoing_builds": 0,
+     "related": 7
+    },
+    "multigrade_lesson_plan": {
+     "incoming_builds": 4,
+     "outgoing_builds": 0,
+     "related": 7
+    },
+    "student_handbook_section": {
+     "incoming_builds": 4,
+     "outgoing_builds": 0,
+     "related": 7
+    },
+    "student_study_support": {
+     "incoming_builds": 4,
+     "outgoing_builds": 0,
+     "related": 7
+    },
+    "teacher_guide_draft": {
+     "incoming_builds": 4,
+     "outgoing_builds": 0,
+     "related": 7
+    }
+   },
+   "review": {
+    "builds": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "omitted": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "relates": {
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "reversed-both": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    }
+   }
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3": {
+   "hub": "1da703e6-f732-518b-bdca-3602a8e8917c",
+   "hubStoredKinds": {
+    "incoming_builds": 1,
+    "outgoing_builds": 5,
+    "related": 6
+   },
+   "oldAllPageKinds": {
+    "incoming_builds": 1,
+    "outgoing_builds": 5,
+    "related": 2
+   },
+   "perKindReturned": {
+    "learning_progression_support_plan": {
+     "incoming_builds": 1,
+     "related": 6
+    },
+    "learning_progression_teaching_sequence": {
+     "incoming_builds": 1,
+     "outgoing_builds": 5,
+     "related": 6
+    },
+    "multigrade_lesson_plan": {
+     "incoming_builds": 1,
+     "outgoing_builds": 5,
+     "related": 6
+    },
+    "student_handbook_section": {
+     "incoming_builds": 1,
+     "outgoing_builds": 5,
+     "related": 6
+    },
+    "student_study_support": {
+     "incoming_builds": 1,
+     "outgoing_builds": 5,
+     "related": 6
+    },
+    "teacher_guide_draft": {
+     "incoming_builds": 1,
+     "outgoing_builds": 5,
+     "related": 6
+    }
+   },
+   "review": {
+    "builds": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "omitted": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "relates": {
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    },
+    "reversed-both": {
+     "buildsTowards": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     },
+     "relatesTo": {
+      "pages": 3,
+      "remainingCursor": true,
+      "returned": 21
+     }
+    }
+   }
+  }
+ }
+}

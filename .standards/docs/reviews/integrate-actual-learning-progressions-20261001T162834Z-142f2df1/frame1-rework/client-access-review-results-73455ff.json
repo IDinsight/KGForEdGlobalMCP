@@ -1,0 +1,513 @@
+{
+  "adversarialUris": {
+    "KGFEGMCP://catalog": "invalid_evidence_uri",
+    "file:///etc/passwd": "invalid_evidence_uri",
+    "kgfegmcp:///catalog": "invalid_evidence_uri",
+    "kgfegmcp://catalog/": "invalid_evidence_uri",
+    "kgfegmcp://framework//snapshot/x/manifest": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f//manifest": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/artifact/%252e%252e": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/artifact/%2e%2e": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/artifact/..%2Fmanifest": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/artifact/a%5Cb": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/manifest/": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/manifest?x=1": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/relationship/%FF": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/standard/e399b510-48bb-58ee-abda-61460a5a853b%00": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/standard/e399b510-48bb-58ee-abda-61460a5a853b/extra": "invalid_evidence_uri",
+    "kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3:443/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/manifest": "invalid_evidence_uri",
+    "kgfegmcp://user@framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/manifest": "invalid_evidence_uri"
+  },
+  "bulkDenied": "resource_access_denied",
+  "calls": {
+    "get_learning_progression": 1,
+    "get_learning_progression_paths": 6,
+    "get_standard_progressions": 18,
+    "get_workflow_instructions": 3,
+    "read_evidence": 18569,
+    "search_learning_progressions": 1261,
+    "traverse_learning_progressions": 12
+  },
+  "cursorTamper": {
+    "forgedPosition": "invalid_cursor",
+    "lpAlteredLimit": "invalid_cursor",
+    "otherSize": "invalid_cursor",
+    "otherUri": "invalid_cursor"
+  },
+  "exact": {
+    "artifacts": [
+      "learningProgressionProvenance",
+      "learningProgressionProvenanceIndex",
+      "nodes",
+      "relationships"
+    ],
+    "confidence": 0.72,
+    "endpoints": [
+      "12b603df-b6f0-50b3-914d-5d655a2dbaf1",
+      "e399b510-48bb-58ee-abda-61460a5a853b"
+    ],
+    "label": "buildsTowards",
+    "noContinuationNotice": true,
+    "nodeStatementsPresent": true,
+    "warningCount": 9
+  },
+  "failures": [],
+  "fullReads": {
+    "cbseSummaryNeedsReview": true,
+    "component": {
+      "bytes": 3163,
+      "windows": 1
+    },
+    "component/provenance": {
+      "bytes": 541,
+      "windows": 1
+    },
+    "componentFound": true,
+    "edgeProvenance": {
+      "bytes": 12275,
+      "mentions": {
+        "checker": true,
+        "confidence": true,
+        "producer": true,
+        "rationale": true,
+        "warnings": true
+      },
+      "topKeys": [
+        "confidenceNotice",
+        "coverageNotice",
+        "epistemicStatus",
+        "generatedOriginNotice",
+        "provenance",
+        "relationshipId",
+        "semanticNotice"
+      ],
+      "windows": 3
+    },
+    "lpSummary": {
+      "bytes": 4577,
+      "windows": 2
+    },
+    "manifest": {
+      "bytes": 22348,
+      "windows": 6
+    },
+    "targetComponents": {
+      "bytes": 4430,
+      "windows": 2
+    },
+    "targetProvenance": {
+      "bytes": 3077,
+      "windows": 1
+    },
+    "targetStandard": {
+      "bytes": 2552,
+      "windows": 1
+    },
+    "unresolved": {
+      "bytes": 167,
+      "windows": 1
+    },
+    "validation": {
+      "bytes": 1418,
+      "windows": 1
+    }
+  },
+  "inventory": [
+    19,
+    9,
+    1,
+    14
+  ],
+  "maxConservativeBytesChars": {
+    "get_learning_progression": [
+      20693,
+      20693
+    ],
+    "get_learning_progression_paths": [
+      94826,
+      94810
+    ],
+    "get_standard_progressions": [
+      98057,
+      98041
+    ],
+    "get_workflow_instructions": [
+      65590,
+      65590
+    ],
+    "read_evidence": [
+      46332,
+      46332
+    ],
+    "search_learning_progressions": [
+      99992,
+      99980
+    ],
+    "traverse_learning_progressions": [
+      97986,
+      97984
+    ]
+  },
+  "maxWireBytesChars": {
+    "get_learning_progression": [
+      20405,
+      20405
+    ],
+    "get_learning_progression_paths": [
+      93654,
+      93638
+    ],
+    "get_standard_progressions": [
+      96704,
+      96688
+    ],
+    "get_workflow_instructions": [
+      65495,
+      65495
+    ],
+    "read_evidence": [
+      46222,
+      46222
+    ],
+    "search_learning_progressions": [
+      98604,
+      98584
+    ],
+    "traverse_learning_progressions": [
+      96732,
+      96730
+    ]
+  },
+  "noncanonicalCanonicalized": true,
+  "packages": {
+    "ghana-nacca-primary-english-language-basic-1-3": {
+      "direct": {
+        "degree": 12,
+        "equalsOracle": true,
+        "hub": "08d2ee7c-a746-5e4b-85d2-2ce01ee9b468",
+        "pages": 2,
+        "stoppingReasons": {
+          "byte_limit": 1,
+          "none": 1
+        }
+      },
+      "discovery": {
+        "equalsOracle": true,
+        "pages": 165,
+        "returned": 1051,
+        "seconds": 21.5,
+        "stoppingReasons": {
+          "byte_limit": 164,
+          "none": 1
+        },
+        "unique": 1051
+      },
+      "emptyComplete": true,
+      "paths": {
+        "nextUnreturnedPath": false,
+        "returnedPathLengths": [
+          5
+        ],
+        "shortestHops": 5,
+        "truncation": []
+      },
+      "storedEdges": 1051,
+      "traversal": {
+        "downstream": {
+          "edges": 9,
+          "scopeComplete": false,
+          "truncation": [
+            "byte_limit"
+          ]
+        },
+        "upstream": {
+          "edges": 0,
+          "scopeComplete": true,
+          "truncation": []
+        }
+      }
+    },
+    "ghana-nacca-primary-mathematics-basic-4-6": {
+      "direct": {
+        "degree": 11,
+        "equalsOracle": true,
+        "hub": "2168162b-6e4e-5e47-86a1-1ce19754dfc4",
+        "pages": 2,
+        "stoppingReasons": {
+          "byte_limit": 1,
+          "none": 1
+        }
+      },
+      "discovery": {
+        "equalsOracle": true,
+        "pages": 86,
+        "returned": 599,
+        "seconds": 11.8,
+        "stoppingReasons": {
+          "byte_limit": 85,
+          "none": 1
+        },
+        "unique": 599
+      },
+      "emptyComplete": true,
+      "paths": {
+        "nextUnreturnedPath": true,
+        "returnedPathLengths": [
+          6,
+          7
+        ],
+        "shortestHops": 6,
+        "truncation": [
+          "byte_limit"
+        ]
+      },
+      "storedEdges": 599,
+      "traversal": {
+        "downstream": {
+          "edges": 9,
+          "scopeComplete": false,
+          "truncation": [
+            "byte_limit"
+          ]
+        },
+        "upstream": {
+          "edges": 0,
+          "scopeComplete": true,
+          "truncation": []
+        }
+      }
+    },
+    "india-cbse-science-learning-framework-classes-9-10": {
+      "direct": {
+        "degree": 12,
+        "equalsOracle": true,
+        "hub": "015e061d-6ffd-5531-a3c3-5804f6aad039",
+        "pages": 2,
+        "stoppingReasons": {
+          "byte_limit": 1,
+          "none": 1
+        }
+      },
+      "discovery": {
+        "equalsOracle": true,
+        "pages": 527,
+        "returned": 3206,
+        "seconds": 69.7,
+        "stoppingReasons": {
+          "byte_limit": 526,
+          "none": 1
+        },
+        "unique": 3206
+      },
+      "emptyComplete": true,
+      "paths": {
+        "nextUnreturnedPath": false,
+        "returnedPathLengths": [
+          6
+        ],
+        "shortestHops": 6,
+        "truncation": []
+      },
+      "storedEdges": 3206,
+      "traversal": {
+        "downstream": {
+          "edges": 9,
+          "scopeComplete": false,
+          "truncation": [
+            "byte_limit"
+          ]
+        },
+        "upstream": {
+          "edges": 1,
+          "scopeComplete": true,
+          "truncation": []
+        }
+      }
+    },
+    "india-tamil-nadu-tnscert-mathematics-classes-1-5": {
+      "direct": {
+        "degree": 12,
+        "equalsOracle": true,
+        "hub": "3fdb1489-8db3-53a5-a2a4-c460d8754e5e",
+        "pages": 2,
+        "stoppingReasons": {
+          "byte_limit": 1,
+          "none": 1
+        }
+      },
+      "discovery": {
+        "equalsOracle": true,
+        "pages": 149,
+        "returned": 907,
+        "seconds": 19.3,
+        "stoppingReasons": {
+          "byte_limit": 148,
+          "none": 1
+        },
+        "unique": 907
+      },
+      "emptyComplete": true,
+      "paths": {
+        "nextUnreturnedPath": true,
+        "returnedPathLengths": [
+          7
+        ],
+        "shortestHops": 7,
+        "truncation": [
+          "byte_limit"
+        ]
+      },
+      "storedEdges": 907,
+      "traversal": {
+        "downstream": {
+          "edges": 9,
+          "scopeComplete": false,
+          "truncation": [
+            "byte_limit"
+          ]
+        },
+        "upstream": {
+          "edges": 0,
+          "scopeComplete": true,
+          "truncation": []
+        }
+      }
+    },
+    "nigeria-nerdc-mathematics-primary-1-3": {
+      "direct": {
+        "degree": 11,
+        "equalsOracle": true,
+        "hub": "0ee7c3ae-68a6-5733-8ae2-670ef25f6cfc",
+        "pages": 2,
+        "stoppingReasons": {
+          "byte_limit": 1,
+          "none": 1
+        }
+      },
+      "discovery": {
+        "equalsOracle": true,
+        "pages": 70,
+        "returned": 486,
+        "seconds": 9.3,
+        "stoppingReasons": {
+          "byte_limit": 69,
+          "none": 1
+        },
+        "unique": 486
+      },
+      "emptyComplete": true,
+      "paths": {
+        "nextUnreturnedPath": true,
+        "returnedPathLengths": [
+          5,
+          5,
+          6
+        ],
+        "shortestHops": 5,
+        "truncation": [
+          "byte_limit"
+        ]
+      },
+      "storedEdges": 486,
+      "traversal": {
+        "downstream": {
+          "edges": 9,
+          "scopeComplete": false,
+          "truncation": [
+            "byte_limit"
+          ]
+        },
+        "upstream": {
+          "edges": 0,
+          "scopeComplete": true,
+          "truncation": []
+        }
+      }
+    },
+    "rwanda-reb-mathematics-lower-primary-1-3": {
+      "direct": {
+        "degree": 12,
+        "equalsOracle": true,
+        "hub": "1da703e6-f732-518b-bdca-3602a8e8917c",
+        "pages": 2,
+        "stoppingReasons": {
+          "byte_limit": 1,
+          "none": 1
+        }
+      },
+      "discovery": {
+        "equalsOracle": true,
+        "pages": 262,
+        "returned": 1831,
+        "seconds": 34.9,
+        "stoppingReasons": {
+          "byte_limit": 261,
+          "none": 1
+        },
+        "unique": 1831
+      },
+      "emptyComplete": true,
+      "paths": {
+        "nextUnreturnedPath": true,
+        "returnedPathLengths": [
+          8
+        ],
+        "shortestHops": 8,
+        "truncation": [
+          "byte_limit"
+        ]
+      },
+      "storedEdges": 1831,
+      "traversal": {
+        "downstream": {
+          "edges": 9,
+          "scopeComplete": false,
+          "truncation": [
+            "byte_limit"
+          ]
+        },
+        "upstream": {
+          "edges": 0,
+          "scopeComplete": true,
+          "truncation": []
+        }
+      }
+    }
+  },
+  "uriUsability": {
+    "byKind": {
+      "artifact": {
+        "readable": 18,
+        "resource_access_denied": 18
+      },
+      "learning-progressions": {
+        "readable": 6
+      },
+      "manifest": {
+        "readable": 6
+      },
+      "relationship": {
+        "readable": 8080
+      },
+      "relationship/provenance": {
+        "readable": 8080
+      },
+      "standard": {
+        "readable": 2317
+      }
+    },
+    "outcomes": {
+      "readable": 18507,
+      "resource_access_denied": 18
+    },
+    "uniqueUris": 18525
+  },
+  "workflowParity": {
+    "learning_progression_curriculum_review": true,
+    "learning_progression_support_plan": true,
+    "multigrade_lesson_plan": true,
+    "rejected:administrator_alignment_review": true,
+    "rejected:cross_framework_comparison": true,
+    "rejected:inferred_progression_hypothesis": true
+  }
+}

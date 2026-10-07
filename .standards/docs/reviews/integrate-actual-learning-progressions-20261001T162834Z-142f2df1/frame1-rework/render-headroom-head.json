@@ -1,0 +1,678 @@
+{
+ "cases": {
+  "ghana-nacca-primary-english-language-basic-1-3|max_ascii|learning_progression_curriculum_review": {
+   "details": "{'max_rendered_prompt_bytes': 65536, 'rendered_prompt_bytes': 65568}",
+   "error": "PromptRenderingError"
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_ascii|learning_progression_support_plan": {
+   "bytes": 32164,
+   "headroom": 33372
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_ascii|learning_progression_teaching_sequence": {
+   "bytes": 32197,
+   "headroom": 33339
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_ascii|multigrade_lesson_plan": {
+   "bytes": 35869,
+   "headroom": 29667
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_ascii|student_handbook_section": {
+   "bytes": 37307,
+   "headroom": 28229
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_ascii|student_study_support": {
+   "bytes": 37498,
+   "headroom": 28038
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_ascii|teacher_guide_draft": {
+   "bytes": 43281,
+   "headroom": 22255
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_multibyte|learning_progression_curriculum_review": {
+   "details": "{'max_rendered_prompt_bytes': 65536, 'rendered_prompt_bytes': 134648}",
+   "error": "PromptRenderingError"
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_multibyte|learning_progression_support_plan": {
+   "bytes": 40164,
+   "headroom": 25372
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 42245,
+   "headroom": 23291
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_multibyte|multigrade_lesson_plan": {
+   "bytes": 49917,
+   "headroom": 15619
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_multibyte|student_handbook_section": {
+   "bytes": 47355,
+   "headroom": 18181
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_multibyte|student_study_support": {
+   "bytes": 47546,
+   "headroom": 17990
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|max_multibyte|teacher_guide_draft": {
+   "bytes": 61329,
+   "headroom": 4207
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|real_ids_multibyte|learning_progression_curriculum_review": {
+   "bytes": 46088,
+   "headroom": 19448
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|real_ids_multibyte|learning_progression_support_plan": {
+   "bytes": 40164,
+   "headroom": 25372
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|real_ids_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 39185,
+   "headroom": 26351
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|real_ids_multibyte|multigrade_lesson_plan": {
+   "bytes": 46857,
+   "headroom": 18679
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|real_ids_multibyte|student_handbook_section": {
+   "bytes": 44295,
+   "headroom": 21241
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|real_ids_multibyte|student_study_support": {
+   "bytes": 44486,
+   "headroom": 21050
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|real_ids_multibyte|teacher_guide_draft": {
+   "bytes": 58269,
+   "headroom": 7267
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|typical|learning_progression_curriculum_review": {
+   "bytes": 27395,
+   "headroom": 38141
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|typical|learning_progression_support_plan": {
+   "bytes": 28166,
+   "headroom": 37370
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|typical|learning_progression_teaching_sequence": {
+   "bytes": 27187,
+   "headroom": 38349
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|typical|multigrade_lesson_plan": {
+   "bytes": 28861,
+   "headroom": 36675
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|typical|student_handbook_section": {
+   "bytes": 32297,
+   "headroom": 33239
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|typical|student_study_support": {
+   "bytes": 32488,
+   "headroom": 33048
+  },
+  "ghana-nacca-primary-english-language-basic-1-3|typical|teacher_guide_draft": {
+   "bytes": 34275,
+   "headroom": 31261
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_ascii|learning_progression_curriculum_review": {
+   "bytes": 64234,
+   "headroom": 1302
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_ascii|learning_progression_support_plan": {
+   "bytes": 30800,
+   "headroom": 34736
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_ascii|learning_progression_teaching_sequence": {
+   "bytes": 30823,
+   "headroom": 34713
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_ascii|multigrade_lesson_plan": {
+   "bytes": 34495,
+   "headroom": 31041
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_ascii|student_handbook_section": {
+   "bytes": 34633,
+   "headroom": 30903
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_ascii|student_study_support": {
+   "bytes": 34869,
+   "headroom": 30667
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_ascii|teacher_guide_draft": {
+   "bytes": 40874,
+   "headroom": 24662
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_multibyte|learning_progression_curriculum_review": {
+   "details": "{'max_rendered_prompt_bytes': 65536, 'rendered_prompt_bytes': 133314}",
+   "error": "PromptRenderingError"
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_multibyte|learning_progression_support_plan": {
+   "bytes": 38800,
+   "headroom": 26736
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 40871,
+   "headroom": 24665
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_multibyte|multigrade_lesson_plan": {
+   "bytes": 48543,
+   "headroom": 16993
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_multibyte|student_handbook_section": {
+   "bytes": 44681,
+   "headroom": 20855
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_multibyte|student_study_support": {
+   "bytes": 44917,
+   "headroom": 20619
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|max_multibyte|teacher_guide_draft": {
+   "bytes": 58922,
+   "headroom": 6614
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|real_ids_multibyte|learning_progression_curriculum_review": {
+   "bytes": 44754,
+   "headroom": 20782
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|real_ids_multibyte|learning_progression_support_plan": {
+   "bytes": 38800,
+   "headroom": 26736
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|real_ids_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 37811,
+   "headroom": 27725
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|real_ids_multibyte|multigrade_lesson_plan": {
+   "bytes": 45483,
+   "headroom": 20053
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|real_ids_multibyte|student_handbook_section": {
+   "bytes": 41621,
+   "headroom": 23915
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|real_ids_multibyte|student_study_support": {
+   "bytes": 41857,
+   "headroom": 23679
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|real_ids_multibyte|teacher_guide_draft": {
+   "bytes": 55862,
+   "headroom": 9674
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|typical|learning_progression_curriculum_review": {
+   "bytes": 26061,
+   "headroom": 39475
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|typical|learning_progression_support_plan": {
+   "bytes": 26802,
+   "headroom": 38734
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|typical|learning_progression_teaching_sequence": {
+   "bytes": 25813,
+   "headroom": 39723
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|typical|multigrade_lesson_plan": {
+   "bytes": 27487,
+   "headroom": 38049
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|typical|student_handbook_section": {
+   "bytes": 29623,
+   "headroom": 35913
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|typical|student_study_support": {
+   "bytes": 29859,
+   "headroom": 35677
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6|typical|teacher_guide_draft": {
+   "bytes": 31868,
+   "headroom": 33668
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_ascii|learning_progression_curriculum_review": {
+   "bytes": 65386,
+   "headroom": 150
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_ascii|learning_progression_support_plan": {
+   "bytes": 32015,
+   "headroom": 33521
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_ascii|learning_progression_teaching_sequence": {
+   "bytes": 32059,
+   "headroom": 33477
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_ascii|multigrade_lesson_plan": {
+   "bytes": 35707,
+   "headroom": 29829
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_ascii|student_handbook_section": {
+   "bytes": 36993,
+   "headroom": 28543
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_ascii|student_study_support": {
+   "bytes": 37130,
+   "headroom": 28406
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_ascii|teacher_guide_draft": {
+   "bytes": 43373,
+   "headroom": 22163
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_multibyte|learning_progression_curriculum_review": {
+   "details": "{'max_rendered_prompt_bytes': 65536, 'rendered_prompt_bytes': 134466}",
+   "error": "PromptRenderingError"
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_multibyte|learning_progression_support_plan": {
+   "bytes": 40015,
+   "headroom": 25521
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 42107,
+   "headroom": 23429
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_multibyte|multigrade_lesson_plan": {
+   "bytes": 49755,
+   "headroom": 15781
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_multibyte|student_handbook_section": {
+   "bytes": 47041,
+   "headroom": 18495
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_multibyte|student_study_support": {
+   "bytes": 47178,
+   "headroom": 18358
+  },
+  "india-cbse-science-learning-framework-classes-9-10|max_multibyte|teacher_guide_draft": {
+   "bytes": 61421,
+   "headroom": 4115
+  },
+  "india-cbse-science-learning-framework-classes-9-10|real_ids_multibyte|learning_progression_curriculum_review": {
+   "bytes": 45906,
+   "headroom": 19630
+  },
+  "india-cbse-science-learning-framework-classes-9-10|real_ids_multibyte|learning_progression_support_plan": {
+   "bytes": 40015,
+   "headroom": 25521
+  },
+  "india-cbse-science-learning-framework-classes-9-10|real_ids_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 39047,
+   "headroom": 26489
+  },
+  "india-cbse-science-learning-framework-classes-9-10|real_ids_multibyte|multigrade_lesson_plan": {
+   "bytes": 46695,
+   "headroom": 18841
+  },
+  "india-cbse-science-learning-framework-classes-9-10|real_ids_multibyte|student_handbook_section": {
+   "bytes": 43981,
+   "headroom": 21555
+  },
+  "india-cbse-science-learning-framework-classes-9-10|real_ids_multibyte|student_study_support": {
+   "bytes": 44118,
+   "headroom": 21418
+  },
+  "india-cbse-science-learning-framework-classes-9-10|real_ids_multibyte|teacher_guide_draft": {
+   "bytes": 58361,
+   "headroom": 7175
+  },
+  "india-cbse-science-learning-framework-classes-9-10|typical|learning_progression_curriculum_review": {
+   "bytes": 27213,
+   "headroom": 38323
+  },
+  "india-cbse-science-learning-framework-classes-9-10|typical|learning_progression_support_plan": {
+   "bytes": 28017,
+   "headroom": 37519
+  },
+  "india-cbse-science-learning-framework-classes-9-10|typical|learning_progression_teaching_sequence": {
+   "bytes": 27049,
+   "headroom": 38487
+  },
+  "india-cbse-science-learning-framework-classes-9-10|typical|multigrade_lesson_plan": {
+   "bytes": 28699,
+   "headroom": 36837
+  },
+  "india-cbse-science-learning-framework-classes-9-10|typical|student_handbook_section": {
+   "bytes": 31983,
+   "headroom": 33553
+  },
+  "india-cbse-science-learning-framework-classes-9-10|typical|student_study_support": {
+   "bytes": 32120,
+   "headroom": 33416
+  },
+  "india-cbse-science-learning-framework-classes-9-10|typical|teacher_guide_draft": {
+   "bytes": 34367,
+   "headroom": 31169
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_ascii|learning_progression_curriculum_review": {
+   "bytes": 65006,
+   "headroom": 530
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_ascii|learning_progression_support_plan": {
+   "bytes": 31659,
+   "headroom": 33877
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_ascii|learning_progression_teaching_sequence": {
+   "bytes": 31711,
+   "headroom": 33825
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_ascii|multigrade_lesson_plan": {
+   "bytes": 35439,
+   "headroom": 30097
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_ascii|student_handbook_section": {
+   "bytes": 36859,
+   "headroom": 28677
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_ascii|student_study_support": {
+   "bytes": 36851,
+   "headroom": 28685
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_ascii|teacher_guide_draft": {
+   "bytes": 42180,
+   "headroom": 23356
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_multibyte|learning_progression_curriculum_review": {
+   "details": "{'max_rendered_prompt_bytes': 65536, 'rendered_prompt_bytes': 134086}",
+   "error": "PromptRenderingError"
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_multibyte|learning_progression_support_plan": {
+   "bytes": 39659,
+   "headroom": 25877
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 41759,
+   "headroom": 23777
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_multibyte|multigrade_lesson_plan": {
+   "bytes": 49487,
+   "headroom": 16049
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_multibyte|student_handbook_section": {
+   "bytes": 46907,
+   "headroom": 18629
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_multibyte|student_study_support": {
+   "bytes": 46899,
+   "headroom": 18637
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|max_multibyte|teacher_guide_draft": {
+   "bytes": 60228,
+   "headroom": 5308
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|real_ids_multibyte|learning_progression_curriculum_review": {
+   "bytes": 45526,
+   "headroom": 20010
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|real_ids_multibyte|learning_progression_support_plan": {
+   "bytes": 39659,
+   "headroom": 25877
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|real_ids_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 38699,
+   "headroom": 26837
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|real_ids_multibyte|multigrade_lesson_plan": {
+   "bytes": 46427,
+   "headroom": 19109
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|real_ids_multibyte|student_handbook_section": {
+   "bytes": 43847,
+   "headroom": 21689
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|real_ids_multibyte|student_study_support": {
+   "bytes": 43839,
+   "headroom": 21697
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|real_ids_multibyte|teacher_guide_draft": {
+   "bytes": 57168,
+   "headroom": 8368
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|typical|learning_progression_curriculum_review": {
+   "bytes": 26833,
+   "headroom": 38703
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|typical|learning_progression_support_plan": {
+   "bytes": 27661,
+   "headroom": 37875
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|typical|learning_progression_teaching_sequence": {
+   "bytes": 26701,
+   "headroom": 38835
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|typical|multigrade_lesson_plan": {
+   "bytes": 28431,
+   "headroom": 37105
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|typical|student_handbook_section": {
+   "bytes": 31849,
+   "headroom": 33687
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|typical|student_study_support": {
+   "bytes": 31841,
+   "headroom": 33695
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5|typical|teacher_guide_draft": {
+   "bytes": 33174,
+   "headroom": 32362
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_ascii|learning_progression_curriculum_review": {
+   "details": "{'focus_mode': 'statement_code', 'profile_id': 'nigeria-nerdc-mathematics-primary-1-3', 'prompt_name': 'learning_progression_curriculum_review', 'supported_focus_modes': ('case_identifier_uri', 'case_identifier_uuid', 'node_id', 'topic')}",
+   "error": "CapabilityUnavailableError"
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_ascii|learning_progression_support_plan": {
+   "bytes": 32179,
+   "headroom": 33357
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_ascii|learning_progression_teaching_sequence": {
+   "bytes": 32197,
+   "headroom": 33339
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_ascii|multigrade_lesson_plan": {
+   "bytes": 35915,
+   "headroom": 29621
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_ascii|student_handbook_section": {
+   "bytes": 37549,
+   "headroom": 27987
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_ascii|student_study_support": {
+   "bytes": 37395,
+   "headroom": 28141
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_ascii|teacher_guide_draft": {
+   "bytes": 42715,
+   "headroom": 22821
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_multibyte|learning_progression_curriculum_review": {
+   "details": "{'focus_mode': 'statement_code', 'profile_id': 'nigeria-nerdc-mathematics-primary-1-3', 'prompt_name': 'learning_progression_curriculum_review', 'supported_focus_modes': ('case_identifier_uri', 'case_identifier_uuid', 'node_id', 'topic')}",
+   "error": "CapabilityUnavailableError"
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_multibyte|learning_progression_support_plan": {
+   "bytes": 40179,
+   "headroom": 25357
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 42245,
+   "headroom": 23291
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_multibyte|multigrade_lesson_plan": {
+   "bytes": 49963,
+   "headroom": 15573
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_multibyte|student_handbook_section": {
+   "bytes": 47597,
+   "headroom": 17939
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_multibyte|student_study_support": {
+   "bytes": 47443,
+   "headroom": 18093
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|max_multibyte|teacher_guide_draft": {
+   "bytes": 60763,
+   "headroom": 4773
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|real_ids_multibyte|learning_progression_curriculum_review": {
+   "bytes": 46148,
+   "headroom": 19388
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|real_ids_multibyte|learning_progression_support_plan": {
+   "bytes": 40179,
+   "headroom": 25357
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|real_ids_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 39185,
+   "headroom": 26351
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|real_ids_multibyte|multigrade_lesson_plan": {
+   "bytes": 46903,
+   "headroom": 18633
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|real_ids_multibyte|student_handbook_section": {
+   "bytes": 44537,
+   "headroom": 20999
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|real_ids_multibyte|student_study_support": {
+   "bytes": 44383,
+   "headroom": 21153
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|real_ids_multibyte|teacher_guide_draft": {
+   "bytes": 57703,
+   "headroom": 7833
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|typical|learning_progression_curriculum_review": {
+   "bytes": 27455,
+   "headroom": 38081
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|typical|learning_progression_support_plan": {
+   "bytes": 28181,
+   "headroom": 37355
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|typical|learning_progression_teaching_sequence": {
+   "bytes": 27187,
+   "headroom": 38349
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|typical|multigrade_lesson_plan": {
+   "bytes": 28907,
+   "headroom": 36629
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|typical|student_handbook_section": {
+   "bytes": 32539,
+   "headroom": 32997
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|typical|student_study_support": {
+   "bytes": 32385,
+   "headroom": 33151
+  },
+  "nigeria-nerdc-mathematics-primary-1-3|typical|teacher_guide_draft": {
+   "bytes": 33709,
+   "headroom": 31827
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_ascii|learning_progression_curriculum_review": {
+   "details": "{'focus_mode': 'statement_code', 'profile_id': 'rwanda-reb-mathematics-lower-primary-1-3', 'prompt_name': 'learning_progression_curriculum_review', 'supported_focus_modes': ('case_identifier_uri', 'case_identifier_uuid', 'node_id', 'topic')}",
+   "error": "CapabilityUnavailableError"
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_ascii|learning_progression_support_plan": {
+   "bytes": 31627,
+   "headroom": 33909
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_ascii|learning_progression_teaching_sequence": {
+   "bytes": 31648,
+   "headroom": 33888
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_ascii|multigrade_lesson_plan": {
+   "bytes": 35270,
+   "headroom": 30266
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_ascii|student_handbook_section": {
+   "bytes": 36564,
+   "headroom": 28972
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_ascii|student_study_support": {
+   "bytes": 36434,
+   "headroom": 29102
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_ascii|teacher_guide_draft": {
+   "bytes": 41181,
+   "headroom": 24355
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_multibyte|learning_progression_curriculum_review": {
+   "details": "{'focus_mode': 'statement_code', 'profile_id': 'rwanda-reb-mathematics-lower-primary-1-3', 'prompt_name': 'learning_progression_curriculum_review', 'supported_focus_modes': ('case_identifier_uri', 'case_identifier_uuid', 'node_id', 'topic')}",
+   "error": "CapabilityUnavailableError"
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_multibyte|learning_progression_support_plan": {
+   "bytes": 39627,
+   "headroom": 25909
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 41696,
+   "headroom": 23840
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_multibyte|multigrade_lesson_plan": {
+   "bytes": 49318,
+   "headroom": 16218
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_multibyte|student_handbook_section": {
+   "bytes": 46612,
+   "headroom": 18924
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_multibyte|student_study_support": {
+   "bytes": 46482,
+   "headroom": 19054
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|max_multibyte|teacher_guide_draft": {
+   "bytes": 59229,
+   "headroom": 6307
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|real_ids_multibyte|learning_progression_curriculum_review": {
+   "bytes": 45587,
+   "headroom": 19949
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|real_ids_multibyte|learning_progression_support_plan": {
+   "bytes": 39627,
+   "headroom": 25909
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|real_ids_multibyte|learning_progression_teaching_sequence": {
+   "bytes": 38636,
+   "headroom": 26900
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|real_ids_multibyte|multigrade_lesson_plan": {
+   "bytes": 46258,
+   "headroom": 19278
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|real_ids_multibyte|student_handbook_section": {
+   "bytes": 43552,
+   "headroom": 21984
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|real_ids_multibyte|student_study_support": {
+   "bytes": 43422,
+   "headroom": 22114
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|real_ids_multibyte|teacher_guide_draft": {
+   "bytes": 56169,
+   "headroom": 9367
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|typical|learning_progression_curriculum_review": {
+   "bytes": 26894,
+   "headroom": 38642
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|typical|learning_progression_support_plan": {
+   "bytes": 27629,
+   "headroom": 37907
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|typical|learning_progression_teaching_sequence": {
+   "bytes": 26638,
+   "headroom": 38898
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|typical|multigrade_lesson_plan": {
+   "bytes": 28262,
+   "headroom": 37274
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|typical|student_handbook_section": {
+   "bytes": 31554,
+   "headroom": 33982
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|typical|student_study_support": {
+   "bytes": 31424,
+   "headroom": 34112
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3|typical|teacher_guide_draft": {
+   "bytes": 32175,
+   "headroom": 33361
+  }
+ },
+ "limit": 65536,
+ "source": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/backend/src/kgfegmcp/__init__.py"
+}
