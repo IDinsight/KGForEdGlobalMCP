@@ -37,6 +37,7 @@ from kgfegmcp.services.models import (
     GetFrameworkStatisticsResult,
     IntegerValueCount,
     LearningComponentStatistics,
+    LearningProgressionStatistics,
     MultiParentStatistics,
     NullableValueCount,
     ParentCountBucket,
@@ -48,7 +49,7 @@ from kgfegmcp.services.models import (
 def _connected_node_count(
     *, loaded_package: LoadedGraphPackage, root_node_id: NodeId
 ) -> int:
-    """Count nodes connected to the framework root by any declared relationship.
+    """Count AS/LC nodes connected to the framework root by hierarchy or supports.
 
     Relationships are followed in both directions, so a learning component reached
     through one standard also reaches every other standard it supports.
@@ -69,6 +70,12 @@ def _connected_node_count(
     neighbors: dict[NodeId, list[NodeId]] = defaultdict(list)
 
     for relationship in loaded_package.relationships:
+        if relationship.label not in {
+            loaded_package.profile.hierarchy.relationship_type,
+            DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE,
+        }:
+            continue
+
         neighbors[relationship.source_node_id].append(relationship.target_node_id)
         neighbors[relationship.target_node_id].append(relationship.source_node_id)
 
@@ -100,8 +107,7 @@ def _hierarchy_relationship_counts(
     -------
     tuple[Counter[str | None], Counter[str | None], Counter[str | None]]
         Canonical label counts, source relationship-type counts, and resolution-status
-        counts over the standards hierarchy only; ``supports`` edges are excluded and
-        reported in the learning-component block instead.
+        counts over the standards hierarchy only; supports and LP are separate.
     """
 
     canonical_label_counts: Counter[str | None] = Counter()
@@ -109,7 +115,7 @@ def _hierarchy_relationship_counts(
     resolution_status_counts: Counter[str | None] = Counter()
 
     for relationship in loaded_package.relationships:
-        if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
+        if relationship.label != loaded_package.profile.hierarchy.relationship_type:
             continue
 
         canonical_label_counts[relationship.label] += 1
@@ -298,20 +304,24 @@ class FrameworkStatisticsService:
         total_framework_nodes = package.counts.framework_nodes
         total_item_nodes = len(loaded_package.item_nodes)
         total_learning_component_nodes = len(loaded_package.learning_component_nodes)
-        total_supports_relationships = sum(
-            1
-            for relationship in loaded_package.relationships
-            if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
-        )
+        label_counts = Counter(row.label for row in loaded_package.relationships)
+        total_supports_relationships = label_counts[
+            DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
+        ]
         total_nodes = total_framework_nodes + total_item_nodes
-        total_relationships = (
-            len(loaded_package.relationships) - total_supports_relationships
-        )
+        total_relationships = label_counts[store.hierarchy_relationship_type]
         total_store_nodes = total_nodes + total_learning_component_nodes
-        total_store_relationships = total_relationships + total_supports_relationships
+        total_store_relationships = (
+            total_relationships
+            + total_supports_relationships
+            + label_counts["buildsTowards"]
+            + label_counts["relatesTo"]
+        )
 
         if (
-            package.counts.item_nodes != total_item_nodes
+            package.counts.builds_towards_relationships != label_counts["buildsTowards"]
+            or package.counts.relates_to_relationships != label_counts["relatesTo"]
+            or package.counts.item_nodes != total_item_nodes
             or package.counts.learning_component_nodes != total_learning_component_nodes
             or package.counts.relationships != total_store_relationships
             or len(store.nodes_by_id) != total_store_nodes
@@ -322,7 +332,8 @@ class FrameworkStatisticsService:
                     "graph_package_id": str(package.package_identity.graph_package_id)
                 },
                 message=(
-                    "Accepted catalog counts disagree with the retained package runtime."
+                    "Accepted catalog counts disagree with the retained "
+                    "package runtime."
                 ),
             )
 
@@ -425,15 +436,23 @@ class FrameworkStatisticsService:
         )
         resolved_count = resolution_status_counts.get(None, 0)
         statistics = FrameworkStatistics(
-            learning_components=_learning_component_statistics(
-                loaded_package=loaded_package
-            ),
             canonical_relationship_label_counts=_to_nullable_counts(
                 canonical_relationship_label_counts
             ),
             code_presence=CodePresenceStatistics(
                 coded_item_count=coded_item_count,
                 uncoded_item_count=total_item_nodes - coded_item_count,
+            ),
+            learning_components=_learning_component_statistics(
+                loaded_package=loaded_package
+            ),
+            learning_progressions=LearningProgressionStatistics(
+                builds_towards_relationships=label_counts["buildsTowards"],
+                has_learning_progression_provenance=(
+                    package.capabilities.has_learning_progression_provenance
+                ),
+                has_learning_progressions=package.capabilities.has_learning_progressions,
+                relates_to_relationships=label_counts["relatesTo"],
             ),
             local_grade_label_counts=_to_nullable_counts(local_grade_label_counts),
             maximum_structural_depth=maximum_structural_depth,

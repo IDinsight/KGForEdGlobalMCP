@@ -5,44 +5,9 @@
 	"profileId": "ghana-nacca-primary-mathematics-basic-4-6",
 	"profileVersion": "1.0",
 	"promptConfigId": "ghana-nacca-primary-mathematics-basic-4-6-guidance",
-	"promptConfigSchemaVersion": "1.0",
-	"promptConfigVersion": "1.0.0",
+	"promptConfigSchemaVersion": "1.1",
+	"promptConfigVersion": "2.0.0",
 	"prompts": {
-		"inferredProgressionHypothesis": {
-			"counterEvidenceGuidance": {
-				"instructions": [
-					"For every proposed transition, check whether the later-grade statement merely repeats a topic, changes representation, or adds a larger number range without clearly increasing conceptual or cognitive demand.",
-					"Treat missing intermediate standards, editorial duplication, reused codes, and same-code/different-content records as counter-evidence or uncertainty rather than repairing the sequence silently.",
-					"Where a proposed connection crosses strands or sub-strands, explain why it is a mathematical connection and not evidence of a source-authored progression path."
-				],
-				"mode": "append"
-			},
-			"evidenceGuidance": {
-				"instructions": [
-					"Compare Basic 4, Basic 5, and Basic 6 evidence using exact indicator wording, action verbs, number ranges, representations, operations, local grade context, and hierarchy placement as separate evidence dimensions.",
-					"Use the repeated B4-B6 strands—Number, Algebra, Geometry and Measurement, and Data—as organizing context, while recognizing that shared strand placement alone does not establish progression.",
-					"Give particular weight to shifts from concrete or pictorial work toward symbolic, generalized, multi-step, justificatory, investigative, or data-interpretive work when the retrieved statements explicitly support those shifts.",
-					"Preserve exact curriculum reference codes such as B4.1.3.2.1 as evidence labels, but do not treat code similarity or numeric order as proof of identity, prerequisite, or progression."
-				],
-				"mode": "append"
-			},
-			"inferenceGuidance": {
-				"instructions": [
-					"Describe a possible progression as a reasoned hypothesis about increasing scope, representation, strategy, or cognitive demand; never describe it as the official teaching order unless the retrieved source explicitly states that order.",
-					"Distinguish conceptual development from simple increases in calculation size, procedural complexity, or grade label.",
-					"Do not infer that a learner has mastered an earlier indicator merely because a later-grade indicator appears related."
-				],
-				"mode": "append"
-			},
-			"sequencePresentationGuidance": {
-				"instructions": [
-					"Present each proposed B4-to-B5, B5-to-B6, or B4-to-B6 transition with the exact source statements, the specific change in demand, supporting hierarchy context, counter-considerations, and a qualitative uncertainty statement.",
-					"When evidence supports more than one plausible sequence, show the alternatives rather than forcing a single linear path.",
-					"Use the source grade labels BASIC 4, BASIC 5, and BASIC 6 in the sequence display and keep normalized grade numbers separate."
-				],
-				"mode": "append"
-			}
-		},
 		"studentHandbookSection": {
 			"audienceGuidance": {
 				"instructions": [

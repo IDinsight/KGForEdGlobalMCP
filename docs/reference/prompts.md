@@ -1,6 +1,6 @@
 # Prompts
 
-The server registers seven deterministic prompt workflows. A prompt resolves accepted
+The server registers nine deterministic prompt workflows. A prompt resolves accepted
 package/profile context, applies rights and attribution rules, merges optional
 framework-local guidance, and returns instructions for the connected MCP host model.
 
@@ -10,9 +10,27 @@ For workflow guidance, see [Use prompt workflows](../guides/prompts.md).
 
 ## Common prompt behavior
 
-All prompts are registered at prompt version `1.2.0`.
+All prompts are registered at prompt version `1.4.0`.
 
-Version 1.2.0 renders every prompt in its lean form:
+Version 1.4.0 adds an **EVIDENCE ACCESS** section to the seven single-framework
+teaching, study and progression workflows. It tells the client
+to read each relied-on resource natively when it can, or otherwise with
+[`read_evidence`](access-tools.md#read_evidence), replaying `page.nextRequest` until the
+record is complete; to use at most 32 evidence windows per workflow (several windows of
+one record count as one record toward every record cap); and to disclose and defer a
+claim whose original provenance stays incomplete, denied or oversized. The same seven
+workflows also render an **EVIDENCE LINKS** block: exact manifest, interpretation-profile, validation, unresolved and LP
+summary URIs for the pinned snapshot, plus per-record patterns with a `{nodeId}`
+placeholder for standards, standard provenance, a standard's learning components,
+learning components and their provenance. Progression links are taken from tool results.
+`administrator_alignment_review` and `cross_framework_comparison` do not include these
+two sections.
+
+The same seven workflows can be rendered through the
+[`get_workflow_instructions`](access-tools.md#get_workflow_instructions) tool for clients
+that do not offer native prompts; for identical arguments the message is identical.
+
+Version 1.4.0 keeps the lean form introduced in 1.3.0:
 
 - the embedded `ACCEPTED PACKAGE CONTEXT` is compact JSON holding only the profile
   facts a workflow reads: code-search policy, grade and stage mappings, hierarchy,
@@ -23,7 +41,7 @@ Version 1.2.0 renders every prompt in its lean form:
   holds the complete profile; empty values are omitted;
 - every tool request template is one compact line in the exact shape the tool schema
   accepts (`{"request": {...}}` for the request-wrapped tools; flat fields for
-  `compare_framework_evidence` and `collect_progression_evidence`);
+  `compare_framework_evidence`);
 - multi-framework prompts render the generic soft guidance once, in a `SHARED
   GUIDANCE` section, and each framework section carries only what its configuration
   adds to or replaces in a named block; and
@@ -192,42 +210,51 @@ grades. It requires the result to state that a shared core rests on a model's ju
 that two standards decompose to the same component, **not** on a curriculum-authored
 equivalence between those grades.
 
-## `inferred_progression_hypothesis`
+## `learning_progression_teaching_sequence`
 
-Required:
+Required: `framework_id`, `topic_or_standard` (1–512 characters).
 
-- `framework_id`
-- `topic_or_standard`
-- at least one local or normalized grade scope must be provided for the evidence
-  workflow to succeed
+| Optional argument                         | Default / bound                                                                          |
+|-------------------------------------------|------------------------------------------------------------------------------------------|
+| `focus_mode`                              | `topic`; also `statement_code`, `node_id`, `case_identifier_uuid`, `case_identifier_uri` |
+| `local_grade_labels`, `normalized_grades` | Empty JSON arrays; up to 32 unique profile-valid values each                             |
+| `snapshot_id`                             | null; pins unique-current once                                                           |
+| `local_context`                           | null; at most 4,000 characters                                                           |
+| `output_language`                         | null; optional language tag                                                              |
 
-Optional:
+The client resolves a topic/code through the first search page of 10, or an exact node/CASE selector through `get_standard`, retaining at most three standards. It reads direct links with three calls per retained standard, one per connection kind in the order `outgoing_builds`, `incoming_builds`, `related` (at most nine calls). Each call reads one page of up to 25 links (fewer if the result reaches the size limit); a remaining `nextCursor` means that kind has more links than were read, and the client reports it. It then reads downstream builds (depth 8/nodes 30/edges 40) and, only for two explicitly selected retained standards, connecting paths (depth 6/paths 3). It retains at most five supporting LCs per standard. The result is an adaptable cited sequence, separating stored builds, nonsequential relates links and generated activities/ordering choices.
 
-| Argument             | Default / values                                    |
-|----------------------|-----------------------------------------------------|
-| `candidate_limit`    | 8; range 2-20                                       |
-| `direction`          | `both`; also `earlier_to_later`, `later_to_earlier` |
-| `focus_mode`         | `topic`                                             |
-| `local_context`      | null                                                |
-| `local_grade_labels` | empty; JSON-array prompt argument, max 32           |
-| `normalized_grades`  | empty; JSON-array prompt argument, max 32           |
-| `output_language`    | null                                                |
-| `snapshot_id`        | null                                                |
+## `learning_progression_support_plan`
 
-Complex collection arguments are entered by MCP prompt clients as JSON-array strings,
-for example:
+Required: `framework_id`, `identifier` (a JSON-object prompt argument selecting exact `node_id`, `case_identifier_uuid` or `case_identifier_uri`; selector text at most 512 characters). Code selection is not accepted by this prompt; resolve a code using search first.
 
-```text
-["BASIC 1", "BASIC 2", "BASIC 3"]
-```
+Optional: `snapshot_id`, `local_context` (at most 4,000 characters), `output_language`, all null by default.
 
-Do not enter comma-separated prose in place of the JSON array.
+The client reads the target standard, then incoming builds and related links in two separate calls. Each call reads one page of up to 25 links (fewer if the result reaches the size limit) and does not follow `nextCursor`; a remaining cursor means that kind has more links than were read, and the client reports it. It also reads upstream builds (depth 3/nodes 20/edges 30), and LCs for the target plus at most three supporting standards (five LCs per standard retained). It proposes cited review/practice options and alternative next steps. Observations are caller reports; suggestions are generated pedagogy, not a mastery diagnosis or compulsory prerequisite.
 
-The workflow does not retrieve learning components itself. When the host uses them as
-progression atoms, the output contract requires them to be labelled
-`[GENERATED-EVIDENCE / llm_inferred]` and carries a disclosure, repeated where they are
-used and again at the end, that a conclusion built on components is inference on
-generated content.
+## `learning_progression_curriculum_review`
+
+Required: `framework_id`.
+
+| Optional argument                               | Default / bound                                                                    |
+|-------------------------------------------------|------------------------------------------------------------------------------------|
+| `standard_identifiers`                          | Empty JSON array; at most 20 unique exact node/CASE/profile-enabled code selectors |
+| `local_grade_labels`, `normalized_grades`       | Empty JSON arrays; at most 32 unique profile-valid values each                     |
+| `statement_types`, `normalized_statement_types` | Empty JSON arrays; at most 32 unique profile-valid values each                     |
+| `endpoint_scope`                                | `either`; also `both`, `source`, `target`                                          |
+| `relationship_types`                            | Empty JSON array (both types); or `["buildsTowards"]`, `["relatesTo"]`, both; unique |
+| `snapshot_id`, `output_language`                | null                                                                               |
+| `local_context`                                 | null; at most 4,000 characters                                                     |
+
+The workflow reads LP summary/statistics, then runs one discovery scan per selected relationship type in the fixed order `buildsTowards`, `relatesTo`. Each scan sets `relationshipTypes` to its single type, keeps the same exact selectors and endpoint filters, and may read up to three pages, so one type never uses up the other's pages. Each page holds up to 25 links (fewer if the result reaches the size limit), and the client records each page's actual count and cursor. A cursor left after a scan's third page means that type's review is incomplete. The client fully inspects at most ten selected exact relationships/provenance records in total (up to five per type when both types return links; unused slots go to the other type) and reads retained validation/unresolved evidence within policy. Package totals, filtered counts and the bounded reviewed subset are reported separately for each type and never added across types. The output contains coverage/warning/review questions, without asserting curriculum omission, pedagogical certification or cross-framework edges.
+
+### Shared stored-progression workflow contract
+
+MCP prompt names/arguments use snake_case. Complex values are JSON-array/object strings; for example `local_grade_labels` is `["PRIMARY ONE"]`, and `identifier` is `{"identifierType":"node_id","nodeId":"<actual-node-id>"}`. Do not enter comma-separated prose. Every workflow pins one exact snapshot, checks derivative rights, and renders deterministic client retrieval instructions; prompt retrieval itself runs neither evidence queries nor a model. Through `get_workflow_instructions` the same arguments use camelCase names and plain JSON arrays/objects.
+
+All three retain source standards, generated LCs, stored generated edges and new pedagogy as separate tiers. Full provenance for used relationships is capped at ten resources, and evidence reading at 32 windows: reduce/defer cited recommendations if more evidence is needed. Keep bounds, warnings, coverage, unavailable/empty/partial results and denied-resource outcomes visible. Missing edges never invoke a hypothesis fallback. See [workflow examples](../guides/progression.md).
+
+The existing `teacher_guide_draft`, `student_study_support`, `student_handbook_section` and `multigrade_lesson_plan` prompts also retrieve optional stored LP evidence: at most three standards, three one-page calls per standard (one per connection kind, at most nine; up to 25 links each), full provenance for at most ten used edges, plus LCs. They preserve useful output when LP is unavailable or sparse. A shared LC supplies generated support evidence, not a new LP or cross-grade equivalence edge.
 
 ## `administrator_alignment_review`
 
@@ -254,7 +281,7 @@ Optional:
 The rendered workflow directs the host to use `compare_framework_evidence`. Retrieved
 similarity remains candidate evidence, not an accepted alignment. Learning components
 may appear in the comparison matrix as `[GENERATED-EVIDENCE / llm_inferred]` rows beside
-source-asserted rows, under the same inference disclosure as the progression prompt, so
+source-asserted rows, under the shared generated-evidence disclosure, so
 the human reviewer sees the tier next to each claim.
 
 ## `cross_framework_comparison`

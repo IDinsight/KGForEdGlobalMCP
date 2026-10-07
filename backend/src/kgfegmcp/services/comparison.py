@@ -33,7 +33,7 @@ from kgfegmcp.domain.enums import CodeAvailability, EpistemicStatus, GraphType
 from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
 from kgfegmcp.errors import InvalidComparisonSelectionError
 from kgfegmcp.profiles.models import CurriculumProfile
-from kgfegmcp.search.models import SearchHit, SearchMode
+from kgfegmcp.search.models import SearchHit, SearchMode, SearchWarning
 from kgfegmcp.services.comparison_models import (
     CompareFrameworkEvidenceResult,
     ComparisonMatchEvidence,
@@ -384,9 +384,11 @@ class ComparisonService:
 
         for framework_id in request.framework_ids:
             selected_snapshot_ids = snapshots_by_framework[framework_id]
-            snapshot_id = selected_snapshot_ids[0] if selected_snapshot_ids else None
+            requested_snapshot_id = (
+                selected_snapshot_ids[0] if selected_snapshot_ids else None
+            )
             snapshot = self.catalog_service.get_framework(
-                framework_id=framework_id, snapshot_id=snapshot_id
+                framework_id=framework_id, snapshot_id=requested_snapshot_id
             )
             package = self.catalog_service.get_graph_package(
                 framework_id=framework_id,
@@ -508,7 +510,7 @@ class ComparisonService:
                 )
             )
             matches: tuple[ComparisonMatchEvidence, ...] = ()
-            package_search_warnings = ()
+            package_search_warnings: tuple[SearchWarning, ...] = ()
             has_more = False
             next_cursor = None
         else:

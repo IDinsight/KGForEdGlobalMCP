@@ -5,48 +5,9 @@
 	"profileId": "india-tamil-nadu-tnscert-mathematics-classes-1-5",
 	"profileVersion": "1.0",
 	"promptConfigId": "india-tamil-nadu-tnscert-mathematics-classes-1-5-guidance",
-	"promptConfigSchemaVersion": "1.0",
-	"promptConfigVersion": "1.0.0",
+	"promptConfigSchemaVersion": "1.1",
+	"promptConfigVersion": "2.0.0",
 	"prompts": {
-		"inferredProgressionHypothesis": {
-			"counterEvidenceGuidance": {
-				"instructions": [
-					"For every proposed transition, check whether the later Class statement merely changes the number range, object set, representation, unit, or written format without clearly increasing conceptual, strategic, or reasoning demand.",
-					"Do not treat a blank Class cell, a new Curricular Goal in Classes 3-5, or the absence of an intermediate Content item as evidence that an idea was mastered, intentionally omitted, or taught in a fixed prerequisite order.",
-					"Treat the proposed-draft status, uncoded Content leaves, partial code coverage, the authored code surface C 1.5, and any wording or table-layout ambiguity as uncertainty rather than silently correcting or completing the source.",
-					"Where a proposed connection crosses Curricular Goals, explain the mathematical relationship explicitly; shared topics such as number, shape, measurement, data, money, or problem solving do not by themselves establish a source-authored progression."
-				],
-				"mode": "append"
-			},
-			"evidenceGuidance": {
-				"instructions": [
-					"Compare exact Class-1 through Class-5 Content statements using grade scope, action, quantity range, operation, representation, material or tool, mathematical vocabulary, expected independence, problem context, and reasoning demand as separate evidence dimensions.",
-					"Use the source hierarchy Curricular Goal > Competency > Content while keeping Class applicability separate as scope metadata; Class is not an additional graph node or hierarchy level.",
-					"Give particular attention to source-supported shifts from bodily movement, sensing, concrete material, observation, spoken description, and comparison toward estimation, mental computation, symbolic representation, written calculation, justification, generalisation, and independent problem solving.",
-					"Trace possible conceptual bridges carefully across the two source sections: initial number, shape, measurement, time, money, data, and computational-thinking experiences in Classes 1-2; and whole-number operations, fractions, geometry, measurement, data, patterns, puzzles, and systematic reasoning in Classes 3-5.",
-					"Preserve exact CG and competency code surfaces as evidence labels, but do not treat code similarity, numerical order, canonicalised punctuation, or a shared Competency row as proof of stable identity, prerequisite, or official progression."
-				],
-				"mode": "append"
-			},
-			"inferenceGuidance": {
-				"instructions": [
-					"Describe every proposed sequence as an LLM-inferred hypothesis about increasing abstraction, range, representation, fluency, strategic choice, explanation, or independence; never call it an official TNSCERT progression unless retrieved source text explicitly states that sequence.",
-					"Distinguish conceptual development from procedural expansion. Larger numbers, more operations, standard units, or written algorithms may increase scope without necessarily demonstrating deeper reasoning.",
-					"Allow for revisiting, branching, and parallel development across number sense, operations, fractions, geometry, measurement, time, money, data, patterns, and computational thinking rather than forcing one linear pathway.",
-					"Do not infer learner mastery, readiness, or deficiency from the presence of a later-Class Content statement, and label any bridge supplied by general mathematics knowledge rather than retrieved evidence as generated."
-				],
-				"mode": "append"
-			},
-			"sequencePresentationGuidance": {
-				"instructions": [
-					"Present each proposed transition with the exact source and target Class labels, Curricular Goal, Competency, Content wording, source paths, the specific change in demand, supporting evidence, counter-evidence, and a qualitative uncertainty statement.",
-					"Show changes in concrete experience, oral expression, representation, number or measurement range, strategy, symbolic procedure, problem context, and reasoning in separate fields or short subsections.",
-					"When more than one plausible path exists, show alternatives and explain what evidence would be needed to choose among them rather than creating a single mandatory sequence.",
-					"Use the source labels Class-1 through Class-5 and keep normalized grade numbers separate; explicitly disclose that the structural hasChild hierarchy is not itself an instructional progression."
-				],
-				"mode": "append"
-			}
-		},
 		"studentHandbookSection": {
 			"audienceGuidance": {
 				"instructions": [

@@ -1,0 +1,56 @@
+{
+  "ghana-nacca-primary-english-language-basic-1-3": {
+    "hasChildCount": 430,
+    "hasChildDigest": "a00b323e7df399718c197716e31759227044c468d4da3eeb01693c67f3ab10f3",
+    "nodeCount": 703,
+    "nodesDigest": "3197eb0caa9e15d3deff5c5408cc46bdd7b9cfbd127b41b346de3022a1ea529c",
+    "originalSnapshotId": "ghana-nacca-primary-english-language-basic-1-3@2019+c33ab5a379fb",
+    "supportsCount": 307,
+    "supportsDigest": "bee60961b67bc96a73a6fb88100858b8033ec30c2dc41e6d6edb001b380930b0"
+  },
+  "ghana-nacca-primary-mathematics-basic-4-6": {
+    "hasChildCount": 302,
+    "hasChildDigest": "69740c09bfce0f533211ec49a96a2f69a32be57df7c6d69a0fcad7c2bba9a33b",
+    "nodeCount": 533,
+    "nodesDigest": "cd505a295d5472bad70e72bc3a6cde826cd967ecfd80c2d365a3af3e4351425e",
+    "originalSnapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+7afbd99e7f80",
+    "supportsCount": 273,
+    "supportsDigest": "be066f77c4132aa3840ed9023490a35adaa7e0fc6e3fd98c18d34b38a2413b84"
+  },
+  "india-cbse-science-learning-framework-classes-9-10": {
+    "hasChildCount": 1109,
+    "hasChildDigest": "2c715b31cce57ff88e3e81d5d3a465d87edbc2bce2da04745cc6c5f832778bb5",
+    "nodeCount": 1728,
+    "nodesDigest": "5b5fa7670a7a91a2609c8e9dd6d885cd4a7b4d1fc9faf262e773225e8ad27fdd",
+    "originalSnapshotId": "india-cbse-science-learning-framework-classes-9-10@undated+e8361376ae1e",
+    "supportsCount": 858,
+    "supportsDigest": "19630497e25c7a6c8143b80c289818e29bfa6c7f60d697d60bedbddc8a60c497"
+  },
+  "india-tamil-nadu-tnscert-mathematics-classes-1-5": {
+    "hasChildCount": 255,
+    "hasChildDigest": "ba8b2ff8e6eec3afd22c2fb023ebbcf767d7c8ef1c20565bd95ffedd7442a3fe",
+    "nodeCount": 655,
+    "nodesDigest": "3bcc41d0018343a043d912c239d18555c4ac7caf4f5a4c15e083545f149f9fb2",
+    "originalSnapshotId": "india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+3b9f8f89171e",
+    "supportsCount": 419,
+    "supportsDigest": "a4e5c1374c55405e2311b9e96262f4f3fb3da9e7fff83a16f7fafd9a55756dbe"
+  },
+  "nigeria-nerdc-mathematics-primary-1-3": {
+    "hasChildCount": 242,
+    "hasChildDigest": "b20bfb088def1156cb9acc0f39d5a4b2606d32e60031e405d268071ad46668b9",
+    "nodeCount": 429,
+    "nodesDigest": "04aa0a80eadefcbc75cc5ad7dd6cb7a45d6d187dc0c6c1191df9c79063b5b8cf",
+    "originalSnapshotId": "nigeria-nerdc-mathematics-primary-1-3@undated+3f35e11c6624",
+    "supportsCount": 204,
+    "supportsDigest": "da3b89f7c4ed8cb14b84223a56c0e4492f27ece9492ac4fcfa5ad07635d9ea78"
+  },
+  "rwanda-reb-mathematics-lower-primary-1-3": {
+    "hasChildCount": 626,
+    "hasChildDigest": "fed3785e19d710cc733c18626218678917cc229db332c0229a7dd590355c1c07",
+    "nodeCount": 1343,
+    "nodesDigest": "26ece23248b9304b5610aa1c74020b8e3c12bb24f9ed5d6186ef0247eb03487d",
+    "originalSnapshotId": "rwanda-reb-mathematics-lower-primary-1-3@2025+98426787aa9f",
+    "supportsCount": 797,
+    "supportsDigest": "85b1343f6390728065eea9745ef9403ceb1d172a9dd36010267b0e5f2ccb0f5c"
+  }
+}

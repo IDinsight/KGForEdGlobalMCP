@@ -1,5 +1,7 @@
 # Quickstart
 
+> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
+
 This quickstart takes a new **KGForEdGlobalMCP** checkout from installation to a
 working local MCP connection.
 
@@ -88,10 +90,10 @@ uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 The smoke command starts the real module entry point in a separate process, completes an
 MCP handshake, and checks the fixed public inventory:
 
-- 13 tools;
+- 19 tools;
 - 1 fixed resource;
-- 12 resource templates; and
-- 7 prompts.
+- 14 resource templates; and
+- 9 prompts.
 
 A successful run returns JSON containing:
 
@@ -115,7 +117,9 @@ If you were given the URL of a hosted deployment instead, no local installation 
 needed; see [Connect to a hosted server](mcp-clients.md#connect-to-a-hosted-server).
 
 Follow [Connect an MCP client](mcp-clients.md) for the complete configuration, JSON
-validation, restart, and connector-enablement steps.
+validation, restart, and connector-enablement steps, then
+[Use with Claude Desktop and claude.ai](claude-clients.md) for evidence access, workflows
+and a step-by-step check.
 
 ## 6. Confirm framework discovery
 

@@ -1,5 +1,7 @@
 # Knowledge Graph for Education Global MCP
 
+> **LP rollout:** Code and data are being merged separately. Stored LP availability appears as each data PR lands. See [rollout and acceptance](development/lp-migration.md).
+
 **KGForEdGlobalMCP** is a curriculum-agnostic, read-only FastMCP server for exploring
 versioned curriculum knowledge graphs from countries, states, and educational
 organizations.
@@ -48,7 +50,7 @@ progression analysis.
     ---
 
     Use deterministic prompt workflows for student support, teacher materials, progression
-    hypotheses, and administrator review.
+    teaching/support planning, and curriculum review.
 
     [Use prompt workflows](guides/prompts.md)
 
@@ -60,10 +62,10 @@ The current MCP surface contains the following:
 
 | Surface            | Count | Purpose                                                                                                                           |
 |--------------------|-------|-----------------------------------------------------------------------------------------------------------------------------------|
-| Tools              | 13    | Framework discovery, standards and learning-component retrieval, graph context, statistics, capabilities, comparison, progression |
+| Tools              | 19    | Framework discovery, standards and learning-component retrieval, graph context, statistics, capabilities, comparison, progression, evidence and workflow access |
 | Fixed resources    | 1     | Server catalog                                                                                                                    |
-| Resource templates | 12    | Framework, package, validation, profile, standards, learning components, provenance, relationship, unresolved, and artifacts      |
-| Prompts            | 7     | Role-oriented and cross-framework client-side workflows                                                                           |
+| Resource templates | 14    | Framework, package, validation, profile, standards, learning components, provenance, relationship, unresolved, and artifacts      |
+| Prompts            | 9     | Role-oriented and cross-framework client-side workflows                                                                           |
 
 ### Tools
 
@@ -79,7 +81,13 @@ The current MCP surface contains the following:
 - `get_framework_statistics`
 - `get_capabilities`
 - `compare_framework_evidence`
-- `collect_progression_evidence`
+- `get_learning_progression`
+- `get_standard_progressions`
+- `search_learning_progressions`
+- `traverse_learning_progressions`
+- `get_learning_progression_paths`
+- `read_evidence`
+- `get_workflow_instructions`
 
 ### Prompts
 
@@ -87,7 +95,9 @@ The current MCP surface contains the following:
 - `teacher_guide_draft`
 - `student_handbook_section`
 - `multigrade_lesson_plan`
-- `inferred_progression_hypothesis`
+- `learning_progression_teaching_sequence`
+- `learning_progression_support_plan`
+- `learning_progression_curriculum_review`
 - `administrator_alignment_review`
 - `cross_framework_comparison`
 
@@ -172,7 +182,7 @@ silently infer educational claims.
 
 The current server also does not provide persisted alignments, accepted mapping
 overlays, embeddings, semantic retrieval, snapshot diffs, server-side LLM calls, or
-first-class learning-progression graphs.
+cross-framework progression edges.
 
 ## Where to start
 

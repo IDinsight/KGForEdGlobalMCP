@@ -34,6 +34,7 @@ from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import (
     FrameworkId,
     GraphPackageId,
+    LanguageTag,
     ProfileId,
     ProfileVersion,
     SchemaVersion,
@@ -184,7 +185,6 @@ PromptConfigVersion = Annotated[
 HandbookWordCount = Annotated[int, Field(ge=150, le=1_500)]
 LessonDurationMinutes = Annotated[int, Field(ge=10, le=240)]
 PracticeCount = Annotated[int, Field(ge=1, le=10)]
-ProgressionCandidateLimit = Annotated[int, Field(ge=2, le=20)]
 PromptFocusText = Annotated[
     str,
     StringConstraints(max_length=512, min_length=1),
@@ -241,8 +241,8 @@ PromptInstruction = Annotated[
     StringConstraints(max_length=1_000, min_length=1),
     AfterValidator(_require_non_whitespace),
 ]
-PROMPT_CONFIG_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
-PROMPT_VERSION: Final[str] = "1.2.0"
+PROMPT_CONFIG_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.1")
+PROMPT_VERSION: Final[str] = "1.4.0"
 MAX_PROMPT_CONFIG_BYTES: Final[int] = 64 * 1_024
 MAX_RENDERED_PROMPT_BYTES: Final[int] = 64 * 1_024
 
@@ -252,7 +252,9 @@ class PromptName(StrEnum):
 
     ADMINISTRATOR_ALIGNMENT_REVIEW = "administrator_alignment_review"
     CROSS_FRAMEWORK_COMPARISON = "cross_framework_comparison"
-    INFERRED_PROGRESSION_HYPOTHESIS = "inferred_progression_hypothesis"
+    LEARNING_PROGRESSION_CURRICULUM_REVIEW = "learning_progression_curriculum_review"
+    LEARNING_PROGRESSION_SUPPORT_PLAN = "learning_progression_support_plan"
+    LEARNING_PROGRESSION_TEACHING_SEQUENCE = "learning_progression_teaching_sequence"
     MULTIGRADE_LESSON_PLAN = "multigrade_lesson_plan"
     STUDENT_HANDBOOK_SECTION = "student_handbook_section"
     STUDENT_STUDY_SUPPORT = "student_study_support"
@@ -263,7 +265,9 @@ PROMPT_NAMES: Final[tuple[str, ...]] = (
     PromptName.STUDENT_STUDY_SUPPORT.value,
     PromptName.TEACHER_GUIDE_DRAFT.value,
     PromptName.STUDENT_HANDBOOK_SECTION.value,
-    PromptName.INFERRED_PROGRESSION_HYPOTHESIS.value,
+    PromptName.LEARNING_PROGRESSION_CURRICULUM_REVIEW.value,
+    PromptName.LEARNING_PROGRESSION_SUPPORT_PLAN.value,
+    PromptName.LEARNING_PROGRESSION_TEACHING_SEQUENCE.value,
     PromptName.ADMINISTRATOR_ALIGNMENT_REVIEW.value,
     PromptName.CROSS_FRAMEWORK_COMPARISON.value,
     PromptName.MULTIGRADE_LESSON_PLAN.value,
@@ -295,20 +299,25 @@ class ComparisonSearchMode(StrEnum):
     TEXT = "text"
 
 
-class ProgressionDirection(StrEnum):
-    """Identify the requested direction of an inferred progression review."""
-
-    BOTH = "both"
-    EARLIER_TO_LATER = "earlier_to_later"
-    LATER_TO_EARLIER = "later_to_earlier"
-
-
 class StudyDifficulty(StrEnum):
     """Identify the requested generated study-support difficulty."""
 
     EXTENSION = "extension"
     FOUNDATIONAL = "foundational"
     ON_LEVEL = "on_level"
+
+
+class LearningProgressionTeachingSequenceRequest(FrozenSchema):
+    """Validate bounded teaching-sequence inputs at the ordinary service boundary."""
+
+    focus_mode: PromptFocusMode = PromptFocusMode.TOPIC
+    framework_id: FrameworkId
+    local_context: PromptLocalContext | None = None
+    local_grade_labels: ProgressionGradeFilters = ()
+    normalized_grades: ProgressionGradeFilters = ()
+    output_language: LanguageTag | None = None
+    snapshot_id: SnapshotId | None = None
+    topic_or_standard: PromptFocusText
 
 
 class PromptGuidanceBlock(FrozenSchema):
@@ -383,12 +392,45 @@ class StudentHandbookSectionGuidance(FrozenSchema):
     section_structure_guidance: PromptGuidanceBlock | None = None
 
 
-class InferredProgressionHypothesisGuidance(FrozenSchema):
-    """Define optional soft guidance for the inferred-progression workflow."""
+class LearningProgressionCurriculumReviewGuidance(FrozenSchema):
+    """Define soft guidance for inspection of stored curriculum relationships.
 
-    counter_evidence_guidance: PromptGuidanceBlock | None = None
+    Examples
+    --------
+    >>> LearningProgressionCurriculumReviewGuidance().evidence_guidance is None
+    True
+    """
+
+    coverage_guidance: PromptGuidanceBlock | None = None
     evidence_guidance: PromptGuidanceBlock | None = None
-    inference_guidance: PromptGuidanceBlock | None = None
+    review_question_guidance: PromptGuidanceBlock | None = None
+
+
+class LearningProgressionSupportPlanGuidance(FrozenSchema):
+    """Define soft guidance for support planning from stored relationships.
+
+    Examples
+    --------
+    >>> LearningProgressionSupportPlanGuidance().evidence_guidance is None
+    True
+    """
+
+    evidence_guidance: PromptGuidanceBlock | None = None
+    practice_guidance: PromptGuidanceBlock | None = None
+    support_guidance: PromptGuidanceBlock | None = None
+
+
+class LearningProgressionTeachingSequenceGuidance(FrozenSchema):
+    """Define soft guidance for teaching sequences from stored relationships.
+
+    Examples
+    --------
+    >>> LearningProgressionTeachingSequenceGuidance().evidence_guidance is None
+    True
+    """
+
+    evidence_guidance: PromptGuidanceBlock | None = None
+    pedagogy_guidance: PromptGuidanceBlock | None = None
     sequence_presentation_guidance: PromptGuidanceBlock | None = None
 
 
@@ -415,7 +457,15 @@ class PromptOverlays(FrozenSchema):
 
     administrator_alignment_review: AdministratorAlignmentReviewGuidance | None = None
     cross_framework_comparison: CrossFrameworkComparisonGuidance | None = None
-    inferred_progression_hypothesis: InferredProgressionHypothesisGuidance | None = None
+    learning_progression_curriculum_review: (
+        LearningProgressionCurriculumReviewGuidance | None
+    ) = None
+    learning_progression_support_plan: LearningProgressionSupportPlanGuidance | None = (
+        None
+    )
+    learning_progression_teaching_sequence: (
+        LearningProgressionTeachingSequenceGuidance | None
+    ) = None
     multigrade_lesson_plan: MultigradeLessonPlanGuidance | None = None
     student_handbook_section: StudentHandbookSectionGuidance | None = None
     student_study_support: StudentStudySupportGuidance | None = None
@@ -452,7 +502,8 @@ class FrameworkPromptConfig(FrozenSchema):
 
         if self.prompt_config_schema_version != PROMPT_CONFIG_SCHEMA_VERSION:
             raise ValueError(
-                f"prompt_config_schema_version must equal {PROMPT_CONFIG_SCHEMA_VERSION}."
+                f"prompt_config_schema_version must equal "
+                f"{PROMPT_CONFIG_SCHEMA_VERSION}."
             )
 
         framework_ids = tuple(str(value) for value in self.framework_ids)
@@ -464,7 +515,16 @@ class FrameworkPromptConfig(FrozenSchema):
         prompt_counts = (
             _count_guidance_instructions(self.prompts.administrator_alignment_review),
             _count_guidance_instructions(self.prompts.cross_framework_comparison),
-            _count_guidance_instructions(self.prompts.inferred_progression_hypothesis),
+            _count_guidance_instructions(
+                self.prompts.learning_progression_curriculum_review
+            ),
+            _count_guidance_instructions(
+                self.prompts.learning_progression_support_plan
+            ),
+            _count_guidance_instructions(
+                self.prompts.learning_progression_teaching_sequence
+            ),
+            _count_guidance_instructions(self.prompts.multigrade_lesson_plan),
             _count_guidance_instructions(self.prompts.student_handbook_section),
             _count_guidance_instructions(self.prompts.student_study_support),
             _count_guidance_instructions(self.prompts.teacher_guide_draft),
@@ -477,12 +537,14 @@ class FrameworkPromptConfig(FrozenSchema):
 
         if any(count > 60 for count in prompt_counts):
             raise ValueError(
-                "Each prompt-specific guidance section may contain at most 60 instructions."
+                "Each prompt-specific guidance section may contain at most 60 "
+                "instructions."
             )
 
         if shared_count + sum(prompt_counts) == 0:
             raise ValueError(
-                "A framework prompt configuration must contain at least one guidance instruction."
+                "A framework prompt configuration must contain at least one guidance "
+                "instruction."
             )
 
         return self

@@ -5,48 +5,9 @@
 	"profileId": "ghana-nacca-primary-english-language-basic-1-3",
 	"profileVersion": "1.0",
 	"promptConfigId": "ghana-nacca-primary-english-language-basic-1-3-guidance",
-	"promptConfigSchemaVersion": "1.0",
-	"promptConfigVersion": "1.0.0",
+	"promptConfigSchemaVersion": "1.1",
+	"promptConfigVersion": "2.0.0",
 	"prompts": {
-		"inferredProgressionHypothesis": {
-			"counterEvidenceGuidance": {
-				"instructions": [
-					"For every proposed transition, check whether the later-grade statement merely repeats a familiar oral-language, phonics, reading, writing, or grammar context rather than clearly increasing independence, text complexity, audience awareness, accuracy, fluency, or meaning-making demand.",
-					"Treat repeated wording, printed code anomalies, same-code records, numbering inconsistencies, and explicitly unresolved parent relationships as counter-evidence or uncertainty rather than silently repairing the source.",
-					"Do not interpret the absence of a sub-strand in one grade, a check mark in the scope-and-sequence table, or a change in strand placement as proof that a skill was mastered, omitted intentionally, or taught in a fixed prerequisite order.",
-					"Where first-language knowledge, cultural familiarity, or oral participation may support English development, describe that only as contextual support unless the retrieved standards explicitly establish a curricular sequence."
-				],
-				"mode": "append"
-			},
-			"evidenceGuidance": {
-				"instructions": [
-					"Compare BASIC 1, BASIC 2, and BASIC 3 evidence using exact indicator wording, action verbs, expected independence, oral or written mode, text type, vocabulary or decoding demand, fluency or comprehension demand, audience and purpose, and hierarchy placement as separate evidence dimensions.",
-					"Use the repeated strands Oral Language, Reading, Writing, Using Writing Conventions/Grammar Usage, and Extensive Reading as organizing context, while recognizing that shared strand placement alone does not establish progression.",
-					"Look for source-supported shifts such as listening and reciting toward interpreting or composing; supported decoding toward structural analysis of words; retelling toward inference, summary, or response; simple words and sentences toward coherent paragraphs; and oral modelling toward increasingly independent language use.",
-					"Treat Listening, Speaking, Reading, and Writing as connected but distinct evidence streams. A stronger statement in one skill does not automatically prove an equivalent increase in another skill.",
-					"Preserve exact curriculum reference codes such as B3.4.9.3.2 as evidence labels, but do not treat code similarity, numerical order, or shared wording as proof of stable identity, prerequisite, or official progression."
-				],
-				"mode": "append"
-			},
-			"inferenceGuidance": {
-				"instructions": [
-					"Describe a possible progression as an LLM-inferred hypothesis about increasing independence, linguistic complexity, accuracy, fluency, comprehension, composition, audience awareness, or integration of skills; never describe it as the official teaching sequence unless the retrieved source explicitly states that sequence.",
-					"Distinguish development in decoding, vocabulary, comprehension, oral communication, writing process, grammar-in-use, and extensive reading rather than collapsing all language development into one linear scale.",
-					"Do not infer that a learner has mastered an earlier indicator merely because a later-grade indicator appears related or uses a more advanced action verb.",
-					"When a proposed progression depends on first-language transfer, cultural knowledge, or a particular classroom practice, label that reasoning as generated and state the evidence gap."
-				],
-				"mode": "append"
-			},
-			"sequencePresentationGuidance": {
-				"instructions": [
-					"Present each proposed BASIC 1-to-BASIC 2, BASIC 2-to-BASIC 3, or BASIC 1-to-BASIC 3 transition with exact source statements, source paths, the specific change in language demand, supporting evidence, counter-considerations, and a qualitative uncertainty statement.",
-					"Organize long reviews by language domain or strand so oral language, decoding and phonics, vocabulary and comprehension, fluency, writing, grammar usage, and extensive reading remain distinguishable.",
-					"When evidence supports more than one plausible route, show alternatives rather than forcing a single linear sequence across all learners or all language skills.",
-					"Use the source grade labels BASIC 1, BASIC 2, and BASIC 3 in the display and keep normalized grade numbers separate."
-				],
-				"mode": "append"
-			}
-		},
 		"studentHandbookSection": {
 			"audienceGuidance": {
 				"instructions": [

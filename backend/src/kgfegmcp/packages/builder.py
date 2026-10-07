@@ -74,6 +74,7 @@ from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
     ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
     DELIVERY_SCHEMA_VERSION,
+    REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
     SOURCE_SCHEMA_VERSION,
     SUPPORTED_INCLUDED_GRAPH_TYPES,
     FrameworkCapabilities,
@@ -91,6 +92,9 @@ from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY,
     DELIVERY_SCHEMA_1_0_UNRESOLVED_RELATIONSHIP_STATUSES,
     DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE,
+    DELIVERY_SCHEMA_1_2_BUILDS_TOWARDS_RELATIONSHIP_TYPE,
+    DELIVERY_SCHEMA_1_2_RELATES_TO_RELATIONSHIP_TYPE,
+    SUPPORTED_RELATIONSHIP_TYPES,
 )
 from kgfegmcp.profiles.loader import load_curriculum_profile
 from kgfegmcp.profiles.models import CurriculumProfile
@@ -98,6 +102,7 @@ from kgfegmcp.regexes import (
     CONTROL_CHARACTER_RE,
     DELIVERY_NODES_BASENAME_RE,
     DELIVERY_RELATIONSHIPS_BASENAME_RE,
+    LEARNING_PROGRESSION_PROVENANCE_SHARD_BASENAME_RE,
     SAFE_AS_ARTIFACT_BASENAME_RE,
 )
 
@@ -132,12 +137,49 @@ _RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
     ),
     "as_unresolved_items.json": ("unresolved_items", "unresolvedItems"),
     "as_lc_validation_report.json": ("validation_report", "validationReport"),
+    "lp_final_claims.json": (
+        "learning_progression_final_claims",
+        "learningProgressionFinalClaims",
+    ),
+    "lp_generation_summary.json": (
+        "learning_progression_summary",
+        "learningProgressionSummary",
+    ),
+    "lp_normalization_receipt.json": (
+        "learning_progression_normalization",
+        "learningProgressionNormalization",
+    ),
+    "lp_relationship_provenance.json": (
+        "learning_progression_provenance",
+        "learningProgressionProvenance",
+    ),
+    "lp_relationship_provenance_index.json": (
+        "learning_progression_provenance_index",
+        "learningProgressionProvenanceIndex",
+    ),
+    "lp_relationships_builds_towards.jsonl": (
+        "learning_progression_builds_towards",
+        "learningProgressionBuildsTowards",
+    ),
+    "lp_relationships_relates_to.jsonl": (
+        "learning_progression_relates_to",
+        "learningProgressionRelatesTo",
+    ),
+    "lp_unresolved_items.json": (
+        "learning_progression_unresolved",
+        "learningProgressionUnresolved",
+    ),
+    "lp_validation_report.json": (
+        "learning_progression_validation",
+        "learningProgressionValidation",
+    ),
 }
 _RECOGNIZED_DETAILED_BASENAMES_CASEFOLDED: Final[frozenset[str]] = frozenset(
     basename.casefold() for basename in _RECOGNIZED_DETAILED_ARTIFACTS
 )
 _RESERVED_ADDITIONAL_LOGICAL_NAMES: Final[frozenset[str]] = frozenset(
     {
+        *(name.casefold() for name in REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES),
         "academicstandardsbundle",
         "entityprovenance",
         "learningcomponentdedupgroups",
@@ -183,12 +225,14 @@ class _ArtifactSource:
 class _DecodedFacts:
     """Hold construction-time facts derived through the existing decoder."""
 
+    builds_towards_relationships: int
     coded_items: int
     framework_nodes: int
     framework_root: FrameworkNode
     item_nodes: int
     learning_component_nodes: int
     multi_parent_targets: int
+    relates_to_relationships: int
     relationships: int
     supports_relationships: int
     text_items: int
@@ -240,7 +284,9 @@ class _PackagePlan:
 class _RelationshipFacts:
     """Hold relationship-derived counts and parent-topology evidence."""
 
+    builds_towards_relationships: int
     multi_parent_targets: int
+    relates_to_relationships: int
     relationships: int
     supports_relationships: int
     unresolved_relationships: int
@@ -589,7 +635,12 @@ def _create_manifest(
             framework_id=plan.framework_id,
             graph_package_id=plan.graph_package_id,
             graph_type=GraphType.ACADEMIC_STANDARDS,
-            included_graph_types=SUPPORTED_INCLUDED_GRAPH_TYPES,
+            included_graph_types=tuple(
+                graph_type
+                for graph_type in SUPPORTED_INCLUDED_GRAPH_TYPES
+                if graph_type is not GraphType.LEARNING_PROGRESSIONS
+                or plan.capabilities.has_learning_progressions
+            ),
             package_revision=1,
             profile=plan.profile_reference,
             rights=plan.rights,
@@ -643,12 +694,14 @@ def _decode_facts(
         relationships_path=relationships_path,
     )
     return _DecodedFacts(
+        builds_towards_relationships=relationship_facts.builds_towards_relationships,
         coded_items=node_facts.coded_items,
         framework_nodes=1,
         framework_root=node_facts.framework_root,
         item_nodes=node_facts.item_nodes,
         learning_component_nodes=node_facts.learning_component_nodes,
         multi_parent_targets=relationship_facts.multi_parent_targets,
+        relates_to_relationships=relationship_facts.relates_to_relationships,
         relationships=relationship_facts.relationships,
         supports_relationships=relationship_facts.supports_relationships,
         text_items=node_facts.text_items,
@@ -702,6 +755,11 @@ def _derive_capabilities(
     return FrameworkCapabilities(
         code_search=code_search,
         has_detailed_provenance=artifacts.entity_provenance is not None,
+        has_learning_progression_provenance=(
+            artifacts.learning_progression_provenance is not None
+            and artifacts.learning_progression_provenance_index is not None
+        ),
+        has_learning_progressions=bool(artifacts.learning_progression_artifacts()),
         has_official_activities=(
             profile.source_role_capabilities.has_official_activities
         ),
@@ -1357,7 +1415,7 @@ def _prepare_artifacts(
             path=input_path, project_dir=project_dir, role="additional artifact"
         )
         basename = resolved_path.name
-        _require_safe_as_basename(basename=basename, role="additional artifact")
+        _require_additional_basename(basename=basename, logical_name=str(logical_name))
 
         normalized_basename = basename.casefold()
 
@@ -1580,9 +1638,11 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
             ADDITIONAL_COUNT_MULTI_PARENT_TARGETS: facts.multi_parent_targets,
             ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS: (facts.unresolved_relationships),
         },
+        builds_towards_relationships=facts.builds_towards_relationships,
         framework_nodes=facts.framework_nodes,
         item_nodes=facts.item_nodes,
         learning_component_nodes=facts.learning_component_nodes,
+        relates_to_relationships=facts.relates_to_relationships,
         relationships=facts.relationships,
         supports_relationships=facts.supports_relationships,
     )
@@ -1640,6 +1700,41 @@ def _prepare_source_document(
     return _FileFingerprint(
         path=resolved_path, sha256=_calculate_file_sha256(resolved_path)
     )
+
+
+def _require_additional_basename(*, basename: str, logical_name: str) -> None:
+    """Permit existing AS extras or an exactly named LP provenance partition.
+
+    Parameters
+    ----------
+    basename
+        Original additional-artifact filename.
+    logical_name
+        Exact manifest additional-artifact name.
+
+    Raises
+    ------
+    ManifestBuildError
+        If an LP partition name does not match its defined manifest slot or the
+        additional artifact violates the existing AS filename policy.
+
+    Examples
+    --------
+    >>> _require_additional_basename(
+    ...     basename="lp_relationship_provenance_shard_00.json",
+    ...     logical_name="learningProgressionProvenanceShard00"
+    ... )
+    """
+
+    match = LEARNING_PROGRESSION_PROVENANCE_SHARD_BASENAME_RE.fullmatch(basename)
+
+    if (
+        match is not None
+        and logical_name == f"learningProgressionProvenanceShard{match[1]}"
+    ):
+        return
+
+    _require_safe_as_basename(basename=basename, role="additional artifact")
 
 
 def _require_delivery_basename(
@@ -2126,15 +2221,20 @@ def _scan_relationship_facts(
     """
 
     parent_sources: dict[str, set[str]] = {}
-    relationship_count = 0
-    supports_relationships = 0
+    relationship_counts = {label: 0 for label in SUPPORTED_RELATIONSHIP_TYPES}
     unresolved_relationships = 0
 
     for relationship in iter_decoded_relationships(source=relationships_path):
-        relationship_count += 1
+        if relationship.label not in relationship_counts:
+            _build_error(
+                details={
+                    "relationship_type": relationship.label,
+                    "line_number": relationship.source_export_order,
+                },
+                message="A relationship type is unsupported by the delivery schema.",
+            )
 
-        if relationship.label == DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE:
-            supports_relationships += 1
+        relationship_counts[relationship.label] += 1
         resolution_status = relationship.resolution_status
 
         if resolution_status is not None:
@@ -2160,9 +2260,17 @@ def _scan_relationship_facts(
         len(source_ids) > 1 for source_ids in parent_sources.values()
     )
     return _RelationshipFacts(
+        builds_towards_relationships=relationship_counts[
+            DELIVERY_SCHEMA_1_2_BUILDS_TOWARDS_RELATIONSHIP_TYPE
+        ],
         multi_parent_targets=multi_parent_targets,
-        relationships=relationship_count,
-        supports_relationships=supports_relationships,
+        relates_to_relationships=relationship_counts[
+            DELIVERY_SCHEMA_1_2_RELATES_TO_RELATIONSHIP_TYPE
+        ],
+        relationships=sum(relationship_counts.values()),
+        supports_relationships=relationship_counts[
+            DELIVERY_SCHEMA_1_1_SUPPORTS_RELATIONSHIP_TYPE
+        ],
         unresolved_relationships=unresolved_relationships,
     )
 

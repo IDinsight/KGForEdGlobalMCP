@@ -5,49 +5,9 @@
 	"profileId": "india-cbse-science-learning-framework-classes-9-10",
 	"profileVersion": "1.0",
 	"promptConfigId": "india-cbse-science-learning-framework-classes-9-10-guidance",
-	"promptConfigSchemaVersion": "1.0",
-	"promptConfigVersion": "1.0.0",
+	"promptConfigSchemaVersion": "1.1",
+	"promptConfigVersion": "2.0.0",
 	"prompts": {
-		"inferredProgressionHypothesis": {
-			"counterEvidenceGuidance": {
-				"instructions": [
-					"Do not treat Class IX to Class X order, chapter numbering, table order, or increasing LO, CLO, or Indicator numbers as proof of an official instructional progression or prerequisite chain.",
-					"Treat LO, CLO, and Indicator codes as Class-scoped labels that may restart or repeat across Class IX and Class X; code similarity or exact code equality across classes does not establish stable identity or continuity.",
-					"Treat a shared Content Domain, repeated action verb, related chapter topic, or similar statement wording as supporting context only. It may reflect revisiting, a different application, or a different content focus rather than increased cognitive demand.",
-					"Do not infer that a Content Domain absent from a later class, such as Food in Class X, was mastered, intentionally completed, or removed for a stated progression reason unless retrieved evidence explicitly says so.",
-					"Preserve every valid direct parent and root path for a multi-parent CLO. Do not select the Chapter path or the NCERT Learning Outcome path as the preferred or more authoritative path."
-				],
-				"mode": "append"
-			},
-			"evidenceGuidance": {
-				"instructions": [
-					"Compare Class IX and Class X evidence using exact statement wording, Class context, Content Domain, Chapter, NCERT Learning Outcome, Content Domain Specific Learning Outcome, Indicator, and every valid hierarchy path as separate evidence dimensions.",
-					"Assess possible change in demand through the source action, conceptual scope, number of interacting ideas, unfamiliarity of context, mathematical or quantitative demand, use of scientific conventions, representation demand, investigation design, evaluation of evidence, and expected independence.",
-					"Use the framework's Knowing, Applying, and Reasoning domains as analytical lenses, while recognising that they describe cognitive work and do not by themselves define a single linear sequence for every concept.",
-					"Look for source-supported shifts such as recalling or describing toward explaining and interpreting; direct application toward unfamiliar problem solving; following an investigation toward designing one; reading a representation toward constructing or evaluating it; and stating a conclusion toward justifying it with evidence.",
-					"Keep conceptual knowledge, laboratory or field practice, calculation, modelling, graph and diagram use, scientific communication, values, and environmental or health application as distinct evidence streams rather than collapsing them into one progression score."
-				],
-				"mode": "append"
-			},
-			"inferenceGuidance": {
-				"instructions": [
-					"Describe every proposed sequence as an LLM-inferred likely progression, never as a source-authored progression, official CBSE prerequisite, promotion rule, or persisted relationship.",
-					"Explain whether the proposed transition appears to increase conceptual complexity, cognitive demand, quantitative reasoning, representational fluency, investigation independence, evidence evaluation, or transfer to unfamiliar situations.",
-					"Allow for non-linear and revisiting patterns. A later statement may broaden, specialise, integrate, or apply an earlier idea without replacing it or proving that every student has mastered it.",
-					"When a transition depends on assumed prior textbook knowledge, a generated conceptual bridge, or general science knowledge not present in retrieved evidence, label that reasoning as generated and state the evidence gap."
-				],
-				"mode": "append"
-			},
-			"sequencePresentationGuidance": {
-				"instructions": [
-					"For each proposed transition, show the exact source and target Class, Content Domain, Chapter, code, statement type, statement wording, all valid source paths, supporting evidence, counter-evidence, and uncertainty.",
-					"Present conceptual, cognitive, quantitative, representational, investigative, and application-related changes in separate fields or short subsections so readers can see which dimensions support the hypothesis.",
-					"Retain unmatched, repeated, ambiguous, or weakly connected statements instead of forcing them into a complete sequence.",
-					"End with the required disclosure that the sequence is generated and does not create an official learning progression, prerequisite edge, equivalence claim, or statement of learner mastery."
-				],
-				"mode": "append"
-			}
-		},
 		"studentHandbookSection": {
 			"audienceGuidance": {
 				"instructions": [

@@ -638,10 +638,9 @@ class GraphPackageRepository:
                 message="The package revision is unsupported by validation persistence.",
             )
 
-        if (
-            manifest.graph_type is not GraphType.ACADEMIC_STANDARDS
-            or manifest.included_graph_types != SUPPORTED_INCLUDED_GRAPH_TYPES
-        ):
+        if manifest.graph_type is not GraphType.ACADEMIC_STANDARDS or not set(
+            manifest.included_graph_types
+        ).issubset(SUPPORTED_INCLUDED_GRAPH_TYPES):
             raise _package_error(
                 details={
                     "graph_type": manifest.graph_type.value,

@@ -1,5 +1,7 @@
 # MCPB packaging
 
+> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
+
 The repository can produce a deterministic MCP Bundle (`.mcpb`) for local desktop MCP
 hosts. Packaging copies the existing generic server, versioned configuration, and
 accepted graph-package repository into a clean stage; it does not introduce a second
@@ -108,10 +110,10 @@ From the repository root:
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 ```
 
-For version `0.1.0`, the default output is:
+For version `0.4.0`, the default output is:
 
 ```text
-dist/kgfegmcp-0.1.0.mcpb
+dist/kgfegmcp-0.4.0.mcpb
 ```
 
 The command removes an existing file at the selected output path before packing a new
@@ -224,25 +226,25 @@ paths.
 List members:
 
 ```bash
-unzip -l ./dist/kgfegmcp-0.1.0.mcpb
+unzip -l ./dist/kgfegmcp-0.4.0.mcpb
 ```
 
 Inspect the packaged manifest:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.1.0.mcpb manifest.json | jq .
+unzip -p ./dist/kgfegmcp-0.4.0.mcpb manifest.json | jq .
 ```
 
 Inspect the server declaration:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.1.0.mcpb manifest.json | jq '.server'
+unzip -p ./dist/kgfegmcp-0.4.0.mcpb manifest.json | jq '.server'
 ```
 
 Test ZIP integrity:
 
 ```bash
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.4.0.mcpb
 ```
 
 ## Recommended acceptance sequence
@@ -261,7 +263,7 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
 # Archive-level sanity check
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.4.0.mcpb
 ```
 
 A strong release baseline requires all four steps to pass.
@@ -277,7 +279,15 @@ repository and retained-stage STDIO smoke tests pass, do not change the server r
 merely to work around an installation UI issue.
 
 The confirmed development connection remains manual STDIO registration through Claude
-Desktop's MCP configuration. See [Connect an MCP client](../getting-started/mcp-clients.md).
+Desktop's MCP configuration. See [Connect an MCP client](../getting-started/mcp-clients.md)
+and the [Claude Desktop walkthrough](../getting-started/claude-clients.md#claude-desktop-walkthrough)
+for checking a 0.4.0 runtime in the client.
+
+If a bundle with the same version number is already installed, Claude Desktop may keep
+the old copy. Remove the existing extension before installing the new bundle. If you
+added the server in Desktop's configuration file instead, quit and reopen Desktop after
+updating the code. The walkthrough's first step shows whether Desktop runs the current
+server.
 
 ## Packaging is behavior-preserving
 

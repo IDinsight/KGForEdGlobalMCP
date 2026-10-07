@@ -29,7 +29,8 @@ This tool has no caller-supplied arguments.
 | `resourceUris`                    | Fixed resource URIs                       |
 | `resourceUriTemplates`            | Parameterized resource templates          |
 | `resourceRepresentations`         | `deterministic_derived` and `raw_source`  |
-| `availableGraphTypes`             | Graph types present in accepted runtimes  |
+| `availableGraphTypes`             | Primary (routing) graph types of accepted packages |
+| `includedGraphTypes`              | Every graph type the accepted packages include |
 | `implementedFeatures`             | Server features implemented by this build |
 | `unavailableFeatures`             | Explicitly unsupported features           |
 | `frameworkPromptOverlaysOptional` | Whether prompt overlays are optional      |
@@ -39,7 +40,9 @@ This tool has no caller-supplied arguments.
 Each `packages[]` entry includes:
 
 - `packageIdentity`, `rights`, `counts`, and `capabilities` (code coverage, text
-  search, detailed provenance, multi-parent, and official source roles);
+  search, detailed provenance, multi-parent, official source roles, and
+  learning-progression availability and provenance);
+- `includedGraphTypes`;
 - `implementedSearchModes`;
 - `implementedLearningComponentSearchModes`;
 - `searchIndex`, the package-local index counts: `codedNodeCount`,
@@ -50,6 +53,11 @@ Each `packages[]` entry includes:
 
 Source metadata is reported by `list_frameworks` and `get_framework`. Build metadata
 and the artifact table are in each package's `package_manifest` resource.
+
+The text result prints `Routing graph types:` and `Included graph types:` for the server,
+and for each package its included graph types and a `Learning progressions:` block with
+`hasLearningProgressions`, `hasLearningProgressionProvenance`, `buildsTowards` and
+`relatesTo` (stored counts).
 
 Standards and learning-component modes are reported separately because they are
 governed differently. Learning-component modes carry a `learning_component_` prefix so
@@ -86,7 +94,7 @@ All fields are optional.
 | Field                | Type            | Default / bound                      | Meaning                                 |
 |----------------------|-----------------|--------------------------------------|-----------------------------------------|
 | `cursor`             | string or null  | null; 1-4096 characters when present | Opaque continuation cursor              |
-| `graphTypes`         | array           | empty; max 16                        | Graph-type filters                      |
+| `graphTypes`         | array           | empty; max 16                        | Match snapshots that include any listed type (`includedGraphTypes`) |
 | `isCurrent`          | boolean or null | null                                 | Current/non-current snapshot filter     |
 | `issuingAuthorities` | array[string]   | empty; max 64                        | Issuing-authority filters               |
 | `jurisdictionTypes`  | array[string]   | empty; max 64                        | Jurisdiction-type filters               |
@@ -144,11 +152,18 @@ A filtered request is:
 | `hasMore`            | Whether another page exists                                |
 | `nextCursor`         | Opaque cursor for the next page, or null                   |
 
-Each item carries the snapshot's identity, source metadata, relations, and available
-graph types, and a summary of each graph package: `packageIdentity`, `capabilities`,
-`counts`, `profileFacets`, `rights`, and `validationStatus`. Build timestamps, schema
-and manifest versions, and the artifact table are in the package's `package_manifest`
-resource.
+Each item carries the snapshot's identity, source metadata, relations,
+`availableGraphTypes` (routing) and `includedGraphTypes`, and a summary of each graph
+package: `packageIdentity`, `includedGraphTypes`, `capabilities`, `counts`,
+`profileFacets`, `rights`, and `validationStatus`. Build timestamps, schema and manifest
+versions, and the artifact table are in the package's `package_manifest` resource.
+
+The text result prints, per snapshot, `Routing graph types:` and `Included graph types:`
+lines, and one line per package that ends with
+`learning_progressions=available|unavailable | builds_towards=<n> | relates_to=<n> |
+validation=<status>`. The `graphTypes` filter matches included types, so
+`["learning_progressions"]` finds every snapshot whose packages contain progressions
+even though they route as `academic_standards`.
 
 When `hasMore` is true, the result text also contains a complete `nextRequest`.
 Submit that request unchanged.
@@ -186,8 +201,10 @@ For reproducible work, pin the exact snapshot:
 ### Result
 
 The result contains one `framework` object with the accepted snapshot's identity,
-source metadata, relations, and available graph types, and the same package summaries as
-`list_frameworks`.
+source metadata, relations, routing and included graph types, and the same package
+summaries as `list_frameworks`. Its text prints, per package, `Included graph types:`,
+`Learning progressions:` and `LP provenance:` flags, and adds
+`learning_progressions[builds_towards=<n>, relates_to=<n>]` to the counts.
 
 If snapshot omission does not resolve to one unique current snapshot, the tool returns
 an `ambiguous_framework` error rather than choosing silently.
@@ -215,20 +232,22 @@ Returns deterministic structural statistics for one Academic Standards package.
 
 ### Result fields
 
-The result contains `package`, `sourceMetadata`, and `statistics`. `package` identifies the package the record comes from and carries its rights:
-`packageIdentity` and `rights`. The package's counts, capabilities, and profile facets
-are reported by `get_framework`; build metadata and the artifact table are in the
-`package_manifest` resource.
+The result contains `package`, `sourceMetadata`, and `statistics`. `package` identifies
+the package the record comes from and carries its rights: `packageIdentity` and
+`rights`. The package's counts, capabilities, and profile facets are reported by
+`get_framework`; build metadata and the artifact table are in the `package_manifest`
+resource.
 
 `statistics` includes:
 
 - `totalFrameworkNodes`, `totalItemNodes`, `totalNodes`, and `totalRelationships`.
   These count the standards hierarchy only: `totalNodes` is the framework root plus
-  the framework items, and `totalRelationships` excludes `supports` edges. Learning
-  components and their edges are counted in the `learningComponents` block below;
+  the framework items, and `totalRelationships` excludes `supports`, `buildsTowards`
+  and `relatesTo` edges. Learning components and their edges are counted in the
+  `learningComponents` block below;
 - local grade, node grade-level, normalized grade, statement-type, normalized
   statement-type, and relationship-type counts, all over the standards hierarchy only,
-  so `supports` edges never appear in the relationship-type or resolution counts;
+  so `supports` or LP edges never appear in the relationship-type or resolution counts;
 - `codePresence` counts;
 - `maximumStructuralDepth` and `minimumStructuralDepthCounts`;
 - `multiParent` cardinality statistics;
@@ -263,9 +282,14 @@ learning_progressions
 reviewed_alignment
 ```
 
-Recognition in the enum is not the same as availability in the accepted catalog. Use
-`get_capabilities.availableGraphTypes` to determine what the running server actually
-serves.
+Recognition in the enum is not the same as availability in the accepted catalog.
+`availableGraphTypes` reports primary package routing types; these mixed packages still
+route as `academic_standards`. `includedGraphTypes` (on capabilities, snapshots and
+packages) lists every type the packages contain, and the `list_frameworks` `graphTypes`
+filter matches it. Check `includedGraphTypes` and package flags
+`hasLearningProgressions`/`hasLearningProgressionProvenance` for LP availability.
+`statistics.learningProgressions` separately reports `buildsTowardsRelationships` and
+`relatesToRelationships` plus those flags; hierarchy/LC blocks retain their meanings.
 
 ## Common errors
 

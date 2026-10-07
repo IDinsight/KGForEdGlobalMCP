@@ -1,0 +1,879 @@
+"""Select stored LP evidence through the accepted catalog without filesystem reads."""
+
+# Standard Library
+import hashlib
+import json
+
+from collections.abc import Mapping
+from dataclasses import dataclass, field
+from types import MappingProxyType
+from typing import cast
+
+# Third Party Library
+from pydantic import ValidationError
+
+# Package Library
+from kgfegmcp.catalog.models import CatalogPackageRuntime
+from kgfegmcp.catalog.service import CatalogService
+from kgfegmcp.domain.enums import CodeAvailability, GraphType
+from kgfegmcp.domain.identifiers import (
+    ArtifactName,
+    FrameworkId,
+    GraphPackageId,
+    Sha256Digest,
+    SnapshotId,
+)
+from kgfegmcp.errors import (
+    AmbiguousGraphNodeError,
+    CapabilityUnavailableError,
+    GraphNodeNotFoundError,
+    InvalidProgressionRequestError,
+    LearningProgressionNotFoundError,
+    ProgressionResultTooLargeError,
+    StandardNotFoundError,
+)
+from kgfegmcp.graph.models import GraphRelationship, StandardNode
+from kgfegmcp.resources.models import ResourceKind
+from kgfegmcp.resources.policy import ResourcePolicy
+from kgfegmcp.resources.uri import (
+    artifact_uri,
+    learning_progressions_uri,
+    manifest_uri,
+    relationship_provenance_uri,
+    relationship_uri,
+    standard_uri,
+)
+from kgfegmcp.search.models import (
+    ExactCodeSearchQuery,
+    ExactPackageSearchScope,
+    SearchFilters,
+    SearchMode,
+    SearchSelectionMode,
+)
+from kgfegmcp.search.service import SearchService
+from kgfegmcp.services.frameworks import FrameworkService
+from kgfegmcp.services.lp_discovery import collection_result, ordered_progressions
+from kgfegmcp.services.lp_models import (
+    MAX_PROGRESSION_RESULT_BYTES,
+    MAX_STATEMENT_EXCERPT_CHARACTERS,
+    PROGRESSION_DERIVATION_ARTIFACT_NAMES,
+    GetLearningProgressionPathsRequest,
+    GetLearningProgressionPathsResult,
+    GetLearningProgressionRequest,
+    GetLearningProgressionResult,
+    GetStandardProgressionsRequest,
+    ProgressionArtifactIdentity,
+    ProgressionCollectionResult,
+    ProgressionEvidenceResult,
+    ProgressionMetadata,
+    ProgressionRelationshipEvidence,
+    ProgressionStandardIdentifier,
+    ProgressionStandardSummary,
+    SearchLearningProgressionsRequest,
+    StatementCodeStandardIdentifier,
+    TraverseLearningProgressionsRequest,
+    TraverseLearningProgressionsResult,
+)
+from kgfegmcp.services.lp_paths import PathIdBound, path_id_bound, paths_result
+from kgfegmcp.services.lp_traversal import (
+    TraversalAdjacency,
+    traversal_adjacency,
+    traversal_result,
+)
+from kgfegmcp.services.models import (
+    CaseUriStandardIdentifier,
+    CaseUuidStandardIdentifier,
+    NodeIdStandardIdentifier,
+    package_reference,
+)
+from kgfegmcp.tool_results import (
+    MAX_TOOL_RESULT_CHARACTERS,
+    canonical_result_text,
+    text_result_envelope,
+    tool_result_size,
+)
+
+
+def progression_result_text(result: ProgressionEvidenceResult) -> str:
+    """Mirror every bounded public field as canonical ordinary JSON text.
+
+    Parameters
+    ----------
+    result
+        Complete typed evidence for one pinned operation.
+
+    Returns
+    -------
+    str
+        JSON text whose parsed value equals the aliased structured result.
+    """
+
+    return canonical_result_text(result)
+
+
+def require_progression_result_size(
+    *,
+    envelope: Mapping[str, object] | None = None,
+    result: ProgressionEvidenceResult,
+    text: str | tuple[str, ...],
+) -> int:
+    """Enforce both ceilings on the complete text and structured tool envelope.
+
+    Parameters
+    ----------
+    envelope
+        Actual adapter envelope when checking final content and metadata.
+    result
+        Complete evidence serialized with public schema aliases.
+    text
+        Single text block or every adapter text block for candidate selection.
+
+    Returns
+    -------
+    int
+        Conservative encoded envelope bytes, including escaping and whitespace.
+
+    Raises
+    ------
+    ProgressionResultTooLargeError
+        If the complete envelope exceeds either byte or character ceiling.
+    """
+
+    size = tool_result_size(
+        envelope
+        if envelope is not None
+        else text_result_envelope(result=result, text=text)
+    )
+
+    if (
+        size.byte_length > MAX_PROGRESSION_RESULT_BYTES
+        or size.character_length > MAX_TOOL_RESULT_CHARACTERS
+    ):
+        uri = (
+            result.relationships[0].provenance_uri
+            if result.relationships
+            else result.metadata.summary_uri
+        )
+        request = json.dumps(
+            ensure_ascii=False, obj={"uri": uri}, separators=(",", ":"), sort_keys=True
+        )
+        raise ProgressionResultTooLargeError(
+            details={
+                "actual_bytes": size.byte_length,
+                "actual_characters": size.character_length,
+                "max_bytes": MAX_PROGRESSION_RESULT_BYTES,
+                "max_characters": MAX_TOOL_RESULT_CHARACTERS,
+            },
+            message=(
+                "The stored progression result exceeds the 1 MiB or "
+                "100,000-character tool envelope ceiling."
+            ),
+            recovery_hint=(
+                f"Call read_evidence with request={request} for the linked resource "
+                "evidence under native rights and source/document limits. "
+                "Narrow collection, traversal or path inputs before rerunning."
+            ),
+        )
+
+    return size.byte_length
+
+
+@dataclass(frozen=True, slots=True)
+class LearningProgressionsService:
+    """Reuse one accepted runtime, standard indexes and rights policy for LP queries."""
+
+    catalog_service: CatalogService
+    framework_service: FrameworkService
+    resource_policy: ResourcePolicy
+    search_service: SearchService
+    _path_id_bounds_by_package: Mapping[GraphPackageId, PathIdBound | None] = field(
+        init=False, repr=False
+    )
+    _progressions_by_package: Mapping[GraphPackageId, tuple[GraphRelationship, ...]] = (
+        field(init=False, repr=False)
+    )
+    _traversal_by_package: Mapping[GraphPackageId, TraversalAdjacency] = field(
+        init=False, repr=False
+    )
+
+    def __post_init__(self) -> None:
+        """Index sorted original LP references once, without another graph store."""
+
+        packages = tuple(
+            package
+            for family in self.catalog_service.list_frameworks().frameworks
+            for snapshot in family.snapshots
+            for package in snapshot.graph_packages
+        )
+        ordered = {
+            package.package_identity.graph_package_id: ordered_progressions(
+                runtime=self.catalog_service.get_package_runtime(
+                    graph_package_id=package.package_identity.graph_package_id
+                )
+            )
+            for package in packages
+        }
+        object.__setattr__(self, "_progressions_by_package", MappingProxyType(ordered))
+        adjacency = {
+            package.package_identity.graph_package_id: traversal_adjacency(
+                runtime=self.catalog_service.get_package_runtime(
+                    graph_package_id=package.package_identity.graph_package_id
+                )
+            )
+            for package in packages
+        }
+        object.__setattr__(self, "_traversal_by_package", MappingProxyType(adjacency))
+        bounds = {
+            graph_package_id: path_id_bound(adjacency=package_adjacency)
+            for graph_package_id, package_adjacency in adjacency.items()
+        }
+        object.__setattr__(self, "_path_id_bounds_by_package", MappingProxyType(bounds))
+
+    @staticmethod
+    def evidence_metadata(*, runtime: CatalogPackageRuntime) -> ProgressionMetadata:
+        """Project load-time identity and retained coverage without reloading files.
+
+        Parameters
+        ----------
+        runtime
+            Exact accepted LP runtime pinned by the route helper.
+
+        Returns
+        -------
+        ProgressionMetadata
+            Derivation artifact identities, manifest identity, rights, limits,
+            coverage and evidence links.
+
+        Raises
+        ------
+        CapabilityUnavailableError
+            If stored LP evidence or any derivation artifact is unavailable.
+        """
+
+        identity = runtime.catalog_package.package_identity
+        evidence = runtime.loaded_package.learning_progression_evidence
+        derivation = {
+            str(artifact.logical_name): artifact
+            for artifact in runtime.loaded_package.artifacts
+            if str(artifact.logical_name) in PROGRESSION_DERIVATION_ARTIFACT_NAMES
+        }
+
+        if evidence is None or len(derivation) != len(
+            PROGRESSION_DERIVATION_ARTIFACT_NAMES
+        ):
+            raise CapabilityUnavailableError(
+                message="Stored LP evidence is unavailable."
+            )
+
+        return ProgressionMetadata(
+            # The manifest hash binds the full inventory; list only what results use.
+            artifacts=tuple(
+                ProgressionArtifactIdentity(
+                    logical_name=derivation[name].logical_name,
+                    sha256=derivation[name].sha256,
+                    uri=artifact_uri(
+                        artifact_name=derivation[name].logical_name,
+                        framework_id=identity.framework_id,
+                        snapshot_id=identity.snapshot_id,
+                    ),
+                )
+                for name in PROGRESSION_DERIVATION_ARTIFACT_NAMES
+            ),
+            coverage=evidence.coverage,
+            manifest_sha256=cast(
+                Sha256Digest,
+                "sha256:"
+                + hashlib.sha256(runtime.loaded_package.manifest_bytes).hexdigest(),
+            ),
+            manifest_uri=manifest_uri(
+                framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
+            ),
+            package=package_reference(package=runtime.catalog_package),
+            stored_builds_towards_count=(
+                runtime.catalog_package.counts.builds_towards_relationships
+            ),
+            stored_relates_to_count=runtime.catalog_package.counts.relates_to_relationships,
+            summary_uri=learning_progressions_uri(
+                framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
+            ),
+            unresolved_uri=artifact_uri(
+                artifact_name=cast(ArtifactName, "learningProgressionUnresolved"),
+                framework_id=identity.framework_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+            validation_uri=artifact_uri(
+                artifact_name=cast(ArtifactName, "learningProgressionValidation"),
+                framework_id=identity.framework_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+        )
+
+    def get_learning_progression(
+        self, request: GetLearningProgressionRequest
+    ) -> GetLearningProgressionResult:
+        """Return exactly one accepted LP edge and its stored endpoint evidence.
+
+        Parameters
+        ----------
+        request
+            Framework, optional snapshot and exact relationship identifier.
+
+        Returns
+        -------
+        GetLearningProgressionResult
+            Original edge, bounded summaries/judgment and exact evidence identities.
+
+        Raises
+        ------
+        LearningProgressionNotFoundError
+            If the identifier is missing or belongs to a non-LP relationship.
+        ProgressionResultTooLargeError
+            If the complete result cannot fit without dropping stored evidence.
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        relationship = runtime.graph_store.relationships_by_id.get(
+            request.relationship_id
+        )
+
+        if relationship is None or relationship.label not in {
+            "buildsTowards",
+            "relatesTo",
+        }:
+            raise LearningProgressionNotFoundError(
+                message="The requested stored learning progression is unavailable."
+            )
+
+        result = GetLearningProgressionResult(
+            metadata=self.evidence_metadata(runtime=runtime),
+            nodes=tuple(
+                self.standard_summary(
+                    node=self.resolve_standard(
+                        identifier=NodeIdStandardIdentifier(
+                            identifier_type="node_id", node_id=node_id
+                        ),
+                        runtime=runtime,
+                    ),
+                    runtime=runtime,
+                )
+                for node_id in (
+                    relationship.source_node_id,
+                    relationship.target_node_id,
+                )
+            ),
+            relationships=(
+                self.relationship_evidence(relationship=relationship, runtime=runtime),
+            ),
+            request=request,
+        )
+        require_progression_result_size(
+            result=result, text=progression_result_text(result=result)
+        )
+        return result
+
+    def get_learning_progression_paths(
+        self, request: GetLearningProgressionPathsRequest
+    ) -> GetLearningProgressionPathsResult:
+        """Find bounded alternative directed simple paths between exact standards.
+
+        Parameters
+        ----------
+        request
+            Source, target and positive depth/path bounds in one framework route.
+
+        Returns
+        -------
+        GetLearningProgressionPathsResult
+            Original generated hops, derived paths and honest search completeness.
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        graph_package_id = runtime.catalog_package.package_identity.graph_package_id
+        return paths_result(
+            adjacency=self._traversal_by_package[graph_package_id],
+            id_bound=self._path_id_bounds_by_package[graph_package_id],
+            request=request,
+            runtime=runtime,
+            service=self,
+        )
+
+    def get_standard_progressions(
+        self, request: GetStandardProgressionsRequest
+    ) -> ProgressionCollectionResult:
+        """Return bounded direct builds and symmetric relates connections.
+
+        Parameters
+        ----------
+        request
+            Exact standard selection, connection meaning and page limits.
+
+        Returns
+        -------
+        ProgressionCollectionResult
+            Original edge tables, per-connection meanings and stateless continuation.
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        node = self.resolve_standard(identifier=request.identifier, runtime=runtime)
+        store = runtime.graph_store
+        groups = {
+            "incoming_builds": store.incoming_by_type_and_node.get(
+                ("buildsTowards", node.node_id), ()
+            ),
+            "outgoing_builds": store.outgoing_by_type_and_node.get(
+                ("buildsTowards", node.node_id), ()
+            ),
+            "related": (
+                *store.incoming_by_type_and_node.get(("relatesTo", node.node_id), ()),
+                *store.outgoing_by_type_and_node.get(("relatesTo", node.node_id), ()),
+            ),
+        }
+        keys = (
+            tuple(groups)
+            if request.connection_kind == "all"
+            else (request.connection_kind,)
+        )
+        edges = {edge.relationship_id: edge for key in keys for edge in groups[key]}
+        candidates = tuple(
+            sorted(edges.values(), key=lambda edge: (edge.label, edge.relationship_id))
+        )
+        return collection_result(
+            candidates=candidates, request=request, runtime=runtime, service=self
+        )
+
+    @staticmethod
+    def relationship_evidence(
+        *, relationship: GraphRelationship, runtime: CatalogPackageRuntime
+    ) -> ProgressionRelationshipEvidence:
+        """Link an original edge to its accepted bounded judgment projection.
+
+        Parameters
+        ----------
+        relationship
+            Exact stored LP edge from this runtime.
+        runtime
+            Owning accepted runtime with validated judgment projections.
+
+        Returns
+        -------
+        ProgressionRelationshipEvidence
+            Original record and full evidence resource references.
+
+        Raises
+        ------
+        LearningProgressionNotFoundError
+            If the supplied edge lacks accepted LP evidence.
+        """
+
+        evidence = runtime.loaded_package.learning_progression_evidence
+        judgment = (
+            next(
+                (
+                    item
+                    for item in evidence.judgments
+                    if item.relationship_id == relationship.relationship_id
+                ),
+                None,
+            )
+            if evidence is not None
+            else None
+        )
+
+        if (
+            judgment is None
+            or runtime.graph_store.relationships_by_id.get(relationship.relationship_id)
+            != relationship
+        ):
+            raise LearningProgressionNotFoundError(
+                message="The requested edge has no accepted LP evidence."
+            )
+
+        identity = runtime.catalog_package.package_identity
+
+        # Preserve the accepted projection's exact wording while clarifying confidence.
+        judgment = judgment.model_copy(
+            update={
+                "confidence_notice": (
+                    "Confidence is a model judgment, not a calibrated probability "
+                    "of learner success or validated pedagogical correctness."
+                )
+            }
+        )
+        return ProgressionRelationshipEvidence(
+            judgment=judgment,
+            provenance_uri=relationship_provenance_uri(
+                framework_id=identity.framework_id,
+                relationship_id=relationship.relationship_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+            relationship=relationship,
+            relationship_uri=relationship_uri(
+                framework_id=identity.framework_id,
+                relationship_id=relationship.relationship_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+        )
+
+    def require_collection_result_size(
+        self, *, result: ProgressionCollectionResult
+    ) -> int:
+        """Apply the shared complete text-plus-structured-content byte ceiling.
+
+        Parameters
+        ----------
+        result
+            Bounded collection with current continuation/count metadata.
+
+        Returns
+        -------
+        int
+            Encoded result bytes.
+        """
+
+        return require_progression_result_size(
+            result=result, text=progression_result_text(result=result)
+        )
+
+    def require_content_access(self, *, runtime: CatalogPackageRuntime) -> None:
+        """Apply the existing reviewed, full-text and single-standard rights rules.
+
+        Parameters
+        ----------
+        runtime
+            Owning package whose content will be returned.
+        """
+
+        self.resource_policy.require_resource_access(
+            resource_kind=ResourceKind.RELATIONSHIP,
+            rights=runtime.catalog_package.rights,
+        )
+
+    def require_paths_result_size(
+        self, *, result: GetLearningProgressionPathsResult
+    ) -> int:
+        """Measure path text and structured evidence under both envelope ceilings.
+
+        Parameters
+        ----------
+        result
+            Complete bounded path envelope.
+
+        Returns
+        -------
+        int
+            Encoded result bytes.
+
+        Raises
+        ------
+        ProgressionResultTooLargeError
+            If the complete envelope exceeds the byte or character ceiling.
+        """
+
+        return require_progression_result_size(
+            result=result, text=progression_result_text(result=result)
+        )
+
+    def require_traversal_result_size(
+        self, *, result: TraverseLearningProgressionsResult
+    ) -> int:
+        """Measure the complete traversal envelope using the shared byte ceiling.
+
+        Parameters
+        ----------
+        result
+            Exact evidence with frontier and completeness metadata.
+
+        Returns
+        -------
+        int
+            Encoded result bytes.
+        """
+
+        return require_progression_result_size(
+            result=result, text=progression_result_text(result=result)
+        )
+
+    def resolve_runtime(
+        self, *, framework_id: FrameworkId, snapshot_id: SnapshotId | None
+    ) -> CatalogPackageRuntime:
+        """Resolve the route once and pin all subsequent operations to its runtime.
+
+        Parameters
+        ----------
+        framework_id
+            Required exact framework family.
+        snapshot_id
+            Optional exact snapshot, otherwise existing unique-current routing.
+
+        Returns
+        -------
+        CatalogPackageRuntime
+            The existing primary mixed-graph runtime with accepted LP capability.
+
+        Raises
+        ------
+        CapabilityUnavailableError
+            If the selected package lacks accepted stored LPs.
+        """
+
+        snapshot = self.framework_service.resolve_snapshot_selection(
+            framework_id=framework_id, snapshot_id=snapshot_id
+        )
+        package = self.catalog_service.get_graph_package(
+            framework_id=snapshot.framework_id,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            snapshot_id=snapshot.snapshot_id,
+        )
+        runtime = self.catalog_service.get_package_runtime(
+            graph_package_id=package.package_identity.graph_package_id
+        )
+
+        if not package.capabilities.has_learning_progressions or (
+            runtime.loaded_package.learning_progression_evidence is None
+        ):
+            raise CapabilityUnavailableError(
+                message="This snapshot does not provide accepted stored LPs."
+            )
+
+        return runtime
+
+    def resolve_standard(
+        self,
+        *,
+        identifier: ProgressionStandardIdentifier,
+        runtime: CatalogPackageRuntime,
+    ) -> StandardNode:
+        """Resolve exact identifiers or a profile-enabled code without guessing.
+
+        Parameters
+        ----------
+        identifier
+            Node ID, CASE UUID/URI or exact statement code.
+        runtime
+            Already pinned package; selectors never choose another snapshot.
+
+        Returns
+        -------
+        StandardNode
+            Exact source standard, excluding framework roots and components.
+
+        Raises
+        ------
+        StandardNotFoundError
+            If no source standard matches.
+        AmbiguousGraphNodeError
+            If the identifier matches several standards.
+        InvalidProgressionRequestError
+            If a semantic code selection is invalid.
+        """
+
+        store = runtime.graph_store
+
+        try:
+            if isinstance(identifier, NodeIdStandardIdentifier):
+                node = store.get_node_by_id(node_id=identifier.node_id).node
+            elif isinstance(identifier, CaseUuidStandardIdentifier):
+                node = store.get_node_by_case_identifier_uuid(
+                    case_identifier_uuid=identifier.case_identifier_uuid
+                ).node
+            elif isinstance(identifier, CaseUriStandardIdentifier):
+                node = store.get_node_by_case_identifier_uri(
+                    case_identifier_uri=identifier.case_identifier_uri
+                ).node
+            elif isinstance(identifier, StatementCodeStandardIdentifier):
+                node = self._resolve_code(identifier=identifier, runtime=runtime)
+            else:
+                raise InvalidProgressionRequestError(
+                    message="Unsupported standard selector."
+                )
+        except GraphNodeNotFoundError as error:
+            raise StandardNotFoundError(
+                message="The selected standard is unavailable."
+            ) from error
+
+        if not isinstance(node, StandardNode):
+            raise StandardNotFoundError(
+                message="The selected node is not a source standard."
+            )
+
+        return node
+
+    def search_learning_progressions(
+        self, request: SearchLearningProgressionsRequest
+    ) -> ProgressionCollectionResult:
+        """Discover stored LP edges with profile-validated endpoint conjunctions.
+
+        Parameters
+        ----------
+        request
+            Type, standard and grade/type criteria with explicit endpoint scope.
+
+        Returns
+        -------
+        ProgressionCollectionResult
+            Bounded deduplicated evidence, matched facets and honest continuation.
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        return collection_result(
+            candidates=self._progressions_by_package[
+                runtime.catalog_package.package_identity.graph_package_id
+            ],
+            request=request,
+            runtime=runtime,
+            service=self,
+        )
+
+    def standard_summary(
+        self, *, node: StandardNode, runtime: CatalogPackageRuntime
+    ) -> ProgressionStandardSummary:
+        """Retain identifiers and existing grade/type facets with a statement excerpt.
+
+        Parameters
+        ----------
+        node
+            Exact source standard from the selected runtime.
+        runtime
+            Pinned owning package and search facet machinery.
+
+        Returns
+        -------
+        ProgressionStandardSummary
+            Bounded wording, explicit excerpt flag and full standard resource URI.
+        """
+
+        identity = runtime.catalog_package.package_identity
+        return ProgressionStandardSummary(
+            case_identifier_uri=node.case_identifier_uri,
+            case_identifier_uuid=node.case_identifier_uuid,
+            facets=self.search_service.get_node_facet_evidence(
+                graph_package_id=identity.graph_package_id, node_id=node.node_id
+            ),
+            node_id=node.node_id,
+            standard_uri=standard_uri(
+                framework_id=identity.framework_id,
+                node_id=node.node_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+            statement_code=node.statement_code,
+            statement_excerpt=(
+                node.description[:MAX_STATEMENT_EXCERPT_CHARACTERS]
+                if node.description is not None
+                else None
+            ),
+            statement_excerpted=(
+                node.description is not None
+                and len(node.description) > MAX_STATEMENT_EXCERPT_CHARACTERS
+            ),
+            statement_type=node.statement_type,
+        )
+
+    def traverse_learning_progressions(
+        self, request: TraverseLearningProgressionsRequest
+    ) -> TraverseLearningProgressionsResult:
+        """Return bounded upstream or downstream stored builds evidence.
+
+        Parameters
+        ----------
+        request
+            Exact standard selector, direction and finite service bounds.
+
+        Returns
+        -------
+        TraverseLearningProgressionsResult
+            Derived subgraph retaining original edge orientation and evidence.
+        """
+
+        runtime = self.resolve_runtime(
+            framework_id=request.framework_id, snapshot_id=request.snapshot_id
+        )
+        self.require_content_access(runtime=runtime)
+        return traversal_result(
+            adjacency=self._traversal_by_package[
+                runtime.catalog_package.package_identity.graph_package_id
+            ],
+            request=request,
+            runtime=runtime,
+            service=self,
+        )
+
+    def _resolve_code(
+        self,
+        *,
+        identifier: StatementCodeStandardIdentifier,
+        runtime: CatalogPackageRuntime,
+    ) -> StandardNode:
+        """Reuse profile-governed exact-code search and reject ambiguous results.
+
+        Parameters
+        ----------
+        identifier
+            Authored code selection whose syntax must satisfy existing search rules.
+        runtime
+            Pinned accepted package owning the code index.
+
+        Returns
+        -------
+        StandardNode
+            Unique exact matching source standard.
+        """
+
+        identity = runtime.catalog_package.package_identity
+
+        if runtime.catalog_package.capabilities.code_search is CodeAvailability.NONE:
+            raise CapabilityUnavailableError(
+                message="This snapshot does not provide profile-enabled code selection."
+            )
+
+        try:
+            query = ExactCodeSearchQuery(
+                filters=SearchFilters(include_groupings=True),
+                limit=2,
+                mode=SearchMode.CODE_EXACT,
+                query=identifier.statement_code,
+                scope=ExactPackageSearchScope(
+                    framework_id=identity.framework_id,
+                    graph_type=identity.graph_type,
+                    selection_mode=SearchSelectionMode.EXACT,
+                    snapshot_id=identity.snapshot_id,
+                ),
+            )
+        except ValidationError as error:
+            raise InvalidProgressionRequestError(
+                message="The statement-code selector is invalid."
+            ) from error
+
+        page = self.search_service.search(query=query)
+
+        if not page.hits:
+            raise StandardNotFoundError(
+                message="The selected statement code is unavailable."
+            )
+
+        if len(page.hits) > 1 or page.has_more:
+            raise AmbiguousGraphNodeError(
+                message="The statement code selects several standards."
+            )
+
+        node = runtime.graph_store.get_node_by_id(
+            node_id=page.hits[0].node.node_id
+        ).node
+
+        if not isinstance(node, StandardNode):
+            raise StandardNotFoundError(
+                message="The selected code is not a source standard."
+            )
+
+        return node

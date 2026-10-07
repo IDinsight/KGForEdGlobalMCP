@@ -7,8 +7,8 @@ catalog through the existing validation gate, and constructs independent package
 search indexes from that catalog result.
 
 The resulting ``AppState`` retains the settings, catalog result, catalog service,
-comparison service, progression-evidence service, prompt service, resource service, and
-search service that MCP components use during one server lifespan. Importing this
+comparison service, learning-progressions service, prompt service, resource service,
+and search service that MCP components use during one server lifespan. Importing this
 module defines the construction process but does not execute it or access runtime files.
 """
 
@@ -39,7 +39,7 @@ from kgfegmcp.search.service import SearchService
 from kgfegmcp.services.comparison import ComparisonService
 from kgfegmcp.services.frameworks import FrameworkService
 from kgfegmcp.services.learning_components import LearningComponentService
-from kgfegmcp.services.progression import ProgressionEvidenceService
+from kgfegmcp.services.learning_progressions import LearningProgressionsService
 from kgfegmcp.services.standards import StandardsService
 
 _LOGGER = logging.getLogger("fastmcp.kgfegmcp.bootstrap")
@@ -57,8 +57,8 @@ class AppState:
         Exact and unique-current in-memory catalog routing service.
     comparison_service
         Deterministic exact-package comparison service over the accepted runtime.
-    progression_evidence_service
-        Deterministic bounded progression-evidence service over the accepted runtime.
+    learning_progressions_service
+        Deterministic bounded learning-progressions service over the accepted runtime.
     prompt_service
         Generic, profile-aware prompt service over the same accepted runtime.
     resource_service
@@ -72,7 +72,7 @@ class AppState:
     catalog_load_result: CatalogLoadResult
     catalog_service: CatalogService
     comparison_service: ComparisonService
-    progression_evidence_service: ProgressionEvidenceService
+    learning_progressions_service: LearningProgressionsService
     prompt_service: PromptService
     resource_service: ResourceService
     search_service: SearchService
@@ -95,7 +95,7 @@ class AppState:
 
         self._validate_catalog_consistency()
         self._validate_comparison_service()
-        self._validate_progression_evidence_service()
+        self._validate_learning_progressions_service()
         self._validate_prompt_service()
         self._validate_resource_service()
 
@@ -142,30 +142,25 @@ class AppState:
                 "AppState comparison and search services must share SearchService."
             )
 
-    def _validate_progression_evidence_service(self) -> None:
-        """Require the progression-evidence service to share retained objects.
+    def _validate_learning_progressions_service(self) -> None:
+        """Require LP queries to share catalog, search, framework and resource policy.
 
         Raises
         ------
         ValueError
-            If the progression-evidence service owns a different catalog service, or a
-            different standards service than the comparison service.
+            If LP queries use independently constructed runtime or policy objects.
         """
 
-        if (
-            self.progression_evidence_service.catalog_service
-            is not self.catalog_service
-        ):
-            raise ValueError(
-                "AppState must retain the CatalogService owned by ProgressionEvidenceService."
-            )
+        service = self.learning_progressions_service
 
         if (
-            self.progression_evidence_service.standards_service
-            is not self.comparison_service.standards_service
+            service.catalog_service is not self.catalog_service
+            or service.framework_service.catalog_service is not self.catalog_service
+            or service.search_service is not self.search_service
+            or service.resource_policy is not self.resource_service.policy
         ):
             raise ValueError(
-                "AppState comparison and progression services must share StandardsService."
+                "AppState LP queries must share catalog, search and resource policy."
             )
 
     def _validate_prompt_service(self) -> None:
@@ -275,12 +270,15 @@ def bootstrap_application() -> AppState:
         comparison_service = ComparisonService(
             catalog_service=catalog_service, standards_service=standards_service
         )
-        progression_evidence_service = ProgressionEvidenceService(
-            catalog_service=catalog_service, standards_service=standards_service
-        )
         resource_policy = ResourcePolicy(
             max_resource_bytes=settings.max_resource_bytes,
             max_resource_source_bytes=settings.max_resource_source_bytes,
+        )
+        learning_progressions_service = LearningProgressionsService(
+            catalog_service=catalog_service,
+            framework_service=framework_service,
+            resource_policy=resource_policy,
+            search_service=search_service,
         )
         resource_repository = ResourceRepository(policy=resource_policy)
         resource_service = ResourceService(
@@ -298,7 +296,7 @@ def bootstrap_application() -> AppState:
             catalog_load_result=catalog_load_result,
             catalog_service=catalog_service,
             comparison_service=comparison_service,
-            progression_evidence_service=progression_evidence_service,
+            learning_progressions_service=learning_progressions_service,
             prompt_service=prompt_service,
             resource_service=resource_service,
             search_service=search_service,
@@ -307,7 +305,8 @@ def bootstrap_application() -> AppState:
     except Exception:
         _LOGGER.exception(
             msg=(
-                "Application state construction failed: operation=application_bootstrap."
+                "Application state construction failed: "
+                "operation=application_bootstrap."
             )
         )
         raise

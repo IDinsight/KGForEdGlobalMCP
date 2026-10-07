@@ -5,48 +5,9 @@
 	"profileId": "nigeria-nerdc-mathematics-primary-1-3",
 	"profileVersion": "1.0",
 	"promptConfigId": "nigeria-nerdc-mathematics-primary-1-3-guidance",
-	"promptConfigSchemaVersion": "1.0",
-	"promptConfigVersion": "1.0.0",
+	"promptConfigSchemaVersion": "1.1",
+	"promptConfigVersion": "2.0.0",
 	"prompts": {
-		"inferredProgressionHypothesis": {
-			"counterEvidenceGuidance": {
-				"instructions": [
-					"For every proposed transition, check whether the later Primary level merely increases the number range, changes a tool or representation, repeats a topic label, or adds a written procedure without clearly increasing conceptual, strategic, or reasoning demand.",
-					"Do not treat page order, topic ordinals, repeated labels such as Addition, Subtraction, Fractions, Length, Time, Money, or Data Collection, or the structural hasChild hierarchy as proof of a source-authored prerequisite sequence.",
-					"Treat the absence of stable statement codes, source-visible editorial inconsistencies, old currency examples, arithmetic slips, duplicated numbering, and wording or table-layout ambiguity as uncertainty; preserve exact source evidence and do not silently repair it.",
-					"Where a proposed bridge crosses Themes or Sub-Themes, explain the mathematical relationship explicitly. Shared everyday contexts, resources, or evaluation formats do not by themselves establish progression."
-				],
-				"mode": "append"
-			},
-			"evidenceGuidance": {
-				"instructions": [
-					"Compare exact Performance Objectives across PRIMARY ONE, PRIMARY TWO, and PRIMARY THREE using number range, operation, representation, material or instrument, standard versus non-standard unit, expected accuracy, application context, independence, and reasoning demand as separate evidence dimensions.",
-					"Use the exact source hierarchy Grade > Theme > Sub-Theme > Topic > Performance Objective. Keep repeated Topic labels scoped to their Grade, Theme, and Sub-Theme because the visible ordinals are local table labels, not official codes or global identifiers.",
-					"Give particular attention to source-supported developments such as 1-5 through 999 and H.T.U. place value; concrete halves and quarters through equivalent and ordered fractions; small-number operations through renaming, multiplication, division, factors and multiples; and natural measures through metre, centimetre, gram, kilogram, litre, perimeter, clocks, calendars, pictograms, and mode.",
-					"Distinguish mathematical content from teacher activities, pupil activities, resources, and evaluation guides. Those source columns may provide contextual evidence, but the Academic Standards graph represents Performance Objectives and grouping structure rather than official activity, resource, or assessment nodes.",
-					"Preserve exact source terminology, symbols, units, and local grade labels when citing evidence, including PRIMARY ONE, PRIMARY TWO, PRIMARY THREE, H.T.U., open sentences, exchanging or renaming, primary measures, secondary measures, and every day statistics."
-				],
-				"mode": "append"
-			},
-			"inferenceGuidance": {
-				"instructions": [
-					"Describe every proposed sequence as an LLM-inferred hypothesis about increasing range, abstraction, representation, procedural fluency, strategic choice, measurement standardisation, application, or independence; never call it an official NERDC progression unless retrieved source text explicitly states that relationship.",
-					"Distinguish scope expansion from conceptual development. Moving from 99 to 200 or 999, adding more digits, or adding a formal algorithm may increase difficulty without proving deeper reasoning or mastery.",
-					"Allow for revisiting and parallel development across number and numeration, basic operations, algebraic processes, mensuration and geometry, and every day statistics rather than forcing all standards into one linear pathway.",
-					"Do not infer learner mastery, readiness, deficiency, or international grade equivalence from the presence or order of a Performance Objective. Label any bridge supplied by general mathematics knowledge rather than retrieved source evidence as generated."
-				],
-				"mode": "append"
-			},
-			"sequencePresentationGuidance": {
-				"instructions": [
-					"Present each proposed transition with exact source and target grade labels, Theme, Sub-Theme, Topic, Performance Objective wording, source paths, the specific change in demand, supporting evidence, counter-evidence, and a qualitative uncertainty statement.",
-					"Show changes in number range, concrete material, spoken or written representation, place value, operation, measurement unit, problem context, accuracy expectation, and learner independence in separate fields or short subsections.",
-					"When one earlier objective could plausibly support several later objectives, or several earlier objectives could support one later objective, show the alternatives instead of inventing a single mandatory path.",
-					"Use the source labels PRIMARY ONE, PRIMARY TWO, and PRIMARY THREE and keep normalized grades 1, 2, and 3 separate; explicitly disclose that the hasChild hierarchy is structural and not itself an instructional progression."
-				],
-				"mode": "append"
-			}
-		},
 		"studentHandbookSection": {
 			"audienceGuidance": {
 				"instructions": [

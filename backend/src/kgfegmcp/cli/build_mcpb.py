@@ -243,7 +243,7 @@ def _ignore_copy_names(directory: str, names: list[str]) -> set[str]:
     return {
         name
         for name in names
-        if name in _IGNORED_NAMES or name.endswith((".pyc", ".pyo"))
+        if name in _IGNORED_NAMES or name.endswith((".egg-info", ".pyc", ".pyo"))
     }
 
 
@@ -410,7 +410,7 @@ def _require_regular_tree(source: Path) -> None:
         raise ValueError(f"Bundle source directory is invalid: '{source}'.")
 
     for path in sorted(source.iterdir(), key=lambda candidate: candidate.name):
-        if path.name in _IGNORED_NAMES or path.suffix in {".pyc", ".pyo"}:
+        if path.name in _IGNORED_NAMES or path.suffix in {".egg-info", ".pyc", ".pyo"}:
             continue
 
         if path.is_symlink():

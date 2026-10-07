@@ -9,15 +9,15 @@ For runtime discovery, use `list_frameworks` and `get_framework`.
 
 ## Catalog summary
 
-| Framework              | Jurisdiction      | Local scope       | Subject          | Adoption       | Code search         | Topology         | Items     | Relationships |
-|------------------------|-------------------|-------------------|------------------|----------------|---------------------|------------------|-----------|---------------|
-| Ghana English Language | Ghana             | BASIC 1–3         | English Language | Adopted        | Partial + prefix    | Tree             | 430       | 430           |
-| Ghana Mathematics      | Ghana             | BASIC 4–6         | Mathematics      | Adopted        | Partial + prefix    | Tree             | 302       | 302           |
-| CBSE Science           | India             | Class IX–X        | Science          | Unknown        | Partial, exact only | Multi-parent DAG | 874       | 1,109         |
-| Tamil Nadu Mathematics | Tamil Nadu, India | Class-1–5         | Mathematics      | Proposed Draft | Partial + prefix    | Tree             | 255       | 255           |
-| Nigeria Mathematics    | Nigeria           | PRIMARY ONE–THREE | Mathematics      | Adopted        | None                | Tree             | 242       | 242           |
-| Rwanda Mathematics     | Rwanda            | P1–P3             | Mathematics      | Adopted        | None                | Tree             | 626       | 626           |
-| **Total**              |                   |                   |                  |                |                     |                  | **2,729** | **2,964**     |
+| Framework              | Jurisdiction      | Local scope       | Subject          | Adoption       | Code search         | Hierarchy        |    Items | hasChild |      LCs | supports | buildsTowards | relatesTo | All relationships |
+|------------------------|-------------------|-------------------|------------------|----------------|---------------------|------------------|---------:|---------:|---------:|---------:|--------------:|----------:|------------------:|
+| Ghana English Language | Ghana             | BASIC 1–3         | English Language | Adopted        | Partial + prefix    | Tree             |      430 |      430 |      272 |      307 | 0 | 0 | 737 |
+| Ghana Mathematics      | Ghana             | BASIC 4–6         | Mathematics      | Adopted        | Partial + prefix    | Tree             |      302 |      302 |      230 |      273 | 0 | 0 | 575 |
+| CBSE Science           | India             | Class IX–X        | Science          | Unknown        | Partial, exact only | Multi-parent DAG |      874 |     1109 |      853 |      858 | 0 | 0 | 1967 |
+| Tamil Nadu Mathematics | Tamil Nadu, India | Class-1–5         | Mathematics      | Proposed Draft | Partial + prefix    | Tree             |      255 |      255 |      399 |      419 | 0 | 0 | 674 |
+| Nigeria Mathematics    | Nigeria           | PRIMARY ONE–THREE | Mathematics      | Adopted        | None                | Tree             |      242 |      242 |      186 |      204 | 0 | 0 | 446 |
+| Rwanda Mathematics     | Rwanda            | P1–P3             | Mathematics      | Adopted        | None                | Tree             |      626 |      626 |      716 |      797 | 0 | 0 | 1423 |
+| **Total**              |                   |                   |                  |                |                     |                  | **2729** | **2964** | **2656** | **2858** | **0** | **0** | **5822** |
 
 Across the six manifests there are **1,439 coded items**, **15 unresolved
 relationships**, and **235 multi-parent targets**. The multi-parent targets are all in
@@ -26,6 +26,11 @@ the CBSE Science package; the unresolved relationships are in the two Ghana pack
 !!! warning "Normalized grade numbers are discovery facets"
     Similar normalized numbers across frameworks do not establish official grade
     equivalence, curricular alignment, or instructional interchangeability.
+
+Stored LP totals are currently zero. Later data PRs target **3,039 buildsTowards**
+and **5,041 relatesTo** edges. Update this catalog with each package migration;
+`get_capabilities` and `get_framework` remain authoritative at runtime.
+See [rollout and acceptance](../development/lp-migration.md).
 
 ## Ghana — English Language, Basic 1–3
 
@@ -38,7 +43,7 @@ ghana-nacca-primary-english-language-basic-1-3
 **Current snapshot**
 
 ```text
-ghana-nacca-primary-english-language-basic-1-3@2019+5ea90021b08d
+ghana-nacca-primary-english-language-basic-1-3@2019+c33ab5a379fb
 ```
 
 | Property                 | Value                                                                         |
@@ -74,7 +79,7 @@ ghana-nacca-primary-mathematics-basic-4-6
 **Current snapshot**
 
 ```text
-ghana-nacca-primary-mathematics-basic-4-6@2019+43d21a2cb010
+ghana-nacca-primary-mathematics-basic-4-6@2019+7afbd99e7f80
 ```
 
 | Property                 | Value                                                    |
@@ -109,7 +114,7 @@ india-cbse-science-learning-framework-classes-9-10
 **Current snapshot**
 
 ```text
-india-cbse-science-learning-framework-classes-9-10@undated+92cd5087f7e0
+india-cbse-science-learning-framework-classes-9-10@undated+e8361376ae1e
 ```
 
 | Property             | Value                                                                  |
@@ -143,7 +148,7 @@ india-tamil-nadu-tnscert-mathematics-classes-1-5
 **Current snapshot**
 
 ```text
-india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+ebbb76c4c52c
+india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+3b9f8f89171e
 ```
 
 | Property            | Value                                                           |
@@ -177,7 +182,7 @@ nigeria-nerdc-mathematics-primary-1-3
 **Current snapshot**
 
 ```text
-nigeria-nerdc-mathematics-primary-1-3@undated+530f13dcf3c3
+nigeria-nerdc-mathematics-primary-1-3@undated+3f35e11c6624
 ```
 
 | Property            | Value                                                         |
@@ -211,7 +216,7 @@ rwanda-reb-mathematics-lower-primary-1-3
 **Current snapshot**
 
 ```text
-rwanda-reb-mathematics-lower-primary-1-3@2025+d298876697c0
+rwanda-reb-mathematics-lower-primary-1-3@2025+98426787aa9f
 ```
 
 | Property            | Value                                                   |
@@ -244,7 +249,9 @@ All six supplied packages currently share these properties:
 
 - graph type: `academic_standards`;
 - package revision: `1`;
-- manifest, delivery, and source schema versions: `1.0`;
+- manifest schema `1.0`, delivery schema `1.1`, source schema `1.0`;
+- included domains: `academic_standards`, `learning_components`;
+- profile version `1.0` and prompt-config version `2.0.0`;
 - terminal validation state: `passed`;
 - text search: enabled;
 - detailed provenance: present;

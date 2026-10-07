@@ -40,6 +40,13 @@ INTERPRETATION_PROFILE_URI_TEMPLATE = (
     "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
     "interpretation-profile"
 )
+LEARNING_PROGRESSIONS_URI_TEMPLATE = (
+    "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/learning-progressions"
+)
+RELATIONSHIP_PROVENANCE_URI_TEMPLATE = (
+    "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/"
+    "relationship/{relationship_id}/provenance"
+)
 MANIFEST_URI_TEMPLATE = (
     "kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/manifest"
 )
@@ -77,6 +84,8 @@ RESOURCE_URI_TEMPLATES: tuple[str, ...] = (
     LEARNING_COMPONENT_URI_TEMPLATE,
     LEARNING_COMPONENT_PROVENANCE_URI_TEMPLATE,
     RELATIONSHIP_URI_TEMPLATE,
+    RELATIONSHIP_PROVENANCE_URI_TEMPLATE,
+    LEARNING_PROGRESSIONS_URI_TEMPLATE,
 )
 
 
@@ -167,6 +176,38 @@ def interpretation_profile_uri(
     )
 
 
+def learning_progressions_uri(
+    *, framework_id: FrameworkId, snapshot_id: SnapshotId
+) -> str:
+    """Build a pinned LP evidence URI for later resource registration.
+
+    Parameters
+    ----------
+    framework_id
+        Exact owning framework.
+    snapshot_id
+        Exact accepted snapshot.
+
+    Returns
+    -------
+    str
+        Percent-encoded public URI with no private source path.
+
+    Examples
+    --------
+    >>> uri = learning_progressions_uri(
+    ...     framework_id=framework_id, snapshot_id=snapshot_id
+    ... )
+    """
+
+    return (
+        manifest_uri(framework_id=framework_id, snapshot_id=snapshot_id).removesuffix(
+            "/manifest"
+        )
+        + "/learning-progressions"
+    )
+
+
 def manifest_uri(*, framework_id: FrameworkId, snapshot_id: SnapshotId) -> str:
     """Build the URI for one accepted package manifest.
 
@@ -187,6 +228,46 @@ def manifest_uri(*, framework_id: FrameworkId, snapshot_id: SnapshotId) -> str:
     return (
         f"kgfegmcp://framework/{_segment(framework_id)}/snapshot/"
         f"{_segment(snapshot_id)}/manifest"
+    )
+
+
+def relationship_provenance_uri(
+    *,
+    framework_id: FrameworkId,
+    relationship_id: RelationshipId,
+    snapshot_id: SnapshotId,
+) -> str:
+    """Build a pinned LP evidence URI for later resource registration.
+
+    Parameters
+    ----------
+    framework_id
+        Exact owning framework.
+    snapshot_id
+        Exact accepted snapshot.
+    relationship_id
+        Exact stored relationship.
+
+    Returns
+    -------
+    str
+        Percent-encoded public URI with no private source path.
+
+    Examples
+    --------
+    >>> uri = relationship_provenance_uri(
+    ...     framework_id=framework_id, relationship_id=relationship_id,
+    ...     snapshot_id=snapshot_id
+    ... )
+    """
+
+    return (
+        relationship_uri(
+            framework_id=framework_id,
+            relationship_id=relationship_id,
+            snapshot_id=snapshot_id,
+        )
+        + "/provenance"
     )
 
 

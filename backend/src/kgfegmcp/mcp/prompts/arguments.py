@@ -21,6 +21,7 @@ from pydantic import BeforeValidator, Field
 
 # Package Library
 from kgfegmcp.domain.identifiers import LanguageTag, SnapshotId
+from kgfegmcp.prompts.learning_progressions import CurriculumReviewSelectors
 from kgfegmcp.prompts.models import (
     ComparisonFrameworkIds,
     ComparisonGradeFilters,
@@ -31,8 +32,6 @@ from kgfegmcp.prompts.models import (
     LessonDurationMinutes,
     MultigradeGradesInRoom,
     PracticeCount,
-    ProgressionCandidateLimit,
-    ProgressionDirection,
     ProgressionGradeFilters,
     PromptFocusMode,
     PromptFocusText,
@@ -42,6 +41,8 @@ from kgfegmcp.prompts.models import (
     PromptMaterials,
     StudyDifficulty,
 )
+from kgfegmcp.services.lp_models import EndpointScope, FacetValues, RelationshipTypes
+from kgfegmcp.services.models import StandardIdentifier
 
 
 @dataclass(frozen=True, slots=True)
@@ -96,12 +97,52 @@ ComparisonGradeFiltersArgument = Annotated[
         )
     ),
 ]
+CurriculumReviewEndpointScopeArgument = Annotated[
+    EndpointScope,
+    BeforeValidator(_BlankPromptArgumentDefault(default="either")),
+    Field(description="Whole endpoint conjunction: either, both, source or target."),
+]
+CurriculumReviewFacetValuesArgument = Annotated[
+    FacetValues,
+    BeforeValidator(_BlankPromptArgumentDefault(default=())),
+    Field(
+        description=(
+            "Up to 32 unique profile-valid facet values, each at most 512 characters. "
+            "Send a JSON array; blank means no filter. Values within a field are OR; "
+            "different fields are AND on the same endpoint."
+        )
+    ),
+]
+CurriculumReviewRelationshipTypesArgument = Annotated[
+    RelationshipTypes,
+    BeforeValidator(_BlankPromptArgumentDefault(default=())),
+    Field(
+        description=(
+            "Relationship types to review, as a JSON array of unique values: "
+            '["buildsTowards"], ["relatesTo"] or both. Blank means both; each '
+            "selected type is scanned separately on its own page budget."
+        )
+    ),
+]
+CurriculumReviewSelectorsArgument = Annotated[
+    CurriculumReviewSelectors,
+    BeforeValidator(_BlankPromptArgumentDefault(default=())),
+    Field(
+        description=(
+            "Up to 20 unique exact selectors as a JSON array of objects with "
+            "identifierType and nodeId, caseIdentifierUuid, caseIdentifierUri or "
+            "profile-enabled statementCode. Each selector text is at most 512 "
+            "characters. Blank means the entire filtered framework scope."
+        )
+    ),
+]
 MultigradeGradesInRoomArgument = Annotated[
     MultigradeGradesInRoom,
     Field(
         description=(
             "Two to eight distinct grades or stages sharing the classroom. MCP prompt "
-            "clients send complex arguments as JSON strings, so enter a JSON array such "
+            "clients send complex arguments as JSON strings, so enter a JSON "
+            "array such "
             'as ["4", "5", "6"]. Do not enter a comma-separated prose string.'
         )
     ),
@@ -157,13 +198,6 @@ OptionalSnapshotIdArgument = Annotated[
 PracticeCountArgument = Annotated[
     PracticeCount, BeforeValidator(_BlankPromptArgumentDefault(default=5))
 ]
-ProgressionCandidateLimitArgument = Annotated[
-    ProgressionCandidateLimit, BeforeValidator(_BlankPromptArgumentDefault(default=8))
-]
-ProgressionDirectionArgument = Annotated[
-    ProgressionDirection,
-    BeforeValidator(_BlankPromptArgumentDefault(default=ProgressionDirection.BOTH)),
-]
 ProgressionLocalGradeLabelsArgument = Annotated[
     ProgressionGradeFilters,
     BeforeValidator(_BlankPromptArgumentDefault(default=())),
@@ -214,6 +248,19 @@ PromptFocusTextArgument = Annotated[
         )
     ),
 ]
+PromptStandardIdentifierArgument = Annotated[
+    StandardIdentifier,
+    Field(
+        description=(
+            "Exact target standard. Send a JSON object with identifierType and its "
+            "matching field, for example "
+            '{"identifierType":"node_id","nodeId":"exact-node-id"}. '
+            "CASE modes use caseIdentifierUuid or caseIdentifierUri. Selector text "
+            "is at most 512 characters. Preserve namespaces; topic/code discovery "
+            "must happen before invoking this exact-target workflow."
+        )
+    ),
+]
 StudyDifficultyArgument = Annotated[
     StudyDifficulty,
     BeforeValidator(_BlankPromptArgumentDefault(default=StudyDifficulty.ON_LEVEL)),
@@ -225,6 +272,10 @@ __all__ = [
     "ComparisonMatchLimitArgument",
     "ComparisonSearchModeArgument",
     "ComparisonSnapshotIdsArgument",
+    "CurriculumReviewEndpointScopeArgument",
+    "CurriculumReviewFacetValuesArgument",
+    "CurriculumReviewRelationshipTypesArgument",
+    "CurriculumReviewSelectorsArgument",
     "HandbookWordCountArgument",
     "IncludeContextPathsArgument",
     "LessonDurationMinutesArgument",
@@ -236,11 +287,10 @@ __all__ = [
     "OptionalPromptMaterialsArgument",
     "OptionalSnapshotIdArgument",
     "PracticeCountArgument",
-    "ProgressionCandidateLimitArgument",
-    "ProgressionDirectionArgument",
     "ProgressionLocalGradeLabelsArgument",
     "ProgressionNormalizedGradesArgument",
     "PromptFocusModeArgument",
     "PromptFocusTextArgument",
+    "PromptStandardIdentifierArgument",
     "StudyDifficultyArgument",
 ]
