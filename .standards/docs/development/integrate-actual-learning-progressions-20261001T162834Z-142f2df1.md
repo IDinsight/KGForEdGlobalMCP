@@ -1665,7 +1665,7 @@ PASS — 2026-10-07. Entry HEAD 3e39e9914cdcd3327e2484a595806262f26fe020 (user c
 ### DEV-028 — Review and sequence each relationship kind on its own budget
 
 `Status`: `DONE` `Depends On`: `DEV-027`
-`Acceptance`: `AC-013, AC-015, AC-016, AC-030`
+`Acceptance`: `AC-013, AC-014, AC-015, AC-016, AC-030`
 
 **Goal**
 
@@ -1694,6 +1694,7 @@ PASS with expected superseded-contract failures — 2026-10-07. Entry HEAD dc849
 **Implementation Notes**
 
 - Observation for the user, not acted on: the support-planning workflow (unchanged by design) still says "one page of 25" for its incoming and related calls, the same fixed-count wording removed elsewhere. Changing it is outside the approved DEV-028 contract.
+- Support-planning wording (AC-014, nested Frame 2 design c2d1c4b, user rework), 2026-10-07 on HEAD c2d1c4b: `_render_support_progressions` steps 2 and 3 now say each call reads one page, limit 25 is the maximum requested and a size-limited page may return fewer, do not follow nextCursor, and a non-null nextCursor means incoming builds / related concepts are incomplete for the target and must be reported. Calls, bounds and all other text unchanged. prompts/learning_progressions.py sha256 9d345bea…ee55f04e. Feedback rerun (workflow_feedback.py 71a3d3e3…c05d8dd6, results workflow-feedback.json 00e69605…81f4b561; previous results kept as workflow-feedback-before-support-plan.json): exit 0, 820 checks; all earlier DEV-028 checks still pass, and for all six packages the support plan (native equals get_workflow_instructions) keeps exactly incoming_builds and related with limit 25 and no cursor, carries the page-limit and incomplete-kind wording on both calls, contains no "page of 25", and differs from the DEV-029 capture only by those two sentences (all other fields and rendered metadata identical). pytest tests/: 101 passed, the same 3 superseded-contract failures, no new failure (data/source_artifacts/learning_progressions/frame1-rework-dev028/checks/pytest-summary.txt). Static: black, isort, ruff, repository mypy on src/ (no issues in 118 files), pylint 10.00/10, interrogate 100% — exit 0.
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
@@ -2576,3 +2577,11 @@ DEV-028 DONE. Next under the approved plan: route the single scoped VERIFICATION
 `Next Action`: `On Architect RESUME, reload STATE/frame/design; reconcile the support-planning wording change into the plan (reopen DEV-028 or add a step under the approval rules), implement and self-check it, then route the single scoped VERIFICATION correction (superseded prompt assertions plus the 63 tests/ mypy errors) before DEV-022.`
 
 User chose to fix the support-planning "one page of 25" wording (DEV-028 Implementation Notes observation) after an explanation. The design states support planning is unchanged, so this is a USER_REWORK of an Architect-owned decision: cleared the routing blocker, saved this assignment, pushed Frame 2 (From/ResumeAt DEVELOPING, Owner ARCHITECTING, FailureType ARCHITECTURE, RerunThrough NONE) and routed to ARCHITECTING. Frame 1 is unchanged. DEV-001–029 statuses are unchanged (DEV-022 PENDING); plan stays IN_PROGRESS.
+
+### Developer resumption after nested Frame 2 Architect correction — 2026-10-07
+
+User explicitly invoked Developer after Architect RESUME (From ARCHITECTING, FailureType NONE; nested Frame 2 popped). Restored Suspended Assignment 6 (DEVELOPMENT/NONE). Entry HEAD c2d1c4b, clean tree (DEV-028 committed as a0efa57); workflow check passed; only Frame 1 remains; STEPWISE, locked tony, AFTER_IMPLEMENTATION/NONE unchanged.
+
+Reconciliation: the design now requires the support-planning workflow (AC-014) to keep its incoming_builds and related calls (limit 25, no cursor) but describe limit 25 as a requested maximum that size-limited pages may not fill, report a non-null nextCursor as an incomplete kind for the target, and drop "one page of 25". This is the same page-limit outcome DEV-028 already delivers for the other workflows, requested by the user ("let's fix it"), so DEV-028 is reopened (DONE -> IN_PROGRESS) with AC-014 added; no new step or separate plan approval is needed. DEV-028 IN_PROGRESS.
+
+DEV-028 DONE again, including AC-014. Remaining under the approved plan: route the single scoped VERIFICATION correction to Tester (the three superseded prompt assertions and the 63 tests/ mypy errors), then DEV-022. Under STEPWISE, persisted a continuation request for that routing and stopped.

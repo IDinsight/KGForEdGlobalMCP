@@ -330,8 +330,10 @@ def _render_support_progressions(route: Mapping[str, object]) -> tuple[str, ...]
 
     selector = {"identifierType": "node_id", "nodeId": "<target-node-id>"}
     return (
-        "2. Call get_standard_progressions once for incoming builds, one page of 25; "
-        "do not follow nextCursor:",
+        "2. Call get_standard_progressions once for incoming builds. It reads one "
+        "page; limit 25 is the maximum requested and a size-limited page may return "
+        "fewer; do not follow nextCursor. A non-null nextCursor means incoming "
+        "builds are incomplete for the target; report it:",
         _tool_call(
             {
                 **route,
@@ -340,8 +342,10 @@ def _render_support_progressions(route: Mapping[str, object]) -> tuple[str, ...]
                 "limit": 25,
             }
         ),
-        "3. Call get_standard_progressions once for related concepts, one page of 25; "
-        "do not follow nextCursor:",
+        "3. Call get_standard_progressions once for related concepts. It reads one "
+        "page; limit 25 is the maximum requested and a size-limited page may return "
+        "fewer; do not follow nextCursor. A non-null nextCursor means related "
+        "concepts are incomplete for the target; report it:",
         _tool_call(
             {**route, "connectionKind": "related", "identifier": selector, "limit": 25}
         ),
