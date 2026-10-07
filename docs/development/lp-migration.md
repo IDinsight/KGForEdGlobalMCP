@@ -19,9 +19,9 @@ with matching profiles and prompt configurations bound to profile version 2.0.
 | CBSE Science | 891 | 2315 |
 | **Total** | **3039** | **5041** |
 
-Matching maintained input artifacts and build specifications are included for five
-frameworks. CBSE Science's input set remains deferred to a separate PR; its complete
-runtime package is installed.
+**6 of 6 input sets migrated.** Matching maintained input artifacts and build
+specifications are included for every framework. Runtime and input-artifact
+migrations are complete.
 
 See the [framework catalog](../data/framework-catalog.md) for active snapshots and
 counts. All dataset acceptance tests must now run; the legacy-only package test may

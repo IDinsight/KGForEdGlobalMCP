@@ -106898,9 +106898,9 @@
     "country": "India",
     "created_at": "2026-08-23T20:19:00.869067+00:00",
     "doc_key": "3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc",
-    "document_ir_fp": "/Users/mustafa/IDinsight/KGForEdGlobal/results/india/pratham/3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc/stitching/document_ir.json",
+    "document_ir_fp": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc/stitching/document_ir.json",
     "framework_title": "Learning Framework - Science",
-    "kg_run_dir": "/Users/mustafa/IDinsight/KGForEdGlobal/results/india/pratham/3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc/kgs",
+    "kg_run_dir": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc/kgs",
     "observed_languages": [
       "en"
     ],
