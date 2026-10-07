@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `AWAITING_USER_SIGNOFF` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,18 +20,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
-`Final review of Frame 1 rework passed with no material findings; synchronization within Frame 1 rerun.`
+`Kind`: `RESUME` `From`: `SYNCHRONIZING` `FailureType`: `NONE` `Reason`:
+`Synchronization COMPLETE for AC-001..AC-037 and retained 0.4.0 candidate 2f0b981c after the Frame 1 Desktop rework; Frame 1 rerun boundary passed, popped and resumed. Await explicit user sign-off, rework or cancellation.`
 
 ## Recovery
 
-`Active`: `true`
-
-### Frame 1
-
-`From`: `AWAITING_USER_SIGNOFF` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
-`Reason`: `User rework after Desktop testing: LP availability missing from discovery text/filter (AC-019), component support relationship IDs absent from tool text (AC-016/AC-029), curriculum review cannot reach relatesTo (AC-015), walkthrough wording (AC-036).`
-`ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
+`Active`: `false`
 
 ## Outstanding Obligations
 

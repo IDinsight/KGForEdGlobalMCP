@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "node",
+    ".standards/bin/check.mjs"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "durationSeconds": 0.206,
+  "environment": {
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_OFFLINE": "1"
+  },
+  "exitCode": 1,
+  "expectedExit": 0,
+  "logs": {
+    "stdout": {
+      "path": ".standards/docs/synchronization/frame1-rework-20261007/workflow-check-final-2.stdout",
+      "sha256": "303f0c350e03913c6c6ece3d221174e51236bd88f8d5f5b7806bfbe03e642b15"
+    },
+    "stderr": {
+      "path": ".standards/docs/synchronization/frame1-rework-20261007/workflow-check-final-2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "startedAtUtc": "2026-10-07T19:11:56.585489+00:00"
+}

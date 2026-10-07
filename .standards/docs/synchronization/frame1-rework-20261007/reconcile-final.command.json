@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "python3",
+    ".standards/docs/synchronization/frame1-rework-20261007/reconcile.py"
+  ],
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "durationSeconds": 4.792,
+  "environment": {
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_OFFLINE": "1"
+  },
+  "exitCode": 0,
+  "expectedExit": 0,
+  "logs": {
+    "stdout": {
+      "path": ".standards/docs/synchronization/frame1-rework-20261007/reconcile-final.stdout",
+      "sha256": "07aca151f910e24a490bb50660cc2a4cdd9621aabbd72ac8151194b09f6221ec"
+    },
+    "stderr": {
+      "path": ".standards/docs/synchronization/frame1-rework-20261007/reconcile-final.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "startedAtUtc": "2026-10-07T19:11:31.234698+00:00"
+}
