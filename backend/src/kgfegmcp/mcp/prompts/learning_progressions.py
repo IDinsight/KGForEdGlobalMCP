@@ -11,6 +11,7 @@ from kgfegmcp.mcp.prompts import build_prompt_result
 from kgfegmcp.mcp.prompts.arguments import (
     CurriculumReviewEndpointScopeArgument,
     CurriculumReviewFacetValuesArgument,
+    CurriculumReviewRelationshipTypesArgument,
     CurriculumReviewSelectorsArgument,
     OptionalLanguageTagArgument,
     OptionalPromptLocalContextArgument,
@@ -35,6 +36,7 @@ async def learning_progression_curriculum_review(
     normalized_grades: CurriculumReviewFacetValuesArgument = (),
     normalized_statement_types: CurriculumReviewFacetValuesArgument = (),
     output_language: OptionalLanguageTagArgument = None,
+    relationship_types: CurriculumReviewRelationshipTypesArgument = (),
     snapshot_id: OptionalSnapshotIdArgument = None,
     standard_identifiers: CurriculumReviewSelectorsArgument = (),
     statement_types: CurriculumReviewFacetValuesArgument = (),
@@ -59,6 +61,8 @@ async def learning_progression_curriculum_review(
         Up to 32 unique normalized statement-type facets in a JSON array.
     output_language
         Optional output language tag.
+    relationship_types
+        Unique buildsTowards/relatesTo values in a JSON array; blank means both.
     snapshot_id
         Optional exact snapshot; omission pins unique-current once.
     standard_identifiers
@@ -82,6 +86,7 @@ async def learning_progression_curriculum_review(
             normalized_grades=normalized_grades,
             normalized_statement_types=normalized_statement_types,
             output_language=output_language,
+            relationship_types=relationship_types,
             snapshot_id=snapshot_id,
             standard_identifiers=standard_identifiers,
             statement_types=statement_types,

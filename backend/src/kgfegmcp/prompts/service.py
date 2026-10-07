@@ -117,7 +117,7 @@ from kgfegmcp.resources.uri import (
     unresolved_uri,
     validation_uri,
 )
-from kgfegmcp.services.lp_models import EndpointScope, FacetValues
+from kgfegmcp.services.lp_models import EndpointScope, FacetValues, RelationshipTypes
 from kgfegmcp.services.models import StandardIdentifier
 
 
@@ -1850,6 +1850,7 @@ class PromptService:
         normalized_grades: FacetValues = (),
         normalized_statement_types: FacetValues = (),
         output_language: LanguageTag | None = None,
+        relationship_types: RelationshipTypes = (),
         snapshot_id: SnapshotId | None = None,
         standard_identifiers: CurriculumReviewSelectors = (),
         statement_types: FacetValues = (),
@@ -1872,6 +1873,9 @@ class PromptService:
             Up to 32 unique normalized statement-type facets.
         output_language
             Optional output language tag.
+        relationship_types
+            Unique buildsTowards/relatesTo types to scan, each on its own page
+            budget; empty means both.
         snapshot_id
             Optional exact snapshot; omission pins unique-current once.
         standard_identifiers
@@ -1899,6 +1903,7 @@ class PromptService:
                 normalized_grades=normalized_grades,
                 normalized_statement_types=normalized_statement_types,
                 output_language=output_language,
+                relationship_types=relationship_types,
                 snapshot_id=snapshot_id,
                 standard_identifiers=standard_identifiers,
                 statement_types=statement_types,

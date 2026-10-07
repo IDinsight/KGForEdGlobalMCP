@@ -207,8 +207,10 @@ LEARNING_PROGRESSION_CURRICULUM_REVIEW_OUTPUT: Final[tuple[str, ...]] = (
     "facets; normalized grades do not establish international equivalence.",
     "Present package-wide stored buildsTowards and relatesTo totals separately "
     "from filtered matching counts, returned relationships and the reviewed subset. "
-    "Report pages read (at most three of 25), distinct returned IDs and at most ten "
-    "fully inspected relationship/provenance pairs. Do not call a sampled subset "
+    "Report, separately for each scanned relationship type, pages read (at most "
+    "three per type), each page's actual returned count, distinct returned IDs and "
+    "the fully inspected relationship/provenance pairs (at most ten in total). Do "
+    "not sum totals across types or call a sampled subset "
     "exhaustive. Unknown denominators and null totalMatchingCount stay unknown; "
     "do not calculate coverage percentages without a known relevant denominator.",
     "Separate [SOURCE-ASSERTED] standard statements, unverified caller observations "

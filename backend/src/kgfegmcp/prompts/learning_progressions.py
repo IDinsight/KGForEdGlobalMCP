@@ -5,7 +5,7 @@ import hashlib
 import json
 
 from collections.abc import Mapping
-from typing import Annotated, Self
+from typing import Annotated, Final, Self
 
 # Third Party Library
 from pydantic import Field, TypeAdapter, ValidationError, model_validator
@@ -26,12 +26,22 @@ from kgfegmcp.services.lp_models import (
     EndpointScope,
     ProgressionFilters,
     ProgressionStandardIdentifier,
+    RelationshipTypes,
 )
 from kgfegmcp.services.models import StandardIdentifier
 
 CurriculumReviewSelectors = Annotated[
     tuple[ProgressionStandardIdentifier, ...], Field(max_length=20)
 ]
+
+# Fixed orders keep rendering deterministic and give each kind/type its own budget,
+# so buildsTowards (listed first by discovery) cannot starve relatesTo.
+_DIRECT_CONNECTION_KINDS: Final[tuple[str, ...]] = (
+    "outgoing_builds",
+    "incoming_builds",
+    "related",
+)
+_REVIEW_RELATIONSHIP_TYPES: Final[tuple[str, ...]] = ("buildsTowards", "relatesTo")
 
 
 class LearningProgressionCurriculumReviewRequest(ProgressionFilters):
@@ -41,12 +51,13 @@ class LearningProgressionCurriculumReviewRequest(ProgressionFilters):
     framework_id: FrameworkId
     local_context: PromptLocalContext | None = None
     output_language: LanguageTag | None = None
+    relationship_types: RelationshipTypes = ()
     snapshot_id: SnapshotId | None = None
     standard_identifiers: CurriculumReviewSelectors = ()
 
     @model_validator(mode="after")
     def validate_selectors(self) -> Self:
-        """Reject duplicate selectors and overlong selector text before rendering.
+        """Reject repeated types or selectors and overlong selector text.
 
         Returns
         -------
@@ -56,8 +67,13 @@ class LearningProgressionCurriculumReviewRequest(ProgressionFilters):
         Raises
         ------
         ValueError
-            If a selector repeats or any selector text exceeds 512 characters.
+            If a relationship type or selector repeats, or any selector text
+            exceeds 512 characters.
         """
+
+        # Same rule search_learning_progressions applies to its relationshipTypes.
+        if len(self.relationship_types) != len(set(self.relationship_types)):
+            raise ValueError("Curriculum-review relationship types must be unique.")
 
         keys = [item.model_dump_json() for item in self.standard_identifiers]
 
@@ -105,6 +121,49 @@ class LearningProgressionSupportPlanRequest(FrozenSchema):
             )
 
         return self
+
+
+def _direct_kind_calls(
+    *, route: Mapping[str, object], selector: Mapping[str, object]
+) -> tuple[str, ...]:
+    """Render one single-page direct call per connection kind for one standard.
+
+    Parameters
+    ----------
+    route
+        Exact framework and snapshot shared by every call.
+    selector
+        Outer node selector with the client-substituted placeholder.
+
+    Returns
+    -------
+    tuple[str, ...]
+        Labelled get_standard_progressions templates in the fixed kind order.
+
+    Examples
+    --------
+    >>> _direct_kind_calls(route=route, selector=selector)[0]
+    '- outgoing_builds:'
+    """
+
+    lines: list[str] = []
+
+    for kind in _DIRECT_CONNECTION_KINDS:
+        lines.extend(
+            (
+                f"- {kind}:",
+                _tool_call(
+                    {
+                        **route,
+                        "connectionKind": kind,
+                        "identifier": selector,
+                        "limit": 25,
+                    }
+                ),
+            )
+        )
+
+    return tuple(lines)
 
 
 def _render_focus(
@@ -208,13 +267,15 @@ def _render_progressions(route: Mapping[str, object]) -> tuple[str, ...]:
     selector = {"identifierType": "node_id", "nodeId": "<selected-node-id>"}
     return (
         "3. For each of at most 3 retained standards, call get_standard_progressions "
-        "once, one page of 25; do not follow nextCursor:",
-        _tool_call(
-            {**route, "connectionKind": "all", "identifier": selector, "limit": 25}
-        ),
-        "Keep incoming builds, outgoing builds and related connections distinct. "
-        "relatesTo is read from either endpoint but retains its canonical stored "
-        "orientation; it supplies related concepts, never sequence hops.",
+        "three times, once per connection kind in this order (at most 9 direct calls "
+        "in total). Each call reads one page: limit 25 is the maximum requested and "
+        "a size-limited page may return fewer; do not follow nextCursor. A non-null "
+        "nextCursor means that kind is incomplete for that standard; report it:",
+        *_direct_kind_calls(route=route, selector=selector),
+        "Keep results grouped by kind and deduplicate relationship IDs across calls "
+        "and standards. Outgoing and incoming builds are directional steps. relatesTo "
+        "is read from either endpoint but retains its canonical stored orientation; "
+        "it supplies related concepts, never sequence hops.",
         "4. For each retained standard call traverse_learning_progressions once "
         "with this bounded downstream request:",
         _tool_call(
@@ -373,6 +434,36 @@ def render_curriculum_review_workflow(
         )
         return "\n".join(lines)
 
+    scan_types = tuple(
+        relationship_type
+        for relationship_type in _REVIEW_RELATIONSHIP_TYPES
+        if not request.relationship_types
+        or relationship_type in request.relationship_types
+    )
+    scan_calls: list[str] = []
+
+    # Every scan shares identical filters, selectors, scope and limit; only the
+    # single relationship type differs.
+    for relationship_type in scan_types:
+        scan_calls.extend(
+            (
+                f"- {relationship_type} scan:",
+                _tool_call(
+                    {
+                        **route,
+                        **filters.model_dump(by_alias=True, mode="json"),
+                        "endpointScope": request.endpoint_scope,
+                        "limit": 25,
+                        "relationshipTypes": [relationship_type],
+                        "standardIdentifiers": [
+                            item.model_dump(by_alias=True, mode="json")
+                            for item in request.standard_identifiers
+                        ],
+                    }
+                ),
+            )
+        )
+
     lines.extend(
         (
             "2. Read the sanitized LP summary and its validation, unresolved and "
@@ -388,28 +479,26 @@ def render_curriculum_review_workflow(
             "Retain warnings, needs_review/no_relation exclusions, selected candidate "
             "coverage, unknown eligibility denominators and structural-only "
             "validation. Zero incidents do not erase individual edge warnings.",
-            "3. Call search_learning_progressions with this exact nested request. "
-            "Scan at most 3 pages of 25 relationships in this entire workflow:",
-            _tool_call(
-                {
-                    **route,
-                    **filters.model_dump(by_alias=True, mode="json"),
-                    "endpointScope": request.endpoint_scope,
-                    "limit": 25,
-                    "standardIdentifiers": [
-                        item.model_dump(by_alias=True, mode="json")
-                        for item in request.standard_identifiers
-                    ],
-                }
-            ),
+            "3. Run one separate search_learning_progressions scan per selected "
+            "relationship type, in this fixed order: "
+            f"{', '.join(scan_types)}. Each scan has its own budget of at most 3 "
+            "pages, so one type never uses up another type's pages. limit 25 is the "
+            "maximum requested per page; a page may return fewer relationships "
+            "because of the result-size ceiling. Record each page's actual "
+            "returnedCount, examinedCount, totalMatchingCount, stoppingReason, "
+            "nextCursor and isComplete. First-page request of each scan:",
+            *scan_calls,
             "Pass every exact supplied selector through standardIdentifiers; never "
             "replace it with topic search or silently skip unresolved/ambiguous "
             "selectors. Retain resolvedStandardNodeIds and effective filters from "
             "the result. A failed selection stops dependent review. For pages 2 "
-            "and 3 only, copy this identical request and add cursor equal to the "
-            "preceding page.nextCursor. Stop on null; never follow a fourth page, "
-            "restart pagination or change filters/limit to bypass the cap. A "
-            "zero-match work-limited page still consumes one page and may continue.",
+            "and 3 of a scan only, copy that scan's identical request and add "
+            "cursor equal to that scan's preceding page.nextCursor; never reuse a "
+            "cursor from another scan. Stop a scan on null; never follow a fourth "
+            "page of a scan, restart pagination or change filters/limit to bypass "
+            "a cap. A zero-match work-limited page still consumes one of that "
+            "scan's pages and may continue. A remaining cursor after a scan's "
+            "third page means that type's review is incomplete.",
             "Values within each field are OR; different fields and selector "
             "membership are AND on one endpoint. either means at least one endpoint "
             "satisfies the whole conjunction; both means each does; source/target "
@@ -417,9 +506,12 @@ def render_curriculum_review_workflow(
             "endpoints. For relatesTo, source/target is canonical order, not "
             "instructional direction. Keep per-endpoint matched facets.",
             "4. Deduplicate returned relationships by exact ID. Select at most 10 "
-            "distinct relationships from these pages for full inspection, explaining "
-            "selection, type balance, warnings and excluded items. For each selected "
-            "relationship call get_learning_progression once:",
+            "distinct relationships in total for full inspection. When two types "
+            "were scanned and both returned relationships, select up to 5 per type "
+            "and give any unused slots to the other type; otherwise select up to 10 "
+            "from the type that returned relationships. Explain the selection, type "
+            "balance, warnings and excluded items. For each selected relationship "
+            "call get_learning_progression once:",
             _tool_call({**route, "relationshipId": "<selected-relationship-id>"}),
             "Replace the placeholder only with a returned relationship ID. Read its "
             "exact relationshipUri and full provenanceUri under resource policy. "
@@ -431,14 +523,17 @@ def render_curriculum_review_workflow(
             "edge used in a recommendation must be fully inspected; reduce or "
             "clearly defer recommendations beyond the cap or with denied/oversized "
             "evidence. Do not substitute uninspected links as recommendations.",
-            "5. Before composition, report package-wide per-type totals separately "
-            "from filtered matching counts, distinct returned relationships and "
-            "fully inspected subset counts. Retain each page's examinedCount, "
+            "5. Before composition, report separately for each scanned type its "
+            "package-wide stored total (statistics/summary), its filtered matching "
+            "count when known, pages read, distinct returned relationships and "
+            "fully inspected count. Retain each page's examinedCount, "
             "returnedCount, totalMatchingCount, nextCursor, isComplete and "
-            "stoppingReason. Do not sum candidateCount or package totals across "
-            "pages. Null totals/unknown denominators stay unknown; at most 75 "
-            "returned relationships is a bounded sample, not global coverage. "
-            "A remaining cursor after page 3 means incomplete review. Explain "
+            "stoppingReason. Never sum candidateCount, matching counts or package "
+            "totals across pages or across types, and never treat one type's "
+            "coverage as the other's. Null totals/unknown denominators stay "
+            "unknown; returned relationships are a bounded sample, not global "
+            "coverage. A remaining cursor after a scan's third page means that "
+            "type's review is incomplete. Explain "
             "unavailable, empty, sparse, clipped, incomplete and policy-denied "
             "evidence; absence never implies curriculum omission or alignment.",
             "Compose evidence-linked review questions only after permitted "
@@ -487,14 +582,16 @@ def render_optional_progression_workflow(*, runtime: CatalogPackageRuntime) -> s
             "step across the entire workflow, including all grades in a multigrade "
             "room; explain selection and omitted standards. This cap does not "
             "replace the existing standards, shared-component or grade workflow.",
-            "For each retained standard, call get_standard_progressions once: "
-            "one direct page of 25 per standard, at most 3 calls in total. Replace "
-            "<selected-node-id> with its exact node ID; do not follow nextCursor, "
-            "traverse, request paths or expand through returned neighbors:",
-            _tool_call(
-                {**route, "connectionKind": "all", "identifier": selector, "limit": 25}
-            ),
-            "Keep incoming builds, outgoing builds and related concepts distinct. "
+            "For each retained standard, call get_standard_progressions three "
+            "times, once per connection kind in this order, at most 9 calls in "
+            "total. Each call reads one page: limit 25 is the maximum requested and "
+            "a size-limited page may return fewer. Replace <selected-node-id> with "
+            "its exact node ID; do not follow nextCursor, traverse, request paths or "
+            "expand through returned neighbors. A non-null nextCursor means that "
+            "kind is incomplete for that standard; report it:",
+            *_direct_kind_calls(route=route, selector=selector),
+            "Keep results grouped by kind (outgoing builds, incoming builds, related "
+            "concepts) and deduplicate relationship IDs across calls and standards. "
             "buildsTowards follows stored source-to-target direction and may "
             "motivate an optional teaching order, not a mandatory prerequisite or "
             "proof of learner mastery/readiness. relatesTo is readable from either "

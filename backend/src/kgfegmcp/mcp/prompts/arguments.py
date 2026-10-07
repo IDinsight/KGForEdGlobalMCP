@@ -41,7 +41,7 @@ from kgfegmcp.prompts.models import (
     PromptMaterials,
     StudyDifficulty,
 )
-from kgfegmcp.services.lp_models import EndpointScope, FacetValues
+from kgfegmcp.services.lp_models import EndpointScope, FacetValues, RelationshipTypes
 from kgfegmcp.services.models import StandardIdentifier
 
 
@@ -110,6 +110,17 @@ CurriculumReviewFacetValuesArgument = Annotated[
             "Up to 32 unique profile-valid facet values, each at most 512 characters. "
             "Send a JSON array; blank means no filter. Values within a field are OR; "
             "different fields are AND on the same endpoint."
+        )
+    ),
+]
+CurriculumReviewRelationshipTypesArgument = Annotated[
+    RelationshipTypes,
+    BeforeValidator(_BlankPromptArgumentDefault(default=())),
+    Field(
+        description=(
+            "Relationship types to review, as a JSON array of unique values: "
+            '["buildsTowards"], ["relatesTo"] or both. Blank means both; each '
+            "selected type is scanned separately on its own page budget."
         )
     ),
 ]
@@ -263,6 +274,7 @@ __all__ = [
     "ComparisonSnapshotIdsArgument",
     "CurriculumReviewEndpointScopeArgument",
     "CurriculumReviewFacetValuesArgument",
+    "CurriculumReviewRelationshipTypesArgument",
     "CurriculumReviewSelectorsArgument",
     "HandbookWordCountArgument",
     "IncludeContextPathsArgument",
