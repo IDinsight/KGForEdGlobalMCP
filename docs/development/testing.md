@@ -76,7 +76,7 @@ declare stored LPs. They run automatically once the data is installed. Invalid p
 and missing baseline frameworks fail rather than becoming skips. Synthetic algorithm
 fixtures need no installed LP evidence.
 
-After the final data PR, require complete dataset acceptance:
+All six runtime LP packages are now installed. Require complete dataset acceptance:
 
     uv --directory backend run --locked --no-sync pytest -q -rs -m "not costs-money" --require-lp-dataset tests
 

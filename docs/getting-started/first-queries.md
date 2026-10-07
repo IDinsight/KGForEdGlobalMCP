@@ -1,6 +1,6 @@
 # First queries
 
-> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
+> **LP dataset:** All six runtime LP packages are installed. See [rollout and acceptance](../development/lp-migration.md) for strict dataset tests and full smoke checks.
 
 Once the `curriculum-knowledge-graph` connector is enabled, start with discovery and
 bounded retrieval before asking the host model to compare or generate educational

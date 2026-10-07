@@ -171,7 +171,7 @@ The profile loader also:
 
 ## Stored progression configuration
 
-All frameworks except CBSE Science use profile version `2.0`, schema `1.1`. CBSE Science remains at profile version `1.0`, schema `1.0` pending its data migration. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
+All six frameworks use profile version `2.0`, schema `1.1`. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
 
 ## Versioning rule
 

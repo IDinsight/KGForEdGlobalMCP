@@ -97,7 +97,7 @@ and `prompts`.
 ## Current repository configurations
 
 The repository snapshot contains one prompt config for each of the six accepted profile
-identities. All currently declare `promptConfigVersion` `2.0.0`. For all frameworks except CBSE Science, paths and `profileVersion` are `2.0`; CBSE Science remains `1.0` to match its installed profile. The prompt configuration version is independent of the profile version.
+identities. All currently declare `promptConfigVersion` `2.0.0`. For all six frameworks, paths and `profileVersion` are `2.0` to match their installed profiles. The prompt configuration version is independent of the profile version.
 
 | Framework/profile                  | Prompt-config ID                                              | Current prompt-specific overlays               |
 |------------------------------------|---------------------------------------------------------------|------------------------------------------------|
