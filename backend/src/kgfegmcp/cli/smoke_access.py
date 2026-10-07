@@ -112,6 +112,94 @@ async def _call_text(
     return parsed, len(serialized)
 
 
+async def _discovery_text(client: Client) -> dict[str, object]:
+    """Require discovery text to show included LP graphs, availability and counts.
+
+    Parameters
+    ----------
+    client
+        Connected transport client.
+
+    Returns
+    -------
+    dict[str, object]
+        Snapshot counts and the diagnostic package's text-reported LP counts.
+
+    Raises
+    ------
+    RuntimeError
+        If the included-type filter, text lines or counts disagree.
+    """
+
+    unfiltered = await _plain_text(client=client, name="list_frameworks", request={})
+    filtered = await _plain_text(
+        client=client,
+        name="list_frameworks",
+        request={"graphTypes": ["learning_progressions"]},
+    )
+    snapshot_pattern = r"^Snapshot ID: (\S+)$"
+    snapshots = re.findall(snapshot_pattern, unfiltered, re.MULTILINE)
+
+    # Every accepted package includes LP, so the included-type filter keeps them all.
+    if not snapshots or re.findall(snapshot_pattern, filtered, re.MULTILINE) != (
+        snapshots
+    ):
+        raise RuntimeError("graphTypes learning_progressions lost included snapshots.")
+
+    if "Included graph types: academic_standards, learning_components, " not in (
+        unfiltered
+    ):
+        raise RuntimeError("list_frameworks text does not show included graph types.")
+
+    builds = int(
+        _text_match(
+            label="diagnostic buildsTowards count",
+            pattern=(
+                rf"^- {re.escape(str(_DIAGNOSTIC_SNAPSHOT_ID))}--\S+ \| .*"
+                r"learning_progressions=available \| builds_towards=(\d+) \|"
+            ),
+            text=unfiltered,
+        )
+    )
+    relates = int(
+        _text_match(
+            label="diagnostic relatesTo count",
+            pattern=(
+                rf"^- {re.escape(str(_DIAGNOSTIC_SNAPSHOT_ID))}--\S+ \| .*"
+                r"relates_to=(\d+) \|"
+            ),
+            text=unfiltered,
+        )
+    )
+    statistics = await client.call_tool_mcp(
+        name="get_framework_statistics",
+        arguments={"request": {"frameworkId": _DIAGNOSTIC_FRAMEWORK_ID}},
+    )
+    stored = json.dumps(statistics.structuredContent)
+
+    if (
+        f'"buildsTowardsRelationships": {builds}' not in stored
+        or f'"relatesToRelationships": {relates}' not in stored
+    ):
+        raise RuntimeError("Discovery text LP counts differ from statistics.")
+
+    capabilities = await client.call_tool_mcp(name="get_capabilities", arguments={})
+    capability_text = str(getattr(capabilities.content[0], "text", ""))
+
+    if (
+        "Included graph types: academic_standards, learning_components, "
+        not in (capability_text)
+        or "    hasLearningProgressions: true" not in capability_text
+    ):
+        raise RuntimeError("get_capabilities text does not show included LP graphs.")
+
+    return {
+        "diagnosticBuildsTowards": builds,
+        "diagnosticRelatesTo": relates,
+        "learningProgressionSnapshots": len(snapshots),
+    }
+
+
 async def _expect_error(
     *, client: Client, code: str, name: str, request: object
 ) -> None:
@@ -311,7 +399,39 @@ async def _workflow_parity(client: Client) -> dict[str, int]:
                 "topic_or_standard": "number",
             },
         ),
+        (
+            "learning_progression_curriculum_review",
+            {
+                "frameworkId": _DIAGNOSTIC_FRAMEWORK_ID,
+                "relationshipTypes": ["relatesTo"],
+            },
+            {
+                "framework_id": _DIAGNOSTIC_FRAMEWORK_ID,
+                "relationship_types": json.dumps(["relatesTo"]),
+            },
+        ),
+        (
+            "learning_progression_teaching_sequence",
+            {"frameworkId": _DIAGNOSTIC_FRAMEWORK_ID, "topicOrStandard": "number"},
+            {"framework_id": _DIAGNOSTIC_FRAMEWORK_ID, "topic_or_standard": "number"},
+        ),
     )
+    # Each selected relationship type gets its own scan and each connection kind its
+    # own direct call; no rendered workflow may fall back to one combined page.
+    required = {
+        "learning_progression_curriculum_review": ("- relatesTo scan:",),
+        "learning_progression_teaching_sequence": (
+            "- outgoing_builds:",
+            "- incoming_builds:",
+            "- related:",
+        ),
+        "teacher_guide_draft": (
+            "- outgoing_builds:",
+            "- incoming_builds:",
+            "- related:",
+        ),
+    }
+    forbidden = ('"connectionKind": "all"', "- buildsTowards scan:", "page of 25")
     lengths: dict[str, int] = {}
 
     for name, request, arguments in cases:
@@ -325,6 +445,11 @@ async def _workflow_parity(client: Client) -> dict[str, int]:
 
         if parsed["rendered"]["message"] != message:
             raise RuntimeError(f"Workflow instructions differ from native: {name}.")
+
+        if not all(item in message for item in required.get(name, ())) or any(
+            item in message for item in forbidden
+        ):
+            raise RuntimeError(f"Workflow lost per-type or per-kind retrieval: {name}.")
 
         lengths[name] = len(message.encode("utf-8"))
 
@@ -428,19 +553,30 @@ async def _text_evidence_links(client: Client) -> dict[str, str]:
         pattern=r"^Node ID: (\S+)$",
         text=await _plain_text(client=client, name="get_standard", request=route),
     )
+    component_text = await _plain_text(
+        client=client, name="get_learning_components_for_standard", request=route
+    )
     component_id = _text_match(
         label="a learning-component ID",
         pattern=r"Learning component: (\S+)",
-        text=await _plain_text(
-            client=client, name="get_learning_components_for_standard", request=route
-        ),
+        text=component_text,
     )
     return {
+        "component": _text_match(
+            label="a component URI",
+            pattern=r"^   Component URI: (kgfegmcp://\S+)$",
+            text=component_text,
+        ),
         "interpretationProfile": links["Interpretation profile"],
         "learningComponentProvenance": links["Learning component provenance"].replace(
             "{nodeId}", component_id
         ),
         "standardProvenance": links["Standard provenance"].replace("{nodeId}", node_id),
+        "supportRelationship": _text_match(
+            label="a support relationship URI",
+            pattern=r"^   Support relationship URI: (kgfegmcp://\S+)$",
+            text=component_text,
+        ),
         "unresolved": links["Unresolved items"],
         "validation": links["Validation report"],
     }
@@ -533,12 +669,23 @@ async def verify_client_access(client: Client) -> dict[str, object]:
         name="get_workflow_instructions",
         request={"workflowName": "inferred_progression_hypothesis"},
     )
+    await _expect_error(
+        client=client,
+        code="relationship types must be unique",
+        name="get_workflow_instructions",
+        request={
+            "frameworkId": _DIAGNOSTIC_FRAMEWORK_ID,
+            "relationshipTypes": ["relatesTo", "relatesTo"],
+            "workflowName": "learning_progression_curriculum_review",
+        },
+    )
     return {
         "diagnosticEdge": _DIAGNOSTIC_EDGE_ID,
+        "discovery": await _discovery_text(client),
         "evidence": evidence,
         "reports": reports,
         "search": await _replay_search(client),
         "textEvidenceLinks": sorted(text_links),
-        "typedFailures": 3,
+        "typedFailures": 4,
         "workflowMessageBytes": await _workflow_parity(client),
     }
