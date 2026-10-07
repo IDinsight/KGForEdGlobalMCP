@@ -171,7 +171,7 @@ The profile loader also:
 
 ## Stored progression configuration
 
-Ghana English Language, Nigeria Mathematics, Ghana Mathematics and Tamil Nadu Mathematics use profile version `2.0`, schema `1.1`. The other two active profiles remain at version `1.0`, schema `1.0`; each data PR supplies its matching migrated profile. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
+All frameworks except CBSE Science use profile version `2.0`, schema `1.1`. CBSE Science remains at profile version `1.0`, schema `1.0` pending its data migration. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
 
 ## Versioning rule
 

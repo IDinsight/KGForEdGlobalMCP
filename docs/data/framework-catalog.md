@@ -16,8 +16,8 @@ For runtime discovery, use `list_frameworks` and `get_framework`.
 | CBSE Science           | India             | Class IX–X        | Science          | Unknown        | Partial, exact only | Multi-parent DAG |      874 |     1109 |      853 |      858 | 0 | 0 | 1967 |
 | Tamil Nadu Mathematics | Tamil Nadu, India | Class-1–5         | Mathematics      | Proposed Draft | Partial + prefix    | Tree             |      255 |      255 |      399 |      419 | 472 | 435 | 1581 |
 | Nigeria Mathematics    | Nigeria           | PRIMARY ONE–THREE | Mathematics      | Adopted        | None                | Tree             |      242 |      242 |      186 |      204 | 189 | 297 | 932 |
-| Rwanda Mathematics     | Rwanda            | P1–P3             | Mathematics      | Adopted        | None                | Tree             |      626 |      626 |      716 |      797 | 0 | 0 | 1423 |
-| **Total**              |                   |                   |                  |                |                     |                  | **2729** | **2964** | **2656** | **2858** | **1210** | **1833** | **8865** |
+| Rwanda Mathematics     | Rwanda            | P1–P3             | Mathematics      | Adopted        | None                | Tree             |      626 |      626 |      716 |      797 | 938 | 893 | 3254 |
+| **Total**              |                   |                   |                  |                |                     |                  | **2729** | **2964** | **2656** | **2858** | **2148** | **2726** | **10696** |
 
 Across the six manifests there are **1,439 coded items**, **15 unresolved
 relationships**, and **235 multi-parent targets**. The multi-parent targets are all in
@@ -27,9 +27,8 @@ the CBSE Science package; the unresolved relationships are in the two Ghana pack
     Similar normalized numbers across frameworks do not establish official grade
     equivalence, curricular alignment, or instructional interchangeability.
 
-Ghana English Language, Nigeria Mathematics, Ghana Mathematics and Tamil Nadu Mathematics
-are migrated, with a combined **1,210 buildsTowards** and **1,833 relatesTo** edges.
-The other two packages await migration. The complete rollout targets
+Five frameworks are migrated, with a combined **2,148 buildsTowards** and
+**2,726 relatesTo** edges. Only CBSE Science awaits runtime migration. The complete rollout targets
 **3,039 buildsTowards** and **5,041 relatesTo** edges. Update this catalog with each migration;
 `get_capabilities` and `get_framework` remain authoritative at runtime.
 See [rollout and acceptance](../development/lp-migration.md).
@@ -218,7 +217,7 @@ rwanda-reb-mathematics-lower-primary-1-3
 **Current snapshot**
 
 ```text
-rwanda-reb-mathematics-lower-primary-1-3@2025+98426787aa9f
+rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13
 ```
 
 | Property            | Value                                                   |
@@ -251,8 +250,8 @@ The installed packages use these formats during the staged rollout:
 
 | Packages | Manifest / delivery schema | Profile version / schema | Included domains |
 | --- | --- | --- | --- |
-| Ghana English Language, Nigeria Mathematics, Ghana Mathematics and Tamil Nadu Mathematics | 1.1 / 1.2 | 2.0 / 1.1 | Academic standards, learning components, learning progressions |
-| Other two frameworks | 1.0 / 1.1 | 1.0 / 1.0 | Academic standards, learning components |
+| All except CBSE Science | 1.1 / 1.2 | 2.0 / 1.1 | Academic standards, learning components, learning progressions |
+| CBSE Science | 1.0 / 1.1 | 1.0 / 1.0 | Academic standards, learning components |
 
 All six supplied packages currently share these properties:
 

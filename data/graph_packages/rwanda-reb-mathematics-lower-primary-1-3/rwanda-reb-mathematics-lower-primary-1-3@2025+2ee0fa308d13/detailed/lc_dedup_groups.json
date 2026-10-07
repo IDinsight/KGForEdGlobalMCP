@@ -1,0 +1,680 @@
+{
+  "candidate_pair_count": 2633,
+  "conflict_count": 2,
+  "conflicts": [
+    {
+      "reason": "merging would join texts the judge explicitly ruled distinct (chaining guard)",
+      "text_a": "explain all information provided by a pictograph",
+      "text_b": "explain the information on a pictograph"
+    },
+    {
+      "reason": "merging would join texts the judge explicitly ruled distinct (chaining guard)",
+      "text_a": "explain the place value of each digit in three-digit numbers",
+      "text_b": "show and explain the place value of each digit in numbers composed of 3 digits"
+    }
+  ],
+  "exact_duplicate_claim_count": 36,
+  "groups": [
+    {
+      "canonical_text": "appreciate the importance of addition of numbers in daily life",
+      "member_texts": [
+        "appreciate the importance of addition in daily life",
+        "appreciate the importance of addition of numbers in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "397216cb-1aac-5c58-af1e-8e531be62ecc",
+        "4cfc8581-e99e-52d1-a23a-669233778330",
+        "5e10f30a-c88c-50b0-a42a-db22025eb774",
+        "649d2eca-be61-5961-b8a3-001f06a28605",
+        "944451ef-0240-5cda-ab9a-4eb54eda5bd5",
+        "e6ac8ee9-6555-56aa-90a9-1fdb521bf772"
+      ]
+    },
+    {
+      "canonical_text": "appreciate the importance of division of numbers in daily life",
+      "member_texts": [
+        "appreciate the importance of division of numbers in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "397216cb-1aac-5c58-af1e-8e531be62ecc",
+        "4cfc8581-e99e-52d1-a23a-669233778330",
+        "e6ac8ee9-6555-56aa-90a9-1fdb521bf772"
+      ]
+    },
+    {
+      "canonical_text": "appreciate the importance of learning to count numbers in daily life",
+      "member_texts": [
+        "appreciate the importance of learning counting numbers in daily life",
+        "appreciate the importance of learning to count numbers in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "37edeb1d-91fe-5f16-8dca-3d00722e26b1",
+        "c7efb330-3408-59dd-bd53-d3dd63340a4e",
+        "cf35d813-668d-5b1f-bf82-726be1e54809"
+      ]
+    },
+    {
+      "canonical_text": "appreciate the importance of learning to read numbers in daily life",
+      "member_texts": [
+        "appreciate the importance of learning reading numbers in daily life",
+        "appreciate the importance of learning to read numbers in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "37edeb1d-91fe-5f16-8dca-3d00722e26b1",
+        "c7efb330-3408-59dd-bd53-d3dd63340a4e",
+        "cf35d813-668d-5b1f-bf82-726be1e54809"
+      ]
+    },
+    {
+      "canonical_text": "appreciate the importance of learning to write numbers in daily life",
+      "member_texts": [
+        "appreciate the importance of learning to write numbers in daily life",
+        "appreciate the importance of learning writing numbers in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "37edeb1d-91fe-5f16-8dca-3d00722e26b1",
+        "c7efb330-3408-59dd-bd53-d3dd63340a4e",
+        "cf35d813-668d-5b1f-bf82-726be1e54809"
+      ]
+    },
+    {
+      "canonical_text": "appreciate the importance of length measurements in real life",
+      "member_texts": [
+        "appreciate the importance of length measurements in real life",
+        "appreciate the importance of using length measurements in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "562ba149-3310-5932-8eb3-d30c6c4214ff",
+        "e7b269e2-c502-5ed9-85fc-66d76f6dbe2f"
+      ]
+    },
+    {
+      "canonical_text": "appreciate the importance of multiplication of numbers in daily life",
+      "member_texts": [
+        "appreciate the importance of multiplication of numbers in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "397216cb-1aac-5c58-af1e-8e531be62ecc",
+        "4cfc8581-e99e-52d1-a23a-669233778330",
+        "e6ac8ee9-6555-56aa-90a9-1fdb521bf772"
+      ]
+    },
+    {
+      "canonical_text": "appreciate the importance of subtraction of numbers in daily life",
+      "member_texts": [
+        "appreciate the importance of subtraction in daily life",
+        "appreciate the importance of subtraction of numbers in daily life"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "397216cb-1aac-5c58-af1e-8e531be62ecc",
+        "4cfc8581-e99e-52d1-a23a-669233778330",
+        "5e10f30a-c88c-50b0-a42a-db22025eb774",
+        "649d2eca-be61-5961-b8a3-001f06a28605",
+        "944451ef-0240-5cda-ab9a-4eb54eda5bd5",
+        "e6ac8ee9-6555-56aa-90a9-1fdb521bf772"
+      ]
+    },
+    {
+      "canonical_text": "compare angles using <, > or =",
+      "member_texts": [
+        "compare angles using <, > or ="
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "17f07c8c-8901-53a3-a47b-9993d8554962",
+        "cd51c897-163b-50fc-99f3-c03fe22445d8"
+      ]
+    },
+    {
+      "canonical_text": "compare the capacity of liquid containers in litres (l)",
+      "member_texts": [
+        "compare the capacity of liquid containers in litres (l)",
+        "compare the capacity of various containers in litres (l)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5efa7ab0-c442-5847-84cd-08ba326039b7",
+        "89b9b779-28bc-50b9-8098-70ca35c208a3"
+      ]
+    },
+    {
+      "canonical_text": "compare the mass of various objects",
+      "member_texts": [
+        "compare the mass of different objects",
+        "compare the mass of various objects"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "73228b91-979b-57c1-bdf3-ff7b74209b0f",
+        "9a83b859-a625-5577-b6a5-3f7bfcdbb61e"
+      ]
+    },
+    {
+      "canonical_text": "compare the quantity of various objects showing less and more quantity",
+      "member_texts": [
+        "compare the quantity of various objects showing less and more quantity",
+        "compare the quantity of various objects to show which has less and which has more"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "894e373d-7d5c-5a48-97a3-3f80b337ffd6",
+        "c04106e3-f2f9-5377-a438-711045d876b4"
+      ]
+    },
+    {
+      "canonical_text": "describe the information on a pictograph",
+      "member_texts": [
+        "describe all information provided by a pictograph",
+        "describe the information on a pictograph",
+        "explain all information provided by a pictograph"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "432cdb04-8143-53aa-8a6f-a35822c5ef3c",
+        "f6bb9409-d45f-5ec1-8d4c-fa46fca30e4c"
+      ]
+    },
+    {
+      "canonical_text": "develop a culture of honesty when using money",
+      "member_texts": [
+        "develop a culture of honesty when using money",
+        "develop the culture of honesty in using money"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e1c7b16-a1f4-53dd-af29-88d005555981",
+        "aed64c6e-d1b4-52e4-a97b-f9791f6d9164"
+      ]
+    },
+    {
+      "canonical_text": "develop critical thinking",
+      "member_texts": [
+        "develop critical thinking"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "517cf81e-20a4-516b-8bd5-c657e1432bea",
+        "9308706d-90cc-5cd3-accc-1c5907b4796e"
+      ]
+    },
+    {
+      "canonical_text": "develop respect for time",
+      "member_texts": [
+        "develop respect for time"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "25105356-3016-5337-b240-20b6b54008e3",
+        "e85f215e-c76d-5aa9-8cae-4c8e73bb061a"
+      ]
+    },
+    {
+      "canonical_text": "develop the culture of observation",
+      "member_texts": [
+        "develop a culture of observation in whatever you are doing",
+        "develop the culture of observation"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "58466ca6-20ed-570e-ab13-5c7c614812bf",
+        "9f768ff0-1e35-582e-a32b-b422bd81631a",
+        "a098cc50-0f59-57b3-8e62-8b1d2d7ee174"
+      ]
+    },
+    {
+      "canonical_text": "develop the culture of working together with others in harmony",
+      "member_texts": [
+        "develop a culture of working together with others harmoniously",
+        "develop the culture of working together in harmony",
+        "develop the culture of working together with others in harmony",
+        "develop the spirit of working harmoniously with others"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "25c1906a-d96b-570e-a9f3-d5ee2e768b65",
+        "55d46af7-59a7-5b55-8b45-aa0d14200ddd",
+        "65708905-73d3-5447-a1b5-6a2e30d8e5d0",
+        "9b2c5ff4-e211-58e7-8d50-a887251a5452",
+        "c3a3911a-7cad-55cf-b73e-d0b3bfb840e0"
+      ]
+    },
+    {
+      "canonical_text": "develop the spirit of orderliness",
+      "member_texts": [
+        "develop the spirit of orderliness"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "9ef8c52a-9cd4-5c39-949a-05c8419bd686",
+        "e85f215e-c76d-5aa9-8cae-4c8e73bb061a"
+      ]
+    },
+    {
+      "canonical_text": "draw a circle",
+      "member_texts": [
+        "draw a circle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "80027187-e779-5f95-b02e-dd574bf1c077",
+        "c6835d78-2098-5d03-b902-20feaceba868"
+      ]
+    },
+    {
+      "canonical_text": "draw a rectangle",
+      "member_texts": [
+        "draw a rectangle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4c3c8048-2a66-5a27-9202-631f5b884ce3",
+        "80027187-e779-5f95-b02e-dd574bf1c077",
+        "fc7a1801-b2d4-51f3-83fe-e348d7df44aa"
+      ]
+    },
+    {
+      "canonical_text": "draw a square",
+      "member_texts": [
+        "draw a square"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4c3c8048-2a66-5a27-9202-631f5b884ce3",
+        "80027187-e779-5f95-b02e-dd574bf1c077",
+        "fc7a1801-b2d4-51f3-83fe-e348d7df44aa"
+      ]
+    },
+    {
+      "canonical_text": "draw a triangle",
+      "member_texts": [
+        "draw a triangle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4c3c8048-2a66-5a27-9202-631f5b884ce3",
+        "80027187-e779-5f95-b02e-dd574bf1c077"
+      ]
+    },
+    {
+      "canonical_text": "draw closed lines",
+      "member_texts": [
+        "draw closed lines"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "09c89601-b8a2-5bb9-9903-777952fb62d3",
+        "d7629038-9463-515d-9855-fee083a97950"
+      ]
+    },
+    {
+      "canonical_text": "draw right angles",
+      "member_texts": [
+        "draw a right angle",
+        "draw right angles"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "87569c5d-3deb-5ea1-b674-937c9859af42",
+        "882763e2-4d64-5eeb-bf84-ed3e7e8d9036"
+      ]
+    },
+    {
+      "canonical_text": "draw straight lines",
+      "member_texts": [
+        "draw straight lines"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "09c89601-b8a2-5bb9-9903-777952fb62d3",
+        "d7629038-9463-515d-9855-fee083a97950"
+      ]
+    },
+    {
+      "canonical_text": "explain the place value of each digit in three-digit numbers",
+      "member_texts": [
+        "explain the place value of each digit in a three-digit number",
+        "explain the place value of each digit in three-digit numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0922a97f-df28-5949-bd39-8b149dba3374",
+        "2e59777f-ee92-5198-9bac-b4cd58c4c672"
+      ]
+    },
+    {
+      "canonical_text": "explain the rule used when finding the missing number in addition",
+      "member_texts": [
+        "explain the rule used to find the missing number in addition of numbers",
+        "explain the rule used when finding the missing number in addition"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8088b845-08b5-52ea-8cca-075ed6ceb959",
+        "f60dc157-a996-5546-8163-9957012dcb63"
+      ]
+    },
+    {
+      "canonical_text": "explain the rule used when finding the missing number in division",
+      "member_texts": [
+        "explain the rule used to find the missing number in division of numbers",
+        "explain the rule used when finding the missing number in division"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8088b845-08b5-52ea-8cca-075ed6ceb959",
+        "f60dc157-a996-5546-8163-9957012dcb63"
+      ]
+    },
+    {
+      "canonical_text": "explain the rule used when finding the missing number in multiplication",
+      "member_texts": [
+        "explain the rule used to find the missing number in multiplication of numbers",
+        "explain the rule used when finding the missing number in multiplication"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8088b845-08b5-52ea-8cca-075ed6ceb959",
+        "f60dc157-a996-5546-8163-9957012dcb63"
+      ]
+    },
+    {
+      "canonical_text": "explain the rule used when finding the missing number in subtraction",
+      "member_texts": [
+        "explain the rule used to find the missing number in subtraction of numbers",
+        "explain the rule used when finding the missing number in subtraction"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8088b845-08b5-52ea-8cca-075ed6ceb959",
+        "f60dc157-a996-5546-8163-9957012dcb63"
+      ]
+    },
+    {
+      "canonical_text": "find the missing number in addition exercises",
+      "member_texts": [
+        "find the missing number in addition exercises",
+        "find the missing number in addition of numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "67777582-42e2-5246-9a17-c03b3321afec",
+        "e1eb6a72-ca31-5ef9-8aa0-4548247c8198"
+      ]
+    },
+    {
+      "canonical_text": "find the missing number in division exercises",
+      "member_texts": [
+        "find the missing number in division exercises",
+        "find the missing number in division of numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "67777582-42e2-5246-9a17-c03b3321afec",
+        "e1eb6a72-ca31-5ef9-8aa0-4548247c8198"
+      ]
+    },
+    {
+      "canonical_text": "find the missing number in multiplication exercises",
+      "member_texts": [
+        "find the missing number in multiplication exercises",
+        "find the missing number in multiplication of numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "67777582-42e2-5246-9a17-c03b3321afec",
+        "e1eb6a72-ca31-5ef9-8aa0-4548247c8198"
+      ]
+    },
+    {
+      "canonical_text": "find the missing number in subtraction exercises",
+      "member_texts": [
+        "find the missing number in subtraction exercises",
+        "find the missing number in subtraction of numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "67777582-42e2-5246-9a17-c03b3321afec",
+        "e1eb6a72-ca31-5ef9-8aa0-4548247c8198"
+      ]
+    },
+    {
+      "canonical_text": "give examples of objects having the same shape as a rectangle",
+      "member_texts": [
+        "give examples of materials or objects that have a similar shape to a rectangle in and outside the classroom",
+        "give examples of objects having the same shape as a rectangle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a8a85684-d302-5ecc-ada0-64da44c25dc3",
+        "db6b8a5a-a619-579d-ad1a-00a47ea8c6ea"
+      ]
+    },
+    {
+      "canonical_text": "give examples of objects having the same shape as a square",
+      "member_texts": [
+        "give examples of materials or objects that have a similar shape to a square in and outside the classroom",
+        "give examples of objects having the same shape as a square"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a8a85684-d302-5ecc-ada0-64da44c25dc3",
+        "db6b8a5a-a619-579d-ad1a-00a47ea8c6ea"
+      ]
+    },
+    {
+      "canonical_text": "give examples of objects having the same shape as a triangle",
+      "member_texts": [
+        "give examples of materials or objects that have a similar shape to a triangle in and outside the classroom",
+        "give examples of objects having the same shape as a triangle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a8a85684-d302-5ecc-ada0-64da44c25dc3",
+        "db6b8a5a-a619-579d-ad1a-00a47ea8c6ea"
+      ]
+    },
+    {
+      "canonical_text": "identify the place value of each digit in three-digit numbers",
+      "member_texts": [
+        "identify the place value of each digit in a three-digit number",
+        "identify the place value of each digit in three-digit numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0922a97f-df28-5949-bd39-8b149dba3374",
+        "2e59777f-ee92-5198-9bac-b4cd58c4c672"
+      ]
+    },
+    {
+      "canonical_text": "identify the place value of numbers composed of four digits",
+      "member_texts": [
+        "identify the place value of each digit in a four-digit number",
+        "identify the place value of numbers composed of four digits"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "b57fb0ae-9961-5d68-b220-f55f3dc5d908",
+        "c08f276f-3d63-5e07-887a-7ce3ca465fbf"
+      ]
+    },
+    {
+      "canonical_text": "identify the properties of a circle",
+      "member_texts": [
+        "identify the properties of a circle",
+        "recognise and identify the properties of a circle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "546ecf82-8ff3-58cb-8113-cedabb1a5b7f",
+        "61748aad-a2c8-5062-9edd-af269e1ca001"
+      ]
+    },
+    {
+      "canonical_text": "identify the properties of a rectangle",
+      "member_texts": [
+        "identify the properties of a rectangle",
+        "list the characteristics/properties of a rectangle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e236e99-3905-532c-a7d7-363e70bc795f",
+        "61748aad-a2c8-5062-9edd-af269e1ca001"
+      ]
+    },
+    {
+      "canonical_text": "identify the properties of a square",
+      "member_texts": [
+        "identify the properties of a square",
+        "list the characteristics/properties of a square"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e236e99-3905-532c-a7d7-363e70bc795f",
+        "61748aad-a2c8-5062-9edd-af269e1ca001"
+      ]
+    },
+    {
+      "canonical_text": "identify the properties of a triangle",
+      "member_texts": [
+        "identify the properties of a triangle",
+        "list the characteristics/properties of a triangle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e236e99-3905-532c-a7d7-363e70bc795f",
+        "61748aad-a2c8-5062-9edd-af269e1ca001"
+      ]
+    },
+    {
+      "canonical_text": "list the value of rwandan currency from 1frw to 1000frw",
+      "member_texts": [
+        "identify the value of rwandan currency from 1frw to 1000frw",
+        "list the value of rwandan currency from 1frw to 1000frw",
+        "state the value of rwandan currency from 1frw to 1000frw"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0571a733-b8a1-59a7-a25e-53d9e652ada8",
+        "945cf41f-e353-50de-8f2d-c613888b3965"
+      ]
+    },
+    {
+      "canonical_text": "orient a point on the grid",
+      "member_texts": [
+        "orient a point located on the grid",
+        "orient a point on the grid"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1a03c224-0de3-5c64-a29e-0510d6de7532",
+        "92cabc1f-24d7-5a4d-aba7-76cf0a9d0808"
+      ]
+    },
+    {
+      "canonical_text": "promote teamwork among learners",
+      "member_texts": [
+        "promote collaboration among the learners",
+        "promote teamwork among learners"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7c7cfd9a-3c74-537e-af69-bb4f13c08a31",
+        "ccf2851f-8351-5926-86af-b581693e3488"
+      ]
+    },
+    {
+      "canonical_text": "read and tell the time shown on a clockface",
+      "member_texts": [
+        "read and tell the time shown on a clockface",
+        "read the time shown by a clockface with long and short needles"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "898cf811-cf68-5849-b2bb-4c4780aaf438",
+        "e5d39c8f-7d64-5f8f-b2dd-6dcae555803f"
+      ]
+    },
+    {
+      "canonical_text": "read numbers from 0 to 1000",
+      "member_texts": [
+        "read numbers from 0 to 1000"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "9f6e2ec1-64e1-56b6-96cb-c73f8734c889",
+        "b5d5cf2c-dba8-5666-a8b0-a7b57e135fcd"
+      ]
+    },
+    {
+      "canonical_text": "read numbers up to 500 in numerals and words",
+      "member_texts": [
+        "read accurately numbers from 0 to 500 in words and figures",
+        "read numbers up to 500 in numerals and words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "908b6202-4b80-5ad2-8f67-b4eaeae7ece6",
+        "d3147cff-bffb-547f-a05a-183e3421ff53"
+      ]
+    },
+    {
+      "canonical_text": "show orderliness in daily life",
+      "member_texts": [
+        "express the spirit of orderliness in daily activities",
+        "show orderliness in daily activities",
+        "show orderliness in daily life",
+        "show the culture of orderliness in daily life",
+        "show the spirit of orderliness in daily activities"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "16beda1c-ea52-5040-8e86-d3f4a9b95e06",
+        "19f220e5-6b7f-5201-961d-57a3c0787307",
+        "3223fa3e-a1c0-5a15-ad97-b3d00bcfae41",
+        "3671f808-dc60-553a-8efc-0a44641d0f9c",
+        "60a07721-2d73-5cc0-adfd-aec4b37f91b4",
+        "831aa4b8-b744-50aa-a52a-e646f8f83d80",
+        "a117b945-f27e-5633-9200-f21d63c42fa9",
+        "b80a68b2-77c1-5e15-b3a0-bbd801f7e938",
+        "d3a6ce57-38da-5097-b968-c2fc84153f56",
+        "e98f50f7-d7bf-5a92-ae34-8166be4d3b1c",
+        "f705a4cc-d4b9-54fe-af47-c852819004c2"
+      ]
+    },
+    {
+      "canonical_text": "subtract whole numbers not exceeding 50",
+      "member_texts": [
+        "subtract whole numbers not exceeding 50",
+        "subtract whole numbers where the terms do not exceed 50"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "03892b8f-987c-509c-89ce-5a543b20f140",
+        "f0991b05-f3ee-5f9d-8b04-109659a953f7"
+      ]
+    },
+    {
+      "canonical_text": "write numbers up to 500 in numerals and words",
+      "member_texts": [
+        "write accurately numbers from 0 to 500 in words and figures",
+        "write numbers up to 500 in numerals and words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "908b6202-4b80-5ad2-8f67-b4eaeae7ece6",
+        "d3147cff-bffb-547f-a05a-183e3421ff53"
+      ]
+    }
+  ],
+  "judged_same_count": 57,
+  "total_claim_count": 799,
+  "unique_text_count": 763
+}

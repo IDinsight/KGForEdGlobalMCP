@@ -1,0 +1,45 @@
+{
+  "lc_confidence_distribution": {
+    "0.8": 15,
+    "0.9": 784
+  },
+  "lc_count_by_language": {
+    "en": 716
+  },
+  "lc_count_by_source_statement_type": {
+    "Attitudes and Values Objective": 125,
+    "Knowledge Objective": 234,
+    "Skills Objective": 362
+  },
+  "lc_dedup_candidate_pair_count": 2633,
+  "lc_dedup_conflict_count": 2,
+  "lc_dedup_judged_same_count": 57,
+  "lc_generation_failed_sfis_count": 0,
+  "lc_max_splits_observed": 8,
+  "lc_multi_claim_lc_count": 53,
+  "lc_multi_parent_lc_count": 53,
+  "lc_selection_mode": "explicit_allowlist",
+  "lc_source_exclusion_reason_counts": {
+    "not_in_allowlist": 151
+  },
+  "lc_splits_distribution": {
+    "1": 252,
+    "2": 157,
+    "3": 43,
+    "4": 18,
+    "5": 2,
+    "6": 1,
+    "8": 2
+  },
+  "llm_request_count": 475,
+  "llm_response_count": 475,
+  "manual_review_overrides": null,
+  "total_lc_claims": 799,
+  "total_lc_source_sfis_considered": 626,
+  "total_lc_source_sfis_eligible": 475,
+  "total_lc_source_sfis_empty_text": 0,
+  "total_lc_source_sfis_excluded": 151,
+  "total_lcs": 716,
+  "total_supports_edges": 797,
+  "warnings": []
+}
