@@ -228,6 +228,7 @@ def test_paths_oversized_entry_rejected(accepted_state: AppState) -> None:
         Topology(accepted_state, builds([("a", "a", "t")], "x" * 1048577)).paths()
     assert failure.value.details["relationship_ids"] == ("a",)
     hint = failure.value.recovery_hint
+    assert hint is not None
     assert '["a"]' in hint and "get_learning_progression" in hint
     assert "resource" in hint.lower()
 

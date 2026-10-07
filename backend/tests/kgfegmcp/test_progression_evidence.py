@@ -33,10 +33,15 @@ from kgfegmcp.resources.uri import (
     relationship_uri,
 )
 from kgfegmcp.services.lp_models import GetLearningProgressionRequest
+from tests.fixtures.progression_fixtures import (
+    artifact_name,
+    package_route,
+    relationship_id,
+)
 
 # Architecture diagnostic contract identities (Nigeria package, exact snapshot).
 NIGERIA = "nigeria-nerdc-mathematics-primary-1-3"
-EDGE = "0129f5d5-42fd-52cb-bcf2-ec07c47103e7"
+EDGE = relationship_id("0129f5d5-42fd-52cb-bcf2-ec07c47103e7")
 TARGET = "e399b510-48bb-58ee-abda-61460a5a853b"
 
 
@@ -58,8 +63,7 @@ def nigeria(state: AppState) -> CatalogPackageRuntime:
 
 def provenance(state: AppState) -> tuple[str, ResourceDocument]:
     """Return the constructor URI and native document of the diagnostic edge."""
-    identity = nigeria(state).catalog_package.package_identity
-    route = {"framework_id": identity.framework_id, "snapshot_id": identity.snapshot_id}
+    route = package_route(nigeria(state))
     return (
         relationship_provenance_uri(**route, relationship_id=EDGE),
         state.resource_service.relationship_provenance(**route, relationship_id=EDGE),
@@ -123,16 +127,14 @@ def test_windows_reassemble_exact_native_bytes(accepted_state: AppState) -> None
 
 def test_native_denial_is_not_bypassed(accepted_state: AppState) -> None:
     """A natively denied artifact is denied identically through read_evidence."""
-    identity = accepted_state.catalog_load_result.package_runtimes[
-        0
-    ].catalog_package.package_identity
-    route = {"framework_id": identity.framework_id, "snapshot_id": identity.snapshot_id}
+    route = package_route(accepted_state.catalog_load_result.package_runtimes[0])
+    nodes = artifact_name("nodes")
     with pytest.raises(ResourceAccessDeniedError) as native:
-        accepted_state.resource_service.artifact(**route, artifact_name="nodes")
+        accepted_state.resource_service.artifact(**route, artifact_name=nodes)
     with pytest.raises(ResourceAccessDeniedError) as paged:
         read_evidence_window(
             request=ReadEvidenceRequest(
-                uri=artifact_uri(**route, artifact_name="nodes"), max_content_bytes=1
+                uri=artifact_uri(**route, artifact_name=nodes), max_content_bytes=1
             ),
             resource_service=accepted_state.resource_service,
         )

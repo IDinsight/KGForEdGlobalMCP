@@ -44,7 +44,7 @@ def arguments(state: AppState, name: str) -> tuple[dict[str, str], dict[str, Any
         "output_language": "fr",
         "snapshot_id": str(identity.snapshot_id),
     }
-    specific: dict[str, Any] = {
+    specifics: dict[str, dict[str, Any]] = {
         "learning_progression_teaching_sequence": {
             "local_grade_labels": grades[:1],
             "topic_or_standard": "number",
@@ -75,8 +75,8 @@ def arguments(state: AppState, name: str) -> tuple[dict[str, str], dict[str, Any
             "lesson_duration_minutes": 60,
             "topic_or_standard": "number",
         },
-    }[name]
-    values = {**common, **specific}
+    }
+    values = {**common, **specifics[name]}
     # Native MCP prompts receive every argument as a string; complex values are JSON.
     native = {
         key: value if isinstance(value, str) else json.dumps(value)
@@ -110,7 +110,10 @@ async def test_tool_renders_the_native_prompt_message(
     assert message == native.messages[0].content.text
     assert native.meta["promptVersion"] == "1.4.0"
     assert "EVIDENCE ACCESS" in message and "read_evidence" in message
-    expected = TypeAdapter(WorkflowInstructionsRequest).validate_python(request)
+    adapter: TypeAdapter[WorkflowInstructionsRequest] = TypeAdapter(
+        WorkflowInstructionsRequest
+    )
+    expected = adapter.validate_python(request)
     assert payload["effectiveRequest"] == expected.model_dump(
         by_alias=True, mode="json"
     )
@@ -157,3 +160,28 @@ async def test_oversized_instructions_fail_without_clipping(
             await client.call_tool("get_workflow_instructions", {"request": request})
     assert "workflow_instructions_too_large" in str(failure.value)
     assert "EVIDENCE ACCESS" not in str(failure.value)
+
+
+async def test_single_type_review_renders_only_that_scan(
+    accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """relationship_types [relatesTo] reaches both routes and keeps one scan."""
+    monkeypatch.setattr("kgfegmcp.app.bootstrap_application", lambda: accepted_state)
+    name = "learning_progression_curriculum_review"
+    native_arguments, request = arguments(accepted_state, name)
+    native_arguments["relationship_types"] = json.dumps(["relatesTo"])
+    request["relationshipTypes"] = ["relatesTo"]
+    async with Client(create_mcp()) as client:
+        native = await client.get_prompt(name, native_arguments)
+        tool = await client.call_tool("get_workflow_instructions", {"request": request})
+    payload = json.loads(tool.content[0].text)
+    message = payload["rendered"]["message"]
+    assert message == native.messages[0].content.text
+    assert payload["effectiveRequest"]["relationshipTypes"] == ["relatesTo"]
+    scans = [
+        json.loads(line)["request"]
+        for line in message.splitlines()
+        if line.startswith('{"request":') and "relationshipTypes" in line
+    ]
+    assert [scan["relationshipTypes"] for scan in scans] == [["relatesTo"]]
+    assert "- relatesTo scan:" in message and "- buildsTowards scan:" not in message

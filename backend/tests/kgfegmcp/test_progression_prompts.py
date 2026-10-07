@@ -4,19 +4,26 @@
 import json
 
 from types import SimpleNamespace
-from typing import Any
+from typing import Any, cast
 
 # Third Party Library
 import pytest
 
-from pydantic import ValidationError
+from fastmcp import Client
+from pydantic import TypeAdapter, ValidationError
 
 # Package Library
+from kgfegmcp.app import create_mcp
 from kgfegmcp.bootstrap import AppState
+from kgfegmcp.catalog.models import CatalogPackageRuntime
 from kgfegmcp.catalog.service import CatalogService
 from kgfegmcp.domain.enums import DerivativeGenerationPolicy
+from kgfegmcp.domain.identifiers import LanguageTag
 from kgfegmcp.errors import PromptAccessDeniedError
-from kgfegmcp.prompts.learning_progressions import render_optional_progression_workflow
+from kgfegmcp.prompts.learning_progressions import (
+    LearningProgressionCurriculumReviewRequest,
+    render_optional_progression_workflow,
+)
 from kgfegmcp.prompts.models import (
     LearningProgressionTeachingSequenceRequest,
     PromptFocusMode,
@@ -26,11 +33,16 @@ from kgfegmcp.services.lp_models import (
     GetLearningProgressionPathsRequest,
     GetLearningProgressionRequest,
     GetStandardProgressionsRequest,
+    ProgressionCollectionResult,
     SearchLearningProgressionsRequest,
     TraverseLearningProgressionsRequest,
 )
 from kgfegmcp.services.models import GetFrameworkStatisticsRequest
 from tests.fixtures.progression_fixtures import selector
+
+# Superseded fixed-count promises: a size-limited page may return fewer edges.
+FIXED_COUNT_PROMISES = ("page of 25", "pages of 25", "three of 25", "at most 75")
+DIRECT_KINDS = ["outgoing_builds", "incoming_builds", "related"]
 
 
 def templates(message: str) -> list[dict[str, Any]]:
@@ -40,6 +52,25 @@ def templates(message: str) -> list[dict[str, Any]]:
         for line in message.splitlines()
         if line.startswith('{"request":')
     ]
+
+
+def assert_per_kind_direct_calls(message: str, placeholder: str) -> None:
+    """Check one single-page direct call per kind, in order, with no all-kind call."""
+    directs = [call for call in templates(message) if "connectionKind" in call]
+    assert [call["connectionKind"] for call in directs] == DIRECT_KINDS
+    for call in directs:
+        GetStandardProgressionsRequest.model_validate(call)
+        assert call["limit"] == 25 and "cursor" not in call
+        assert call["identifier"] == {
+            "identifierType": "node_id",
+            "nodeId": placeholder,
+        }
+    assert "at most 9" in message
+    assert "limit 25 is the maximum requested" in message
+    assert "may return fewer" in message and "do not follow nextCursor" in message
+    assert "kind is incomplete for that standard" in message
+    assert "deduplicate relationship IDs across calls and standards" in message
+    assert not any(promise in message for promise in FIXED_COUNT_PROMISES)
 
 
 def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
@@ -52,7 +83,7 @@ def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
             local_context="Teacher observation; not measured mastery.",
             local_grade_labels=(),
             normalized_grades=(),
-            output_language="fr",
+            output_language=TypeAdapter(LanguageTag).validate_python("fr"),
             snapshot_id=identity.snapshot_id,
             topic_or_standard="mathematics",
         )
@@ -60,7 +91,6 @@ def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
         calls = templates(message)
         walk = next(call for call in calls if "direction" in call)
         paths = next(call for call in calls if "sourceIdentifier" in call)
-        direct = next(call for call in calls if "connectionKind" in call)
         assert (
             walk["direction"],
             walk["maxDepth"],
@@ -69,7 +99,9 @@ def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
         ) == ("downstream", 8, 30, 40)
         GetLearningProgressionPathsRequest.model_validate(paths)
         assert (paths["maxDepth"], paths["maxPaths"]) == (6, 3)
-        assert direct["connectionKind"] == "all" and direct["limit"] == 25
+        # Frame 2 per-kind calls replace the single connectionKind all page.
+        assert_per_kind_direct_calls(message, "<selected-node-id>")
+        assert "never sequence hops" in message
         assert any(call.get("limit") == 10 for call in calls)
         assert (
             "at most 3 selected standards" in message
@@ -122,7 +154,11 @@ def test_support_plan_workflow(accepted_state: AppState) -> None:
             "incoming_builds",
             "related",
         }
-        assert all(call["limit"] == 25 for call in directs)
+        assert all(call["limit"] == 25 and "cursor" not in call for call in directs)
+        assert result.message.count("limit 25 is the maximum requested") == 2
+        assert "incoming builds are incomplete for the target" in result.message
+        assert "related concepts are incomplete for the target" in result.message
+        assert not any(p in result.message for p in FIXED_COUNT_PROMISES)
         assert (
             "at most 3 supporting standards" in result.message
             and "at most 10 distinct full" in result.message
@@ -152,17 +188,37 @@ def test_curriculum_review_workflow(accepted_state: AppState) -> None:
             standard_identifiers=(selector(edge.source_node_id),),
         )
         calls = templates(result.message)
-        assert len(calls) == 3
+        # Omitted relationship_types: one single-type scan per type, fixed order.
+        assert len(calls) == 4
         GetFrameworkStatisticsRequest.model_validate(calls[0])
-        query = SearchLearningProgressionsRequest.model_validate(calls[1])
+        scans = calls[1:3]
+        assert [scan["relationshipTypes"] for scan in scans] == [
+            ["buildsTowards"],
+            ["relatesTo"],
+        ]
+        assert {
+            key: value for key, value in scans[0].items() if key != "relationshipTypes"
+        } == {
+            key: value for key, value in scans[1].items() if key != "relationshipTypes"
+        }
+        for scan in scans:
+            query = SearchLearningProgressionsRequest.model_validate(scan)
+            assert query.endpoint_scope == "source" and query.limit == 25
+            assert query.standard_identifiers == (selector(edge.source_node_id),)
+            assert query.cursor is None
         GetLearningProgressionRequest.model_validate(
-            {**calls[2], "relationshipId": edge.relationship_id}
+            {**calls[3], "relationshipId": edge.relationship_id}
         )
-        assert query.endpoint_scope == "source" and query.limit == 25
-        assert query.standard_identifiers == (selector(edge.source_node_id),)
+        assert not any(p in result.message for p in FIXED_COUNT_PROMISES)
         for phrase in [
-            "at most 3 pages of 25",
-            "never follow a fourth",
+            "own budget of at most 3 pages",
+            "limit 25 is the maximum requested",
+            "never reuse a cursor from another scan",
+            "never follow a fourth page of a scan",
+            "that type's review is incomplete",
+            "select up to 5 per type",
+            "unused slots to the other type",
+            "never sum",
             "at most 10 distinct full",
             "whole conjunction",
             "reviewed subset",
@@ -178,7 +234,7 @@ def test_curriculum_review_workflow(accepted_state: AppState) -> None:
 def test_shared_legacy_enrichment(accepted_state: AppState) -> None:
     """All four retained client workflows use the same finite optional LP step."""
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
-    common = dict(
+    common: dict[str, Any] = dict(
         focus_mode=PromptFocusMode.TOPIC,
         framework_id=runtime.catalog_package.package_identity.framework_id,
         local_context=None,
@@ -217,7 +273,7 @@ def test_shared_legacy_enrichment(accepted_state: AppState) -> None:
     ]
     for result in results:
         assert "at most 3 distinct already-resolved standards" in result.message
-        assert "one direct page of 25 per standard" in result.message
+        assert_per_kind_direct_calls(result.message, "<selected-node-id>")
         assert "at most 10 distinct full edge-provenance" in result.message
         assert "get_learning_components_for_standard" in result.message
         assert (
@@ -290,13 +346,17 @@ def test_unavailable_optional_evidence_has_no_fallback(
             "has_learning_progression_provenance": False,
         }
     )
+    # A real runtime rejects capabilities that differ from its manifest, so a
+    # namespace double supplies the two attributes the renderer reads.
     projected = SimpleNamespace(
         catalog_package=runtime.catalog_package.model_copy(
             update={"capabilities": capabilities}
         ),
         loaded_package=runtime.loaded_package,
     )
-    message = render_optional_progression_workflow(runtime=projected)
+    message = render_optional_progression_workflow(
+        runtime=cast(CatalogPackageRuntime, projected)
+    )
     assert "unavailable" in message.lower()
     assert "get_standard_progressions" not in message
     assert (
@@ -304,3 +364,69 @@ def test_unavailable_optional_evidence_has_no_fallback(
         in message
     )
     assert "infer" in message.lower()
+
+
+@pytest.mark.parametrize(
+    "relationship_types",
+    [("relatesTo", "relatesTo"), ("hasChild",)],
+    ids=["duplicate", "unknown"],
+)
+def test_review_relationship_types_are_validated(
+    relationship_types: tuple[str, ...],
+) -> None:
+    """Repeated or non-LP relationship types fail before any rendering."""
+    base = {"framework_id": "synthetic", "relationship_types": ("relatesTo",)}
+    LearningProgressionCurriculumReviewRequest.model_validate(base)
+    with pytest.raises(ValidationError):
+        LearningProgressionCurriculumReviewRequest.model_validate(
+            {**base, "relationship_types": relationship_types}
+        )
+
+
+async def test_rendered_relates_scan_reaches_stored_relates_edges(
+    accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """F3: Ghana Mathematics BASIC 5's rendered relatesTo scan returns relatesTo."""
+    monkeypatch.setattr("kgfegmcp.app.bootstrap_application", lambda: accepted_state)
+    runtime = next(
+        item
+        for item in accepted_state.catalog_load_result.package_runtimes
+        if item.catalog_package.package_identity.framework_id
+        == "ghana-nacca-primary-mathematics-basic-4-6"
+    )
+    stored = {
+        edge.relationship_id: edge.label
+        for edge in runtime.loaded_package.relationships
+        if edge.label in {"buildsTowards", "relatesTo"}
+    }
+    identity = runtime.catalog_package.package_identity
+    message = accepted_state.prompt_service.learning_progression_curriculum_review(
+        framework_id=identity.framework_id,
+        local_grade_labels=("BASIC 5",),
+        snapshot_id=identity.snapshot_id,
+    ).message
+    scans = [call for call in templates(message) if "relationshipTypes" in call]
+    returned: dict[str, list[str]] = {}
+    async with Client(create_mcp()) as client:
+        # Execute each rendered scan as written: its own cursor, at most 3 pages.
+        for scan in scans:
+            request, labels = dict(scan), list[str]()
+            for _ in range(3):
+                result = await client.call_tool(
+                    "search_learning_progressions", {"request": request}
+                )
+                page = ProgressionCollectionResult.model_validate(
+                    result.structured_content
+                )
+                labels.extend(
+                    stored[item.relationship.relationship_id]
+                    for item in page.relationships
+                )
+                if page.page.next_cursor is None:
+                    break
+                request = {**scan, "cursor": page.page.next_cursor}
+            returned[scan["relationshipTypes"][0]] = labels
+    assert returned["relatesTo"] and set(returned["relatesTo"]) == {"relatesTo"}
+    assert returned["buildsTowards"] and set(returned["buildsTowards"]) == {
+        "buildsTowards"
+    }

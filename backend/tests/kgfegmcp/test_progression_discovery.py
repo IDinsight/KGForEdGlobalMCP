@@ -352,6 +352,7 @@ def test_discovery_oversized_entry_rejected(
                 framework_id=runtime.catalog_package.package_identity.framework_id
             )
         )
+    assert failure.value.recovery_hint is not None
     assert "resource" in failure.value.recovery_hint.lower()
 
 

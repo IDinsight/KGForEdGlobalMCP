@@ -102,4 +102,5 @@ def test_individually_oversized_traversal_entry_is_an_error(
             f"scope_complete={observed.scope_complete}."
         )
     assert failure.value.error_code == "progression_result_too_large"
+    assert failure.value.recovery_hint is not None
     assert "resource" in failure.value.recovery_hint.lower()

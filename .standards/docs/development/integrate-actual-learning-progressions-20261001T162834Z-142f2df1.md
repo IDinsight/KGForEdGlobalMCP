@@ -2585,3 +2585,20 @@ User explicitly invoked Developer after Architect RESUME (From ARCHITECTING, Fai
 Reconciliation: the design now requires the support-planning workflow (AC-014) to keep its incoming_builds and related calls (limit 25, no cursor) but describe limit 25 as a requested maximum that size-limited pages may not fill, report a non-null nextCursor as an incomplete kind for the target, and drop "one page of 25". This is the same page-limit outcome DEV-028 already delivers for the other workflows, requested by the user ("let's fix it"), so DEV-028 is reopened (DONE -> IN_PROGRESS) with AC-014 added; no new step or separate plan approval is needed. DEV-028 IN_PROGRESS.
 
 DEV-028 DONE again, including AC-014. Remaining under the approved plan: route the single scoped VERIFICATION correction to Tester (the three superseded prompt assertions and the 63 tests/ mypy errors), then DEV-022. Under STEPWISE, persisted a continuation request for that routing and stopped.
+
+### Suspended Assignment 7
+
+`Recovery Frame`: `2` `Recovery Reason`: `Tester-owned formal cases assert superseded contracts and fail mypy with resolved imports: test_progression_prompts.py test_teaching_sequence_workflow, test_shared_legacy_enrichment and test_curriculum_review_workflow expect a connectionKind all call, 'one direct page of 25' and one review scan; 63 resolved-mypy errors in 9 tests/ files. Correct them and assess the DEV-026/027/028/029 contracts before Developer resumes DEV-022.`
+`Purpose`: `DEVELOPMENT`
+`Target`: `NONE`
+`Assessed Inputs`: `HEAD 5aa24aa (clean): DEV-026/029 in 3e39e99, DEV-027 in dc849ad, DEV-028 in a0efa57 and 5aa24aa; identities and evidence in each step's self-check.`
+`Next Action`: `On Tester RESUME, reload STATE/frame/plan/report, reconcile corrected tests and the scoped assessment, rerun pytest and mypy on src/ and tests/, then stop before DEV-022 under STEPWISE. DEV-022 (smoke expectations, rebuilt 0.4.0 candidate, user-run transports) remains PENDING.`
+
+### Scoped VERIFICATION correction routed to Tester — 2026-10-07
+
+User explicitly approved routing on 2026-10-07; cleared the routing blocker. Entry HEAD 5aa24aa5 (clean; user committed the support-planning wording). Workflow check passed. Saved Suspended Assignment 7, pushed nested Frame 2 (From/ResumeAt DEVELOPING, Owner TESTING, FailureType VERIFICATION, RerunThrough NONE); Frame 1 unchanged.
+
+For Tester (independent session; everything needed is in files):
+- Superseded-contract failures (pytest exit 1, 101 passed): tests/kgfegmcp/test_progression_prompts.py::test_teaching_sequence_workflow (line ~72 asserts connectionKind "all"; now three per-kind calls outgoing_builds, incoming_builds, related), ::test_shared_legacy_enrichment (line ~220 asserts "one direct page of 25 per standard"; now three per-kind calls, at most 9), ::test_curriculum_review_workflow (line ~155 asserts 3 rendered calls; with relationship_types omitted there are now two single-type scans, so 4). Contracts: architecture "Curriculum-review scans", "Per-kind direct calls" and the AC-013/014/015/016 Frame 1/2 technical criteria. See DEV-028 self-check and data/source_artifacts/learning_progressions/frame1-rework-dev028/checks/.
+- Type errors: with DEV-029's configuration (backend/pyproject.toml mypy_path/explicit_package_bases; Makefile and CI commands unchanged), `cd backend && .venv/bin/mypy tests/ --explicit-package-bases --ignore-missing-imports --show-error-codes` reports 63 errors in 9 Tester-owned files (list: data/source_artifacts/learning_progressions/frame1-rework-dev029/checks/mypy-tests-tester-owned.txt). src/ reports none. CI linting fails until these are corrected.
+- New contracts the Tester may wish to cover in this assessment (Tester decides): AC-019 includedGraphTypes, graphTypes filter and discovery text (DEV-026); AC-016/AC-029 component citation text and rights marking (DEV-027); AC-013/014/015/016 per-type scans, per-kind calls, relationship_types validation and page-limit wording (DEV-028). Developer feedback scripts and results are under frame1-rework-dev026/027/028 and dev029 checks; they are implementation feedback, not formal evidence.

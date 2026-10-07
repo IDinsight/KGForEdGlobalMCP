@@ -18,12 +18,8 @@ from kgfegmcp.resources.lp import partition_name
 from kgfegmcp.resources.policy import ResourcePolicy
 from kgfegmcp.resources.repository import ResourceRepository
 from kgfegmcp.resources.service import ResourceService
-
-
-def route(runtime: Any) -> dict[str, str]:
-    """Pin the exact immutable framework/snapshot pair."""
-    identity = runtime.catalog_package.package_identity
-    return {"framework_id": identity.framework_id, "snapshot_id": identity.snapshot_id}
+from tests.fixtures.progression_fixtures import artifact_name
+from tests.fixtures.progression_fixtures import package_route as route
 
 
 def test_original_per_edge_trace_and_hashes(accepted_state: AppState) -> None:
@@ -95,7 +91,8 @@ def test_bulk_is_denied_independently(accepted_state: AppState) -> None:
     assert not runtime.catalog_package.rights.allow_bulk_resource
     with pytest.raises(ResourceAccessDeniedError):
         accepted_state.resource_service.artifact(
-            **route(runtime), artifact_name="learningProgressionProvenance"
+            **route(runtime),
+            artifact_name=artifact_name("learningProgressionProvenance"),
         )
 
 

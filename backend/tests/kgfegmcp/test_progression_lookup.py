@@ -14,14 +14,17 @@ from kgfegmcp.bootstrap import AppState
 from kgfegmcp.catalog.service import CatalogService
 from kgfegmcp.errors import (
     CapabilityUnavailableError,
+    KGFEGMCPError,
     LearningProgressionNotFoundError,
     ResourceAccessDeniedError,
     StandardNotFoundError,
 )
+from kgfegmcp.graph.models import StandardNode
 from kgfegmcp.services.lp_models import GetLearningProgressionRequest
 from kgfegmcp.services.models import (
     CaseUriStandardIdentifier,
     CaseUuidStandardIdentifier,
+    StandardIdentifier,
 )
 from tests.fixtures.progression_fixtures import selector
 
@@ -92,6 +95,8 @@ def test_every_exact_edge_preserves_accepted_evidence(
             ]
             for summary in result.nodes:
                 original = runtime.graph_store.nodes_by_id[summary.node_id]
+                # LP endpoints are standards; this also narrows the node union.
+                assert isinstance(original, StandardNode)
                 assert summary.case_identifier_uuid == original.case_identifier_uuid
                 assert summary.case_identifier_uri == original.case_identifier_uri
                 assert summary.statement_excerpt == (
@@ -169,7 +174,7 @@ def test_reused_exact_failure_distinctions(
                 update={"learning_progression_evidence": None}
             ),
         )
-        expected = CapabilityUnavailableError
+        expected: type[KGFEGMCPError] = CapabilityUnavailableError
     else:
         rights = runtime.catalog_package.rights.model_copy(
             update={"allow_full_text": False}
@@ -198,7 +203,7 @@ def test_reused_selector_namespaces(accepted_state: AppState) -> None:
     """Node/CASE UUID/CASE URI resolve the same original standard in each package."""
     for runtime in accepted_state.catalog_load_result.package_runtimes:
         node = runtime.loaded_package.item_nodes[0]
-        for identifier in [
+        identifiers: list[StandardIdentifier] = [
             selector(node.node_id),
             CaseUuidStandardIdentifier(
                 identifier_type="case_identifier_uuid",
@@ -208,7 +213,8 @@ def test_reused_selector_namespaces(accepted_state: AppState) -> None:
                 identifier_type="case_identifier_uri",
                 case_identifier_uri=node.case_identifier_uri,
             ),
-        ]:
+        ]
+        for identifier in identifiers:
             assert (
                 accepted_state.learning_progressions_service.resolve_standard(
                     identifier=identifier, runtime=runtime

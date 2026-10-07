@@ -6,10 +6,21 @@ import json
 
 from collections import defaultdict
 from types import SimpleNamespace
-from typing import Any
+from typing import Any, TypedDict, cast
+
+# Third Party Library
+from pydantic import TypeAdapter
 
 # Package Library
 from kgfegmcp.bootstrap import AppState
+from kgfegmcp.catalog.models import CatalogPackageRuntime
+from kgfegmcp.domain.identifiers import (
+    ArtifactName,
+    FrameworkId,
+    RelationshipId,
+    SnapshotId,
+)
+from kgfegmcp.services.learning_progressions import LearningProgressionsService
 from kgfegmcp.services.lp_models import (
     GetLearningProgressionPathsRequest,
     TraverseLearningProgressionsRequest,
@@ -22,6 +33,29 @@ from kgfegmcp.services.models import NodeIdStandardIdentifier
 def selector(node: str) -> NodeIdStandardIdentifier:
     """Select one exact outer node ID."""
     return NodeIdStandardIdentifier(identifier_type="node_id", node_id=node)
+
+
+class PackageRoute(TypedDict):
+    """Exact immutable framework/snapshot keyword pair for resource calls."""
+
+    framework_id: FrameworkId
+    snapshot_id: SnapshotId
+
+
+def package_route(runtime: CatalogPackageRuntime) -> PackageRoute:
+    """Pin the exact accepted framework/snapshot pair of one runtime."""
+    identity = runtime.catalog_package.package_identity
+    return {"framework_id": identity.framework_id, "snapshot_id": identity.snapshot_id}
+
+
+def relationship_id(value: str) -> RelationshipId:
+    """Validate a literal relationship ID through the production identifier type."""
+    return TypeAdapter(RelationshipId).validate_python(value)
+
+
+def artifact_name(value: str) -> ArtifactName:
+    """Validate a literal artifact name through the production identifier type."""
+    return TypeAdapter(ArtifactName).validate_python(value)
 
 
 class Topology:
@@ -77,7 +111,11 @@ class Topology:
                 outgoing_by_type_and_node=outgoing,
             )
         )
-        self.adjacency = traversal_adjacency(runtime=self.runtime)
+        # The namespace double supplies only the graph_store indexes the real
+        # algorithms read; the cast states that interface for the type checker.
+        self.adjacency = traversal_adjacency(
+            runtime=cast(CatalogPackageRuntime, self.runtime)
+        )
 
     # These doubles retain the production service keyword signatures.
     # pylint: disable=unused-argument
@@ -122,8 +160,9 @@ class Topology:
         return traversal_result(
             adjacency=self.adjacency,
             request=request,
-            runtime=self.runtime,
-            service=self,
+            runtime=cast(CatalogPackageRuntime, self.runtime),
+            # This double keeps the service methods the algorithm calls.
+            service=cast(LearningProgressionsService, self),
         )
 
     def paths(self, source: str = "a", target: str = "t", **limits: Any) -> Any:
@@ -137,8 +176,9 @@ class Topology:
         return paths_result(
             adjacency=self.adjacency,
             request=request,
-            runtime=self.runtime,
-            service=self,
+            runtime=cast(CatalogPackageRuntime, self.runtime),
+            # This double keeps the service methods the algorithm calls.
+            service=cast(LearningProgressionsService, self),
         )
 
 

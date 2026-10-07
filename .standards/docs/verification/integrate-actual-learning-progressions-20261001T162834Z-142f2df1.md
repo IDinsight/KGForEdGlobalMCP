@@ -5,18 +5,89 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 # Verification Report
 
-`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `COMPLETE` `User Style`: `NONE`
-`Assessment Purpose`: `FULL` `Assessment Target`: `NONE`
+`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `IN_PROGRESS` `User Style`: `NONE`
+`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Frame 2 Desktop-rework test correction: superseded prompt cases, resolved-mypy test errors, DEV-026/027/028/029 contracts`
 
-## Current Full Verification — final candidate 01df98e1, 2026-10-06
+## Current Scoped Recovery — Frame 2 Desktop-rework test correction, 2026-10-07
 
-REVERIFY, FULL/NONE, for Tester-owned VERIFICATION Frame 2 (From/ResumeAt REVIEWING_FINAL, RerunThrough NONE) raised by .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-003. Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable. User Style NONE. Outcome: **FULL Tester gate PASSED** for the final retained candidate.
+REVERIFY/CORRECTION for active Tester-owned nested Frame 2 (From/ResumeAt DEVELOPING, FailureType VERIFICATION, RerunThrough NONE). Exact reason: Tester-owned formal cases assert superseded contracts and fail mypy with resolved imports: test_progression_prompts.py test_teaching_sequence_workflow, test_shared_legacy_enrichment and test_curriculum_review_workflow expect a connectionKind all call, 'one direct page of 25' and one review scan; 63 resolved-mypy errors in 9 tests/ files. Correct them and assess the DEV-026/027/028/029 contracts before Developer resumes DEV-022. Developer Suspended Assignment 7 preserves DEVELOPMENT/NONE under this reason. ARCHITECTING-owned Frame 1 (Desktop rework; ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified session claim. User Style NONE. Outcome: **scoped CORRECTION gate PASSED**; report stays IN_PROGRESS.
 
 ## Assessed Inputs
 
-HEAD f541139, clean tree. Final candidate data/source_artifacts/learning_progressions/client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb (SHA256 01df98e1…, 657 members) and bundle/. Since the 15c80166 full pass (a2ee9a0 plus Tester's b287810 test), backend/src, backend/tests, pyproject, uv.lock, fastmcp.json, config, data/graph_packages and the MCPB manifest are byte-identical (`git diff a2ee9a0 HEAD` touches only the already-assessed test_progression_evidence.py 55367197…); changes are documentation (backend/README.md shipped as README.md, docs/, packaging/mcpb/README.md, README.md), review/documentation records and the Developer plan. E4 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate.
+Entry HEAD 5aa24aa (DEV-026/029 3e39e99, DEV-027 dc849ad, DEV-028 a0efa57 and 5aa24aa); dirty tree only STATE.md and the Developer plan (routing records). E5 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/desktop-rework-correction: entry-inputs.txt / final-inputs.txt hash 172 tracked backend/.github/packaging/config inputs; prior-verification.md preserves the previous report. Contract: scope 2eabb26b… (37 current ACs, unchanged), architecture f95eae97… sections "Desktop rework correction", "Curriculum-review scans", "Per-kind direct calls" (incl. nested Frame 2 support-plan wording), "Discovery of included graph types and LP availability", "Component citation text" and the Frame 1/2 technical criteria for AC-013/014/015/016/019/029; context 64d9b6d5… unchanged; plan de0d4953… (IN_PROGRESS, STEPWISE, AFTER_IMPLEMENTATION/NONE; DEV-026/027/028/029 DONE, DEV-022 PENDING). Developer self-checks and feedback scripts are diagnostic input only. All backend/src, pyproject, uv.lock, config, packaging, .github and .pre-commit-config.yaml are byte-identical to HEAD at exit.
+
+Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR, MYPY/RUFF caches, PYLINTHOME and COVERAGE_FILE in session temp (sandbox). Autouse socket guard. No model/paid service, deployment, package mutation or application edit.
 
 ## Acceptance Evidence
+
+| AC / technical criterion | Tests or checks | Disposition and evidence |
+| --- | --- | --- |
+| AC-013, AC-016 / Per-kind direct calls (Frame 2) | Corrected test_progression_prompts::test_teaching_sequence_workflow (six packages) and ::test_shared_legacy_enrichment (teacher guide, study support, handbook, multigrade) via shared assert_per_kind_direct_calls: exactly outgoing_builds, incoming_builds, related in order, limit 25, no cursor, node placeholder, valid GetStandardProgressionsRequest, at-most-9/requested-maximum/may-return-fewer/no-nextCursor/incomplete-kind/dedup wording, no connectionKind all and no fixed-count promise; related never sequence hops. Native = tool text by test_single_type_review… and existing seven-variant parity rows. | VERIFIED for scoped correction. Controls: both fail at dc849ad (pre-DEV-028). |
+| AC-014 / support-plan page-limit wording (nested Frame 2) | test_support_plan_workflow strengthened: incoming_builds and related only, limit 25, no cursor, requested-maximum wording on both calls, incomplete-kind wording for incoming builds and related concepts, no "page of 25". | VERIFIED. Control: fails at a0efa57 (before the wording change), passes now. |
+| AC-015 / Curriculum-review scans (Frame 1) | Corrected test_curriculum_review_workflow (six packages, types omitted): 4 calls — statistics, buildsTowards then relatesTo single-type scans identical apart from type (source scope, selector, limit 25, no cursor), get_learning_progression; per-scan 3-page budget, cursor isolation, fourth-page stop, incomplete-type, 5-per-type balance, never-sum and existing disclosure phrases; no fixed-count promise. New test_single_type_review_renders_only_that_scan: native prompt (relationship_types JSON string) = get_workflow_instructions (relationshipTypes), effectiveRequest carries it, only the relatesTo scan. New test_review_relationship_types_are_validated [duplicate, unknown hasChild]. New test_rendered_relates_scan_reaches_stored_relates_edges: Ghana Mathematics BASIC 5 review rendered, each scan executed as written through real search_learning_progressions (own cursor, at most 3 pages): relatesTo scan returns only stored relatesTo edges (non-empty), buildsTowards scan only buildsTowards. | VERIFIED. Controls: all five fail at dc849ad. |
+| AC-019 / Discovery included types and LP availability (Frame 1) | New test_progression_discovery_text: graphTypes rows [learning_progressions], [academic_standards], none — each pages through all six snapshots by real cursors at limit 2, text IDs = structured; list_frameworks text has Routing/Included lines (no single "Graph types:"), structured includedGraphTypes, per package learning_progressions=available with builds_towards/relates_to equal to get_framework_statistics; get_framework per package included types, LP/LP provenance true, counts equal statistics; get_capabilities server routing/included lines, structured includedGraphTypes and six per-package LP blocks equal statistics; undeclared-LP summary renders unavailable and zeros. | VERIFIED. Control at c347140 (pre-DEV-026): LP filter row, all text cases and undeclared case fail; routing and no-filter rows pass there too, so they return exactly what they returned before. |
+| AC-016, AC-029 / Component citation text (Frame 1) | New test_component_citation_text: on all six packages, the most-supported standard (stable tie-break) — header Standard and Standard learning components URIs are among the tool's resource links; per component (text order = structured) Support relationship ID = structured relationshipId, stored endpoints component -> standard, Direction line, Component URI and (exactly when declared) Component provenance URI among get_learning_component links; Support relationship URI addresses the ID and its text-only read_evidence replay equals the native read and contentSha256. Rights case through the real tool (catalog package with standard resources denied): every URI line marked "not readable under package rights", no kgfegmcp:// URI, structured unchanged, all relationship IDs printed, all non-URI lines identical. | VERIFIED. Controls: both fail at 3e39e99 (pre-DEV-027). |
+| AC-025 / static checks with resolved imports (DEV-029) | Resolved mypy on tests/ (CI form) 63 errors at entry (stdout 5307f3a0…, equal to Developer's list) → 0; CI src/tests mypy, pre-commit hook form (root, --config-file) on 19 test modules, isort, black, ruff, interrogate 100%, pylint src/tests 10.00/10 all exit 0. Type fixes use validated identifier values (TypeAdapter), typed route helpers, explicit None/isinstance narrowing (StandardNode endpoints) and documented casts only for the existing namespace doubles; no assertion weakened. | VERIFIED for scoped correction; whole AC-025 (independent full acceptance) AWAITING_IMPLEMENTATION DEV-022 and future FULL/NONE. |
+| AC-030, AC-031 / workflow variants | Existing seven-variant native/tool parity rows rerun and pass with DEV-028 text; new single-type parity scenario above. | Scoped regression VERIFIED. |
+| AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-017, AC-018, AC-023, AC-024, AC-028, AC-033 | Application source/data unchanged by Tester; full CI suite 117 passed (all prior LP, evidence, AS/LC regression and removal cases). | Scoped regression VERIFIED; full reconciliation future FULL/NONE. |
+| AC-020, AC-032 | Desktop rework design read as input. | Inspected; full independent reconciliation remains. |
+| AC-021, AC-022, AC-034, AC-035 | Smoke expectations, rebuilt 0.4.0 candidate, user-run repository/staged STDIO and loopback HTTP. | AWAITING_IMPLEMENTATION DEV-022. |
+| AC-026, AC-027, AC-036, AC-037 | Documenter (incl. D1 walkthrough wording) after implementation. | PENDING later-role dependencies (Documenter). |
+
+## Scenario Budget
+
+All historical allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8, evidence.py 6, workflow_instructions.py 8, mcp/tools/workflows.py 8, prompts/service.py 6, mcp/tools/learning_progressions.py 5/5; others 5). User explicitly approved on 2026-10-07: `prompts/learning_progressions.py` 5→9 and `prompts/service.py` 6→7 for AC-015 relationship_types evidence; no other increase.
+
+Corrections reuse existing allocations: teaching sequence, curriculum review (types omitted), optional enrichment (four legacy workflows) and support plan are the same setups and outcomes under the current contract; the mypy fixes change no scenario.
+
+| Source file (backend/src/kgfegmcp/) | Reused coverage | Active-change allocations this assessment | User additions |
+| --- | --- | --- | --- |
+| `prompts/learning_progressions.py` | 5 corrected reservations | +4: single-type selection, duplicate types, unknown type, Ghana BASIC 5 relatesTo execution → 9/9 | 5→9 approved |
+| `prompts/service.py` | 6 prior | +1: single-type selection threads relationship_types → 7/7 | 6→7 approved |
+| `mcp/prompts/learning_progressions.py` | 3 prior | +1: single-type native retrieval → 4/5 | NONE |
+| `mcp/prompts/arguments.py` | NONE | 1: JSON-array relationship_types argument → 1/5 | NONE |
+| `services/frameworks.py` | NONE | 3: LP filter, routing filter, no filter (rows) → 3/5 | NONE |
+| `catalog/repository.py`, `catalog/models.py` | NONE | 1 each: included-type union seen through the LP filter row | NONE |
+| `services/models.py` | NONE | 1: summary includedGraphTypes (list_frameworks text case) | NONE |
+| `mcp/tools/frameworks.py` | NONE | 3: list text, get_framework text, undeclared-LP summary | NONE |
+| `services/capabilities.py`, `mcp/tools/capabilities.py` | NONE | 1 each: capabilities text/structured | NONE |
+| `mcp/tools/learning_components.py` | NONE | 2: citation handles readable, rights-denied marking | NONE |
+
+Unknown-type rejection is charged to the new argument's request model (prompts/learning_progressions.py), not lp_models (its enum reservation is unchanged). DEV-029 configuration and annotation-only src fixes are exercised by the static checks, not scenarios. Six-package loops are one property each over the finite accepted set; no random generator.
+
+## Execution Evidence
+
+Receipts E5/<label>.command.json (argv, cwd, environment names, exit code, stdout/stderr hashes); repository cwd.
+- entry-suite: `uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider -m 'not costs-money' tests` exit 1, 101 passed / 3 failed — exactly the three superseded cases. mypy-tests-entry: exit 1, 63 errors in 9 files.
+- Tester iterations (not evidence): first unavailable-capability rewrite used dataclasses.replace and tripped the real runtime's manifest invariant, restored to the namespace double with a documented cast; one component request used the wrong field shape (nodeId), corrected; two new-file mypy annotations; the first static receipt loop failed to spawn commands (zsh quoting) and was rerun under the same labels; the first pre-commit-form mypy failed in uv's offline rebuild (precommit-mypy-tests-envfail.*), rerun with --locked --no-sync.
+- Controls (E5/controls/<commit>: git-archived backend/src at that commit, current tests, main venv, PYTHONPATH to archived src): c347140 5 failed / 2 passed (routing and no-filter rows pass); 3e39e99 2 failed; dc849ad 8 failed / 12 passed (exactly the corrected and new DEV-028 cases); a0efa57 1 failed (support-plan wording).
+- ci-suite (exact CI command with coverage): exit 0, **117 passed** (157 s; 104 prior + 13 new collected cases), total coverage 66%. Pre-existing pytest-asyncio warning unchanged.
+- static-isort/black/ruff-src/ruff-tests/interrogate/mypy-src (118 files)/mypy-tests (21 files)/pylint-src/pylint-tests (CI linting.yml forms): all exit 0; precommit-mypy-tests (hook form from repository root on 19 test modules): exit 0.
+- Preservation: final-inputs.txt differs from entry only in the nine modified test/fixture files; new test_component_citation_text.py (0fc404d4…) and test_progression_discovery_text.py (22b3e2f4…). Identities in E5/test-identities.txt. No application, config, data, packaging, contract, plan or other owner edit; STATE blocker set and cleared for the budget decision.
+
+## Open Findings and Dependencies
+
+- Active correction VERIFIED. New implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned obligation: NONE. Budget question resolved (approved); BlockedOn cleared.
+- Remaining full-gate gaps are only approved unfinished DEV-022 (smoke/schema expectations for the new fields, text and prompt argument; rebuilt 0.4.0 candidate and closure; user-run repository STDIO, staged STDIO and loopback HTTP) and the later FULL/NONE assessment of all 37 ACs; Documenter dependencies AC-026/027/036/037 (including D1) unchanged.
+- Local evidence does not establish Desktop UI behavior, composed teaching output or deployed claude.ai acceptance.
+
+## Resume or Handoff
+
+Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. Associated with nested Frame 2's exact reason and Developer Suspended Assignment 7 (DEVELOPMENT/NONE). No Tester assignment was suspended (the prior FULL report was complete for the earlier candidate and is history below). No downstream role precedes unfinished Developer work, so RerunThrough NONE stands: pop only Frame 2 and RESUME DEVELOPING, From TESTING, FailureType NONE; preserve Frame 1. Developer restores Suspended Assignment 7, reconciles the test-file identities above, and proceeds to DEV-022 under STEPWISE. No CHECKPOINT, full completion or Reviewer handoff. The future FULL/NONE assessment must re-establish the rebuilt candidate, transports and all 37 ACs.
+
+## Historical Full Verification For Final Candidate 01df98e1
+
+Superseded by the Desktop-testing rework (Frame 1) and the section above; retained as history.
+
+### Prior Full Verification — final candidate 01df98e1, 2026-10-06
+
+REVERIFY, FULL/NONE, for Tester-owned VERIFICATION Frame 2 (From/ResumeAt REVIEWING_FINAL, RerunThrough NONE) raised by .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-003. Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable. User Style NONE. Outcome: **FULL Tester gate PASSED** for the final retained candidate.
+
+#### 01df98e1 Assessed Inputs
+
+HEAD f541139, clean tree. Final candidate data/source_artifacts/learning_progressions/client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb (SHA256 01df98e1…, 657 members) and bundle/. Since the 15c80166 full pass (a2ee9a0 plus Tester's b287810 test), backend/src, backend/tests, pyproject, uv.lock, fastmcp.json, config, data/graph_packages and the MCPB manifest are byte-identical (`git diff a2ee9a0 HEAD` touches only the already-assessed test_progression_evidence.py 55367197…); changes are documentation (backend/README.md shipped as README.md, docs/, packaging/mcpb/README.md, README.md), review/documentation records and the Developer plan. E4 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate.
+
+#### 01df98e1 Acceptance Evidence
 
 | AC / technical criterion | Evidence | Disposition |
 | --- | --- | --- |
@@ -26,24 +97,24 @@ HEAD f541139, clean tree. Final candidate data/source_artifacts/learning_progres
 | AC-020, AC-032 | Architecture and client-support assessment inspected. | VERIFIED by inspection. |
 | AC-026, AC-027, AC-036, AC-037 | Documenter record and final review own documentation evidence; Tester confirms only that the shipped README in the final archive equals backend/README.md. | PENDING/owned by Documenter and final review (not Tester evidence). |
 
-## Scenario Budget
+#### 01df98e1 Scenario Budget
 
 No new scenario; all allocations and approved ceilings carried unchanged. Closure/stage reruns reuse the existing distribution allocation.
 
-## Execution Evidence
+#### 01df98e1 Execution Evidence
 
 - stdio-stage (outside sandbox; sandbox blocks the smoke child's default uv cache, as recorded earlier): exit 0, status passed, 19/9/1/14/15.
 - closure: exit 0 (sourceDrift empty; changedFromVerified15c80166 = [README.md]; readmeCurrent true).
 - Reused with justification: f002-reverify ci-suite/final-suite (104 passed), CI static, stdio-repo, http; earlier package validations (graph packages unchanged).
 - Preservation: no application/test/data/config/packaging/owner-artifact edit; only this report and STATE.
 
-## Open Findings and Dependencies
+#### 01df98e1 Open Findings and Dependencies
 
 - Implementation/upstream/verification defects: NONE. Required unrun/failed/flaky/uncovered checks: NONE. Blocking question: NONE.
 - .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-003 correction is ready for Reviewer recheck; Reviewer owns its status.
 - Local evidence does not establish Desktop UI behavior, composed teaching output or deployed claude.ai acceptance.
 
-## Resume or Handoff
+#### 01df98e1 Resume or Handoff
 
 Tester owns active Frame 2 with RerunThrough NONE and no downstream rerun needed (no product, documentation or archive change): pop Frame 2 and RESUME REVIEWING_FINAL (From TESTING, FailureType NONE). Frame 1 continues through SYNCHRONIZING. Reviewer (FINAL_DELIVERABLE) rechecks from this section and E4.
 
