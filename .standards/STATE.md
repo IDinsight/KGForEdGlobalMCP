@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `ARCHITECTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `USER_REWORK` `From`: `DEVELOPING` `FailureType`: `ARCHITECTURE` `Reason`:
-`User asked to align support-planning page-limit wording with the other workflows; the design says support planning is unchanged.`
+`Kind`: `RESUME` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
+`Nested Frame 2 design: support planning adopts the shared page-limit wording, calls unchanged; no rerun, popped. Developer resumes Suspended Assignment 6.`
 
 ## Recovery
 
@@ -32,12 +32,6 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
 `Reason`: `User rework after Desktop testing: LP availability missing from discovery text/filter (AC-019), component support relationship IDs absent from tool text (AC-016/AC-029), curriculum review cannot reach relatesTo (AC-015), walkthrough wording (AC-036).`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
-
-### Frame 2
-
-`From`: `DEVELOPING` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
-`Reason`: `User rework 2026-10-07: support-planning workflow still promises one page of 25 for its incoming/related calls; align its page-limit wording with the other workflows (design currently says support planning is unchanged).`
-`ResumeAt`: `DEVELOPING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 

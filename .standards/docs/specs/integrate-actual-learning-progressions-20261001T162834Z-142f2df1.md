@@ -222,7 +222,7 @@ version at 0.4.0 and the global prompt library at 1.4.0 (user confirmed on
 - `AC-011`: Existing relationship URI plus new per-edge provenance URI and verified partitions.
 - `AC-012`: Closed artifact policy, existing resource rights/limits, and source/content hashes.
 - `AC-013`: learning_progression_teaching_sequence workflow contract, with per-kind direct calls (Frame 2, 2026-10-07).
-- `AC-014`: learning_progression_support_plan workflow contract.
+- `AC-014`: learning_progression_support_plan workflow contract, with the shared page-limit wording (nested Frame 2, 2026-10-07).
 - `AC-015`: learning_progression_curriculum_review workflow contract, with the 2026-10-07 per-type scans and relationship_types argument.
 - `AC-016`: Shared bounded LP retrieval instructions in four existing teaching/study workflows, with per-kind direct calls (Frame 2); components-for-standard text carries the support relationship IDs/URIs they cite (2026-10-07).
 - `AC-017`: Explicit hypothesis removal and fresh profile/prompt configurations.
@@ -662,7 +662,12 @@ Teaching-sequence traversal and path steps are unchanged.
   related concepts are never sequence hops. Deduplicate relationship IDs across
   calls and standards.
 - The full-provenance cap stays 10 distinct relationships per workflow invocation.
-- Support planning already uses separate incoming and related calls; it is unchanged.
+- Support planning already uses separate incoming and related calls, so its calls,
+  limits and steps are unchanged. Its wording follows the same page-limit rule
+  (user rework, nested Frame 2, 2026-10-07): replace "one page of 25" with "reads
+  one page; limit 25 is the maximum requested and a size-limited page may return
+  fewer; do not follow nextCursor", and say that a non-null nextCursor means that
+  kind is incomplete for the target and must be reported.
 - No service, connection-kind, ordering, cursor or schema change.
 
 ### Discovery of included graph types and LP availability (Frame 1, 2026-10-07)
@@ -1003,6 +1008,7 @@ Rendering, retrieval, and composed teaching output are distinct evidence states.
 - `AC-019` (Frame 1, 2026-10-07): For all six accepted snapshots, list_frameworks, get_framework and get_capabilities text name `learning_progressions` among included graph types (routing types stay `academic_standards`) and show each package's LP availability with buildsTowards/relatesTo counts equal to statistics. `graphTypes: [learning_progressions]` returns all six; `[academic_standards]` and an empty filter return exactly what they returned before.
 - `AC-016`, `AC-029` (Frame 1, 2026-10-07): For every component listed in get_learning_components_for_standard text, the support relationship ID and its relationship URI, component URI and (when declared) component provenance URI appear in ordinary text, equal those in structuredContent/resource links, and the relationship URI reads through native resources and read_evidence. Rights-denied URIs are marked, not silently dropped.
 - `AC-013`, `AC-016` (Frame 2, 2026-10-07): The rendered teaching-sequence workflow and the shared optional step of all four existing teaching/study workflows (native and get_workflow_instructions, identical text) contain, per retained standard, exactly the outgoing_builds, incoming_builds and related direct calls with limit 25 and no cursor following, at most 9 in total, and no `connectionKind: all` direct call. No rendered text promises a fixed number of returned edges per page.
+- `AC-014` (nested Frame 2, 2026-10-07): The rendered support-planning workflow (native and get_workflow_instructions, identical text) keeps exactly its incoming_builds and related calls with limit 25 and no cursor following, describes limit 25 as a requested maximum that size-limited pages may not fill, reports a non-null nextCursor as an incomplete kind for the target, and contains no "one page of 25" promise.
 - `AC-015` (Frame 1, 2026-10-07): With relationship_types omitted, the rendered curriculum review (native and get_workflow_instructions, identical text) contains one single-type discovery scan per type, buildsTowards then relatesTo, each capped at 3 pages with its own cursor; with one type selected, only that scan. No rendered text promises a fixed per-page or 75-edge return. On Ghana Mathematics Basic 5 the relatesTo scan returns stored relatesTo edges when any exist in scope. Invalid/duplicate types fail validation.
 
 ## Build Plan
@@ -1190,3 +1196,10 @@ development work): per-kind direct calls for the teaching-sequence and shared
 optional workflows; version stays 0.4.0. Coverage for AC-013/AC-016 is updated; no
 other contract changes. DEVELOPING had produced nothing yet, so no rerun is needed:
 pop Frame 2 and RESUME at DEVELOPING. Frame 1 keeps RerunThrough SYNCHRONIZING.
+
+Nested Frame 2 (ARCHITECTING-owned, 2026-10-07, user rework from DEVELOPING): the
+support-planning workflow adopts the shared page-limit wording; its calls and bounds
+do not change. Only AC-014 coverage and criteria change. The work belongs to
+Developer's interrupted assignment (Suspended Assignment 6), so no other rerun is
+needed: pop this frame and RESUME at DEVELOPING. Frame 1 keeps RerunThrough
+SYNCHRONIZING.
