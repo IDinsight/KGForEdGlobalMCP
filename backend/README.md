@@ -1,5 +1,7 @@
 # Curriculum Knowledge Graph MCP backend
 
+> **LP rollout:** Profile-1.0 packages remain supported. LP examples and full STDIO/HTTP smoke checks require the later dataset. See [rollout and acceptance](../docs/development/lp-migration.md).
+
 This package contains the curriculum-agnostic FastMCP application and its ordinary
 domain services. It loads immutable graph packages, builds the accepted catalog and
 search indexes, exposes deterministic tools, resources, and prompts, and supports local
@@ -22,13 +24,13 @@ The application uses:
 
 The fixed MCP inventory is:
 
-- **13 tools**
+- **19 tools**
 - **1 fixed resource**
-- **12 resource templates**
-- **7 prompts**
+- **14 resource templates**
+- **9 prompts**
 
 Application state is constructed once inside the FastMCP lifespan. The accepted graph
-packages, catalog service, search service, comparison service, progression-evidence
+packages, catalog service, search service, comparison service, learning-progressions
 service, resource service, and prompt service share the same immutable runtime objects.
 
 ## Backend layout
@@ -271,7 +273,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.1.0.mcpb
+dist/kgfegmcp-0.4.0.mcpb
 ```
 
 The packaging command stages:
@@ -367,7 +369,13 @@ get_learning_components_for_standard
 get_framework_statistics
 get_capabilities
 compare_framework_evidence
-collect_progression_evidence
+get_learning_progression
+get_standard_progressions
+search_learning_progressions
+traverse_learning_progressions
+get_learning_progression_paths
+read_evidence
+get_workflow_instructions
 ```
 
 ### Prompts
@@ -377,7 +385,9 @@ student_study_support
 teacher_guide_draft
 student_handbook_section
 multigrade_lesson_plan
-inferred_progression_hypothesis
+learning_progression_teaching_sequence
+learning_progression_support_plan
+learning_progression_curriculum_review
 administrator_alignment_review
 cross_framework_comparison
 ```
@@ -411,22 +421,26 @@ A zero-match page means only that the exact query did not match retained descrip
 under the supplied filters. After identifying a relevant grouping, use bounded graph
 context to recover related items that do not contain any query token.
 
-The progression prompt accepts `local_grade_labels` and `normalized_grades` as
-typed arrays. MCP prompt clients serialize these complex values as JSON strings, so
-enter JSON arrays such as `["Grade 1", "Grade 2"]`, not a comma-separated
-prose string. It renders one direct
-`collect_progression_evidence` call. The ordinary progression-evidence service
-validates and canonically orders those scopes, excludes grouping nodes from the
-candidate count, deduplicates exact standards, applies deterministic grade-balanced
-selection, reports requested scopes without retained evidence, and returns no more than
-`candidate_limit` retained candidates.
+The three stored-progression prompts use exact package-local standards, generated
+`buildsTowards`/`relatesTo` edges, provenance and supporting Learning Components.
+Grade/filter collections are JSON-array strings at the MCP prompt boundary. The tools
+use nested `request` objects and finite page/work/path/byte bounds. See
+[progression tools](../docs/reference/progression-tool.md), [workflow examples](../docs/guides/progression.md) and [local preparation](../docs/development/framework-package.md#learning-progression-inputs-and-updates).
+
+The five progression tools return their complete result as JSON text as well as
+structured content, so text-only clients see every edge, statement, warning, link and
+cursor. `read_evidence` reads any resource URI in bounded windows under the same rights
+and size limits, and `get_workflow_instructions` returns the rendered instructions of the
+three progression workflows and four teaching/study workflows for clients without native
+prompts. See [access tools](../docs/reference/access-tools.md) and
+[Claude Desktop and claude.ai](../docs/getting-started/claude-clients.md).
 
 ### Resources
 
 The server registers:
 
 - `kgfegmcp://catalog`; and
-- twelve `kgfegmcp://` resource templates for framework, manifest, validation,
+- fourteen `kgfegmcp://` resource templates for framework, manifest, validation,
   unresolved evidence, interpretation profile, declared artifacts, standards, learning
   components, provenance, and relationships.
 
@@ -446,7 +460,8 @@ Backend changes should preserve these boundaries:
 - avoid server-side LLM calls and MCP sampling; and
 - reserve STDIO stdout for protocol messages.
 
-The root `instructions.md` is the architecture and implementation source of truth.
+Use the current project instructions in `AGENTS.md` and the maintained architecture
+and interface documentation under `docs/`.
 
 ## Optional quality commands
 
@@ -510,4 +525,5 @@ loggers and remain on stderr under FastMCP's logging lifecycle.
 
 - [`../README.md`](../README.md): project setup and Claude Desktop onboarding
 - [`../packaging/mcpb/README.md`](../packaging/mcpb/README.md): MCP Bundle packaging
-- [`../instructions.md`](../instructions.md): architecture and implementation source of truth
+- [`../AGENTS.md`](../AGENTS.md): project agent instructions
+- [`../docs/architecture.md`](../docs/architecture.md): maintained architecture

@@ -22,7 +22,7 @@ from fastmcp import Context
 from fastmcp.tools.base import ToolResult
 
 # Package Library
-from kgfegmcp.errors import KGFEGMCPError
+from kgfegmcp.errors import KGFEGMCPError, ResourceAccessDeniedError
 from kgfegmcp.mcp.errors import tool_error_boundary
 from kgfegmcp.mcp.tools import (
     READ_ONLY_TOOL_ANNOTATIONS,
@@ -46,7 +46,9 @@ from kgfegmcp.resources.models import ResourceKind
 from kgfegmcp.resources.uri import (
     learning_component_provenance_uri,
     learning_component_uri,
+    relationship_uri,
     standard_learning_components_uri,
+    standard_uri,
 )
 from kgfegmcp.search.models import LearningComponentSearchMode
 from kgfegmcp.services.frameworks import FrameworkService
@@ -72,6 +74,7 @@ if TYPE_CHECKING:
     from kgfegmcp.catalog.models import CatalogGraphPackage
     from kgfegmcp.domain.identifiers import NodeId
     from kgfegmcp.graph.models import LearningComponentNode
+    from kgfegmcp.resources.policy import ResourcePolicy
     from kgfegmcp.search.models import (
         LearningComponentSearchHit,
         SupportedStandardReference,
@@ -88,6 +91,7 @@ _COMPONENT_INTERPRETATION = (
     "curriculum; its wording, tags, and support confidence do not by themselves "
     "establish equivalence, mastery, prerequisites, progression, or difficulty."
 )
+_NOT_READABLE = "not readable under package rights"
 _PARENT_CODE_GUIDANCE = (
     "Components attach to the codes the pipeline decomposed, so an exact query "
     "against a parent code returns nothing when only its children carry components; "
@@ -202,28 +206,60 @@ def _format_component_result(result: GetLearningComponentResult) -> str:
 
 
 def _format_components_for_standard(
+    *,
+    package: CatalogGraphPackage,
+    policy: ResourcePolicy,
     result: GetLearningComponentsForStandardResult,
 ) -> str:
-    """Format every component supporting one exact standard.
+    """Format every component supporting one exact standard with citation handles.
 
     Parameters
     ----------
+    package
+        Exact accepted graph package whose identity, capabilities and rights govern
+        the printed URIs.
+    policy
+        Shared resource policy deciding whether each URI family is readable.
     result
         Supporting components, the selected standard, and package evidence.
 
     Returns
     -------
     str
-        Stable readable supporting-component evidence.
+        Stable readable supporting-component evidence, including the support
+        relationship ID and readable URIs for each component.
     """
 
+    identity = package.package_identity
     standard = result.standard
     lines = [
         f"Standard: {standard.statement_code or '[uncoded]'}",
         f"Node ID: {standard.node_id}",
-        f"Description: {_collapse_whitespace(standard.description)}",
+        f"Description: {_collapse_whitespace(standard.description or '[no description]')}",
         f"Statement type: {standard.statement_type or '[none]'}",
         f"Normalized statement type: {standard.normalized_statement_type or '[none]'}",
+        "Standard URI: "
+        + _permitted_uri(
+            package=package,
+            policy=policy,
+            resource_kind=ResourceKind.STANDARD,
+            uri=standard_uri(
+                framework_id=identity.framework_id,
+                node_id=standard.node_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+        ),
+        "Standard learning components URI: "
+        + _permitted_uri(
+            package=package,
+            policy=policy,
+            resource_kind=ResourceKind.STANDARD_LEARNING_COMPONENTS,
+            uri=standard_learning_components_uri(
+                framework_id=identity.framework_id,
+                node_id=standard.node_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+        ),
         f"Supporting learning components: {len(result.components)}",
     ]
 
@@ -233,6 +269,12 @@ def _format_components_for_standard(
                 "",
                 *_supporting_component_lines(
                     component=component, index=index, standard_id=standard.node_id
+                ),
+                *_supporting_component_citation_lines(
+                    component=component,
+                    package=package,
+                    policy=policy,
+                    standard_id=standard.node_id,
                 ),
             )
         )
@@ -501,6 +543,43 @@ def _learning_component_service(state: AppState) -> LearningComponentService:
     )
 
 
+def _permitted_uri(
+    *,
+    package: CatalogGraphPackage,
+    policy: ResourcePolicy,
+    resource_kind: ResourceKind,
+    uri: str,
+) -> str:
+    """Return one URI when package rights permit its family, or a marked denial.
+
+    Parameters
+    ----------
+    package
+        Exact accepted graph package whose rights govern the resource family.
+    policy
+        Shared resource policy, the same check used for resource links.
+    resource_kind
+        Closed resource family the URI addresses.
+    uri
+        Exact URI built from the package identity.
+
+    Returns
+    -------
+    str
+        The URI, or ``not readable under package rights`` when the family is denied,
+        so a denied handle is marked rather than silently omitted.
+    """
+
+    try:
+        policy.require_resource_access(
+            resource_kind=resource_kind, rights=package.rights
+        )
+    except ResourceAccessDeniedError:
+        return _NOT_READABLE
+
+    return uri
+
+
 def _supported_code_values(
     references: tuple[SupportedStandardReference, ...],
     *,
@@ -586,6 +665,93 @@ def _format_references(
         references, already_shown=already_shown, matched=matched
     )
     return "; ".join(values) if values else "[none]"
+
+
+def _supporting_component_citation_lines(
+    *,
+    component: SupportingLearningComponent,
+    package: CatalogGraphPackage,
+    policy: ResourcePolicy,
+    standard_id: NodeId,
+) -> list[str]:
+    """Format the citation handles for one component supporting the standard.
+
+    Parameters
+    ----------
+    component
+        Component and the stored supports relationship that declares it.
+    package
+        Exact accepted graph package whose identity, capabilities and rights govern
+        the printed URIs.
+    policy
+        Shared resource policy deciding whether each URI family is readable.
+    standard_id
+        The requested standard, the expected target of the supports relationship.
+
+    Returns
+    -------
+    list[str]
+        Support relationship ID, its URI and stored direction, the component URI and,
+        when the package declares detailed provenance, the component provenance URI.
+    """
+
+    identity = package.package_identity
+    node_id = component.node.node_id
+    relationship = component.relationship
+
+    # Print the stored orientation; the service selects supports edges running from
+    # the component to the requested standard, so the raw endpoints are a fallback.
+    if (
+        relationship.source_node_id == node_id
+        and relationship.target_node_id == standard_id
+    ):
+        direction = "component -> standard"
+    else:
+        direction = f"{relationship.source_node_id} -> {relationship.target_node_id}"
+
+    lines = [
+        f"   Support relationship ID: {relationship.relationship_id}",
+        "   Support relationship URI: "
+        + _permitted_uri(
+            package=package,
+            policy=policy,
+            resource_kind=ResourceKind.RELATIONSHIP,
+            uri=relationship_uri(
+                framework_id=identity.framework_id,
+                relationship_id=relationship.relationship_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+        ),
+        f"   Direction: {direction}",
+        "   Component URI: "
+        + _permitted_uri(
+            package=package,
+            policy=policy,
+            resource_kind=ResourceKind.LEARNING_COMPONENT,
+            uri=learning_component_uri(
+                framework_id=identity.framework_id,
+                node_id=node_id,
+                snapshot_id=identity.snapshot_id,
+            ),
+        ),
+    ]
+
+    if package.capabilities.has_detailed_provenance:
+        lines.append(
+            "   Component provenance URI: "
+            + _permitted_uri(
+                package=package,
+                policy=policy,
+                resource_kind=ResourceKind.LEARNING_COMPONENT_PROVENANCE,
+                uri=learning_component_provenance_uri(
+                    framework_id=identity.framework_id,
+                    node_id=node_id,
+                    snapshot_id=identity.snapshot_id,
+                ),
+            )
+        )
+
+    return lines
 
 
 def _supporting_component_lines(
@@ -835,7 +1001,9 @@ async def get_learning_components_for_standard(
         ).get_learning_components_for_standard(request)
         package = catalog_package(result.package.package_identity, state)
         return build_tool_result(
-            content=_format_components_for_standard(result),
+            content=_format_components_for_standard(
+                package=package, policy=state.resource_service.policy, result=result
+            ),
             resource_links=(
                 *standard_resource_links(
                     node=result.standard, package=package, state=state

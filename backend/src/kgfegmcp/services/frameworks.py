@@ -227,7 +227,7 @@ def _matches_currency(
 def _matches_graph_types(
     *, request: ListFrameworksRequest, snapshot: CatalogFrameworkSnapshot
 ) -> bool:
-    """Return whether one snapshot exposes any requested graph type.
+    """Return whether one snapshot includes any requested graph type.
 
     Parameters
     ----------
@@ -239,11 +239,13 @@ def _matches_graph_types(
     Returns
     -------
     bool
-        ``True`` when the filter is empty or any requested graph type is available.
+        ``True`` when the filter is empty or any requested graph type is included.
     """
 
+    # Match included types so a primary academic-standards package that also
+    # contains progressions is found; routing still uses available_graph_types.
     return not request.graph_types or bool(
-        set(request.graph_types).intersection(snapshot.available_graph_types)
+        set(request.graph_types).intersection(snapshot.included_graph_types)
     )
 
 

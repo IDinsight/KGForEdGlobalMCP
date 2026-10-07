@@ -43,7 +43,7 @@ from kgfegmcp.schemas import FrozenSchema
 ConfigurationKey = Annotated[
     str, StringConstraints(max_length=100, min_length=1, pattern=r"^[a-z][a-z0-9_]*$")
 ]
-PROFILE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.0")
+PROFILE_SCHEMA_VERSION: Final[SchemaVersion] = cast(SchemaVersion, "1.1")
 
 
 def _require_unique(*, field_name: str, values: tuple[str, ...]) -> None:
@@ -420,7 +420,6 @@ class CurriculumProfile(FrozenSchema):
     profile_id: ProfileId
     profile_schema_version: SchemaVersion = PROFILE_SCHEMA_VERSION
     profile_version: ProfileVersion
-    progression_heuristics: tuple[str, ...] = ()
     required_disclosures: tuple[str, ...] = ()
     rights: RightsPolicy
     source_role_capabilities: SourceRoleCapabilities = Field(
@@ -432,10 +431,53 @@ class CurriculumProfile(FrozenSchema):
     subject_mapping_status: SubjectMappingStatus
     subject_vocabulary: SubjectVocabulary
 
+    @model_validator(mode="before")
+    @classmethod
+    def accept_legacy_profile(cls, value: object) -> object:
+        """Read schema-1.0 profiles with an empty retired heuristics field.
+
+        Parameters
+        ----------
+        value
+            Raw profile input, left unchanged by compatibility processing.
+
+        Returns
+        -------
+        object
+            A copy without the empty legacy field, or the original input.
+
+        Raises
+        ------
+        ValueError
+            If legacy heuristics are nonempty, malformed, or declared twice.
+        """
+
+        if not isinstance(value, dict):
+            return value
+
+        version = value.get("profileSchemaVersion", value.get("profile_schema_version"))
+        if version != "1.0":
+            return value
+
+        legacy_keys = ("progressionHeuristics", "progression_heuristics")
+        present = [key for key in legacy_keys if key in value]
+        if len(present) > 1:
+            raise ValueError("Legacy progression heuristics must be declared once.")
+
+        if not present:
+            return value
+
+        if value[present[0]] not in ([], ()):
+            raise ValueError("Legacy progression heuristics must be empty.")
+
+        compatible = dict(value)
+        del compatible[present[0]]
+        return compatible
+
     @field_validator("profile_schema_version")
     @classmethod
     def validate_profile_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
-        """Require the exact repository-supported curriculum-profile schema version.
+        """Require a supported curriculum-profile schema version.
 
         Parameters
         ----------
@@ -453,10 +495,8 @@ class CurriculumProfile(FrozenSchema):
             If the profile declares an unsupported schema version.
         """
 
-        if value != PROFILE_SCHEMA_VERSION:
-            raise ValueError(
-                f"profile_schema_version must equal {PROFILE_SCHEMA_VERSION}."
-            )
+        if value not in {"1.0", PROFILE_SCHEMA_VERSION}:
+            raise ValueError("profile_schema_version must be 1.0 or 1.1.")
 
         return value
 
@@ -785,9 +825,6 @@ class CurriculumProfile(FrozenSchema):
         _require_unique(field_name="subject_aliases", values=self.subject_aliases)
         _require_unique(
             field_name="comparison_dimensions", values=self.comparison_dimensions
-        )
-        _require_unique(
-            field_name="progression_heuristics", values=self.progression_heuristics
         )
         _require_unique(
             field_name="required_disclosures", values=self.required_disclosures

@@ -56,10 +56,33 @@ Use normal pytest selectors for focused iteration, for example:
 uv --directory backend run --locked pytest tests/path/to/test_module.py -q
 ```
 
-The supplied snapshot used to prepare these docs does not contain `backend/tests/`, even
-though the project configuration and backend README describe that directory. If a
-checkout lacks the test suite, record that limitation explicitly rather than reporting
-pytest as a completed acceptance layer.
+The current suite contains real collected LP acceptance, algorithm, lookup/discovery, traversal/path, resource/rights, prompt, protocol and AS/LC regression cases under `backend/tests/kgfegmcp/`. Shared helpers and the portable pre-change hash fixture live under `backend/tests/fixtures/`. Empty collection (pytest exit 5) is failure, not acceptance.
+
+Tests must never call live LLM APIs or paid services. Mock those boundaries, including negative/error paths; the `costs-money` marker does not waive this rule. The current suite guards network connections; local protocol checks require no model. With the locked environment already installed, run without synchronization/network access:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 UV_OFFLINE=1 \
+  uv --directory backend run --locked --offline --no-sync \
+  pytest -q -p no:cacheprovider -m 'not costs-money' tests
+```
+
+Do not treat an offline environment flag alone as proof that test code cannot call a service; retain mocks/network guards and inspect actual assertions. Formal acceptance also needs current inputs, commands/results and limitations.
+
+## Tests during the staged LP rollout
+
+The default offline run executes algorithm, compatibility and applicable MCP checks.
+Tests marked `lp_dataset` report explicit skips until all six baseline packages
+declare stored LPs. They run automatically once the data is installed. Invalid packages
+and missing baseline frameworks fail rather than becoming skips. Synthetic algorithm
+fixtures need no installed LP evidence.
+
+After the final data PR, require complete dataset acceptance:
+
+    uv --directory backend run --locked --no-sync pytest -q -rs -m "not costs-money" --require-lp-dataset tests
+
+This strict option fails if any LP migration is missing. A run with dataset skips is
+not complete LP acceptance. STDIO/HTTP smoke commands also use fixed LP snapshot
+and edge identities and require the completed dataset. See [rollout and acceptance](lp-migration.md).
 
 ## What to test by subsystem
 
@@ -126,15 +149,24 @@ Test exact documented semantics rather than fuzzy expectations:
 ### Services
 
 Prefer service-level tests for framework discovery, standard retrieval, comparison, and
-progression evidence. Assert that services share package-local identities and do not
+stored progression evidence. Assert that services share package-local identities and do not
 invent alignment/progression relationships.
+
+### Stored learning progressions
+
+Cover original edge identity and per-edge provenance equality, directed builds and symmetric relates lookup, endpoint-scope facet conjunction, deterministic request-bound paging, branches/merges/alternative simple paths, cycles, depth/node/edge/work/queue/byte limits, complete empty versus unavailable/missing/incomplete cases, rights/hash failures and obsolete-surface refusal. Test an individually oversized entry both first and later; noncontinuable traversal must not silently drop it. A later path that does not fit must stop with `byte_limit` and `nextUnreturnedPath`, never fail earlier paths or clip a path. Controlled negative fixtures must not mutate terminal packages or call models.
+
+### Text-only and evidence access
+
+Clients may read only ordinary tool text. `test_progression_text_only.py` parses each of the five progression tools from its text block alone, requires it to equal `structuredContent`, and replays real cursors from that text. `test_progression_evidence.py` covers `read_evidence`: rejection of malformed URIs and extra request fields, Unicode-safe windows and record-bound cursors, byte-exact reassembly against native reads, native denials that paging cannot bypass (rechecked on every continuation), and a text-only journey that takes standard and learning-component IDs from tool text, builds links from the rendered **EVIDENCE LINKS** block and reads them without server-side URI constructors. `test_progression_workflow_tools.py` checks that `get_workflow_instructions` renders the same message as the native prompt, rejects the removed hypothesis workflow name, and fails rather than clipping oversized instructions. `test_progression_discovery_text.py` checks that the `graphTypes` filter matches included types (with cursor replay), that `list_frameworks`, `get_framework` and `get_capabilities` text shows routing and included graph types and LP counts equal to statistics, and that a package without declared progressions reads as unavailable. `test_component_citation_text.py` checks, on all six packages, that `get_learning_components_for_standard` text prints the support relationship IDs and URIs equal to the structured result and links, that the support relationship URI taken from text reads the same through `read_evidence` as natively, and that rights-denied families are marked. Prompt tests cover one discovery scan per relationship type, one direct call per connection kind, and the requested-maximum page wording. Size checks must count the whole emitted result, text and structured copy together, against both the byte and character ceilings.
 
 ### MCP adapters
 
 Adapter tests should focus on the protocol boundary:
 
 - public field aliases and strict input validation;
-- conversion from ordinary service results to FastMCP results;
+- conversion from ordinary service results to FastMCP results, including canonical JSON
+  text that parses to the structured result where that contract applies;
 - stable error mapping;
 - resource links;
 - explicit registration; and
@@ -232,8 +264,8 @@ Because both commands share one set of checks, the STDIO and HTTP transports can
 accepted against different inventories. See
 [Hosted deployment](../operations/deployment.md).
 
-A successful current server reports thirteen tools, one fixed resource, twelve resource
-templates, and seven prompts.
+A successful current server reports nineteen tools, one fixed resource, fourteen resource
+templates, and nine prompts.
 
 ## Public-surface change checklist
 
@@ -255,7 +287,9 @@ Install the documentation extra and build strictly:
 
 ```bash
 uv --directory backend sync --locked --extra docs
-uv --directory backend run --locked mkdocs build --strict
+project_root="$PWD"
+uv --directory backend run --locked mkdocs build --strict \
+  --config-file "$project_root/mkdocs.yml"
 ```
 
 For documentation that embeds machine-derived catalog facts, also verify those facts

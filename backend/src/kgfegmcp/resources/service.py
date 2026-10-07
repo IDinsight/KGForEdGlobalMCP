@@ -48,8 +48,15 @@ from kgfegmcp.errors import (
 )
 from kgfegmcp.packages.checksums import calculate_bytes_sha256
 from kgfegmcp.packages.models import DeclaredArtifactReference, LoadedGraphPackage
+from kgfegmcp.resources.lp import (
+    LP_PARTITION_NAMES,
+    partition_name,
+    summary_result,
+    validated_partition_index,
+)
 from kgfegmcp.resources.models import (
     LearningComponentProvenanceResult,
+    RelationshipProvenanceResult,
     ResourceDocument,
     ResourceKind,
     ResourceMetadata,
@@ -57,7 +64,7 @@ from kgfegmcp.resources.models import (
     ResourceSourceEvidence,
     StandardProvenanceResult,
 )
-from kgfegmcp.resources.policy import ResourcePolicy
+from kgfegmcp.resources.policy import ArtifactPolicyDecision, ResourcePolicy
 from kgfegmcp.resources.repository import ResourceRepository
 from kgfegmcp.resources.uri import (
     CATALOG_URI,
@@ -66,7 +73,9 @@ from kgfegmcp.resources.uri import (
     interpretation_profile_uri,
     learning_component_provenance_uri,
     learning_component_uri,
+    learning_progressions_uri,
     manifest_uri,
+    relationship_provenance_uri,
     relationship_uri,
     standard_learning_components_uri,
     standard_provenance_uri,
@@ -236,6 +245,51 @@ class ResourceService:
         if self.learning_component_service.catalog_service is not self.catalog_service:
             raise ValueError("ResourceService dependencies must share CatalogService.")
 
+    def _artifact_decision(
+        self, *, logical_name: str, runtime: CatalogPackageRuntime
+    ) -> ArtifactPolicyDecision:
+        """Apply closed policy and require exact index/manifest membership for shards.
+
+        Parameters
+        ----------
+        logical_name
+            Exact declared artifact slot, never a path or permissive prefix.
+        runtime
+            Owning accepted package with validated LP evidence.
+
+        Returns
+        -------
+        ArtifactPolicyDecision
+            Rights decision after any required partition membership checks.
+        """
+
+        if logical_name not in LP_PARTITION_NAMES:
+            return self.policy.artifact_decision(
+                logical_name=logical_name, rights=runtime.catalog_package.rights
+            )
+
+        if runtime.loaded_package.learning_progression_evidence is None:
+            raise ResourceNotFoundError(
+                message="The requested LP partition is unavailable."
+            )
+
+        # Denied bulk requests never read the index. Slot membership is verified next.
+        decision = self.policy.artifact_decision(
+            logical_name=logical_name,
+            rights=runtime.catalog_package.rights,
+            validated_partitions=(logical_name,),
+        )
+        index, _ = validated_partition_index(
+            loaded_package=runtime.loaded_package, repository=self.repository
+        )
+
+        if logical_name not in index.partitions:
+            raise ResourceNotFoundError(
+                message="The requested LP partition is unavailable."
+            )
+
+        return decision
+
     def _available_artifact_names(
         self, *, logical_names: tuple[str, ...], runtime: CatalogPackageRuntime
     ) -> tuple[ArtifactName, ...]:
@@ -254,12 +308,31 @@ class ResourceService:
             Generic artifact names the current rights permit, in deterministic order.
         """
 
-        rights = runtime.catalog_package.rights
         available: list[ArtifactName] = []
+        partitions: tuple[str, ...] = ()
+
+        if runtime.loaded_package.learning_progression_evidence is not None:
+            try:
+                self.policy.artifact_decision(
+                    logical_name=LP_PARTITION_NAMES[0],
+                    rights=runtime.catalog_package.rights,
+                    validated_partitions=LP_PARTITION_NAMES,
+                )
+                index, _ = validated_partition_index(
+                    loaded_package=runtime.loaded_package, repository=self.repository
+                )
+            except (ResourceNotFoundError, ResourceAccessDeniedError):
+                pass
+            else:
+                partitions = tuple(index.partitions)
 
         for logical_name in logical_names:
             try:
-                self.policy.artifact_decision(logical_name=logical_name, rights=rights)
+                self.policy.artifact_decision(
+                    logical_name=logical_name,
+                    rights=runtime.catalog_package.rights,
+                    validated_partitions=partitions,
+                )
             except (ResourceNotFoundError, ResourceAccessDeniedError):
                 continue
 
@@ -686,9 +759,7 @@ class ResourceService:
             framework_id=framework_id, snapshot_id=snapshot_id
         )
         logical_name = str(artifact_name)
-        decision = self.policy.artifact_decision(
-            logical_name=logical_name, rights=runtime.catalog_package.rights
-        )
+        decision = self._artifact_decision(logical_name=logical_name, runtime=runtime)
         content, reference = self.repository.read_artifact(
             loaded_package=runtime.loaded_package, logical_name=logical_name
         )
@@ -802,6 +873,58 @@ class ResourceService:
             source_artifacts=(evidence,),
         )
 
+    def learning_progressions(
+        self, *, framework_id: FrameworkId, snapshot_id: SnapshotId
+    ) -> ResourceDocument:
+        """Return sanitized public LP availability, counts and eligibility metadata.
+
+        Parameters
+        ----------
+        framework_id
+            Exact owning framework.
+        snapshot_id
+            Exact immutable snapshot; no current-snapshot guessing.
+
+        Returns
+        -------
+        ResourceDocument
+            Allowlisted numeric metadata with derived and original-summary hashes.
+        """
+
+        runtime = self._package_runtime(
+            framework_id=framework_id,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            snapshot_id=snapshot_id,
+        )
+        self.policy.require_resource_access(
+            resource_kind=ResourceKind.LEARNING_PROGRESSIONS,
+            rights=runtime.catalog_package.rights,
+        )
+        result, references = summary_result(
+            loaded_package=runtime.loaded_package, repository=self.repository
+        )
+        graph_package_id = runtime.catalog_package.package_identity.graph_package_id
+        return self._build_derived_document(
+            canonical_uri=learning_progressions_uri(
+                framework_id=framework_id, snapshot_id=snapshot_id
+            ),
+            package=runtime.catalog_package,
+            resource_kind=ResourceKind.LEARNING_PROGRESSIONS,
+            source_artifacts=(
+                self._manifest_evidence(
+                    graph_package_id=graph_package_id,
+                    loaded_package=runtime.loaded_package,
+                ),
+                *tuple(
+                    _source_evidence(
+                        graph_package_id=graph_package_id, reference=reference
+                    )
+                    for reference in references
+                ),
+            ),
+            value=result,
+        )
+
     def manifest(
         self, *, framework_id: FrameworkId, snapshot_id: SnapshotId
     ) -> ResourceDocument:
@@ -883,6 +1006,20 @@ class ResourceService:
 
         available_kinds.extend(self._available_standards_kinds(runtime))
 
+        if (
+            runtime.catalog_package.package_identity.graph_type
+            is GraphType.ACADEMIC_STANDARDS
+        ):
+            available_kinds.append(ResourceKind.LEARNING_PROGRESSIONS)
+
+            if (
+                runtime.catalog_package.capabilities.has_learning_progression_provenance
+                and self._permits_resource_kind(
+                    resource_kind=ResourceKind.RELATIONSHIP_PROVENANCE, runtime=runtime
+                )
+            ):
+                available_kinds.append(ResourceKind.RELATIONSHIP_PROVENANCE)
+
         if available_artifacts:
             available_kinds.append(ResourceKind.ARTIFACT)
 
@@ -950,6 +1087,113 @@ class ResourceService:
                 ),
             ),
             value=relationship,
+        )
+
+    def relationship_provenance(
+        self,
+        *,
+        framework_id: FrameworkId,
+        relationship_id: RelationshipId,
+        snapshot_id: SnapshotId,
+    ) -> ResourceDocument:
+        """Return one original full LP entry from its checksum-verified partition.
+
+        Parameters
+        ----------
+        framework_id
+            Exact owning framework.
+        relationship_id
+            Accepted buildsTowards or relatesTo identifier.
+        snapshot_id
+            Exact immutable snapshot.
+
+        Returns
+        -------
+        ResourceDocument
+            Original entry with notices and manifest/map/partition/index/edge hashes.
+
+        Raises
+        ------
+        ResourceNotFoundError
+            If the edge is not LP or mandatory provenance is unavailable.
+        """
+
+        runtime = self._package_runtime(
+            framework_id=framework_id,
+            graph_type=GraphType.ACADEMIC_STANDARDS,
+            snapshot_id=snapshot_id,
+        )
+        self.policy.require_resource_access(
+            resource_kind=ResourceKind.RELATIONSHIP_PROVENANCE,
+            rights=runtime.catalog_package.rights,
+        )
+        edge = runtime.graph_store.relationships_by_id.get(relationship_id)
+        evidence = runtime.loaded_package.learning_progression_evidence
+
+        if edge is None or edge.label not in {"buildsTowards", "relatesTo"}:
+            raise ResourceNotFoundError(
+                message="The requested stored LP edge is unavailable."
+            )
+
+        if evidence is None or not any(
+            row.relationship_id == relationship_id for row in evidence.judgments
+        ):
+            raise ResourceNotFoundError(
+                message="The requested LP edge has no accepted provenance."
+            )
+
+        index, index_reference = validated_partition_index(
+            loaded_package=runtime.loaded_package, repository=self.repository
+        )
+        name = partition_name(relationship_id)
+        content, partition_reference = self.repository.read_artifact(
+            loaded_package=runtime.loaded_package, logical_name=name
+        )
+        entries = _parse_json_object(content)
+        provenance = entries.get(relationship_id)
+
+        if len(entries) != index.partitions[name].entry_count or not isinstance(
+            provenance, dict
+        ):
+            raise ResourceNotFoundError(
+                message="The retained LP provenance entry is unavailable."
+            )
+
+        references = (
+            self.repository.artifact_reference(
+                loaded_package=runtime.loaded_package,
+                logical_name="learningProgressionProvenance",
+            ),
+            partition_reference,
+            index_reference,
+            self.repository.artifact_reference(
+                loaded_package=runtime.loaded_package, logical_name="relationships"
+            ),
+        )
+        graph_package_id = runtime.catalog_package.package_identity.graph_package_id
+        return self._build_derived_document(
+            canonical_uri=relationship_provenance_uri(
+                framework_id=framework_id,
+                relationship_id=relationship_id,
+                snapshot_id=snapshot_id,
+            ),
+            package=runtime.catalog_package,
+            resource_kind=ResourceKind.RELATIONSHIP_PROVENANCE,
+            source_artifacts=(
+                self._manifest_evidence(
+                    graph_package_id=graph_package_id,
+                    loaded_package=runtime.loaded_package,
+                ),
+                *tuple(
+                    _source_evidence(
+                        graph_package_id=graph_package_id, reference=reference
+                    )
+                    for reference in references
+                ),
+            ),
+            value=RelationshipProvenanceResult(
+                provenance=provenance, relationship_id=relationship_id
+            ),
         )
 
     def learning_component(

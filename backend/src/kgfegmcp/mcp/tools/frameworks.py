@@ -38,6 +38,7 @@ from kgfegmcp.services.models import (
     GetFrameworkResult,
     ListFrameworksRequest,
     ListFrameworksResult,
+    PackageSummary,
 )
 
 if TYPE_CHECKING:
@@ -46,7 +47,8 @@ if TYPE_CHECKING:
 
     # Package Library
     from kgfegmcp.bootstrap import AppState
-    from kgfegmcp.catalog.models import CatalogGraphPackage, CatalogSourceMetadata
+    from kgfegmcp.catalog.models import CatalogSourceMetadata
+    from kgfegmcp.domain.enums import GraphType
 
 
 def _format_boolean(value: bool) -> str:
@@ -117,9 +119,6 @@ def _format_framework_list(result: ListFrameworksResult) -> str:
     ]
 
     for snapshot in result.items:
-        graph_types = tuple(
-            graph_type.value for graph_type in snapshot.available_graph_types
-        )
         metadata = snapshot.source_metadata
         lines.extend(
             (
@@ -128,7 +127,14 @@ def _format_framework_list(result: ListFrameworksResult) -> str:
                 f"Framework ID: {snapshot.framework_id}",
                 f"Snapshot ID: {snapshot.snapshot_id}",
                 *_format_source_metadata(metadata),
-                f"Graph types: {_format_values(graph_types)}",
+                (
+                    "Routing graph types: "
+                    f"{_format_graph_types(snapshot.available_graph_types)}"
+                ),
+                (
+                    "Included graph types: "
+                    f"{_format_graph_types(snapshot.included_graph_types)}"
+                ),
                 "Graph packages:",
             )
         )
@@ -145,13 +151,13 @@ def _format_framework_list(result: ListFrameworksResult) -> str:
     return "\n".join(lines)
 
 
-def _format_graph_package(package: CatalogGraphPackage) -> list[str]:
+def _format_graph_package(package: PackageSummary) -> list[str]:
     """Format complete public metadata for one accepted graph package.
 
     Parameters
     ----------
     package
-        Accepted catalog graph package to render.
+        Accepted graph-package summary to render.
 
     Returns
     -------
@@ -166,6 +172,7 @@ def _format_graph_package(package: CatalogGraphPackage) -> list[str]:
     return [
         f"- Graph package ID: {identity.graph_package_id}",
         f"  Graph type: {identity.graph_type.value}",
+        f"  Included graph types: {_format_graph_types(package.included_graph_types)}",
         f"  Package revision: {identity.package_revision}",
         f"  Profile: {identity.profile_id}@{identity.profile_version}",
         f"  Code coverage: {capabilities.code_search.value}",
@@ -188,6 +195,14 @@ def _format_graph_package(package: CatalogGraphPackage) -> list[str]:
             f"{_format_boolean(capabilities.has_unresolved_relationships)}"
         ),
         f"  Multi-parent: {_format_boolean(capabilities.multi_parent)}",
+        (
+            "  Learning progressions: "
+            f"{_format_boolean(capabilities.has_learning_progressions)}"
+        ),
+        (
+            "  LP provenance: "
+            f"{_format_boolean(capabilities.has_learning_progression_provenance)}"
+        ),
         f"  Counts: {_format_package_counts(package)}",
         f"  Validation status: {package.validation_status.value}",
         f"  Rights review status: {rights.review_status.value}",
@@ -201,6 +216,23 @@ def _format_graph_package(package: CatalogGraphPackage) -> list[str]:
         ("  Generated derivatives: " f"{rights.allow_generated_derivatives.value}"),
         f"  Attribution: {rights.attribution_statement}",
     ]
+
+
+def _format_graph_types(graph_types: tuple[GraphType, ...]) -> str:
+    """Format ordered graph types by their exact public values.
+
+    Parameters
+    ----------
+    graph_types
+        Ordered graph types to render.
+
+    Returns
+    -------
+    str
+        Comma-separated graph-type values or ``none`` for an empty tuple.
+    """
+
+    return _format_values(tuple(graph_type.value for graph_type in graph_types))
 
 
 def _format_optional_value(value: object | None) -> str:
@@ -220,13 +252,13 @@ def _format_optional_value(value: object | None) -> str:
     return "none" if value is None else str(value)
 
 
-def _format_package_counts(package: CatalogGraphPackage) -> str:
+def _format_package_counts(package: PackageSummary) -> str:
     """Format exact declared counts for one accepted graph package.
 
     Parameters
     ----------
     package
-        Accepted catalog graph package whose counts must be rendered.
+        Accepted graph-package summary whose counts must be rendered.
 
     Returns
     -------
@@ -245,17 +277,20 @@ def _format_package_counts(package: CatalogGraphPackage) -> str:
     return (
         f"standards[{', '.join(standards_parts)}] "
         f"learning_components[nodes={package.counts.learning_component_nodes}] "
+        "learning_progressions["
+        f"builds_towards={package.counts.builds_towards_relationships}, "
+        f"relates_to={package.counts.relates_to_relationships}] "
         f"relationships_including_supports={package.counts.relationships}"
     )
 
 
-def _format_package_summary(package: CatalogGraphPackage) -> str:
+def _format_package_summary(package: PackageSummary) -> str:
     """Format one compact package summary for framework discovery output.
 
     Parameters
     ----------
     package
-        Accepted catalog graph package to summarize.
+        Accepted graph-package summary to summarize.
 
     Returns
     -------
@@ -264,13 +299,20 @@ def _format_package_summary(package: CatalogGraphPackage) -> str:
     """
 
     capabilities = package.capabilities
+    counts = package.counts
     identity = package.package_identity
+    learning_progressions = (
+        "available" if capabilities.has_learning_progressions else "unavailable"
+    )
     return (
         f"{identity.graph_package_id} | graph_type={identity.graph_type.value} | "
         f"profile={identity.profile_id}@{identity.profile_version} | "
         f"code_coverage={capabilities.code_search.value} | "
         f"text_search={_format_boolean(capabilities.text_search)} | "
-        f"learning_components={package.counts.learning_component_nodes} | "
+        f"learning_components={counts.learning_component_nodes} | "
+        f"learning_progressions={learning_progressions} | "
+        f"builds_towards={counts.builds_towards_relationships} | "
+        f"relates_to={counts.relates_to_relationships} | "
         f"validation={package.validation_status.value}"
     )
 

@@ -1,5 +1,7 @@
 # CLI commands
 
+> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
+
 The backend installs five operator-facing command-line applications. Run them through
 the repository's locked `uv` environment so the executable code and dependency graph
 match the checked-in project metadata.
@@ -27,6 +29,15 @@ uv --directory backend run --locked --no-dev kgfegmcp-validate-packages --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
 ```
+
+## Prepare Learning Progression inputs
+
+```bash
+uv --directory backend run --locked kgfegmcp-prepare-learning-progressions --help
+uv --directory backend run --locked kgfegmcp-prepare-learning-progressions
+```
+
+The command reads verified repository-local copies and their copy receipt, normalizes split stored LP records while preserving AS/LC delivery, reconciles combined/provenance evidence, and writes deterministic partitions/index/receipt in a separate preparation root. Defaults: receipt `data/source_artifacts/learning_progressions/copy_receipt.json`; output `data/source_artifacts/learning_progressions/prepared`. Optional `--framework-id`, `--receipt`, `--output-root` select safe inputs/output. It neither regenerates judgments nor builds/accepts/activates packages. Identical outputs are reusable; conflicting or unsafe output is rejected. See [source inventory and update process](../development/framework-package.md#learning-progression-inputs-and-updates).
 
 ## Recommended operator flow
 
@@ -63,25 +74,38 @@ in a separate STDIO process. It then:
 
 1. completes the MCP handshake;
 2. lists and requires the exact approved inventory;
-3. verifies 13 tools, 1 fixed resource, 12 resource templates, and 7 prompts;
+3. verifies 19 tools, 1 fixed resource, 14 resource templates, and 9 prompts;
 4. reads one known-good JSON resource from the fixed catalog and every resource-template
-   family; and
-5. closes the client and proves the subprocess exits cleanly.
+   family;
+5. runs representative queries on all five progression tools;
+6. checks text-only access: parses each progression and access-tool result from its text
+   alone, follows real continuation requests, reads the Nigeria diagnostic provenance and
+   the LP coverage reports (including the CBSE `needs_review` claim and the Ghana warning
+   counts) through `read_evidence`, reads standard and learning-component evidence using
+   only links taken from tool text and rendered **EVIDENCE LINKS**, compares
+   `get_workflow_instructions` with the native prompts, and checks typed failures. It
+   also requires discovery text to show included `learning_progressions` with counts
+   equal to statistics (and the `graphTypes` filter to keep all six snapshots), reads
+   the support relationship and component links taken from component text, and requires
+   the curriculum review to scan each relationship type separately and the teaching
+   workflows to call each connection kind separately; and
+7. closes the client and proves the subprocess exits cleanly.
 
 A successful result is deterministic JSON containing:
 
 ```json
 {
   "fixedResourceCount": 1,
-  "promptCount": 7,
-  "resourceReadCount": 13,
-  "resourceTemplateCount": 12,
+  "promptCount": 9,
+  "resourceReadCount": 15,
+  "resourceTemplateCount": 14,
   "status": "passed",
-  "toolCount": 13
+  "toolCount": 19
 }
 ```
 
-The actual result also includes per-resource read summaries and `bundleRoot`.
+The actual result also includes `inventory`, `toolSchemaIdentities`, per-resource read
+summaries, `progressions`, `access` and `bundleRoot`.
 
 ### Smoke a retained MCPB stage
 
@@ -112,8 +136,9 @@ the same checks as `kgfegmcp-stdio-smoke`:
 1. completes the MCP handshake;
 2. lists and requires the exact approved inventory;
 3. reads one known-good JSON resource from the fixed catalog and every resource-template
-   family; and
-4. closes the client cleanly.
+   family;
+4. runs the same progression and text-only access checks; and
+5. closes the client cleanly.
 
 Both smoke commands share one definition of the approved surface in
 `cli/smoke_checks.py`, so the two transports cannot be held to different inventories.
@@ -330,7 +355,7 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
 # 5. Confirm ZIP-level integrity.
-unzip -t ./dist/kgfegmcp-0.1.0.mcpb
+unzip -t ./dist/kgfegmcp-0.4.0.mcpb
 ```
 
 The exact archive name follows the version in `packaging/mcpb/manifest.json`.

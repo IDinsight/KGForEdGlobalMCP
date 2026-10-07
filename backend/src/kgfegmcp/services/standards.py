@@ -45,6 +45,7 @@ from kgfegmcp.search.models import (
     PrefixCodeSearchQuery,
     SearchFilters,
     SearchMode,
+    SearchQuery,
     SearchSelectionMode,
     TextSearchQuery,
 )
@@ -425,7 +426,7 @@ class StandardsService:
 
     @staticmethod
     def _require_standard_node(
-        *, graph_package_id: GraphPackageId, node: FrameworkNode | StandardNode
+        *, graph_package_id: GraphPackageId, node: GraphNodeRecord
     ) -> StandardNode:
         """Require an exact graph lookup to resolve to a standard item node.
 
@@ -444,7 +445,8 @@ class StandardsService:
         Raises
         ------
         StandardNotFoundError
-            If the selected identifier resolves to the framework root.
+            If the selected identifier resolves to the framework root or a learning
+            component rather than a standard item node.
         """
 
         if isinstance(node, StandardNode):
@@ -692,6 +694,7 @@ class StandardsService:
         )
         scope = self._build_search_scope(selected_snapshots)
         filters = self._build_search_filters(request)
+        query: SearchQuery
 
         if isinstance(request, TextStandardsSearchRequest):
             query = TextSearchQuery(

@@ -58,7 +58,7 @@ A filtered discovery request can look like:
 | Field                | Purpose                                                    |
 |----------------------|------------------------------------------------------------|
 | `query`              | Free-text discovery across selected framework metadata     |
-| `graphTypes`         | Require at least one requested graph type                  |
+| `graphTypes`         | Require at least one requested graph type to be included   |
 | `isCurrent`          | Restrict to current or non-current snapshots               |
 | `issuingAuthorities` | Filter by source issuing authority                         |
 | `jurisdictionTypes`  | Filter by source jurisdiction type                         |
@@ -87,6 +87,34 @@ For example, requesting:
 ```
 
 means **Ghana OR Nigeria**, and **Mathematics**.
+
+### Find frameworks with learning progressions
+
+`graphTypes` matches the graph types a snapshot's packages *include*
+(`includedGraphTypes`), not only the type each package is filed under. Academic Standards packages may also include Learning Components and
+Learning Progressions. This request returns only snapshots with installed LP data:
+none at the code-first stage, then the migrated subset, and all six after rollout:
+
+```json
+{
+  "request": {
+    "graphTypes": ["learning_progressions"]
+  }
+}
+```
+
+The result text keeps the two lists apart for each snapshot:
+
+```text
+Routing graph types: academic_standards
+Included graph types: academic_standards, learning_components, learning_progressions
+```
+
+The routing list is the type tools use to select a package. The included list says what
+the package contains. Each package summary line also states progression availability and
+the stored link counts, for example
+`learning_progressions=available | builds_towards=189 | relates_to=297` for Nigeria
+Mathematics. A package that declares no progressions shows `unavailable` and zero counts.
 
 ### Free-text discovery
 
@@ -136,13 +164,15 @@ For an exact version:
 {
   "request": {
     "frameworkId": "ghana-nacca-primary-mathematics-basic-4-6",
-    "snapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+43d21a2cb010"
+    "snapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9"
   }
 }
 ```
 
 `get_framework` exposes exact source metadata, graph-package identity, counts,
-validation, rights, and declared package capabilities.
+validation, rights, and declared package capabilities. Its text gives each package's
+included graph types, `Learning progressions` and `LP provenance` flags, and
+`learning_progressions[builds_towards=<n>, relates_to=<n>]` within the counts.
 
 ## Inspect implemented capabilities
 
@@ -153,7 +183,10 @@ Call `get_capabilities` with no arguments before selecting a package-sensitive m
 ```
 
 The result reports the fixed public MCP surface and, for every accepted graph package,
-its authoritative `implementedSearchModes`.
+its authoritative `implementedSearchModes`. It also lists routing and included graph
+types for the whole server and, per package, a `Learning progressions:` block with
+`hasLearningProgressions`, `hasLearningProgressionProvenance` and the stored
+`buildsTowards` and `relatesTo` counts.
 
 !!! warning "Code coverage is not search authorization"
     A package may contain some coded nodes and still not implement every code-search

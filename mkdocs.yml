@@ -28,6 +28,7 @@ nav:
       - Quickstart: getting-started/index.md
       - Local installation: getting-started/local-installation.md
       - Connect an MCP client: getting-started/mcp-clients.md
+      - Claude Desktop and claude.ai: getting-started/claude-clients.md
       - First queries: getting-started/first-queries.md
 
   - Using the server:
@@ -35,7 +36,7 @@ nav:
       - Search and retrieve standards: guides/standards-search.md
       - Navigate hierarchies: guides/hierarchy-context.md
       - Compare framework evidence: guides/comparison.md
-      - Collect progression evidence: guides/progression.md
+      - Use stored learning progressions: guides/progression.md
       - Use prompt workflows: guides/prompts.md
       - Read resources and provenance: guides/resources.md
 
@@ -45,7 +46,8 @@ nav:
       - Standards tools: reference/standards-tools.md
       - Learning component tools: reference/learning-component-tools.md
       - Comparison tool: reference/comparison-tool.md
-      - Progression tool: reference/progression-tool.md
+      - Learning progression tools: reference/progression-tool.md
+      - Evidence and workflow access tools: reference/access-tools.md
       - Resources and URI templates: reference/resources.md
       - Prompts: reference/prompts.md
       - Errors, cursors, and limits: reference/protocol-behavior.md
@@ -72,6 +74,7 @@ nav:
       - Local development: development/local-setup.md
       - Add or update a framework: development/framework-package.md
       - Testing and acceptance: development/testing.md
+      - Staged LP rollout: development/lp-migration.md
 
   - Contribute:
       - Contributing: contributing.md

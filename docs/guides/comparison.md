@@ -213,4 +213,4 @@ before generating a review.
 
 ---
 
-**Next:** [Collect progression evidence](progression.md)
+**Next:** [Use stored learning progressions](progression.md)

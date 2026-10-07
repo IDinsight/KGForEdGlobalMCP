@@ -93,6 +93,13 @@ def _format_statistics(result: GetFrameworkStatisticsResult) -> str:
             f"Items of those types with no component: "
             f"{components.standards_without_components}",
             f"Tag vocabulary: {components.tag_vocabulary_size}",
+            "",
+            "Stored learning progressions",
+            f"buildsTowards: "
+            f"{statistics.learning_progressions.builds_towards_relationships}",
+            f"relatesTo: {statistics.learning_progressions.relates_to_relationships}",
+            "Generated relationships; counts do not certify pedagogy or establish "
+            "mandatory prerequisites.",
         )
     )
 
@@ -162,7 +169,8 @@ def register_statistics_tools(server: FastMCP[dict[str, AppState]]) -> None:
         annotations=READ_ONLY_TOOL_ANNOTATIONS,
         description=(
             "Return deterministic source, normalized, code-presence, hierarchy-depth, "
-            "multi-parent, and unresolved-status counts for one accepted graph package. "
+            "multi-parent, unresolved-status and separate stored LP counts for one "
+            "accepted graph package. "
             "The package's capabilities, counts, profile facets, and validation status "
             "are reported by get_framework."
         ),

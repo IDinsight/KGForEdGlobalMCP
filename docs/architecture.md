@@ -15,8 +15,8 @@ The implementation is organized around five goals:
 1. **Preserve source identity and structure.** Frameworks, snapshots, graph packages,
    local terminology, and hierarchy are retained rather than flattened into one
    synthetic curriculum.
-2. **Keep curriculum-specific semantics out of generic code.** Versioned interpretation 
-   profiles define grade labels, statement types, hierarchy rules, code behavior, and 
+2. **Keep curriculum-specific semantics out of generic code.** Versioned interpretation
+   profiles define grade labels, statement types, hierarchy rules, code behavior, and
    framework disclosures.
 3. **Validate data before serving it.** Graph packages pass a package and topology
    validation gate before entering the accepted runtime catalog.
@@ -60,16 +60,16 @@ flowchart TB
         FRAMEWORK[Framework services]
         STANDARDS[Standards and graph context]
         COMPARE[Comparison evidence]
-        PROGRESSION[Progression evidence]
+        PROGRESSION[Stored learning progressions]
         RESOURCE[Rights-aware resources]
         PROMPTS[Prompt service]
         CAPS[Capabilities and statistics]
     end
 
     subgraph MCP[FastMCP boundary]
-        TOOLS[13 tools]
-        RESOURCES[1 resource + 12 templates]
-        MCPPROMPTS[7 prompts]
+        TOOLS[19 tools]
+        RESOURCES[1 resource + 14 templates]
+        MCPPROMPTS[9 prompts]
     end
 
     HOST[MCP client / host model]
@@ -127,7 +127,7 @@ registration or domain logic, so the transport never changes the public surface.
 
 ## Lifespan and application bootstrap
 
-Application data is not loaded during package import. Instead, runtime construction 
+Application data is not loaded during package import. Instead, runtime construction
 begins when the FastMCP lifespan starts.
 
 The composition root is `backend/src/kgfegmcp/bootstrap.py`. Its bootstrap sequence is:
@@ -173,14 +173,14 @@ sequenceDiagram
 ```
 
 `AppState` retains the accepted catalog, settings, search service, comparison service,
-progression-evidence service, prompt service, and resource service for one server
+learning-progressions service, prompt service, and resource service for one server
 lifespan. Its invariants require those services to share the same catalog and runtime
 objects rather than mixing independently constructed state.
 
 ## The package validation gate
 
-Graph packages are a trust boundary. The loader and validator check package identity 
-and declared artifacts before the catalog exposes them. Validation includes checks such 
+Graph packages are a trust boundary. The loader and validator check package identity
+and declared artifacts before the catalog exposes them. Validation includes checks such
 as:
 
 - framework, snapshot, graph-package, and profile identity consistency;
@@ -242,20 +242,20 @@ See [Search and retrieve standards](guides/standards-search.md) for search seman
 
 ## Service layer
 
-The MCP adapters are thin and ordinary Python services own the application behavior 
+The MCP adapters are thin and ordinary Python services own the application behavior
 beneath the protocol boundary.
 
-| Service area                | Responsibility                                                                                     |
-|-----------------------------|----------------------------------------------------------------------------------------------------|
-| Catalog and frameworks      | Framework-family discovery, exact snapshot routing, unique-current routing, and framework metadata |
-| Standards                   | Search orchestration, exact standard retrieval, and source-grounded standard results               |
-| Graph context               | Direct relationships, bounded ancestors and descendants, and bounded complete root paths           |
-| Comparison                  | Deterministic, independently bounded cross-framework retrieval                                     |
-| Progression evidence        | Grade-scoped, deduplicated, balanced candidate collection without asserting a progression          |
-| Resources                   | Deterministic and retained artifact access under rights and size policy                            |
-| Prompts                     | Generic workflows plus optional framework-specific guidance overlays                               |
+| Service area                | Responsibility                                                                                       |
+|-----------------------------|------------------------------------------------------------------------------------------------------|
+| Catalog and frameworks      | Framework-family discovery, exact snapshot routing, unique-current routing, and framework metadata   |
+| Standards                   | Search orchestration, exact standard retrieval, and source-grounded standard results                 |
+| Graph context               | Direct relationships, bounded ancestors and descendants, and bounded complete root paths             |
+| Comparison                  | Deterministic, independently bounded cross-framework retrieval                                       |
+| Progression evidence        | Exact stored links, filtered pages and bounded directed builds paths with provenance                 |
+| Resources                   | Deterministic and retained artifact access under rights and size policy                              |
+| Prompts                     | Generic workflows plus optional framework-specific guidance overlays                                 |
 | Learning components         | Component search, exact component retrieval, and traversal of the `supports` edge in both directions |
-| Capabilities and statistics | Truthful server/package feature reporting and framework statistics                                 |
+| Capabilities and statistics | Truthful server/package feature reporting and framework statistics                                   |
 
 This split allows service behavior to be tested independently of MCP transport concerns.
 
@@ -290,7 +290,7 @@ and [Resources and URI templates](reference/resources.md).
 
 ## Prompt architecture
 
-The seven MCP prompts are deterministic instruction renderers, not server-side generation
+The nine MCP prompts are deterministic instruction renderers, not server-side generation
 endpoints.
 
 Generic workflow logic is shared across frameworks. Versioned prompt configurations can
@@ -306,7 +306,9 @@ This separation is especially important for workflows such as:
 - `teacher_guide_draft`;
 - `student_handbook_section`;
 - `multigrade_lesson_plan`;
-- `inferred_progression_hypothesis`;
+- `learning_progression_teaching_sequence`;
+- `learning_progression_support_plan`;
+- `learning_progression_curriculum_review`;
 - `administrator_alignment_review`; and
 - `cross_framework_comparison`.
 
@@ -319,11 +321,53 @@ Cross-framework operations do not create edges between source graphs.
 
 `compare_framework_evidence` performs bounded retrieval independently within each
 selected framework and returns candidate evidence for downstream review.
-`collect_progression_evidence` similarly assembles candidates across requested grade
-scopes while preserving package-local identity and grade terminology.
+Stored progression tools operate within one exact package; they retrieve accepted
+relationships and do not create cross-framework links.
 
 The host model may reason over those results, but the server does not persist an
 alignment, grade equivalence, prerequisite, or progression relationship.
+
+## LP integration and immutable evidence
+
+Learning progressions live in each curriculum's existing graph and use the same
+selectors, rights rules, resources and MCP tools as standards and components. Each kind
+of link has its own label, so parent–child links, component support links and
+progression links stay separate. Each curriculum's package is an immutable snapshot
+(profile version 2.0) that keeps the original standard and component IDs and source
+text. The provenance file is also stored in 64 checked parts, so a client can open the
+evidence for one relationship without reading the whole file. No second database is
+needed. See [local copy and update process](development/framework-package.md#learning-progression-inputs-and-updates).
+
+## How clients get results and evidence
+
+Some MCP clients, including Claude Desktop, pass only the text of a tool result to the
+model. The server is designed so that the text alone is enough. All of this reuses the
+existing services; there is no separate service or database.
+
+- **Full results in text.** Each of the five progression tools returns its whole result
+  as JSON text, as well as the structured result. Both copies count toward the size
+  limits (1 MiB and 100,000 characters), so a page can hold fewer items than the
+  requested `limit`.
+- **Short package identity.** Each result names the four package files it was built
+  from and links to the package manifest for the full file list.
+- **Paths stop cleanly.** If the next path would make the result too large, the tool
+  returns the paths it has and names the next one.
+- **Two helper tools.** `read_evidence` reads any resource link in pieces, with the same
+  rights and limits as a normal resource read. `get_workflow_instructions` returns the
+  same instructions as seven of the native prompts, for clients that cannot use prompts.
+- **Discovery shows what a package contains.** Each package is filed as Academic
+  Standards, which is how tools select it, and also contains Learning Components and
+  Learning Progressions. Discovery shows both lists, and the `graphTypes` filter matches
+  what a package contains.
+- **Citation links in component text.** `get_learning_components_for_standard` prints
+  each support relationship ID and the links needed to cite and open the evidence.
+- **One request per link type in workflows.** Results list `buildsTowards` links before
+  `relatesTo` links, and a page can stop early at the size limit. A combined page may
+  therefore contain no `relatesTo` links, so the workflows request each type, or each
+  connection kind, separately.
+
+See [access tools](reference/access-tools.md) and
+[Claude Desktop and claude.ai](getting-started/claude-clients.md).
 
 ## Determinism and immutability
 

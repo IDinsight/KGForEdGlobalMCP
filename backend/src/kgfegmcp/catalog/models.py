@@ -302,6 +302,7 @@ class CatalogFrameworkSnapshot(FrozenSchema):
     available_graph_types: tuple[GraphType, ...] = Field(min_length=1)
     framework_id: FrameworkId
     graph_packages: tuple[CatalogGraphPackage, ...] = Field(min_length=1)
+    included_graph_types: tuple[GraphType, ...] = Field(min_length=1)
     snapshot_id: SnapshotId
     snapshot_relations: tuple[SnapshotRelation, ...] = ()
     source_metadata: CatalogSourceMetadata
@@ -357,6 +358,16 @@ class CatalogFrameworkSnapshot(FrozenSchema):
         if self.available_graph_types != tuple(expected_graph_types):
             raise ValueError(
                 "available_graph_types must equal the deterministic package graph types."
+            )
+
+        # Routing types name each package's primary type; included types name every
+        # graph the accepted packages contain, so routing types are always a subset.
+        if self.included_graph_types != sorted_included_graph_types(
+            self.graph_packages
+        ):
+            raise ValueError(
+                "included_graph_types must equal the sorted union of the package "
+                "included graph types."
             )
 
         ordered_packages = list(self.graph_packages)
@@ -1018,3 +1029,36 @@ def catalog_snapshot_order_key(snapshot: CatalogFrameworkSnapshot) -> tuple[str]
     """
 
     return (str(snapshot.snapshot_id),)
+
+
+def sorted_included_graph_types(
+    graph_packages: tuple[CatalogGraphPackage, ...],
+) -> tuple[GraphType, ...]:
+    """Return every graph type the accepted packages contain, in value order.
+
+    Parameters
+    ----------
+    graph_packages
+        Accepted catalog graph packages whose manifests declare included types.
+
+    Returns
+    -------
+    tuple[GraphType, ...]
+        Sorted, duplicate-free union of the packages' included graph types.
+
+    Examples
+    --------
+    An academic-standards package that also includes components and progressions:
+
+    >>> sorted_included_graph_types(snapshot.graph_packages)  # doctest: +SKIP
+    (<GraphType.ACADEMIC_STANDARDS: 'academic_standards'>,
+     <GraphType.LEARNING_COMPONENTS: 'learning_components'>,
+     <GraphType.LEARNING_PROGRESSIONS: 'learning_progressions'>)
+    """
+
+    graph_types = {
+        graph_type
+        for graph_package in graph_packages
+        for graph_type in graph_package.included_graph_types
+    }
+    return tuple(sorted(graph_types, key=lambda graph_type: graph_type.value))

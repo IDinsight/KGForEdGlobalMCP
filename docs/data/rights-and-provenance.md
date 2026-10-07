@@ -162,6 +162,10 @@ These statuses support a central documentation rule: **where information came fr
 how it was produced matters**. Retrieved source evidence, deterministic server output,
 and host-model inference should not be collapsed into one undifferentiated claim.
 
+## Learning progression evidence
+
+Per-edge LP provenance uses reviewed/full-text/standard rights, not bulk permission. The sanitized LP summary, validation/index/normalization artifacts are metadata; unresolved evidence is full-text; original maps, partitions, split edges, generation summary and final claims are bulk. Manifest presence does not grant access. Defaults remain 32 MiB resource source-read and 8 MiB return; partitions allow exact reads without raising them. See [LP resource policies](../reference/resources.md#learning-progression-resources).
+
 ## Attribution and generated material
 
 When generated material uses curriculum evidence, clients should preserve the package's
@@ -170,7 +174,8 @@ attribution requirements and clearly separate:
 - exact or paraphrased source-backed curriculum evidence;
 - deterministic retrieval/context supplied by the server; and
 - generated explanation, synthesis, pedagogy, examples, alignment judgments, or
-  progression hypotheses produced by the host model.
+  teaching/support suggestions produced by the host model; and
+- stored model-generated LP edges with their original judgment/provenance.
 
 The framework-local prompt configs reinforce this separation, but they do not override
 the resource rights policy.

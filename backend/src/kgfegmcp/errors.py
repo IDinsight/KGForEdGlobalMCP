@@ -140,6 +140,18 @@ class DeliveryPropertyDecodingError(KGFEGMCPError):
     error_code = "delivery_property_decoding_error"
 
 
+class EvidenceResultTooLargeError(KGFEGMCPError):
+    """Raised when not even one Unicode scalar of evidence fits a tool result.
+
+    Examples
+    --------
+    >>> EvidenceResultTooLargeError(message="Unavailable.").error_code
+    'evidence_result_too_large'
+    """
+
+    error_code = "evidence_result_too_large"
+
+
 class FrameworkNotFoundError(KGFEGMCPError):
     """Raised when a requested framework or snapshot is unavailable."""
 
@@ -164,6 +176,30 @@ class InvalidCursorError(KGFEGMCPError):
     error_code = "invalid_cursor"
 
 
+class InvalidEvidenceUriError(KGFEGMCPError):
+    """Raised when an evidence URI is not one exact supported resource address.
+
+    Examples
+    --------
+    >>> InvalidEvidenceUriError(message="Unavailable.").error_code
+    'invalid_evidence_uri'
+    """
+
+    error_code = "invalid_evidence_uri"
+
+
+class InvalidProgressionRequestError(KGFEGMCPError):
+    """Raised when LP selectors or operation semantics are invalid.
+
+    Examples
+    --------
+    >>> InvalidProgressionRequestError(message="Unavailable.").error_code
+    'invalid_progression_request'
+    """
+
+    error_code = "invalid_progression_request"
+
+
 class JSONLParsingError(KGFEGMCPError):
     """Raised when a JSONL record cannot be read or validated as a wire envelope."""
 
@@ -174,6 +210,18 @@ class LearningComponentNotFoundError(KGFEGMCPError):
     """Raised when a requested learning-component identifier cannot be resolved."""
 
     error_code = "learning_component_not_found"
+
+
+class LearningProgressionNotFoundError(KGFEGMCPError):
+    """Raised when an exact ID is missing or is not an accepted LP edge.
+
+    Examples
+    --------
+    >>> LearningProgressionNotFoundError(message="Unavailable.").error_code
+    'learning_progression_not_found'
+    """
+
+    error_code = "learning_progression_not_found"
 
 
 class ManifestBuildError(KGFEGMCPError):
@@ -192,6 +240,18 @@ class ProfileValidationError(KGFEGMCPError):
     """Raised when a curriculum interpretation profile is invalid."""
 
     error_code = "profile_validation_error"
+
+
+class ProgressionResultTooLargeError(KGFEGMCPError):
+    """Raised when complete LP evidence exceeds the fixed tool byte ceiling.
+
+    Examples
+    --------
+    >>> ProgressionResultTooLargeError(message="Unavailable.").error_code
+    'progression_result_too_large'
+    """
+
+    error_code = "progression_result_too_large"
 
 
 class PromptAccessDeniedError(KGFEGMCPError):
@@ -230,7 +290,31 @@ class StandardNotFoundError(KGFEGMCPError):
     error_code = "standard_not_found"
 
 
+class UnsupportedEvidenceFormatError(KGFEGMCPError):
+    """Raised when authorized resource bytes cannot be paged as UTF-8 text.
+
+    Examples
+    --------
+    >>> UnsupportedEvidenceFormatError(message="Unavailable.").error_code
+    'unsupported_evidence_format'
+    """
+
+    error_code = "unsupported_evidence_format"
+
+
 class UnsupportedSearchModeError(KGFEGMCPError):
     """Raised when a requested deterministic search mode is unsupported."""
 
     error_code = "unsupported_search_mode"
+
+
+class WorkflowInstructionsTooLargeError(KGFEGMCPError):
+    """Raised when complete workflow instructions cannot fit one tool result.
+
+    Examples
+    --------
+    >>> WorkflowInstructionsTooLargeError(message="Unavailable.").error_code
+    'workflow_instructions_too_large'
+    """
+
+    error_code = "workflow_instructions_too_large"

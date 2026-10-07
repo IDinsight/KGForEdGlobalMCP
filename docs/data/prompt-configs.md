@@ -1,6 +1,6 @@
 # Prompt configurations
 
-Framework-local prompt configurations add optional soft guidance to the server's seven
+Framework-local prompt configurations add optional soft guidance to the server's nine
 generic prompt workflows. They provide terminology, context, warnings, pedagogy, and
 presentation guidance without changing tool behavior or executing an LLM.
 
@@ -16,7 +16,7 @@ The prompt root is optional. If the configured root does not exist, the server s
 with an empty prompt-config registry and uses generic prompt definitions only. If a
 `prompts.json` file is present for an accepted profile, it must validate successfully.
 
-The supported `promptConfigSchemaVersion` is currently `1.0` and one prompt config is
+The supported `promptConfigSchemaVersion` is currently `1.1` and one prompt config is
 limited to **64 KiB** of exact file bytes.
 
 ## Identity contract
@@ -27,7 +27,7 @@ A configuration declares:
 |-----------------------------|--------------------------------------------------------|
 | `promptConfigId`            | Stable kebab-case configuration identity               |
 | `promptConfigVersion`       | Configuration version token                            |
-| `promptConfigSchemaVersion` | Schema version, currently `1.0`                        |
+| `promptConfigSchemaVersion` | Schema version, currently `1.1`                        |
 | `profileId`                 | Exact profile ID selecting the config                  |
 | `profileVersion`            | Exact profile version selecting the config             |
 | `frameworkIds`              | Exact framework-ID tuple owned by the selected profile |
@@ -76,17 +76,19 @@ schemas, or graph records.
 
 ## Prompt-specific overlays
 
-The schema supports optional overlays for all seven generic prompt names.
+The schema supports optional overlays for all nine generic prompt names.
 
-| Prompt                            | Supported local guidance sections                            |
-|-----------------------------------|--------------------------------------------------------------|
-| `student_study_support`           | audience, example, explanation, practice                     |
-| `teacher_guide_draft`             | assessment, differentiation, lesson structure, pedagogy      |
-| `student_handbook_section`        | audience, example, explanation, section structure            |
-| `multigrade_lesson_plan`          | classroom management, differentiation, shared core           |
-| `inferred_progression_hypothesis` | counter-evidence, evidence, inference, sequence presentation |
-| `administrator_alignment_review`  | evidence matrix, governance, risk framing, review questions  |
-| `cross_framework_comparison`      | comparison dimensions, synthesis, terminology, uncertainty   |
+| Prompt                                   | Supported local guidance sections                           |
+|------------------------------------------|-------------------------------------------------------------|
+| `student_study_support`                  | audience, example, explanation, practice                    |
+| `teacher_guide_draft`                    | assessment, differentiation, lesson structure, pedagogy     |
+| `student_handbook_section`               | audience, example, explanation, section structure           |
+| `multigrade_lesson_plan`                 | classroom management, differentiation, shared core          |
+| `learning_progression_teaching_sequence` | evidence, pedagogy, sequence presentation                   |
+| `learning_progression_support_plan`      | evidence, practice, support                                 |
+| `learning_progression_curriculum_review` | coverage, evidence, review questions                        |
+| `administrator_alignment_review`         | evidence matrix, governance, risk framing, review questions |
+| `cross_framework_comparison`             | comparison dimensions, synthesis, terminology, uncertainty  |
 
 Each prompt-specific overlay may contain at most **60 instructions**. A complete
 framework prompt config must contain at least one guidance instruction across `shared`
@@ -95,26 +97,26 @@ and `prompts`.
 ## Current repository configurations
 
 The repository snapshot contains one prompt config for each of the six accepted profile
-identities. All currently declare `promptConfigVersion` `1.0.0`.
+identities. All currently declare `promptConfigVersion` `2.0.0`. During the code-first rollout, their paths and `profileVersion` remain `1.0` to match installed profiles; the prompt configuration version is independent of the profile version.
 
-| Framework/profile                  | Prompt-config ID                                              | Current prompt-specific overlays                                     |
-|------------------------------------|---------------------------------------------------------------|----------------------------------------------------------------------|
-| Ghana English Basic 1–3            | `ghana-nacca-primary-english-language-basic-1-3-guidance`     | Study support, teacher guide, student handbook, inferred progression |
-| Ghana Mathematics Basic 4–6        | `ghana-nacca-primary-mathematics-basic-4-6-guidance`          | Study support, teacher guide, student handbook, inferred progression |
-| CBSE Science Classes IX–X          | `india-cbse-science-learning-framework-classes-9-10-guidance` | Study support, teacher guide, student handbook, inferred progression |
-| Tamil Nadu Mathematics Classes 1–5 | `india-tamil-nadu-tnscert-mathematics-classes-1-5-guidance`   | Study support, teacher guide, student handbook, inferred progression |
-| Nigeria Mathematics Primary 1–3    | `nigeria-nerdc-mathematics-primary-1-3-guidance`              | Study support, teacher guide, student handbook, inferred progression |
-| Rwanda Mathematics P1–P3           | `rwanda-reb-mathematics-lower-primary-1-3-guidance`           | Study support, teacher guide, student handbook, inferred progression |
+| Framework/profile                  | Prompt-config ID                                              | Current prompt-specific overlays               |
+|------------------------------------|---------------------------------------------------------------|------------------------------------------------|
+| Ghana English Basic 1–3            | `ghana-nacca-primary-english-language-basic-1-3-guidance`     | Study support, teacher guide, student handbook |
+| Ghana Mathematics Basic 4–6        | `ghana-nacca-primary-mathematics-basic-4-6-guidance`          | Study support, teacher guide, student handbook |
+| CBSE Science Classes IX–X          | `india-cbse-science-learning-framework-classes-9-10-guidance` | Study support, teacher guide, student handbook |
+| Tamil Nadu Mathematics Classes 1–5 | `india-tamil-nadu-tnscert-mathematics-classes-1-5-guidance`   | Study support, teacher guide, student handbook |
+| Nigeria Mathematics Primary 1–3    | `nigeria-nerdc-mathematics-primary-1-3-guidance`              | Study support, teacher guide, student handbook |
+| Rwanda Mathematics P1–P3           | `rwanda-reb-mathematics-lower-primary-1-3-guidance`           | Study support, teacher guide, student handbook |
 
 All six also provide the five shared-guidance sections. The current files do **not**
 declare framework-local `administratorAlignmentReview` or `crossFrameworkComparison`
-overlays, although the schema supports them. Those multi-framework workflows still use
+overlays, although the schema supports them. All three LP workflow overlays are also absent in the six current configs; the registered generic workflows remain available. Those multi-framework workflows still use
 the generic prompt definition and the selected frameworks' accepted profile/rights
 context.
 
 ## Prompt configuration is optional; prompt registration is not
 
-The server always registers the seven generic prompts. Missing framework-local config
+The server always registers the nine generic prompts. Missing framework-local config
 means there is no local overlay for that profile; it does not remove the generic prompt
 from the MCP surface.
 

@@ -1,6 +1,6 @@
 # Use prompt workflows
 
-The server exposes seven deterministic MCP prompt workflows. A prompt does not call an
+The server exposes nine deterministic MCP prompt workflows. A prompt does not call an
 LLM, retrieve evidence by itself, or generate the final educational material. It renders
 versioned instructions and runtime context for the connected MCP host, which then calls
 the appropriate tools and produces any final synthesis or draft.
@@ -30,18 +30,26 @@ evidence-status, package-isolation, or generated-content rules.
 
 ## Available prompts
 
-| Prompt                            | Primary use                                                                                            |
-|-----------------------------------|--------------------------------------------------------------------------------------------------------|
-| `student_study_support`           | Evidence-grounded study support and practice                                                           |
-| `teacher_guide_draft`             | Evidence-grounded teacher lesson-guide draft                                                           |
-| `student_handbook_section`        | Evidence-grounded student-facing handbook section                                                      |
-| `multigrade_lesson_plan`          | One lesson for a classroom holding several grades, built from shared learning components               |
-| `inferred_progression_hypothesis` | Review a bounded multi-grade candidate set and formulate an explicitly inferred progression hypothesis |
-| `administrator_alignment_review`  | Structured review between one source and one target framework                                          |
-| `cross_framework_comparison`      | Exploratory evidence-grounded comparison across two to eight frameworks                                |
+| Prompt                                   | Primary use                                                                              |
+|------------------------------------------|------------------------------------------------------------------------------------------|
+| `student_study_support`                  | Evidence-grounded study support and practice                                             |
+| `teacher_guide_draft`                    | Evidence-grounded teacher lesson-guide draft                                             |
+| `student_handbook_section`               | Evidence-grounded student-facing handbook section                                        |
+| `multigrade_lesson_plan`                 | One lesson for a classroom holding several grades, built from shared learning components |
+| `learning_progression_teaching_sequence` | Draft a cited sequence using stored links and LCs                                        |
+| `learning_progression_support_plan`      | Propose target-standard review/practice options                                          |
+| `learning_progression_curriculum_review` | Inspect bounded counts, warnings and provenance                                          |
+| `administrator_alignment_review`         | Structured review between one source and one target framework                            |
+| `cross_framework_comparison`             | Exploratory evidence-grounded comparison across two to eight frameworks                  |
 
-All seven prompts are registered as generated-content workflows. The current prompt
-version is `1.2.0`.
+All nine prompts are registered as generated-content workflows. The current prompt
+version is `1.4.0`.
+
+Seven of them (all except `administrator_alignment_review` and
+`cross_framework_comparison`) can also be fetched as a tool result with
+`get_workflow_instructions`, for clients that work only through tools. The rendered
+message is identical to the native prompt. See
+[Evidence and workflow access tools](../reference/access-tools.md).
 
 ## Rights gate
 
@@ -208,46 +216,19 @@ source-asserted curriculum. A shared core therefore rests on a model's judgement
 standards decompose to the same component, **not** on a curriculum-authored equivalence
 between those grades, and the generated plan must say so.
 
-## `inferred_progression_hypothesis`
+## Stored progression workflows
 
-This workflow is intentionally different from ordinary generation prompts. It directs
-the host to call `collect_progression_evidence` once, using the server-enforced grade
-scope and hard candidate limit, before formulating any hypothesis.
+Use the three distinct prompts for different educational decisions:
 
-| Parameter            | Required    | Default / bounds                                    |
-|----------------------|-------------|-----------------------------------------------------|
-| `framework_id`       | yes         | Exact framework ID                                  |
-| `topic_or_standard`  | yes         | Interpreted by `focus_mode`                         |
-| `focus_mode`         | no          | `topic`                                             |
-| `local_grade_labels` | conditional | JSON array of exact source-facing scopes            |
-| `normalized_grades`  | conditional | JSON array of normalized retrieval scopes           |
-| `candidate_limit`    | no          | `8`, from 2 through 20                              |
-| `direction`          | no          | `both`; also `earlier_to_later`, `later_to_earlier` |
-| `local_context`      | no          | Untrusted local nuance                              |
-| `output_language`    | no          | Optional language tag                               |
-| `snapshot_id`        | no          | Unique-current routing when omitted                 |
+| Prompt                                   | Purpose                                                                                           |
+|------------------------------------------|---------------------------------------------------------------------------------------------------|
+| `learning_progression_teaching_sequence` | An adaptable cited sequence from stored builds, related concepts and supporting LCs               |
+| `learning_progression_support_plan`      | Target-standard review/practice options using teacher observations and incoming/upstream evidence |
+| `learning_progression_curriculum_review` | Bounded inspection of stored counts, scope, warnings and provenance for ministry/ed-tech review   |
 
-At least one of the two grade arrays must be populated by the evidence tool.
+See [worked prompt examples](progression.md#teaching-sequence) and [exact prompt arguments](../reference/prompts.md#learning_progression_teaching_sequence). Each prompt pins the exact package and instructs the client to retrieve finite evidence before composing the output. Suggested pedagogy is generated; stored LP is model-generated evidence with provenance, not publisher-endorsed or certified pedagogy. No absent-edge fallback is provided.
 
-Complex MCP prompt arguments must be entered as JSON arrays, not comma-separated prose:
-
-```text
-candidate_limit: 8
-direction: both
-focus_mode: topic
-framework_id: nigeria-nerdc-mathematics-primary-1-3
-local_grade_labels: ["PRIMARY ONE", "PRIMARY TWO", "PRIMARY THREE"]
-normalized_grades: []
-output_language: en
-topic_or_standard: fractions
-```
-
-!!! warning "The output remains a hypothesis"
-    The prompt may ask the host to propose a relationship after reviewing the evidence,
-    but that relationship must remain explicitly `llm_inferred`. Grade order, source
-    hierarchy, or similarity does not turn it into an official progression.
-
-See [Collect progression evidence](progression.md) for the deterministic tool step.
+Teacher-guide, study-support, handbook and multigrade workflows also retrieve optional stored progressions for at most three selected standards. For each standard they make three calls, one per connection kind (outgoing builds, incoming builds, related), at most nine in total. Each call reads one page of up to 25 links; a page can hold fewer if the result reaches the size limit. If a `nextCursor` remains, that kind has more links than were read, and the workflow says so. Asking for each kind separately makes sure related concepts are not crowded out by builds. They also read full provenance for up to ten used relationships, and supporting LCs. Related concepts stay separate from directional builds. They explain unavailable/empty/incomplete evidence and continue their useful established outputs. Shared LCs do not establish progression or equivalence.
 
 ## `administrator_alignment_review`
 
@@ -355,8 +336,17 @@ other unnecessary personal information into prompt arguments.
 
 Prompt-selection UX is client-specific. Some hosts expose server prompts directly in a
 prompt picker, while others may require explicit selection or manual parameter entry.
-The server contract remains the same: the prompt is deterministic instructions, and the
-host is responsible for executing the requested tool workflow.
+In Claude Desktop the prompts appear under **Add from curriculum-knowledge-graph** and
+are added as an attachment. If a client does not show prompts, ask it to call
+`get_workflow_instructions` and follow `rendered.message`. The server contract remains
+the same: the prompt is deterministic instructions, and the host is responsible for
+executing the requested tool workflow. See
+[Use with Claude Desktop and claude.ai](../getting-started/claude-clients.md).
+
+In the seven single-framework workflows, the **EVIDENCE ACCESS** section explains how to read full evidence: natively
+where the client can open resources, otherwise with `read_evidence`, finishing
+multi-window records before relying on them. The **EVIDENCE LINKS** block gives exact
+links for the pinned snapshot and patterns for standard and learning-component records.
 
 A useful verification pattern is to inspect the rendered workflow before trusting the
 final generated answer. The workflow should identify the exact framework/snapshot
@@ -368,13 +358,13 @@ the host must use.
 When a prompt workflow produces educational prose, keep these categories visibly
 separate:
 
-| Category                              | Treatment                                                                     |
-|---------------------------------------|-------------------------------------------------------------------------------|
-| Exact source wording                  | Quote or reproduce only within applicable rights and attribution requirements |
-| Retrieved source evidence             | Preserve exact identifiers, package identity, and warnings                    |
-| Deterministic server guidance         | Describe as server-generated workflow instructions                            |
-| Model explanation or draft            | Label as generated content, not official curriculum wording                   |
-| Comparison/progression interpretation | Label as inferred unless the source explicitly asserts it                     |
+| Category                      | Treatment                                                                     |
+|-------------------------------|-------------------------------------------------------------------------------|
+| Exact source wording          | Quote or reproduce only within applicable rights and attribution requirements |
+| Retrieved source evidence     | Preserve exact identifiers, package identity, and warnings                    |
+| Deterministic server guidance | Describe as server-generated workflow instructions                            |
+| Model explanation or draft    | Label as generated content, not official curriculum wording                   |
+| Comparison and stored LP      | Preserve generated origin; stored LP has exact retained provenance            |
 
 ---
 

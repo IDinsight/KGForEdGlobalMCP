@@ -1,5 +1,7 @@
 # First queries
 
+> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
+
 Once the `curriculum-knowledge-graph` connector is enabled, start with discovery and
 bounded retrieval before asking the host model to compare or generate educational
 material.
@@ -31,7 +33,8 @@ Ask the MCP host:
 ```text
 Use the curriculum-knowledge-graph connector to list all available frameworks. For each
 framework, show the framework ID, snapshot ID, jurisdiction, subject, local grades or
-stages, validation status, and available graph types. Preserve the source terminology.
+stages, validation status, and routing and included graph types. Preserve the source
+terminology.
 ```
 
 The server's `list_frameworks` tool returns accepted immutable framework snapshots. Its
@@ -157,7 +160,7 @@ is not equivalent to the source phrase:
 structure of a story
 ```
 
-A zero-result query only means that the supplied lexical expression did not match 
+A zero-result query only means that the supplied lexical expression did not match
 within the requested bounds.
 
 !!! warning "Zero matches do not prove curriculum absence"
@@ -228,7 +231,7 @@ Then move to the task-specific guides for more complete workflows:
 - [Search and retrieve standards](../guides/standards-search.md)
 - [Navigate hierarchies](../guides/hierarchy-context.md)
 - [Compare framework evidence](../guides/comparison.md)
-- [Collect progression evidence](../guides/progression.md)
+- [Use stored learning progressions](../guides/progression.md)
 - [Use prompt workflows](../guides/prompts.md)
 
 ---
