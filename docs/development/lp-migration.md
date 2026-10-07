@@ -8,11 +8,12 @@ comparison, and prompt workflows remain usable.
 
 ## Current rollout status
 
-**3 of 6 runtime packages migrated:** Nigeria Mathematics supplies 189 buildsTowards
+**4 of 6 runtime packages migrated:** Nigeria Mathematics supplies 189 buildsTowards
 and 297 relatesTo relationships; Ghana Mathematics supplies 299 buildsTowards and
 300 relatesTo relationships; Tamil Nadu Mathematics supplies 472 buildsTowards and
-435 relatesTo relationships. All three use matching profiles and prompt configurations
-bound to profile version 2.0. The other three runtime packages remain on their
+435 relatesTo relationships; Ghana English Language supplies 250 buildsTowards and
+801 relatesTo relationships. All four use matching profiles and prompt configurations
+bound to profile version 2.0. The other two runtime packages remain on their
 existing standards and learning-component data. Matching maintained input artifacts
 and build specifications are now included for Nigeria, Ghana and Tamil Nadu
 Mathematics; the other three input sets await LP migration.
