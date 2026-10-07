@@ -26020,9 +26020,9 @@
       "country": "Ghana",
       "created_at": "2026-08-23T20:19:00.862897+00:00",
       "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
-      "document_ir_fp": "/Users/mustafa/IDinsight/KGForEdGlobal/results/ghana/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/stitching/document_ir.json",
+      "document_ir_fp": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/stitching/document_ir.json",
       "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-      "kg_run_dir": "/Users/mustafa/IDinsight/KGForEdGlobal/results/ghana/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/kgs",
+      "kg_run_dir": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa/kgs",
       "observed_languages": [
         "en",
         "mul"
@@ -95157,7 +95157,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:689c7905e0d2ba75369f7ea27e7cfbd8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95237,7 +95237,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:5a4c342deb90dd11166e4f6cfc329a54",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95312,7 +95312,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8766573dd194d70fff2c05a1fcb7b91d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95387,7 +95387,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a88edbb9869eb7a74aba3a69452c4d1e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95461,7 +95461,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:5a2d3c2d21b28dcf02ced135da3e5ad3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95534,7 +95534,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f803ac1a84bbfd03c20f9971d28eca2a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95608,7 +95608,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9b034bb0a80d95e6b51f183dbed450df",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95682,7 +95682,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0bbc6598b727e14f9ca0a369fdd55658",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95755,7 +95755,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2600b0e4f29f9ebcee7d90da13296409",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95829,7 +95829,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2b4ab179b339d4171168e8c5dc0f5277",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95920,7 +95920,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c5d1c7e3d53eb81c3ff08904e11dcd33",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -95998,7 +95998,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:10647ef56efbbfdeb312499954c795f6",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96091,7 +96091,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:5fd8b0e8afa63bfbfc3104d655240b3e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96170,7 +96170,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:df7013a2b7370f59b0d77b67b320ff59",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96243,7 +96243,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d5ee31d28310262f9fbb867300d97bd8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96336,7 +96336,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:00e04dd1262602b97dd88d6482831582",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96419,7 +96419,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3ac3cfa5305585c4191ac2171a59b3fe",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96494,7 +96494,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:09c9e2a52c1266446d4be3471d610212",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96568,7 +96568,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:96e410d943261e60baa3963ff030a7cd",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96642,7 +96642,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d1edb52075588e8a56f3b4c84050fe06",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96717,7 +96717,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:459cf2e50fee7a315b5e9531465c146c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96792,7 +96792,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:87daba2aa33f8cc61b85e9e872a7af9e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96867,7 +96867,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3f05fdc570aa33f884a96a370701af11",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -96943,7 +96943,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:849336165a3c16fde383f76ee267c77b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97019,7 +97019,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:be17b5528dc5ee1a37653a0a97999dfc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97094,7 +97094,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a0cecfefc282cca51950f9483eb64e2d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97186,7 +97186,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:73a171c4b205543aaf3c7913562dd056",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97262,7 +97262,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:77c5518e9e91519b28f6d2458ba63986",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97335,7 +97335,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:10008d76ef80b9730badee1335619feb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97408,7 +97408,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:58a8a629b5ceb05f2167c4db2b380a7c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97481,7 +97481,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2c2b545a9a18fad8710a2443573909a7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97555,7 +97555,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f8d7e9da58b3ddb66f850e51f44833b7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97630,7 +97630,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:056ea9661c3e4668c41da51e3585c2ff",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97705,7 +97705,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6d7bb309406df9ee6820924f6892ab19",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97798,7 +97798,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8ca95f121d2f35ed4c7b29e646db0c8e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97878,7 +97878,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca22786f272cf948116cacfb20b9300f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -97970,7 +97970,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f1f4e557f4158305fa93befc5ad9a2c0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98065,7 +98065,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f8f09bd75a6cd052c9f4d244c5ddbb66",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98145,7 +98145,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a5a72f701b0fc7e3639e6a97c56099a1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98219,7 +98219,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9ee697c7528cafdd5f2c217a5a5fdf71",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98295,7 +98295,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8c0188fdad39c3fa7853be6da0cb5200",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98371,7 +98371,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9a5a3fd2475cafc443dc4052289cc309",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98445,7 +98445,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f97afc046564b041ca5ecbd9a105c108",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98520,7 +98520,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e7422b9df0b3133a361c26eda924fb4c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98596,7 +98596,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ee67f03fae722b0450ef546dcda81074",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98669,7 +98669,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7e253ed58075d52232a3657b6505b4ca",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98742,7 +98742,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b56b2d014e2dbe51610397715f4776ce",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98817,7 +98817,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:67fa6d91c13c19c69230201e272da517",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98892,7 +98892,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d2b63663b58089fcc3b62ddb61bfcbac",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -98967,7 +98967,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:284e481d3eb71a4430a09d65f3f7329b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99060,7 +99060,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9a3e248702c212ad8730bd9cff0b77d3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99140,7 +99140,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e81f65e67ed89e9c5012ff0aae912fbc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99214,7 +99214,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7fba119e7c517d98e28c8808f5eb02aa",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99287,7 +99287,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:017bba7015074731e83fdfd02166249a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99361,7 +99361,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a44ae6d83f606bfa421c5511774f1ec5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99435,7 +99435,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6e3ec7e48dd8e093970adecb16002ff7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99507,7 +99507,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:633380b8695a481175797fcb45e4ff7f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99580,7 +99580,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c4d0a36381f7daf9a44426541c4c4e1a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99655,7 +99655,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d4d9e63eb5f3ed60c3bce60b8b6548d8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99730,7 +99730,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9f1174e9630ef5a4eef06134d3004be2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99806,7 +99806,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e96dba4fd00633f26a8e046691a2053d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99881,7 +99881,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ea03fe70f4c90c987db199f1d96d6dbf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -99954,7 +99954,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a257527aeb377735734dabfe15e74566",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100028,7 +100028,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6cfe32b696b455ec40fe5521106bc4dd",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100102,7 +100102,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7b4137e46fdb64afc92564c354825610",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100176,7 +100176,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:47d031b5567746cfa7a65fc2d260b226",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100250,7 +100250,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d3859dfdf0b4978b578beeb719c71779",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100323,7 +100323,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3decdec71e9daed5e29fbf4ba38156cb",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100414,7 +100414,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0ee9b6bad9f3109a31ab05aac5cdb7a8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100512,7 +100512,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d036e48991a10903515d4221aa66027a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100591,7 +100591,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b2e7688d9a7b7b1b0cb208b1f3a8dc11",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100684,7 +100684,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2b2024ccd5356ce9fe11170df6eb63bf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100765,7 +100765,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c2dcb82659ffa49d1a905f1df99ecb15",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100840,7 +100840,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9518e658ff961dc87f35416e5293c23e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100915,7 +100915,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2729ec919d5fcda1eaf6031725346588",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -100989,7 +100989,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:106b6203d53c7a50c627b5490946995e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101080,7 +101080,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7b4d5925fae9f2389e98d041955bbedc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101162,7 +101162,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8b5c8e0e2f4143af73d271a3c7af9ced",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101253,7 +101253,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b3dcc3a2b5780c55a73d0eb0d9459369",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101332,7 +101332,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:43222d65cf42c313f867a4e6f8878605",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101407,7 +101407,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:538b66db2b3febea67a732a1a7a69ba5",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101481,7 +101481,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9f811ed853daad93f9895b89d92eea63",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101555,7 +101555,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca43f425e41e0b83d652f36adb21e86f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101631,7 +101631,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b0eeb55907f5b364f5766ddb52d11c9e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101706,7 +101706,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2e1df7f62d7f685e53c0acd1620ebe4d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101779,7 +101779,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:bfae365afdc58b696c57e034a416c8ac",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101852,7 +101852,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:1f9bf51bc04a533bbe82014e729cc745",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -101926,7 +101926,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:94bc5fab959e7a4d2280c0f3e47c3b1f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102018,7 +102018,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8f4865c84ee91d262bb01f4094aad263",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102096,7 +102096,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:701b9aaf1b4fdaaeade15e1d1cbc8a94",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102205,7 +102205,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:49d7f3dff4b012f004cae76e2aebefec",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102307,7 +102307,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f871990e3568a9e2b822f72186e7cfbc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102404,7 +102404,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:78cdd745c811ca3432d9f2648994ee83",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102483,7 +102483,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8ca1e4a1164d2645329b32ab19d0e2c2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102557,7 +102557,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:eb4ee9c9d4bc8fb91ae2b1f20f3b009c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102630,7 +102630,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d52d7ac28b224e06ed6695c23bfa9a58",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102704,7 +102704,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:648ec82f2547c7e9f813b105e1774fd2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102780,7 +102780,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:646ab2bc692fd480a5972616aa1fabf9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102874,7 +102874,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9b0f0e0d7efb535006c637420ebd3a94",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -102955,7 +102955,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c46880d7f684d854b24f7b05730f256c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103029,7 +103029,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d6cdaac231e57cd610dcd4a1fc6e9522",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103103,7 +103103,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:387321b392eb45517656624fdc9be9da",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103178,7 +103178,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:17982acda929d5535f4999272fb6ebee",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103252,7 +103252,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9e56bc7c081e2a8678020cd1228f8ef3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103325,7 +103325,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c326ae5571ab0171b9e5e670b27b1a9c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103400,7 +103400,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:761669de6f74f160ec95a11d47c0a2e3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103476,7 +103476,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9697c63b1808dc8aaace6029a6251172",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103550,7 +103550,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:eec302c27d897420b6bbe8978a2aa217",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103641,7 +103641,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c0d6a11cbfe77f8cfa04355e268ae43a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103741,7 +103741,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:352d95854bf575eed78ae184ed8d1206",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103820,7 +103820,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9d7540411d2b1020c9e8f0c910c6d6d9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103913,7 +103913,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:291225032a433e12db71df9839217a45",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -103991,7 +103991,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f002539c7e537222083f1b9d8ae86c29",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104065,7 +104065,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:70701b2c231fd679067f87e85344f152",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104139,7 +104139,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a6a558baffd5540b810c5adeb42d329a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104214,7 +104214,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3936f1470d85dfba9ab2c00ad94dd2fa",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104289,7 +104289,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d8c03b08c0b4bc3b83a3973e3cff45ba",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104364,7 +104364,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9e486b4af8069523e006605bd322671a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104440,7 +104440,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9e0dc49c6f5e00143453a6e5d68a7e75",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104515,7 +104515,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:620d884d886bacd85abe3547b776c285",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104588,7 +104588,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:43a719709689b1865acc96247d18d24a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104661,7 +104661,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:215ca03ff5bcda866d53c9a98c54b44e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104734,7 +104734,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:af307252dcf3813794e2395dc57b6985",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104808,7 +104808,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:898ab4024a7b1179f1eb57aadf156c09",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104882,7 +104882,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:dfd00534c418daf0b20d8d8d0bff4866",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -104973,7 +104973,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9c549c0b5b96bf0b256e225879ccf39b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105047,7 +105047,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2065d5f5c4cd6f9984c71725ec4172bf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105122,7 +105122,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8e9abc02a5cdc2b4a4be93c8d8ad7425",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105197,7 +105197,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:75e8d6cce87f5b5e3623ca648b8e1cb1",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105272,7 +105272,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:50f29130fcfb6949baefa09a17ac50b2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105364,7 +105364,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c5873061802f1ebe10e3f30b4e0dc830",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105440,7 +105440,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:01ef2efa9c204c81e8e696c9c3515f06",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105514,7 +105514,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f730ea283190a89805ce2e909b6d7409",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105590,7 +105590,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4198a5b49638cca89b1025fdf915f480",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105665,7 +105665,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c9079e8d0758441d8082636cb95d50bf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105738,7 +105738,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9c622a587908eef7d83c5e8371af15c3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105812,7 +105812,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:417c1c205d92668b176196fe776d71ee",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105886,7 +105886,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b2189d5bbd3cbb71b3cb4834c8800c76",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -105979,7 +105979,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9eaa19c7964e018f5ff484b104708a87",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106059,7 +106059,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8939727634df39a763ee03db473b087e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106131,7 +106131,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ac677828cfbaed7df387d9a82ae69e16",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106223,7 +106223,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0ebb7771a43190ff86aa72bfedbe7399",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106304,7 +106304,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:732340ee525252514bc7562ba9add9c4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106416,7 +106416,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:bd36e6dde97e27d578cafc488d19881f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106539,7 +106539,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:119eb75ca09a5497ab8730a6e1b6bc52",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106624,7 +106624,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6f0e48fa8862f1bf0c60c51337fc1d3e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106698,7 +106698,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:596cdc0396ae722f44dbf05a13c91ad0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106772,7 +106772,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:47b81c36e16996d73ea5da4cd0fa5348",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106847,7 +106847,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:03b4533cb905835948134a7a4fccf501",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106921,7 +106921,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ac1de26a8af0f1f8a31d184d8ee8dfe3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -106994,7 +106994,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3cd50e761aac956f7ee91f27c334d2c6",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107066,7 +107066,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7f6a5387f9ca51adf02099b9958098e3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107138,7 +107138,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca08a2d2af1123b456b3123b03b4173d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107212,7 +107212,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:fa075d98b038f066edf0d82422452354",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107287,7 +107287,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2679f688a016ddf645e030ed25e5df3d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107362,7 +107362,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:63094cedcede75bf6d2e84825afa2f60",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107436,7 +107436,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:64936d2aad014d0ca39a55f6f5527f05",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107510,7 +107510,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ac2afe2912a60a49ae70e6c9fc035968",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107584,7 +107584,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c7b004fd90367c875981792c9ff7a523",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107658,7 +107658,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:736afcc2c293f1e52c1b95e874eff31d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107768,7 +107768,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4a6ed6c3fa522585003fa26752d06a45",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107853,7 +107853,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:55c1b6b452cfa89d6d32b47de885f531",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -107927,7 +107927,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ca1d546b193b673ce34f291d98dad5af",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108001,7 +108001,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:00a52e5f875bba0074b554f2ac356ede",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108075,7 +108075,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a5e29202df6dbe763c58bea733df38ce",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108149,7 +108149,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8b29ab6f9a800dfd8bb9dc9a5608ea65",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108241,7 +108241,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:8a5edb7a7f3bb14cfd09a7fc22bb885e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108320,7 +108320,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d5d848322b616f282492a6b3bd792eaf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108394,7 +108394,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b042196e9f1b079f9f4b44950925b185",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108468,7 +108468,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f07fe459caf9ae53abcde39c4311e6b4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108543,7 +108543,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:1bd88c794f8d7eeb3ed9b7bc233b007d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108617,7 +108617,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:f9f156e9900d02ace1918c3ec4ff1ae0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108726,7 +108726,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:d163d26126bb509cb59175cb88298d59",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108811,7 +108811,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:215fae9dee61001d1a53e50e8bcbbfc7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108886,7 +108886,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c0bff3cc061b3b6ed33f8c23faf427dc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -108961,7 +108961,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7d287b3277ccee944b52605b9dfc997b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109035,7 +109035,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2cb4ccbcc227a21791358993fe9d2118",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109109,7 +109109,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:546806dd35294eabc905126329a2a317",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109184,7 +109184,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:48ea0ee2fd1b2c7307814988394671dd",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109259,7 +109259,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7941f5bfba56a90011dadf9803acaba9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109334,7 +109334,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4be0f86c18cf98bdaaf8871826729fca",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109408,7 +109408,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:83a845a6e17927baaa358fb3209dc7e9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109482,7 +109482,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3130eb58f9eb676f6573bdf6c9bc6e39",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109556,7 +109556,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:1e2d56d0178f0cfa101c20c18e61ffe4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109630,7 +109630,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ba1e0b4ef04f02567883876db3c9ac83",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109705,7 +109705,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:322c63c44cb72a0a3fe2091c2c42bc4f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109780,7 +109780,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7bd235d77254ad97cf70ec9b06b8aa59",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109855,7 +109855,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2c3c9d461b0ca2bf9712eb92671692f9",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -109929,7 +109929,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:727f578d7b09fd8282b762a4cad1c5ce",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110002,7 +110002,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:028259582007b8502369a3165ef0a64f",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110075,7 +110075,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:59baa22cfe887d84d2a370d44d1a27c0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110149,7 +110149,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:08ceb1f702baeaf674dfd5c06e9b72ad",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110224,7 +110224,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2cff51488b8a88c6bfe51a6174eec2f4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110298,7 +110298,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ddd165ef2a65d02baa56b808f3864e54",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110371,7 +110371,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3a7ee8fa8113de6d90e1f6d8dfe10b45",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110446,7 +110446,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:67dfb07594024d51940f03585433cc8a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110521,7 +110521,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:213f143206b6d860823ca05d8d8d5491",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110595,7 +110595,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ccb0ce32ad4e331520cffcf96e2ab3b4",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110670,7 +110670,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:773687e56edc1dc5be35a3dfd3be7ff2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110744,7 +110744,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:43d2bf61cd85fd13db21260c04d7b922",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110837,7 +110837,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:e2523c7765de6c118178011334ecfb45",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110918,7 +110918,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:57f1c3a8ab7a103e2ccb728765322a0d",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -110993,7 +110993,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:c0792a2553b899671b0ed8558a34e165",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111069,7 +111069,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:79d458a5b6e390b56db39a5fafe29fd7",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111163,7 +111163,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:540d4f90b324eaefbc33be3e54add976",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111280,7 +111280,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7d0da5fc7705d7517461765013ec1fa8",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111363,7 +111363,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2f0cef0031cd32686577d7b2a5921a3e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111437,7 +111437,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2c26fd1f808e867e1a92d1a8440b12a0",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111528,7 +111528,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:afbb1c92603ab9d356477a1baa4c1144",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111625,7 +111625,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:b14f25cad0b2ac8d590aea18677b49f3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111705,7 +111705,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:6711d4061bf734bb7bb4c7fb2735d477",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111796,7 +111796,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:22f4d74993494fccfa1fe8860a76255c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111876,7 +111876,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2ea55004edf97c68bcf618ad7a74db1a",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -111970,7 +111970,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4860b98e9379b7602176ea79d1d84f4c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112049,7 +112049,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ab4c7f6758a0db33574883ee932ae198",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112123,7 +112123,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:2a957a5baf0368dbb018731be108cd66",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112198,7 +112198,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:417d2b157856b0bfb4526bdefdf5ea5e",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112272,7 +112272,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:44f1b097cbeaadad5e7b5335d0b83aaf",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112346,7 +112346,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:23ca794a86e26c66322ce99df5b0a096",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112420,7 +112420,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:a76565b7754b51ad8e103cd667b201fe",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112493,7 +112493,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:4b0b6862d510add98a09c000b872844c",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112567,7 +112567,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:0496968cf250d185d6cb34027ba5f6ee",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112643,7 +112643,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ed8479c053f93d9b8a02c49b129d13fc",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112718,7 +112718,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:9eb92c0a21a54bc66fc7d447c42dfdc3",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112792,7 +112792,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:61617b0e8f1f638fa86d9b33db8e7db2",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112867,7 +112867,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:49adf4b11a575e73b6c5ab508a1e8015",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -112942,7 +112942,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:49fc9ebb78617dfdfe5ff9228d368785",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -113017,7 +113017,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:ee3d8e459a80ff355b06e4b839795699",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -113091,7 +113091,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:7c60798b9f69553a89c7cd629c2bfd6b",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -113166,7 +113166,7 @@
         "country": "Ghana",
         "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
         "framework_title": "Mathematics Curriculum for Primary Schools (Basic 4 - 6)",
-        "generated_from_step10_bundle_fingerprint": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+        "generated_from_step10_bundle_fingerprint": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
         "identity": {
           "identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:framework:3c453bc0889db3c11d7fec0b9c210a17",
           "namespace_uuid": "3f6b9f2a-7d8a-5d85-a9c3-9f3b8d3c3f4b",
@@ -144868,12 +144868,12 @@
   "validation_report": {
     "errors": [],
     "input_fingerprints": {
-      "academic_standards_kg_bundle": "5871b4a7de8e8079a3787e4928d36023d205ded1062d743b41fe54472095ed6a",
+      "academic_standards_kg_bundle": "c88516742d65ca17269ac1016a11bb3a1ce5f2b37dd63e23563d4ff3f4a45393",
       "lc_entity_provenance": "f2b414e2f17896120cc79d02c37f939ab80de1f35b2bf3bb8f063f2667d3aafd",
       "lc_generation_failures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "lc_generation_summary": "caf475aab5c747b95680f06f9aa1338b156f61244c8087b634a83a045c6091d3",
       "lc_supports_edges": "7eb09af1029a04f18443b6f62fad2dc196c7b13be7048f9fb9d2434d39c90e97",
-      "learning_components": "94d193764397d373b2a126f76859a6e136f62e80ebf2260f2f09b7935339f3e1"
+      "learning_components": "0c8c492823abc860a6d44f5aad8f44bc71a841b5252ad9945ed51c32ff8467a0"
     },
     "learning_commons_export_schema_version": "2026-07-09",
     "object_counts": {
