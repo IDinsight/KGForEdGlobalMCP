@@ -12,9 +12,9 @@ comparison, and prompt workflows remain usable.
 and 297 relatesTo relationships; Ghana Mathematics supplies 299 buildsTowards and
 300 relatesTo relationships. Both use matching profiles and prompt configurations
 bound to profile version 2.0. The other four runtime packages remain on their
-existing standards and learning-component data. Nigeria's matching maintained
-input artifacts and build specification are now included; the other five input sets
-await LP migration.
+existing standards and learning-component data. Matching maintained input artifacts
+and build specifications are now included for Nigeria and Ghana Mathematics; the
+other four input sets await LP migration.
 
 See the [framework catalog](../data/framework-catalog.md) for the active snapshot
 and installed counts. Dataset acceptance tests still skip until all six migrations
