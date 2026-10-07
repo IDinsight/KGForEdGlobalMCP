@@ -1,7 +1,5 @@
 # MCPB packaging
 
-> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
-
 The repository can produce a deterministic MCP Bundle (`.mcpb`) for local desktop MCP
 hosts. Packaging copies the existing generic server, versioned configuration, and
 accepted graph-package repository into a clean stage; it does not introduce a second

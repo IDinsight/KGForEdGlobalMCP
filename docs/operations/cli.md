@@ -1,7 +1,5 @@
 # CLI commands
 
-> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
-
 The backend installs five operator-facing command-line applications. Run them through
 the repository's locked `uv` environment so the executable code and dependency graph
 match the checked-in project metadata.

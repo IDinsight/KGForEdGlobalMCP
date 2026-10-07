@@ -162,7 +162,6 @@ async def test_oversized_instructions_fail_without_clipping(
     assert "EVIDENCE ACCESS" not in str(failure.value)
 
 
-@pytest.mark.lp_dataset
 async def test_single_type_review_renders_only_that_scan(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:

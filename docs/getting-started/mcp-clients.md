@@ -122,7 +122,7 @@ Quit the application completely:
 osascript -e 'quit app "Claude"'
 ```
 
-Then reopen Claude Desktop. A window close may not be sufficient if the application
+Then reopen Claude Desktop. A window close may not be sufficient if the application 
 process remains active.
 
 ### 5. Enable the connector
@@ -169,8 +169,8 @@ The explicit repository environment variables shown in the Claude Desktop exampl
 safe way to make runtime input locations independent of the host's working directory.
 
 !!! warning "Do not substitute a filesystem Python entry point"
-    Use `python -m kgfegmcp.mcpb_server` intact Launching `src/kgfegmcp/mcpb_server.py`
-    directly can cause Python package-name shadowing and break imports from the
+    Use `python -m kgfegmcp.mcpb_server` intact Launching `src/kgfegmcp/mcpb_server.py` 
+    directly can cause Python package-name shadowing and break imports from the 
     external MCP SDK.
 
 ## Connect to a hosted server

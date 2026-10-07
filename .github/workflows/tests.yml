@@ -4,9 +4,23 @@ on:
 
   pull_request:
     branches: [ "**" ]
+    paths:
+      - ".github/workflows/tests.yml"
+      - "backend/**"
+      - "config/**"
+      - "data/**"
+      - "packaging/**"
+      - "Dockerfile"
 
   push:
     branches: ["main"]
+    paths:
+      - ".github/workflows/tests.yml"
+      - "backend/**"
+      - "config/**"
+      - "data/**"
+      - "packaging/**"
+      - "Dockerfile"
 
 env:
   CHAT_ENV: testing
@@ -14,7 +28,34 @@ env:
   OPENAI_API_KEY: sk-fake  # pragma: allowlist secret
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          # Define what is "backend" changes.
+          filters: |
+            backend:
+              - ".github/workflows/tests.yml"
+              - "backend/**"
+              - "config/**"
+              - "data/**"
+              - "packaging/**"
+              - "Dockerfile"
+
   backend-tests:
+    needs: changes
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.changes.outputs.backend == 'true' }}
+
     runs-on: ubuntu-latest
 
     defaults:
@@ -44,8 +85,7 @@ jobs:
       - name: Sync dev dependencies
         run: uv sync --locked --extra dev
 
-      # Match the local offline suite; missing tests must fail the job.
+      # Run Pytest with coverage for the backend.
       - name: Run Pytest with coverage
-        run: >-
-          uv run --locked --no-sync pytest -rsPQ -m "not costs-money"
-          --cov-report term-missing --cov-config=./pyproject.toml --cov=. tests
+        run: |
+          uv run --locked --no-sync pytest -rsPQ -m "not costs-money" --cov-report term-missing --cov-config=./pyproject.toml --cov=kgfegmcp tests

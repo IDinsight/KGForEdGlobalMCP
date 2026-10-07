@@ -1,7 +1,5 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** All six frameworks now provide stored LPs. Matching maintained input artifacts are included for all six frameworks. See [rollout and acceptance](docs/development/lp-migration.md).
-
 <!-- Badges -->
 <p align="center">
   <a href="https://github.com/econchick/interrogate">
@@ -26,7 +24,7 @@ source-grounded evidence, and does not call a server-side LLM.
 ## Architecture
 
 Each curriculum is retained as an independent, immutable, and versioned graph package.
-A shared catalog and common MCP services make the packages searchable through one
+A shared catalog and common MCP services make the packages searchable through one 
 server without flattening them into a single source graph.
 
 This preserves:
@@ -101,13 +99,13 @@ its own bounds, scores, `has_more` value, and cursor; a zero-match result does n
 curriculum absence. Once a relevant branch is found, bounded hierarchy context is
 preferred over unlimited synonym generation.
 
-Stored progression queries retrieve `buildsTowards` and `relatesTo` evidence in one
-exact framework/snapshot. The three new prompts support teaching sequences, support
-planning and curriculum review using standards, relationships, provenance and
-supporting Learning Components. Grade arrays are entered as JSON arrays at the prompt
-boundary. Stored edges are IDinsight-generated judgments, without publisher
-endorsement; confidence is not a calibrated learner-success probability. Missing edges
-do not prove absence of a pedagogical relationship. See [the progression guide](docs/guides/progression.md)
+Stored progression queries retrieve `buildsTowards` and `relatesTo` evidence in one 
+exact framework/snapshot. The three new prompts support teaching sequences, support 
+planning and curriculum review using standards, relationships, provenance and 
+supporting Learning Components. Grade arrays are entered as JSON arrays at the prompt 
+boundary. Stored edges are IDinsight-generated judgments, without publisher 
+endorsement; confidence is not a calibrated learner-success probability. Missing edges 
+do not prove absence of a pedagogical relationship. See [the progression guide](docs/guides/progression.md) 
 and [maintainer update process](docs/development/framework-package.md#learning-progression-inputs-and-updates).
 
 ## Prerequisites
@@ -159,7 +157,7 @@ uv --directory backend sync --locked --extra dev
 
 ## Verify the local server
 
-Run the full dataset smoke through a separate locked STDIO subprocess. Also run strict dataset acceptance as described in [rollout and acceptance](docs/development/lp-migration.md):
+Run the real server through a separate locked STDIO subprocess:
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
@@ -169,7 +167,7 @@ The smoke command:
 
 1. starts `python -m kgfegmcp.mcpb_server`;
 2. completes an MCP handshake;
-3. verifies the exact 19-tool, 1-resource, 14-template, and 9-prompt inventory; and
+3. verifies the exact 13-tool, 1-resource, 12-template, and 7-prompt inventory; and
 4. confirms that the subprocess exits cleanly.
 
 A successful run returns a JSON result with `"status": "passed"`.
@@ -391,7 +389,7 @@ stderr, and production code should not use uncontrolled `print()` calls.
 
 ## Project documentation
 
-- `AGENTS.md` supplies project agent instructions; `docs/architecture.md` describes the
+- `AGENTS.md` supplies project agent instructions; `docs/architecture.md` describes the 
   maintained architecture.
 - `backend/README.md` contains backend-specific operational notes.
 - `packaging/mcpb/README.md` describes the MCP Bundle packaging workflow.

@@ -74,7 +74,6 @@ nav:
       - Local development: development/local-setup.md
       - Add or update a framework: development/framework-package.md
       - Testing and acceptance: development/testing.md
-      - Staged LP rollout: development/lp-migration.md
 
   - Contribute:
       - Contributing: contributing.md

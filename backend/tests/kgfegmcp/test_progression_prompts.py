@@ -73,7 +73,6 @@ def assert_per_kind_direct_calls(message: str, placeholder: str) -> None:
     assert not any(promise in message for promise in FIXED_COUNT_PROMISES)
 
 
-@pytest.mark.lp_dataset
 def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
     """Six-package samples preserve bounded teaching retrieval, identity and notices."""
     for runtime in accepted_state.catalog_load_result.package_runtimes:
@@ -129,7 +128,6 @@ def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
             ) == [str(identity.snapshot_id)]
 
 
-@pytest.mark.lp_dataset
 def test_support_plan_workflow(accepted_state: AppState) -> None:
     """Exact-target support respects independent incoming/related/upstream budgets."""
     for runtime in accepted_state.catalog_load_result.package_runtimes:
@@ -174,7 +172,6 @@ def test_support_plan_workflow(accepted_state: AppState) -> None:
             GetStandardProgressionsRequest.model_validate(call)
 
 
-@pytest.mark.lp_dataset
 def test_curriculum_review_workflow(accepted_state: AppState) -> None:
     """Review exposes matching scope and a finite subset instead of a coverage claim."""
     for runtime in accepted_state.catalog_load_result.package_runtimes:
@@ -234,7 +231,6 @@ def test_curriculum_review_workflow(accepted_state: AppState) -> None:
             assert phrase.lower() in result.message.lower()
 
 
-@pytest.mark.lp_dataset
 def test_shared_legacy_enrichment(accepted_state: AppState) -> None:
     """All four retained client workflows use the same finite optional LP step."""
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
@@ -387,7 +383,6 @@ def test_review_relationship_types_are_validated(
         )
 
 
-@pytest.mark.lp_dataset
 async def test_rendered_relates_scan_reaches_stored_relates_edges(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:

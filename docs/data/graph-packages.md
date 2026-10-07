@@ -17,7 +17,7 @@ data/graph_packages/<framework-id>/<snapshot-id>/
 The snapshot directory must be under the matching framework directory, and both names
 must satisfy the repository identifier contracts.
 
-A package after LP migration has this shape (legacy packages omit LP artifacts):
+A supplied package has this shape:
 
 ```text
 <snapshot-id>/

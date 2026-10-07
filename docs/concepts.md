@@ -260,17 +260,17 @@ See [Compare framework evidence](guides/comparison.md).
 
 ## Stored learning progressions
 
-The server retrieves accepted `buildsTowards` and `relatesTo` relationships between
-standards. Directional builds support success without mandatory prerequisites; relates
-links express concepts/skills without sequence. They are IDinsight model-generated
-judgments, retaining `llm_inferred` origin and exact provenance, not publisher-endorsed
+The server retrieves accepted `buildsTowards` and `relatesTo` relationships between 
+standards. Directional builds support success without mandatory prerequisites; relates 
+links express concepts/skills without sequence. They are IDinsight model-generated 
+judgments, retaining `llm_inferred` origin and exact provenance, not publisher-endorsed 
 or certified pedagogy. Confidence is not a calibrated learner-success probability.
 
-Only stored edges support progression hops. Hierarchy, grade/code ordering, lexical
-similarity and shared Learning Components cannot supply missing edges. Traversals/paths
-are deterministic derived evidence referencing original relationships; they assert no
-new direct link or compulsory teaching order. Limited candidate coverage, unresolved
-claims and bounded search mean absent evidence is not proof of no pedagogical
+Only stored edges support progression hops. Hierarchy, grade/code ordering, lexical 
+similarity and shared Learning Components cannot supply missing edges. Traversals/paths 
+are deterministic derived evidence referencing original relationships; they assert no 
+new direct link or compulsory teaching order. Limited candidate coverage, unresolved 
+claims and bounded search mean absent evidence is not proof of no pedagogical 
 relationship.
 
 See [Use stored learning progressions](guides/progression.md).
@@ -305,7 +305,7 @@ directly to the standards it decomposes.
 Package-level results describe that one graph with two different fields:
 
 - `includedGraphTypes` lists every content domain present in the package's graph,
-  `academic_standards` and `learning_components`, plus `learning_progressions` after that package's LP migration; and
+  currently `academic_standards`, `learning_components` and `learning_progressions`; and
 - `availableGraphTypes` lists the primary graph type of each package in a snapshot,
   currently `academic_standards` only. It identifies which kinds of package can be
   addressed, not which kinds of node the graph contains.

@@ -81,7 +81,6 @@ def digest(data: bytes) -> str:
     return "sha256:" + hashlib.sha256(data).hexdigest()
 
 
-@pytest.mark.lp_dataset
 def test_windows_reassemble_exact_native_bytes(accepted_state: AppState) -> None:
     """Ordered windows reproduce native bytes, hash and metadata without overlap."""
     uri, native = provenance(accepted_state)
@@ -142,7 +141,6 @@ def test_native_denial_is_not_bypassed(accepted_state: AppState) -> None:
     assert paged.value.message == native.value.message
 
 
-@pytest.mark.lp_dataset
 def test_continuation_reapplies_native_policy(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -166,7 +164,6 @@ def test_continuation_reapplies_native_policy(
         )
 
 
-@pytest.mark.lp_dataset
 def test_cursor_is_bound_to_its_record(accepted_state: AppState) -> None:
     """A continuation cursor from one record cannot be replayed on another."""
     uri, _ = provenance(accepted_state)
@@ -189,7 +186,6 @@ def test_cursor_is_bound_to_its_record(accepted_state: AppState) -> None:
         )
 
 
-@pytest.mark.lp_dataset
 def test_encoded_separator_uri_is_rejected(accepted_state: AppState) -> None:
     """An encoded path separator never reaches a different native route."""
     uri, _ = provenance(accepted_state)
@@ -243,7 +239,6 @@ def find_provenance_uri(value: Any) -> str:
     return ""
 
 
-@pytest.mark.lp_dataset
 async def test_text_only_replay_matches_native_read(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:

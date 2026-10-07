@@ -1,7 +1,5 @@
 # Quickstart
 
-> **LP dataset:** All six runtime LP packages are installed. See [rollout and acceptance](../development/lp-migration.md) for strict dataset tests and full smoke checks.
-
 This quickstart takes a new **KGForEdGlobalMCP** checkout from installation to a
 working local MCP connection.
 

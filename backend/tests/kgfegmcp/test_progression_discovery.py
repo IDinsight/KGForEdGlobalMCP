@@ -87,7 +87,6 @@ def pages(
     )
 
 
-@pytest.mark.lp_dataset
 def test_complete_pagination_matches_original_edges(accepted_state: AppState) -> None:
     """Bounded six-package generation verifies one exhaustive ordered-ID property."""
     total = 0
@@ -117,7 +116,6 @@ def test_complete_pagination_matches_original_edges(accepted_state: AppState) ->
     assert total == 8080
 
 
-@pytest.mark.lp_dataset
 @pytest.mark.parametrize("kind", ["incoming_builds", "outgoing_builds", "related"])
 def test_direct_adjacency_matches_original_records(
     accepted_state: AppState, kind: str
@@ -170,7 +168,6 @@ def test_direct_adjacency_matches_original_records(
         )
 
 
-@pytest.mark.lp_dataset
 @pytest.mark.parametrize("scope", ["either", "both", "source", "target"])
 def test_endpoint_scope_exact_selection(accepted_state: AppState, scope: str) -> None:
     """Each scope evaluates exact membership on the specified endpoints."""
@@ -206,7 +203,6 @@ def test_endpoint_scope_exact_selection(accepted_state: AppState, scope: str) ->
         assert found == [e.relationship_id for e in edges if match(e)]
 
 
-@pytest.mark.lp_dataset
 def test_facets_cannot_mix_across_endpoints(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -260,7 +256,6 @@ def test_facets_cannot_mix_across_endpoints(
     )
 
 
-@pytest.mark.lp_dataset
 def test_cursor_binds_the_normalized_request(accepted_state: AppState) -> None:
     """Bounded mutation generation checks one request-integrity property."""
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
@@ -288,7 +283,6 @@ def test_cursor_binds_the_normalized_request(accepted_state: AppState) -> None:
     assert repeat == first
 
 
-@pytest.mark.lp_dataset
 def test_zero_match_work_page_makes_progress(accepted_state: AppState) -> None:
     """Continuation advances examined nonmatches and preserves unknown totals."""
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
@@ -346,7 +340,6 @@ def project_large(monkeypatch: pytest.MonkeyPatch, size: int) -> None:
     )
 
 
-@pytest.mark.lp_dataset
 def test_discovery_oversized_entry_rejected(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -363,7 +356,6 @@ def test_discovery_oversized_entry_rejected(
     assert "resource" in failure.value.recovery_hint.lower()
 
 
-@pytest.mark.lp_dataset
 def test_discovery_combination_bytes_preserve_continuation(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -425,7 +417,6 @@ def test_discovery_combination_bytes_preserve_continuation(
     assert reasons == ["byte_limit", "byte_limit", None]
 
 
-@pytest.mark.lp_dataset
 @pytest.mark.parametrize("kind", ["checksum", "range", "stale"])
 def test_reused_cursor_integrity_boundaries(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch, kind: str
@@ -487,7 +478,6 @@ def test_reused_cursor_integrity_boundaries(
         )
 
 
-@pytest.mark.lp_dataset
 def test_reused_profile_code_and_grade_facets(accepted_state: AppState) -> None:
     """Repeat DEV-013 profile-valid code/grade filter equivalence against real nodes."""
     # Package Library

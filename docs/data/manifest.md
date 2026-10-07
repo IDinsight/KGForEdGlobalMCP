@@ -3,11 +3,8 @@
 `package_manifest.json` is the package-level contract that binds identity, artifacts,
 checksums, profile semantics, capabilities, rights, counts, and validation state.
 
-The runtime accepts manifest/delivery pairs `1.0/1.1` for existing packages and
-`1.1/1.2` for new packages. Mixed pairs are rejected; stored LPs require manifest
-`1.1`. Source schema and supported package revision remain `1.0` and `1`.
-All six installed frameworks use the `1.1/1.2` pair. The runtime retains support
-for legacy packages using the `1.0/1.1` pair.
+The current manifest version is `1.1`, delivery schema is `1.2`, and source schema is
+`1.0`. The supported package revision is `1`.
 
 ## Top-level fields
 
@@ -20,7 +17,7 @@ for legacy packages using the `1.0/1.1` pair.
 | `graphType`             | Primary graph domain                                              |
 | `includedGraphTypes`    | Graph domains included in the package                             |
 | `packageRevision`       | Package-format revision, currently `1`                            |
-| `deliverySchemaVersion` | Delivery schema `1.1` or `1.2`, paired as above     |
+| `deliverySchemaVersion` | Delivery JSONL schema version. The supported version is `1.2`     |
 | `sourceSchemaVersion`   | Detailed-source schema version                                    |
 | `createdAt`             | Timezone-aware package creation timestamp                         |
 | `framework`             | Source-faithful and normalized framework metadata                 |
@@ -50,7 +47,7 @@ A valid manifest must satisfy several identity invariants:
 6. A snapshot relation may not target the same snapshot or duplicate the same
    `(relationType, targetSnapshotId)` pair.
 
-Packages migrated to include learning components and progressions declare
+The current packages including learning components and progressions declare
 `includedGraphTypes: [academic_standards, learning_components, learning_progressions]`. Because an initial
 `graphPackageId` may declare only its primary graph type, such a package uses the
 deterministic graph-type/package-revision form instead, and its `graphPackageId` is
@@ -77,7 +74,7 @@ curriculum terminology or establish equivalence.
 
 ## Profile reference
 
-The profile binding is deliberately small and exact. This example is for a migrated profile; legacy packages retain version `1.0` and their original checksum:
+The profile binding is deliberately small and exact:
 
 ```json
 {
