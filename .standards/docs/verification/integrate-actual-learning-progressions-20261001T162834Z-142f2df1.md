@@ -5,20 +5,77 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 # Verification Report
 
-`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `IN_PROGRESS` `User Style`: `NONE`
-`Assessment Purpose`: `CORRECTION` `Assessment Target`: `Frame 2 Desktop-rework test correction: superseded prompt cases, resolved-mypy test errors, DEV-026/027/028/029 contracts`
+`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `COMPLETE` `User Style`: `NONE`
+`Assessment Purpose`: `FULL` `Assessment Target`: `NONE`
 
-## Current Scoped Recovery — Frame 2 Desktop-rework test correction, 2026-10-07
+## Current Full Verification — Frame 1 Desktop rework, candidate 2f0b981c, 2026-10-07
+
+REVERIFY, FULL/NONE, as the downstream rerun of ARCHITECTING-owned Frame 1 (Desktop-testing rework; From/ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING), entered by FORWARD from DEVELOPING after Developer's full gate (plan COMPLETE, Current Increment NONE). This conversation holds only Tester history (including the nested Frame 2 correction below), no Developer authoring; client freshness/model metadata unavailable, no machine-certified session claim. User Style NONE. Outcome: **FULL Tester gate PASSED**; AC-026/027/036/037 remain explicit Documenter dependencies.
+
+## Assessed Inputs
+
+HEAD 108914e; dirty tree none (E6/entry-status.txt empty, unchanged at exit). E6 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/frame1-full (entry-inputs.txt = final-inputs.txt, 174 tracked backend/.github/packaging/config inputs; prior-verification.md). Contract: scope 2eabb26b… (37 current ACs), architecture f95eae97… (Desktop rework, curriculum-review scans, per-kind direct calls incl. support-plan wording, discovery included types, component citation text; Frame 1/2 technical criteria), context 64d9b6d5…, plan 8c3ee4e1… (COMPLETE; 23 steps DONE incl. DEV-026..029 and DEV-022). Since the Frame 2 correction (verified section below), application change is only cli/smoke_access.py (shared smoke: discovery text, citation URIs, per-type/per-kind workflow parity, duplicate-type failure); all 11 Tester test files equal the verified identities (E5/test-identities.txt). Since the prior full pass (01df98e1 at f541139): graph packages, config, packaging, docs/READMEs, uv.lock unchanged; pyproject (mypy config) and .pre-commit-config changed (DEV-029). Candidate: data/source_artifacts/learning_progressions/frame1-rework-dev022/kgfegmcp-0.4.0-frame1-rework.mcpb (SHA256 2f0b981c…, 82183565 bytes, 657 members) and bundle/; earlier 0.4.0 candidates are history. Developer self-checks/receipts (frame1-rework-dev026..029/022) are inputs only; every result below is an independent Tester execution.
+
+Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; caches in session temp. Repository STDIO, staged STDIO and loopback HTTP ran outside the sandbox (it denies the default uv cache and loopback binding, as recorded in earlier passes). No model/paid service, deployment, publication, package mutation or external write.
+
+## Acceptance Evidence
+
+| AC / technical criterion | Tests or checks | Disposition and evidence |
+| --- | --- | --- |
+| AC-019 (Frame 1) | test_progression_discovery_text (filter rows with cursor replay, list/get_framework/capabilities text vs statistics, undeclared-LP summary); shared smoke discovery check on all three transports (6 LP snapshots; Nigeria 189/297 equal to statistics). | VERIFIED. |
+| AC-016, AC-029 (Frame 1 citation) | test_component_citation_text (six packages; handles equal structured/links; relationship URI text-only read_evidence = native; rights marking); smoke reads text-derived Support relationship and Component URIs completely on all transports. | VERIFIED. |
+| AC-013, AC-014, AC-015, AC-016 (Frame 1/2 workflows) | Corrected/new prompt and workflow-tool cases (per-kind calls, support-plan wording, per-type scans, single-type parity, duplicate/unknown rejection, executed Ghana BASIC 5 relatesTo scan); smoke workflow parity incl. relatesTo-only review, per-kind teaching sequence and teacher guide, forbidden connectionKind all / "page of 25" on all transports; prior workflow cases rerun. | VERIFIED (rendering/retrieval; no end-to-end client composition). |
+| AC-030, AC-031 | Seven-variant native/tool parity, single-type parity, oversized/obsolete cases; smoke workflow parity on three transports. | VERIFIED. |
+| AC-021, AC-034 | E6 stdio-repo, stdio-stage (--bundle-root frame1-rework-dev022/bundle), http (loopback, server stopped): status passed, 19/9/1/14/15, 4 typed failures; closure.py: identical inventory, all tool schema identities, LP queries, native reads and access suite across the three. | VERIFIED (local; not public claude.ai). |
+| AC-022, AC-035 | E6/closure.py: 138 copies equal receipt and external originals; archive = stage = working tree = HEAD for all 657 members; stage unchanged by startup; manifest 0.4.0; six packages × 64 shards; archive 2f0b981c… matches Developer's claim; exactly the 23 members whose sources changed since f541139 differ from the verified 01df98e1 archive. Shipped README.md equals the 01df98e1 one (19 tools, 0.4.0) and does not yet describe the new discovery/citation lines or relationship_types. | VERIFIED for runtime/evidence/closure; current shipped-instruction content PENDING Documenter — a README change requires a candidate refresh and closure re-verification before synchronization. |
+| AC-025 | CI suite (exact command) 117 passed; all CI static checks with resolved imports exit 0; this report accounts for all 37 ACs. | VERIFIED. |
+| AC-023, AC-024 | 117 collected offline cases incl. positive/negative/bounded/regression; autouse socket guard; no model/paid call; CI fails on errors. | VERIFIED. |
+| AC-001 | closure.py copy-receipt check. | VERIFIED. |
+| AC-002, AC-003, AC-004 | Exact-edge reconciliation, acceptance negatives, coverage/needs-review/validation/unresolved suites (CI suite); six read-only package validations rerun (validator modules changed annotation-only): all isValid, 522 package files unchanged. | VERIFIED. |
+| AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-028, AC-033 | Lookup/discovery/traversal/paths (incl. 6522 shortest connections)/identity/provenance/policy/text-only suites in the CI suite; smoke LP queries on three transports. | VERIFIED. |
+| AC-017, AC-018 | Removal refusals and obsolete names absent from all inventories; semantic AS/LC baseline regression and AS/LC smoke reads. | VERIFIED. |
+| AC-020, AC-032 | Desktop rework design, alternatives and client-support assessment inspected; implementation reuses existing services, constructors and policy. | VERIFIED by inspection. |
+| AC-026, AC-027, AC-036, AC-037 | Documenter: guides/references for new discovery lines, citation lines, relationship_types and per-kind calls; D1 walkthrough wording; remote checklist; strict build. | PENDING later-role dependencies (Documenter). |
+
+## Scenario Budget
+
+No new scenario in this full pass. All allocations and approved ceilings from the Frame 2 correction (below) and history carry unchanged, including the user-approved 2026-10-07 increases prompts/learning_progressions.py 9 and prompts/service.py 7. Transport/closure reruns reuse the existing distribution allocation.
+
+## Execution Evidence
+
+Receipts E6/<label>.command.json (argv, cwd, environment names, exit, stdout/stderr hashes); repository cwd.
+- ci-suite (exact CI command with coverage): exit 0, **117 passed** (161 s), coverage 66%.
+- static-isort/black/ruff-src/ruff-tests/interrogate/mypy-src (118)/mypy-tests (21)/pylint-src/pylint-tests (CI forms): all exit 0.
+- validate-1..6 (`kgfegmcp-validate-packages one … --read-only`): exit 0, isValid true; package tree hashes unchanged.
+- stdio-repo, stdio-stage, http (outside sandbox): exit 0 each; HTTP loopback only, server stopped.
+- closure (E6/closure.py, adapted from the 01df98e1 pass): exit 0 (first generation had a shell-escaping syntax error in the script; corrected, not a product result). E6/stage-before.json taken before the staged run.
+- Preservation: no application/test/data/config/packaging/owner-artifact edit in this pass; only this report and STATE.
+
+## Open Findings and Dependencies
+
+- Implementation/upstream/verification defects: NONE. Required present-phase unrun/failed/flaky/uncovered checks: NONE. Blocking question: NONE.
+- Documenter dependencies AC-026/027/036/037, including D1 and user documentation for the new discovery/citation text, relationship_types and per-kind calls; any shipped README change invalidates archive closure and requires a refreshed candidate and closure re-verification before synchronization (AC-035).
+- Local evidence does not establish Desktop UI behavior, composed teaching output or deployed claude.ai acceptance.
+
+## Resume or Handoff
+
+Full Tester gate passed; report COMPLETE. Hand off TESTING -> REVIEWING_IMPLEMENTATION by FORWARD within Frame 1's rerun route (RerunThrough SYNCHRONIZING); Frame 1 stays on the stack. Reviewer (kind IMPLEMENTATION) should start from this section, E6 receipts, the Frame 2 correction section below (E5) and candidate frame1-rework-dev022.
+
+## Historical Scoped Frame 2 Desktop-Rework Test Correction
+
+Superseded by the section above; retained as history.
+
+### Prior Current Scoped Recovery — Frame 2 Desktop-rework test correction, 2026-10-07
 
 REVERIFY/CORRECTION for active Tester-owned nested Frame 2 (From/ResumeAt DEVELOPING, FailureType VERIFICATION, RerunThrough NONE). Exact reason: Tester-owned formal cases assert superseded contracts and fail mypy with resolved imports: test_progression_prompts.py test_teaching_sequence_workflow, test_shared_legacy_enrichment and test_curriculum_review_workflow expect a connectionKind all call, 'one direct page of 25' and one review scan; 63 resolved-mypy errors in 9 tests/ files. Correct them and assess the DEV-026/027/028/029 contracts before Developer resumes DEV-022. Developer Suspended Assignment 7 preserves DEVELOPMENT/NONE under this reason. ARCHITECTING-owned Frame 1 (Desktop rework; ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable, no machine-certified session claim. User Style NONE. Outcome: **scoped CORRECTION gate PASSED**; report stays IN_PROGRESS.
 
-## Assessed Inputs
+#### Desktop-rework correction Assessed Inputs
 
 Entry HEAD 5aa24aa (DEV-026/029 3e39e99, DEV-027 dc849ad, DEV-028 a0efa57 and 5aa24aa); dirty tree only STATE.md and the Developer plan (routing records). E5 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/desktop-rework-correction: entry-inputs.txt / final-inputs.txt hash 172 tracked backend/.github/packaging/config inputs; prior-verification.md preserves the previous report. Contract: scope 2eabb26b… (37 current ACs, unchanged), architecture f95eae97… sections "Desktop rework correction", "Curriculum-review scans", "Per-kind direct calls" (incl. nested Frame 2 support-plan wording), "Discovery of included graph types and LP availability", "Component citation text" and the Frame 1/2 technical criteria for AC-013/014/015/016/019/029; context 64d9b6d5… unchanged; plan de0d4953… (IN_PROGRESS, STEPWISE, AFTER_IMPLEMENTATION/NONE; DEV-026/027/028/029 DONE, DEV-022 PENDING). Developer self-checks and feedback scripts are diagnostic input only. All backend/src, pyproject, uv.lock, config, packaging, .github and .pre-commit-config.yaml are byte-identical to HEAD at exit.
 
 Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_OFFLINE, PYTHONDONTWRITEBYTECODE, PATHS_PROJECT_DIR; UV_CACHE_DIR, MYPY/RUFF caches, PYLINTHOME and COVERAGE_FILE in session temp (sandbox). Autouse socket guard. No model/paid service, deployment, package mutation or application edit.
 
-## Acceptance Evidence
+#### Desktop-rework correction Acceptance Evidence
 
 | AC / technical criterion | Tests or checks | Disposition and evidence |
 | --- | --- | --- |
@@ -34,7 +91,7 @@ Environment: locked Python 3.13 backend via uv --locked --offline --no-sync; UV_
 | AC-021, AC-022, AC-034, AC-035 | Smoke expectations, rebuilt 0.4.0 candidate, user-run repository/staged STDIO and loopback HTTP. | AWAITING_IMPLEMENTATION DEV-022. |
 | AC-026, AC-027, AC-036, AC-037 | Documenter (incl. D1 walkthrough wording) after implementation. | PENDING later-role dependencies (Documenter). |
 
-## Scenario Budget
+#### Desktop-rework correction Scenario Budget
 
 All historical allocations and approved ceilings carried (traversal 8, paths 12, discovery 13, shared service 8, evidence.py 6, workflow_instructions.py 8, mcp/tools/workflows.py 8, prompts/service.py 6, mcp/tools/learning_progressions.py 5/5; others 5). User explicitly approved on 2026-10-07: `prompts/learning_progressions.py` 5→9 and `prompts/service.py` 6→7 for AC-015 relationship_types evidence; no other increase.
 
@@ -55,7 +112,7 @@ Corrections reuse existing allocations: teaching sequence, curriculum review (ty
 
 Unknown-type rejection is charged to the new argument's request model (prompts/learning_progressions.py), not lp_models (its enum reservation is unchanged). DEV-029 configuration and annotation-only src fixes are exercised by the static checks, not scenarios. Six-package loops are one property each over the finite accepted set; no random generator.
 
-## Execution Evidence
+#### Desktop-rework correction Execution Evidence
 
 Receipts E5/<label>.command.json (argv, cwd, environment names, exit code, stdout/stderr hashes); repository cwd.
 - entry-suite: `uv --directory backend run --locked --offline --no-sync pytest -q -p no:cacheprovider -m 'not costs-money' tests` exit 1, 101 passed / 3 failed — exactly the three superseded cases. mypy-tests-entry: exit 1, 63 errors in 9 files.
@@ -65,13 +122,13 @@ Receipts E5/<label>.command.json (argv, cwd, environment names, exit code, stdou
 - static-isort/black/ruff-src/ruff-tests/interrogate/mypy-src (118 files)/mypy-tests (21 files)/pylint-src/pylint-tests (CI linting.yml forms): all exit 0; precommit-mypy-tests (hook form from repository root on 19 test modules): exit 0.
 - Preservation: final-inputs.txt differs from entry only in the nine modified test/fixture files; new test_component_citation_text.py (0fc404d4…) and test_progression_discovery_text.py (22b3e2f4…). Identities in E5/test-identities.txt. No application, config, data, packaging, contract, plan or other owner edit; STATE blocker set and cleared for the budget decision.
 
-## Open Findings and Dependencies
+#### Desktop-rework correction Open Findings and Dependencies
 
 - Active correction VERIFIED. New implementation/upstream/verification defect: NONE. Required scoped unrun/failed/flaky/uncovered check: NONE. Tester-owned obligation: NONE. Budget question resolved (approved); BlockedOn cleared.
 - Remaining full-gate gaps are only approved unfinished DEV-022 (smoke/schema expectations for the new fields, text and prompt argument; rebuilt 0.4.0 candidate and closure; user-run repository STDIO, staged STDIO and loopback HTTP) and the later FULL/NONE assessment of all 37 ACs; Documenter dependencies AC-026/027/036/037 (including D1) unchanged.
 - Local evidence does not establish Desktop UI behavior, composed teaching output or deployed claude.ai acceptance.
 
-## Resume or Handoff
+#### Desktop-rework correction Resume or Handoff
 
 Scoped CORRECTION gate PASSED; report remains IN_PROGRESS. Associated with nested Frame 2's exact reason and Developer Suspended Assignment 7 (DEVELOPMENT/NONE). No Tester assignment was suspended (the prior FULL report was complete for the earlier candidate and is history below). No downstream role precedes unfinished Developer work, so RerunThrough NONE stands: pop only Frame 2 and RESUME DEVELOPING, From TESTING, FailureType NONE; preserve Frame 1. Developer restores Suspended Assignment 7, reconciles the test-file identities above, and proceeds to DEV-022 under STEPWISE. No CHECKPOINT, full completion or Reviewer handoff. The future FULL/NONE assessment must re-establish the rebuilt candidate, transports and all 37 ACs.
 
