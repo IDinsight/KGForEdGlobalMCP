@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DOCUMENTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `REVIEWING_FINAL` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
-`Frame 2 corrected: 0.4.0 candidate rebuilt from HEAD 4fb23fe with the updated README (client-recovery-docs-dev022, archive 01df98e1); closure binds every member to HEAD and the staged run matches prior transports. Pop Frame 2; resume documentation.`
+`Kind`: `FORWARD` `From`: `DOCUMENTING` `FailureType`: `NONE` `Reason`:
+`Documentation COMPLETE for AC-001..AC-037: 0.4.0 guides/reference, Claude Desktop walkthrough and claude.ai checklist; DOC-002 resolved (candidate 01df98e1 ships current README). Request FINAL_DELIVERABLE review; Frame 1 continues through SYNCHRONIZING.`
 
 ## Recovery
 
