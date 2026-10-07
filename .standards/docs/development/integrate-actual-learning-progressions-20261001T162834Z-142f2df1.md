@@ -1633,7 +1633,7 @@ PASS — 2026-10-07. Entry HEAD c3471405a58b11db8379df5d3b427dd3d0a9ff1b plus DE
 
 ### DEV-027 — Print component citation handles in components-for-standard text
 
-`Status`: `PENDING` `Depends On`: `DEV-029`
+`Status`: `DONE` `Depends On`: `DEV-029`
 `Acceptance`: `AC-016, AC-029`
 
 **Goal**
@@ -1651,6 +1651,12 @@ get_learning_components_for_standard text keeps its existing lines and adds once
 **Self-Check**
 
 Offline text-only feedback on all six packages: every listed component's IDs/URIs in text equal structuredContent/resource-link values, and each support relationship URI reads through native resources and through read_evidence; a rights-denied case is marked; pytest tests/; static checks.
+
+PASS — 2026-10-07. Entry HEAD 3e39e9914cdcd3327e2484a595806262f26fe020 (user commit of DEV-026 and DEV-029), clean apart from this step; changed module mcp/tools/learning_components.py sha256 bf3e3219…29ea4879.
+
+- Implementation: `_format_components_for_standard` now takes the exact catalog package and the shared ResourcePolicy (the tool passes `state.resource_service.policy`) and adds `Standard URI` and `Standard learning components URI` once; new `_supporting_component_citation_lines` adds per component `Support relationship ID`, `Support relationship URI`, `Direction` (stored endpoints; `component -> standard` when source is the component and target the requested standard, otherwise the raw endpoints), `Component URI` and, when `has_detailed_provenance`, `Component provenance URI`. New `_permitted_uri` applies `require_resource_access` for the URI's own resource kind and returns `not readable under package rights` on ResourceAccessDeniedError, so denied handles are marked, not dropped. URIs come from the existing constructors and the result package identity. Structured content, ordering, resource links and other LC tools are unchanged; the existing `N. Learning component: <id>` line is unchanged, so cli/smoke_access.py's parser still finds the first component.
+- citation feedback (data/source_artifacts/learning_progressions/frame1-rework-dev027/checks/citation_feedback.py e2f64896…9dcf8f71, results citation-feedback.json 663eaa57…98b83272; network blocked; real create_mcp app through an in-memory FastMCP client): exit 0, 745 checks. Six packages, three standards each (the most-supported plus two in stable order), 67 components: text component order equals structured; each Support relationship ID equals structured relationshipId; direction equals the stored source/target; Standard and Standard learning components URIs equal the tool's resource links; Component and Component provenance URIs equal the links get_learning_component returns (provenance line present exactly when declared); each relationship URI addresses the ID and reads completely through read_evidence (windows replayed from text, hash verified) with bytes equal to the native resource. Denial: the same formatter and policy with a copy of the Ghana English package whose rights deny standard resources marks all 8 URI lines `not readable under package rights`, prints no kgfegmcp:// URI, and still prints every relationship ID.
+- regression: pytest tests/ exit 0, 104 passed (no superseded-contract failure). Static: black, isort, ruff, repository mypy on src/ (resolved imports, no issues in 118 files), pylint 10.00/10, interrogate 100% — exit 0.
 
 ### DEV-028 — Review and sequence each relationship kind on its own budget
 
@@ -2536,3 +2542,7 @@ DEV-026 DONE (see its self-check). Under STEPWISE, persisted the continuation re
 The DEV-026 triple check found that the repository's mypy invocation resolves kgfegmcp imports to Any. The user explicitly directed fixing this before DEV-027, which is their approval of this plan addition (DEV-029, AC-025's static checks; DEV-027 now depends on it). Developer fixes production source and tool configuration only. The 63 resolved-mypy errors in Tester-owned tests/ will join the scoped VERIFICATION correction planned before DEV-022. Cleared the DEV-027 continuation blocker; DEV-029 IN_PROGRESS.
 
 DEV-029 DONE. Consequence for routing: with imports resolved, `mypy tests/` (Makefile lint-mypy, CI linting.yml) now fails on 63 errors in Tester-owned tests/ until Tester corrects them; CI linting will fail on a push in between. Add these to the single scoped VERIFICATION correction planned after DEV-028 and before DEV-022 (with any superseded-contract cases). Under STEPWISE, persisted the continuation request for DEV-027 and stopped.
+
+User explicitly authorized DEV-027 on 2026-10-07; cleared only its STEPWISE blocker. DEV-027 IN_PROGRESS.
+
+DEV-027 DONE (see its self-check). Under STEPWISE, persisted the continuation request for DEV-028 and stopped.
