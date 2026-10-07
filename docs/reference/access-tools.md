@@ -63,10 +63,14 @@ mismatched cursor fails with `invalid_cursor`. Paging does not raise native limi
 call reapplies rights, exposure class, source-read and return-size checks, and a resource
 that is denied natively is denied here too.
 
-Measured on the current Nigeria snapshot with the default window: the diagnostic
-relationship provenance (12,275 bytes) and the target standard's provenance arrive in one
-window; the manifest (22,348 bytes) needs two; Ghana Mathematics' dedicated unresolved
-record (42,831 bytes) needs three.
+Window counts depend on the window size. Measured with the default window of 16,384
+bytes: the Nigeria diagnostic relationship provenance (12,275 bytes) and the target
+standard's provenance arrive in one window; the Nigeria manifest (22,348 bytes) needs
+two; and Ghana Mathematics' standards-hierarchy unresolved-items report (`/unresolved`,
+42,831 bytes) needs three. With `maxContentBytes` 4,096 the same report needs 11
+windows. That report covers unresolved parent–child links in the standards hierarchy; it
+is not progression evidence, which is in the `learningProgressionUnresolved` record that
+`metadata.unresolvedUri` points to.
 
 ## `get_workflow_instructions`
 
@@ -88,7 +92,7 @@ The other request fields are that prompt's arguments in camelCase (`framework_id
 and selector objects are sent as JSON values, not JSON strings:
 
 ```json
-{"request":{"workflowName":"learning_progression_support_plan","frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f","identifier":{"identifierType":"node_id","nodeId":"e399b510-48bb-58ee-abda-61460a5a853b"},"localContext":"Learners explain the whole but confuse equal-sized parts.","outputLanguage":"en"}}
+{"request":{"workflowName":"learning_progression_support_plan","frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f","identifier":{"identifierType":"node_id","nodeId":"e399b510-48bb-58ee-abda-61460a5a853b"},"localContext":"Learners can count to 9 but often write 6 and 9 the wrong way round.","outputLanguage":"en"}}
 ```
 
 Unknown workflow names, extra fields and invalid values fail validation.

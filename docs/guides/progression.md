@@ -30,6 +30,8 @@ Call `get_learning_progression` with that input. Call `get_standard_progressions
 {"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"<returned-snapshot-id>","identifier":{"identifierType":"node_id","nodeId":"<returned-source-node-id>"},"connectionKind":"all","limit":25}}
 ```
 
+An `all` page lists builds before related links, so on a standard with many links it can stop at the result-size limit before any related link appears. To see each kind, call once per `connectionKind` (`outgoing_builds`, `incoming_builds`, `related`), as the workflows do.
+
 Follow outgoing builds with `traverse_learning_progressions`:
 
 ```json
@@ -72,7 +74,7 @@ local_grade_labels: ["PRIMARY ONE", "PRIMARY TWO", "PRIMARY THREE"]
 output_language: en
 ```
 
-Prompt collection values are JSON-array strings, not comma-separated prose. This workflow pins a package, inspects the first 10 standard-search hits and retains at most three standards. It retrieves one direct page per standard, downstream builds (depth 8, nodes 30, edges 40), and up to three connecting paths at depth 6 only when two retained standards are selected. It retains at most five supporting Learning Components per selected standard. Related concepts stay separate from sequence hops.
+Prompt collection values are JSON-array strings, not comma-separated prose. This workflow pins a package, inspects the first 10 standard-search hits and retains at most three standards. It retrieves direct links separately for each connection kind (outgoing builds, incoming builds, related; one page each, at most nine calls), downstream builds (depth 8, nodes 30, edges 40), and up to three connecting paths at depth 6 only when two retained standards are selected. It retains at most five supporting Learning Components per selected standard. Related concepts stay separate from sequence hops.
 
 The host uses this evidence to draft an adaptable, cited sequence with alternatives and generated activities. If coverage is sparse, it states that limitation and does not invent an edge.
 
@@ -83,11 +85,11 @@ Choose `learning_progression_support_plan`; pass an exact target selector as a J
 ```text
 framework_id: nigeria-nerdc-mathematics-primary-1-3
 identifier: {"identifierType":"node_id","nodeId":"<selected-target-node-id>"}
-local_context: Learners explain the whole but confuse equal-sized parts.
+local_context: Learners can count to 9 but often write 6 and 9 the wrong way round.
 output_language: en
 ```
 
-Replace the target with an actual selected standard. The client reads the target, incoming builds and related concepts (one page of 25 each), upstream builds at depth 3/nodes 20/edges 30, and supporting components for the target and at most three supporting standards (five components each retained). It proposes cited review/practice options and alternative next steps. Teacher observations are caller reports; suggestions are generated pedagogy. This is not an automatic mastery/readiness diagnosis.
+Replace the target with an actual selected standard, and write a classroom note about that standard (this note fits "write correctly number 6-9", node `e399b510-48bb-58ee-abda-61460a5a853b`). The client reads the target, then incoming builds and related concepts in two separate calls. Each reads one page of up to 25 links (fewer if the result reaches the size limit); a remaining `nextCursor` means that kind has more links than were read, and the client reports it. It then reads upstream builds at depth 3/nodes 20/edges 30, and supporting components for the target and at most three supporting standards (five components each retained). It proposes cited review/practice options and alternative next steps. Teacher observations are caller reports; suggestions are generated pedagogy. This is not an automatic mastery/readiness diagnosis.
 
 ## Curriculum review
 
@@ -100,11 +102,11 @@ endpoint_scope: either
 output_language: en
 ```
 
-Optional `standard_identifiers` accepts a JSON array of at most 20 exact node/CASE/profile-enabled code selectors. Grade/type filters use the same endpoint conjunction as discovery. The client reads statistics and the LP summary, inspects at most three pages of 25 edges, and at most ten selected exact relationships/provenance records, plus validation/unresolved evidence within policy. A ministry or ed-tech reviewer can compare stored totals with the bounded inspected subset, identify warning/review questions and retain exact citations. Missing edges are not proof of curriculum omission, and no cross-framework progression is asserted.
+Optional `standard_identifiers` accepts a JSON array of at most 20 exact node/CASE/profile-enabled code selectors. Optional `relationship_types` takes `["buildsTowards"]`, `["relatesTo"]` or both; blank means both. Grade/type filters use the same endpoint conjunction as discovery. The client reads statistics and the LP summary, then runs one search per selected type, each allowed up to three pages, so `relatesTo` links are always included when requested. Each page holds up to 25 links, often fewer because of the size limit (seven per page for Ghana Mathematics Basic 5), and the client records each page's actual count. It fully inspects at most ten selected exact relationships/provenance records (up to five per type when both return links), plus validation/unresolved evidence within policy, and reports each type's counts separately. A ministry or ed-tech reviewer can compare stored totals with the bounded inspected subset, identify warning/review questions and retain exact citations. Missing edges are not proof of curriculum omission, and no cross-framework progression is asserted.
 
 ## Preserve provenance and coverage limits
 
-All three workflows cap full provenance inspection at ten used relationships and evidence reading at 32 `read_evidence` windows; several windows of one record count as one record. Reduce the cited recommendation set or defer additional evidence if that cap is reached. These are client evidence-retention caps, not changes to LC-tool output limits. The four existing teacher-guide, student-study, handbook and multigrade workflows also retrieve optional stored links with supporting LCs, explaining unavailable/empty/incomplete evidence without a fallback that invents relationships.
+All three workflows cap full provenance inspection at ten used relationships and evidence reading at 32 `read_evidence` windows; several windows of one record count as one record. Reduce the cited recommendation set or defer additional evidence if that cap is reached. These are client evidence-retention caps, not changes to LC-tool output limits. The four existing teacher-guide, student-study, handbook and multigrade workflows also retrieve optional stored links (one call per connection kind for up to three standards) with supporting LCs, explaining unavailable/empty/incomplete evidence without a fallback that invents relationships.
 
 Read `metadata.summaryUri`, `validationUri` and `unresolvedUri` for coverage and structural-only notices. CBSE retains one `needs_review` claim outside accepted edges; Ghana Mathematics and Ghana English retain 141 and 10 unresolved-warning pairs. Edge warnings can exist independently of those counts. Absent edges may reflect eligibility or limited candidate coverage. Rights and byte limits still apply, even when an artifact is present. See [resources](resources.md), [prompt guide](prompts.md) and [maintainer preparation](../development/framework-package.md#learning-progression-inputs-and-updates).
 

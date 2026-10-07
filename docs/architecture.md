@@ -329,40 +329,44 @@ alignment, grade equivalence, prerequisite, or progression relationship.
 
 ## LP integration and immutable evidence
 
-Stored LP shares each curriculum's accepted graph/runtime and existing selectors, 
-rights policy, resources and thin MCP adapters. Separate labels preserve hasChild 
-ancestry and LC supports. New immutable artifact-set snapshots and profile version 2.0 
-replaced the sealed old packages; standard/component identity and source text stay 
-intact. The original provenance map plus 64 validated partitions lets clients open one 
-relationship's evidence within existing byte limits. No second database or mutable 
-graph is needed. See [local copy and update process](development/framework-package.md#learning-progression-inputs-and-updates).
+Learning progressions live in each curriculum's existing graph and use the same
+selectors, rights rules, resources and MCP tools as standards and components. Each kind
+of link has its own label, so parent–child links, component support links and
+progression links stay separate. Each curriculum's package is an immutable snapshot
+(profile version 2.0) that keeps the original standard and component IDs and source
+text. The provenance file is also stored in 64 checked parts, so a client can open the
+evidence for one relationship without reading the whole file. No second database is
+needed. See [local copy and update process](development/framework-package.md#learning-progression-inputs-and-updates).
 
-## Client access (server 0.4.0)
+## How clients get results and evidence
 
-Claude Desktop showed only short summaries of progression results, and its resource
-menu could not open the evidence links those results returned. Version 0.4.0 fixes this
-by reusing existing services rather than adding new ones:
+Some MCP clients, including Claude Desktop, pass only the text of a tool result to the
+model. The server is designed so that the text alone is enough. All of this reuses the
+existing services; there is no separate service or database.
 
-- **Results as text.** The five progression tools now put their complete result into the
-  text block as canonical JSON, in addition to the unchanged structured content. A client
-  that reads only text sees every edge, statement, warning, link and cursor. The cost is
-  that each result carries its evidence twice, so the server measures the whole result
-  against 1 MiB and 100,000 characters and pages stop earlier.
-- **Smaller identity block.** Each result used to list all 86 package artifacts with
-  their checksums: about 27,000 characters, counted twice (text and structured copy), so
-  roughly half the size budget. Now it names only the four
-  artifacts it is derived from and points to the manifest for the rest — like citing the
-  pages you quoted instead of reprinting the binder's whole table of contents.
-- **Paths stop instead of failing.** If a later path does not fit, the result returns the
-  paths already found and names the next one by its IDs.
-- **Two access tools.** `read_evidence` sends any resource through the existing resource
-  service in bounded windows, with the same rights and limits. `get_workflow_instructions`
-  calls the existing prompt renderers for seven workflows, so tool-only clients get the
-  same instructions as the native prompts. Native prompts and resources are unchanged.
+- **Full results in text.** Each of the five progression tools returns its whole result
+  as JSON text, as well as the structured result. Both copies count toward the size
+  limits (1 MiB and 100,000 characters), so a page can hold fewer items than the
+  requested `limit`.
+- **Short package identity.** Each result names the four package files it was built
+  from and links to the package manifest for the full file list.
+- **Paths stop cleanly.** If the next path would make the result too large, the tool
+  returns the paths it has and names the next one.
+- **Two helper tools.** `read_evidence` reads any resource link in pieces, with the same
+  rights and limits as a normal resource read. `get_workflow_instructions` returns the
+  same instructions as seven of the native prompts, for clients that cannot use prompts.
+- **Discovery shows what a package contains.** Each package is filed as Academic
+  Standards, which is how tools select it, and also contains Learning Components and
+  Learning Progressions. Discovery shows both lists, and the `graphTypes` filter matches
+  what a package contains.
+- **Citation links in component text.** `get_learning_components_for_standard` prints
+  each support relationship ID and the links needed to cite and open the evidence.
+- **One request per link type in workflows.** Results list `buildsTowards` links before
+  `relatesTo` links, and a page can stop early at the size limit. A combined page may
+  therefore contain no `relatesTo` links, so the workflows request each type, or each
+  connection kind, separately.
 
-Accepted packages, profiles and prompt configurations were not changed. The server and
-MCPB version moved to 0.4.0 and the prompt library to 1.4.0. See
-[access tools](reference/access-tools.md) and
+See [access tools](reference/access-tools.md) and
 [Claude Desktop and claude.ai](getting-started/claude-clients.md).
 
 ## Determinism and immutability

@@ -230,6 +230,21 @@ never decomposed (compare `supportedStatementTypes` in `get_framework_statistics
 legitimately has no components. Standard wording is printed whole; nothing in the
 learning-component text output is truncated.
 
+The text also prints what a client needs to cite and open the evidence, even if it reads
+only text:
+
+- once, for the standard: `Standard URI` and `Standard learning components URI`;
+- for each component: `Support relationship ID` (the stored `supports` relationship),
+  `Support relationship URI`, `Direction` (`component -> standard`), `Component URI` and,
+  when the package declares detailed provenance, `Component provenance URI`.
+
+For example, for Nigeria node `e399b510-48bb-58ee-abda-61460a5a853b` the one component
+`20507dfe-4d56-575c-b7ea-33b1f9072300` is supported through relationship
+`5f89e75a-70c5-5260-b325-31fcba940574`. Read any of these URIs with `read_evidence` or as
+a native resource. If package rights deny a resource family, the line says
+`not readable under package rights` instead of being left out. The structured result and
+resource links are unchanged.
+
 ## Traversal directions
 
 ```text

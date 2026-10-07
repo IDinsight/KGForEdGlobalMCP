@@ -311,7 +311,10 @@ Package-level results describe that one graph with two different fields:
   addressed, not which kinds of node the graph contains.
 
 Use `includedGraphTypes` and the `learningComponentNodes` count, not
-`availableGraphTypes`, to decide whether a package offers learning components.
+`availableGraphTypes`, to decide whether a package offers learning components. The same
+applies to learning progressions: use `includedGraphTypes` and `hasLearningProgressions`.
+The `list_frameworks` `graphTypes` filter matches included types, and discovery text
+prints both lists (`Routing graph types:` and `Included graph types:`).
 
 Although the two node kinds live in one graph, node-level tools and resources keep them
 separate: a standards operation never returns a component, and a learning-component

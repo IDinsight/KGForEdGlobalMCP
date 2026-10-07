@@ -156,7 +156,7 @@ no_matches
 unresolved_evidence_present
 ```
 
-Stored progression results retain judgment warnings and coverage notices, plus explicit page stopping and traversal/path truncation reasons. They do not use the obsolete candidate-collection warning taxonomy. Preserve total/omitted warning indicators and inspect full provenance.
+Stored progression results retain judgment warnings and coverage notices, plus explicit page stopping and traversal/path truncation reasons. Preserve total/omitted warning indicators and inspect full provenance.
 
 A warning is part of the evidence contract. Clients should preserve it rather than
 silently converting uncertainty or capability limits into a confident conclusion.

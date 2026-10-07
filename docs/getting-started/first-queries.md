@@ -31,7 +31,8 @@ Ask the MCP host:
 ```text
 Use the curriculum-knowledge-graph connector to list all available frameworks. For each
 framework, show the framework ID, snapshot ID, jurisdiction, subject, local grades or
-stages, validation status, and available graph types. Preserve the source terminology.
+stages, validation status, and routing and included graph types. Preserve the source
+terminology.
 ```
 
 The server's `list_frameworks` tool returns accepted immutable framework snapshots. Its

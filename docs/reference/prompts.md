@@ -222,7 +222,7 @@ Required: `framework_id`, `topic_or_standard` (1–512 characters).
 | `local_context`                           | null; at most 4,000 characters                                                           |
 | `output_language`                         | null; optional language tag                                                              |
 
-The client resolves a topic/code through the first search page of 10, or an exact node/CASE selector through `get_standard`, retaining at most three standards. It reads direct links (one page of 25 each), downstream builds (depth 8/nodes 30/edges 40) and, only for two explicitly selected retained standards, connecting paths (depth 6/paths 3). It retains at most five supporting LCs per standard. The result is an adaptable cited sequence, separating stored builds, nonsequential relates links and generated activities/ordering choices.
+The client resolves a topic/code through the first search page of 10, or an exact node/CASE selector through `get_standard`, retaining at most three standards. It reads direct links with three calls per retained standard, one per connection kind in the order `outgoing_builds`, `incoming_builds`, `related` (at most nine calls). Each call reads one page of up to 25 links (fewer if the result reaches the size limit); a remaining `nextCursor` means that kind has more links than were read, and the client reports it. It then reads downstream builds (depth 8/nodes 30/edges 40) and, only for two explicitly selected retained standards, connecting paths (depth 6/paths 3). It retains at most five supporting LCs per standard. The result is an adaptable cited sequence, separating stored builds, nonsequential relates links and generated activities/ordering choices.
 
 ## `learning_progression_support_plan`
 
@@ -230,7 +230,7 @@ Required: `framework_id`, `identifier` (a JSON-object prompt argument selecting 
 
 Optional: `snapshot_id`, `local_context` (at most 4,000 characters), `output_language`, all null by default.
 
-The client reads the target standard, incoming builds and related links (one page of 25 each), upstream builds (depth 3/nodes 20/edges 30), and LCs for the target plus at most three supporting standards (five LCs per standard retained). It proposes cited review/practice options and alternative next steps. Observations are caller reports; suggestions are generated pedagogy, not a mastery diagnosis or compulsory prerequisite.
+The client reads the target standard, then incoming builds and related links in two separate calls. Each call reads one page of up to 25 links (fewer if the result reaches the size limit) and does not follow `nextCursor`; a remaining cursor means that kind has more links than were read, and the client reports it. It also reads upstream builds (depth 3/nodes 20/edges 30), and LCs for the target plus at most three supporting standards (five LCs per standard retained). It proposes cited review/practice options and alternative next steps. Observations are caller reports; suggestions are generated pedagogy, not a mastery diagnosis or compulsory prerequisite.
 
 ## `learning_progression_curriculum_review`
 
@@ -242,10 +242,11 @@ Required: `framework_id`.
 | `local_grade_labels`, `normalized_grades`       | Empty JSON arrays; at most 32 unique profile-valid values each                     |
 | `statement_types`, `normalized_statement_types` | Empty JSON arrays; at most 32 unique profile-valid values each                     |
 | `endpoint_scope`                                | `either`; also `both`, `source`, `target`                                          |
+| `relationship_types`                            | Empty JSON array (both types); or `["buildsTowards"]`, `["relatesTo"]`, both; unique |
 | `snapshot_id`, `output_language`                | null                                                                               |
 | `local_context`                                 | null; at most 4,000 characters                                                     |
 
-The workflow reads LP summary/statistics and passes exact selectors/endpoint filters to discovery. It scans at most three pages of 25, inspects at most ten selected exact relationships/provenance records and reads retained validation/unresolved evidence within policy. Package totals and the bounded reviewed subset remain separate. The output contains coverage/warning/review questions, without asserting curriculum omission, pedagogical certification or cross-framework edges.
+The workflow reads LP summary/statistics, then runs one discovery scan per selected relationship type in the fixed order `buildsTowards`, `relatesTo`. Each scan sets `relationshipTypes` to its single type, keeps the same exact selectors and endpoint filters, and may read up to three pages, so one type never uses up the other's pages. Each page holds up to 25 links (fewer if the result reaches the size limit), and the client records each page's actual count and cursor. A cursor left after a scan's third page means that type's review is incomplete. The client fully inspects at most ten selected exact relationships/provenance records in total (up to five per type when both types return links; unused slots go to the other type) and reads retained validation/unresolved evidence within policy. Package totals, filtered counts and the bounded reviewed subset are reported separately for each type and never added across types. The output contains coverage/warning/review questions, without asserting curriculum omission, pedagogical certification or cross-framework edges.
 
 ### Shared stored-progression workflow contract
 
@@ -253,7 +254,7 @@ MCP prompt names/arguments use snake_case. Complex values are JSON-array/object 
 
 All three retain source standards, generated LCs, stored generated edges and new pedagogy as separate tiers. Full provenance for used relationships is capped at ten resources, and evidence reading at 32 windows: reduce/defer cited recommendations if more evidence is needed. Keep bounds, warnings, coverage, unavailable/empty/partial results and denied-resource outcomes visible. Missing edges never invoke a hypothesis fallback. See [workflow examples](../guides/progression.md).
 
-The existing `teacher_guide_draft`, `student_study_support`, `student_handbook_section` and `multigrade_lesson_plan` prompts also retrieve optional stored LP evidence: at most three standards, one direct page of 25 each, full provenance for at most ten used edges, plus LCs. They preserve useful output when LP is unavailable or sparse. A shared LC supplies generated support evidence, not a new LP or cross-grade equivalence edge.
+The existing `teacher_guide_draft`, `student_study_support`, `student_handbook_section` and `multigrade_lesson_plan` prompts also retrieve optional stored LP evidence: at most three standards, three one-page calls per standard (one per connection kind, at most nine; up to 25 links each), full provenance for at most ten used edges, plus LCs. They preserve useful output when LP is unavailable or sparse. A shared LC supplies generated support evidence, not a new LP or cross-grade equivalence edge.
 
 ## `administrator_alignment_review`
 

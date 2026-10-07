@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-07",
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "environment": {
+    "UV_OFFLINE": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_CACHE_DIR": "<session TMPDIR>/uvcache",
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Users/tzz/.local/bin/uv",
+        "--directory",
+        "backend",
+        "run",
+        "--locked",
+        "--offline",
+        "--no-sync",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--config-file",
+        "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/mkdocs.yml",
+        "--site-dir",
+        "<session TMPDIR>/doc/site"
+      ],
+      "exitCode": 0,
+      "stdout": "strict-build.stdout",
+      "stdoutSha256": "sha256:58230455308383c40de8b9f12bcb5f38f475d38413ebc57ccec95ae4646b2193",
+      "note": "Combined stdout/stderr; vendor Material notice only; no strict warning."
+    },
+    {
+      "argv": [
+        "/Users/tzz/.local/bin/uv",
+        "--directory",
+        "backend",
+        "run",
+        "--locked",
+        "--offline",
+        "--no-sync",
+        "python",
+        "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/documentation/frame1-rework-20261007/check-docs.py",
+        "<session TMPDIR>/doc/site"
+      ],
+      "exitCode": 0,
+      "stdout": "check-docs.stdout",
+      "stdoutSha256": "sha256:aa34699dc537fddff68c588437f5463f1dc80e38398ecdeeb5cd993528de029e",
+      "stderr": "check-docs.stderr",
+      "stderrSha256": "sha256:19fd4ae91d05f9245bda3cdbb1a3c229e55d171e28a5f80c116e6236e30694e7",
+      "checkerSha256": "sha256:0b422e50ebe4a2d088db3f7c1681e4a44ec981c42f0743302ea1dc824ca299f8",
+      "resultsSha256": "sha256:e6db523701ae947bd4fcd91182211615a363fa0d3e366e67e75087db10ec6992",
+      "note": "Sockets blocked; in-process FastMCP client; no model or paid call. stderr holds expected translated-error warnings from negative cases."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "-i",
+        "one page of 25|pages of 25|at most 75|equal-sized|collect_progression_evidence|inferred_progression_hypothesis|17 tools|0\\.3\\.1\\.mcpb",
+        "README.md",
+        "backend/README.md",
+        "packaging/mcpb/README.md",
+        "docs",
+        "examples",
+        "mkdocs.yml"
+      ],
+      "exitCode": 1,
+      "note": "No matches (expected absence)."
+    },
+    {
+      "argv": [
+        "node",
+        ".standards/bin/check.mjs"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "superseded": [
+    {
+      "run": "check-docs.py first run",
+      "exitCode": 1,
+      "cause": "harness still required the literal component provenance link in the page; the walkthrough now takes it from tool text. Checker-only fix."
+    },
+    {
+      "run": "check-docs.py second run",
+      "exitCode": 1,
+      "cause": "harness parsed get_framework_statistics text as JSON; switched to structuredContent. Checker-only fix."
+    },
+    {
+      "run": "git diff --check first run",
+      "exitCode": 2,
+      "cause": "trailing spaces on three edited lines in docs/reference/framework-tools.md; stripped, then build and checker rerun on final content."
+    }
+  ]
+}

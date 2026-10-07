@@ -81,7 +81,12 @@ in a separate STDIO process. It then:
    the LP coverage reports (including the CBSE `needs_review` claim and the Ghana warning
    counts) through `read_evidence`, reads standard and learning-component evidence using
    only links taken from tool text and rendered **EVIDENCE LINKS**, compares
-   `get_workflow_instructions` with the native prompts, and checks typed failures; and
+   `get_workflow_instructions` with the native prompts, and checks typed failures. It
+   also requires discovery text to show included `learning_progressions` with counts
+   equal to statistics (and the `graphTypes` filter to keep all six snapshots), reads
+   the support relationship and component links taken from component text, and requires
+   the curriculum review to scan each relationship type separately and the teaching
+   workflows to call each connection kind separately; and
 7. closes the client and proves the subprocess exits cleanly.
 
 A successful result is deterministic JSON containing:

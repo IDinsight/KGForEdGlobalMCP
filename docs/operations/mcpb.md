@@ -281,6 +281,12 @@ Desktop's MCP configuration. See [Connect an MCP client](../getting-started/mcp-
 and the [Claude Desktop walkthrough](../getting-started/claude-clients.md#claude-desktop-walkthrough)
 for checking a 0.4.0 runtime in the client.
 
+If a bundle with the same version number is already installed, Claude Desktop may keep
+the old copy. Remove the existing extension before installing the new bundle. If you
+added the server in Desktop's configuration file instead, quit and reopen Desktop after
+updating the code. The walkthrough's first step shows whether Desktop runs the current
+server.
+
 ## Packaging is behavior-preserving
 
 The builder copies the accepted runtime inputs. It does not modify:
