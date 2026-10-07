@@ -7,7 +7,7 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
 
 ## Frame 1 Desktop Rework Revision — approved 2026-10-07
@@ -1698,7 +1698,7 @@ PASS with expected superseded-contract failures — 2026-10-07. Entry HEAD dc849
 
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-021, DEV-025, DEV-028`
+`Status`: `DONE` `Depends On`: `DEV-021, DEV-025, DEV-028`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
 
 **Current Recovery Assignment — proposed 2026-10-06**
@@ -2620,3 +2620,17 @@ Entry HEAD 9511b68 (clean). Reopened intent from the Frame 1 Build Plan step 10:
 - inprocess-smoke (R/inprocess_smoke.py via run_command): exit 0. 19 tools, 9 prompts, 1 fixed resource, 14 templates, 15 native reads; discovery 6 LP snapshots, Nigeria 189/297 equal to statistics; 17 complete evidence reads (adds support relationship and component); 4 typed failures; workflow parity for support plan, teacher guide, curriculum review (relatesTo only) and teaching sequence (27,018–33,633 bytes). Results R/inprocess-smoke.json 008d409c…3e161273.
 - regression: pytest backend/tests exit 0, 117 passed.
 - Next: the user commits smoke_access.py (with this plan); Developer then builds the candidate from that clean HEAD into frame1-rework-dev022/, binds closure to HEAD, and the user runs repository STDIO, staged STDIO and loopback HTTP outside the sandbox.
+- User committed 1c31450 (smoke_access.py equals the tested 97960862…dc4106bd4543). Cleared the commit blocker. build-mcpb from that clean HEAD (R/build-mcpb.*): exit 0; data/source_artifacts/learning_progressions/frame1-rework-dev022/kgfegmcp-0.4.0-frame1-rework.mcpb, 82183565 bytes, SHA256 2f0b981ca94a595f1e2a78c70084609dfcbc0aba1d5f434d56341228f4f1c2d3, 657 files, version 0.4.0, official mcpb validate/pack inside the builder. checks/closure.py (R/closure.*): exit 0, 9 checks — build inputs equal HEAD 1c31450; archive equals stage byte-for-byte; every member maps to a repository input and equals both the working tree and the committed HEAD blob; manifest 0.4.0; six package trees and all 522 graph-package files; no caches, environments, preparation or test trees. Pending user-run outside the sandbox (uv cache and loopback binding are blocked here): repository STDIO, staged STDIO with --bundle-root data/source_artifacts/learning_progressions/frame1-rework-dev022/bundle, and the loopback HTTP harness.
+- User ran the three transports outside the sandbox through checks/run_command.py: stdio-repo exit 0 (11.4 s), stdio-stage with --bundle-root frame1-rework-dev022/bundle exit 0 (14.6 s), http-harness exit 0 (11.9 s, loopback only, server stopped). No tracebacks; the three "Expected backend error translated" lines are the smoke's deliberate typed failures. checks/transport_agreement.py (R/transport-agreement.*): exit 0 — repository STDIO, staged STDIO, loopback HTTP and in-process runs agree exactly on inventory (19 tools, 9 prompts, 1 fixed resource, 14 templates), all tool schema identities, LP queries, the access suite (discovery 6 LP snapshots and Nigeria 189/297, 17 complete evidence reads including the text-derived support relationship and component URIs, 4 typed failures, workflow parity incl. relatesTo-only review and per-kind teaching sequence) and 15 native resource reads; all 657 archived files unchanged in the stage after startup, whose only additions are its own .venv and src/kgfegmcp.egg-info. checks/closure.py rerun after the runs at unchanged HEAD 1c31450: exit 0 (pre-run receipts kept as closure-pre-runs.*), archive SHA256 unchanged 2f0b981ca94a595f1e2a78c70084609dfcbc0aba1d5f434d56341228f4f1c2d3. Evidence index R/evidence-index.json SHA256 52d97e89d025add4c633925b56313cbaa606ed4374a4b01cb1992e56a51c3dd6.
+
+DEV-022 DONE. Retained 0.4.0 candidate: data/source_artifacts/learning_progressions/frame1-rework-dev022/kgfegmcp-0.4.0-frame1-rework.mcpb; earlier 0.4.0 candidates (including client-recovery-docs-dev022, 01df98e1…) are history.
+
+### Full Developer completion for Frame 1 rework — 2026-10-07
+
+Gate: all twenty-three current approved steps are DONE (DEV-001–005, DEV-023, DEV-012–021, DEV-024–029, DEV-022); current-cycle DEVELOPMENT provenance and Active Work.Development are correct; implemented behavior conforms to the revised scope and the Frame 1/nested-Frame-2 architecture (included graph types and LP discovery text, component citation text, per-type review scans, per-kind direct calls, shared page-limit wording incl. support planning); User Style tony locked and unchanged, with universal, Python and tony styles followed; every step's self-check passed or its limitation was routed (superseded formal cases and tests/ typing corrected by Tester in VERIFICATION Frame 2; Architect nested Frame 2 for support-planning wording; sandbox-blocked transports run by the user); DEV-029 (mypy resolution) was added by explicit user direction; no unapproved deviation, Developer-owned obligation or open question. Status COMPLETE, Current Increment NONE.
+
+Claims for independent full Tester verification (Assessment FULL/NONE), in addition to the earlier 0.4.0 client-access claims: AC-019 includedGraphTypes on catalog snapshot/summary/package summary/capabilities, graphTypes filter on included types, discovery text routing/included lines and per-package LP availability/counts (DEV-026); AC-016/AC-029 component citation handles with rights marking (DEV-027); AC-013/014/015/016/030 relationship_types argument, per-type scans, per-kind calls and page-limit wording, native and instruction variants identical (DEV-028); AC-025 static checks with resolved imports (DEV-029); AC-021/AC-034/AC-035 shared smoke and the retained frame1-rework 0.4.0 candidate bound to HEAD 1c31450 (DEV-022). Evidence: each step's self-check and the frame1-rework-dev026/027/028/029/022 receipt folders.
+
+Limitations and dependencies, not passing claims: D1 walkthrough wording (AC-036) and any user documentation describing the new discovery lines, citation lines, relationship_types argument and per-kind calls are Documenter-owned; no model call, Desktop UI run, public claude.ai acceptance, deployment or publication was performed; Developer checks are implementation feedback, not formal acceptance.
+
+Handoff: forward DEVELOPING -> TESTING for full verification as the downstream rerun of ARCHITECTING-owned Frame 1 (RerunThrough SYNCHRONIZING); the frame stays on the stack.
