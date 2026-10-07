@@ -42,19 +42,27 @@ Connect that edge's source and target with `get_learning_progression_paths`:
 {"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"<returned-snapshot-id>","sourceIdentifier":{"identifierType":"node_id","nodeId":"<returned-source-node-id>"},"targetIdentifier":{"identifierType":"node_id","nodeId":"<returned-target-node-id>"},"maxDepth":3,"maxPaths":3}}
 ```
 
-Read `relationshipUri`, `provenanceUri` and both `standardUri` links. Provenance retains full rationale, warnings, candidate references, source/config/content hashes and producer/checker trace. Tool excerpts are not the full record. If access is denied or too large, report the limit instead of fabricating evidence.
+Each tool returns its complete result as JSON text, so a client that reads only text sees the same edges, statements, confidence, warnings, links and cursors as one that reads structured content.
+
+Read `relationshipUri`, `provenanceUri` and both `standardUri` links, natively if your client can open them, or with `read_evidence`:
+
+```json
+{"request":{"uri":"<returned-provenance-uri>"}}
+```
+
+If `page.isComplete` is false, call again with `page.nextRequest` until it is true and join the windows. Provenance retains full rationale, warnings, candidate references, source/config/content hashes and producer/checker trace. Tool excerpts are not the full record. If access is denied or too large, report the limit instead of fabricating evidence. For a step-by-step check with fixed Nigeria identifiers, see the [Claude Desktop walkthrough](../getting-started/claude-clients.md#claude-desktop-walkthrough).
 
 ## Filter and bound the inspection
 
 For grade/stage review, `search_learning_progressions` accepts local/normalized grade and statement-type arrays plus `endpointScope`. OR applies within each array; AND applies across fields on one endpoint. `either`, `both`, `source` and `target` select how endpoints satisfy that entire conjunction. Local labels remain source-facing; normalized grades do not establish equivalence. See the [tool reference](../reference/progression-tool.md) for exact arguments and bounds.
 
-Collections default to 25 edges, maximum 100, with 5,000 examined candidates per page. Preserve `page.nextCursor` and replay the same request to continue; a partial or zero-match work-limited page may still have more evidence. Stored package totals, inspected subset counts and filtered match counts are different.
+Collections default to 25 edges, maximum 100, with 5,000 examined candidates per page. Each result must also fit within 100,000 characters, so a page often stops earlier with `stoppingReason: byte_limit`. To continue, call the same tool with `page.nextRequest` unchanged; a partial or zero-match work-limited page may still have more evidence. Stored package totals, inspected subset counts and filtered match counts are different.
 
-`traverse_learning_progressions` follows builds upstream/downstream; `get_learning_progression_paths` follows builds from a selected source to a distinct target. Every hop is a stored edge. Paths/subgraphs are deterministic derived evidence, not a new direct edge or compulsory teaching order. Inspect `scopeComplete`, `graphExhausted`, frontier, counters and `truncationReasons`. They have no continuation; rerun with changed finite inputs when appropriate. An incomplete empty search proves neither global disconnection nor absence of a pedagogical relationship.
+`traverse_learning_progressions` follows builds upstream/downstream; `get_learning_progression_paths` follows builds from a selected source to a distinct target. Every hop is a stored edge. Paths/subgraphs are deterministic derived evidence, not a new direct edge or compulsory teaching order. Inspect `scopeComplete`, `graphExhausted`, frontier, counters and `truncationReasons`. They have no continuation; rerun with narrower finite inputs when appropriate. If a path result stops at the size limit, `nextUnreturnedPath` names the next path by its IDs so you can look up its edges with `get_learning_progression`. An incomplete empty search proves neither global disconnection nor absence of a pedagogical relationship.
 
 ## Teaching sequence
 
-Choose `learning_progression_teaching_sequence` in your MCP client's prompt picker:
+Choose `learning_progression_teaching_sequence` in your MCP client's prompt picker (in Claude Desktop, **Add from curriculum-knowledge-graph**). If your client cannot show prompts, ask it to call `get_workflow_instructions` with the same arguments in camelCase, `"workflowName":"learning_progression_teaching_sequence"`, and JSON arrays instead of array strings; see [workflow access](../reference/access-tools.md#get_workflow_instructions).
 
 ```text
 framework_id: nigeria-nerdc-mathematics-primary-1-3
@@ -96,7 +104,7 @@ Optional `standard_identifiers` accepts a JSON array of at most 20 exact node/CA
 
 ## Preserve provenance and coverage limits
 
-All three workflows cap full provenance inspection at ten used relationships. Reduce the cited recommendation set or defer additional evidence if that cap is reached. These are client evidence-retention caps, not changes to LC-tool output limits. The four existing teacher-guide, student-study, handbook and multigrade workflows also retrieve optional stored links with supporting LCs, explaining unavailable/empty/incomplete evidence without a fallback that invents relationships.
+All three workflows cap full provenance inspection at ten used relationships and evidence reading at 32 `read_evidence` windows; several windows of one record count as one record. Reduce the cited recommendation set or defer additional evidence if that cap is reached. These are client evidence-retention caps, not changes to LC-tool output limits. The four existing teacher-guide, student-study, handbook and multigrade workflows also retrieve optional stored links with supporting LCs, explaining unavailable/empty/incomplete evidence without a fallback that invents relationships.
 
 Read `metadata.summaryUri`, `validationUri` and `unresolvedUri` for coverage and structural-only notices. CBSE retains one `needs_review` claim outside accepted edges; Ghana Mathematics and Ghana English retain 141 and 10 unresolved-warning pairs. Edge warnings can exist independently of those counts. Absent edges may reflect eligibility or limited candidate coverage. Rights and byte limits still apply, even when an artifact is present. See [resources](resources.md), [prompt guide](prompts.md) and [maintainer preparation](../development/framework-package.md#learning-progression-inputs-and-updates).
 

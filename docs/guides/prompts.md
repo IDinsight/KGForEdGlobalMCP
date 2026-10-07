@@ -43,7 +43,13 @@ evidence-status, package-isolation, or generated-content rules.
 | `cross_framework_comparison`             | Exploratory evidence-grounded comparison across two to eight frameworks                  |
 
 All nine prompts are registered as generated-content workflows. The current prompt
-version is `1.3.0`.
+version is `1.4.0`.
+
+Seven of them (all except `administrator_alignment_review` and
+`cross_framework_comparison`) can also be fetched as a tool result with
+`get_workflow_instructions`, for clients that work only through tools. The rendered
+message is identical to the native prompt. See
+[Evidence and workflow access tools](../reference/access-tools.md).
 
 ## Rights gate
 
@@ -330,8 +336,17 @@ other unnecessary personal information into prompt arguments.
 
 Prompt-selection UX is client-specific. Some hosts expose server prompts directly in a
 prompt picker, while others may require explicit selection or manual parameter entry.
-The server contract remains the same: the prompt is deterministic instructions, and the
-host is responsible for executing the requested tool workflow.
+In Claude Desktop the prompts appear under **Add from curriculum-knowledge-graph** and
+are added as an attachment. If a client does not show prompts, ask it to call
+`get_workflow_instructions` and follow `rendered.message`. The server contract remains
+the same: the prompt is deterministic instructions, and the host is responsible for
+executing the requested tool workflow. See
+[Use with Claude Desktop and claude.ai](../getting-started/claude-clients.md).
+
+In the seven single-framework workflows, the **EVIDENCE ACCESS** section explains how to read full evidence: natively
+where the client can open resources, otherwise with `read_evidence`, finishing
+multi-window records before relying on them. The **EVIDENCE LINKS** block gives exact
+links for the pinned snapshot and patterns for standard and learning-component records.
 
 A useful verification pattern is to inspect the rendered workflow before trusting the
 final generated answer. The workflow should identify the exact framework/snapshot

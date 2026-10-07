@@ -72,25 +72,33 @@ in a separate STDIO process. It then:
 
 1. completes the MCP handshake;
 2. lists and requires the exact approved inventory;
-3. verifies 17 tools, 1 fixed resource, 14 resource templates, and 9 prompts;
+3. verifies 19 tools, 1 fixed resource, 14 resource templates, and 9 prompts;
 4. reads one known-good JSON resource from the fixed catalog and every resource-template
-   family; and
-5. closes the client and proves the subprocess exits cleanly.
+   family;
+5. runs representative queries on all five progression tools;
+6. checks text-only access: parses each progression and access-tool result from its text
+   alone, follows real continuation requests, reads the Nigeria diagnostic provenance and
+   the LP coverage reports (including the CBSE `needs_review` claim and the Ghana warning
+   counts) through `read_evidence`, reads standard and learning-component evidence using
+   only links taken from tool text and rendered **EVIDENCE LINKS**, compares
+   `get_workflow_instructions` with the native prompts, and checks typed failures; and
+7. closes the client and proves the subprocess exits cleanly.
 
 A successful result is deterministic JSON containing:
 
 ```json
 {
   "fixedResourceCount": 1,
-  "promptCount": 7,
-  "resourceReadCount": 13,
-  "resourceTemplateCount": 12,
+  "promptCount": 9,
+  "resourceReadCount": 15,
+  "resourceTemplateCount": 14,
   "status": "passed",
-  "toolCount": 13
+  "toolCount": 19
 }
 ```
 
-The actual result also includes per-resource read summaries and `bundleRoot`.
+The actual result also includes `inventory`, `toolSchemaIdentities`, per-resource read
+summaries, `progressions`, `access` and `bundleRoot`.
 
 ### Smoke a retained MCPB stage
 
@@ -121,8 +129,9 @@ the same checks as `kgfegmcp-stdio-smoke`:
 1. completes the MCP handshake;
 2. lists and requires the exact approved inventory;
 3. reads one known-good JSON resource from the fixed catalog and every resource-template
-   family; and
-4. closes the client cleanly.
+   family;
+4. runs the same progression and text-only access checks; and
+5. closes the client cleanly.
 
 Both smoke commands share one definition of the approved surface in
 `cli/smoke_checks.py`, so the two transports cannot be held to different inventories.
@@ -339,7 +348,7 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
 # 5. Confirm ZIP-level integrity.
-unzip -t ./dist/kgfegmcp-0.3.1.mcpb
+unzip -t ./dist/kgfegmcp-0.4.0.mcpb
 ```
 
 The exact archive name follows the version in `packaging/mcpb/manifest.json`.

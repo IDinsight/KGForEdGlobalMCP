@@ -88,7 +88,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 The smoke command starts the real module entry point in a separate process, completes an
 MCP handshake, and checks the fixed public inventory:
 
-- 17 tools;
+- 19 tools;
 - 1 fixed resource;
 - 14 resource templates; and
 - 9 prompts.
@@ -115,7 +115,9 @@ If you were given the URL of a hosted deployment instead, no local installation 
 needed; see [Connect to a hosted server](mcp-clients.md#connect-to-a-hosted-server).
 
 Follow [Connect an MCP client](mcp-clients.md) for the complete configuration, JSON
-validation, restart, and connector-enablement steps.
+validation, restart, and connector-enablement steps, then
+[Use with Claude Desktop and claude.ai](claude-clients.md) for evidence access, workflows
+and a step-by-step check.
 
 ## 6. Confirm framework discovery
 

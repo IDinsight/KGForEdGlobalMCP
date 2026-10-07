@@ -216,7 +216,7 @@ Inspect findings, then omit `--read-only` for an intentional pending-to-terminal
 
 ### Provenance and independent validation
 
-Current contracts are manifest `1.1`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.3.0`. Adding evidence changed artifact-set snapshot hashes; source version tokens and standard/component IDs stayed intact.
+Current contracts are manifest `1.1`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.4.0` (server/MCPB `0.4.0`). Adding evidence changed artifact-set snapshot hashes; source version tokens and standard/component IDs stayed intact.
 
 CBSE's original provenance map is about 40.9 MB, above the default 32 MiB resource source-read limit. All packages retain the original and 64 deterministic maps: `SHA256(UTF8(relationship_id))[0] modulo 64`, logical names `learningProgressionProvenanceShard00` through `63`. The validated index binds their exact hashes and placement; their exhaustive unique union must equal the original entries. This lets a client open one evidence page without opening the entire binder, while maintaining rights and byte ceilings.
 

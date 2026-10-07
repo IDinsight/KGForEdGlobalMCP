@@ -42,7 +42,7 @@ remain configuration-driven rather than curriculum-specific.
 
 The server exposes:
 
-- **17 tools**
+- **19 tools**
 - **1 fixed resource**
 - **14 resource templates**
 - **9 prompts**
@@ -66,6 +66,8 @@ The server exposes:
 - `search_learning_progressions`
 - `traverse_learning_progressions`
 - `get_learning_progression_paths`
+- `read_evidence`
+- `get_workflow_instructions`
 
 ### Prompts
 
@@ -305,7 +307,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.3.1.mcpb
+dist/kgfegmcp-0.4.0.mcpb
 ```
 
 Retain the exact staging directory for review:

@@ -4,6 +4,8 @@ The resource surface provides rights-aware, read-only access to accepted metadat
 exact graph records, provenance, and a closed set of manifest-declared artifacts.
 
 For task-oriented guidance, see [Read resources and provenance](../guides/resources.md).
+Clients that cannot open resources directly can read the same content with the
+[`read_evidence`](access-tools.md#read_evidence) tool.
 
 ## Fixed resource
 
@@ -134,7 +136,8 @@ The resource layer enforces two independent limits:
 
 The configured source-read limit must be greater than or equal to the return limit.
 Requests exceeding either limit return `resource_access_denied` rather than partial
-content.
+content. `read_evidence` applies these limits to the whole resource before returning any
+window, so paging cannot be used to read a resource that is too large natively.
 
 See [Environment variables](../operations/configuration.md) for configured limits.
 
@@ -161,7 +164,7 @@ The server resolves an accepted ID to its validated partition without a caller-s
 
 The `/learning-progressions` summary reports availability, stored per-type counts, structural/process-only scope, retained candidate/claim/needs-review/unresolved counts and eligibility/coverage notices, plus artifact links. Missing denominators remain unknown. Accepted edge tables exclude unresolved/rejected/no-relation/needs-review claims. A zero warning-pair count does not erase individual edge warnings.
 
-Defaults are 32 MiB source-read and 8 MiB returned content. Lower operator limits still apply to partition reads; denied/oversized evidence produces an explicit error, never fabricated or silently clipped full provenance. Query text plus structured output has a separate 1 MiB ceiling. See [LP tool reference](progression-tool.md).
+Defaults are 32 MiB source-read and 8 MiB returned content. Lower operator limits still apply to partition reads; denied/oversized evidence produces an explicit error, never fabricated or silently clipped full provenance. Query results have separate tool-result ceilings (1 MiB and 100,000 characters for text plus structured output). See [LP tool reference](progression-tool.md).
 
 ## Relationship resource
 
@@ -180,6 +183,10 @@ semantics.
 | `resource_not_found`     | Resource, artifact, or approved exposure contract cannot be resolved |
 | `resource_access_denied` | Rights, exposure class, or size policy blocks access                 |
 | `framework_not_found`    | Framework/snapshot route is unavailable                              |
+
+`read_evidence` adds `invalid_evidence_uri`, `unsupported_evidence_format`,
+`evidence_result_too_large` and `invalid_cursor`; see
+[its error table](access-tools.md#errors).
 
 Unexpected resource exceptions are masked as:
 

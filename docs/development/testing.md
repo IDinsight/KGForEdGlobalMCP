@@ -138,14 +138,19 @@ invent alignment/progression relationships.
 
 ### Stored learning progressions
 
-Cover original edge identity and per-edge provenance equality, directed builds and symmetric relates lookup, endpoint-scope facet conjunction, deterministic request-bound paging, branches/merges/alternative simple paths, cycles, depth/node/edge/work/queue/byte limits, complete empty versus unavailable/missing/incomplete cases, rights/hash failures and obsolete-surface refusal. Test an individually oversized entry both first and later; noncontinuable traversal must not silently drop it. Controlled negative fixtures must not mutate terminal packages or call models.
+Cover original edge identity and per-edge provenance equality, directed builds and symmetric relates lookup, endpoint-scope facet conjunction, deterministic request-bound paging, branches/merges/alternative simple paths, cycles, depth/node/edge/work/queue/byte limits, complete empty versus unavailable/missing/incomplete cases, rights/hash failures and obsolete-surface refusal. Test an individually oversized entry both first and later; noncontinuable traversal must not silently drop it. A later path that does not fit must stop with `byte_limit` and `nextUnreturnedPath`, never fail earlier paths or clip a path. Controlled negative fixtures must not mutate terminal packages or call models.
+
+### Text-only and evidence access
+
+Clients may read only ordinary tool text. `test_progression_text_only.py` parses each of the five progression tools from its text block alone, requires it to equal `structuredContent`, and replays real cursors from that text. `test_progression_evidence.py` covers `read_evidence`: rejection of malformed URIs and extra request fields, Unicode-safe windows and record-bound cursors, byte-exact reassembly against native reads, native denials that paging cannot bypass (rechecked on every continuation), and a text-only journey that takes standard and learning-component IDs from tool text, builds links from the rendered **EVIDENCE LINKS** block and reads them without server-side URI constructors. `test_progression_workflow_tools.py` checks that `get_workflow_instructions` renders the same message as the native prompt, rejects the removed hypothesis workflow name, and fails rather than clipping oversized instructions. Size checks must count the whole emitted result, text and structured copy together, against both the byte and character ceilings.
 
 ### MCP adapters
 
 Adapter tests should focus on the protocol boundary:
 
 - public field aliases and strict input validation;
-- conversion from ordinary service results to FastMCP results;
+- conversion from ordinary service results to FastMCP results, including canonical JSON
+  text that parses to the structured result where that contract applies;
 - stable error mapping;
 - resource links;
 - explicit registration; and
@@ -243,7 +248,7 @@ Because both commands share one set of checks, the STDIO and HTTP transports can
 accepted against different inventories. See
 [Hosted deployment](../operations/deployment.md).
 
-A successful current server reports seventeen tools, one fixed resource, fourteen resource
+A successful current server reports nineteen tools, one fixed resource, fourteen resource
 templates, and nine prompts.
 
 ## Public-surface change checklist

@@ -60,7 +60,7 @@ The current MCP surface contains the following:
 
 | Surface            | Count | Purpose                                                                                                                           |
 |--------------------|-------|-----------------------------------------------------------------------------------------------------------------------------------|
-| Tools              | 17    | Framework discovery, standards and learning-component retrieval, graph context, statistics, capabilities, comparison, progression |
+| Tools              | 19    | Framework discovery, standards and learning-component retrieval, graph context, statistics, capabilities, comparison, progression, evidence and workflow access |
 | Fixed resources    | 1     | Server catalog                                                                                                                    |
 | Resource templates | 14    | Framework, package, validation, profile, standards, learning components, provenance, relationship, unresolved, and artifacts      |
 | Prompts            | 9     | Role-oriented and cross-framework client-side workflows                                                                           |
@@ -84,6 +84,8 @@ The current MCP surface contains the following:
 - `search_learning_progressions`
 - `traverse_learning_progressions`
 - `get_learning_progression_paths`
+- `read_evidence`
+- `get_workflow_instructions`
 
 ### Prompts
 

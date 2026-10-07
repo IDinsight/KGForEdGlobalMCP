@@ -22,6 +22,11 @@ flowchart LR
 
 The server exposes **one fixed resource** and **fourteen resource templates**.
 
+Every resource can also be read through the `read_evidence` tool, which returns the same
+authorized content in windows of up to 32,768 bytes under the same rights and size
+limits. Use it when your client cannot open a resource link directly. See
+[Evidence and workflow access tools](../reference/access-tools.md#read_evidence).
+
 ## Stored progression evidence
 
 From LP query results, follow `relationshipUri` for the edge and `provenanceUri` for its full original judgment and trace. Keep framework/snapshot/package/profile and returned/source-artifact hashes with the citation. Rationale/confidence/warnings in tools are bounded projections; the per-edge resource retains the complete available evidence. Confidence is a model judgment, not a learner-success probability.
@@ -258,10 +263,17 @@ the correctness of the tool's domain result.
 ## Client support varies
 
 Whether a resource can be browsed or opened directly also depends on the connected MCP
-host's resource support. If a host exposes tools but not resource reads, use the tool
-surface for framework discovery, standards retrieval, context, comparison, and
-progression evidence. The server-side resource contracts still exist even when a
-particular client does not expose them in its UI.
+host's resource support. Claude Desktop, for example, was observed attaching the Catalog
+resource from its menu, but its menu did not list templated resources such as a
+relationship's provenance. When a host cannot open a link, call `read_evidence` with the
+exact URI and replay `page.nextRequest` until `page.isComplete` is true. Rights and size
+limits are the same on both routes. See
+[Use with Claude Desktop and claude.ai](../getting-started/claude-clients.md).
+
+Some tools return links only as MCP resource-link blocks, which text-only clients may not
+show. The workflow **EVIDENCE LINKS** block lists the snapshot-level links and the
+patterns for standard and learning-component records, so a client can build them from
+IDs shown in tool text.
 
 ## Choosing tools versus resources
 

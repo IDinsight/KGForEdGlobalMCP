@@ -22,7 +22,7 @@ The application uses:
 
 The fixed MCP inventory is:
 
-- **17 tools**
+- **19 tools**
 - **1 fixed resource**
 - **14 resource templates**
 - **9 prompts**
@@ -271,7 +271,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.3.1.mcpb
+dist/kgfegmcp-0.4.0.mcpb
 ```
 
 The packaging command stages:
@@ -372,6 +372,8 @@ get_standard_progressions
 search_learning_progressions
 traverse_learning_progressions
 get_learning_progression_paths
+read_evidence
+get_workflow_instructions
 ```
 
 ### Prompts
@@ -422,6 +424,14 @@ The three stored-progression prompts use exact package-local standards, generate
 Grade/filter collections are JSON-array strings at the MCP prompt boundary. The tools 
 use nested `request` objects and finite page/work/path/byte bounds. See 
 [progression tools](../docs/reference/progression-tool.md), [workflow examples](../docs/guides/progression.md) and [local preparation](../docs/development/framework-package.md#learning-progression-inputs-and-updates).
+
+The five progression tools return their complete result as JSON text as well as
+structured content, so text-only clients see every edge, statement, warning, link and
+cursor. `read_evidence` reads any resource URI in bounded windows under the same rights
+and size limits, and `get_workflow_instructions` returns the rendered instructions of the
+three progression workflows and four teaching/study workflows for clients without native
+prompts. See [access tools](../docs/reference/access-tools.md) and
+[Claude Desktop and claude.ai](../docs/getting-started/claude-clients.md).
 
 ### Resources
 

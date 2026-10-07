@@ -14,7 +14,7 @@ The server registers its components explicitly and exposes a fixed read-only sur
 
 | Component type     | Count | Purpose                                                                                                                                |
 |--------------------|-------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Tools              | 17    | Deterministic discovery, retrieval, traversal, statistics, learning-component retrieval, comparison evidence, and progression evidence |
+| Tools              | 19    | Deterministic discovery, retrieval, traversal, statistics, learning-component retrieval, comparison evidence, progression evidence, and evidence/workflow access |
 | Fixed resources    | 1     | Complete accepted package catalog                                                                                                      |
 | Resource templates | 14    | Framework, package, standard, learning-component, relationship, provenance, and approved artifact reads                                |
 | Prompts            | 9     | Deterministic client-side reasoning and generation workflows                                                                           |
@@ -22,7 +22,7 @@ The server registers its components explicitly and exposes a fixed read-only sur
 ```mermaid
 %%{init: {"themeVariables": {"fontSize": "18px"}}}%%
 flowchart LR
-    CLIENT[MCP client / host] --> TOOLS[17 read-only tools]
+    CLIENT[MCP client / host] --> TOOLS[19 read-only tools]
     CLIENT --> RES[1 fixed resource + 14 templates]
     CLIENT --> PROMPTS[9 prompt workflows]
     TOOLS --> STATE[Immutable accepted AppState]
@@ -52,8 +52,10 @@ flowchart LR
 | `search_learning_progressions`         | [Learning progression tools](progression-tool.md)       | Stored bounded relationship evidence           |
 | `traverse_learning_progressions`       | [Learning progression tools](progression-tool.md)       | Stored bounded relationship evidence           |
 | `get_learning_progression_paths`       | [Learning progression tools](progression-tool.md)       | Stored bounded relationship evidence           |
+| `read_evidence`                        | [Access tools](access-tools.md)                         | One window of a resource's permitted content   |
+| `get_workflow_instructions`            | [Access tools](access-tools.md)                         | Complete rendered native workflow instructions |
 
-All seventeen tools carry read-only, idempotent annotations.
+All nineteen tools carry read-only, idempotent annotations.
 
 ## Input naming
 
@@ -96,11 +98,14 @@ coerced.
 
 Successful tools return both human-readable and machine-readable evidence:
 
-- a deterministic text summary;
 - `structuredContent` matching the registered output schema;
-- optional resource links; and
+- text: for the five progression tools, `read_evidence` and `get_workflow_instructions`,
+  one canonical JSON block that parses to exactly the structured content; for the other
+  tools, a deterministic text summary;
+- optional resource links on the other tools; and
 - for catalog/standard/component search pages, an additional continuation text block
-  containing `nextRequest`; LP collection continuation is in `page.nextCursor`.
+  containing `nextRequest`; LP collections and `read_evidence` carry continuation in
+  `page.nextCursor` and `page.nextRequest`.
 
 Resource links are supplementary. Failure to construct an optional link does not change
 the underlying tool result.
@@ -135,7 +140,8 @@ The nine registered prompts are:
 - `cross_framework_comparison`
 
 Prompts render deterministic instructions for the connected host model. They do not call
-an LLM, retrieve standards evidence themselves, or persist model conclusions.
+an LLM, retrieve standards evidence themselves, or persist model conclusions. The first
+seven can also be rendered as a tool result with `get_workflow_instructions`.
 
 See [Prompts](prompts.md) for parameters, defaults, limits, and result metadata.
 

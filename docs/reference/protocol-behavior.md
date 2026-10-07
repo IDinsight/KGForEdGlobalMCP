@@ -63,7 +63,11 @@ blindly at MCP boundaries.
 | `invalid_comparison_selection`     | Cross-framework selection is inconsistent                 |
 | `learning_progression_not_found`   | Exact LP ID missing or non-LP                             |
 | `invalid_progression_request`      | LP semantic filters/selection invalid                     |
-| `progression_result_too_large`     | Individual LP result/entry exceeds byte ceiling           |
+| `progression_result_too_large`     | Exact LP result, single edge or first path exceeds result ceiling |
+| `invalid_evidence_uri`             | `read_evidence` URI is not one exact supported address    |
+| `unsupported_evidence_format`      | Authorized resource bytes are not UTF-8 text              |
+| `evidence_result_too_large`        | No evidence content fits beside its metadata              |
+| `workflow_instructions_too_large`  | Complete workflow instructions exceed result ceiling      |
 | `invalid_cursor`                   | Pagination cursor malformed, stale, or request-mismatched |
 | `jsonl_parsing_error`              | Package JSONL record invalid                              |
 | `manifest_build_error`             | Pending manifest cannot be built safely                   |
@@ -215,9 +219,13 @@ cross-framework ranking limit.
 
 ## Progression limits
 
-See [the five-tool bounds table](progression-tool.md#bounds-and-continuation). Direct/discovery pages default to 25 and cap at 100, with 5,000 examined candidates. Traversal defaults to depth 8/nodes 100/edges 100 and caps at 12/250/100. Paths default to depth 6/three paths, capped at 12/20. Work and path queue admissions cap at 5,000; tool text plus structured content caps at 1 MiB.
+See [the five-tool bounds table](progression-tool.md#bounds-and-continuation). Direct/discovery pages default to 25 and cap at 100, with 5,000 examined candidates. Traversal defaults to depth 8/nodes 100/edges 100 and caps at 12/250/100. Paths default to depth 6/three paths, capped at 12/20. Work and path queue admissions cap at 5,000; the whole tool result (text plus structured content) caps at 1 MiB and 100,000 characters.
 
-Traversal/paths have no cursor. `scopeComplete`, `graphExhausted`, frontier/counters and `truncationReasons` distinguish requested-depth completion from full exhaustion. Complete empty evidence is successful; bounded empty results do not prove global disconnection. An individually oversized entry raises `progression_result_too_large` with resource recovery guidance.
+Traversal/paths have no cursor. `scopeComplete`, `graphExhausted`, frontier/counters and `truncationReasons` distinguish requested-depth completion from full exhaustion. Complete empty evidence is successful; bounded empty results do not prove global disconnection. An oversized exact result, single edge or first path raises `progression_result_too_large`; a later path that does not fit stops the result with `byte_limit` and `nextUnreturnedPath`.
+
+## Evidence and workflow access limits
+
+`read_evidence` windows default to 16,384 bytes and accept at most 32,768; cursors are at most 4,096 characters. Native resource source-read and return limits apply to the whole resource first. `get_workflow_instructions` keeps the 64 KiB prompt-rendering limit and fails rather than clipping. Both tools share the 1 MiB / 100,000-character tool-result ceiling. See [access tools](access-tools.md).
 
 ## Prompt limits
 
@@ -238,13 +246,14 @@ Complex prompt collection arguments are entered as JSON arrays by MCP prompt cli
 
 ## Tool result compatibility
 
-Every tool result contains machine-readable `structuredContent` plus a deterministic
-text summary. Catalog/search pages add a model-visible continuation block; LP collections expose continuation in `page`. Some tools also add
-optional `resource_link` content blocks.
+Every tool result contains machine-readable `structuredContent` plus text. The five
+progression tools, `read_evidence` and `get_workflow_instructions` emit their complete
+result as one canonical JSON text block that parses to exactly the structured content,
+so text-only clients see the full evidence and real cursor values. The other tools keep
+a deterministic text summary: catalog/search pages add a model-visible continuation
+block, and some tools add optional `resource_link` content blocks.
 
-The structured result is authoritative for programmatic use. Human-readable text and
-links exist for compatibility and navigation and do not add source claims beyond the
-structured evidence.
+Text and links do not add source claims beyond the structured evidence.
 
 ## Deterministic ordering
 

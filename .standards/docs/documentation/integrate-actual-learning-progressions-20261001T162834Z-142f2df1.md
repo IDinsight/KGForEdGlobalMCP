@@ -5,11 +5,48 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 # Documentation Record
 
-`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Status`: `COMPLETE`
+`Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Status`: `IN_PROGRESS`
 `Collaboration`: `AUTONOMOUS` `Target`: `ACTIVE_CHANGE`
 `Target Detail`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `User Style`: `NONE`
 
 ## Assessed Inputs and Boundary
+
+**Client-access rerun — 2026-10-06 (current, IN_PROGRESS; waiting on DOC-002).** Entered DOCUMENTING by FORWARD from REVIEWING_IMPLEMENTATION (COMPLETE at b287810) inside SCOPING-owned Frame 1 (ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING). This role is a downstream rerun, not the frame owner. Entry HEAD `a6416413d3de10286f19ded08bb25bb3d9af01dd`, clean tree. STANDARD/BROWNFIELD; no blocker, pending cadence, baseline reconciliation or outstanding obligation, so no protocol chapter applies. Reused AUTONOMOUS / ACTIVE_CHANGE / User Style NONE; loaded universal and Python documentation styles (no TypeScript/HTML/CSS asset changed). Current inventory AC-001..AC-037, no retired IDs. The 2026-10-03 conclusion below is superseded: it covered only AC-001..AC-027 and predates the 0.4.0 surface.
+
+Inputs read: protocol, MODE/STATE, scope, architecture (client-support assessment, Frame 2 size correction, text/evidence/workflow contracts, Build Plan step 6), implementation review (COMPLETE; AC-026/027/036/037 and the shipped-README part of AC-035 left to Documenter), plan and verification report status/evidence references, actual source (`tool_results.py`, `mcp/tools/{evidence,workflows,learning_progressions}.py`, `prompts/{workflow_instructions,service,definitions}.py`, `services/lp_models.py`, `errors.py`, `services/capabilities.py`), new tests, Tester E3 smoke receipt and all affected docs. Identities are in [client-access-20261006/inputs.json](client-access-20261006/inputs.json): contracts equal the Reviewer-assessed identities (scope `2eabb26b…`, spec `52dbfa4f…`, plan `9e05ed5f…`, verification `18547d92…`, CONTEXT `64d9b6d5…`); runtime/test/config listing 154 files `ed65f24c…`, unchanged by this role; candidate archive `15c80166…`; 51 documentation files hashed. Comparison range: `19f47ae` (pre-REPLAN sign-off point) to HEAD `a641641` for behavior, plus this role's uncommitted documentation edits.
+
+Editing boundary: reusable Markdown docs, `mkdocs.yml` navigation (two entries), `README.md`, `backend/README.md`, `packaging/mcpb/README.md`, this record and its `client-access-20261006/` evidence. No runtime, test, configuration, manifest, package, build recipe or retained archive was changed. Managed AGENTS/CLAUDE blocks untouched.
+
+### Work and evidence (2026-10-06)
+
+Audiences: teachers and ministry/ed-tech users in Claude Desktop or claude.ai; integrators; operators/maintainers. New pages: `docs/getting-started/claude-clients.md` (verified-versus-untested matrix, supported routes per client, 12-step Desktop walkthrough with the four diagnostic IDs and expected results, results table with honest run status, claude.ai post-deployment checklist) and `docs/reference/access-tools.md` (`read_evidence`, `get_workflow_instructions`, output limits, errors). Updated: progression reference (canonical JSON text, compact derivation-artifact metadata, `page.nextRequest`, both ceilings, `byte_limit` paging, path size stop/`nextUnreturnedPath`, error meaning), progression guide (text contract, `read_evidence` example, workflow tool route, 32-window cap), prompts reference/guide (1.4.0, EVIDENCE ACCESS/EVIDENCE LINKS scoped to the seven single-framework workflows, tool route), resources guide/reference, protocol behavior (new errors, access limits, text contract), MCP reference overview (19 tools, result shape), MCP clients page, site home, quickstart, architecture (plain-language "Client access (server 0.4.0)" section), CLI smoke (19/9/1/14, progression and text-only access checks, corrected stale example output), MCPB/troubleshooting/READMEs (19 tools, 0.4.0 file names, access tools), testing guide (new text-only/evidence/workflow test modules), development index and framework-package versions. Every count, size, ID and expectation in the walkthrough and access pages was taken from actual runs and is asserted by the checker; prompt/test/coverage claims were checked against source and corrected where wrong (EVIDENCE ACCESS absent from the two multi-framework prompts; missing standard returns `standard_not_found`; test coverage wording; artifact-list budget share).
+
+| Current AC | Documentation disposition (2026-10-06) |
+| --- | --- |
+| AC-001–AC-025 | 2026-10-03 dispositions below remain valid on unchanged packages/configuration; affected surfaces (AC-008/009 path stop and size ceilings, AC-010 compact metadata, AC-011/012 evidence route, AC-013–016 1.4.0 evidence access, AC-019 19-tool inventory, AC-021 smoke contents, AC-022 0.4.0 file names, AC-023 tests) updated as listed above. Formal conclusions stay with Developer/Tester/Reviewer. |
+| AC-026 | User guides/reference/examples now describe the 0.4.0 queries, evidence route and workflows; strict build and executed examples pass. Complete for docs; shipped-README agreement pending DOC-002. |
+| AC-027 | Maintainer pages: testing guide, development index, framework-package versions, plain-language architecture section; local preparation vs user-owned deployment preserved. |
+| AC-028, AC-031 | Text contract, combined byte/character accounting, explicit partial/denied outcomes documented (progression reference, access tools, protocol behavior). Behavior evidence is Tester/Reviewer-owned. |
+| AC-029 | `read_evidence` contract, URI sources, EVIDENCE LINKS patterns, windows/cursors/hashes documented; walkthrough steps 7–10 executed locally. |
+| AC-030 | Native prompt route first, `get_workflow_instructions` alternative for seven workflows, unsupported features named; parity checked for all seven. |
+| AC-032 | No documentation obligation beyond reflecting the Architect matrix; claude-clients page follows it. |
+| AC-033, AC-034 | Tester-owned; testing guide and CLI page describe the checks; no Documenter claim of formal evidence. |
+| AC-035 | Shipped README content corrected in `backend/README.md`; retained archive still ships the old README. Open: DOC-002 (Developer rebuild, Tester re-verify). |
+| AC-036 | Desktop walkthrough with exact IDs, expected results, pagination, full provenance, AS/LC evidence, coverage/validation/unresolved (CBSE needs_review, Ghana unresolved), policy denial, Catalog/native prompt routes and a bounded support workflow. Status recorded honestly: tool calls replayed locally and passed; nothing run in Desktop; no composed workflow run. |
+| AC-037 | Supported Desktop/claude.ai routes, actual schemas/counts, verified vs user-reported vs untested separation, remote checklist after user deployment. Shipped-instruction agreement pending DOC-002. |
+
+### Checks (2026-10-06)
+
+All at `/Users/tzz/Projects/private/idi/KGForEdGlobalMCP`, `UV_OFFLINE=1`, `PYTHONDONTWRITEBYTECODE=1`, `PATHS_PROJECT_DIR` set, session `UV_CACHE_DIR`; locked env reused with `--locked --offline --no-sync`; no model or paid call. Receipts: [commands.json](client-access-20261006/commands.json).
+
+- `uv --directory backend run --locked --offline --no-sync mkdocs build --strict --config-file <root>/mkdocs.yml --site-dir <TMPDIR>/doc/site`: exit 0; only the vendor Material notice.
+- `uv … python <root>/.standards/docs/documentation/client-access-20261006/check-docs.py <site>`: exit 0, [results.json](client-access-20261006/results.json). In-process real `create_mcp`, sockets blocked, 77 tool calls: inventory 19/9/14/1 and tool lists in four docs equal registration; walkthrough steps 1–12 executed with every stated expectation asserted (inline JSON taken from the saved page); search replay 27 pages/189 unique edges; provenance 12,275 bytes one window, three at 4,096; AS/LC links read; CBSE needsReviewClaims 1; Ghana unresolved 42,831 bytes in three windows; bulk artifact denied; native support-plan message equals the tool message, version 1.4.0; access-tool examples, malformed URIs, unreplaced template, size bound, lowercase-escape canonicalization, missing standard code; six progression-guide examples with returned-ID substitution; native/tool parity and EVIDENCE sections for all seven workflows; catalog snapshot IDs; 45 rendered pages, 5,098 local links/anchors resolve.
+- `git diff --check`: exit 0. Obsolete scan (`17 tools`/`seventeen tools`, `0.3.1.mcpb`, prompt version 1.3.0, removed hypothesis names) over READMEs/docs/examples/mkdocs: exit 1, no matches (expected).
+- Superseded: first checker run exit 1 (checker used directory-style rendered paths; harness fix only); second run passed before an error-table correction; Documenter's own `kgfegmcp-stdio-smoke` exit 1 because the sandbox blocked the child process's uv cache — smoke facts come from Tester receipt `f002-reverify/stdio-repo.stdout` (exit 0, 19/9/1/14, 15 reads).
+- Limits: no Desktop or claude.ai execution, no composed teaching output, no external link fetch, no visual check. These are recorded as untested in the docs themselves and do not block documentation; DOC-002 does block the gate.
+
+### Historical recovery assessment — 2026-10-03
+
 
 Current recovery assessment: 2026-10-03, STANDARD/BROWNFIELD, entry HEAD `2f9217d`, clean working tree. Scope AC-001–AC-027 has no added/retired IDs; context/scope/design retain their earlier exact identities. Original audit baseline `9d5c9a0` remains the cycle boundary. Current comparison includes the committed final documentation at `062fb59`, final-review findings and recovery commits through entry, affected unchanged inputs and the new dirty documentation/evidence. No HEAD-only or clean-tree completion assumption was used.
 
@@ -85,6 +122,27 @@ Limits: rendered HTML structure/local links are checked, not visual or classroom
 
 ## Discrepancies, Dependencies, and Remaining Work
 
+### DOC-002 — Retained 0.4.0 bundle ships the outdated backend README
+
+`Status`: `OPEN` `Owner`: `DEVELOPER` `FailureType`: `IMPLEMENTATION`
+
+Affects AC-035 (shipped instructions) and AC-037 (docs and shipped instructions agree). The retained candidate `data/source_artifacts/learning_progressions/client-recovery-f001-dev022/kgfegmcp-0.4.0-client-recovery-f001.mcpb` (`15c80166…`) contains `README.md` `197db6b1…`, equal to HEAD `backend/README.md` and still stating 17 tools and `kgfegmcp-0.3.1.mcpb`. The corrected saved `backend/README.md` is `9ce0fc15…` (19 tools, 0.4.0, access tools). The archive is a Developer-owned distribution artifact; Documenter must not rebuild or patch it. Required correction: after the documentation edits are committed, Developer rebuilds the retained 0.4.0 candidate from committed source with the existing builder, records the new archive/stage identity, and Tester re-verifies closure and staged STDIO smoke (as anticipated in `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md`, Questions/Later Dependencies). On resume Documenter verifies archive and stage README bytes equal the committed `backend/README.md`, updates any candidate path/date in `docs/getting-started/claude-clients.md` if needed, reruns the strict build and checker, and only then completes.
+
+### Remaining and later-owner items
+
+- Final review (FINAL_DELIVERABLE) and synchronization remain their owners' work; the old final-review findings stay as recorded there.
+- User-owned: running the Desktop walkthrough and claude.ai checklist after deployment; their results are not claimed.
+
+## Resume and Conclusion
+
+**Current (2026-10-06): IN_PROGRESS, full Documenter gate not passed.** All required documentation surfaces for AC-001..AC-037 are saved, strict-built and checked; the only blocking item is DOC-002 (Developer-owned stale shipped README in the retained bundle). This is a normal failure handoff, not a Documenter Corrective Return: DOCUMENTING → DEVELOPING with FailureType IMPLEMENTATION, pushing Frame 2 (From DOCUMENTING, Owner DEVELOPING, ResumeAt DOCUMENTING, RerunThrough NONE) above the preserved SCOPING-owned Frame 1. Developer, as Frame 2 owner, plans the rerun (expected: rebuild, then Tester re-verification) and returns by RESUME to DOCUMENTING.
+
+Before the rebuild the user should commit the saved documentation so the candidate can be built from committed source. Blocking question: NONE.
+
+On resume: (1) reload STATE, plan and verification report; record the new candidate path/hash and Tester evidence; (2) verify archive and stage `README.md` bytes equal committed `backend/README.md`; (3) rehash `client-access-20261006/inputs.json` inputs and reconcile any change to scope/design/runtime/docs, reopening affected conclusions; (4) update the candidate reference in `docs/getting-started/claude-clients.md` only if it became inaccurate; (5) rerun strict build, `check-docs.py`, `git diff --check`, the obsolete scan and `node .standards/bin/check.mjs`; (6) mark DOC-002 RESOLVED with evidence, set this record COMPLETE and hand off FORWARD to REVIEWING_FINAL (kind FINAL_DELIVERABLE) in a fresh session, keeping Frame 1. No final review, synchronization or sign-off is claimed here.
+
+## Historical discrepancies and conclusion (2026-10-03)
+
 ### DOC-001 — Correct prompt count, catalog parser and final-content evidence
 
 `Status`: `RESOLVED` `Owner`: `DOCUMENTER` `FailureType`: `DOCUMENTATION`
@@ -93,9 +151,9 @@ AC-026/AC-027; original evidence is `.standards/docs/reviews/integrate-actual-le
 
 No unresolved owned documentation discrepancy, pending guided edit, required surface, blocking question or Documenter-owned obligation remains. `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-001` and `.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-002` remain OPEN in the unchanged final report until independent reassessment. They have correction evidence available; their statuses are not silently closed here. Final review and synchronization remain future owner work; no cycle sign-off is claimed.
 
-## Resume and Conclusion
+### 2026-10-03 conclusion (superseded)
 
-Selected ACTIVE_CHANGE target and full Documenter gate are COMPLETE for current content. The saved assessment passed workflow/diff checks, and every current file/support identity was rehashed immediately before completion. No required documentation work or blocker remains; recovery now returns to final review. On resumption rehash recovery final-inputs.json, all current files/supporting evidence and archive against actual content, reconcile any changed contract/AC and reopen unsupported claims. This receipt, not historical completion below, is the current-byte basis. Blocking question NONE.
+Selected ACTIVE_CHANGE target and full Documenter gate were COMPLETE for the 2026-10-03 content. The saved assessment passed workflow/diff checks, and every current file/support identity was rehashed immediately before completion. No required documentation work or blocker remains; recovery now returns to final review. On resumption rehash recovery final-inputs.json, all current files/supporting evidence and archive against actual content, reconcile any changed contract/AC and reopen unsupported claims. This receipt, not historical completion below, is the current-byte basis. Blocking question NONE.
 
 The successful DOCUMENTING rerun boundary pops Frame 1 and returns to its ResumeAt REVIEWING_FINAL with Kind RESUME, From DOCUMENTING and FailureType NONE. The recovery stack is empty after this required return. Developer's planned route is honored without replanning. Next Reviewer kind FINAL_DELIVERABLE must independently recheck both original failure cases, the new archive/stage evidence and owned corrected checker/final identities, reconcile all current ACs, and resolve only its own findings. No assessment is conducted or auto-dispatched from this authoring chat.
 

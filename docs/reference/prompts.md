@@ -10,9 +10,27 @@ For workflow guidance, see [Use prompt workflows](../guides/prompts.md).
 
 ## Common prompt behavior
 
-All prompts are registered at prompt version `1.3.0`.
+All prompts are registered at prompt version `1.4.0`.
 
-Version 1.3.0 renders every prompt in its lean form:
+Version 1.4.0 adds an **EVIDENCE ACCESS** section to the seven single-framework
+teaching, study and progression workflows. It tells the client
+to read each relied-on resource natively when it can, or otherwise with
+[`read_evidence`](access-tools.md#read_evidence), replaying `page.nextRequest` until the
+record is complete; to use at most 32 evidence windows per workflow (several windows of
+one record count as one record toward every record cap); and to disclose and defer a
+claim whose original provenance stays incomplete, denied or oversized. The same seven
+workflows also render an **EVIDENCE LINKS** block: exact manifest, interpretation-profile, validation, unresolved and LP
+summary URIs for the pinned snapshot, plus per-record patterns with a `{nodeId}`
+placeholder for standards, standard provenance, a standard's learning components,
+learning components and their provenance. Progression links are taken from tool results.
+`administrator_alignment_review` and `cross_framework_comparison` do not include these
+two sections.
+
+The same seven workflows can be rendered through the
+[`get_workflow_instructions`](access-tools.md#get_workflow_instructions) tool for clients
+that do not offer native prompts; for identical arguments the message is identical.
+
+Version 1.4.0 keeps the lean form introduced in 1.3.0:
 
 - the embedded `ACCEPTED PACKAGE CONTEXT` is compact JSON holding only the profile
   facts a workflow reads: code-search policy, grade and stage mappings, hierarchy,
@@ -231,9 +249,9 @@ The workflow reads LP summary/statistics and passes exact selectors/endpoint fil
 
 ### Shared stored-progression workflow contract
 
-MCP prompt names/arguments use snake_case. Complex values are JSON-array/object strings; for example `local_grade_labels` is `["PRIMARY ONE"]`, and `identifier` is `{"identifierType":"node_id","nodeId":"<actual-node-id>"}`. Do not enter comma-separated prose. Every workflow pins one exact snapshot, checks derivative rights, and renders deterministic client retrieval instructions; prompt retrieval itself runs neither evidence queries nor a model.
+MCP prompt names/arguments use snake_case. Complex values are JSON-array/object strings; for example `local_grade_labels` is `["PRIMARY ONE"]`, and `identifier` is `{"identifierType":"node_id","nodeId":"<actual-node-id>"}`. Do not enter comma-separated prose. Every workflow pins one exact snapshot, checks derivative rights, and renders deterministic client retrieval instructions; prompt retrieval itself runs neither evidence queries nor a model. Through `get_workflow_instructions` the same arguments use camelCase names and plain JSON arrays/objects.
 
-All three retain source standards, generated LCs, stored generated edges and new pedagogy as separate tiers. Full provenance for used relationships is capped at ten resources: reduce/defer cited recommendations if more evidence is needed. Keep bounds, warnings, coverage, unavailable/empty/partial results and denied-resource outcomes visible. Missing edges never invoke a hypothesis fallback. See [workflow examples](../guides/progression.md).
+All three retain source standards, generated LCs, stored generated edges and new pedagogy as separate tiers. Full provenance for used relationships is capped at ten resources, and evidence reading at 32 windows: reduce/defer cited recommendations if more evidence is needed. Keep bounds, warnings, coverage, unavailable/empty/partial results and denied-resource outcomes visible. Missing edges never invoke a hypothesis fallback. See [workflow examples](../guides/progression.md).
 
 The existing `teacher_guide_draft`, `student_study_support`, `student_handbook_section` and `multigrade_lesson_plan` prompts also retrieve optional stored LP evidence: at most three standards, one direct page of 25 each, full provenance for at most ten used edges, plus LCs. They preserve useful output when LP is unavailable or sparse. A shared LC supplies generated support evidence, not a new LP or cross-grade equivalence edge.
 

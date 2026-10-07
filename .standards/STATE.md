@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DOCUMENTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_IMPLEMENTATION` `FailureType`: `NONE` `Reason`:
-`Implementation review COMPLETE at b287810: review F-001/F-002 resolved (EVIDENCE LINKS, text-only AS/LC journey), candidate 15c80166 equals HEAD. AC-026/027/036/037 and shipped-README part of AC-035 pending Documenter; Frame 1 continues through SYNCHRONIZING.`
+`Kind`: `FAILURE` `From`: `DOCUMENTING` `FailureType`: `IMPLEMENTATION` `Reason`:
+`Retained 0.4.0 MCPB (15c80166) ships the old backend README (17 tools, 0.3.1); rebuild from committed source after the docs commit (documentation record DOC-002, AC-035/AC-037).`
 
 ## Recovery
 
@@ -32,6 +32,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
+
+### Frame 2
+
+`From`: `DOCUMENTING` `Owner`: `DEVELOPING` `FailureType`: `IMPLEMENTATION`
+`Reason`: `Retained 0.4.0 MCPB (15c80166) ships the old backend README (17 tools, 0.3.1); rebuild from committed source after the docs commit (documentation record DOC-002, AC-035/AC-037).`
+`ResumeAt`: `DOCUMENTING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 

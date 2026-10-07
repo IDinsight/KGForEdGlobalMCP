@@ -28,6 +28,7 @@ nav:
       - Quickstart: getting-started/index.md
       - Local installation: getting-started/local-installation.md
       - Connect an MCP client: getting-started/mcp-clients.md
+      - Claude Desktop and claude.ai: getting-started/claude-clients.md
       - First queries: getting-started/first-queries.md
 
   - Using the server:
@@ -46,6 +47,7 @@ nav:
       - Learning component tools: reference/learning-component-tools.md
       - Comparison tool: reference/comparison-tool.md
       - Learning progression tools: reference/progression-tool.md
+      - Evidence and workflow access tools: reference/access-tools.md
       - Resources and URI templates: reference/resources.md
       - Prompts: reference/prompts.md
       - Errors, cursors, and limits: reference/protocol-behavior.md

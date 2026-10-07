@@ -67,7 +67,7 @@ flowchart TB
     end
 
     subgraph MCP[FastMCP boundary]
-        TOOLS[17 tools]
+        TOOLS[19 tools]
         RESOURCES[1 resource + 14 templates]
         MCPPROMPTS[9 prompts]
     end
@@ -336,6 +336,34 @@ replaced the sealed old packages; standard/component identity and source text st
 intact. The original provenance map plus 64 validated partitions lets clients open one 
 relationship's evidence within existing byte limits. No second database or mutable 
 graph is needed. See [local copy and update process](development/framework-package.md#learning-progression-inputs-and-updates).
+
+## Client access (server 0.4.0)
+
+Claude Desktop showed only short summaries of progression results, and its resource
+menu could not open the evidence links those results returned. Version 0.4.0 fixes this
+by reusing existing services rather than adding new ones:
+
+- **Results as text.** The five progression tools now put their complete result into the
+  text block as canonical JSON, in addition to the unchanged structured content. A client
+  that reads only text sees every edge, statement, warning, link and cursor. The cost is
+  that each result carries its evidence twice, so the server measures the whole result
+  against 1 MiB and 100,000 characters and pages stop earlier.
+- **Smaller identity block.** Each result used to list all 86 package artifacts with
+  their checksums: about 27,000 characters, counted twice (text and structured copy), so
+  roughly half the size budget. Now it names only the four
+  artifacts it is derived from and points to the manifest for the rest — like citing the
+  pages you quoted instead of reprinting the binder's whole table of contents.
+- **Paths stop instead of failing.** If a later path does not fit, the result returns the
+  paths already found and names the next one by its IDs.
+- **Two access tools.** `read_evidence` sends any resource through the existing resource
+  service in bounded windows, with the same rights and limits. `get_workflow_instructions`
+  calls the existing prompt renderers for seven workflows, so tool-only clients get the
+  same instructions as the native prompts. Native prompts and resources are unchanged.
+
+Accepted packages, profiles and prompt configurations were not changed. The server and
+MCPB version moved to 0.4.0 and the prompt library to 1.4.0. See
+[access tools](reference/access-tools.md) and
+[Claude Desktop and claude.ai](getting-started/claude-clients.md).
 
 ## Determinism and immutability
 

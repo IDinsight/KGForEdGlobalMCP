@@ -138,6 +138,9 @@ Use the curriculum-knowledge-graph connector to list all available frameworks.
 If framework snapshots are returned, the MCP host has successfully started the server
 and completed tool discovery.
 
+Next, follow [Use with Claude Desktop and claude.ai](claude-clients.md) to read full
+evidence, use workflows, and check the setup step by step with exact identifiers.
+
 ## Generic STDIO launch contract
 
 For another MCP host, the important runtime contract is the same even if the client's
@@ -195,6 +198,10 @@ the local path:
 Use the curriculum-knowledge-graph connector to list all available frameworks.
 ```
 
+The claude.ai connector path has not yet been tested with the current server. After the
+hosted service is updated, work through the
+[remote acceptance checklist](claude-clients.md#claudeai-remote-acceptance-checklist).
+
 ### Claude Code
 
 ```bash
@@ -226,8 +233,9 @@ The MCP host is the reasoning and generation layer. The server is responsible fo
 - lexical and profile-governed code search;
 - exact standards retrieval and bounded hierarchy traversal;
 - rights-aware resources;
-- deterministic comparison and progression evidence; and
-- deterministic prompt rendering.
+- deterministic comparison and progression evidence;
+- bounded reads of full permitted evidence (`read_evidence`); and
+- deterministic prompt rendering, natively or through `get_workflow_instructions`.
 
 The host may synthesize, explain, compare, or draft from returned evidence, but those
 model-generated conclusions are not automatically source-asserted curriculum claims.
@@ -276,4 +284,4 @@ python -m kgfegmcp.mcpb_server
 
 ---
 
-**Next:** [First queries](first-queries.md)
+**Next:** [Use with Claude Desktop and claude.ai](claude-clients.md)

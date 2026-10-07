@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-06",
+  "cwd": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP",
+  "environment": {
+    "UV_OFFLINE": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "UV_CACHE_DIR": "<session TMPDIR>/uvcache",
+    "PATHS_PROJECT_DIR": "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Users/tzz/.local/bin/uv",
+        "--directory",
+        "backend",
+        "run",
+        "--locked",
+        "--offline",
+        "--no-sync",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--config-file",
+        "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/mkdocs.yml",
+        "--site-dir",
+        "<session TMPDIR>/doc/site"
+      ],
+      "exitCode": 0,
+      "stdout": "strict-build.stdout",
+      "stdoutSha256": "sha256:85e46fdd03b26746b10c5b7b43f59c981143e2bb6265ab4d515aa9c3a9615988",
+      "note": "Combined stdout/stderr; only the vendor Material notice appears; no strict warning."
+    },
+    {
+      "argv": [
+        "/Users/tzz/.local/bin/uv",
+        "--directory",
+        "backend",
+        "run",
+        "--locked",
+        "--offline",
+        "--no-sync",
+        "python",
+        "/Users/tzz/Projects/private/idi/KGForEdGlobalMCP/.standards/docs/documentation/client-access-20261006/check-docs.py",
+        "<session TMPDIR>/doc/site"
+      ],
+      "exitCode": 0,
+      "stdout": "check-docs.stdout",
+      "stdoutSha256": "sha256:3dbba46afe26ca9dec6c36cdf5e9963a1595dd7ff73c080cf65ece53ee79a8b2",
+      "stderr": "check-docs.stderr",
+      "stderrSha256": "sha256:8154a0b44261c2cf8b52d43908dd5b8724bcb3c2e7c2d9161795feb77c036a17",
+      "checkerSha256": "sha256:32f7f41db9f3f9de444d5878fcd66fa44718cfd5c4aac0d2604cddcfe1d4b8fc",
+      "resultsSha256": "sha256:c7b004df2d0a5f973af3bfa2797f4e0a8190fd61f4536e213462c4f037173757"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "-U",
+        "-i",
+        "<obsolete count/name/version pattern, see record>",
+        "README.md",
+        "backend/README.md",
+        "docs",
+        "examples",
+        "packaging/mcpb/README.md",
+        "mkdocs.yml"
+      ],
+      "exitCode": 1,
+      "note": "No matches: expected absence."
+    }
+  ],
+  "superseded": [
+    {
+      "what": "first check-docs run",
+      "exitCode": 1,
+      "cause": "Checker expected directory-style rendered paths (getting-started/claude-clients/index.html); site uses .html files. Harness error, fixed in checker only. All tool/walkthrough assertions before the site section had passed."
+    },
+    {
+      "what": "second check-docs run",
+      "exitCode": 0,
+      "cause": "Passed; then access-tools error table corrected (missing standard returns standard_not_found) and an assertion added; superseded by the recorded run."
+    },
+    {
+      "what": "repository kgfegmcp-stdio-smoke by Documenter",
+      "exitCode": 1,
+      "cause": "Sandbox denied the child uv process access to ~/.cache/uv (Operation not permitted); not a product failure. Smoke facts in docs come from Tester receipt f002-reverify/stdio-repo.stdout (exit 0)."
+    }
+  ]
+}
