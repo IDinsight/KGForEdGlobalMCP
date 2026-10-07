@@ -9,11 +9,12 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 Evolution architecture, revised on 2026-10-03 for the completed REPLAN scope in
 `.standards/docs/scope/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md`.
-The active-cycle baseline remains `.standards/CONTEXT.md`. Recovery Frame 1 is
-owned by SCOPING, resumes at AWAITING_USER_SIGNOFF and reruns through SYNCHRONIZING.
-Architect is a downstream rerun and preserves that frame. The original package
-integration is implemented; its valid contracts below remain binding. This revision
-changes client delivery and access, not stored graph judgments or accepted data.
+The active-cycle baseline remains `.standards/CONTEXT.md`. The 2026-10-03 SCOPING
+frame completed and was popped at SYNCHRONIZING. The current Frame 1 (2026-10-07) is
+an ARCHITECTING-owned user rework after Claude Desktop testing of the 0.4.0
+candidate; see **Desktop rework correction** below. The original package
+integration is implemented; its valid contracts below remain binding. These
+revisions change client delivery and access, not stored graph judgments or accepted data.
 The existing Python/FastMCP application is immutable, deterministic, read-only,
 profile-driven, and local-data-only. Reuse its accepted-package lifecycle,
 GraphStore, catalog routing, standard selectors/search, component links, resource
@@ -144,6 +145,68 @@ effect: an empty result drops to about 15,000 characters, every real shortest pa
 (≤8 hops) fits with max_paths 1, and direct/search pages hold roughly 8–10 edges
 instead of 3–4. These are design estimates; Developer measures actual envelopes.
 
+### Desktop rework correction (Frame 1, 2026-10-07)
+
+Claude Desktop testing of the 0.4.0 candidate found three server gaps (F1–F3) and
+one walkthrough wording defect (D1). Read-only inspection confirms the causes:
+
+- **F1 (AC-019).** A snapshot's graph types are built only from each package's
+  *primary* type (`catalog/repository.py` `_build_snapshot`). All six packages are
+  primary `academic_standards` packages that also *include* Learning Components and
+  Learning Progressions, so discovery text says only `academic_standards`, the
+  `graphTypes: [learning_progressions]` filter matches nothing, and no text shows a
+  package's LP flags or buildsTowards/relatesTo counts, although structured
+  `hasLearningProgressions` is true.
+- **F2 (AC-016, AC-029).** Workflows tell the client to cite component and support
+  relationship IDs/URIs, but `get_learning_components_for_standard` text prints only
+  the component ID, description, tags, confidence and supported standards. The
+  support relationship ID and the readable URIs exist only in structuredContent and
+  resource links.
+- **F3 (AC-015).** Discovery orders by `(relationship type, ID)`, so buildsTowards
+  comes first. Size-limited pages hold about 7 edges, so the curriculum review's
+  three-page cap returns about 21 buildsTowards edges and never reaches relatesTo
+  (Ghana Basic 5 observed). The prompt has no relationship-type argument and still
+  promises "3 pages of 25 / at most 75".
+
+Decisions, in plain terms:
+
+- **Say what each package contains, not only how it is routed.** Keep the existing
+  routing list (`availableGraphTypes`, which tools use to pick a package) unchanged.
+  Add `includedGraphTypes`: the sorted union of the validated manifest
+  `included_graph_types` of every accepted package in the snapshot (and, in
+  get_capabilities, across all accepted packages). The `graphTypes` discovery filter
+  matches included types. Because a package's primary type is always one of its
+  included types, every snapshot that matched before still matches. Discovery,
+  framework lookup and capabilities text show both lists plus each package's LP
+  availability and its stored buildsTowards/relatesTo counts. Think of it as a
+  library listing both the shelf a book is filed on and every chapter it contains.
+- **Print the citation handles the workflows ask for.** The components-for-standard
+  text gains, per component, the support relationship ID and the readable URIs that
+  the structured result and links already carry. No new tool, no JSON mirror and no
+  change to that tool's structured result.
+- **Review each relationship type on its own budget.** The curriculum review gains
+  an optional `relationship_types` argument (default: both types). The rendered
+  workflow runs one separately filtered discovery scan per selected type, each with
+  its own three-page cap, so relatesTo is always sampled when requested. Wording
+  states the requested page limit as a maximum and asks for actual returned counts.
+  The search service, its ordering and cursor contract stay unchanged.
+- **Ask for each kind of direct link separately (user decision, Frame 2).** The
+  teaching-sequence workflow and the shared optional progression step in the four
+  existing teaching/study workflows have the same gap: one `connectionKind: all` page
+  per standard lists buildsTowards first, so related concepts can be cut off. They
+  now make one call per connection kind (outgoing builds, incoming builds, related)
+  for each retained standard, using the existing connection kinds.
+- **D1 is documentation.** The walkthrough's window-count wording, misplaced AS/LC
+  unresolved record and mismatched classroom note are Documenter-owned (AC-036). The
+  design already distinguishes the AS/LC unresolved resource from LP unresolved
+  evidence and defines the 16,384-byte default window; no design change is needed.
+
+No accepted package, profile, configuration, stored judgment, ceiling, maximum,
+public tool/prompt/template count or cursor format changes. Keep the server/MCPB
+version at 0.4.0 and the global prompt library at 1.4.0 (user confirmed on
+2026-10-07): no 0.4.0 candidate has been published or deployed. The new archive/stage hashes distinguish it; the earlier 0.4.0 archive
+(`01df98e1…`) and its receipts become historical.
+
 ## Acceptance Coverage
 
 - `AC-001`: First-step local copy boundary and exact-byte receipt; Build Plan step 1.
@@ -158,13 +221,13 @@ instead of 3–4. These are design estimates; Developer measures actual envelope
 - `AC-010`: Generated edge origin, exact identity, and relationship semantics in all evidence.
 - `AC-011`: Existing relationship URI plus new per-edge provenance URI and verified partitions.
 - `AC-012`: Closed artifact policy, existing resource rights/limits, and source/content hashes.
-- `AC-013`: learning_progression_teaching_sequence workflow contract.
+- `AC-013`: learning_progression_teaching_sequence workflow contract, with per-kind direct calls (Frame 2, 2026-10-07).
 - `AC-014`: learning_progression_support_plan workflow contract.
-- `AC-015`: learning_progression_curriculum_review workflow contract.
-- `AC-016`: Shared bounded LP retrieval instructions in four existing teaching/study workflows.
+- `AC-015`: learning_progression_curriculum_review workflow contract, with the 2026-10-07 per-type scans and relationship_types argument.
+- `AC-016`: Shared bounded LP retrieval instructions in four existing teaching/study workflows, with per-kind direct calls (Frame 2); components-for-standard text carries the support relationship IDs/URIs they cite (2026-10-07).
 - `AC-017`: Explicit hypothesis removal and fresh profile/prompt configurations.
 - `AC-018`: Label isolation and unchanged AS/LC bytes/IDs, selectors, DAGs and useful services.
-- `AC-019`: Evidence-derived capabilities, separate counts, and fixed public inventory.
+- `AC-019`: Evidence-derived capabilities, separate counts, fixed public inventory, and (2026-10-07) included graph types plus per-package LP availability/counts in discovery text and filters.
 - `AC-020`: Reuse decision, simple packaging explanations and rejected alternatives.
 - `AC-021`: Single registration/bootstrap boundary and shared STDIO/HTTP schema/smoke contracts.
 - `AC-022`: Existing MCPB stage includes only new active packages/configuration and required evidence.
@@ -178,14 +241,14 @@ instead of 3–4. These are design estimates; Developer measures actual envelope
   normalization, acceptance and distribution boundaries below govern its instructions.
 
 - `AC-028`: Canonical text mirror, shared envelope budgets, whole-entry pagination/truncation and explicit full-evidence links.
-- `AC-029`: Allowlisted URI dispatch into ResourceService and deterministic content paging preserve the complete permitted evidence and its identity.
+- `AC-029`: Allowlisted URI dispatch into ResourceService and deterministic content paging preserve the complete permitted evidence and its identity; components-for-standard text supplies usable component, provenance and support-relationship URIs (2026-10-07).
 - `AC-030`: Native renderer preservation, seven-workflow typed alternate invocation and shared evidence-access instructions.
 - `AC-031`: Common transport/result budgets, existing rights and safe repositories, exact hashes, original semantics and explicit errors.
 - `AC-032`: Recovery decision/client support matrix, documented assumptions, alternatives and tool-access contracts fix the assessment before implementation.
 - `AC-033`: Text/structured equivalence, real cursors, size-driven continuation and bounded nonempty operations provide meaningful offline verification targets.
 - `AC-034`: Shared factory/registration and concrete exact evidence/regression targets; independent Tester owns executions and claims.
 - `AC-035`: Versioned retained MCPB refresh and staged runtime contracts, with historical source/archive/stage evidence retained.
-- `AC-036`: No architectural impact on Documenter's user-run walkthrough execution or status; invocation/evidence/composition boundaries below define what it must exercise.
+- `AC-036`: No architectural impact on Documenter's user-run walkthrough execution or status; invocation/evidence/composition boundaries below define what it must exercise. The D1 corrections (window counts tied to the requested window size, AS/LC versus LP unresolved evidence, a classroom note matching its target standard) are Documenter-owned.
 - `AC-037`: No architectural impact on prose, strict-build results or user deployment/sign-off; the client support matrix and concrete surface govern documentation and the later remote checklist.
 
 ## Components
@@ -531,9 +594,9 @@ empty results, clipped evidence and denied resources, with no inferred-edge fall
 
 | Prompt                                 | Selection and required retrieval/output sequence                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 |----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| learning_progression_teaching_sequence | Existing focus_mode/topic_or_standard with local/normalized grade filters; resolve topic with existing lexical standard search (first page 10), or an exact selector with get_standard. Retain up to 3 explicitly identified standards. Retrieve direct links (25 each), bounded downstream traversal (depth 8, nodes 30, edges 40), and paths (depth 6, at most 3) only when two retained standards are selected for connection. Separate relates links from sequence hops; get LCs for selected standards, capped to 5 per standard in client evidence. Return adaptable cited sequence, alternatives and generated activities; no sparse-coverage edge invention.                                                                                                                            |
+| learning_progression_teaching_sequence | Existing focus_mode/topic_or_standard with local/normalized grade filters; resolve topic with existing lexical standard search (first page 10), or an exact selector with get_standard. Retain up to 3 explicitly identified standards. Retrieve direct links per connection kind (see per-kind direct calls below), bounded downstream traversal (depth 8, nodes 30, edges 40), and paths (depth 6, at most 3) only when two retained standards are selected for connection. Separate relates links from sequence hops; get LCs for selected standards, capped to 5 per standard in client evidence. Return adaptable cited sequence, alternatives and generated activities; no sparse-coverage edge invention.                                                                                                                            |
 | learning_progression_support_plan      | Exact StandardIdentifier target and teacher observations/local_context; get_standard, direct incoming builds (25), related concepts (25), upstream traversal (depth 3, nodes 20, edges 30), LCs for target and up to 3 retained supporting standards (5 each). Return review/practice options and alternative next steps with citations. Observations are caller reports, suggestions generated pedagogy, not diagnosis/readiness or compulsory prerequisites.                                                                                                                                                                                                                                                                                                                                  |
-| learning_progression_curriculum_review | Optional exact standard selectors (max 20), local/normalized grade and statement-type filters, explicit endpoint_scope default either. Read LP summary and statistics, pass exact selectors through search standard_identifiers when supplied, scan up to 3 relationship pages of 25 with identical endpoint filters (or inspect direct pages for at most 3 selected standards with the inspected subset explicit), inspect at most 10 selected exact relationships/provenance resources, and read validation/unresolved/summary links within policy. Return stored coverage/counts versus bounded reviewed subset, direction/conceptual-link evidence, warning/needs-review review questions. Preserve partialness; no absence-as-omission, curriculum certification or cross-framework edges. |
+| learning_progression_curriculum_review | Optional exact standard selectors (max 20), local/normalized grade and statement-type filters, explicit endpoint_scope default either, and (2026-10-07) optional relationship_types (unique buildsTowards/relatesTo values; empty means both). Read statistics and the LP summary, then run one search_learning_progressions scan per selected type in the fixed order buildsTowards, relatesTo: each scan sets relationshipTypes to that single type, passes exact selectors through standard_identifiers and keeps identical endpoint filters, requests limit 25 and follows at most 3 pages. Inspect at most 10 selected exact relationships/provenance resources, balanced across scanned types (below), and read validation/unresolved/summary links within policy. Return per-type stored totals versus bounded reviewed subsets, direction/conceptual-link evidence, warning/needs-review review questions. Preserve partialness; no absence-as-omission, curriculum certification or cross-framework edges. |
 
 Client evidence must retain scope/limits and page/path completeness; bounded workflow
 inspection counts are not global coverage. Retrieve full provenance for relationships
@@ -544,13 +607,114 @@ workflow does not falsely claim the LC tool itself returned only those items.
 
 For teacher_guide_draft, student_study_support, student_handbook_section and
 multigrade_lesson_plan, add a shared optional-evidence step after exact standards are
-selected: up to 3 retained standards, one direct page of 25 per standard, full
+selected: up to 3 retained standards, the per-kind direct calls below, full
 provenance for up to 10 used edges, and LC evidence through existing support links.
 Multigrade retains shared-LC/DAG/grade behavior; a shared LC does not become an LP
 edge. Explain limited/unavailable results and continue the useful existing output.
 Administrator/comparison disclosures acknowledge stored generated LP without
 reclassifying comparisons as official equivalence or creating cross-framework links.
 No new heuristic-profile or hypothesis-guidance blocks are permitted.
+
+#### Curriculum-review scans (Frame 1, 2026-10-07)
+
+`relationship_types` reuses the discovery request's existing `RelationshipTypes`
+type and validation (only buildsTowards/relatesTo, unique, at most 2). It is added
+to `LearningProgressionCurriculumReviewRequest`, so the get_workflow_instructions
+curriculum-review variant gains it automatically under its camel-case alias. The
+native prompt accepts it as a JSON-array string like its other array arguments.
+Rendering is deterministic; the same validated request yields the same text.
+
+- Scan order is the fixed type order buildsTowards then relatesTo, restricted to
+  the selected types. Each scan is a separate search_learning_progressions request
+  whose `relationshipTypes` holds exactly that one type; all other filters,
+  selectors, endpoint scope and the requested limit 25 are identical across scans.
+- Each scan follows nextCursor from its own previous page only, for at most 3 pages
+  (6 pages in total when both types are selected). Never reuse a cursor across scans,
+  change filters/limit or restart pagination to bypass the cap. A zero-match
+  work-limited page still consumes one of that scan's pages.
+- Wording states that limit 25 is the maximum requested and that a page may return
+  fewer edges because of the result-size ceiling; the client records each page's
+  actual returnedCount, stoppingReason, nextCursor and isComplete. Remove the "3
+  pages of 25" and "at most 75" promises. A remaining cursor after a scan's third
+  page means that type's review is incomplete.
+- Full inspection keeps its cap of 10 distinct relationships for the workflow. When
+  both types are scanned and returned edges, select up to 5 per type and give unused
+  slots to the other type; explain the selection and excluded items.
+- Reporting is per type: package-wide stored totals (statistics/summary), filtered
+  matching counts when known, distinct returned and fully inspected counts. Never
+  sum totals across scans or treat one type's coverage as the other's.
+
+#### Per-kind direct calls (Frame 2, 2026-10-07)
+
+The teaching-sequence workflow and the shared optional progression step (teacher
+guide, student study, student handbook, multigrade) replace their single
+`connectionKind: all` page per standard with three get_standard_progressions calls
+per retained standard, in the fixed order `outgoing_builds`, `incoming_builds`,
+`related`. Each call requests limit 25, reads one page and does not follow
+nextCursor. The 3-retained-standard cap is unchanged, so each workflow makes at most
+9 direct calls (the optional step's old "at most 3 calls" cap becomes 9).
+Teaching-sequence traversal and path steps are unchanged.
+
+- Wording states that limit 25 is a requested maximum and size-limited pages may
+  return fewer; a non-null nextCursor for a kind means that kind is incomplete for
+  that standard, and the client reports it.
+- Results stay grouped by kind: outgoing/incoming builds are directional steps;
+  related concepts are never sequence hops. Deduplicate relationship IDs across
+  calls and standards.
+- The full-provenance cap stays 10 distinct relationships per workflow invocation.
+- Support planning already uses separate incoming and related calls; it is unchanged.
+- No service, connection-kind, ordering, cursor or schema change.
+
+### Discovery of included graph types and LP availability (Frame 1, 2026-10-07)
+
+`CatalogFrameworkSnapshot` and `FrameworkSnapshotSummary` add `included_graph_types`
+(alias `includedGraphTypes`): the sorted, duplicate-free union of every accepted
+package's validated manifest `included_graph_types`. Validate it alongside the
+existing `available_graph_types` invariant; it always contains every available
+(primary) type. `available_graph_types` keeps its routing meaning and all existing
+routing/capability checks (comparison, statistics and standards services) keep using
+it. GetCapabilitiesResult adds server-wide `includedGraphTypes`, the union across
+all accepted packages; its per-package `includedGraphTypes` already exists.
+
+The list_frameworks `graphTypes` filter matches a snapshot when any requested type
+is in its `includedGraphTypes`. Update the field description to say so. No other
+filter, ordering or framework-cursor format changes. Cursors from the earlier
+unpublished 0.4.0 candidate carry no compatibility promise.
+
+Text (alongside unchanged structured results):
+
+- list_frameworks: per snapshot, `Routing graph types:` (available) and
+  `Included graph types:` lines replace the single `Graph types:` line. Each package
+  summary adds `learning_progressions=available|unavailable`,
+  `builds_towards=<n>` and `relates_to=<n>`.
+- get_framework: each graph package adds included graph types,
+  `Learning progressions` and `LP provenance` booleans; counts add
+  `learning_progressions[builds_towards=<n>, relates_to=<n>]`.
+- get_capabilities: server-level `Routing graph types:` and `Included graph types:`
+  lines; each package adds its included graph types and a `Learning progressions:`
+  block with hasLearningProgressions, hasLearningProgressionProvenance and the two
+  stored counts.
+
+All values come from accepted manifest capabilities/counts already validated against
+the stored edges; statistics remain the queryable-count source. A package without
+declared LP shows `unavailable` and zero counts, never an inferred availability.
+
+### Component citation text (Frame 1, 2026-10-07)
+
+get_learning_components_for_standard text keeps its existing lines and adds:
+
+- once: the selected standard's URI and the standard-learning-components URI;
+- per component: `Support relationship ID` (the stored supports relationship
+  identifier), `Support relationship URI` (the existing exact relationship
+  resource), stored direction `component -> standard`, `Component URI`, and
+  `Component provenance URI` when the package declares detailed provenance.
+
+Build URIs with the existing constructors from the result's exact package identity.
+Apply the same policy check the resource links already use: when the package's
+rights deny a resource kind, print `not readable under package rights` for that URI
+rather than omitting the line silently. Structured content, ordering, resource links
+and the tool's existing (unbudgeted) text contract are otherwise unchanged; no LP
+envelope, JSON mirror or pagination is added. Do not rewrite other LC tools.
 
 ### Ordinary text and total result accounting
 
@@ -741,7 +905,8 @@ The final revised surface is 19 tools (12 retained + 5 LP + 2 access tools),
 1 fixed resource and 14 resource templates (12 retained + 2). Explicit registration,
 capabilities and shared smoke expectations agree on exact names/schemas, not just
 counts. Per-package discovery differentiates included LP from the primary
-academic_standards routing type. Statistics expose separate stored LP counts;
+academic_standards routing type through `includedGraphTypes`, text LP availability
+and counts (2026-10-07 contract above). Statistics expose separate stored LP counts;
 AS-only parent/root/context and supports queries always select their own labels.
 STDIO and local Streamable HTTP use the same application state and adapter contracts.
 
@@ -835,6 +1000,10 @@ Rendering, retrieval, and composed teaching output are distinct evidence states.
 - `AC-032`: The persisted support assessment distinguishes observed Desktop behavior, source-documented remote capabilities, design choices and untested acceptance. The public connector has a complete tool-access route, without depending on an unverified attachment UX or claiming it lacks native capabilities.
 - `AC-034`: Local STDIO and local HTTP emit the same five LP text contracts and two access-tool schemas/content/errors. Offline meaningful checks include the Nigeria diagnostic relationship and full original provenance, exact endpoint standards, representative LC/full provenance, CBSE needs-review, Ghana warnings, coverage and both LP and AS/LC validation/unresolved; rights/native reads/prompts/affected searches/context/supports and size/cursor regressions remain assessable.
 - `AC-035`: The final source and freshly retained 0.4.0 archive/stage expose 19 tools, nine native prompts, one fixed resource and fourteen templates with exact matching schemas, current rendered/shipped instructions and permitted evidence closure. Record new archive/source/stage identities; earlier 0.3.1 pass/hash claims remain historical.
+- `AC-019` (Frame 1, 2026-10-07): For all six accepted snapshots, list_frameworks, get_framework and get_capabilities text name `learning_progressions` among included graph types (routing types stay `academic_standards`) and show each package's LP availability with buildsTowards/relatesTo counts equal to statistics. `graphTypes: [learning_progressions]` returns all six; `[academic_standards]` and an empty filter return exactly what they returned before.
+- `AC-016`, `AC-029` (Frame 1, 2026-10-07): For every component listed in get_learning_components_for_standard text, the support relationship ID and its relationship URI, component URI and (when declared) component provenance URI appear in ordinary text, equal those in structuredContent/resource links, and the relationship URI reads through native resources and read_evidence. Rights-denied URIs are marked, not silently dropped.
+- `AC-013`, `AC-016` (Frame 2, 2026-10-07): The rendered teaching-sequence workflow and the shared optional step of all four existing teaching/study workflows (native and get_workflow_instructions, identical text) contain, per retained standard, exactly the outgoing_builds, incoming_builds and related direct calls with limit 25 and no cursor following, at most 9 in total, and no `connectionKind: all` direct call. No rendered text promises a fixed number of returned edges per page.
+- `AC-015` (Frame 1, 2026-10-07): With relationship_types omitted, the rendered curriculum review (native and get_workflow_instructions, identical text) contains one single-type discovery scan per type, buildsTowards then relatesTo, each capped at 3 pages with its own cursor; with one type selected, only that scan. No rendered text promises a fixed per-page or 75-edge return. On Ghana Mathematics Basic 5 the relatesTo scan returns stored relatesTo edges when any exist in scope. Invalid/duplicate types fail validation.
 
 ## Build Plan
 
@@ -864,6 +1033,22 @@ Rendering, retrieval, and composed teaching output are distinct evidence states.
    exact-ID Desktop walkthrough and post-deployment remote checklist, marks actual
    execution status honestly and checks strict/current shipped content. Actual
    user deployment, public-client acceptance and sign-off remain user follow-up.
+
+Frame 1 rework (2026-10-07), after Developer reconciles its plan:
+
+7. Add `includedGraphTypes` to the catalog snapshot, snapshot summary and
+   capabilities result with its invariant; switch the discovery filter to it; extend
+   the three discovery text formatters with routing/included types and per-package
+   LP availability/counts.
+8. Extend components-for-standard text with the support relationship ID and the
+   permitted URIs, using existing constructors and policy checks.
+9. Add `relationship_types` to the curriculum-review request (native argument and
+   instruction variant follow), render per-type scans/selection/reporting, and
+   replace the teaching-sequence and shared optional `all` direct page with the three
+   per-kind calls (Frame 2), and correct page-limit wording in all affected workflows.
+10. Update shared smoke/schema expectations (prompt argument, new fields, text
+    lines) and offline checks; rebuild the retained 0.4.0 candidate and its stage.
+    Tester, both reviews, Documenter (including D1) and Synchronizer follow.
 
 The original copy/normalization/package production sequence and its executed
 receipts remain in the existing development/verification history. Existing
@@ -911,6 +1096,15 @@ against the revised client contracts.
   caller contracts. Preserve exact source IDs and explain these local package changes
   in later documentation; deployment timing is the user's decision.
 
+- Per-type curriculum scans double the maximum discovery pages (6) for a both-type
+  review. Pages are still size-limited (about 7 edges), so each type's sample is
+  small; workflows report it as a bounded sample, not coverage.
+- Per-kind direct calls raise the teaching and optional direct-call budget from 3
+  to 9. Each page is still size-limited, so a kind with many links can remain
+  incomplete; the workflow reports it rather than following cursors.
+- Desktop may treat a rebuilt archive with the same 0.4.0 version as already
+  installed; the walkthrough should tell users to remove and reinstall the extension.
+
 ## Alternatives
 
 - Summary-only text plus structuredContent: rejected by verified Desktop output and
@@ -950,6 +1144,15 @@ against the revised client contracts.
 - Keep hypothesis aliases/heuristics or infer missing links: rejected by the explicit
   replacement scope and would confuse stored judgments with new client speculation.
 
+- Frame 1 (2026-10-07) alternatives, rejected: making LP a primary/routing graph type
+  or a separate package (would change package identity and routing for no user gain);
+  changing discovery ordering to interleave types (changes every cursor/order
+  contract and still gives no per-type guarantee); a JSON mirror or new tool for
+  component citations (larger change than printing the existing handles); bumping
+  to 0.4.1 (user chose to keep 0.4.0); a new two-direction `builds` connection kind
+  to save one call per standard (schema change for little benefit); disclosing the
+  teaching/optional gap without fixing it (user asked for the fix).
+
 ### Architect recovery gate and handoff record
 
 Revised in EVOLUTION mode for the same cycle. All 37 current scope identifiers are
@@ -958,9 +1161,8 @@ dispositions. No blocking design question remains. Production code, tests, owned
 downstream completion statuses, audit/context, user documentation and public
 deployment are not changed by Architect.
 
-Frame 1 (SCOPING-owned, 2026-10-03): this design was revised as its downstream rerun
-and forwarded to DEVELOPING; Frame 1 continues unchanged through SYNCHRONIZING and
-RESUMES to AWAITING_USER_SIGNOFF only at that boundary.
+Earlier SCOPING-owned frame (2026-10-03, history): this design was revised as its
+downstream rerun; that frame completed at SYNCHRONIZING and was popped.
 
 Frame 2 (ARCHITECTING-owned, 2026-10-06): the user selected the result-size
 correction recorded above (compact derivation-artifact metadata plus the path size
@@ -972,3 +1174,19 @@ and RESUME at DEVELOPING. Developer restores Suspended Assignment 3, reconciles 
 plan under its approval rules and re-establishes affected evidence. Tester's formal
 coverage of these contracts follows in Frame 1's existing route. A newly discovered
 scope/context/design defect follows nested failure mechanics.
+
+Frame 1 (ARCHITECTING-owned, 2026-10-07, user rework after Desktop testing): the
+design now covers F1–F3 through included graph types and LP discovery text, component
+citation text and per-type curriculum-review scans; D1 is Documenter-owned. All 37
+identifiers remain covered with unchanged meanings. Downstream invalidation: the
+implementation and retained 0.4.0 candidate (DEVELOPING), verification (TESTING),
+implementation review, documentation including D1 and the walkthrough (DOCUMENTING),
+final review and synchronization all depend on these contracts. Rerun from
+DEVELOPING through SYNCHRONIZING, keep Frame 1, and RESUME to AWAITING_USER_SIGNOFF
+at that boundary. No deployment or sign-off is part of this route.
+
+Frame 2 (ARCHITECTING-owned, 2026-10-07, user rework from DEVELOPING before any
+development work): per-kind direct calls for the teaching-sequence and shared
+optional workflows; version stays 0.4.0. Coverage for AC-013/AC-016 is updated; no
+other contract changes. DEVELOPING had produced nothing yet, so no rerun is needed:
+pop Frame 2 and RESUME at DEVELOPING. Frame 1 keeps RerunThrough SYNCHRONIZING.
