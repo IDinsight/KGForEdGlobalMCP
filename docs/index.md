@@ -1,6 +1,6 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** Code and data are being merged separately. Stored LP availability appears as each data PR lands. See [rollout and acceptance](development/lp-migration.md).
+> **LP rollout:** All six runtime packages now provide stored LPs. CBSE Science's maintained input artifacts will follow separately. See [rollout and acceptance](development/lp-migration.md).
 
 **KGForEdGlobalMCP** is a curriculum-agnostic, read-only FastMCP server for exploring
 versioned curriculum knowledge graphs from countries, states, and educational

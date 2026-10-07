@@ -92,8 +92,8 @@ means **Ghana OR Nigeria**, and **Mathematics**.
 
 `graphTypes` matches the graph types a snapshot's packages *include*
 (`includedGraphTypes`), not only the type each package is filed under. Academic Standards packages may also include Learning Components and
-Learning Progressions. This request returns only snapshots with installed LP data:
-none at the code-first stage, then the migrated subset, and all six after rollout:
+Learning Progressions. This request returns only snapshots with installed LP data,
+which now includes all six repository frameworks:
 
 ```json
 {

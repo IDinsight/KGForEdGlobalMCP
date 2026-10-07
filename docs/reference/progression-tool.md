@@ -1,6 +1,6 @@
 # Learning progression tools
 
-> **Dataset prerequisite:** LP examples and full smoke checks require the later LP packages. During the code-first rollout, use the offline test command in [rollout and acceptance](../development/lp-migration.md). Standards and learning components remain usable.
+> **LP dataset:** All six runtime LP packages are installed. See [rollout and acceptance](../development/lp-migration.md) for strict dataset tests and full smoke checks.
 
 Five read-only tools retrieve accepted, stored `buildsTowards` and `relatesTo` edges between standards in one framework/snapshot. They do not infer missing relationships. See the [guide and examples](../guides/progression.md) for educational use.
 

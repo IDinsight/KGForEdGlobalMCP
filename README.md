@@ -1,6 +1,6 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** Five frameworks now provide stored LPs. CBSE Science retains its standards and learning-component package; its stored LP queries report `capability_unavailable` until its data PR lands. See [rollout and acceptance](docs/development/lp-migration.md).
+> **LP rollout:** All six frameworks now provide stored LPs. CBSE Science's maintained input artifacts will follow separately. See [rollout and acceptance](docs/development/lp-migration.md).
 
 <!-- Badges -->
 <p align="center">
@@ -159,7 +159,7 @@ uv --directory backend sync --locked --extra dev
 
 ## Verify the local server
 
-After the LP data rollout, run the full dataset smoke through a separate locked STDIO subprocess. During the code-first stage, use the offline test command in [rollout and acceptance](docs/development/lp-migration.md):
+Run the full dataset smoke through a separate locked STDIO subprocess. Also run strict dataset acceptance as described in [rollout and acceptance](docs/development/lp-migration.md):
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
