@@ -7,8 +7,25 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `COMPLETE` `Verification Cadence`: `AFTER_IMPLEMENTATION`
+`Status`: `PROPOSED` `Verification Cadence`: `AFTER_IMPLEMENTATION`
 `Current Increment`: `NONE`
+
+## Frame 1 Desktop Rework Revision — proposed 2026-10-07
+
+Recovery Frame 1 (Owner ARCHITECTING, from/resuming at AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) reruns Developer downstream after the Desktop-testing rework. Architecture sections "Desktop rework correction", "Curriculum-review scans", "Per-kind direct calls", "Discovery of included graph types and LP availability" and "Component citation text" (Build Plan 7–10) define the new contracts. They change public text, a catalog/capabilities field, a filter's matching rule and a prompt argument, so this is a material plan change: the plan returns to PROPOSED. STEPWISE, locked style tony, AFTER_IMPLEMENTATION and Current Increment NONE are unchanged. Versions stay server/MCPB 0.4.0 and prompts 1.4.0 (user decision 2026-10-07). D1 (walkthrough wording, AC-036) is Documenter-owned and not in this plan.
+
+| Order | Step | Observable outcome |
+|---|---|---|
+| 1 | DEV-026 (new, F1) | includedGraphTypes on catalog snapshot/summary and capabilities; graphTypes filter matches included types; discovery text shows routing/included types and per-package LP availability and counts. |
+| 2 | DEV-027 (new, F2) | get_learning_components_for_standard text prints the standard/standard-components URIs once and, per component, support relationship ID/URI, direction, component URI and component provenance URI, with rights-denied URIs marked. |
+| 3 | DEV-028 (new, F3 + Frame 2 decision) | Curriculum review takes relationship_types and renders one single-type scan per selected type with its own 3-page cap, balanced 10-edge inspection and per-type reporting; teaching sequence and the shared optional step make three per-kind direct calls per retained standard; no fixed-count page promises remain. |
+| 4 | DEV-022 (reopened) | Shared smoke/schema expectations follow the new fields, text and prompt argument; a fresh retained 0.4.0 candidate is built from committed source and bound by closure; user-run repository STDIO, staged STDIO and loopback HTTP agree. |
+
+Existing DONE steps (DEV-017, DEV-018, DEV-020, DEV-021, DEV-025) keep their history; the new steps change the same areas under the new contracts rather than reopening them, because their original outcomes still hold and the new behavior is additional. No accepted package, profile, configuration, stored judgment, ceiling, maximum, cursor format, connection kind or tool/prompt/template count changes.
+
+Self-checks per step: offline feedback on all six accepted packages through real FastMCP text-only calls (and native prompts versus get_workflow_instructions for DEV-028), including the Architect's Frame 1 technical acceptance targets (graphTypes [learning_progressions] returns all six while [academic_standards]/empty return what they returned before; every listed component's IDs/URIs in text equal structured/link values and the relationship URI reads through native resources and read_evidence; Ghana Mathematics Basic 5 relatesTo scan returns stored relatesTo edges; invalid/duplicate relationship_types fail validation), pytest tests/, and black/isort/ruff/mypy/pylint/interrogate on changed modules.
+
+Formal tests: Tester-owned cases that encode the superseded text or workflow wording (for example the single "Graph types:" line, a connectionKind all direct call, or "3 pages of 25") are expected to fail. Developer does not edit them. As in the Frame 2 precedent, record each such failure as superseded-contract evidence in the step's self-check, finish DEV-026 to DEV-028, then route one scoped VERIFICATION correction to Tester before DEV-022 so the candidate is built and smoked against a green suite. Any other formal failure is treated as an implementation defect.
 
 ## Frame 2 Size-Correction Revision — approved 2026-10-06
 
@@ -1549,9 +1566,72 @@ Planned: offline ad hoc native/alternate message equality for all seven variants
 
 Share validation/adaptation below MCP rather than invoke decorated native handlers. Framework-specific prompt configuration is an immutable input. Runtime generic workflow messages are Developer implementation; user-facing guides, Desktop walkthrough and remote checklist remain Documenter-owned.
 
+### DEV-026 — Show included graph types and LP availability in discovery
+
+`Status`: `PENDING` `Depends On`: `DEV-025`
+`Acceptance`: `AC-019`
+
+**Goal**
+
+Let discovery say what each package contains (F1), not only how it is routed, and let the graphTypes filter find snapshots that include Learning Progressions.
+
+**Affected Area**
+
+catalog/models.py and catalog/repository.py (snapshot includedGraphTypes and invariant), catalog/service.py and services/frameworks.py (snapshot summary field, `_matches_graph_types`), services/capabilities.py (server-wide includedGraphTypes), mcp/tools/frameworks.py and mcp/tools/capabilities.py (text formatters); the filter field description.
+
+**Expected Outcome**
+
+CatalogFrameworkSnapshot, FrameworkSnapshotSummary and GetCapabilitiesResult carry sorted, duplicate-free includedGraphTypes (union of accepted manifests' included types), validated to contain every available type; availableGraphTypes and all routing checks are unchanged. list_frameworks graphTypes matches included types: [learning_progressions] returns all six snapshots; [academic_standards] and an empty filter return what they returned before. Text: list_frameworks shows `Routing graph types:` and `Included graph types:` per snapshot and per package `learning_progressions=available|unavailable`, `builds_towards=<n>`, `relates_to=<n>`; get_framework shows per-package included types, LP and LP provenance flags and LP counts; get_capabilities shows server-level routing/included lines and a per-package Learning progressions block. Counts come from accepted manifests and equal statistics; an undeclared LP package shows unavailable and zeros.
+
+**Self-Check**
+
+Offline FastMCP text-only feedback over all six snapshots for the three tools and the filter cases above, counts compared with get_framework_statistics; pytest tests/; static checks on changed modules.
+
+### DEV-027 — Print component citation handles in components-for-standard text
+
+`Status`: `PENDING` `Depends On`: `DEV-026`
+`Acceptance`: `AC-016, AC-029`
+
+**Goal**
+
+Give text-only clients the support relationship IDs and readable URIs that workflows ask them to cite (F2).
+
+**Affected Area**
+
+mcp/tools/learning_components.py (`_format_components_for_standard` and the existing link/policy helpers it can reuse); existing URI constructors and resource policy.
+
+**Expected Outcome**
+
+get_learning_components_for_standard text keeps its existing lines and adds once the selected standard URI and the standard-learning-components URI, and per component `Support relationship ID`, `Support relationship URI`, direction `component -> standard`, `Component URI` and, when the package declares detailed provenance, `Component provenance URI`. URIs use existing constructors from the result's exact package identity; a URI whose resource kind the package rights deny prints `not readable under package rights`. Structured content, ordering, resource links and other LC tools are unchanged.
+
+**Self-Check**
+
+Offline text-only feedback on all six packages: every listed component's IDs/URIs in text equal structuredContent/resource-link values, and each support relationship URI reads through native resources and through read_evidence; a rights-denied case is marked; pytest tests/; static checks.
+
+### DEV-028 — Review and sequence each relationship kind on its own budget
+
+`Status`: `PENDING` `Depends On`: `DEV-027`
+`Acceptance`: `AC-013, AC-015, AC-016, AC-030`
+
+**Goal**
+
+Stop buildsTowards from starving relatesTo in rendered workflows (F3 and the user's Frame 2 decision).
+
+**Affected Area**
+
+prompts/learning_progressions.py (curriculum-review request model, teaching-sequence and shared optional-step renderers), mcp/prompts/learning_progressions.py and mcp/prompts/arguments.py (native JSON-array argument), prompts/workflow_instructions.py (variant inherits the field), affected wording in prompts/definitions.py if any.
+
+**Expected Outcome**
+
+LearningProgressionCurriculumReviewRequest gains optional relationship_types (alias relationshipTypes) reusing the discovery RelationshipTypes type and validation; the native prompt accepts it as a JSON-array string and the instruction variant inherits it. The review renders one search_learning_progressions scan per selected type in the order buildsTowards, relatesTo, each with exactly that one type, identical other filters and limit 25, following only its own cursor for at most 3 pages; up to 10 inspected relationships split up to 5 per type with unused slots given to the other type; per-type stored totals, filtered counts when known, returned and inspected counts, never summed. Teaching sequence and the shared optional step for teacher guide, study support, handbook and multigrade make outgoing_builds, incoming_builds and related calls (limit 25, no cursor following) per retained standard, at most 9, grouped by kind and deduplicated; traversal/path steps and support planning are unchanged. No rendered text promises a fixed per-page or 75-edge return; a page may return fewer than 25 and a non-null cursor means that kind/type is incomplete. Native and instruction-variant text stay identical and deterministic.
+
+**Self-Check**
+
+Offline rendering feedback on all six packages, native prompt versus get_workflow_instructions equality for every affected workflow (relationship_types omitted, each single type, both), absence of `connectionKind: all` direct calls and fixed-count promises, invalid/duplicate types rejected; executing the rendered Ghana Mathematics Basic 5 relatesTo scan returns stored relatesTo edges; pytest tests/; static checks.
+
 ### DEV-022 — Align local transport checks, CI and retained MCPB distribution
 
-`Status`: `DONE` `Depends On`: `DEV-021, DEV-025`
+`Status`: `PENDING` `Depends On`: `DEV-021, DEV-025, DEV-028`
 `Acceptance`: `AC-018, AC-019, AC-021, AC-022, AC-023, AC-024, AC-025, AC-028, AC-029, AC-030, AC-031, AC-033, AC-034, AC-035, AC-037`
 
 **Current Recovery Assignment — proposed 2026-10-06**
@@ -2394,3 +2474,11 @@ Reconciliation: since the last build (f57640d) the shipped-input trees changed o
 - User-run stdio-stage with --bundle-root client-recovery-docs-dev022/bundle: exit 0 (13.2 s), no tracebacks. checks/stage_agreement.py exit 0: the new staged run equals the f001 repository STDIO, loopback HTTP and previous staged runs on inventory, all schema identities, LP queries, the 15-read access suite and 15 native reads; all 657 archived files unchanged after startup. checks/closure.py rerun at unchanged HEAD 4fb23fe: exit 0, archive SHA256 unchanged. Evidence index SHA256 03882557b100852bb957e5a012091012ea23a95adcd4d3e348e8d8e3926be973.
 
 DEV-022 DONE; all nineteen steps DONE; full Developer gate passes. Plan COMPLETE. Retained candidate: client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb (earlier candidates are history). As Frame 2 owner, no other state needs a rerun before DOCUMENTING (runtime bytes unchanged; Documenter's own record and later Reviewer/Synchronizer phases follow in Frame 1's route): pop Frame 2 and RESUME DOCUMENTING. Suggested commit: chore(dist): rebuild 0.4.0 candidate with updated README.
+
+### Frame 1 Desktop rework reconciliation — 2026-10-07
+
+User explicitly invoked Developer to continue the active recovery after Architect's RESUME (Frame 2 popped; Frame 1 Owner ARCHITECTING, RerunThrough SYNCHRONIZING). Entry HEAD c3471405a58b11db8379df5d3b427dd3d0a9ff1b, clean tree; workflow check passed; no conditional protocol chapter applies; locked style tony is present. Developer had produced nothing since the rework was routed.
+
+Reconciliation: the design adds behavior (new result fields, filter rule, tool text lines, prompt argument and per-kind/per-type workflow calls), so the plan is materially revised: DEV-026, DEV-027 and DEV-028 are added, DEV-022 is reopened (DONE -> PENDING, now also depending on DEV-028), and the plan returns to PROPOSED. Sufficiency: every consequential value (field names, filter semantics, text labels, scan order/caps/selection split, call order/caps, version numbers) is fixed by the architecture; remaining choices (helper factoring, formatter layout within the specified labels) are reversible Developer details. Retained candidate before this rework: client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb (01df98e1…), which becomes history once DEV-022 rebuilds.
+
+Blocked on explicit user approval of this revised plan before implementation; on approval, set APPROVED, then start DEV-026 only under STEPWISE.
