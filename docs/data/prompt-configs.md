@@ -97,7 +97,7 @@ and `prompts`.
 ## Current repository configurations
 
 The repository snapshot contains one prompt config for each of the six accepted profile
-identities. All currently declare `promptConfigVersion` `2.0.0`. Nigeria's path and `profileVersion` are `2.0`; the other five remain `1.0` to match installed profiles. The prompt configuration version is independent of the profile version.
+identities. All currently declare `promptConfigVersion` `2.0.0`. For Nigeria and Ghana Mathematics, paths and `profileVersion` are `2.0`; the other four remain `1.0` to match installed profiles. The prompt configuration version is independent of the profile version.
 
 | Framework/profile                  | Prompt-config ID                                              | Current prompt-specific overlays               |
 |------------------------------------|---------------------------------------------------------------|------------------------------------------------|

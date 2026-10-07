@@ -6,7 +6,7 @@ checksums, profile semantics, capabilities, rights, counts, and validation state
 The runtime accepts manifest/delivery pairs `1.0/1.1` for existing packages and
 `1.1/1.2` for new packages. Mixed pairs are rejected; stored LPs require manifest
 `1.1`. Source schema and supported package revision remain `1.0` and `1`.
-Nigeria Mathematics uses the `1.1/1.2` pair. The other five installed packages
+Nigeria and Ghana Mathematics use the `1.1/1.2` pair. The other four installed packages
 retain the legacy `1.0/1.1` pair during the staged rollout.
 
 ## Top-level fields
