@@ -11,8 +11,9 @@ comparison, and prompt workflows remain usable.
 **1 of 6 runtime packages migrated:** Nigeria Mathematics now supplies 189
 buildsTowards and 297 relatesTo relationships, with its matching profile and prompt
 configuration bound to profile version 2.0. The other five runtime packages remain
-on their existing standards and learning-component data. Nigeria's maintained input
-artifacts are deferred to a separate PR.
+on their existing standards and learning-component data. Nigeria's matching maintained
+input artifacts and build specification are now included; the other five input sets
+await LP migration.
 
 See the [framework catalog](../data/framework-catalog.md) for the active snapshot
 and installed counts. Dataset acceptance tests still skip until all six migrations
