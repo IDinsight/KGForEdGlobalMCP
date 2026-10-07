@@ -8,15 +8,58 @@ Cycle: integrate-actual-learning-progressions-20261001T162834Z-142f2df1
 `Cycle`: `integrate-actual-learning-progressions-20261001T162834Z-142f2df1` `Mode`: `REVERIFY` `Status`: `COMPLETE` `User Style`: `NONE`
 `Assessment Purpose`: `FULL` `Assessment Target`: `NONE`
 
-## Current Full Verification — Frame 2 rerun after review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001, 2026-10-06
+## Current Full Verification — final candidate 01df98e1, 2026-10-06
 
-REVERIFY, FULL/NONE, as the RerunThrough boundary of IMPLEMENTATION Frame 2 (From/ResumeAt REVIEWING_IMPLEMENTATION, Owner DEVELOPING) raised by implementation review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001; also corrects Tester-owned review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002. Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable. User Style NONE. Outcome: **FULL Tester gate PASSED**; .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 corrections are ready for Reviewer recheck (Reviewer owns their status). AC-026/027/036/037 remain Documenter dependencies.
+REVERIFY, FULL/NONE, for Tester-owned VERIFICATION Frame 2 (From/ResumeAt REVIEWING_FINAL, RerunThrough NONE) raised by .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-003. Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable. User Style NONE. Outcome: **FULL Tester gate PASSED** for the final retained candidate.
 
 ## Assessed Inputs
 
-HEAD a2ee9a0, clean tree at entry. Since the prior full pass (bc6dd21): Developer changed backend/src/kgfegmcp/prompts/service.py (93e05202…, EVIDENCE LINKS rendering), prompts/definitions.py (41785663…), cli/smoke_access.py (7a18f250…, all evidence URIs derived from client-visible text) and rebuilt the candidate data/source_artifacts/learning_progressions/client-recovery-f001-dev022/kgfegmcp-0.4.0-client-recovery-f001.mcpb (SHA256 15c80166…, 82178314 bytes, 657 members); Reviewer added its report/diagnostics. No data/config/packaging/dependency change since 2fa83b7. Review findings read: .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001 and #F-002. E3 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/f002-reverify (entry-inputs.json: 864 inputs). Tester change: backend/tests/kgfegmcp/test_progression_evidence.py (55367197…).
+HEAD f541139, clean tree. Final candidate data/source_artifacts/learning_progressions/client-recovery-docs-dev022/kgfegmcp-0.4.0-client-recovery-docs.mcpb (SHA256 01df98e1…, 657 members) and bundle/. Since the 15c80166 full pass (a2ee9a0 plus Tester's b287810 test), backend/src, backend/tests, pyproject, uv.lock, fastmcp.json, config, data/graph_packages and the MCPB manifest are byte-identical (`git diff a2ee9a0 HEAD` touches only the already-assessed test_progression_evidence.py 55367197…); changes are documentation (backend/README.md shipped as README.md, docs/, packaging/mcpb/README.md, README.md), review/documentation records and the Developer plan. E4 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-candidate.
 
 ## Acceptance Evidence
+
+| AC / technical criterion | Evidence | Disposition |
+| --- | --- | --- |
+| AC-022, AC-035 | E4/closure.py: archive = stage = working tree = HEAD for all 657 members; only README.md differs from the verified 15c80166 archive and equals backend/README.md (19 tools, 0.4.0, no 17-tool/0.3.1 text); stage unchanged by startup; manifest 0.4.0; six packages × 64 shards; 138 copies verified. New staged STDIO (--bundle-root client-recovery-docs-dev022/bundle): passed, 19/9/1/14/15, 15 complete text-derived evidence reads; equal to f002 repository STDIO and loopback HTTP on inventory, schema identities, LP queries, native reads and access suite. | VERIFIED. |
+| AC-021, AC-025, AC-034 | Repository STDIO, loopback HTTP, CI suite (104 passed) and CI static from f002-reverify reused: their runtime source, tests, config, data and lock are byte-identical; new staged run adds the final stage. | VERIFIED. |
+| AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008, AC-009, AC-010, AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-019, AC-023, AC-024, AC-028, AC-029, AC-030, AC-031, AC-033 | Unchanged inputs; dispositions and executions in the 15c80166 section below remain valid. | VERIFIED. |
+| AC-020, AC-032 | Architecture and client-support assessment inspected. | VERIFIED by inspection. |
+| AC-026, AC-027, AC-036, AC-037 | Documenter record and final review own documentation evidence; Tester confirms only that the shipped README in the final archive equals backend/README.md. | PENDING/owned by Documenter and final review (not Tester evidence). |
+
+## Scenario Budget
+
+No new scenario; all allocations and approved ceilings carried unchanged. Closure/stage reruns reuse the existing distribution allocation.
+
+## Execution Evidence
+
+- stdio-stage (outside sandbox; sandbox blocks the smoke child's default uv cache, as recorded earlier): exit 0, status passed, 19/9/1/14/15.
+- closure: exit 0 (sourceDrift empty; changedFromVerified15c80166 = [README.md]; readmeCurrent true).
+- Reused with justification: f002-reverify ci-suite/final-suite (104 passed), CI static, stdio-repo, http; earlier package validations (graph packages unchanged).
+- Preservation: no application/test/data/config/packaging/owner-artifact edit; only this report and STATE.
+
+## Open Findings and Dependencies
+
+- Implementation/upstream/verification defects: NONE. Required unrun/failed/flaky/uncovered checks: NONE. Blocking question: NONE.
+- .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/final-deliverable.md#F-003 correction is ready for Reviewer recheck; Reviewer owns its status.
+- Local evidence does not establish Desktop UI behavior, composed teaching output or deployed claude.ai acceptance.
+
+## Resume or Handoff
+
+Tester owns active Frame 2 with RerunThrough NONE and no downstream rerun needed (no product, documentation or archive change): pop Frame 2 and RESUME REVIEWING_FINAL (From TESTING, FailureType NONE). Frame 1 continues through SYNCHRONIZING. Reviewer (FINAL_DELIVERABLE) rechecks from this section and E4.
+
+## Historical Full Verification For Candidate 15c80166
+
+Superseded by the section above; retained as history.
+
+### Prior Full Verification — candidate 15c80166, 2026-10-06
+
+REVERIFY, FULL/NONE, as the RerunThrough boundary of IMPLEMENTATION Frame 2 (From/ResumeAt REVIEWING_IMPLEMENTATION, Owner DEVELOPING) raised by implementation review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001; also corrects Tester-owned review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002. Frame 1 (SCOPING, ResumeAt AWAITING_USER_SIGNOFF, RerunThrough SYNCHRONIZING) is preserved. Independent Tester conversation without Developer authoring history; client freshness/model metadata unavailable. User Style NONE. Outcome: **FULL Tester gate PASSED**; .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 corrections are ready for Reviewer recheck (Reviewer owns their status). AC-026/027/036/037 remain Documenter dependencies.
+
+#### 15c80166 Assessed Inputs
+
+HEAD a2ee9a0, clean tree at entry. Since the prior full pass (bc6dd21): Developer changed backend/src/kgfegmcp/prompts/service.py (93e05202…, EVIDENCE LINKS rendering), prompts/definitions.py (41785663…), cli/smoke_access.py (7a18f250…, all evidence URIs derived from client-visible text) and rebuilt the candidate data/source_artifacts/learning_progressions/client-recovery-f001-dev022/kgfegmcp-0.4.0-client-recovery-f001.mcpb (SHA256 15c80166…, 82178314 bytes, 657 members); Reviewer added its report/diagnostics. No data/config/packaging/dependency change since 2fa83b7. Review findings read: .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001 and #F-002. E3 = data/source_artifacts/learning_progressions/tester/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/f002-reverify (entry-inputs.json: 864 inputs). Tester change: backend/tests/kgfegmcp/test_progression_evidence.py (55367197…).
+
+#### 15c80166 Acceptance Evidence
 
 | AC / technical criterion | Evidence | Disposition |
 | --- | --- | --- |
@@ -27,11 +70,11 @@ HEAD a2ee9a0, clean tree at entry. Since the prior full pass (bc6dd21): Develope
 | AC-020, AC-032 | Architecture and client-support assessment inspected; correction stays within the design's construction-rule option. | VERIFIED by inspection. |
 | AC-026, AC-027, AC-036, AC-037 | Documenter guides/READMEs/walkthrough/checklist/strict build. | PENDING later-role dependencies (Documenter). |
 
-## Scenario Budget
+#### 15c80166 Scenario Budget
 
 All prior allocations and approved ceilings carried. User explicitly approved on 2026-10-06 `prompts/service.py` 5→6 for the .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 journey; that scenario is charged to prompts/service.py (6/6), mcp/tools/evidence.py (4/5) and definitions.py (1/5). One scenario: one text-only client journey and one outcome (every needed AS/LC evidence record obtainable), with six records read as related assertions. No other increase.
 
-## Execution Evidence
+#### 15c80166 Execution Evidence
 
 Receipts E3/<label>.command.json (repository cwd).
 - f002-draft: exit 1 on a Tester assumption (interpretation profile is a native blob, not text); corrected to byte comparison; f002-draft2 exit 0 (10 evidence cases).
@@ -41,14 +84,14 @@ Receipts E3/<label>.command.json (repository cwd).
 - closure: exit 0 (sourceDrift empty).
 - Preservation: only test_progression_evidence.py and this report changed; no application/data/config/packaging/owner-artifact edit.
 
-## Open Findings and Dependencies
+#### 15c80166 Open Findings and Dependencies
 
 - Implementation/upstream/verification defects: NONE. Required unrun/failed/flaky/uncovered checks: NONE. Blocking question: NONE.
 - Review .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001 (Developer) and .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 (Tester) corrections verified here; Reviewer rechecks and owns their status.
 - Documenter dependencies AC-026/027/036/037, including backend/packaging README counts/versions; a README change requires an archive refresh and closure re-verification before synchronization.
 - Local evidence does not establish Desktop UI behavior, composed teaching output or deployed claude.ai acceptance.
 
-## Resume or Handoff
+#### 15c80166 Resume or Handoff
 
 Full Tester gate passed at Frame 2's RerunThrough boundary: pop Frame 2 and RESUME REVIEWING_IMPLEMENTATION (From TESTING, FailureType NONE); Frame 1 stays. Reviewer (IMPLEMENTATION) rechecks .standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-001/.standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md#F-002 from this section and E3.
 

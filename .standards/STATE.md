@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `REVIEWING_FINAL` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FAILURE` `From`: `REVIEWING_FINAL` `FailureType`: `VERIFICATION` `Reason`:
-`Final retained 0.4.0 candidate 01df98e1 (README-only rebuild) lacks Tester closure and staged-smoke re-verification (AC-022/AC-025/AC-035); verification report still binds superseded 15c80166. Details in the final-deliverable review.`
+`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
+`Final candidate 01df98e1 independently verified: closure binds all 657 members to HEAD and stage, only README.md differs from verified 15c80166; staged STDIO passes and agrees with repository STDIO/HTTP; unchanged-runtime evidence reused. Resume FINAL_DELIVERABLE review; Frame 1 continues.`
 
 ## Recovery
 
@@ -32,12 +32,6 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 `From`: `AWAITING_USER_SIGNOFF` `Owner`: `SCOPING` `FailureType`: `SCOPING`
 `Reason`: `User requests REPLAN of the same Learning Progressions cycle for verified Desktop text/evidence access gaps and a supported local Desktop/public claude.ai connector surface; preserve native prompts/resources and valid requirements.`
 `ResumeAt`: `AWAITING_USER_SIGNOFF` `RerunThrough`: `SYNCHRONIZING`
-
-### Frame 2
-
-`From`: `REVIEWING_FINAL` `Owner`: `TESTING` `FailureType`: `VERIFICATION`
-`Reason`: `Tester evidence does not cover the final retained 0.4.0 candidate client-recovery-docs-dev022 (01df98e1, README-only rebuild): re-establish closure and staged STDIO smoke for it and update AC-022/AC-025/AC-035, which still bind 15c80166.`
-`ResumeAt`: `REVIEWING_FINAL` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 
