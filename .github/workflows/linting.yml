@@ -4,9 +4,15 @@ on:
 
   pull_request:
     branches: ["**"]
+    paths:
+      - ".github/workflows/linting.yaml"
+      - "**.py"
 
   push:
     branches: ["main"]
+    paths:
+      - ".github/workflows/linting.yaml"
+      - "**.py"
 
 env:
   CHAT_ENV: testing
@@ -14,7 +20,29 @@ env:
   OPENAI_API_KEY: sk-fake  # pragma: allowlist secret
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          # Define what is "backend" changes.
+          filters: |
+            backend:
+              - "**.py"
+
   backend-lint-and-format-checks:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+
     runs-on: ubuntu-latest
 
     defaults:
@@ -27,11 +55,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-
       # Install uv and point it at backend directory so it finds the right pyproject.toml.
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
@@ -42,29 +65,29 @@ jobs:
 
       # Install the pinned tool versions.
       - name: Sync dev dependencies
-        run: uv sync --locked --extra dev
+        run: uv sync --extra dev
 
       # Run linters and formatters.
       - name: isort
-        run: uv run --locked --no-sync isort --check --diff src/ tests/
+        run: uv run isort --check --diff src/ tests/
 
       - name: black
-        run: uv run --locked --no-sync black --check src/ tests/
+        run: uv run black --check src/ tests/
 
       - name: ruff
         run: |
-          uv run --locked --no-sync ruff check src/
-          uv run --locked --no-sync ruff check tests/
+          uv run ruff check src/
+          uv run ruff check tests/
 
       - name: interrogate
-        run: uv run --locked --no-sync interrogate -v src/ tests/
+        run: uv run interrogate -v src/ tests/
 
       - name: mypy
         run: |
-          uv run --locked --no-sync mypy src/ --explicit-package-bases --ignore-missing-imports --show-error-codes
-          uv run --locked --no-sync mypy tests/ --explicit-package-bases --ignore-missing-imports --show-error-codes
+          uv run mypy src/ --explicit-package-bases --ignore-missing-imports --show-error-codes
+          uv run mypy tests/ --explicit-package-bases --ignore-missing-imports --show-error-codes
 
       - name: pylint
         run: |
-          uv run --locked --no-sync pylint src/
-          uv run --locked --no-sync pylint tests/
+          uv run pylint src/
+          uv run pylint tests/

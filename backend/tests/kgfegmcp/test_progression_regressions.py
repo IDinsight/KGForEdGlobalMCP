@@ -37,17 +37,19 @@ def test_six_package_standards_components_preserved(accepted_state: AppState) ->
         args = dict(
             framework_id=identity.framework_id, snapshot_id=identity.snapshot_id
         )
-        support = next(
-            e for e in runtime.loaded_package.relationships if e.label == "supports"
+        build = next(
+            e
+            for e in runtime.loaded_package.relationships
+            if e.label == "buildsTowards"
         )
-        selected = selector(support.target_node_id)
+        selected = selector(build.source_node_id)
         standard = standards.get_standard(
             GetStandardRequest(identifier=selected, **args)
         )
         context = standards.get_standard_context(
-            GetStandardContextRequest(node_id=support.target_node_id, **args)
+            GetStandardContextRequest(node_id=build.source_node_id, **args)
         )
-        assert standard.node is runtime.graph_store.nodes_by_id[support.target_node_id]
+        assert standard.node is runtime.graph_store.nodes_by_id[build.source_node_id]
         assert all(
             e.relationship_type == "hasChild" for e in context.ancestors.relationships
         )
@@ -56,7 +58,7 @@ def test_six_package_standards_components_preserved(accepted_state: AppState) ->
         )
         assert all(
             c.relationship.label == "supports"
-            and c.relationship.target_node_id == support.target_node_id
+            and c.relationship.target_node_id == build.source_node_id
             for c in supports.components
         )
         component = runtime.loaded_package.learning_component_nodes[0]

@@ -22,7 +22,6 @@ from tests.fixtures.progression_fixtures import artifact_name
 from tests.fixtures.progression_fixtures import package_route as route
 
 
-@pytest.mark.lp_dataset
 def test_original_per_edge_trace_and_hashes(accepted_state: AppState) -> None:
     """Six-package samples preserve complete original entries and independent hashes."""
     for runtime in accepted_state.catalog_load_result.package_runtimes:
@@ -61,7 +60,6 @@ def test_original_per_edge_trace_and_hashes(accepted_state: AppState) -> None:
         assert "not a mandatory prerequisite" in payload["semanticNotice"]
 
 
-@pytest.mark.lp_dataset
 def test_summary_is_safe_public_projection(accepted_state: AppState) -> None:
     """Coverage/warnings remain explicit without source prompts or private paths."""
     for runtime in accepted_state.catalog_load_result.package_runtimes:
@@ -98,7 +96,6 @@ def test_bulk_is_denied_independently(accepted_state: AppState) -> None:
         )
 
 
-@pytest.mark.lp_dataset
 def test_full_text_denial_precedes_reads(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -130,7 +127,6 @@ def test_full_text_denial_precedes_reads(
         )
 
 
-@pytest.mark.lp_dataset
 def test_source_bytes_refused(accepted_state: AppState) -> None:
     """A lower operator source ceiling gives an explicit refusal of an exact entry."""
     runtime = accepted_state.catalog_load_result.package_runtimes[0]
@@ -168,7 +164,6 @@ def test_unknown_artifact_cannot_use_prefix_policy(accepted_state: AppState) -> 
         )
 
 
-@pytest.mark.lp_dataset
 def test_resource_checksum_refusal(accepted_state: AppState, tmp_path: Any) -> None:
     """A changed isolated source cannot be read using accepted checksum evidence."""
     package = accepted_state.catalog_load_result.package_runtimes[0].loaded_package

@@ -1,7 +1,5 @@
 # First queries
 
-> **LP dataset:** All six runtime LP packages are installed. See [rollout and acceptance](../development/lp-migration.md) for strict dataset tests and full smoke checks.
-
 Once the `curriculum-knowledge-graph` connector is enabled, start with discovery and
 bounded retrieval before asking the host model to compare or generate educational
 material.
@@ -160,7 +158,7 @@ is not equivalent to the source phrase:
 structure of a story
 ```
 
-A zero-result query only means that the supplied lexical expression did not match
+A zero-result query only means that the supplied lexical expression did not match 
 within the requested bounds.
 
 !!! warning "Zero matches do not prove curriculum absence"

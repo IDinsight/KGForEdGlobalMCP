@@ -795,7 +795,7 @@ class GraphPackageManifest(FrozenSchema):
     @field_validator("delivery_schema_version")
     @classmethod
     def validate_delivery_schema_version(cls, value: SchemaVersion) -> SchemaVersion:
-        """Require a supported delivery schema version.
+        """Require the exact repository-supported delivery schema version.
 
         Parameters
         ----------
@@ -813,15 +813,17 @@ class GraphPackageManifest(FrozenSchema):
             If the manifest declares an unsupported delivery schema version.
         """
 
-        if value not in {"1.1", DELIVERY_SCHEMA_VERSION}:
-            raise ValueError("delivery_schema_version must be 1.1 or 1.2.")
+        if value != DELIVERY_SCHEMA_VERSION:
+            raise ValueError(
+                f"delivery_schema_version must equal {DELIVERY_SCHEMA_VERSION}."
+            )
 
         return value
 
     @field_validator("manifest_version")
     @classmethod
     def validate_manifest_version(cls, value: ManifestVersion) -> ManifestVersion:
-        """Require a supported manifest version.
+        """Require the exact repository-supported manifest version.
 
         Parameters
         ----------
@@ -839,8 +841,8 @@ class GraphPackageManifest(FrozenSchema):
             If the manifest declares an unsupported manifest version.
         """
 
-        if value not in {"1.0", MANIFEST_VERSION}:
-            raise ValueError("manifest_version must be 1.0 or 1.1.")
+        if value != MANIFEST_VERSION:
+            raise ValueError(f"manifest_version must equal {MANIFEST_VERSION}.")
 
         return value
 
@@ -894,17 +896,6 @@ class GraphPackageManifest(FrozenSchema):
         """
 
         declared = GraphType.LEARNING_PROGRESSIONS in self.included_graph_types
-        supported_versions = {("1.0", "1.1"), ("1.1", "1.2")}
-
-        if (
-            self.manifest_version,
-            self.delivery_schema_version,
-        ) not in supported_versions:
-            raise ValueError("Manifest and delivery schema versions are incompatible.")
-
-        if self.manifest_version == "1.0" and declared:
-            raise ValueError("Learning progressions require manifest version 1.1.")
-
         artifacts = self.artifacts.learning_progression_artifacts()
         lp_count = (
             self.counts.builds_towards_relationships

@@ -263,13 +263,3 @@ def mock_loguru_logger(monkeypatch: pytest.MonkeyPatch) -> InstallLoguruMock:
 
 
 # Conftest helpers.
-
-
-def pytest_addoption(parser: pytest.Parser) -> None:
-    """Allow final acceptance runs to require the complete migrated LP dataset."""
-    parser.addoption(
-        "--require-lp-dataset",
-        action="store_true",
-        default=False,
-        help="Fail instead of skipping when the six-package LP dataset is incomplete.",
-    )

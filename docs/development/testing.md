@@ -68,22 +68,6 @@ PYTHONDONTWRITEBYTECODE=1 UV_OFFLINE=1 \
 
 Do not treat an offline environment flag alone as proof that test code cannot call a service; retain mocks/network guards and inspect actual assertions. Formal acceptance also needs current inputs, commands/results and limitations.
 
-## Tests during the staged LP rollout
-
-The default offline run executes algorithm, compatibility and applicable MCP checks.
-Tests marked `lp_dataset` report explicit skips until all six baseline packages
-declare stored LPs. They run automatically once the data is installed. Invalid packages
-and missing baseline frameworks fail rather than becoming skips. Synthetic algorithm
-fixtures need no installed LP evidence.
-
-All six runtime LP packages are now installed. Require complete dataset acceptance:
-
-    uv --directory backend run --locked --no-sync pytest -q -rs -m "not costs-money" --require-lp-dataset tests
-
-This strict option fails if any LP migration is missing. A run with dataset skips is
-not complete LP acceptance. STDIO/HTTP smoke commands also use fixed LP snapshot
-and edge identities and require the completed dataset. See [rollout and acceptance](lp-migration.md).
-
 ## What to test by subsystem
 
 ### Domain and schemas

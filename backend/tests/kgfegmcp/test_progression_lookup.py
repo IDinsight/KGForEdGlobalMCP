@@ -37,7 +37,6 @@ DERIVATION_ARTIFACTS = [
 ]
 
 
-@pytest.mark.lp_dataset
 def test_every_exact_edge_preserves_accepted_evidence(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -131,7 +130,6 @@ def test_every_exact_edge_preserves_accepted_evidence(
     assert count == 8080
 
 
-@pytest.mark.lp_dataset
 @pytest.mark.parametrize(
     "kind", ["missing", "non_lp", "missing_standard", "unavailable", "denied"]
 )

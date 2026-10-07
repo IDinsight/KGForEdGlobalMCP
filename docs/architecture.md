@@ -15,8 +15,8 @@ The implementation is organized around five goals:
 1. **Preserve source identity and structure.** Frameworks, snapshots, graph packages,
    local terminology, and hierarchy are retained rather than flattened into one
    synthetic curriculum.
-2. **Keep curriculum-specific semantics out of generic code.** Versioned interpretation
-   profiles define grade labels, statement types, hierarchy rules, code behavior, and
+2. **Keep curriculum-specific semantics out of generic code.** Versioned interpretation 
+   profiles define grade labels, statement types, hierarchy rules, code behavior, and 
    framework disclosures.
 3. **Validate data before serving it.** Graph packages pass a package and topology
    validation gate before entering the accepted runtime catalog.
@@ -127,7 +127,7 @@ registration or domain logic, so the transport never changes the public surface.
 
 ## Lifespan and application bootstrap
 
-Application data is not loaded during package import. Instead, runtime construction
+Application data is not loaded during package import. Instead, runtime construction 
 begins when the FastMCP lifespan starts.
 
 The composition root is `backend/src/kgfegmcp/bootstrap.py`. Its bootstrap sequence is:
@@ -179,8 +179,8 @@ objects rather than mixing independently constructed state.
 
 ## The package validation gate
 
-Graph packages are a trust boundary. The loader and validator check package identity
-and declared artifacts before the catalog exposes them. Validation includes checks such
+Graph packages are a trust boundary. The loader and validator check package identity 
+and declared artifacts before the catalog exposes them. Validation includes checks such 
 as:
 
 - framework, snapshot, graph-package, and profile identity consistency;
@@ -242,7 +242,7 @@ See [Search and retrieve standards](guides/standards-search.md) for search seman
 
 ## Service layer
 
-The MCP adapters are thin and ordinary Python services own the application behavior
+The MCP adapters are thin and ordinary Python services own the application behavior 
 beneath the protocol boundary.
 
 | Service area                | Responsibility                                                                                       |

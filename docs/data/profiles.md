@@ -20,12 +20,12 @@ For example:
 ```text
 config/profiles/
 └── ghana-nacca-primary-english-language-basic-1-3/
-    └── 1.0/
+    └── 2.0/
         └── profile.json
 ```
 
 The document must declare the same `profileId` and `profileVersion` selected by its
-path. The runtime supports `profileSchemaVersion` `1.0` and `1.1`. For legacy schema `1.0`, an empty retired `progressionHeuristics` array is accepted and discarded during parsing; a nonempty array is rejected. Original file bytes still determine the manifest-bound checksum.
+path. The supported `profileSchemaVersion` is currently `1.1`.
 
 ## What a profile defines
 
@@ -171,7 +171,7 @@ The profile loader also:
 
 ## Stored progression configuration
 
-All six frameworks use profile version `2.0`, schema `1.1`. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
+The six active profiles use version `2.0`, schema `1.1`. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
 
 ## Versioning rule
 

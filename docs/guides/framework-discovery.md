@@ -91,9 +91,9 @@ means **Ghana OR Nigeria**, and **Mathematics**.
 ### Find frameworks with learning progressions
 
 `graphTypes` matches the graph types a snapshot's packages *include*
-(`includedGraphTypes`), not only the type each package is filed under. Academic Standards packages may also include Learning Components and
-Learning Progressions. This request returns only snapshots with installed LP data,
-which now includes all six repository frameworks:
+(`includedGraphTypes`), not only the type each package is filed under. Every current
+package is an Academic Standards package that also includes Learning Components and
+Learning Progressions, so this request returns all six snapshots:
 
 ```json
 {

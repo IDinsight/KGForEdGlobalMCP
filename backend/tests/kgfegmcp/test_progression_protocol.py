@@ -60,7 +60,6 @@ async def test_new_prompt_protocol_retrieval(
     assert result.meta["promptVersion"] == "1.4.0"
 
 
-@pytest.mark.lp_dataset
 async def test_reused_mcp_error_and_removed_surface_contracts(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:

@@ -79,7 +79,6 @@ def assert_evidence(payload: dict[str, Any]) -> None:
     assert metadata["generatedOriginNotice"]
 
 
-@pytest.mark.lp_dataset
 @pytest.mark.parametrize(
     "operation",
     ["exact", "direct", "search", "traverse", "paths"],

@@ -11,13 +11,13 @@ For runtime discovery, use `list_frameworks` and `get_framework`.
 
 | Framework              | Jurisdiction      | Local scope       | Subject          | Adoption       | Code search         | Hierarchy        |    Items | hasChild |      LCs | supports | buildsTowards | relatesTo | All relationships |
 |------------------------|-------------------|-------------------|------------------|----------------|---------------------|------------------|---------:|---------:|---------:|---------:|--------------:|----------:|------------------:|
-| Ghana English Language | Ghana             | BASIC 1–3         | English Language | Adopted        | Partial + prefix    | Tree             |      430 |      430 |      272 |      307 | 250 | 801 | 1788 |
-| Ghana Mathematics      | Ghana             | BASIC 4–6         | Mathematics      | Adopted        | Partial + prefix    | Tree             |      302 |      302 |      230 |      273 | 299 | 300 | 1174 |
-| CBSE Science           | India             | Class IX–X        | Science          | Unknown        | Partial, exact only | Multi-parent DAG |      874 |     1109 |      853 |      858 | 891 | 2315 | 5173 |
-| Tamil Nadu Mathematics | Tamil Nadu, India | Class-1–5         | Mathematics      | Proposed Draft | Partial + prefix    | Tree             |      255 |      255 |      399 |      419 | 472 | 435 | 1581 |
-| Nigeria Mathematics    | Nigeria           | PRIMARY ONE–THREE | Mathematics      | Adopted        | None                | Tree             |      242 |      242 |      186 |      204 | 189 | 297 | 932 |
-| Rwanda Mathematics     | Rwanda            | P1–P3             | Mathematics      | Adopted        | None                | Tree             |      626 |      626 |      716 |      797 | 938 | 893 | 3254 |
-| **Total**              |                   |                   |                  |                |                     |                  | **2729** | **2964** | **2656** | **2858** | **3039** | **5041** | **13902** |
+| Ghana English Language | Ghana             | BASIC 1–3         | English Language | Adopted        | Partial + prefix    | Tree             |      430 |      430 |      272 |      307 |           250 |       801 |              1788 |
+| Ghana Mathematics      | Ghana             | BASIC 4–6         | Mathematics      | Adopted        | Partial + prefix    | Tree             |      302 |      302 |      230 |      273 |           299 |       300 |              1174 |
+| CBSE Science           | India             | Class IX–X        | Science          | Unknown        | Partial, exact only | Multi-parent DAG |      874 |     1109 |      853 |      858 |           891 |      2315 |              5173 |
+| Tamil Nadu Mathematics | Tamil Nadu, India | Class-1–5         | Mathematics      | Proposed Draft | Partial + prefix    | Tree             |      255 |      255 |      399 |      419 |           472 |       435 |              1581 |
+| Nigeria Mathematics    | Nigeria           | PRIMARY ONE–THREE | Mathematics      | Adopted        | None                | Tree             |      242 |      242 |      186 |      204 |           189 |       297 |               932 |
+| Rwanda Mathematics     | Rwanda            | P1–P3             | Mathematics      | Adopted        | None                | Tree             |      626 |      626 |      716 |      797 |           938 |       893 |              3254 |
+| **Total**              |                   |                   |                  |                |                     |                  | **2729** | **2964** | **2656** | **2858** |      **3039** |  **5041** |         **13902** |
 
 Across the six manifests there are **1,439 coded items**, **15 unresolved
 relationships**, and **235 multi-parent targets**. The multi-parent targets are all in
@@ -27,10 +27,10 @@ the CBSE Science package; the unresolved relationships are in the two Ghana pack
     Similar normalized numbers across frameworks do not establish official grade
     equivalence, curricular alignment, or instructional interchangeability.
 
-All six frameworks provide stored LPs, with **3,039 buildsTowards** and
-**5,041 relatesTo** edges. Update this catalog with each package change;
-`get_capabilities` and `get_framework` remain authoritative at runtime.
-See [rollout and acceptance](../development/lp-migration.md).
+LP totals are **3,039 buildsTowards** and **5,041 relatesTo**. All-relationship totals
+include hasChild, supports and both LP labels; hierarchy/component counts retain their
+own meaning. These are stored generated judgments with selected candidate coverage,
+not publisher endorsement or exhaustive pedagogy. See [LP usage](../guides/progression.md).
 
 ## Ghana — English Language, Basic 1–3
 
@@ -245,18 +245,13 @@ deterministic derivation rather than a source-visible statement.
 
 ## Shared package properties
 
-All six installed packages now use the LP format:
-
-| Packages | Manifest / delivery schema | Profile version / schema | Included domains |
-| --- | --- | --- | --- |
-| All six frameworks | 1.1 / 1.2 | 2.0 / 1.1 | Academic standards, learning components, learning progressions |
-
 All six supplied packages currently share these properties:
 
 - graph type: `academic_standards`;
 - package revision: `1`;
-- source schema: `1.0`;
-- prompt-config version: `2.0.0`;
+- manifest schema `1.1`, delivery schema `1.2`, source schema `1.0`;
+- included domains: `academic_standards`, `learning_components`, `learning_progressions`;
+- profile version `2.0` and prompt-config version `2.0.0`;
 - terminal validation state: `passed`;
 - text search: enabled;
 - detailed provenance: present;

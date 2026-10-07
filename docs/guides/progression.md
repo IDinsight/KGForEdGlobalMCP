@@ -1,8 +1,6 @@
 # Use stored learning progressions
 
-> **LP dataset:** All six runtime LP packages are installed. See [rollout and acceptance](../development/lp-migration.md) for strict dataset tests and full smoke checks.
-
-Use stored relationships to explore a teaching sequence, find support for a target standard, or inspect a curriculum's retained evidence. The planned six-package LP dataset contains 3,039 `buildsTowards` and 5,041 `relatesTo` edges, each with retained provenance. Start with [framework discovery](framework-discovery.md) and keep the returned framework, snapshot and package identity in every citation.
+Use stored relationships to explore a teaching sequence, find support for a target standard, or inspect a curriculum's retained evidence. The six supplied curricula contain 3,039 `buildsTowards` and 5,041 `relatesTo` edges, each with retained provenance. Start with [framework discovery](framework-discovery.md) and keep the returned framework, snapshot and package identity in every citation.
 
 ## Read the two meanings correctly
 

@@ -46,11 +46,7 @@ async def stored_lp_counts(client: Client, framework_id: str) -> tuple[int, int]
 
 @pytest.mark.parametrize(
     "graph_types",
-    [
-        pytest.param(["learning_progressions"], marks=pytest.mark.lp_dataset),
-        ["academic_standards"],
-        [],
-    ],
+    [["learning_progressions"], ["academic_standards"], []],
     ids=["included-lp", "routing-type", "no-filter"],
 )
 async def test_graph_type_filter_matches_included_types(
@@ -83,7 +79,6 @@ async def test_graph_type_filter_matches_included_types(
     assert sorted(found) == snapshot_ids(accepted_state) and len(found) == 6
 
 
-@pytest.mark.lp_dataset
 async def test_list_frameworks_text_shows_lp_availability(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -109,7 +104,6 @@ async def test_list_frameworks_text_shows_lp_availability(
             ) in line
 
 
-@pytest.mark.lp_dataset
 async def test_get_framework_text_shows_package_lp_evidence(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -133,7 +127,6 @@ async def test_get_framework_text_shows_package_lp_evidence(
             )
 
 
-@pytest.mark.lp_dataset
 async def test_capabilities_text_shows_included_types_and_lp_blocks(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:

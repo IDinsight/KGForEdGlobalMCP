@@ -1,7 +1,5 @@
 # Add or update a framework
 
-> **Rollout prerequisite:** LP rebuild examples require the corresponding maintained input artifacts and version-2.0 profiles from the data PRs. See [the staged rollout](lp-migration.md).
-
 Adding an Academic Standards framework should normally be a **data and configuration
 change**, not a curriculum-specific Python change.
 
@@ -163,7 +161,7 @@ lp_validation_report.json
 
 Raw verified copies live at `data/source_artifacts/learning_progressions/<doc-key>/kgs/`. Their `copy_receipt.json` records source paths, framework/CASE mapping, size, SHA-256 before and after copying, destination hash and old package/profile identities. The initial copy retained 138 files (933,392,640 bytes), reconciled all 8,080 LP edges, and verified the external originals were unchanged. Raw copies, receipts, scratch normalization, old retired trees and verification stages are deliberately ignored local preparation evidence. They are not in a fresh clone, runtime discovery or MCPB.
 
-The six maintained `data/input_artifacts/<set>/` trees and `package_build.json` files are version-controlled. All six migrated input sets include normalized delivery, required AS/LC and LP detailed evidence, the original provenance map, 64 partitions, index and sanitized normalization receipt. These inputs are sufficient to rebuild their corresponding LP packages without raw copies or the external project. Active runtime consumes only `data/graph_packages` plus profiles/prompts.
+The six maintained `data/input_artifacts/<set>/` trees and `package_build.json` files are version-controlled and sufficient to rebuild packages without raw copies or the external project. Each includes normalized delivery, required AS/LC and LP detailed evidence, the original provenance map, 64 partitions, index and sanitized normalization receipt. Active runtime consumes only `data/graph_packages` plus profiles/prompts.
 
 ### Prepare new source exports locally
 
@@ -203,7 +201,7 @@ uv --directory backend run --locked kgfegmcp-build-manifest \
   --dry-run
 ```
 
-All six maintained specifications select profile version `2.0`, schema-compatible delivery and every required detailed/partition artifact. Input paths in the spec resolve from the project root; `--spec` itself is an absolute path because uv changes cwd to backend. Omit `--dry-run` only to create the proposed pending package in this fresh root. For other curricula, copy the corresponding maintained specification and review its output root before each build. Never patch a sealed accepted package; changed artifacts/profile bytes require new immutable identities.
+Each maintained spec selects profile version `2.0`, schema-compatible delivery and every required detailed/partition artifact. Input paths in the spec resolve from the project root; `--spec` itself is an absolute path because uv changes cwd to backend. Omit `--dry-run` only to create the proposed pending package in this fresh root. For other curricula, copy the corresponding maintained specification and review its output root before each build. Never patch a sealed accepted package; changed artifacts/profile bytes require new immutable identities.
 
 Validate the separate package root before switching active data:
 
@@ -214,11 +212,11 @@ KGFEGMCP_GRAPH_PACKAGES_ROOT="$project_root/data/source_artifacts/learning_progr
   --framework-id <framework-id> --snapshot-id <built-snapshot-id> --read-only
 ```
 
-Inspect findings, then omit `--read-only` for an intentional pending-to-terminal acceptance; terminal revalidation never persists changes. For each framework, validate its replacement before switching its active package and matching profile/prompt configuration in the same PR. Finish with complete six-package acceptance after the last migration. Keep one unambiguous current snapshot per framework. Required runtime evidence stays in the accepted package, not only in ignored preparation folders. Local preparation/activation and distribution verification do not publish or deploy; deployment remains user-owned.
+Inspect findings, then omit `--read-only` for an intentional pending-to-terminal acceptance; terminal revalidation never persists changes. Ensure all six replacement packages pass before retiring old active directories/config versions. Keep one unambiguous current snapshot per framework. Required runtime evidence stays in the accepted package, not only in ignored preparation folders. Local preparation/activation and distribution verification do not publish or deploy; deployment remains user-owned.
 
 ### Provenance and independent validation
 
-The target LP package contracts are manifest `1.1`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.4.0` (server/MCPB `0.4.0`). Adding evidence changed artifact-set snapshot hashes; source version tokens and standard/component IDs stayed intact.
+Current contracts are manifest `1.1`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.4.0` (server/MCPB `0.4.0`). Adding evidence changed artifact-set snapshot hashes; source version tokens and standard/component IDs stayed intact.
 
 CBSE's original provenance map is about 40.9 MB, above the default 32 MiB resource source-read limit. All packages retain the original and 64 deterministic maps: `SHA256(UTF8(relationship_id))[0] modulo 64`, logical names `learningProgressionProvenanceShard00` through `63`. The validated index binds their exact hashes and placement; their exhaustive unique union must equal the original entries. This lets a client open one evidence page without opening the entire binder, while maintaining rights and byte ceilings.
 

@@ -22,7 +22,6 @@ from kgfegmcp.services.lp_models import (
 from tests.fixtures.progression_fixtures import selector
 
 
-@pytest.mark.lp_dataset
 @pytest.mark.parametrize(
     "mutation,code",
     [
@@ -101,7 +100,6 @@ def test_graph_rejects_invalid_lp_independently(
     assert validate_learning_progression_graph(package) == ()
 
 
-@pytest.mark.lp_dataset
 @pytest.mark.parametrize(
     "logical,data",
     [("learningProgressionSummary", b"{}"), ("learningProgressionProvenance", b"{}")],
@@ -231,7 +229,6 @@ def test_approved_request_defaults() -> None:
     assert SearchLearningProgressionsRequest(framework_id="synthetic").limit == 25
 
 
-@pytest.mark.lp_dataset
 def test_copied_package_checksum_rejected(
     accepted_state: AppState, tmp_path: Any
 ) -> None:

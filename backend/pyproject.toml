@@ -87,10 +87,7 @@ plugins = ["pydantic.mypy"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 bdd_features_base_dir = "tests/features/"
-markers = [
-    "costs-money",
-    "lp_dataset: requires the complete six-package learning-progression dataset",
-]
+markers = ["costs-money"]
 pythonpath = [".", "kgfegmcp"]
 testpaths = ["tests"]
 

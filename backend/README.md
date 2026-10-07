@@ -1,7 +1,5 @@
 # Curriculum Knowledge Graph MCP backend
 
-> **LP rollout:** All six runtime LP packages are installed. Run strict dataset acceptance and the full STDIO smoke check. Profile-1.0 packages remain supported. See [rollout and acceptance](../docs/development/lp-migration.md).
-
 This package contains the curriculum-agnostic FastMCP application and its ordinary
 domain services. It loads immutable graph packages, builds the accepted catalog and
 search indexes, exposes deterministic tools, resources, and prompts, and supports local
@@ -421,10 +419,10 @@ A zero-match page means only that the exact query did not match retained descrip
 under the supplied filters. After identifying a relevant grouping, use bounded graph
 context to recover related items that do not contain any query token.
 
-The three stored-progression prompts use exact package-local standards, generated
-`buildsTowards`/`relatesTo` edges, provenance and supporting Learning Components.
-Grade/filter collections are JSON-array strings at the MCP prompt boundary. The tools
-use nested `request` objects and finite page/work/path/byte bounds. See
+The three stored-progression prompts use exact package-local standards, generated 
+`buildsTowards`/`relatesTo` edges, provenance and supporting Learning Components. 
+Grade/filter collections are JSON-array strings at the MCP prompt boundary. The tools 
+use nested `request` objects and finite page/work/path/byte bounds. See 
 [progression tools](../docs/reference/progression-tool.md), [workflow examples](../docs/guides/progression.md) and [local preparation](../docs/development/framework-package.md#learning-progression-inputs-and-updates).
 
 The five progression tools return their complete result as JSON text as well as

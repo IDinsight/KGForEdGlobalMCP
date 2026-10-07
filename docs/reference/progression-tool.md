@@ -1,7 +1,5 @@
 # Learning progression tools
 
-> **LP dataset:** All six runtime LP packages are installed. See [rollout and acceptance](../development/lp-migration.md) for strict dataset tests and full smoke checks.
-
 Five read-only tools retrieve accepted, stored `buildsTowards` and `relatesTo` edges between standards in one framework/snapshot. They do not infer missing relationships. See the [guide and examples](../guides/progression.md) for educational use.
 
 ## Routing and selectors
@@ -80,7 +78,7 @@ To continue, call the same tool with `page.nextRequest` exactly as returned: it 
 
 Traversal is breadth-first with relationship-ID neighbor ordering and preserves branching/merging edges. Paths are directed simple paths ordered by hop count then relationship-ID tuple, with per-path cycle protection so alternatives survive. Results expose `scopeComplete`, `graphExhausted`, `truncationReasons`, counters and frontier. Requested-depth completeness does not mean the whole graph is exhausted. These operations have no cursor: narrow the bounded inputs and rerun. Do not retry indefinitely to evade service ceilings.
 
-Traversal adds whole edges until the size ceiling, then reports `byte_limit` with `scopeComplete` false. Paths are admitted whole in order. If a later path does not fit after at least one path was selected, the result returns the paths already selected, adds `byte_limit`, sets `scopeComplete` and `graphExhausted` false, and names the path that did not fit in `nextUnreturnedPath` (its ordered node and relationship IDs only; its edges are not in the tables). Inspect those edges with `get_learning_progression`, or rerun with a smaller `maxDepth` or `maxPaths`. A path is never clipped. For the complete six-package LP dataset, a `maxPaths: 1` request with enough depth returns the shortest stored path for every connected pair; the longest such path is 8 hops (Rwanda).
+Traversal adds whole edges until the size ceiling, then reports `byte_limit` with `scopeComplete` false. Paths are admitted whole in order. If a later path does not fit after at least one path was selected, the result returns the paths already selected, adds `byte_limit`, sets `scopeComplete` and `graphExhausted` false, and names the path that did not fit in `nextUnreturnedPath` (its ordered node and relationship IDs only; its edges are not in the tables). Inspect those edges with `get_learning_progression`, or rerun with a smaller `maxDepth` or `maxPaths`. A path is never clipped. On all six packages, a `maxPaths: 1` request with enough depth returns the shortest stored path for every connected pair; the longest such path is 8 hops (Rwanda).
 
 ## Empty, unavailable and failed requests
 

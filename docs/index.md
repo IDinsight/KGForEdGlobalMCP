@@ -1,7 +1,5 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** All six runtime packages now provide stored LPs. Matching maintained input artifacts are included for all six frameworks. See [rollout and acceptance](development/lp-migration.md).
-
 **KGForEdGlobalMCP** is a curriculum-agnostic, read-only FastMCP server for exploring
 versioned curriculum knowledge graphs from countries, states, and educational
 organizations.
@@ -181,7 +179,7 @@ silently infer educational claims.
     does not necessarily mean that the curriculum lacks the concept.
 
 The current server also does not provide persisted alignments, accepted mapping
-overlays, embeddings, semantic retrieval, snapshot diffs, server-side LLM calls, or
+overlays, embeddings, semantic retrieval, snapshot diffs, server-side LLM calls, or 
 cross-framework progression edges.
 
 ## Where to start

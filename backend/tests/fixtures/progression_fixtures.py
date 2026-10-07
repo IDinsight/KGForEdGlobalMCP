@@ -1,11 +1,10 @@
-"""Synthetic topology with validated evidence shapes and the real byte encoder."""
+"""Synthetic topology with accepted evidence shapes and the real byte encoder."""
 
 # Standard Library
 import hashlib
 import json
 
 from collections import defaultdict
-from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, TypedDict, cast
 
@@ -13,6 +12,7 @@ from typing import Any, TypedDict, cast
 from pydantic import TypeAdapter
 
 # Package Library
+from kgfegmcp.bootstrap import AppState
 from kgfegmcp.catalog.models import CatalogPackageRuntime
 from kgfegmcp.domain.identifiers import (
     ArtifactName,
@@ -20,17 +20,9 @@ from kgfegmcp.domain.identifiers import (
     RelationshipId,
     SnapshotId,
 )
-from kgfegmcp.graph.models import StandardNode
-from kgfegmcp.services.learning_progressions import (
-    LearningProgressionsService,
-    progression_result_text,
-    require_progression_result_size,
-)
+from kgfegmcp.services.learning_progressions import LearningProgressionsService
 from kgfegmcp.services.lp_models import (
     GetLearningProgressionPathsRequest,
-    ProgressionMetadata,
-    ProgressionRelationshipEvidence,
-    ProgressionStandardSummary,
     TraverseLearningProgressionsRequest,
 )
 from kgfegmcp.services.lp_paths import paths_result
@@ -69,26 +61,24 @@ def artifact_name(value: str) -> ArtifactName:
 class Topology:
     """Supply in-memory original-edge shapes; never claim package acceptance."""
 
-    def __init__(self, spec: list[tuple[str, str, str, str, str]]) -> None:
-        """Build synthetic evidence without bootstrapping installed graph packages."""
-        seed = json.loads(
-            Path(__file__)
-            .with_name("synthetic_progression_evidence.json")
-            .read_text(encoding="utf-8")
+    def __init__(
+        self, state: AppState, spec: list[tuple[str, str, str, str, str]]
+    ) -> None:
+        """Build deterministic synthetic nodes and immutable sorted adjacency."""
+        runtime = state.catalog_load_result.package_runtimes[0]
+        self.service = state.learning_progressions_service
+        base = next(
+            e
+            for e in runtime.loaded_package.relationships
+            if e.label == "buildsTowards"
         )
-        self.metadata = ProgressionMetadata.model_validate(seed["metadata"]).model_copy(
-            update={
-                "stored_builds_towards_count": sum(
-                    row[3] == "buildsTowards" for row in spec
-                ),
-                "stored_relates_to_count": sum(row[3] == "relatesTo" for row in spec),
-            }
-        )
-        self.summary = ProgressionStandardSummary.model_validate(seed["summary"])
-        self.evidence = ProgressionRelationshipEvidence.model_validate(seed["evidence"])
-        base = self.evidence.relationship
-        node = StandardNode(
-            labels=("StandardsFrameworkItem",), node_id="a", source_export_order=1
+        node = runtime.loaded_package.item_nodes[0]
+        # Production metadata is compact (four derivation artifacts), so synthetic
+        # topology now carries it unchanged.
+        self.metadata = self.service.evidence_metadata(runtime=runtime)
+        self.summary = self.service.standard_summary(node=node, runtime=runtime)
+        self.evidence = self.service.relationship_evidence(
+            relationship=base, runtime=runtime
         )
         self.edges = {
             identifier: base.model_copy(
@@ -139,20 +129,13 @@ class Topology:
 
     def standard_summary(self, *, node: Any, runtime: Any) -> Any:
         """Project a synthetic ID into the accepted standard summary shape."""
-        return self.summary.model_copy(
-            update={
-                "node_id": node.node_id,
-                "standard_uri": f"test://synthetic/standards/{node.node_id}",
-            }
-        )
+        return self.summary.model_copy(update={"node_id": node.node_id})
 
     def relationship_evidence(self, *, relationship: Any, runtime: Any) -> Any:
         """Retain the whole supplied edge and matching judgment identifier."""
         return self.evidence.model_copy(
             update={
                 "relationship": relationship,
-                "relationship_uri": f"test://synthetic/relationships/{relationship.relationship_id}",
-                "provenance_uri": f"test://synthetic/provenance/{relationship.relationship_id}",
                 "judgment": self.evidence.judgment.model_copy(
                     update={"relationship_id": relationship.relationship_id}
                 ),
@@ -163,15 +146,11 @@ class Topology:
 
     def require_traversal_result_size(self, *, result: Any) -> int:
         """Execute the production traversal envelope encoder."""
-        return require_progression_result_size(
-            result=result, text=progression_result_text(result=result)
-        )
+        return self.service.require_traversal_result_size(result=result)
 
     def require_paths_result_size(self, *, result: Any) -> int:
         """Execute the production path envelope encoder."""
-        return require_progression_result_size(
-            result=result, text=progression_result_text(result=result)
-        )
+        return self.service.require_paths_result_size(result=result)
 
     def walk(self, origin: str = "a", /, **limits: Any) -> Any:
         """Execute real bounded BFS with the supplied topology."""
@@ -201,25 +180,6 @@ class Topology:
             # This double keeps the service methods the algorithm calls.
             service=cast(LearningProgressionsService, self),
         )
-
-
-def assert_envelope_bounds(result: Any) -> None:
-    """Independently measure complete text and structured evidence under both ceilings."""
-    text = progression_result_text(result=result)
-    structured = result.model_dump(by_alias=True, mode="json")
-    assert json.loads(text) == structured
-    serialized = json.dumps(
-        {
-            "_meta": None,
-            "content": [{"text": text, "type": "text"}],
-            "isError": False,
-            "structuredContent": structured,
-        },
-        ensure_ascii=False,
-        sort_keys=True,
-    )
-    assert len(serialized) <= 100000
-    assert len(serialized.encode("utf-8")) <= 1048576
 
 
 def builds(
