@@ -1,0 +1,63 @@
+{
+ "date": "2026-10-07",
+ "head": "87c3595f209ff0097eec6799b62a2dbbda4ec5a3",
+ "trackedDirty": [],
+ "inputs": {
+  "scope": {
+   "path": ".standards/docs/scope/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+   "sha256": "2eabb26b03463cb85dbd93464f26a8fbd5e9b6ebf0aa805699b4a2f3e313ea71"
+  },
+  "architecture": {
+   "path": ".standards/docs/specs/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+   "sha256": "f95eae97c60bcb847d96bafed0001497727bbec00febe3a8cc772a8891b36c98"
+  },
+  "context": {
+   "path": ".standards/CONTEXT.md",
+   "sha256": "64d9b6d529b092773943fb3eb8ee5b9b56f9cde4b94427926a7557ce1c7be4f5"
+  },
+  "plan": {
+   "path": ".standards/docs/development/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+   "sha256": "8c3ee4e16a69e074dbc14f35027923de83b5a5df2533aae7b8f8a94a9f8b3b86"
+  },
+  "verification": {
+   "path": ".standards/docs/verification/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+   "sha256": "a8fc13231d4b4099fdc5ca42331eaa7a711c20fa7f210a25babda3d10c281dca"
+  },
+  "implementationReview": {
+   "path": ".standards/docs/reviews/integrate-actual-learning-progressions-20261001T162834Z-142f2df1/implementation.md",
+   "sha256": "037c99989271c6a70dc26cff2eed71a9562d955b18b049f56ba4421a3b7fbf57"
+  },
+  "documentationRecord": {
+   "path": ".standards/docs/documentation/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+   "sha256": "e22a696872cb6648112d7ce8b5903d6785253ace8de4e66dbb56bef8d8fdc652"
+  },
+  "synchronizationRecord": {
+   "path": ".standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md",
+   "sha256": "0f13ea0c8a5942341d1b200ac4bbe309c28985de4807deb33856a62ca9f21a3c"
+  },
+  "state": {
+   "path": ".standards/STATE.md",
+   "sha256": "3238181a5affc860147c291578c5e249bed3dada813d51a1e9da26fb058664c0"
+  },
+  "documenterFinalInputs": {
+   "path": ".standards/docs/documentation/style-rework-20261007/final-inputs.json",
+   "sha256": "b35ecabc2c38bae4fca48023abd539e6209aa0e0e20761f13fc29e4adedbc1aa"
+  },
+  "candidate": {
+   "path": "data/source_artifacts/learning_progressions/frame1-rework-dev022/kgfegmcp-0.4.0-frame1-rework.mcpb",
+   "sha256": "2f0b981ca94a595f1e2a78c70084609dfcbc0aba1d5f434d56341228f4f1c2d3"
+  },
+  "backendReadme": {
+   "path": "backend/README.md",
+   "sha256": "9ce0fc15618949b402b2d6d6e3d82e9525369334e742c6f9621c0738043d4365"
+  }
+ },
+ "documentationIdentities": "All 51 files in documenterFinalInputs.documentation, the six contracts and the candidate re-hashed equal at entry (0 mismatches); no tracked documentation file is unlisted.",
+ "receipts": [
+  "archive-closure-head.command.json",
+  "check-docs-copy.command.json",
+  "final-frame1-claims.command.json",
+  "pytest-suite.command.json",
+  "strict-build.command.json"
+ ]
+}
