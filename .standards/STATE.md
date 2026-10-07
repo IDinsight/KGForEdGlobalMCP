@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `AWAITING_USER_SIGNOFF` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `SIGNED_OFF` `CycleMode`: `UNSET` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `SYNCHRONIZING` `FailureType`: `NONE` `Reason`:
-`Synchronization COMPLETE for AC-001..AC-037 and retained 0.4.0 candidate 2f0b981c after the Frame 1 Desktop rework; Frame 1 rerun boundary passed, popped and resumed. Await explicit user sign-off, rework or cancellation.`
+`Kind`: `SIGNOFF` `From`: `AWAITING_USER_SIGNOFF` `FailureType`: `NONE` `Reason`:
+`User signed off 2026-10-07 after completion was revalidated against current inputs (AC-001..AC-037, retained 0.4.0 candidate 2f0b981c). Cycle complete.`
 
 ## Recovery
 
