@@ -1,2 +1,0 @@
-STANDARDS check found 1 problem:
-- .standards/docs/synchronization/integrate-actual-learning-progressions-20261001T162834Z-142f2df1.md: mentions DOC-001 without naming its record. Write it as <path>#DOC-001, e.g. .standards/docs/documentation/<cycle>.md#DOC-001.
