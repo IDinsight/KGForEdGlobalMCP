@@ -1,6 +1,6 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** Nigeria Mathematics now provides stored LPs. The other five frameworks retain their standards and learning-component packages; stored LP queries report `capability_unavailable` until each corresponding data PR lands. See [rollout and acceptance](docs/development/lp-migration.md).
+> **LP rollout:** Nigeria and Ghana Mathematics now provide stored LPs. The other four frameworks retain their standards and learning-component packages; stored LP queries report `capability_unavailable` until each corresponding data PR lands. See [rollout and acceptance](docs/development/lp-migration.md).
 
 <!-- Badges -->
 <p align="center">

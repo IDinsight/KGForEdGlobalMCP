@@ -171,7 +171,7 @@ The profile loader also:
 
 ## Stored progression configuration
 
-Nigeria Mathematics uses profile version `2.0`, schema `1.1`. The other five active profiles remain at version `1.0`, schema `1.0`; each data PR supplies its matching migrated profile. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
+Nigeria and Ghana Mathematics use profile version `2.0`, schema `1.1`. The other four active profiles remain at version `1.0`, schema `1.0`; each data PR supplies its matching migrated profile. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
 
 ## Versioning rule
 
