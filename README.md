@@ -1,6 +1,6 @@
 # Knowledge Graph for Education Global MCP
 
-> **LP rollout:** Ghana English Language, Nigeria Mathematics, Ghana Mathematics and Tamil Nadu Mathematics now provide stored LPs. The other two frameworks retain their standards and learning-component packages; stored LP queries report `capability_unavailable` until each corresponding data PR lands. See [rollout and acceptance](docs/development/lp-migration.md).
+> **LP rollout:** Five frameworks now provide stored LPs. CBSE Science retains its standards and learning-component package; its stored LP queries report `capability_unavailable` until its data PR lands. See [rollout and acceptance](docs/development/lp-migration.md).
 
 <!-- Badges -->
 <p align="center">
