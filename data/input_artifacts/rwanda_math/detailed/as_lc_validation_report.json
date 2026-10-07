@@ -1,12 +1,12 @@
 {
   "errors": [],
   "input_fingerprints": {
-    "academic_standards_kg_bundle": "0f81bc915b6e35342012ec12d829670fb1a229e62efc3bd02d085adbb3aa4b9a",
+    "academic_standards_kg_bundle": "da59a4cd7d1185d69e3e6b351d42e44b80c95912e28676bf98a8bc5057da3eac",
     "lc_entity_provenance": "bdf6872524d6ab050b704267fb8065a5aefd8ddb47e019f5f544d9d998fa3e09",
     "lc_generation_failures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "lc_generation_summary": "a739059c3b3013290b31ccec87222d4b59d1490494c932e4cd3015a017dc2396",
     "lc_supports_edges": "eb3994c099a87f0293cb669b88f55ac0f91893e62bf21e504d17376dffc51071",
-    "learning_components": "ef42fbea79abeb070ed9269284fe713e7b3413a415def00396060462028e730e"
+    "learning_components": "2040e0e4ea831af5b62dd2682c5fa8c500c992a3119c2090eb9a65d369c8ecae"
   },
   "learning_commons_export_schema_version": "2026-07-09",
   "object_counts": {

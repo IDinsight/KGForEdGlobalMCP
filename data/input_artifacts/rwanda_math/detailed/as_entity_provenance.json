@@ -50287,9 +50287,9 @@
     "country": "Rwanda",
     "created_at": "2026-08-24T11:47:03.701121+00:00",
     "doc_key": "7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874",
-    "document_ir_fp": "/Users/mustafa/IDinsight/KGForEdGlobal/results/rwanda/7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874/stitching/document_ir.json",
+    "document_ir_fp": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874/stitching/document_ir.json",
     "framework_title": "Mathematics Syllabus for Lower Primary | Primary 1 - 3",
-    "kg_run_dir": "/Users/mustafa/IDinsight/KGForEdGlobal/results/rwanda/7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874/kgs",
+    "kg_run_dir": "/Users/tzz/Projects/private/idi/KGForEdGlobal/results/kg_for_ed/7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874/kgs",
     "observed_languages": [
       "en",
       "mul"

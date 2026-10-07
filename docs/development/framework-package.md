@@ -163,7 +163,7 @@ lp_validation_report.json
 
 Raw verified copies live at `data/source_artifacts/learning_progressions/<doc-key>/kgs/`. Their `copy_receipt.json` records source paths, framework/CASE mapping, size, SHA-256 before and after copying, destination hash and old package/profile identities. The initial copy retained 138 files (933,392,640 bytes), reconciled all 8,080 LP edges, and verified the external originals were unchanged. Raw copies, receipts, scratch normalization, old retired trees and verification stages are deliberately ignored local preparation evidence. They are not in a fresh clone, runtime discovery or MCPB.
 
-The six maintained `data/input_artifacts/<set>/` trees and `package_build.json` files are version-controlled. The migrated Ghana English Language, Nigeria Mathematics, Ghana Mathematics and Tamil Nadu Mathematics input sets each include normalized delivery, required AS/LC and LP detailed evidence, the original provenance map, 64 partitions, index and sanitized normalization receipt. These inputs are sufficient to rebuild their corresponding LP packages without raw copies or the external project. The other two input sets retain their pre-LP data pending separate migrations. Active runtime consumes only `data/graph_packages` plus profiles/prompts.
+The six maintained `data/input_artifacts/<set>/` trees and `package_build.json` files are version-controlled. The five migrated input sets (all frameworks except CBSE Science) each include normalized delivery, required AS/LC and LP detailed evidence, the original provenance map, 64 partitions, index and sanitized normalization receipt. These inputs are sufficient to rebuild their corresponding LP packages without raw copies or the external project. The CBSE Science input set retains its pre-LP data pending migration. Active runtime consumes only `data/graph_packages` plus profiles/prompts.
 
 ### Prepare new source exports locally
 
@@ -203,7 +203,7 @@ uv --directory backend run --locked kgfegmcp-build-manifest \
   --dry-run
 ```
 
-The maintained Ghana English Language, Nigeria Mathematics, Ghana Mathematics and Tamil Nadu Mathematics specs select profile version `2.0`, schema-compatible delivery and every required detailed/partition artifact. The other two specs will be migrated with their corresponding input sets. Input paths in the spec resolve from the project root; `--spec` itself is an absolute path because uv changes cwd to backend. Omit `--dry-run` only to create the proposed pending package in this fresh root. For other curricula, copy the corresponding maintained specification and review its output root before each build. Never patch a sealed accepted package; changed artifacts/profile bytes require new immutable identities.
+The five migrated specifications (all frameworks except CBSE Science) select profile version `2.0`, schema-compatible delivery and every required detailed/partition artifact. The CBSE Science specification will be migrated with its input set. Input paths in the spec resolve from the project root; `--spec` itself is an absolute path because uv changes cwd to backend. Omit `--dry-run` only to create the proposed pending package in this fresh root. For other curricula, copy the corresponding maintained specification and review its output root before each build. Never patch a sealed accepted package; changed artifacts/profile bytes require new immutable identities.
 
 Validate the separate package root before switching active data:
 
