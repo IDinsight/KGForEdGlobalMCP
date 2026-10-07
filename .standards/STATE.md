@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `REVIEWING_IMPLEMENTATION` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DOCUMENTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -20,8 +20,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
-`Frame 2 rerun boundary passed: full re-verification on candidate 15c80166 (104 offline cases incl. new text-only AS/LC evidence-link journey for review F-002, CI static, three transports, closure). Resume IMPLEMENTATION review to recheck F-001/F-002; Frame 1 continues.`
+`Kind`: `FORWARD` `From`: `REVIEWING_IMPLEMENTATION` `FailureType`: `NONE` `Reason`:
+`Implementation review COMPLETE at b287810: review F-001/F-002 resolved (EVIDENCE LINKS, text-only AS/LC journey), candidate 15c80166 equals HEAD. AC-026/027/036/037 and shipped-README part of AC-035 pending Documenter; Frame 1 continues through SYNCHRONIZING.`
 
 ## Recovery
 
