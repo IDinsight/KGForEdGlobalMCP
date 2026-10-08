@@ -314,7 +314,7 @@ packaging contract, archive inspection, and troubleshooting workflow.
 
 ## Claude Desktop
 
-The confirmed local-development connection uses:
+The documented local-development connection uses:
 
 ```text
 ~/Library/Application Support/Claude/claude_desktop_config.json
@@ -348,7 +348,10 @@ prompt, and graph-package paths. See the root [`README.md`](../README.md) for th
 copyable example and restart instructions.
 
 Custom `.mcpb` installation behavior can vary by Claude Desktop build. Manual
-`claude_desktop_config.json` registration is the confirmed local connection method.
+`claude_desktop_config.json` registration is the documented local connection method.
+On 2026-10-08 a user ran server 0.4.0 in Desktop on macOS through both this
+registration and the `.mcpb` bundle, with no failures observed; other Desktop builds
+and operating systems are untested.
 
 ## Public MCP components
 

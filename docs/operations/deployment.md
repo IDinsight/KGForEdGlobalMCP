@@ -103,22 +103,22 @@ No `KGFEGMCP_*` variables need to be set on the platform. The image sets
 `PATHS_PROJECT_DIR=/app` and `KGFEGMCP_ENV=prod`, and every content root resolves from
 its default beneath `/app`. See [Environment variables](configuration.md).
 
-Clients connect to:
+Clients connect to the project's public deployment at:
 
 ```text
-https://<service-domain>/mcp
+https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 !!! important "Treat the public domain as permanent"
     Every connected client stores the endpoint URL. Changing the domain later means
-    every user must reconfigure their connector, so choose a stable name before sharing
-    it.
+    every user must reconfigure their connector, and every page that names this
+    endpoint must be updated. Keep the domain stable once it has been shared.
 
 After each deployment, verify the live service:
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
-  --url https://<service-domain>/mcp
+  --url https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 ## Access and rights posture

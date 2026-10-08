@@ -256,8 +256,10 @@ unzip -t ./dist/kgfegmcp-0.4.0.mcpb
 The `.mcpb` file is intended for Claude Desktop's custom-extension installation flow.
 Installation behavior can vary by Claude Desktop build. Some builds recognize a valid
 bundle but leave the **Install** button disabled during client-side prerequisite checks.
+On 2026-10-08 a user installed and used the 0.4.0 bundle in Claude Desktop on macOS with
+no failures observed; other Desktop builds and operating systems are untested.
 
-The confirmed local-development connection method is manual registration through:
+The documented local-development connection method is manual registration through:
 
 ```text
 ~/Library/Application Support/Claude/claude_desktop_config.json

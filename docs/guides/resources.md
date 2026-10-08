@@ -263,9 +263,11 @@ the correctness of the tool's domain result.
 ## Client support varies
 
 Whether a resource can be browsed or opened directly also depends on the connected MCP
-host's resource support. Claude Desktop, for example, was observed attaching the Catalog
-resource from its menu, but its menu did not list templated resources such as a
-relationship's provenance. When a host cannot open a link, call `read_evidence` with the
+host's resource support. On an earlier build (2026-10-03), Claude Desktop was observed
+attaching the Catalog resource from its menu, but its menu did not list templated
+resources such as a relationship's provenance. On 0.4.0 (2026-10-08) the Desktop menu
+listed more than Catalog, and server resources could be attached in a claude.ai custom
+connector. When a host cannot open a link, call `read_evidence` with the
 exact URI and replay `page.nextRequest` until `page.isComplete` is true. Rights and size
 limits are the same on both routes. See
 [Use with Claude Desktop and claude.ai](../getting-started/claude-clients.md).

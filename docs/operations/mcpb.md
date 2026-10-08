@@ -86,21 +86,6 @@ profile, prompt, data, and graph-package paths.
     `python -m kgfegmcp.mcpb_server`. Direct filesystem execution can cause the internal
     `kgfegmcp.mcp` package to shadow the external MCP SDK package named `mcp`.
 
-### Where does the bundle get `uv`?
-
-This bundle declares `server.type: uv` and launches a bare `uv` command. It ships
-no `uv` executable or virtual environment. The
-[MCPB UV runtime specification](https://github.com/modelcontextprotocol/mcpb/blob/main/MANIFEST.md#uv-runtime-v04)
-says the host manages Python and dependencies. It does not establish how this
-Desktop build finds or supplies the `uv` executable for our explicit launch
-configuration.
-
-**Known unknown:** whether Desktop provides `uv` for this bundle or needs a
-user-installed executable on its `PATH`. We have not installed the 0.4.0 bundle
-in Desktop. A terminal's `command -v uv` result alone does not show that Desktop
-can find it. For the checkout route, install `uv` yourself and use its absolute
-path as documented in [Connect an MCP client](../getting-started/mcp-clients.md).
-
 ## Build flow
 
 ```mermaid
@@ -286,10 +271,14 @@ A strong release baseline requires all four steps to pass.
 ## Claude Desktop installation
 
 These steps are for a built `dist/kgfegmcp-0.4.0.mcpb`, rather than a repository
-checkout. Installation and a 0.4.0 run in Desktop have not been checked on any OS.
-The checkout guide documents macOS only. The manifest declares macOS (`darwin`),
-Linux (`linux`) and Windows (`win32`); that declaration is not installation or
-testing evidence. No Windows or Linux setup steps are supplied here.
+checkout. On 2026-10-08 a user installed a 0.4.0 bundle in Claude Desktop on macOS and
+used it with no failures observed; see the
+[evidence table](../getting-started/claude-clients.md#what-has-and-has-not-been-checked).
+Removing the bundle and reinstalling the same version have not been checked. The
+checkout guide documents macOS only. The manifest declares macOS (`darwin`), Linux
+(`linux`) and Windows (`win32`); that declaration is not installation or testing
+evidence. No Windows or Linux setup steps are supplied here, and Desktop on those systems
+is untested.
 
 ### Install and enable the bundle
 
@@ -305,33 +294,15 @@ testing evidence. No Windows or Linux setup steps are supplied here.
 3. In a new conversation, open **+ > Connectors** and check for the connected
    server and its tools. Anthropic documents this inspection route in its
    [local MCP guide](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop).
-   **Unverified UI detail:** the exact label and enable control for this bundle.
-   Look for **Curriculum Knowledge Graph MCP** or **curriculum-knowledge-graph**.
-   If your build offers a disabled extension/connector switch, turn it on;
-   we have not confirmed a separate switch is required.
 4. Follow the [Claude Desktop walkthrough](../getting-started/claude-clients.md#claude-desktop-walkthrough)
-   to check the connected server. None of these steps has been tried with this
-   project's 0.4.0 bundle. A passing repository or unpacked-stage smoke does not
-   establish a successful Desktop installation.
+   to check the connected server. A passing repository or unpacked-stage smoke does
+   not establish a successful Desktop installation.
 
 If tools are absent after installation, Anthropic recommends restarting Desktop
 and checking the extension's settings for incomplete configuration in the
 [local MCP guide](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop).
 
-For a Team or Enterprise account with an extension allowlist, direct file
-installation can be blocked. An owner instead uploads the bundle under
-**Organization settings > Connectors > Desktop > Add custom extension** and
-uses **Add to team**. This is a separate
-[organization-managed installation route](https://support.claude.com/en/articles/12592343-enabling-and-using-the-desktop-extension-allowlist).
-
 ### Remove an older copy before reinstalling
-
-Removal is not a blanket prerequisite for every update. For organization-managed
-custom extensions, Anthropic documents **Upload new version** from the custom
-upload menu, keeping the manifest `name` and increasing `version`, without first
-removing the extension. See its
-[versioned-update instructions](https://support.claude.com/en/articles/12592343-enabling-and-using-the-desktop-extension-allowlist).
-This does not establish what a local same-version reinstall does.
 
 **Unverified procedure for a same-version rebuild:** open **Settings >
 Extensions**, select the installed **Curriculum Knowledge Graph MCP** extension,
@@ -349,12 +320,11 @@ line means an older copy is running. If you registered a checkout in
 reopen it after updating the code. See
 [Connect an MCP client](../getting-started/mcp-clients.md#desktop-is-running-an-old-copy).
 
-If installation is blocked, consult Anthropic's guide and your organization's
-extension settings. Keep that client issue separate from server acceptance;
-do not change the server runtime just to work around an installation UI check.
-The [evidence table](../getting-started/claude-clients.md#what-has-and-has-not-been-checked)
-records what remains untested. `uv` provisioning is still the
-[known unknown above](#where-does-the-bundle-get-uv).
+If installation is blocked, consult Anthropic's guide. Keep that client issue separate
+from server acceptance; do not change the server runtime just to work around an
+installation UI check. The
+[evidence table](../getting-started/claude-clients.md#what-has-and-has-not-been-checked)
+records what remains untested.
 
 ## Packaging is behavior-preserving
 

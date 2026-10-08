@@ -13,19 +13,21 @@ Be clear about which claims rest on which evidence:
 |---|---|---|
 | Server version 0.4.0, over local STDIO and local Streamable HTTP | Automated offline tests and smoke checks: tool text for all five progression tools, `read_evidence`, `get_workflow_instructions`, native prompts and resources, paging, size limits, progression details in framework listings, citation links in component text, and one request per link type in workflows | Passed locally, 2026-10-07. This tests the server, not a client. |
 | MCPB bundle, version 0.4.0 | STDIO smoke test run from the unpacked bundle | Passed locally, 2026-10-07; not an installation in Desktop |
-| MCPB installation in Claude Desktop, version 0.4.0 | Install, enable, removal and same-version replacement steps | Not checked in Desktop on any OS; see the [installation guide](../operations/mcpb.md#claude-desktop-installation) for sources and unverified steps |
+| MCPB installation in Claude Desktop, version 0.4.0 | Install and use on macOS; removal and same-version replacement | Install and use observed by a user on macOS, 2026-10-08. Removal and same-version replacement not checked on any OS; see the [installation guide](../operations/mcpb.md#claude-desktop-installation) |
 | Claude Desktop, earlier development build | Observed by a user on 2026-10-03: the connector started and listed six frameworks; all nine prompts appeared under **Add from curriculum-knowledge-graph**, and the support-planning prompt rendered as an attachment; the **Catalog** resource attached; the resource menu offered only Catalog and could not find a progression link. | User observations, not a test of this version |
-| Claude Desktop, version 0.4.0 | The [walkthrough below](#claude-desktop-walkthrough) | Prepared; not yet run in Desktop |
-| claude.ai custom connector | Nothing yet: the hosted service has not been updated to 0.4.0 | Untested; use the [remote checklist](#claudeai-remote-acceptance-checklist) after deployment |
+| Claude Desktop, version 0.4.0, on macOS | Observed by a user on 2026-10-08 through both the checkout configuration (`claude_desktop_config.json`) and the `.mcpb` bundle: the connector started, frameworks were listed, and prompts and resources appeared. Steps 1–13 of the [walkthrough below](#claude-desktop-walkthrough), including 9a, were run, and the user checked the composed, cited answers in steps 11–13. The resource menu listed more than Catalog. | User observation, 2026-10-08; no failures observed. Desktop app version not recorded. |
+| claude.ai custom connector, version 0.4.0 | Observed by a user on 2026-10-08 against the public deployment at `https://kg-for-ed-global-mcp.up.railway.app/mcp`, which was confirmed to run 0.4.0 on that date. Same results as the Desktop row above, including walkthrough steps 1–13 and their composed answers. The server's prompts showed in claude.ai, and server resources could be attached. | User observation, 2026-10-08; no failures observed. Plan type and connector name not recorded. |
 
-The local setup guide is written for macOS. The earlier observations and
-2026-10-07 smoke evidence above do not record an OS, so they establish no
-OS-specific Desktop pass. Windows and Linux Desktop setup is undocumented and
-untested here; the manifest's three declared platforms do not change that.
+The local setup guide is written for macOS, and the 2026-10-08 Desktop observations
+were made on macOS. The 2026-10-03 observations and 2026-10-07 smoke evidence above do
+not record an OS, so they establish no OS-specific Desktop pass. Windows and Linux
+Desktop setup is undocumented and untested here; the manifest's three declared
+platforms do not change that.
 
-No end-to-end teaching workflow (retrieval followed by a cited, composed answer) has been
-run and checked in any client. Rendering a prompt, reading a resource or passing a smoke
-test is not the same as a completed workflow.
+On 2026-10-08 a user ran the walkthrough workflows, including the cited, composed
+answers in steps 11–13, in Claude Desktop and in claude.ai, and checked the answers.
+These are a user's observations, not automated tests. Rendering a prompt, reading a
+resource or passing a smoke test is still not the same as a completed workflow.
 
 ## Supported routes
 
@@ -33,9 +35,9 @@ test is not the same as a completed workflow.
 |---|---|---|
 | Progression query results | Ordinary tool text. Each of the five progression tools returns its complete bounded result as JSON text, including edges, statements, confidence, warnings, links and cursors. | Same tools and text. |
 | Next page of a search or direct-connections result | Ask Claude to call the same tool with `page.nextRequest` unchanged. | Same. |
-| Full provenance and supporting evidence | Attach a resource from the connector's menu where it is offered (Catalog was observed). For any other link, ask Claude to call `read_evidence` with the exact URI. | Ask Claude to call `read_evidence`. Whether claude.ai lets you attach server resources has not been tested. |
+| Full provenance and supporting evidence | Attach a resource from the connector's menu where it is offered (only Catalog on an earlier build; more resources on 0.4.0). For any other link, ask Claude to call `read_evidence` with the exact URI. | Attach a server resource in claude.ai (observed working, 2026-10-08), or ask Claude to call `read_evidence`. |
 | Standard and learning-component evidence | Workflow instructions list exact links and per-record link patterns (**EVIDENCE LINKS**); Claude fills in IDs from tool text and reads them with `read_evidence`. | Same. |
-| Workflow instructions | Native prompt from **Add from curriculum-knowledge-graph** (observed working). Alternative: ask Claude to call `get_workflow_instructions`. | The server advertises all nine prompts; whether claude.ai shows them is untested. `get_workflow_instructions` covers the seven teaching, study and progression workflows. |
+| Workflow instructions | Native prompt from **Add from curriculum-knowledge-graph** (observed working on an earlier build; prompts also appeared on 0.4.0, 2026-10-08). Alternative: ask Claude to call `get_workflow_instructions`. | The server's prompts showed in claude.ai (observed, 2026-10-08). Alternative: `get_workflow_instructions` covers the seven teaching, study and progression workflows. |
 
 `get_workflow_instructions` does not cover `administrator_alignment_review` or
 `cross_framework_comparison`; use those as native prompts. See
@@ -43,8 +45,10 @@ test is not the same as a completed workflow.
 
 Known client limits that matter here:
 
-- The Desktop resource menu observed on 2026-10-03 listed only Catalog and could not find
-  a progression link by URI. Use `read_evidence` for links returned by tools.
+- On an earlier build (2026-10-03), the Desktop resource menu listed only Catalog and
+  could not find a progression link by URI. On 0.4.0 (2026-10-08) it listed more than
+  Catalog; whether it can find a progression link was not recorded. Use `read_evidence`
+  for links returned by tools.
 - Anthropic documents a tool-result limit of roughly 150,000 characters for connectors.
   This server keeps each tool result, text and structured copy combined, under 100,000
   characters and 1 MiB. Pages and paths stop early rather than exceed that, and say so.
@@ -70,8 +74,9 @@ The walkthrough uses one fixed diagnostic case from the Nigeria curriculum:
 
 **Run status.** Every tool call below was replayed against the same server code and data
 through an in-process MCP client on 2026-10-07, and the expected results were checked.
-None of the steps has been run in Claude Desktop yet; record your own results in the
-[table at the end](#record-your-results).
+On 2026-10-08 a user ran steps 1–13, including 9a, in Claude Desktop on macOS against
+0.4.0 and observed no failures. The results are in the
+[table at the end](#record-your-results); add your own there.
 
 **Before you start, check that Desktop runs the current server.** In step 1, each
 framework should show `Routing graph types:` and `Included graph types:` lines. If it
@@ -274,27 +279,37 @@ single `relatesTo` scan.
 
 ### Record your results
 
-| Step | Status before your run | Your result (date, client version, pass/limited/fail, notes) |
+| Step | Recorded results | Your result (date, client version, pass/limited/fail, notes) |
 |---|---|---|
-| 1–10 (and 9a) | Tool calls replayed locally and passed, 2026-10-07; not run in Desktop | |
-| 11 | Prompt appeared and rendered in Desktop on an earlier build; rendering of this version checked locally; retrieval and composed answer not run | |
-| 12 | Rendering checked locally (identical to native); retrieval and composed answer not run | |
-| 13 | Rendering and the six scan pages checked locally; composed review not run | |
+| 1–10 (and 9a) | Tool calls replayed locally and passed, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08: no failures observed. | |
+| 11 | Prompt appeared and rendered in Desktop on an earlier build, 2026-10-03; rendering of 0.4.0 checked locally, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
+| 12 | Rendering checked locally (identical to native), 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
+| 13 | Rendering and the six scan pages checked locally, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed review checked: no failures observed. | |
+
+The 2026-10-08 results are a user's observations; the Desktop app version was not
+recorded. The same steps gave the same results in a claude.ai custom connector on that
+date.
 
 Mark a step **limited** if it worked but Claude only summarised, needed extra
 instructions, or a client feature was unavailable.
 
 ## claude.ai remote acceptance checklist
 
-Use this only after the hosted service is updated to 0.4.0 (see
+Use this to check the hosted service after each deployment (see
 [Hosted deployment](../operations/deployment.md)). Deployment timing and sign-off are
-the operator's decision; none of these items has been run yet.
+the operator's decision.
+
+On 2026-10-08 the public deployment at
+`https://kg-for-ed-global-mcp.up.railway.app/mcp` was confirmed to run 0.4.0, and a
+user's claude.ai results against it are recorded in
+[What has and has not been checked](#what-has-and-has-not-been-checked). No result from
+the HTTP smoke in item 1 is recorded for that deployment.
 
 1. From a repository checkout, run the HTTP smoke against the endpoint:
 
     ```bash
     uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
-      --url https://<service-domain>/mcp
+      --url https://kg-for-ed-global-mcp.up.railway.app/mcp
     ```
 
     It must pass before testing in claude.ai. This proves the deployed server, not the
@@ -318,7 +333,8 @@ the operator's decision; none of these items has been run yet.
 9. Run step 13 and check that the review includes `relatesTo` links and reports each
    type separately.
 10. Write down the date, endpoint, connector name, plan type and each result, keeping
-    server results, client observations and untested items separate.
+    server results, client observations and untested items separate. For the
+    2026-10-08 check, the connector name and plan type were not recorded.
 
 ---
 

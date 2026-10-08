@@ -42,11 +42,12 @@ separates server startup and package-loading problems from client configuration 
 ## Claude Desktop on macOS
 
 The paths, shell commands, restart and log instructions below are written for
-macOS. The 0.4.0 checkout connection and bundle installation have not been tested
-in Desktop on any OS. Earlier client observations and server smoke checks are
-listed in [What has and has not been checked](claude-clients.md#what-has-and-has-not-been-checked);
-their recorded evidence does not name an OS. Windows and Linux Desktop setup
-steps are not documented here.
+macOS. On 2026-10-08 a user connected Desktop on macOS to server 0.4.0 through both
+this checkout configuration and the `.mcpb` bundle and observed no failures. Those
+results, earlier client observations and server smoke checks are listed in
+[What has and has not been checked](claude-clients.md#what-has-and-has-not-been-checked);
+the earlier evidence does not name an OS. Windows and Linux Desktop setup steps are
+not documented here and are untested.
 
 The bundle manifest declares `darwin`, `linux` and `win32`. That is a platform
 declaration, not proof of Desktop availability or a successful install on those
@@ -193,10 +194,11 @@ safe way to make runtime input locations independent of the host's working direc
 
 ## Connect to a hosted server
 
-A hosted deployment exposes the server at a Streamable HTTP endpoint:
+A hosted deployment exposes the server at a Streamable HTTP endpoint. The project's
+public deployment is:
 
 ```text
-https://<service-domain>/mcp
+https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 Nothing is installed or started on your machine. The endpoint is unauthenticated, so the
@@ -216,14 +218,16 @@ the local path:
 Use the curriculum-knowledge-graph connector to list all available frameworks.
 ```
 
-The claude.ai connector path has not yet been tested with the current server. After the
-hosted service is updated, work through the
+On 2026-10-08 a user connected a claude.ai custom connector to the public deployment,
+running 0.4.0, and observed the same results as in Desktop; see
+[What has and has not been checked](claude-clients.md#what-has-and-has-not-been-checked).
+To check the connector again after a deployment, work through the
 [remote acceptance checklist](claude-clients.md#claudeai-remote-acceptance-checklist).
 
 ### Claude Code
 
 ```bash
-claude mcp add --transport http curriculum-knowledge-graph https://<service-domain>/mcp
+claude mcp add --transport http curriculum-knowledge-graph https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 ### Other MCP clients
@@ -236,7 +240,7 @@ From a repository checkout, run the HTTP smoke command against the endpoint:
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
-  --url https://<service-domain>/mcp
+  --url https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 See [Hosted deployment](../operations/deployment.md) for how the hosted service is built
@@ -263,7 +267,9 @@ model-generated conclusions are not automatically source-asserted curriculum cla
 The repository can also build a deterministic `.mcpb` bundle for distribution. Client
 installation behavior for custom extensions can vary by Claude Desktop build, so manual
 `claude_desktop_config.json` registration remains the documented macOS
-local-development path; the 0.4.0 Desktop connection is untested.
+local-development path. On 2026-10-08 a user installed and used the 0.4.0 bundle in
+Desktop on macOS with no failures observed; other Desktop builds and operating systems
+are untested.
 
 See [MCPB packaging](../operations/mcpb.md) for the packaging contract and staged-runtime
 smoke test.
