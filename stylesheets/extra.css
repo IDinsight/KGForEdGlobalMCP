@@ -1,0 +1,82 @@
+/* Mermaid diagrams ------------------------------------------------------ */
+
+/*
+ * Mermaid diagrams are interactive through mkdocs-panzoom-plugin. Keep the
+ * initial view fitted to the documentation column; readers can zoom and pan
+ * dense diagrams instead of relying on a large fixed minimum SVG width.
+ */
+.md-typeset .mermaid {
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem auto;
+  overflow: hidden;
+  text-align: center;
+}
+
+.md-typeset .mermaid svg {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 auto;
+}
+
+/* Selective fullscreen support for especially dense diagrams. */
+.md-typeset .mermaid-fullscreen {
+  position: relative;
+}
+
+.mermaid-fullscreen__button {
+  position: absolute;
+  z-index: 5;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.2rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font: inherit;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: var(--md-shadow-z1);
+}
+
+.mermaid-fullscreen__button:hover,
+.mermaid-fullscreen__button:focus-visible {
+  background: var(--md-accent-fg-color--transparent);
+  border-color: var(--md-accent-fg-color);
+  outline: none;
+}
+
+.mermaid-fullscreen:fullscreen,
+.mermaid-fullscreen:-webkit-full-screen {
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  padding: 3.25rem 1rem 1rem;
+  overflow: hidden;
+  background: var(--md-default-bg-color);
+}
+
+.mermaid-fullscreen:fullscreen .mermaid,
+.mermaid-fullscreen:-webkit-full-screen .mermaid {
+  width: 100%;
+  height: calc(100vh - 4.25rem);
+  margin: 0;
+}
+
+.mermaid-fullscreen:fullscreen .mermaid svg,
+.mermaid-fullscreen:-webkit-full-screen .mermaid svg {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.mermaid-fullscreen:fullscreen .mermaid-fullscreen__button,
+.mermaid-fullscreen:-webkit-full-screen .mermaid-fullscreen__button {
+  top: 0.75rem;
+  right: 0.75rem;
+}
