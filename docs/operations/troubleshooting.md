@@ -203,7 +203,7 @@ See [Environment variables](configuration.md).
 
 ## Desktop connector does not appear
 
-For the confirmed Claude Desktop local setup, check that:
+For the documented macOS checkout setup, check that:
 
 - `command` is the absolute result of `command -v uv`;
 - the repository/backend paths are absolute;
@@ -212,11 +212,17 @@ For the confirmed Claude Desktop local setup, check that:
 - the repository STDIO smoke passes; and
 - Claude Desktop was fully quit and reopened after the configuration change.
 
-Validate the client JSON on macOS:
+The paths and commands here are macOS-only; Desktop 0.4.0 remains untested.
+From the repository root, after synchronizing the environment, check JSON syntax
+with the project's Python (no `jq` required):
 
 ```bash
-jq empty "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+backend/.venv/bin/python -m json.tool \
+  "$HOME/Library/Application Support/Claude/claude_desktop_config.json" > /dev/null
 ```
+
+Valid JSON exits 0 without output; invalid JSON prints an error and exits
+non-zero. This does not check whether the executable or repository paths exist.
 
 Inspect likely Claude MCP logs:
 
@@ -364,8 +370,10 @@ unzip -t ./dist/kgfegmcp-0.4.0.mcpb
 ```
 
 then treat the disabled/failed install control as a client installation-path issue before
-changing the server or package data. Manual STDIO registration is the confirmed local
-development connection method.
+changing the server or package data. Manual STDIO registration is the documented
+macOS development connection method; a 0.4.0 run in Desktop is still untested.
+See [Claude Desktop installation](mcpb.md#claude-desktop-installation) for the
+sourced installation route and unverified removal/replacement steps.
 
 ## When to start a new investigation
 

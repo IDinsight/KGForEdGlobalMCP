@@ -35,6 +35,26 @@ data are supplied through the repository-level `config/` and `data/` directories
 
 ## Install prerequisites
 
+### Disk space
+
+Allow about 2 GB for the checkout, Git history and Python environment in this
+sample, plus additional space for Python downloads and the uv cache. Measurements
+from this checkout on 2026-10-08 are:
+
+| Component | Measured size | What it is for |
+|---|---|---|
+| Tracked files | 1.36 GB total | A normal clone downloads all tracked data |
+| `data/graph_packages/` (part of that total) | 671 MB | Required runtime graph packages |
+| `data/input_artifacts/` (part of that total) | 671 MB | Preparation inputs; not loaded by the server or included in the bundle/image |
+| Local Git packs | 281 MiB | Repository history; a fresh clone's pack size may differ |
+| Existing `backend/.venv` | 321 MiB | Includes development/docs tooling here; a runtime-only environment was not measured |
+
+GB and MB are decimal; GiB and MiB are binary. These figures exclude the
+git-ignored local `data/source_artifacts/` tree, which is not part of a fresh
+clone. uv's cache and managed Python live outside the checkout and were not
+measured. The estimate does not cover a built bundle, a retained stage or an
+installed Desktop extension; those need additional space.
+
 ### Install `uv`
 
 Install `uv` using the method appropriate for your platform, then confirm it is on your

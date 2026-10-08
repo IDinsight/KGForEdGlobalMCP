@@ -22,9 +22,18 @@ Install the following before you begin:
 | `uv`         | Manage the required Python interpreter and locked environment                      |
 | Python 3.13  | Runtime required by the backend (`>=3.13,<3.14`)                                   |
 | An MCP host  | Connect to the local STDIO server; Claude Desktop is the default local integration |
+| Disk space   | About 2 GB for the measured checkout, local Git history and Python environment, plus space for downloads and caches; see below |
 
 Node.js, npm, and the MCPB CLI are needed only when building the optional `.mcpb`
 distribution. They are not required for ordinary local server use.
+
+Measured on 2026-10-08: tracked files occupy about 1.36 GB, including 671 MB of
+`data/graph_packages/` needed by the server and 671 MB of `data/input_artifacts/`
+that it does not load. Local Git packs add 281 MiB and the existing Python
+environment adds 321 MiB (including development/docs tooling). A fresh clone and
+runtime-only environment may differ. Python downloads and the uv cache were not
+measured; allow additional space for them. See
+[Disk space](local-installation.md#disk-space) for the breakdown.
 
 ## Setup flow
 
@@ -84,6 +93,14 @@ Run the repository smoke command before configuring an MCP host:
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-stdio-smoke
 ```
+
+The smoke command's child server launch uses `uv --offline`, so it needs the
+locked dependencies already installed or available in uv's cache. Running
+`uv sync` first prepares them. The outer `uv run` also
+[synchronizes the project environment by default](https://docs.astral.sh/uv/concepts/projects/run/),
+so skipping a separate sync does not by itself prove the repository smoke will
+fail. A retained bundle stage needs its own environment or cached dependencies;
+see [MCPB packaging](../operations/mcpb.md#smoke-test-the-retained-stage).
 
 The smoke command starts the real module entry point in a separate process, completes an
 MCP handshake, and checks the fixed public inventory:

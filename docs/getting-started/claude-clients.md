@@ -12,10 +12,16 @@ Be clear about which claims rest on which evidence:
 | Surface | What was checked | Status |
 |---|---|---|
 | Server version 0.4.0, over local STDIO and local Streamable HTTP | Automated offline tests and smoke checks: tool text for all five progression tools, `read_evidence`, `get_workflow_instructions`, native prompts and resources, paging, size limits, progression details in framework listings, citation links in component text, and one request per link type in workflows | Passed locally, 2026-10-07. This tests the server, not a client. |
-| MCPB bundle, version 0.4.0 | STDIO smoke test run from the unpacked bundle | Passed locally, 2026-10-07 |
+| MCPB bundle, version 0.4.0 | STDIO smoke test run from the unpacked bundle | Passed locally, 2026-10-07; not an installation in Desktop |
+| MCPB installation in Claude Desktop, version 0.4.0 | Install, enable, removal and same-version replacement steps | Not checked in Desktop on any OS; see the [installation guide](../operations/mcpb.md#claude-desktop-installation) for sources and unverified steps |
 | Claude Desktop, earlier development build | Observed by a user on 2026-10-03: the connector started and listed six frameworks; all nine prompts appeared under **Add from curriculum-knowledge-graph**, and the support-planning prompt rendered as an attachment; the **Catalog** resource attached; the resource menu offered only Catalog and could not find a progression link. | User observations, not a test of this version |
 | Claude Desktop, version 0.4.0 | The [walkthrough below](#claude-desktop-walkthrough) | Prepared; not yet run in Desktop |
 | claude.ai custom connector | Nothing yet: the hosted service has not been updated to 0.4.0 | Untested; use the [remote checklist](#claudeai-remote-acceptance-checklist) after deployment |
+
+The local setup guide is written for macOS. The earlier observations and
+2026-10-07 smoke evidence above do not record an OS, so they establish no
+OS-specific Desktop pass. Windows and Linux Desktop setup is undocumented and
+untested here; the manifest's three declared platforms do not change that.
 
 No end-to-end teaching workflow (retrieval followed by a cited, composed answer) has been
 run and checked in any client. Rendering a prompt, reading a resource or passing a smoke
@@ -69,9 +75,11 @@ None of the steps has been run in Claude Desktop yet; record your own results in
 
 **Before you start, check that Desktop runs the current server.** In step 1, each
 framework should show `Routing graph types:` and `Included graph types:` lines. If it
-shows a single `Graph types:` line instead, Desktop is running an older copy: remove the
-extension and install the bundle again, or, if you added the server in Desktop's
-configuration file, quit and reopen Desktop.
+shows a single `Graph types:` line instead, Desktop is running an older copy.
+For a bundle, follow the removal and reinstall steps in
+[Claude Desktop installation](../operations/mcpb.md#claude-desktop-installation)
+(unverified in this project). For a checkout added in Desktop's configuration
+file, verify its paths, fully quit Desktop and reopen it.
 
 ### 1. Discovery
 
