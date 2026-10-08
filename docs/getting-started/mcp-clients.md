@@ -41,7 +41,18 @@ separates server startup and package-loading problems from client configuration 
 
 ## Claude Desktop on macOS
 
-The confirmed manual configuration file is:
+The paths, shell commands, restart and log instructions below are written for
+macOS. The 0.4.0 checkout connection and bundle installation have not been tested
+in Desktop on any OS. Earlier client observations and server smoke checks are
+listed in [What has and has not been checked](claude-clients.md#what-has-and-has-not-been-checked);
+their recorded evidence does not name an OS. Windows and Linux Desktop setup
+steps are not documented here.
+
+The bundle manifest declares `darwin`, `linux` and `win32`. That is a platform
+declaration, not proof of Desktop availability or a successful install on those
+systems. See [Claude Desktop installation](../operations/mcpb.md#claude-desktop-installation).
+
+The manual configuration file on macOS is:
 
 ```text
 ~/Library/Application Support/Claude/claude_desktop_config.json
@@ -68,7 +79,9 @@ directory as your terminal, so use absolute paths in the configuration.
 
 Add the following member beneath the existing top-level `mcpServers` object. Replace the
 placeholder paths with the values from your machine and preserve unrelated Claude
-Desktop settings.
+Desktop settings. There are eight path placeholders: the `uv` executable, the
+`backend` directory and six environment paths. Keep all nine environment keys,
+including the three fixed values, as shown.
 
 ```json
 {
@@ -106,13 +119,17 @@ If the file already contains other `mcpServers`, add
 
 ### 3. Validate the JSON
 
-On macOS, validate the configuration before restarting Claude Desktop:
+From the repository root, after synchronizing the environment, use its Python
+to validate the configuration before restarting Claude Desktop. This needs no
+`jq` installation:
 
 ```bash
-jq empty "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+backend/.venv/bin/python -m json.tool \
+  "$HOME/Library/Application Support/Claude/claude_desktop_config.json" > /dev/null
 ```
 
-No output means the JSON parsed successfully.
+Exit status 0 with no output means the JSON parsed successfully. Invalid JSON
+prints an error and exits non-zero. This checks syntax, not paths or server startup.
 
 ### 4. Fully restart Claude Desktop
 
@@ -169,7 +186,8 @@ The explicit repository environment variables shown in the Claude Desktop exampl
 safe way to make runtime input locations independent of the host's working directory.
 
 !!! warning "Do not substitute a filesystem Python entry point"
-    Use `python -m kgfegmcp.mcpb_server` intact Launching `src/kgfegmcp/mcpb_server.py` 
+    Use `python -m kgfegmcp.mcpb_server` intact. Launching
+    `src/kgfegmcp/mcpb_server.py`
     directly can cause Python package-name shadowing and break imports from the 
     external MCP SDK.
 
@@ -244,7 +262,8 @@ model-generated conclusions are not automatically source-asserted curriculum cla
 
 The repository can also build a deterministic `.mcpb` bundle for distribution. Client
 installation behavior for custom extensions can vary by Claude Desktop build, so manual
-`claude_desktop_config.json` registration remains the confirmed local-development path.
+`claude_desktop_config.json` registration remains the documented macOS
+local-development path; the 0.4.0 Desktop connection is untested.
 
 See [MCPB packaging](../operations/mcpb.md) for the packaging contract and staged-runtime
 smoke test.
@@ -257,9 +276,20 @@ Confirm all of the following:
 
 - `command` is the absolute result of `command -v uv`;
 - every repository path in the configuration is absolute;
-- the JSON passes `jq empty`;
+- the JSON passes the Python check in [Validate the JSON](#3-validate-the-json);
 - `kgfegmcp-stdio-smoke` still passes; and
 - Claude Desktop was fully quit and reopened.
+
+### Desktop is running an old copy
+
+If a framework listing has one `Graph types:` line instead of separate
+`Routing graph types:` and `Included graph types:` lines, Desktop is running an
+older copy. For a checkout configured in JSON, verify the checkout paths, fully
+quit Desktop and reopen it. For a bundle, remove the installed extension and
+reinstall the current bundle; the removal and same-version replacement steps
+are unverified in this project. Follow
+[Claude Desktop installation](../operations/mcpb.md#claude-desktop-installation)
+and check the listing again.
 
 ### Inspect Claude MCP logs on macOS
 
