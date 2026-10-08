@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `REVIEWING_FINAL` `CycleMode`: `DOCUMENTATION` `PendingCycleMode`:
+`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `DOCUMENTATION` `PendingCycleMode`:
 `UNSET` `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -24,8 +24,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `DOCUMENTING` `FailureType`: `NONE` `Reason`:
-`Documentation updated and checked; ready for FINAL_DELIVERABLE review.`
+`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
+`Final-deliverable review passed with no material findings; ready for synchronization.`
 
 ## Recovery
 
