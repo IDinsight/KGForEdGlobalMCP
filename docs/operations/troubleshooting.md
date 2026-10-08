@@ -212,7 +212,8 @@ For the documented macOS checkout setup, check that:
 - the repository STDIO smoke passes; and
 - Claude Desktop was fully quit and reopened after the configuration change.
 
-The paths and commands here are macOS-only; Desktop 0.4.0 remains untested.
+The paths and commands here are macOS-only. A user ran Desktop with server 0.4.0 on
+macOS on 2026-10-08 and observed no failures; other operating systems are untested.
 From the repository root, after synchronizing the environment, check JSON syntax
 with the project's Python (no `jq` required):
 
@@ -371,9 +372,11 @@ unzip -t ./dist/kgfegmcp-0.4.0.mcpb
 
 then treat the disabled/failed install control as a client installation-path issue before
 changing the server or package data. Manual STDIO registration is the documented
-macOS development connection method; a 0.4.0 run in Desktop is still untested.
-See [Claude Desktop installation](mcpb.md#claude-desktop-installation) for the
-sourced installation route and unverified removal/replacement steps.
+macOS development connection method. On 2026-10-08 a user installed and used the 0.4.0
+bundle in Desktop on macOS with no failures observed; other Desktop builds and
+operating systems are untested. See
+[Claude Desktop installation](mcpb.md#claude-desktop-installation) for the sourced
+installation route and unverified removal/replacement steps.
 
 ## When to start a new investigation
 

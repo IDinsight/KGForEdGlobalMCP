@@ -184,7 +184,10 @@ stdout for protocol traffic.
 
 ## Connect Claude Desktop
 
-The confirmed local integration uses Claude Desktop's MCP configuration file:
+The documented local integration uses Claude Desktop's MCP configuration file. On
+2026-10-08 a user connected Desktop on macOS to server 0.4.0 this way and through the
+`.mcpb` bundle, with no failures observed; see
+[Use with Claude Desktop and claude.ai](docs/getting-started/claude-clients.md#what-has-and-has-not-been-checked).
 
 ```text
 ~/Library/Application Support/Claude/claude_desktop_config.json
@@ -259,17 +262,19 @@ Use the curriculum-knowledge-graph connector to list all available frameworks.
 ## Connect to a hosted server
 
 The same server can run as a hosted Streamable HTTP service. Clients then connect to a
-URL instead of starting a local process, and nothing is installed on the user's machine:
+URL instead of starting a local process, and nothing is installed on the user's machine.
+The project's public deployment is at:
 
 ```text
-https://<service-domain>/mcp
+https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 In Claude, add a custom connector in the connector settings and enter that URL, leaving
-authentication empty. In Claude Code:
+authentication empty. A user connected a claude.ai custom connector to this deployment,
+running 0.4.0, on 2026-10-08 with no failures observed. In Claude Code:
 
 ```bash
-claude mcp add --transport http curriculum-knowledge-graph https://<service-domain>/mcp
+claude mcp add --transport http curriculum-knowledge-graph https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 The hosted service is built from the root `Dockerfile`, which bakes `config/` and
@@ -334,8 +339,9 @@ python -m kgfegmcp.mcpb_server
 ```
 
 Claude Desktop custom-extension installation behavior may vary by client build. Manual
-registration through `claude_desktop_config.json` is the confirmed local connection
-method.
+registration through `claude_desktop_config.json` is the documented local connection
+method. A user installed and used the 0.4.0 bundle in Desktop on macOS on 2026-10-08
+with no failures observed; other Desktop builds and operating systems are untested.
 
 ## Useful CLI commands
 

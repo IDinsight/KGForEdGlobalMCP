@@ -125,7 +125,7 @@ Use this to verify a server that is already running over Streamable HTTP, such a
 
 ```bash
 uv --directory backend run --locked --no-dev kgfegmcp-http-smoke \
-  --url https://<service-domain>/mcp
+  --url https://kg-for-ed-global-mcp.up.railway.app/mcp
 ```
 
 The command does not start a server. It connects to the endpoint and then runs exactly
