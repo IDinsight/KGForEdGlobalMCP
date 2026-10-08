@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `DOCUMENTATION` `PendingCycleMode`:
+`WorkflowState`: `AWAITING_USER_SIGNOFF` `CycleMode`: `DOCUMENTATION` `PendingCycleMode`:
 `UNSET` `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -24,8 +24,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
-`FINAL_DELIVERABLE review passed with no material findings for AC-001 to AC-014; ready for synchronization.`
+`Kind`: `FORWARD` `From`: `SYNCHRONIZING` `FailureType`: `NONE` `Reason`:
+`Synchronization passed with no discrepancies for AC-001 to AC-014; documentation cycle ready for user sign-off.`
 
 ## Recovery
 
