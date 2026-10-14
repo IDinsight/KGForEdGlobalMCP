@@ -1,0 +1,472 @@
+{
+	"codeSearchPolicy": {
+		"allowPrefixSearch": false,
+		"availability": "none",
+		"canonicalizationNotes": [],
+		"caseSensitive": false,
+		"codeParentRules": [],
+		"codeTypes": [],
+		"codesAreUniqueIdentifiers": false,
+		"prefixDelimiters": [],
+		"punctuationNormalization": false,
+		"whitespaceNormalization": false
+	},
+	"comparisonDimensions": [
+		"wording",
+		"scope",
+		"cognitive_demand",
+		"granularity",
+		"hierarchy_placement",
+		"grade_context"
+	],
+	"educationStageMappings": [],
+	"frameworkIds": [
+		"south-africa-dbe-caps-english-home-language-grades-r-3"
+	],
+	"gradeLevelStatementTypes": [
+		"Grade"
+	],
+	"gradeMappings": [
+		{
+			"aliases": [
+				"GRADE R",
+				"GRADE R HOME LANGUAGE ENGLISH",
+				"Grade R Home Language English",
+				"3.1 GRADE R"
+			],
+			"localLabel": "Grade R",
+			"normalizedGrades": [
+				"K"
+			]
+		},
+		{
+			"aliases": [
+				"GRADE 1",
+				"GRADE 1 HOME LANGUAGE ENGLISH",
+				"Grade 1 Home Language English",
+				"3.2 GRADE 1"
+			],
+			"localLabel": "Grade 1",
+			"normalizedGrades": [
+				"1"
+			]
+		},
+		{
+			"aliases": [
+				"GRADE 2",
+				"GRADE 2 HOME LANGUAGE ENGLISH",
+				"Grade 2 Home Language English",
+				"3.3 GRADE 2"
+			],
+			"localLabel": "Grade 2",
+			"normalizedGrades": [
+				"2"
+			]
+		},
+		{
+			"aliases": [
+				"GRADE 3",
+				"GRADE 3 HOME LANGUAGE ENGLISH",
+				"Grade 3 Home Language English",
+				"3.4 GRADE 3"
+			],
+			"localLabel": "Grade 3",
+			"normalizedGrades": [
+				"3"
+			]
+		}
+	],
+	"hierarchy": {
+		"allowMultiParent": false,
+		"relationshipType": "hasChild",
+		"rootStatementTypes": [
+			"Grade"
+		],
+		"statementTypeOrder": [
+			"Grade",
+			"Term",
+			"Skill Area",
+			"Sub-strand",
+			"Skill"
+		]
+	},
+	"knownSourceAnomalies": [
+		{
+			"anomalyId": "uncoded_repeated_skill_statements",
+			"description": "CAPS prints no statement codes. The same Skill wording repeats across sub-strands, terms, and grades; each occurrence is scoped by its Grade, Term, Skill Area, and Sub-strand and must not be treated as a global identifier.",
+			"requiredDisclosure": "Code search is unavailable; text and hierarchy context are used for retrieval."
+		},
+		{
+			"anomalyId": "grade_r_encoded_as_k",
+			"description": "The source encodes Grade R items with gradeLevel \"K\". The profile labels them Grade R and keeps K as the retrieval facet.",
+			"requiredDisclosure": "Grade R items carry the normalized grade facet K, which is the source's encoding and does not establish equivalence with kindergarten or any other system's grade."
+		}
+	],
+	"languagePolicy": {
+		"allowBilingualPairing": false,
+		"languages": [
+			"en"
+		],
+		"notes": [
+			"This CAPS English Home Language Grades R-3 curriculum is English-only for KG extraction. Do not create bilingual pairs, translations, or cross-language equivalents. Preserve the visible English wording exactly. If incidental non-English text is visible, preserve it only as source evidence and do not translate or pair it."
+		],
+		"preserveSourceTerminology": true
+	},
+	"localSubject": "English Home Language",
+	"normalizedSubjects": [
+		"English Language Arts"
+	],
+	"profileId": "south-africa-dbe-caps-english-home-language-grades-r-3",
+	"profileSchemaVersion": "1.1",
+	"profileVersion": "2.0",
+	"requiredDisclosures": [
+		"Normalized grades are retrieval facets and do not establish international grade equivalence.",
+		"A hasChild hierarchy is not a source-authored instructional progression unless the source explicitly says so.",
+		"An Academic Standard alone does not establish learner mastery.",
+		"Identifier, code, or text retrieval matches do not establish official equivalence."
+	],
+	"rights": {
+		"allowBulkResource": false,
+		"allowFullText": true,
+		"allowGeneratedDerivatives": "allowed",
+		"allowStandardResources": true,
+		"attributionStatement": "Source curriculum: Curriculum and Assessment Policy Statement (CAPS), English Home Language, Foundation Phase, Grades R-3. © 2011 Department of Basic Education, Republic of South Africa.",
+		"reviewStatus": "provisional_operator_approved",
+		"sourceLicense": "Unknown"
+	},
+	"sourceRoleCapabilities": {
+		"hasOfficialActivities": false,
+		"hasOfficialAssessmentGuidance": false,
+		"hasOfficialResources": false,
+		"roleNotes": [
+			"The Academic Standards graph excludes activities, assessment guidance, and resources as node types; detailed source artifacts may retain contextual evidence."
+		]
+	},
+	"statementTypes": [
+		{
+			"aliases": [
+				"GRADE",
+				"grade"
+			],
+			"allowedParents": [],
+			"controlledValues": [
+				{
+					"aliases": [
+						"GRADE R",
+						"GRADE R HOME LANGUAGE ENGLISH",
+						"Grade R Home Language English",
+						"3.1 GRADE R"
+					],
+					"canonicalValue": "Grade R"
+				},
+				{
+					"aliases": [
+						"GRADE 1",
+						"GRADE 1 HOME LANGUAGE ENGLISH",
+						"Grade 1 Home Language English",
+						"3.2 GRADE 1"
+					],
+					"canonicalValue": "Grade 1"
+				},
+				{
+					"aliases": [
+						"GRADE 2",
+						"GRADE 2 HOME LANGUAGE ENGLISH",
+						"Grade 2 Home Language English",
+						"3.3 GRADE 2"
+					],
+					"canonicalValue": "Grade 2"
+				},
+				{
+					"aliases": [
+						"GRADE 3",
+						"GRADE 3 HOME LANGUAGE ENGLISH",
+						"Grade 3 Home Language English",
+						"3.4 GRADE 3"
+					],
+					"canonicalValue": "Grade 3"
+				}
+			],
+			"description": "Visible CAPS Foundation Phase grade (Grade R, 1, 2 or 3), printed in each REQUIREMENTS PER TERM table banner as 'GRADE <n> HOME LANGUAGE ENGLISH'; a root-level Standard Grouping under the framework.",
+			"identityScope": [],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Grade"
+		},
+		{
+			"aliases": [
+				"TERM",
+				"term"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Grade"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"TERM 1",
+						"term 1"
+					],
+					"canonicalValue": "Term 1"
+				},
+				{
+					"aliases": [
+						"TERM 2",
+						"term 2"
+					],
+					"canonicalValue": "Term 2"
+				},
+				{
+					"aliases": [
+						"TERM 3",
+						"term 3"
+					],
+					"canonicalValue": "Term 3"
+				},
+				{
+					"aliases": [
+						"TERM 4",
+						"term 4"
+					],
+					"canonicalValue": "Term 4"
+				}
+			],
+			"description": "Visible TERM label in a REQUIREMENTS PER TERM table banner, scoped under the active Grade.",
+			"identityScope": [
+				"Grade"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Term"
+		},
+		{
+			"aliases": [
+				"SKILL AREA",
+				"skill area",
+				"Language skill",
+				"LANGUAGE SKILL"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Term"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [
+						"LISTENING AND SPEAKING (ORAL)",
+						"Listening and Speaking",
+						"LISTENING AND SPEAKING",
+						"Oral"
+					],
+					"canonicalValue": "Listening and Speaking (Oral)"
+				},
+				{
+					"aliases": [
+						"EMERGENT READING"
+					],
+					"canonicalValue": "Emergent Reading"
+				},
+				{
+					"aliases": [
+						"EMERGENT WRITING"
+					],
+					"canonicalValue": "Emergent Writing"
+				},
+				{
+					"aliases": [
+						"READING AND PHONICS"
+					],
+					"canonicalValue": "Reading and Phonics"
+				},
+				{
+					"aliases": [
+						"WRITING"
+					],
+					"canonicalValue": "Writing"
+				}
+			],
+			"description": "Visible skill-area label in a REQUIREMENTS PER TERM table banner, scoped under the active Grade and Term. Grade R uses Listening and Speaking (Oral), Emergent Reading and Emergent Writing; Grades 1-3 use Listening and Speaking (Oral), Reading and Phonics, and Writing.",
+			"identityScope": [
+				"Grade",
+				"Term"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Skill Area"
+		},
+		{
+			"aliases": [
+				"SUB-STRAND",
+				"Substrand",
+				"SUBSTRAND"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Skill Area"
+				}
+			],
+			"controlledValues": [
+				{
+					"aliases": [],
+					"canonicalValue": "Daily activities in all areas of Language and other subjects"
+				},
+				{
+					"aliases": [
+						"Uses language to develop concepts in all subjects"
+					],
+					"canonicalValue": "Uses language to develop concepts"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Uses language to think and reason"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Uses language to investigate and explore"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Processes information"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Uses visual and pictorial cues to make meaning"
+				},
+				{
+					"aliases": [
+						"Emergent reading",
+						"Emergent reading skills (taught in Shared and Group Guided Reading lessons)"
+					],
+					"canonicalValue": "Emergent reading skills"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Begins to make meaning of written text"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Shared Reading"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Independent Reading"
+				},
+				{
+					"aliases": [
+						"Phonological/ Phonemic Awareness"
+					],
+					"canonicalValue": "Phonological/Phonemic Awareness"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Relates sounds to letters and words"
+				},
+				{
+					"aliases": [
+						"Emergent Handwriting"
+					],
+					"canonicalValue": "Handwriting"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Emergent Writing"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Works with words"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Daily / Weekly activities in all areas of Language and other subjects"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Twice weekly focussed listening and speaking activities"
+				},
+				{
+					"aliases": [
+						"Daily Phonemic Awareness/ Phonic Activities of 15 minutes",
+						"Daily Phonic Activities of 15 minutes",
+						"Phonic Activities three times a week for 15 minutes"
+					],
+					"canonicalValue": "Phonics"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Group Guided Reading"
+				},
+				{
+					"aliases": [
+						"Paired/Independent Reading (three times a week)",
+						"Paired/Independent Reading (twice a week in Language focus time)"
+					],
+					"canonicalValue": "Paired/Independent Reading"
+				},
+				{
+					"aliases": [],
+					"canonicalValue": "Shared, Group and Independent Writing"
+				}
+			],
+			"description": "Sub-strand heading printed inside the CONTENT/CONCEPTS/SKILLS body of a REQUIREMENTS PER TERM table, before its ASSESSMENT row, that groups the bulleted learner statements after it (for example Phonics, Shared Reading or Handwriting); scoped under the table's Grade, Term and Skill Area. A Standard Grouping between Skill Area and Skill.",
+			"identityScope": [
+				"Grade",
+				"Term",
+				"Skill Area"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard Grouping",
+			"sourceStatementType": "Sub-strand"
+		},
+		{
+			"aliases": [
+				"SKILL",
+				"skill",
+				"CONTENT/CONCEPTS/SKILLS",
+				"Content/Concepts/Skills",
+				"content/concepts/skills"
+			],
+			"allowedParents": [
+				{
+					"maxCount": 1,
+					"minCount": 1,
+					"parentStatementType": "Sub-strand"
+				}
+			],
+			"controlledValues": [],
+			"description": "Official CAPS learner requirement: one bulleted statement in the CONTENT/CONCEPTS/SKILLS body of a REQUIREMENTS PER TERM table (or its continuation rows), scoped under the active Grade, Term and Skill Area and the Sub-strand heading printed above it. CAPS prints no codes for these statements.",
+			"identityScope": [
+				"Grade",
+				"Term",
+				"Skill Area",
+				"Sub-strand"
+			],
+			"isGraphNode": true,
+			"normalizedStatementType": "Standard",
+			"sourceStatementType": "Skill"
+		}
+	],
+	"subjectAliases": [],
+	"subjectMappingNote": "English Home Language is mapped to the Learning Commons English Language Arts subject for discovery.",
+	"subjectMappingStatus": "mapped",
+	"subjectVocabulary": {
+		"unmatchedValue": "Other",
+		"values": [
+			"English Language Arts",
+			"Mathematics",
+			"Science",
+			"Social Studies",
+			"Other"
+		],
+		"vocabularyId": "learning-commons-academic-subject",
+		"vocabularyVersion": "2026-07-21"
+	}
+}

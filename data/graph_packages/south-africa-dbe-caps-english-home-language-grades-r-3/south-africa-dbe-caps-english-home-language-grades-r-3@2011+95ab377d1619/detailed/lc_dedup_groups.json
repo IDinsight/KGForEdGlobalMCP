@@ -1,0 +1,1901 @@
+{
+  "candidate_pair_count": 4859,
+  "conflict_count": 1,
+  "conflicts": [
+    {
+      "reason": "merging would join texts the judge explicitly ruled distinct (chaining guard)",
+      "text_a": "reads big books or other enlarged texts as a whole class with the teacher",
+      "text_b": "\u2018reads\u2019 big books or other enlarged texts as a whole class with the teacher"
+    }
+  ],
+  "exact_duplicate_claim_count": 220,
+  "groups": [
+    {
+      "canonical_text": "'reads' books independently for pleasure in the library or classroom reading corner",
+      "member_texts": [
+        "'reads' books independently for pleasure in the library or classroom reading corner",
+        "'reads' independently books for pleasure in the library or classroom reading corner",
+        "\u2018reads\u2019 books independently for pleasure in the library or classroom reading corner",
+        "\u2018reads\u2019 independently books for pleasure in the library or classroom reading corner"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1206c49c-530a-5cf4-9d1b-44ba18311c89",
+        "3b224d33-e33f-5a9e-ba30-2c3b38b63888",
+        "652c8c01-50dd-5211-8d6c-8bb33f3f3274",
+        "dfe35ca0-f17f-5ffb-b1cf-abc0a1d197a8"
+      ]
+    },
+    {
+      "canonical_text": "'writes' from left to right and top to bottom",
+      "member_texts": [
+        "'writes' from left to right and top to bottom",
+        "'writes' observing conventions of directionality: 'writes' from left to right, top to bottom of page"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1d08d896-9bd3-578e-8d4f-c9cc3eeafaf1",
+        "99283fde-3d33-554d-8f17-e7dbccf38d2d"
+      ]
+    },
+    {
+      "canonical_text": "acts on a complex string of instructions",
+      "member_texts": [
+        "acts on a complex string of instructions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "561299f7-4175-5e86-a80e-0f647bb4fbbd",
+        "d7c40bd6-f8a5-5fbc-bff0-bf4faebadeb0"
+      ]
+    },
+    {
+      "canonical_text": "acts out a story, song or rhyme",
+      "member_texts": [
+        "acts out a story, song or rhyme"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "16959a64-c92e-5337-9dd9-ff691c7ade55",
+        "8d30b0b8-e849-506f-8382-fa1f48d1d830"
+      ]
+    },
+    {
+      "canonical_text": "acts out parts of a story, song or rhyme",
+      "member_texts": [
+        "acts out part of the story, song or rhyme",
+        "acts out parts of a story, song or rhyme"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "28797c89-6511-5c90-b93e-68fc8707fe59",
+        "cce65a88-59bf-56c1-ad23-0e0eae133364"
+      ]
+    },
+    {
+      "canonical_text": "adopts a 'reading voice'",
+      "member_texts": [
+        "adopts a 'reading voice'",
+        "adopts a \u2018reading voice\u2019",
+        "adopts a \u2018reading\u2019 voice"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2796e0ac-e5be-54b1-ae11-2daef75d8e98",
+        "3e248808-f5dd-5b43-b7cc-f709b083738b",
+        "ebc05810-d85a-5db2-9b61-120ce395d7df"
+      ]
+    },
+    {
+      "canonical_text": "answers a range of questions based on the story read",
+      "member_texts": [
+        "answers a range of questions based on the story read"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "20d62aee-c9dd-50af-b932-d813d7b9e807",
+        "968bb12e-f90c-5766-8c1e-c2ac97830aaa"
+      ]
+    },
+    {
+      "canonical_text": "answers closed and open-ended questions",
+      "member_texts": [
+        "answers closed and open-ended questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8f20da5f-f5da-5468-bcc4-1c49620f17ac",
+        "a9331573-8101-5555-a274-e17fca1fbc92",
+        "dbc7caff-571d-5025-957d-c709cc2a2937"
+      ]
+    },
+    {
+      "canonical_text": "answers open-ended questions",
+      "member_texts": [
+        "answers open-ended questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "13510b70-7044-5870-8238-d4eea22de20e",
+        "e4c50f4b-de41-5d79-96d5-221fe2a4dbea"
+      ]
+    },
+    {
+      "canonical_text": "answers questions in discussions",
+      "member_texts": [
+        "answers questions in discussions",
+        "answers questions when participating in discussions",
+        "participates in discussions by answering questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "03cb68f1-01b5-5fa8-8868-e0978fabcc38",
+        "297a13f0-b179-5c37-a3d9-cc28620387f0",
+        "95ac61ec-81e6-5e76-8df7-17ccebd97634"
+      ]
+    },
+    {
+      "canonical_text": "asks questions",
+      "member_texts": [
+        "asks questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0a52951d-4bbf-5869-bf92-54b874af3d57",
+        "3d43704f-4ae3-57d1-93e8-28abe07f8a85",
+        "43c3ab16-7708-58eb-8c3e-d45e6ed0bdb9",
+        "5f985458-df05-53a5-ad16-cae7be83d266",
+        "b52cba31-1231-54a8-97f3-4aede04b5316",
+        "f1aa64d1-755a-5144-af09-7ff4ddb9f07e"
+      ]
+    },
+    {
+      "canonical_text": "asks questions for clarification",
+      "member_texts": [
+        "asks for clarification",
+        "asks questions for clarification",
+        "asks questions for clarity"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3c3f5a01-9b10-5f3b-b8e3-fc49e4b17a1b",
+        "940d62ae-d802-589f-b5a4-0e3e9c28a0e0",
+        "d17d8a19-4c59-5d34-b651-bc2d3b922296",
+        "f26d5c6d-c7f5-5f64-83ba-9a792bdd8d86"
+      ]
+    },
+    {
+      "canonical_text": "asks questions in discussions",
+      "member_texts": [
+        "asks questions in discussions",
+        "asks questions when participating in discussions",
+        "participates in discussions by asking questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "03cb68f1-01b5-5fa8-8868-e0978fabcc38",
+        "297a13f0-b179-5c37-a3d9-cc28620387f0",
+        "95ac61ec-81e6-5e76-8df7-17ccebd97634",
+        "c65fce45-3d32-570d-9fb5-d6fcce8c3c7b"
+      ]
+    },
+    {
+      "canonical_text": "attempts to spell unfamiliar words using phonic knowledge",
+      "member_texts": [
+        "attempts to spell unfamiliar words using phonic knowledge"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0fba58ef-a74a-5e60-83b6-ecca9d4fe7c8",
+        "98b9bac9-b71b-50db-a8d9-f68619f72f16"
+      ]
+    },
+    {
+      "canonical_text": "begins to 'write' observing conventions of directionality: 'writes' from left to right, top to bottom of page",
+      "member_texts": [
+        "begins to 'write' observing conventions of directionality: 'writes' from left to right, top to bottom of page"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "005be138-b841-58ec-b9cc-bb6dedbb7275",
+        "4241218c-375e-5708-b397-b0b9b4ca1082"
+      ]
+    },
+    {
+      "canonical_text": "begins to copy letters and numerals from the classroom environment in own writing attempts: pretend writing using a mixture of copied letters and squiggles",
+      "member_texts": [
+        "begins to copy letters and numerals from the classroom environment in own writing attempts: pretend writing using a mixture of copied letters and squiggles"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e2d7bb6-fd9f-52ce-9515-a6727097d016",
+        "2ea5b6a8-2c56-5459-bfe8-53ebd59992af"
+      ]
+    },
+    {
+      "canonical_text": "begins to monitor self when reading, both recognition and comprehension",
+      "member_texts": [
+        "begins to monitor self when reading, both in the area of word recognition and comprehension",
+        "begins to monitor self when reading, both recognition and comprehension"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6245517e-6b19-59c8-9786-ac0f7e0de6fd",
+        "df1c613d-15fd-561f-a772-092f1bad1888"
+      ]
+    },
+    {
+      "canonical_text": "builds own word bank and personal dictionary",
+      "member_texts": [
+        "builds own word bank and personal dictionary"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1b17cffb-f99e-5d09-ac7a-4183b5f66e06",
+        "3ea1b3dc-4a9c-5520-8c03-6f46d57ef2a7",
+        "d87ff46a-3215-5efe-8063-ed0d45ff19b0",
+        "ee38b5dd-89d0-506b-b2f2-a92447688b10"
+      ]
+    },
+    {
+      "canonical_text": "builds words using the phonic skills taught this year",
+      "member_texts": [
+        "builds words using the phonic skills taught this year"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "609720cc-9610-5460-9712-0217f029d22c",
+        "65314fe2-1b2a-5ddb-8ca7-c084f2874059",
+        "94e4a121-46e6-5f76-a6ec-2475e31ada12"
+      ]
+    },
+    {
+      "canonical_text": "comments on what was heard",
+      "member_texts": [
+        "comments on what was heard"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6a1c3fca-23de-58a0-b284-cad6c4c2afe1",
+        "c05f5e6d-cd4d-517b-a431-e02915b38240"
+      ]
+    },
+    {
+      "canonical_text": "compares things that are different",
+      "member_texts": [
+        "compares things that are different"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "49936297-31c7-5651-9db8-4932ee259b4b",
+        "4cf4aa87-36c7-5b9b-9dc6-425c1c0db510",
+        "a827c9ea-edb5-5a3a-a414-e33fc3cbc5de",
+        "cc94ace0-18fd-5bbf-9fd0-4f033c9236a1"
+      ]
+    },
+    {
+      "canonical_text": "completes crosswords to reinforce reading and vocabulary skills",
+      "member_texts": [
+        "completes crosswords to reinforce reading and vocabulary skills"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "401ad73a-c985-505d-b2b6-3e8c8c19d1b5",
+        "58988c7d-e562-5cc0-8983-609287c885d7",
+        "7f087ef3-c0a9-5736-8c4b-8064cc0305dd"
+      ]
+    },
+    {
+      "canonical_text": "continues to build a sight vocabulary from the incidental reading programme, the graded reading series and high-frequency word lists",
+      "member_texts": [
+        "continues to build a sight vocabulary from the incidental reading programme, the graded reading series and high-frequency word lists"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "527d3cf2-e8f2-5faa-a104-3a0db3378621",
+        "617d848e-c8d7-5728-9ad8-f718d880d9ec",
+        "65d625f6-5d1a-5041-a45a-0a46645ac26b",
+        "b6a6d4a2-090b-5278-b901-f7b1103fbef6",
+        "b819cd1f-3f9e-5f8e-87df-d47a855bb7a4",
+        "bf01b7ac-19ca-57e9-89bc-9076b2e2f169",
+        "ec705a9f-bc20-580d-85f8-7fe6352fa64a"
+      ]
+    },
+    {
+      "canonical_text": "contributes ideas and words for a class story (shared writing)",
+      "member_texts": [
+        "contributes ideas and words for a class story (shared writing)",
+        "contributes ideas and words for a class story in shared writing sessions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0054d6e6-62e8-5b94-aa08-1670413352c7",
+        "acdd50c7-cdc5-531c-b1e0-8692bd10c6a3"
+      ]
+    },
+    {
+      "canonical_text": "contributes ideas for a class news book",
+      "member_texts": [
+        "contributes ideas for a class news book"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "43898e1a-b09c-54e4-8422-ef88f8fff2df",
+        "73431fcd-6d49-5575-96f3-20e214f80153"
+      ]
+    },
+    {
+      "canonical_text": "contributes ideas in discussions",
+      "member_texts": [
+        "contributes ideas in discussions",
+        "suggests ideas when participating in discussions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "297a13f0-b179-5c37-a3d9-cc28620387f0",
+        "2a277576-1d92-52ec-94e3-c8138906ceb6"
+      ]
+    },
+    {
+      "canonical_text": "contributes sentences to a class piece of writing by dictating as the teacher writes",
+      "member_texts": [
+        "contributes sentences to a class piece of writing by dictating as the teacher writes",
+        "contributes sentences to a class piece of writing by dictating while the teacher writes"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1373aea6-478b-5f7b-a81d-2871b81a135c",
+        "169f8ccb-0154-50ba-a415-7c890df81730",
+        "d8fd118b-bff5-505d-bd2e-d8f8eb4da5ea"
+      ]
+    },
+    {
+      "canonical_text": "copies patterns onto pegboards",
+      "member_texts": [
+        "copies patterns onto pegboards"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1ee1bad5-a18f-5f70-a885-0dd6dc115816",
+        "c0944fb4-8a2f-50c0-896e-aa169b2d24aa",
+        "f4e815c0-2d1d-5eb0-8667-e2331328d5a3"
+      ]
+    },
+    {
+      "canonical_text": "copies print from the environment when playing, such as labels from advertisements",
+      "member_texts": [
+        "copies print from the environment when playing, for example labels from advertisements",
+        "copies print from the environment when playing, such as labels from advertisements"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a101a333-3488-5b78-a9d0-293bf3cafaaa",
+        "e1aebc9f-31c4-59ce-8cf4-0ec719c21fbc"
+      ]
+    },
+    {
+      "canonical_text": "copies words with correct spacing",
+      "member_texts": [
+        "copies words with correct spacing"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "84502049-1a64-560a-935f-33a23b6594e1",
+        "e52d435b-c054-5a34-8fdd-ad75e2662090"
+      ]
+    },
+    {
+      "canonical_text": "describes characters in stories",
+      "member_texts": [
+        "describes characters in stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3b27af54-7766-5fb5-b34e-d61fa0f5f4fc",
+        "f8945ae8-ceca-50d6-9025-fd45797a2716"
+      ]
+    },
+    {
+      "canonical_text": "describes similarities and differences",
+      "member_texts": [
+        "describes similarities and differences"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "043775dd-1267-52f5-a3cb-fb5c87b96893",
+        "70b1ff00-9c8e-522d-84ed-50b22ba298c0",
+        "879a1302-68ec-5b60-8f07-9dac3a30624f",
+        "d4b86f61-8d52-5fe8-99c5-6c8f65d0b2d3"
+      ]
+    },
+    {
+      "canonical_text": "describes the characteristics of characters in stories or television",
+      "member_texts": [
+        "describes the characteristics of characters in stories or television"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1c1041df-7c3b-556a-a79a-557354ad1fbe",
+        "460ccba9-14f5-51f7-bde3-d3ab22b97eb7"
+      ]
+    },
+    {
+      "canonical_text": "develops eye-hand co-ordination by making more complex patterns with crayons",
+      "member_texts": [
+        "develops eye-hand co-ordination by making more complex patterns with crayons"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "526fb8a6-4c48-51e6-b571-be644f903729",
+        "b683c50f-b05c-5198-bfbb-e897fd5fefd4"
+      ]
+    },
+    {
+      "canonical_text": "develops eye-hand co-ordination by playing catch with bean bags, large or tennis balls, paper balls",
+      "member_texts": [
+        "develops eye-hand co-ordination by playing catch with bean bags, large or tennis balls, paper balls",
+        "develops eye-hand co-ordination by playing catch with bean bags, large or tennis balls, paper balls etc"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "526fb8a6-4c48-51e6-b571-be644f903729",
+        "b683c50f-b05c-5198-bfbb-e897fd5fefd4"
+      ]
+    },
+    {
+      "canonical_text": "develops fine-motor control by playing more finger rhymes with finger actions",
+      "member_texts": [
+        "develops fine-motor control by playing more finger rhymes with finger actions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "b01b4d48-74f1-57d9-9ba8-10516e5da8c5",
+        "d67aeb10-d6ac-5114-9673-aeb711dcf137"
+      ]
+    },
+    {
+      "canonical_text": "develops fine-motor control using scissors to cut out bold outlined pictures, shapes etc",
+      "member_texts": [
+        "develops fine-motor control using scissors to cut out bold outlined pictures, shapes etc"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4be56f66-f62f-53a0-885d-6aeeb901291b",
+        "cc6bb4c4-41f1-5ff1-ad32-de6a0a0aa1a3"
+      ]
+    },
+    {
+      "canonical_text": "develops large muscle control by working in pairs or on own to form letters with their bodies",
+      "member_texts": [
+        "develops large muscle control by working in pairs or on own to form letters with their bodies"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "10deec8d-3bd4-58b8-a24b-5532996f103a",
+        "a8392b44-b197-5d7a-b605-a08ec4060dba"
+      ]
+    },
+    {
+      "canonical_text": "discusses book handling and care",
+      "member_texts": [
+        "discusses book handling and care"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "63fdb347-38b4-595b-a564-1de436a9cb3b",
+        "e800f088-acc4-5f41-92e1-c55792952a78",
+        "f1bc868d-34bc-51b1-91f8-dabc29dac2db"
+      ]
+    },
+    {
+      "canonical_text": "discusses characters in stories",
+      "member_texts": [
+        "discusses characters in stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3b27af54-7766-5fb5-b34e-d61fa0f5f4fc",
+        "f8945ae8-ceca-50d6-9025-fd45797a2716"
+      ]
+    },
+    {
+      "canonical_text": "discusses stories and other texts read aloud",
+      "member_texts": [
+        "discusses stories and other texts read aloud"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1025e5c5-47fa-5de3-bbf3-5336dfc18b73",
+        "79a162e9-9e1a-542d-befd-18e96afd3456"
+      ]
+    },
+    {
+      "canonical_text": "distinguishes between the shape of different letters and words, for example sorts identical objects, views a sequence of nearly identical pictures and picks out the one that is different and explains why it is different",
+      "member_texts": [
+        "distinguishes between the shape of different letters and words through activities such as sorting identical objects, viewing sequence of nearly identical pictures, picking out the one that is different and explaining why it is different",
+        "distinguishes between the shape of different letters and words, for example sorts identical objects, views a sequence of nearly identical pictures and picks out the one that is different and explains why it is different"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "00208604-dddc-5183-9e9e-00c8e2e8b0d2",
+        "d506ea70-30a1-59ee-b1f2-5d34b8902a5e"
+      ]
+    },
+    {
+      "canonical_text": "distinguishes pictures from print: points to a word and asks what the word is",
+      "member_texts": [
+        "distinguishes pictures from print, for example, points to a word and asks for it to be read",
+        "distinguishes pictures from print: points to a word and asks what the word is"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a05fe711-7828-5b76-82b8-f224a2091b61",
+        "cd891887-8a23-52ce-b4ab-e59a2043fc4c"
+      ]
+    },
+    {
+      "canonical_text": "does the actions that go with poems and rhymes",
+      "member_texts": [
+        "does the actions that go with poems and rhymes"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a55136b4-7727-51e8-9415-94cf3f3d09f0",
+        "b52a748e-bdf2-55f8-b576-e9f86e54004d"
+      ]
+    },
+    {
+      "canonical_text": "draws pictures capturing main idea of the stories, songs or rhymes",
+      "member_texts": [
+        "draws pictures capturing main idea of the stories, songs or rhymes",
+        "draws pictures capturing the main idea of stories, songs or rhymes"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "98956520-4877-56f3-9433-012b34f2c19a",
+        "aa212c5a-2a16-5f81-bee0-11b5aceb860a"
+      ]
+    },
+    {
+      "canonical_text": "draws pictures of stories, songs or rhymes",
+      "member_texts": [
+        "draws pictures of stories, songs or rhymes"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "69221219-6f31-5104-bf1b-776849ec5f42",
+        "daa48e1c-81d7-5f56-91a2-c65c290b013c"
+      ]
+    },
+    {
+      "canonical_text": "draws pictures to convey a message about a personal experience",
+      "member_texts": [
+        "draws pictures to convey a message about a personal experience",
+        "draws pictures to convey a message such as about a personal experience",
+        "draws pictures to convey a message, for example about a personal experience"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "593a2270-bfc3-5bfd-b3ee-f7481819333c",
+        "7a7249bc-ff3b-57c1-a2a3-f7cca50939c1",
+        "8d62a33a-5a3e-5574-a88f-52020c33ff9f",
+        "9de7c624-5c6f-54a0-b637-3f14b39f7429",
+        "ab54558b-8ef7-5ac8-8dd9-e981e6367d2b"
+      ]
+    },
+    {
+      "canonical_text": "draws pictures to show understanding of a story",
+      "member_texts": [
+        "draws a picture to show understanding of a story",
+        "draws pictures to show understanding of a story"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "49325297-802b-5b42-9960-ea8e50d0e0fd",
+        "ac0bd25f-03a4-587d-be60-0e56923064e5"
+      ]
+    },
+    {
+      "canonical_text": "expresses feelings about a text",
+      "member_texts": [
+        "expresses feelings about a text"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3100b438-a6b4-51b2-a3dc-76eebdaec2db",
+        "346f1cd3-9718-595b-99e9-e608934b2a1c"
+      ]
+    },
+    {
+      "canonical_text": "expresses whether a story was liked",
+      "member_texts": [
+        "expresses whether a story was liked"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3887b8af-757f-549a-8d0c-8f06c554c8d3",
+        "c9911611-bc6d-55cd-b1ce-b7bd05b4b000"
+      ]
+    },
+    {
+      "canonical_text": "gives an opinion on what was read",
+      "member_texts": [
+        "gives an opinion on what was read"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "00b964d1-0629-5862-9cbb-6f788b92db73",
+        "0a3c6da3-303d-533c-88c5-e92ca8c66d1e",
+        "548b6fca-7ac7-515f-bb6c-b63823b49957"
+      ]
+    },
+    {
+      "canonical_text": "gives answers to questions",
+      "member_texts": [
+        "answers questions",
+        "gives answers to questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2383f3d2-7782-56f1-8bac-4e8b145a502d",
+        "2ef83f11-392b-5558-bc0d-7f8b3f95da82",
+        "8b5c3cdd-1ecd-5024-8e08-74683d3088d6"
+      ]
+    },
+    {
+      "canonical_text": "gives explanations",
+      "member_texts": [
+        "gives explanations"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2f8ceebf-e1f4-54f2-84f3-9336ef1a8b57",
+        "3c3f5a01-9b10-5f3b-b8e3-fc49e4b17a1b",
+        "50a6b5a7-634c-585a-8cf7-9d4c20191f07"
+      ]
+    },
+    {
+      "canonical_text": "groups common words into sound families",
+      "member_texts": [
+        "groups common words into sound families"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "71b2d28c-66d1-57c6-ada7-8b56dc9b39d1",
+        "72a33c44-06f0-58f7-85cc-7f382f953a2f"
+      ]
+    },
+    {
+      "canonical_text": "holds crayons using an acceptable pencil grip",
+      "member_texts": [
+        "holds crayons correctly using an acceptable pencil grip",
+        "holds crayons using an acceptable pencil grip"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4b9b3547-66e5-5bb5-9a35-e54931e1cfe6",
+        "62a2ba1e-7117-5f8f-9663-e1790b04a3c9"
+      ]
+    },
+    {
+      "canonical_text": "holds pencil and crayon correctly",
+      "member_texts": [
+        "holds pencil and crayon correctly"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3c21525e-ac4f-5ab7-9e14-511819969e48",
+        "470f5477-aed3-5bb5-ac9f-3179b1c9d402",
+        "de5b812c-ec77-532d-83f6-edfdad2dcffe"
+      ]
+    },
+    {
+      "canonical_text": "holds the book the right way up",
+      "member_texts": [
+        "holds the book the right way up"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "96d2b65b-2644-51a2-9609-89d70e0a7b6a",
+        "988329a7-8f20-574d-b7ce-4e1de760519a",
+        "a9b68d74-16e3-5b00-bee3-e953bcaf90a9"
+      ]
+    },
+    {
+      "canonical_text": "identifies a letter or a space between words in print: own names or familiar words or in a book",
+      "member_texts": [
+        "identifies a letter or a space between words in print such as their names or familiar words or in a book",
+        "identifies a letter or a space between words in print, e.g. their names or familiar words or in a book",
+        "identifies a letter or a space between words in print: own names or familiar words or in a book"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6cafe7bd-56e1-5ced-b101-e2f83ac29d0e",
+        "d00d941b-24a0-5124-8b9b-5a2f9df59877",
+        "e49a0e8b-3b2f-5043-9a98-07846e473507"
+      ]
+    },
+    {
+      "canonical_text": "identifies letter-sound relationships of all single letters",
+      "member_texts": [
+        "identifies letter-sound relationships of all single letters"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "529b4dbd-307d-5ba3-b0a0-04b7d0320602",
+        "677e6da6-7243-5414-b974-c8c42dc36bc2",
+        "87a952e5-3432-5ca3-a7d4-4f91d4066b84"
+      ]
+    },
+    {
+      "canonical_text": "identifies similarities and differences",
+      "member_texts": [
+        "identifies similarities and differences"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "043775dd-1267-52f5-a3cb-fb5c87b96893",
+        "70b1ff00-9c8e-522d-84ed-50b22ba298c0",
+        "879a1302-68ec-5b60-8f07-9dac3a30624f",
+        "d4b86f61-8d52-5fe8-99c5-6c8f65d0b2d3",
+        "f1c91d25-c838-577e-9a75-849dc30e0158"
+      ]
+    },
+    {
+      "canonical_text": "identifies the sequence of events and the setting of the story",
+      "member_texts": [
+        "identifies the sequence of events and the setting in the book read",
+        "identifies the sequence of events and the setting of the story"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "cbcac8a3-ba99-5246-9c40-f55df9a36882",
+        "ce275913-69b1-5ebf-9568-7f81e5896b45"
+      ]
+    },
+    {
+      "canonical_text": "identifies the sequence of events in simple stories",
+      "member_texts": [
+        "identifies the sequence of events in simple stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "c0ed3cc1-d6c4-57fc-90b8-29192128cc00",
+        "f718fdec-81f3-52c7-b358-881aae4c5495"
+      ]
+    },
+    {
+      "canonical_text": "identifies the sequence of events in what was read",
+      "member_texts": [
+        "identifies key details in what was read such as the sequence of events",
+        "identifies the sequence of events in what was read"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "249f71a8-398a-5602-8abd-49246e48c902",
+        "cf04db43-b51e-5f95-ba1a-de6d8f2a83b9"
+      ]
+    },
+    {
+      "canonical_text": "interprets pictures to make up own story, that is, \u2018reads\u2019 the pictures",
+      "member_texts": [
+        "interprets pictures to make up own story, that is, \u2018reads\u2019 the pictures",
+        "interprets pictures to make up own story: \u2018reads\u2019 the pictures",
+        "makes up own story by 'reading' the pictures"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "beb3d093-59ad-5739-a5c2-99b4c0aeb9d2",
+        "c05c6f95-5483-5ecc-a422-8c47abdc2361",
+        "d99d5b0b-a496-53a8-81b9-fa3a9540fd53",
+        "e59bed2a-ea18-58a6-baed-c4bb286635dc",
+        "f1178597-3039-5e50-9a7b-93fe9ef0c5b1"
+      ]
+    },
+    {
+      "canonical_text": "joins in the shared reading of texts with increasing confidence and enjoyment",
+      "member_texts": [
+        "joins in the shared reading of texts with increasing confidence and enjoyment"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "06c2c063-c97a-56b8-8cb4-c1e96d973648",
+        "8ad8f7f6-d5d9-565b-a5e1-91189d5b956c"
+      ]
+    },
+    {
+      "canonical_text": "learns to spell ten words a week taken from phonics lessons",
+      "member_texts": [
+        "learns to spell ten words a week taken from phonics lessons"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6788c561-432c-59b6-ada8-0cf3466c195a",
+        "c0290b4c-bf71-5148-8afb-2a9ff8f7daf6",
+        "d71210c3-7130-5cda-9a6e-b440a9e08d4b"
+      ]
+    },
+    {
+      "canonical_text": "learns to spell ten words a week taken from phonics lessons and sight words",
+      "member_texts": [
+        "learns to spell ten words a week taken from phonics lessons and sight words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2f015dd4-c89b-5a72-8232-3b4faceef7b2",
+        "33587162-999e-5a0f-8866-969593ed8564",
+        "55e7fc61-e634-51ac-adb5-6cafc6007ab2"
+      ]
+    },
+    {
+      "canonical_text": "listens attentively to questions",
+      "member_texts": [
+        "listens attentively to questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2ef83f11-392b-5558-bc0d-7f8b3f95da82",
+        "8b5c3cdd-1ecd-5024-8e08-74683d3088d6"
+      ]
+    },
+    {
+      "canonical_text": "listens for the detail in stories",
+      "member_texts": [
+        "listens for the detail in stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0c7c9cfa-41f2-589b-8c9a-402918ac758d",
+        "2edf2e3a-e14a-5b6a-b785-e5b2cb3592e0",
+        "ad6a783a-8e66-5eec-afec-01f9d3981f4d",
+        "e4c50f4b-de41-5d79-96d5-221fe2a4dbea"
+      ]
+    },
+    {
+      "canonical_text": "listens to a complex string of instructions",
+      "member_texts": [
+        "listens to a complex sequence of instructions",
+        "listens to a complex string of instructions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "561299f7-4175-5e86-a80e-0f647bb4fbbd",
+        "7512673f-4cf3-5134-81d1-c043c929edd2",
+        "d7c40bd6-f8a5-5fbc-bff0-bf4faebadeb0"
+      ]
+    },
+    {
+      "canonical_text": "listens to and recalls in order simple word sequences such as big, beg, bag, starting with three words and building up to four or more",
+      "member_texts": [
+        "listens to and recalls in order simple word sequences such as big, beg, bag, starting with three words and building up to four or more",
+        "listens to and recalls simple word sequences, in order, such as big, beg, bag, starting with three words and building up to four or more"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4fd9864c-ebe5-5680-a040-5ddb59b54a53",
+        "86aa4da1-a203-52c6-b8de-4f68efafd25c"
+      ]
+    },
+    {
+      "canonical_text": "listens to announcements",
+      "member_texts": [
+        "listens to announcements"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1dd0c279-2d7d-5f09-8855-9ae98e6508a4",
+        "6101c357-827f-5521-83e8-eebd4a19dd99"
+      ]
+    },
+    {
+      "canonical_text": "listens to instructions and announcements",
+      "member_texts": [
+        "listens to instructions and announcements"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3ffe02bc-2466-5157-9adf-0cf113431e8a",
+        "e4f9df76-0c93-5ab0-ae6e-93ab1179ff8c"
+      ]
+    },
+    {
+      "canonical_text": "listens to longer stories",
+      "member_texts": [
+        "listens to longer stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "ac4fc0e5-3115-5439-aca4-7a8bf50fc41a",
+        "edbdd5e2-e530-5f32-b098-da9e271b67c2"
+      ]
+    },
+    {
+      "canonical_text": "listens to stories",
+      "member_texts": [
+        "listens to a story",
+        "listens to stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2f12bc1f-d795-5aa8-819c-8c44c48a6fb7",
+        "411e210a-6b69-5b49-a5c4-d0ea59fa3ead",
+        "4ec587c0-8d00-50a9-8f72-7be307191a43",
+        "5593d1f4-0878-5996-9d9d-c76fcdc8366b",
+        "9efd5f39-be52-5dd3-b86c-081316b8a977",
+        "fa51e61a-e1b9-58e0-8d34-a75a2cf406e1"
+      ]
+    },
+    {
+      "canonical_text": "listens to stories and other texts read aloud",
+      "member_texts": [
+        "listens to stories and other texts read aloud"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1025e5c5-47fa-5de3-bbf3-5336dfc18b73",
+        "79a162e9-9e1a-542d-befd-18e96afd3456"
+      ]
+    },
+    {
+      "canonical_text": "listens without interrupting",
+      "member_texts": [
+        "listens without interrupting"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2fd21b1f-0fe8-51fb-b4ba-3ee3b5a4f2c6",
+        "5acf8b61-31fc-5146-9b67-2be2066f97cd",
+        "6a1c3fca-23de-58a0-b284-cad6c4c2afe1",
+        "90e22da4-ef9b-5e46-bd0d-2fe63ff68083",
+        "940d62ae-d802-589f-b5a4-0e3e9c28a0e0"
+      ]
+    },
+    {
+      "canonical_text": "listens without interrupting, showing respect for the speaker",
+      "member_texts": [
+        "listens without interrupting, showing respect for the speaker"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "26d8f0ce-461f-540e-9175-797aa8e98601",
+        "2ed48342-a51b-525b-bb11-d7fe1f5a74cd",
+        "acc9e5f0-c2f9-5c02-9c8c-f69b8c7c5f9f",
+        "bd1597f9-231c-534c-95f0-439410d77832",
+        "d17d8a19-4c59-5d34-b651-bc2d3b922296",
+        "d2c61bb0-05bb-5125-967e-e8d8779c7b1f",
+        "dc66bd6f-6ae0-5a2c-950f-0140a3903816"
+      ]
+    },
+    {
+      "canonical_text": "looks carefully at pictures",
+      "member_texts": [
+        "looks carefully at pictures"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7a2f7b12-aa67-55a4-87d0-87ee63a50479",
+        "e6865db5-936e-5f34-8004-def2794d9ab6"
+      ]
+    },
+    {
+      "canonical_text": "makes links to own experience when reading with the teacher, viewing television or pictures",
+      "member_texts": [
+        "makes links to own experience when reading with the teacher, viewing television or pictures"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4d1c9c63-416a-5ace-a988-76ba143849d9",
+        "5edd6c2e-8320-5e1f-af7b-351fffea78e0"
+      ]
+    },
+    {
+      "canonical_text": "matches pictures and words using puzzles",
+      "member_texts": [
+        "matches pictures and words using puzzles",
+        "matches words to pictures in print such as word-picture puzzles"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3fa5b291-647d-50bd-a222-c7a7f909fd7f",
+        "e875aade-d08f-5d96-be78-383f0dadc57a"
+      ]
+    },
+    {
+      "canonical_text": "matches things that go together",
+      "member_texts": [
+        "matches things that go together"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "49936297-31c7-5651-9db8-4932ee259b4b",
+        "4cf4aa87-36c7-5b9b-9dc6-425c1c0db510",
+        "a827c9ea-edb5-5a3a-a414-e33fc3cbc5de",
+        "cc94ace0-18fd-5bbf-9fd0-4f033c9236a1"
+      ]
+    },
+    {
+      "canonical_text": "monitors self when reading, both word recognition and comprehension",
+      "member_texts": [
+        "monitors self when reading, both in the area of word recognition and comprehension",
+        "monitors self when reading, both word recognition and comprehension"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1068bd84-7f94-5754-9b58-ca6c107e319c",
+        "4660b893-1288-56ae-97d8-013bb126679c",
+        "66ff3cb4-f4a6-523f-a227-150a8ec3e585",
+        "689b6ef5-4775-5fb6-b932-c0bb52e75e72",
+        "a47ded9b-14dc-539e-bc2b-bca79de4c199",
+        "a9bafc0f-3c04-5437-80e0-d03009e9256f",
+        "b19b5d20-aac8-5786-83f3-7ee6c3b68532",
+        "db0a159c-62f9-5588-9216-c8f10d45e837"
+      ]
+    },
+    {
+      "canonical_text": "offers solutions",
+      "member_texts": [
+        "offers solutions",
+        "offers solutions to problems"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2f8ceebf-e1f4-54f2-84f3-9336ef1a8b57",
+        "69be0273-e02f-57d6-a4ec-a628164c25aa"
+      ]
+    },
+    {
+      "canonical_text": "participates in a discussion to choose a topic to write about",
+      "member_texts": [
+        "participates in a discussion to choose a topic to write about"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "06e5cccf-bccd-505b-83a4-c27f0d646e25",
+        "2301a077-a2d1-5ff2-a841-9326f7365a1b",
+        "dc40d1d2-12ac-544e-bcbd-48831b5c3e85"
+      ]
+    },
+    {
+      "canonical_text": "participates in discussions",
+      "member_texts": [
+        "participates in a discussion",
+        "participates in discussions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0a52951d-4bbf-5869-bf92-54b874af3d57",
+        "43c3ab16-7708-58eb-8c3e-d45e6ed0bdb9",
+        "88aced40-2ce6-5d37-b0f8-51320679a92e",
+        "9510a609-c220-5a1e-ab32-37f581e29773",
+        "95ac61ec-81e6-5e76-8df7-17ccebd97634",
+        "c65fce45-3d32-570d-9fb5-d6fcce8c3c7b",
+        "c7d2249a-224c-540f-96ed-c7d0a0f8e40d",
+        "f26d5c6d-c7f5-5f64-83ba-9a792bdd8d86"
+      ]
+    },
+    {
+      "canonical_text": "passes on messages",
+      "member_texts": [
+        "passes on messages"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0a83eeab-d646-5681-a4b1-efdd33147f9b",
+        "ff223bfb-62ad-53f2-86e0-249bbe52e0aa"
+      ]
+    },
+    {
+      "canonical_text": "picks out selected information from a description",
+      "member_texts": [
+        "picks out selected information from a description"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "125aced1-2297-53eb-9425-91f11b643cf5",
+        "4c86b0c1-b197-526c-99f9-888e63de2aab",
+        "aaf900ab-7d8b-5756-b6c9-351882260b12"
+      ]
+    },
+    {
+      "canonical_text": "pretends to read",
+      "member_texts": [
+        "pretends to read",
+        "pretends to \u2018read\u2019"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2796e0ac-e5be-54b1-ae11-2daef75d8e98",
+        "3e248808-f5dd-5b43-b7cc-f709b083738b",
+        "ebc05810-d85a-5db2-9b61-120ce395d7df"
+      ]
+    },
+    {
+      "canonical_text": "reads a book as a whole class with the teacher (shared reading)",
+      "member_texts": [
+        "reads a book as a whole class with the teacher",
+        "reads a book as a whole class with the teacher (shared reading)",
+        "reads books as a whole class with teacher (shared reading)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0d9b30bf-568e-5341-b48b-677068d4b4f4",
+        "12c91ad6-742c-5b53-9226-4df7871d0dde",
+        "14ceaece-d4d7-5fdb-834f-01a3bcddfde1",
+        "36a841ca-fe94-57ae-b1fc-d86e233d7531",
+        "6057e939-0a31-5c2e-a7ba-935aba60fcbd",
+        "ce275913-69b1-5ebf-9568-7f81e5896b45"
+      ]
+    },
+    {
+      "canonical_text": "reads aloud from a book at own level in a guided reading group with the teacher, where the whole group reads the same story",
+      "member_texts": [
+        "reads aloud from a book at own level in a guided reading group with the teacher, that is, the whole group reads the same story",
+        "reads aloud from a book at own level in a guided reading group with the teacher, where the whole group reads the same story"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "317a13e8-4818-5c50-96b9-33ef16257627",
+        "bad8c5e9-3d79-5c77-84ae-151deafe2973"
+      ]
+    },
+    {
+      "canonical_text": "reads aloud from own book in a guided reading group with teacher, that is, the whole group reads the same story",
+      "member_texts": [
+        "reads aloud from own book in a guided reading group with teacher, that is, the whole group reads the same story",
+        "reads aloud from own book in a guided reading group with the teacher, where the whole group reads the same story"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1b0bc7e7-5175-5ad0-8908-2f9856310d17",
+        "2fc692c6-f025-5ac0-91d6-eb62005edd5b",
+        "67a42336-5f2d-5b91-8dae-3b4f3cde7dbf",
+        "aa31c2d8-b0a0-5aa3-bf92-2dbaac6925cb"
+      ]
+    },
+    {
+      "canonical_text": "reads aloud to a partner",
+      "member_texts": [
+        "reads aloud to a partner"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "015adf9f-cc06-5c23-9343-0ed53bc1cddf",
+        "213342e2-fa8e-5e50-af10-86d14a0d0f7d",
+        "38032574-24c7-5251-99fb-92acbea89e9d",
+        "4bc7ca5d-ba2f-5739-8942-91962a3a9072",
+        "828f3331-22b2-5b87-9f35-1198dd6fb644",
+        "a2fb5253-993a-53f9-a139-deb325bbb304",
+        "face39e2-9565-5640-bb08-f3758ce3b0c1"
+      ]
+    },
+    {
+      "canonical_text": "reads big books or other enlarged texts as a whole class with teacher",
+      "member_texts": [
+        "reads as a whole class with teacher big books or other enlarged texts",
+        "reads big books or other enlarged texts as a whole class with teacher",
+        "reads big books or other enlarged texts as a whole class with the teacher"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "30b4f39f-b7b4-5bb7-ab00-dc10473b69de",
+        "877d6c1f-9130-5e84-932c-16ebe96da140",
+        "9c711861-9a5f-5451-bae3-5767b90d780c",
+        "ba3bca28-e972-5444-b5e2-5efedd485d90"
+      ]
+    },
+    {
+      "canonical_text": "reads books read in shared reading sessions and books from the classroom reading corner",
+      "member_texts": [
+        "reads books read in shared reading sessions and books from the classroom reading corner"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5ed432d1-966a-5f00-9002-e3d0b18c36c4",
+        "8e65f775-329e-54f6-8a3b-6e711387fa74"
+      ]
+    },
+    {
+      "canonical_text": "reads both silently and out loud from own book in a guided reading group with the teacher, where the whole group reads the same story at the instructional level of the group",
+      "member_texts": [
+        "reads both silently and out loud from own book in a guided reading group with the teacher, that is, the whole group reads the same story at the instructional level of the group",
+        "reads both silently and out loud from own book in a guided reading group with the teacher, where the whole group reads the same story at the instructional level of the group",
+        "reads both silently and out loud from own book in a guided reading group with the teacher, where the whole group reads the same story on the instructional reading level of the group",
+        "reads both silently and out loud from own book in a guided reading group with the teacher, with the whole group reading the same story at the instructional level of the group"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "064f3532-22f6-561a-80a9-c11a47b1aedf",
+        "2131dbe3-444a-503b-8f88-4af2e8f1c806",
+        "91a8b218-0b65-5f25-9f62-14c52c986a7c",
+        "e4451912-c302-57c5-b645-ccace9dcb6ac"
+      ]
+    },
+    {
+      "canonical_text": "reads enlarged texts such as poems, big books, posters and electronic texts as a whole class with the teacher (shared reading)",
+      "member_texts": [
+        "reads enlarged texts such as poems, big books, posters and electronic texts as a whole class with the teacher (shared reading)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a6e602a3-2840-58e3-b126-51cdb03cef01",
+        "e4336ab3-0d5b-5935-860e-749164e5dcba"
+      ]
+    },
+    {
+      "canonical_text": "reads own and others' writing",
+      "member_texts": [
+        "'reads' own and others' 'writing'",
+        "reads own and others writing",
+        "reads own and others' writing"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "34df1dee-106f-5d31-b1d4-e2c5bce181b8",
+        "6e1a46de-6539-5ce9-bb99-3ab9e5847072",
+        "71ad3545-822d-575e-b1ce-b7104f38c6b9",
+        "8a8238b9-bad7-5951-a1d4-5c4941e1269b",
+        "983f9de5-b3b9-5d17-b5e8-83dac0d21aad",
+        "ab2e3892-7951-5490-98ba-ecf86c9b3d50",
+        "b9bba6d7-0935-5889-ad4e-5c4576418c36",
+        "d3835d49-146a-5aa8-9ea4-c2bb70960675"
+      ]
+    },
+    {
+      "canonical_text": "reads own writing",
+      "member_texts": [
+        "reads own writing"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "51b3ace6-f3ae-59db-8c66-7c2a49825e73",
+        "e160ffea-60fc-553a-9604-a4b09a96c439"
+      ]
+    },
+    {
+      "canonical_text": "reads with increasing fluency and expression",
+      "member_texts": [
+        "reads with increasing fluency and expression"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2acb629f-2f72-5933-b2d9-3b034b48232f",
+        "33441c30-d628-50e1-9cb2-82b9a5a8c654",
+        "7d409dc2-ff52-57e0-bf1f-81cc62ebc5c7",
+        "844718c1-d5de-5631-a507-670f039a59dd",
+        "ee374d04-8c08-57a9-a5b4-42acdfe72546"
+      ]
+    },
+    {
+      "canonical_text": "reads words from phonics lessons in sentences and other texts",
+      "member_texts": [
+        "reads phonic words in sentences and other texts",
+        "reads words from phonics lessons in sentences and other texts"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "00cd405b-c2f8-5f3c-8c85-e96d4690835c",
+        "0493a399-6c33-5403-8187-8efb79a81488",
+        "70710a4a-1f29-591b-87f8-a7c4c99b871c",
+        "bc32bc9e-61b0-58b1-9da5-39d2c661b135",
+        "bcfae5a1-e91d-571f-8971-dde597b22d82",
+        "c5bc26c5-5c28-5650-8473-85e06ad6f3d1",
+        "ea01c653-0691-5f27-985b-9b5bf598bbf9"
+      ]
+    },
+    {
+      "canonical_text": "recognises own name and names of at least five other children in the class",
+      "member_texts": [
+        "recognises own name and names of at least five other children in the class"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2e086e2c-0e8f-5bdd-8cd9-4a17a9b829e2",
+        "4137cce7-735f-52f3-b9e7-960c9d37b3e9"
+      ]
+    },
+    {
+      "canonical_text": "relates the story created",
+      "member_texts": [
+        "relates the story created"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "ac1c2def-84f5-5133-a88a-d3c373a6f9be",
+        "f0460e25-6054-59fc-b781-da0f5a392de2"
+      ]
+    },
+    {
+      "canonical_text": "relates the story created from the ordered pictures",
+      "member_texts": [
+        "relates the story created from the ordered pictures",
+        "relates the story created from the sequence of pictures"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a90edc1b-6ff2-5da6-a8b5-0deaed2305df",
+        "fe46ecff-a7c7-5ea1-929d-04f8d3c3327d"
+      ]
+    },
+    {
+      "canonical_text": "responds appropriately to a complex sequence of instructions",
+      "member_texts": [
+        "responds appropriately to a complex sequence of instructions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7512673f-4cf3-5134-81d1-c043c929edd2",
+        "9f6626b6-f224-5272-9868-706926f247b6"
+      ]
+    },
+    {
+      "canonical_text": "responds appropriately to announcements",
+      "member_texts": [
+        "responds appropriately to announcements"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1dd0c279-2d7d-5f09-8855-9ae98e6508a4",
+        "6101c357-827f-5521-83e8-eebd4a19dd99"
+      ]
+    },
+    {
+      "canonical_text": "responds appropriately to instructions and announcements",
+      "member_texts": [
+        "responds appropriately to instructions and announcements"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3ffe02bc-2466-5157-9adf-0cf113431e8a",
+        "e4f9df76-0c93-5ab0-ae6e-93ab1179ff8c"
+      ]
+    },
+    {
+      "canonical_text": "retells other children's stories in own words",
+      "member_texts": [
+        "retells other children's stories in own words",
+        "retells stories of others in own words",
+        "retells the stories of other children in own words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0d0f69f0-feac-5372-875c-0a0bf4f0c914",
+        "3a101d63-c2e4-54f7-898f-d95385169605",
+        "6ab97910-1c3e-5ab7-96f8-7494239ee355",
+        "984e9455-9961-563f-9032-9134f83e8207"
+      ]
+    },
+    {
+      "canonical_text": "role plays writing in play situations, for example 'writes' lists",
+      "member_texts": [
+        "role plays 'writing' in play situations, for example 'writes' lists",
+        "role plays writing in play situations, for example 'writes' lists"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "468418e2-d469-5b49-9dcc-8f369ae261df",
+        "cffa6a07-2264-51d4-9741-c567197d7578"
+      ]
+    },
+    {
+      "canonical_text": "says poems and rhymes",
+      "member_texts": [
+        "says poems and rhymes"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a55136b4-7727-51e8-9415-94cf3f3d09f0",
+        "b52a748e-bdf2-55f8-b576-e9f86e54004d"
+      ]
+    },
+    {
+      "canonical_text": "sequences pictures",
+      "member_texts": [
+        "orders a sequence of pictures",
+        "sequences pictures"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a90edc1b-6ff2-5da6-a8b5-0deaed2305df",
+        "ac1c2def-84f5-5133-a88a-d3c373a6f9be"
+      ]
+    },
+    {
+      "canonical_text": "sequences pictures of a story",
+      "member_texts": [
+        "sequences pictures in a story",
+        "sequences pictures of a story"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "09e8d7d8-8f29-5bd5-bd36-952e95dc3377",
+        "10521b8a-354b-520e-bddf-8dd999cd1d28",
+        "28292aa1-fa15-5797-a9b8-196d4300a464",
+        "3cb41f0a-8016-5090-a0e9-056cb6ee2ab9",
+        "52ba79d8-78b3-52e1-bf8c-a90d7e146c71",
+        "a0b2d2ee-46f3-5c34-a683-bc49facabf9c"
+      ]
+    },
+    {
+      "canonical_text": "shows respect for books",
+      "member_texts": [
+        "shows respect for books"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3b224d33-e33f-5a9e-ba30-2c3b38b63888",
+        "dfe35ca0-f17f-5ffb-b1cf-abc0a1d197a8"
+      ]
+    },
+    {
+      "canonical_text": "shows understanding by answering questions related to the story",
+      "member_texts": [
+        "shows understanding by answering questions related to the story"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "ac4fc0e5-3115-5439-aca4-7a8bf50fc41a",
+        "edbdd5e2-e530-5f32-b098-da9e271b67c2"
+      ]
+    },
+    {
+      "canonical_text": "sings songs and rhymes",
+      "member_texts": [
+        "sings songs and rhymes"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8d314f9f-8324-5a04-857c-145eb83edc34",
+        "e8b6e6ce-48a6-529f-b70f-f9adf7bc4f82"
+      ]
+    },
+    {
+      "canonical_text": "spells common words correctly",
+      "member_texts": [
+        "spells common words correctly"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0fba58ef-a74a-5e60-83b6-ecca9d4fe7c8",
+        "98b9bac9-b71b-50db-a8d9-f68619f72f16",
+        "d1a94dcd-7f5a-5183-9b07-2f811d3b1593"
+      ]
+    },
+    {
+      "canonical_text": "spells words correctly using phonic knowledge in informal tests, in dictation and in all written work",
+      "member_texts": [
+        "spells words correctly using phonic knowledge in informal tests, in dictation and in all written work",
+        "spells words correctly using their phonic knowledge in informal tests, in dictation and in all written work"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "604214a4-78a8-59d4-9258-378ab1e225ad",
+        "8fe5d47a-819a-5141-bc17-d6a91507040a",
+        "eb60b722-4f5c-5050-afde-e6c4f58d97b2"
+      ]
+    },
+    {
+      "canonical_text": "suggests solutions to a problem especially during mathematics",
+      "member_texts": [
+        "suggests solutions to a problem especially during mathematics"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0420b6cc-28d0-5098-95ff-af6142b3fa37",
+        "820b0502-2e29-5183-9785-6ba0cee352a0",
+        "89ff02ab-7b48-5425-ac08-c8912e2d2cbb",
+        "a26cb955-2e10-5cc0-951b-797ec4669b94"
+      ]
+    },
+    {
+      "canonical_text": "suggests solutions to a problem, specifically word problems in mathematics",
+      "member_texts": [
+        "suggests solutions to a problem, specifically word problems in mathematics"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "190ffe59-4dd7-5cb2-9c19-36e47c86ee0c",
+        "89d5525f-f343-519b-bd00-903953e473ba"
+      ]
+    },
+    {
+      "canonical_text": "suggests topics for discussion",
+      "member_texts": [
+        "suggests topics for discussion"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1fdd5943-f1b1-5e5d-b092-d1f0fe69b1b8",
+        "2a277576-1d92-52ec-94e3-c8138906ceb6"
+      ]
+    },
+    {
+      "canonical_text": "takes turns to speak",
+      "member_texts": [
+        "takes turns to speak"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "26d8f0ce-461f-540e-9175-797aa8e98601",
+        "2ed48342-a51b-525b-bb11-d7fe1f5a74cd",
+        "5acf8b61-31fc-5146-9b67-2be2066f97cd",
+        "940d62ae-d802-589f-b5a4-0e3e9c28a0e0",
+        "bd1597f9-231c-534c-95f0-439410d77832",
+        "e6cda9e3-763c-5397-b6e5-9af5d1f7029b"
+      ]
+    },
+    {
+      "canonical_text": "talks about common experiences",
+      "member_texts": [
+        "talks about common experiences"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7a2f7b12-aa67-55a4-87d0-87ee63a50479",
+        "e6865db5-936e-5f34-8004-def2794d9ab6"
+      ]
+    },
+    {
+      "canonical_text": "talks about personal experiences such as tells news expressing feelings and opinions",
+      "member_texts": [
+        "talks about personal experiences such as tells news expressing feelings and opinions",
+        "talks about personal experiences, for example, tells news expressing feelings and opinions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6311167a-9f15-5f68-8eb3-c5bc962c42b1",
+        "7384a971-de50-532f-b96b-23deaee49cfa"
+      ]
+    },
+    {
+      "canonical_text": "talks about personal experiences such as tells news using the correct sequence",
+      "member_texts": [
+        "talks about personal experiences such as tells news using the correct sequence",
+        "talks about personal experiences, for example tells news using correct sequence"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "05864a28-099b-5574-878a-9e9bdba60f59",
+        "f51341cf-5048-5870-8b5d-df36b770d413"
+      ]
+    },
+    {
+      "canonical_text": "talks about pictures in posters, theme charts, books etc. related to a minimum of five themes per term",
+      "member_texts": [
+        "talks about pictures in posters, theme charts and books related to a minimum of five themes per term",
+        "talks about pictures in posters, theme charts, books etc. related to a minimum of five themes per term"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7c83cc4e-52ed-544e-8c0d-6b1be4e7ff8f",
+        "7d990807-b54b-53c7-bab5-8003b76c3072",
+        "c7551de5-eee9-59cf-ad86-e7ba289b5f7f",
+        "fc21c1d3-8bb2-5acb-a006-768a1b099459"
+      ]
+    },
+    {
+      "canonical_text": "tells a story with a beginning, middle and end",
+      "member_texts": [
+        "tells a story that has a beginning, middle and end",
+        "tells a story with a beginning, middle and end"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "d83cdcae-0889-5f02-a17c-1863ccb7fcf5",
+        "fc50120c-b5b5-566f-9c6b-639aae9c3038"
+      ]
+    },
+    {
+      "canonical_text": "tells stories",
+      "member_texts": [
+        "tells stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0d0f69f0-feac-5372-875c-0a0bf4f0c914",
+        "3a101d63-c2e4-54f7-898f-d95385169605",
+        "6ab97910-1c3e-5ab7-96f8-7494239ee355",
+        "984e9455-9961-563f-9032-9134f83e8207"
+      ]
+    },
+    {
+      "canonical_text": "traces simple outlines of pictures, patterns and own names where the correct starting point and writing direction are indicated on letters",
+      "member_texts": [
+        "traces simple outlines of pictures, patterns and own names where the correct starting point and writing direction are indicated on letters"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0b843473-e4f6-5407-962b-23dfe1e88e92",
+        "409b7ef5-d608-5e35-ae78-d82c9e57cea7",
+        "e8e4ea32-ae5b-5f8a-8db5-368da9be534b"
+      ]
+    },
+    {
+      "canonical_text": "turns pages correctly",
+      "member_texts": [
+        "turns pages correctly"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "96d2b65b-2644-51a2-9609-89d70e0a7b6a",
+        "988329a7-8f20-574d-b7ce-4e1de760519a",
+        "a9b68d74-16e3-5b00-bee3-e953bcaf90a9"
+      ]
+    },
+    {
+      "canonical_text": "turns the pages of a book correctly",
+      "member_texts": [
+        "turns the pages of a book correctly"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3b224d33-e33f-5a9e-ba30-2c3b38b63888",
+        "dfe35ca0-f17f-5ffb-b1cf-abc0a1d197a8"
+      ]
+    },
+    {
+      "canonical_text": "understands and uses appropriate language of different subjects",
+      "member_texts": [
+        "understands and uses appropriate language of different subjects"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "16f916c2-e8f3-5fe9-aba5-5a567c598295",
+        "2691f219-2a75-54d8-b95c-29a83e6fab45",
+        "a52c2b3b-113d-58fb-9304-8ea6d71f748b",
+        "b91938dc-5d09-5d6c-948a-9c0fb327b647"
+      ]
+    },
+    {
+      "canonical_text": "understands that pictures and photographs convey meaning about events, people, places and things",
+      "member_texts": [
+        "understands that pictures and photographs convey meaning about events, people, places and things"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e52fe75-8975-50b0-96a4-ab803dc9c0d5",
+        "12f6aa9b-9dd8-5e36-8cf5-48d91eabbb02"
+      ]
+    },
+    {
+      "canonical_text": "understands that writing and drawing are different",
+      "member_texts": [
+        "understands that writing and drawing are different"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e2d7bb6-fd9f-52ce-9515-a6727097d016",
+        "2ea5b6a8-2c56-5459-bfe8-53ebd59992af"
+      ]
+    },
+    {
+      "canonical_text": "uses a dictionary to find new vocabulary and their meanings",
+      "member_texts": [
+        "uses a dictionary to find new vocabulary and their meanings"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3a91124b-707e-599c-8fde-66f3a26247fa",
+        "bc14d08c-53f9-50e3-ac1b-330269f8265f"
+      ]
+    },
+    {
+      "canonical_text": "uses a range of writing tools: paint brushes, wax crayons etc",
+      "member_texts": [
+        "uses a range of writing tools such as paint brushes, wax crayons",
+        "uses a range of writing tools: paint brushes, wax crayons etc"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "71e9df07-0a57-5e2b-a1c2-6adf90a0d346",
+        "da3c1c86-595e-51b5-9f56-b214abf322e9"
+      ]
+    },
+    {
+      "canonical_text": "uses an ever-increasing vocabulary when speaking",
+      "member_texts": [
+        "uses an ever-increasing vocabulary when speaking"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "58ab911e-1f40-5912-ab96-2911dd90549c",
+        "a7e9cfd8-7564-58e9-a6ef-e82efc0f00c5",
+        "d37e631c-a427-5ed6-bd9b-49f9942c85e4"
+      ]
+    },
+    {
+      "canonical_text": "uses correct punctuation (full stops, commas, question marks and exclamation marks) so that others can read what has been written",
+      "member_texts": [
+        "uses correct punctuation (full stops, commas, question marks and exclamation marks) so that others can read what has been written"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "12df06fc-af81-5be1-8aa2-9e120ffd78e2",
+        "c238e0cb-c933-51a3-b68d-99e15f2d8aa8"
+      ]
+    },
+    {
+      "canonical_text": "uses cover of book and illustrations throughout the text to predict storyline",
+      "member_texts": [
+        "uses cover of book and illustrations throughout the text to predict storyline",
+        "uses the cover of a book and illustrations throughout the text to predict the storyline"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "e48087b7-6f50-50b6-8989-e802a85a10fd",
+        "fe1cb3ec-db0d-5639-8b16-9bec3f8e93e1"
+      ]
+    },
+    {
+      "canonical_text": "uses handwriting tools effectively: pencil, eraser, ruler",
+      "member_texts": [
+        "uses handwriting tools effectively: pencil, eraser, ruler"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "49a5cdc3-0cd0-51e2-b4a9-a02d67942b65",
+        "4cd941c6-d227-5d10-94ae-96deca0b08d9",
+        "53f03b32-b512-573c-b33a-5b43b1fa8632",
+        "741e5eca-4933-55ff-95be-f83898ba2097",
+        "99cccc1f-c330-582d-9cd5-9f49e1863f51"
+      ]
+    },
+    {
+      "canonical_text": "uses phonics knowledge and spelling rules to write unfamiliar words",
+      "member_texts": [
+        "uses phonic knowledge and spelling rules to write unfamiliar words",
+        "uses phonics knowledge and spelling rules to write unfamiliar words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "70c416aa-1831-52ad-81c7-c4fb735a43d1",
+        "7ab2b5a8-e3cb-5adf-82a8-ca3d550c77b1",
+        "96268f52-4537-5a35-bc45-09f6bb53aa8b"
+      ]
+    },
+    {
+      "canonical_text": "uses phonics, context clues, structural analysis and sight words when reading",
+      "member_texts": [
+        "uses phonics, context clues, and structural analysis and sight words when reading",
+        "uses phonics, context clues, structural analysis and sight words when reading"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "05d9fce3-f186-53a5-819f-2edade174db1",
+        "5d4f2b65-e462-5c3e-8684-7abd21fc3c3b"
+      ]
+    },
+    {
+      "canonical_text": "uses pictures to predict what the story is about",
+      "member_texts": [
+        "uses pictures to predict what the story is about"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1560ace3-2125-508a-bdd2-3a31f2f185b3",
+        "23f2cd41-1f29-582a-a1cb-574f36c6a612",
+        "b5070916-cc1b-50a8-9a39-293b380fc458"
+      ]
+    },
+    {
+      "canonical_text": "uses prepositions correctly",
+      "member_texts": [
+        "uses prepositions correctly"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8cdc3f3b-53a0-5943-8cc6-639987714f7e",
+        "fd6fdd6c-32ce-5954-b3b3-f5388d796586"
+      ]
+    },
+    {
+      "canonical_text": "uses present, past and future tenses correctly",
+      "member_texts": [
+        "uses present, past and future tense correctly",
+        "uses present, past and future tenses correctly"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3f792e7c-ac5f-5f5e-82fb-10f031311342",
+        "644f1685-acde-5d8c-a420-704c1418b1d0",
+        "ecc15d9c-9ebc-59fe-8539-4d20a6a0d7a5"
+      ]
+    },
+    {
+      "canonical_text": "uses punctuation correctly: capital letters, full stops, commas, question marks, exclamation marks and inverted commas",
+      "member_texts": [
+        "uses punctuation correctly: capital letters, full stops, commas, question marks, exclamation marks and inverted commas"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "809f8dd7-c845-51f7-83f7-59a9c7f18ae4",
+        "c39f2070-a410-5f3a-8f8b-d480192040a0"
+      ]
+    },
+    {
+      "canonical_text": "uses self-correcting strategies when reading: re-reading, pausing, practising a word before saying it aloud",
+      "member_texts": [
+        "uses self-correcting strategies when reading: re-reading, pausing, practising a word before saying it aloud"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0144034c-d990-583d-845b-6b03953b3314",
+        "41b6fa3e-0ef2-5317-8ea0-9af97476cd29",
+        "674b0c5b-980e-594e-b54d-c0328e291809"
+      ]
+    },
+    {
+      "canonical_text": "uses sight words, phonics, contextual and structural analysis decoding skills when reading",
+      "member_texts": [
+        "uses sight words, phonics, contextual and structural analysis decoding skills when reading"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "922c5781-b85b-5fbd-bafd-4e797f03ecaf",
+        "c14daaa9-453e-5f5d-aacb-0cd1417ce210",
+        "e3c93226-e160-503c-adeb-da51c278e28a"
+      ]
+    },
+    {
+      "canonical_text": "uses visual cues to identify the purpose of advertisements and the intended audience",
+      "member_texts": [
+        "uses visual cues to identify the purpose of advertisements and the intended audience"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "289cf7fc-145b-5a99-ab0f-2dd4ff84af01",
+        "536543c2-204d-54f1-b636-01d0f60b09aa"
+      ]
+    },
+    {
+      "canonical_text": "writes at least three sentences of own news or creative story using sounds learnt and common sight words, capital letters and full stops",
+      "member_texts": [
+        "writes at least three sentences of own news or creative story using sounds learned and common sight words, capital letters and full stops",
+        "writes at least three sentences of own news or creative story using sounds learnt and common sight words, capital letters and full stops"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0e926bb9-47ed-5d52-9907-15fe85e2a91c",
+        "348241d3-6956-54f8-81cd-b73d5edf8f8d"
+      ]
+    },
+    {
+      "canonical_text": "writes short words in joined script or cursive writing",
+      "member_texts": [
+        "writes short words in joined script or cursive writing",
+        "writes short words in the joined script or cursive writing"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3add652e-8013-52cc-8331-5b05db4fd4fb",
+        "88c34c2f-299c-5a8c-8712-c180f3241cf8"
+      ]
+    },
+    {
+      "canonical_text": "writes words using sounds learnt",
+      "member_texts": [
+        "writes words using letter sounds learnt",
+        "writes words using sounds learnt"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3bdcb566-5b78-5c58-b6b7-112890a4b3c0",
+        "ec171972-8f0f-5686-91d1-808a1b30691b"
+      ]
+    },
+    {
+      "canonical_text": "writes words with correct spacing",
+      "member_texts": [
+        "writes words with correct spacing"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "05c855bc-749a-58a2-95c8-b0ed7f2f7fa2",
+        "84502049-1a64-560a-935f-33a23b6594e1",
+        "e52d435b-c054-5a34-8fdd-ad75e2662090"
+      ]
+    }
+  ],
+  "judged_same_count": 89,
+  "total_claim_count": 1204,
+  "unique_text_count": 984
+}

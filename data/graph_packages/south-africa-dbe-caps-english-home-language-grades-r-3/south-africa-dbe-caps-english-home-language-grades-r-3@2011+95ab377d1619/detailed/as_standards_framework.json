@@ -1,0 +1,36 @@
+{
+  "academic_subject": "English Home Language",
+  "adoption_status": "Adopted",
+  "attribution_statement": "Source curriculum: Curriculum and Assessment Policy Statement (CAPS), English Home Language, Foundation Phase, Grades R-3. \u00a9 2011 Department of Basic Education, Republic of South Africa.",
+  "author": "Department of Basic Education",
+  "case_identifier_uri": "urn:uuid:7bb16abe-6d0a-5bb9-9a01-aeb7c4baeaa3",
+  "case_identifier_uuid": "7bb16abe-6d0a-5bb9-9a01-aeb7c4baeaa3",
+  "date_created": null,
+  "date_modified": null,
+  "description": null,
+  "identifier": "7bb16abe-6d0a-5bb9-9a01-aeb7c4baeaa3",
+  "in_language": "en",
+  "is_current": true,
+  "jurisdiction": "South Africa",
+  "license": "Unknown",
+  "metadata": {
+    "country": "South Africa",
+    "doc_key": "c939a3a9dcce92ed61d970f4599ced6f2ddc425d1220eeeab9828472b878d24d",
+    "framework_title": "Curriculum and Assessment Policy Statement (CAPS): English Home Language, Foundation Phase, Grades R-3",
+    "grades_or_stages": [
+      "Grade R",
+      "Grade 1",
+      "Grade 2",
+      "Grade 3"
+    ],
+    "languages": [
+      "en"
+    ],
+    "page_count": 100,
+    "pdf_name": "caps_english_hl_grade_3_fs.pdf",
+    "primary_language": "en"
+  },
+  "name": "Curriculum and Assessment Policy Statement (CAPS): English Home Language, Foundation Phase, Grades R-3",
+  "notes": null,
+  "provider": "IDinsight"
+}
