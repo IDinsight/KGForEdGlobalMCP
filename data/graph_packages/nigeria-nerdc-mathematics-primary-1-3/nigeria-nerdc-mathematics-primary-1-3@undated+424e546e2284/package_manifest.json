@@ -1,6 +1,5 @@
 {
   "artifacts": {
-    "academicStandardsBundle": null,
     "additionalArtifacts": {
       "evidenceArchiveRecord": "evidence/evidence_archive_record.json",
       "learningProgressionProvenanceShard00": "slim/lp_relationship_provenance_shard_00.json",
@@ -72,21 +71,14 @@
     "learningComponentDedupGroups": "detailed/lc_dedup_groups.json",
     "learningComponentProvenance": "slim/lc_entity_provenance.json",
     "learningComponentSummary": "detailed/lc_generation_summary.json",
-    "learningComponentsBundle": null,
-    "learningProgressionBuildsTowards": null,
-    "learningProgressionFinalClaims": null,
     "learningProgressionNormalization": "detailed/lp_normalization_receipt.json",
-    "learningProgressionProvenance": null,
     "learningProgressionProvenanceIndex": "slim/lp_relationship_provenance_index.json",
-    "learningProgressionRelatesTo": null,
     "learningProgressionSummary": "detailed/lp_generation_summary.json",
     "learningProgressionUnresolved": "detailed/lp_unresolved_items.json",
     "learningProgressionValidation": "detailed/lp_validation_report.json",
     "nodes": "delivery/as_lc_lp_nodes_nigeria-nerdc-mathematics-primary-1-3.jsonl",
     "relationships": "delivery/as_lc_lp_relationships_nigeria-nerdc-mathematics-primary-1-3.jsonl",
-    "relationshipsHasChild": null,
     "standardsFramework": "detailed/as_standards_framework.json",
-    "standardsFrameworkItems": null,
     "unresolvedItems": "detailed/as_unresolved_items.json",
     "validationReport": "detailed/as_lc_validation_report.json"
   },
@@ -196,7 +188,7 @@
     "relationships": 932,
     "supportsRelationships": 204
   },
-  "createdAt": "2026-10-14T14:16:03Z",
+  "createdAt": "2026-10-14T15:07:46Z",
   "deliverySchemaVersion": "1.2",
   "framework": {
     "adoptionStatus": "Adopted",
@@ -259,6 +251,6 @@
   "sourceSchemaVersion": "1.0",
   "validation": {
     "status": "passed",
-    "validatedAt": "2026-10-14T14:16:24Z"
+    "validatedAt": "2026-10-14T15:07:55Z"
   }
 }

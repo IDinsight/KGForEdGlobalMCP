@@ -596,7 +596,7 @@ name-specific branch.
 
 ### DEV-010 — Remove `1.1` support
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-008`
+`Status`: `DONE` `Depends On`: `DEV-008`
 `Acceptance`: `AC-001, AC-008`
 
 **Goal**
@@ -647,11 +647,79 @@ failure (Plan Notes, Suspended Assignment 3). Until the design is corrected the
 uncommitted working tree does not start the server; `git stash` or
 `git checkout` of the listed files restores the last committed state.
 
+Result after the correction (2026-10-14, `0a47aa8`; the DEV-010 edits are
+committed in `f8096e4`): from `backend/`, isort, black, ruff, mypy (123 files),
+interrogate (100%) and pylint (10.00/10) clean on all of `src/`. `grep` over
+`src/` (excluding LP preparation code) finds no `1.1` path, archive-only field,
+bridge or "legacy" wording; the only remaining matches are the
+`has_learning_progression_provenance` capability and the builder's
+full-evidence input basenames. Earlier on a scratch copy: a `1.1` manifest →
+`manifest_version_unsupported`; an archive-only key (`null` or a path) or an
+archive-only name as an additional artifact → `manifest_invalid`. Startup,
+revalidation, archive verification and the suite are checked in DEV-012, once
+the six snapshots are re-sealed.
+
+---
+
+### DEV-012 — Re-seal the six `1.2` snapshots without archive-only keys
+
+`Status`: `DONE` `Depends On`: `DEV-010`
+`Acceptance`: `AC-001, AC-004, AC-006, AC-015`
+
+**Goal**
+
+Replace the six unreleased `1.2` snapshots, whose manifests carry the eight
+archive-only keys as `null`, with rebuilt and re-accepted ones (Interfaces 2).
+
+**Affected Area**
+
+`data/graph_packages/` (delete the six snapshot directories, rebuild from the
+unchanged `package_build.json` specs with only `outputRoot` redirected, accept
+with `kgfegmcp-validate-packages pending`).
+
+**Expected Outcome**
+
+Each framework again has one `passed` `1.2` snapshot with the same snapshot ID
+and byte-identical declared artifacts; only the manifest differs (no
+archive-only keys, new timestamps). The server starts under `fail`.
+
+**Self-Check**
+
+Before deleting, record every declared artifact's SHA-256; after rebuilding,
+require identical snapshot IDs and artifact hashes and no archive-only keys in
+any manifest. Then: startup under `fail` loads the six; `validate-packages one
+--read-only` passes for each; a scratch `1.1` manifest is rejected with
+`manifest_version_unsupported` and one with a `null` archive-only key with
+`manifest_invalid`; `kgfegmcp-verify-evidence-archive all` passes; suite shows
+no new failures beyond those recorded in Plan Notes.
+
+Result (2026-10-14, `0a47aa8`): recorded each manifest's snapshot ID and 79
+checksums (all six `1.2`, `passed`, eight `null` archive-only keys each);
+deleted the six snapshot directories; rebuilt with
+`kgfegmcp-build-manifest --spec <copy>` (unchanged specs, `outputRoot` set to
+`data/graph_packages`) → all `created` with the same six snapshot IDs;
+`kgfegmcp-validate-packages pending` → exit 0, all six `passed`, persisted, no
+findings. Every rebuilt manifest has the same snapshot ID and identical
+`checksums` (79/79, also equal to the on-disk SHA-256 of each file) and no
+archive-only key; `git status` shows only the six manifests modified. Then:
+`bootstrap_application()` with `KGFEGMCP_INVALID_PACKAGE_POLICY=fail` → six
+`1.2` packages; `validate-packages one … --read-only` for each → exit 0, valid,
+`passed`, not persisted, no findings; `kgfegmcp-verify-evidence-archive all` →
+exit 0, 86 `ok` each; on a scratch copy of Nigeria, unchanged → no findings,
+`manifestVersion` `1.1` → `manifest_version_unsupported`,
+`learningProgressionFinalClaims: null` → `manifest_invalid`. Suite: 112 passed,
+5 failed — the 4 recorded in Plan Notes plus
+`test_progression_resources.py::test_bulk_is_denied_independently`, which
+expects `ResourceAccessDeniedError` for the generic artifact
+`learningProgressionProvenance`; since DEV-010 removed its policy entry, the
+name is undeclared and gives `ResourceNotFoundError`, the "unavailable instead
+of access denied" change the design lists under Risks (Tester rework).
+
 ---
 
 ### DEV-009 — Ignore and untrack archive-only files
 
-`Status`: `PENDING` `Depends On`: `DEV-010`
+`Status`: `PENDING` `Depends On`: `DEV-012`
 `Acceptance`: `AC-003, AC-006, AC-014, AC-016`
 
 **Goal**
@@ -697,6 +765,10 @@ otherwise recorded as a limitation.
   `test_progression_lookup.py::test_every_exact_edge_preserves_accepted_evidence`
   and `test_progression_resources.py::test_original_per_edge_trace_and_hashes`
   (both expect `learningProgressionProvenance` to be declared).
+  Since DEV-010,
+  `test_progression_resources.py::test_bulk_is_denied_independently` also
+  fails: it expects access denied for the undeclared `learningProgressionProvenance`
+  artifact, which now reports unavailable by design.
 - All self-check scripts live in the session scratchpad, not the repository.
 - The size fallback in the design's Risks (hoisting constant per-edge fields)
   is a design revision; if DEV-009 measures over 100 MB, Developer routes an
@@ -758,3 +830,13 @@ returned to `PROPOSED` for approval; the locked user style is unchanged.
 `Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`:
 `architecture spec at f191682; committed six accepted 1.2 packages at 7f02e77 (manifests with null archive-only artifact keys); uncommitted DEV-010 edits listed under DEV-010`
 `Next Action`: `Reconcile DEV-010 with the corrected design (model tolerance or re-sealed packages), finish the removal, then rerun startup, the 1.1 rejection, rebuild ID, full revalidation, archive verification and the suite.`
+
+### Recovery Reconciliation 3 (2026-10-14)
+
+Suspended Assignment 3 restored after the Architect's correction (`0a47aa8`):
+archive-only keys must be absent from manifests, and the six unreleased `1.2`
+snapshots are rebuilt and re-accepted with the same IDs. The DEV-010 code edits
+were committed in `f8096e4`. DEV-010 keeps its code outcome; its startup and
+revalidation checks move to new DEV-012, which re-seals the snapshots. DEV-009
+now depends on DEV-012. The plan returned to `PROPOSED` for approval; the locked
+user style is unchanged.
