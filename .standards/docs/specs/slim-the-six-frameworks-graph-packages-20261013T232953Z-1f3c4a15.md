@@ -186,6 +186,21 @@ placement stays `SHA256(UTF8(relationship_id))[0] modulo 64`.
   `learningProgressionProvenance`, `learningProgressionBuildsTowards` or
   `learningProgressionRelatesTo`. The model has no fields for them, and these
   names are reserved, so they cannot be declared as additional artifacts either.
+- A manifest must contain no key for these kinds, not even with a `null` value.
+  The six `1.2` snapshots accepted during development were serialized before
+  the fields were removed, so they carry those eight keys as `null`. They are
+  unreleased (only on the feature branch, not merged or deployed), so the fix
+  is to rebuild and re-accept them, not to keep always-null fields in the model:
+  - remove the eight fields from `PackageArtifacts`;
+  - delete the six snapshot directories;
+  - rebuild them from the same specs and inputs;
+  - re-accept them with the evidence tier.
+
+  Because the snapshot ID derives from the declared checksums, which do not
+  change, the rebuilt snapshots keep the same IDs and differ only in manifest
+  bytes (no `null` keys, new timestamps). A snapshot with the same ID whose
+  artifact bytes differ is a defect. Once a snapshot is released, this
+  re-acceptance is no longer allowed.
 - When LP is included, the required LP set is `Normalization`,
   `ProvenanceIndex`, `Summary`, `Unresolved`, `Validation` and the 64 shard
   names. `hasLearningProgressionProvenance` means that this slim set is present.
@@ -450,9 +465,11 @@ or mismatched entry. It never downloads or uploads.
    be reproduced from the current snapshots; Git history is sufficient.
 6. Build and accept the six `1.2` snapshots with local evidence, then delete the
    old `1.1` snapshot directories.
-7. Remove the `1.1` model rules, the full-package build path, policy entries for
-   names that can no longer be declared, and every test or fixture that exists
-   only for `1.1`. Migrate the remaining tests to `1.2`.
+7. Remove the `1.1` model rules, the archive-only `PackageArtifacts` fields, the
+   full-package build path, policy entries for names that can no longer be
+   declared, and every test or fixture that exists only for `1.1`. Migrate the
+   remaining tests to `1.2`. Then rebuild and re-accept the six `1.2` snapshots
+   so their manifests carry no archive-only keys (Interfaces 2).
 8. Apply the ignore rules and untrack the matched files; measure tracked size.
 9. Rework the tests that read full evidence. Add the synthetic evidence fixture
    and run the STDIO, HTTP loopback, MCPB stage and Docker smokes.
