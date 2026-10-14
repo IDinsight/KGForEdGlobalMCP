@@ -337,7 +337,7 @@ temporary `1.1` bridge; DEV-010 removes it.
 
 ### DEV-006 — Serve slim LP and entity provenance
 
-`Status`: `PENDING` `Depends On`: `DEV-004`
+`Status`: `DONE` `Depends On`: `DEV-004`
 `Acceptance`: `AC-009, AC-011, AC-012, AC-013`
 
 **Goal**
@@ -365,6 +365,43 @@ rights checks are unchanged.
 Serve the scratch Rwanda `1.2` package through the resource service for a sample
 of edges, standards and components and check the payload shape; confirm rights
 denials match today's.
+
+Result (2026-10-14, working tree at `7ef0092` plus changes to `resources/service.py`,
+`resources/lp.py`, `resources/models.py`, `mcp/resources/register.py`). Copies
+of the six scratch `1.2` packages accepted with `KGFEGMCP_GRAPH_PACKAGES_ROOT`
+set to them (`kgfegmcp-validate-packages pending`, exit 0, all `passed`). Scratch
+`dev006.py` bootstrapped the app on the real `1.1` packages and on the accepted
+`1.2` copies and compared, per framework, about 40 LP edges, 21 standards and
+21 components (every Nth by ID): the `1.2` edge provenance equals
+`slim_lp_record` of the `1.1` record; standard provenance equals the `1.1` item
+without `candidate_source_refs` plus `original_item_sha256`; LC provenance equals
+the `1.1` entry plus `original_component_sha256`; `archivedProvenanceSha256`
+equals the `1.1` manifest hash of the full map, AS or LC document;
+`sourceDocument` and `attributionStatement` agree. `source_artifacts`: edge →
+manifest, shard, slim index, `relationships`, `evidenceArchiveRecord`;
+standard/LC → slim artifact, `evidenceArchiveRecord`. `read_evidence` on a
+`1.2` edge URI returns the slim record. Generic artifact resource outcomes for
+a shard, `entityProvenance`, `learningComponentProvenance`,
+`learningProgressionSummary` and the index are the same exception class as on
+`1.1` (`ResourceAccessDeniedError` under the current rights);
+`evidenceArchiveRecord` → `ResourceNotFoundError`. The `learning_progressions`
+resource lists Normalization, ProvenanceIndex, Summary, Unresolved and
+Validation. `resources/policy.py` is unchanged. Suite: 115 passed, the same 2
+known DEV-005 failures. isort, black, ruff, mypy, interrogate (100%) and pylint
+(10.00/10) clean on the four files.
+
+Limitation: `kgfegmcp-stdio-smoke` could not run here. It launches the server
+with `uv` and a fixed environment (no `UV_CACHE_DIR`), and the sandbox denies
+`~/.cache/uv`; it also always serves `<repo>/data/graph_packages`. Smoke runs
+stay in DEV-009, after the new packages are in place.
+
+**Implementation Notes**
+
+`validated_partition_index`, `_archive_reference`, `_entity_source` and
+`_entity_sources` branch on the manifest version; the `1.1` branches are the
+temporary bridge (DEV-010 removes them). The bridge fills the new result fields
+from the full documents so both layouts return the same shape. The MCP resource
+template description for edge provenance no longer says "full original".
 
 ---
 
