@@ -180,7 +180,7 @@ inputs must sit inside the repository so `localPath` is repository-relative.
 
 ### DEV-004 — Runtime validation tier
 
-`Status`: `PENDING` `Depends On`: `DEV-002, DEV-003`
+`Status`: `DONE` `Depends On`: `DEV-002, DEV-003`
 `Acceptance`: `AC-002, AC-006, AC-007, AC-008, AC-010`
 
 **Goal**
@@ -207,6 +207,40 @@ Load the scratch-built Rwanda `1.2` package with `GraphPackageLoader` and
 compare projections and coverage with the current `1.1` package's (must be
 equal); tamper copies (missing, extra, altered runtime file) still give today's
 blocking findings. Existing suite still passes on the `1.1` packages.
+
+Result (2026-10-14, working tree at `7a3e16b` plus `lp_runtime.py` (new),
+`loader.py` and `lp_validation.py` changes): all six frameworks built with the
+DEV-003 builder into a scratch output root (unchanged specs, `outputRoot`
+redirected) and loaded with `GraphPackageLoader`. Scratch `dev004_all.py`: every
+`1.2` package loads with no findings, and its `LearningProgressionEvidence`
+(judgments and coverage) equals the current `1.1` package's (1051, 599, 3206,
+907, 486, 1831 judgments). Scratch snapshot IDs: Ghana English `…@2019+f2a9ab5922a1`,
+Ghana Math `…@2019+ed3b9450718a`, CBSE `…@undated+21ece81a7ac5`, Tamil Nadu
+`…@2025-proposed-draft+82b183ba9acc`, Nigeria `…@undated+424e546e2284`, Rwanda
+`…@2025+7c2d6f401157`. Scratch `dev004.py` on Rwanda copies: missing shard →
+`artifact_missing`, `package_declared_file_missing`; extra file →
+`package_undeclared_file`; altered record → `artifact_checksum_mismatch`,
+`snapshot_checksum_identity_mismatch` (none load). On verified bytes passed
+straight to `validate_runtime_evidence`: flipped decision →
+`lp_slim_record_mismatch`; removed field reinstated → `lp_slim_record_shape`;
+record entry dropped and archive file marked runtime →
+`evidence_record_runtime_mismatch`; record hash change →
+`lp_normalization_output_hashes`; slim index original-index hash change →
+`lp_partition_declarations`; record moved to the wrong shard →
+`lp_partition_contents`. `grep` finds no `local_path` use in `lp_runtime.py` or
+`loader.py`. Suite: 117 passed. isort, black, ruff, mypy, interrogate (100%) and
+pylint (10.00/10) clean on the three files.
+
+**Implementation Notes**
+
+`_projection` now takes the `Judgment` and `_coverage` takes the report and
+summary; their outputs are unchanged and `lp_runtime.py` imports them. The
+loader picks `validate_runtime_evidence` for `1.2` and the existing validator
+for the `1.1` bridge, and captures the record bytes. Runtime findings use new
+codes `evidence_record_identity`, `evidence_record_runtime_mismatch`,
+`lp_slim_record_shape`, `lp_slim_record_mismatch` and `runtime_evidence_shape`,
+and reuse `lp_normalization_output_hashes`, `lp_partition_declarations`,
+`lp_partition_identity`, `lp_partition_contents` and `lp_provenance_ids`.
 
 ---
 

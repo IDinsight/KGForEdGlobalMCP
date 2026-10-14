@@ -71,10 +71,13 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_nodes,
     iter_decoded_relationships,
 )
+from kgfegmcp.packages.lp_runtime import validate_runtime_evidence
 from kgfegmcp.packages.lp_validation import (
     validate_learning_progression_evidence,
 )
 from kgfegmcp.packages.models import (
+    EVIDENCE_ARCHIVE_RECORD_NAME,
+    MANIFEST_VERSION,
     SUPPORTED_INCLUDED_GRAPH_TYPES,
     SUPPORTED_PACKAGE_REVISION,
     ArtifactIntegrityObservation,
@@ -128,7 +131,7 @@ _BLOCKING_FINDING_CODES: Final[frozenset[str]] = frozenset(
     }
 )
 _CAPTURED_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
-    {"nodes", "relationships", "validationReport"}
+    {EVIDENCE_ARCHIVE_RECORD_NAME, "nodes", "relationships", "validationReport"}
 )
 _MANIFEST_LOGICAL_NAME: Final[str] = "packageManifest"
 _MANIFEST_VERSION_FINDINGS: Final[tuple[tuple[frozenset[str], str, str], ...]] = (
@@ -492,7 +495,15 @@ class GraphPackageLoader:
             relationships=delivery.relationships,
             validation_report=loaded_report,
         )
-        lp_evidence, lp_findings = validate_learning_progression_evidence(
+
+        # Runtime-only packages validate from runtime files alone; the full-layout path
+        # is a temporary bridge for the current packages until cutover.
+        validate_evidence = (
+            validate_runtime_evidence
+            if manifest.manifest_version == MANIFEST_VERSION
+            else validate_learning_progression_evidence
+        )
+        lp_evidence, lp_findings = validate_evidence(
             captured_contents=dict(verification.captured_contents),
             package=loaded_package,
         )

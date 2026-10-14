@@ -30,6 +30,7 @@ from kgfegmcp.packages.lp_models import (
     CycleDiagnostics,
     Decision,
     FinalClaims,
+    Judgment,
     JudgmentProjection,
     LearningProgressionEvidence,
     Provenance,
@@ -187,13 +188,15 @@ def _claim_endpoints(claim: Claim) -> tuple[str | None, str | None]:
     return None, None
 
 
-def _coverage(evidence: _Evidence) -> CoverageProjection:
+def _coverage(*, report: ValidationReport, summary: Summary) -> CoverageProjection:
     """Project source coverage with optional unknown selection denominators.
 
     Parameters
     ----------
-    evidence
-        Accepted report and summary evidence.
+    report
+        Accepted LP validation report.
+    summary
+        Accepted LP generation summary.
 
     Returns
     -------
@@ -202,12 +205,12 @@ def _coverage(evidence: _Evidence) -> CoverageProjection:
 
     Examples
     --------
-    >>> _coverage(evidence).semantic_scope_notice == _SCOPE_NOTICE
+    >>> _coverage(report=report, summary=summary).semantic_scope_notice == _SCOPE_NOTICE
     True
     """
 
-    eligibility = evidence.summary.eligibility
-    warnings = evidence.report.warnings
+    eligibility = summary.eligibility
+    warnings = report.warnings
     return CoverageProjection(
         eligible_sfis_per_relationship=(
             tuple(sorted(eligibility.eligible_sfis_per_relationship.items()))
@@ -225,9 +228,9 @@ def _coverage(evidence: _Evidence) -> CoverageProjection:
             if eligibility
             else None
         ),
-        needs_review_claims=evidence.report.object_counts["needs_review_claims"],
-        no_relation_claims=evidence.report.object_counts["no_relation_claims"],
-        semantic_scope_notice=evidence.report.semantic_scope_notice,
+        needs_review_claims=report.object_counts["needs_review_claims"],
+        no_relation_claims=report.object_counts["no_relation_claims"],
+        semantic_scope_notice=report.semantic_scope_notice,
         total_sfis_considered=(
             eligibility.total_sfis_considered if eligibility else None
         ),
@@ -249,9 +252,7 @@ def _coverage(evidence: _Evidence) -> CoverageProjection:
             if eligibility
             else None
         ),
-        unresolved_warning_pairs=evidence.report.object_counts[
-            "unresolved_warning_pairs"
-        ],
+        unresolved_warning_pairs=report.object_counts["unresolved_warning_pairs"],
         validation_warning_count=len(warnings),
         validation_warning_excerpts=tuple(warning[:512] for warning in warnings[:5]),
         validation_warnings_excerpted=any(
@@ -393,15 +394,15 @@ def _load_evidence(
     )
 
 
-def _projection(*, identifier: str, provenance: Provenance) -> JudgmentProjection:
+def _projection(*, identifier: str, judgment: Judgment) -> JudgmentProjection:
     """Retain the stored final model judgment with bounded excerpts and flags.
 
     Parameters
     ----------
     identifier
         Exact stored relationship identifier.
-    provenance
-        Complete validated per-edge evidence.
+    judgment
+        Validated final judgment of the per-edge evidence.
 
     Returns
     -------
@@ -410,11 +411,10 @@ def _projection(*, identifier: str, provenance: Provenance) -> JudgmentProjectio
 
     Examples
     --------
-    >>> len(_projection(identifier=identifier, provenance=provenance).rationale_excerpt) <= 512
+    >>> len(_projection(identifier=identifier, judgment=judgment).rationale_excerpt) <= 512
     True
     """
 
-    judgment = provenance.claim.judgment
     return JudgmentProjection.model_validate(
         {
             "confidence": judgment.confidence,
@@ -841,7 +841,9 @@ def _validate_provenance(
             edge=edges[identifier], evidence=evidence, provenance=provenance
         )
         _validate_request_identity(evidence=evidence, provenance=provenance)
-        projections.append(_projection(identifier=identifier, provenance=provenance))
+        projections.append(
+            _projection(identifier=identifier, judgment=provenance.claim.judgment)
+        )
 
     _require(code="lp_nonpublishing_exclusion", condition=seen == set(accepted))
     return tuple(projections)
@@ -1221,7 +1223,8 @@ def validate_learning_progression_evidence(
         judgments = _validate_provenance(accepted=accepted, evidence=evidence)
         _validate_report(evidence)
         projection = LearningProgressionEvidence(
-            coverage=_coverage(evidence), judgments=judgments
+            coverage=_coverage(report=evidence.report, summary=evidence.summary),
+            judgments=judgments,
         )
     except _EvidenceError as error:
         return None, (
