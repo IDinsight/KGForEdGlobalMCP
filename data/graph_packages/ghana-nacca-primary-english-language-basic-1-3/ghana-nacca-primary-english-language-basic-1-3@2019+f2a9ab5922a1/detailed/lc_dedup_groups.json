@@ -1,0 +1,399 @@
+{
+  "candidate_pair_count": 713,
+  "conflict_count": 0,
+  "conflicts": [],
+  "exact_duplicate_claim_count": 14,
+  "groups": [
+    {
+      "canonical_text": "answer questions for clarification about what other people say",
+      "member_texts": [
+        "answer questions for clarification about what other people say",
+        "answer questions for clarifications about what other people say"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "12bfafbd-9f35-5670-9de3-d17838b034c7",
+        "df7b2257-4b1c-576b-80c4-037d9e72c9a9"
+      ]
+    },
+    {
+      "canonical_text": "ask questions for clarification about what other people say",
+      "member_texts": [
+        "ask questions for clarification about what other people say",
+        "ask questions for clarifications about what other people say"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "12bfafbd-9f35-5670-9de3-d17838b034c7",
+        "df7b2257-4b1c-576b-80c4-037d9e72c9a9"
+      ]
+    },
+    {
+      "canonical_text": "blend sounds to produce simple syllables/words",
+      "member_texts": [
+        "blend sounds to produce simple syllables/words",
+        "orally blend two or three sounds together to make one syllable word, e.g. (a-sh = ash, b-i-n = bin)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7bf5eccb-633c-534f-815c-e43739f15ef2",
+        "eb456d2d-7cfa-5f4d-a4e3-873885771e1a"
+      ]
+    },
+    {
+      "canonical_text": "blend syllables to produce words",
+      "member_texts": [
+        "blend syllables to produce words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4d522171-1ad8-5540-86b9-93927caef4c8",
+        "7bf5eccb-633c-534f-815c-e43739f15ef2"
+      ]
+    },
+    {
+      "canonical_text": "capitalise titles of texts",
+      "member_texts": [
+        "capitalise titles of texts",
+        "use capital letters at the beginning of titles"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "00496f13-3044-5ef3-99c9-2306b676a8d1",
+        "e16cf2e8-c157-5fbd-8abf-51d7049228d6"
+      ]
+    },
+    {
+      "canonical_text": "copy sentences from a given substitution table",
+      "member_texts": [
+        "copy correct sentences from substitution tables",
+        "copy sentences from a given substitution table"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "110d5807-daed-5767-b4c7-da499975ded1",
+        "11130467-6909-5ce4-b1a4-01750b41df0f"
+      ]
+    },
+    {
+      "canonical_text": "demonstrate turn-taking in conversations",
+      "member_texts": [
+        "demonstrate turn-taking in conversation in different topics",
+        "demonstrate turn-taking in conversations"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6aa8eb1c-35a7-557e-9508-a94b3f186583",
+        "94c51fd6-98b4-54ef-9c0c-f609048faea5"
+      ]
+    },
+    {
+      "canonical_text": "develop two coherent paragraphs on one idea or concept using leading questions",
+      "member_texts": [
+        "develop two coherent paragraphs on one idea or concept using leading questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "694b509a-4c42-5678-997b-8896c7215796",
+        "9f381f65-f0c7-5df4-a7b8-5a67d931bc24"
+      ]
+    },
+    {
+      "canonical_text": "dramatise stories heard or read",
+      "member_texts": [
+        "dramatise stories heard and read",
+        "dramatise stories heard or read",
+        "role-play stories heard and read",
+        "role-play stories heard or read"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3f16b607-e2ae-5a97-a98d-5800d26dfab9",
+        "ed207a01-fa31-5e42-84fd-fbd78588e6c7"
+      ]
+    },
+    {
+      "canonical_text": "draw pictures to share an opinion",
+      "member_texts": [
+        "draw a picture to share an opinion",
+        "draw pictures to share an opinion"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3545e74e-babf-5564-96d4-b8bbdfee99bb",
+        "aa0b12f7-5a2a-59b1-a2bd-6a1501b29c0e"
+      ]
+    },
+    {
+      "canonical_text": "identify characters in a story",
+      "member_texts": [
+        "identify characters in a story",
+        "recognise characters in a story"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "61a07372-14d6-5a1e-98de-c3cbabeadf8d",
+        "d53426ed-be01-5353-ad68-13a7a5753e6e"
+      ]
+    },
+    {
+      "canonical_text": "make polite requests",
+      "member_texts": [
+        "make polite requests"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6fc1e01b-bcfc-5ca8-a4b0-90fadab96964",
+        "a715f400-7699-50d3-88df-cef64d0b618a"
+      ]
+    },
+    {
+      "canonical_text": "match parts of sentences to compose meaningful texts",
+      "member_texts": [
+        "match parts of sentences to compose meaningful texts"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5c1d83a7-7db7-5026-bf05-b32a39a9902e",
+        "db7917ed-a061-575d-8e0d-28e335bca147"
+      ]
+    },
+    {
+      "canonical_text": "read level-appropriate sight words",
+      "member_texts": [
+        "read level-appropriate sight words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "09dba39b-0a1f-5881-bf09-05e67bb6383c",
+        "813ee1ef-3d87-58ca-9411-39e5efe5af1d",
+        "cf041507-59eb-5b65-8199-66a065fccb28"
+      ]
+    },
+    {
+      "canonical_text": "recognise the sequence of events in stories",
+      "member_texts": [
+        "recognise the sequence of events in a narrative text",
+        "recognise the sequence of events in stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "28cfeef1-d29a-51eb-9729-1409d00684db",
+        "d27ce71c-b0d5-595b-bd09-984adb94b36f"
+      ]
+    },
+    {
+      "canonical_text": "relate the sequence of events in stories",
+      "member_texts": [
+        "relate the sequence of events in a narrative text",
+        "relate the sequence of events in stories"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "28cfeef1-d29a-51eb-9729-1409d00684db",
+        "d27ce71c-b0d5-595b-bd09-984adb94b36f"
+      ]
+    },
+    {
+      "canonical_text": "respond to commands",
+      "member_texts": [
+        "respond to commands"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "256a8004-795c-59e6-9a53-7ea9ccccdd82",
+        "68a6056a-751c-55e0-b908-2ca5269b5de3"
+      ]
+    },
+    {
+      "canonical_text": "respond to polite requests",
+      "member_texts": [
+        "respond to polite requests"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6fc1e01b-bcfc-5ca8-a4b0-90fadab96964",
+        "a715f400-7699-50d3-88df-cef64d0b618a"
+      ]
+    },
+    {
+      "canonical_text": "retell level-appropriate texts in own words",
+      "member_texts": [
+        "retell level-appropriate text in own words",
+        "retell level-appropriate texts in own words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5b58c0f7-675b-5724-b66e-cf018dbd521d",
+        "851d874e-f472-5d10-b59b-a2f4ccdcc7fe",
+        "b030f7fc-19c6-5ac5-b76c-f95bb9cd4a87"
+      ]
+    },
+    {
+      "canonical_text": "segment syllables/words into sounds",
+      "member_texts": [
+        "orally segment spoken syllables/words into individual sounds e.g. stop = s-t-o-p",
+        "segment syllables/words into sounds"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7a544049-2959-5b70-bb0b-599fd2526167",
+        "8985c25e-7548-54c9-bf3a-4286ed072993"
+      ]
+    },
+    {
+      "canonical_text": "speak with confidence before different audience",
+      "member_texts": [
+        "speak with confidence before different audience",
+        "speak with confidence before different audiences, e.g. small group, class, etc"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "8ab35808-b199-50e6-b895-c96cfbc5387c",
+        "b8207e88-b47f-5659-93b6-2d20be585ff6"
+      ]
+    },
+    {
+      "canonical_text": "understand the relationship between spelling of words and sounds of speech",
+      "member_texts": [
+        "understand the relationship between spelling of words and sounds of speech"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "92a1d91e-b190-523f-9f8a-3a5258103067",
+        "d9a19096-b066-5238-9d1a-22789e4a5110"
+      ]
+    },
+    {
+      "canonical_text": "use appropriate greetings for special occasions",
+      "member_texts": [
+        "use appropriate greetings for special occasions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "751c017b-62a6-5e2f-94e8-034e386189da",
+        "d26ef812-548a-5257-b8c8-1eb040ae2b6b"
+      ]
+    },
+    {
+      "canonical_text": "use appropriate pronunciation and intonation in answering wh-questions",
+      "member_texts": [
+        "use appropriate pronunciation and intonation in answering wh-questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "06211eba-52e2-58fc-8bb4-448625c8c851",
+        "d9f8c4ac-f16e-5d94-97de-748277fe1456"
+      ]
+    },
+    {
+      "canonical_text": "use appropriate pronunciation and intonation in asking wh-questions",
+      "member_texts": [
+        "use appropriate pronunciation and intonation in asking wh-questions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "06211eba-52e2-58fc-8bb4-448625c8c851",
+        "d9f8c4ac-f16e-5d94-97de-748277fe1456"
+      ]
+    },
+    {
+      "canonical_text": "use common rhyming endings to decode simple words",
+      "member_texts": [
+        "use common rhyming endings to decode simple words",
+        "use common rhyming/endings to decode simple words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4dfd9bd0-a505-56ed-b201-4a6f40bd6a09",
+        "f0be4072-b03d-52b9-b85e-3c153c0d0456"
+      ]
+    },
+    {
+      "canonical_text": "use elements of structural analysis to decode unknown words",
+      "member_texts": [
+        "use basic elements of structural analysis (e.g prefixes, suffixes, compound, root words) to decode unknown words",
+        "use elements of structural analysis to decode unknown words"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "d63db9a4-ce13-54f2-a7ca-f8ef81b48aa6",
+        "f9031ec6-d2db-5334-b21d-93f90eb10b2d"
+      ]
+    },
+    {
+      "canonical_text": "use illustrations, text clues and context to make predictions during reading",
+      "member_texts": [
+        "use illustrations, text clues (title, headings) and context to make predictions",
+        "use illustrations, text clues and context to make predictions during reading"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "01992f28-ed87-54b2-ab59-c0c4f915ace1",
+        "6cf85d37-ddcf-5f8e-9734-ae519ddb6dc2"
+      ]
+    },
+    {
+      "canonical_text": "use self-correction strategy to make meaning from texts",
+      "member_texts": [
+        "use self-correction strategies to make meaning when reading texts",
+        "use self-correction strategy to make meaning from texts"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5951c5dd-d4cb-5880-a686-dc056f8cfda6",
+        "8e38a110-abee-55c2-bf19-0fb723aa5205"
+      ]
+    },
+    {
+      "canonical_text": "use the present tense continuous form of verbs",
+      "member_texts": [
+        "use the present continuous form of verbs to describe actions taking place at the time of speaking",
+        "use the present tense continuous form of verbs"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2ac28f19-c43b-5a5d-8ac9-326a69c92b40",
+        "de2bf65a-fbd0-5f8b-93a1-aaa996460e39"
+      ]
+    },
+    {
+      "canonical_text": "use the present tense of verbs to describe habitual actions",
+      "member_texts": [
+        "use the present tense of verbs to describe habitual actions",
+        "use the simple present tense to express habitual actions (simple truths, interest, feelings and opinions)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3400c9d2-0cf1-5fd0-b56d-90120a97a18c",
+        "b142c829-60a6-530e-afe3-86c42a705c79"
+      ]
+    },
+    {
+      "canonical_text": "use visualisation strategy (form mental images about texts) to enhance understanding of level-appropriate texts",
+      "member_texts": [
+        "use visualisation strategy (form mental images about texts) to enhance understanding of level-appropriate texts",
+        "use visualisation strategy (form mental images when reading text) to enhance understanding of level-appropriate texts"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "9cfa75fb-6496-532f-b012-a784d23be128",
+        "feb0bb3f-090e-51a7-b043-2f0a13f14bc6"
+      ]
+    },
+    {
+      "canonical_text": "use words containing digraphs to make meaningful sentences",
+      "member_texts": [
+        "use words containing digraphs to make meaningful sentences"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "c46a159f-e0e8-56d8-a689-088c4d67d5d4",
+        "e596e7e5-9ed0-58f1-acf2-b4ca1ba0a918"
+      ]
+    }
+  ],
+  "judged_same_count": 26,
+  "total_claim_count": 309,
+  "unique_text_count": 295
+}

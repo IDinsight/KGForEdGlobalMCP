@@ -1105,6 +1105,11 @@ class GraphPackageManifest(FrozenSchema):
 class LoadedGraphPackage(FrozenSchema):
     """Hold one safely loaded immutable graph-package aggregate for validation."""
 
+    # Archive-only evidence identities from a runtime-only package's evidence
+    # archive record; empty for packages without one.
+    archived_artifact_sha256: dict[ArtifactName, Sha256Digest] = Field(
+        default_factory=dict
+    )
     artifacts: tuple[DeclaredArtifactReference, ...]
     framework_root: FrameworkNode
     item_nodes: tuple[StandardNode, ...]

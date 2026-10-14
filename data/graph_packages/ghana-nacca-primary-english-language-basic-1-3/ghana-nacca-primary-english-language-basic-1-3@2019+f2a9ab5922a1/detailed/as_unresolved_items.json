@@ -1,0 +1,102 @@
+{
+  "finalization_exclusion_summary": {
+    "excluded_conflict_group_count": 0,
+    "excluded_needs_review_group_count": 0
+  },
+  "relationship_unresolved_edges": [
+    {
+      "child_final_sfi_uuid": "4f5d76cf-3242-52e4-8c16-7b569f84588a",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "Indicator B1.1.6.2.1 implies a B1.1.6.2 Content Standard parent. No exact finalized B1.1.6.2 candidate is present; the only same-grade/strand/sub-strand Content Standard is B1.1.6.1, which runtime instructions explicitly forbid attaching merely because its continued cell is nearby in the same table row. No defensible direct parent exists in the bounded set.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child is Indicator B1.1.6.2.1, which implies a B1.1.6.2 Content Standard parent. No exact finalized B1.1.6.2 candidate exists in the bounded set; the only same grade/strand/sub-strand Content Standard is B1.1.6.1 (endpoint 8a166485), which the runtime overrides explicitly forbid attaching merely because its continued cell shares the same table row. All other candidates conflict on Grade/Strand/Sub-Strand. Per policy, the correct action is unresolved with no selected parents (audited root fallback added later by the pipeline). The producer draft correctly returns unresolved=true and selected_parent_endpoint_ids=[], satisfying the parent_requirements safe-minimum rule.",
+        "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:relationship:hasChild:862e9144-b9e0-5512-bfa9-55597af6d1d6:4f5d76cf-3242-52e4-8c16-7b569f84588a",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_400a69af2d10e31e",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b1.1.6.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "862e9144-b9e0-5512-bfa9-55597af6d1d6",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "72a98493-9a16-58b6-9a80-e53012bfa4c1",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "862e9144-b9e0-5512-bfa9-55597af6d1d6",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "4f5d76cf-3242-52e4-8c16-7b569f84588a",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "f462ee3a-e03f-58e9-af64-0174d4da57a0",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "Indicator B1.1.6.2.2 implies a B1.1.6.2 Content Standard parent. Per runtime policy, it may only attach if an exact finalized B1.1.6.2 Content Standard exists; no such candidate is present. B1.1.6.1 (the nearby continued cell) must not be selected merely for proximity. Marking unresolved.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child is Indicator B1.1.6.2.2, whose implied parent is Content Standard B1.1.6.2. The runtime overrides explicitly state B1.1.6.2.1/B1.1.6.2.2 may attach only to an exact finalized B1.1.6.2 Content Standard and must never attach to nearby B1.1.6.1. No B1.1.6.2 candidate exists in the bounded set (only B1.1.6.1 same-row cell and cross-scope alternatives). The producer correctly marked the child unresolved with no selected parents, matching the required unresolved contract and parent_requirements. No material correction needed.",
+        "doc_key": "e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8:relationship:hasChild:862e9144-b9e0-5512-bfa9-55597af6d1d6:f462ee3a-e03f-58e9-af64-0174d4da57a0",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_c308f50560771af9",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b1.1.6.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "862e9144-b9e0-5512-bfa9-55597af6d1d6",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "c050c8e5-8219-5656-afac-ed154c9c0253",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "862e9144-b9e0-5512-bfa9-55597af6d1d6",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "f462ee3a-e03f-58e9-af64-0174d4da57a0",
+      "unresolved_root_fallback": true
+    }
+  ]
+}

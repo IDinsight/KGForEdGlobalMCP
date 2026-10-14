@@ -1,0 +1,35 @@
+{
+  "academic_subject": "Science",
+  "adoption_status": "Unknown",
+  "attribution_statement": "Learning Framework - Science, Central Board of Secondary Education (CBSE), developed in collaboration with Azim Premji University.",
+  "author": "Central Board of Secondary Education (CBSE) and Azim Premji University",
+  "case_identifier_uri": "urn:uuid:4839ccc8-5fcc-58a1-a981-7994625c79b2",
+  "case_identifier_uuid": "4839ccc8-5fcc-58a1-a981-7994625c79b2",
+  "date_created": null,
+  "date_modified": null,
+  "description": null,
+  "identifier": "4839ccc8-5fcc-58a1-a981-7994625c79b2",
+  "in_language": "en",
+  "is_current": true,
+  "jurisdiction": "India",
+  "license": "Not specified in source PDF",
+  "metadata": {
+    "country": "India",
+    "doc_key": "3f8c25c19ed8395bf6625b7958092b8d219cae743b9ea36fcfd56efd59b6d2fc",
+    "framework_title": "Learning Framework - Science",
+    "grades_or_stages": [
+      "Secondary Stage",
+      "Class IX",
+      "Class X"
+    ],
+    "languages": [
+      "en"
+    ],
+    "page_count": 92,
+    "pdf_name": "learning_standards_science.pdf",
+    "primary_language": "en"
+  },
+  "name": "Learning Framework - Science",
+  "notes": null,
+  "provider": "Central Board of Secondary Education (CBSE)"
+}

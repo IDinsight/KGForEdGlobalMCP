@@ -459,7 +459,7 @@ so one run confirms a whole restored input set. It finds the record at the fixed
 
 ### DEV-008 — Build and accept the six `1.2` snapshots
 
-`Status`: `PENDING` `Depends On`: `DEV-003, DEV-005, DEV-006`
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-003, DEV-005, DEV-006, DEV-011`
 `Acceptance`: `AC-001, AC-002, AC-004, AC-006, AC-015`
 
 **Goal**
@@ -486,6 +486,96 @@ Scratch comparison: delivery file hashes equal; per-edge projections and
 framework, standards and progression tool outputs equal between old and new
 packages except the expected fields. Server bootstrap under `fail` loads all
 six. Rebuilding one framework from its spec reproduces its snapshot ID.
+
+Progress (2026-10-14, working tree at `ec30e40` plus DEV-002 to DEV-007 changes):
+built the six `1.2` packages into `data/graph_packages/` from temporary spec
+copies that only set `outputRoot` to `data/graph_packages` (snapshot IDs
+identical to the scratch builds: Ghana English `…@2019+f2a9ab5922a1`, Ghana
+Math `…@2019+ed3b9450718a`, CBSE `…@undated+21ece81a7ac5`, Tamil Nadu
+`…@2025-proposed-draft+82b183ba9acc`, Nigeria `…@undated+424e546e2284`, Rwanda
+`…@2025+7c2d6f401157`), then `kgfegmcp-validate-packages pending` → exit 0, all
+six `passed`, persisted. The old `1.1` snapshots are still present (not
+deleted); the catalog loads all twelve. Scratch `dev008_compare.py` paired
+calls on old and new snapshots: delivery hashes equal; `LearningProgressionEvidence`
+equal; `get_framework`, framework statistics, `get_standard`,
+`get_standard_context` identical after snapshot/graph-package ID normalization;
+`search_standards` identical except `page.nextCursor`, which encodes a hash of
+the effective query including the snapshot ID. Every progression service call
+on `1.2` (`get_learning_progression` ×8080, `get_standard_progressions` ×196,
+`traverse_learning_progressions` ×196, `get_learning_progression_paths` ×65,
+`search_learning_progressions` ×6) raised `CapabilityUnavailableError`:
+`LearningProgressionsService.evidence_metadata` requires every name in
+`services/lp_models.py` `PROGRESSION_DERIVATION_ARTIFACT_NAMES`
+(`learningProgressionProvenance`, `learningProgressionProvenanceIndex`, `nodes`,
+`relationships`) to be declared, and `1.2` packages no longer declare the full
+map. Routed as an `ARCHITECTURE` failure (see Plan Notes, Suspended Assignment 2).
+
+---
+
+### DEV-011 — Progression result citations from archived identities
+
+`Status`: `DONE` `Depends On`: `DEV-004, DEV-006`
+`Acceptance`: `AC-002`
+
+**Goal**
+
+Make the progression tools work on `1.2` packages with unchanged citations
+(Interfaces 10).
+
+**Affected Area**
+
+`packages/models.py` (`LoadedGraphPackage` gains the record's archived
+identities, logical name → SHA-256, `runtime: false` entries only);
+`packages/lp_runtime.py` and `packages/loader.py` (the runtime tier returns
+them and the loader stores them); `services/learning_progressions.py`
+(`evidence_metadata` resolves each of the four names generically: declared
+artifact first, archived identity second, otherwise
+`CapabilityUnavailableError`); `services/lp_models.py` (comment on
+`PROGRESSION_DERIVATION_ARTIFACT_NAMES`).
+
+**Expected Outcome**
+
+On `1.2` packages every progression tool answers, and `metadata.artifacts`
+keeps the four entries in the same order and shape: `learningProgressionProvenance`
+cites the archived map's SHA-256 (unchanged from `1.1`) and its artifact URI;
+only the `learningProgressionProvenanceIndex` hash differs. No file is read to
+build the metadata.
+
+**Self-Check**
+
+Rerun `dev008_compare.py` with both snapshot sets in `data/graph_packages/`:
+every progression call succeeds on `1.2`, and results match `1.1` except
+snapshot identity, the index hash and the snapshot-derived search cursor.
+Existing suite (no new failures) and lint/type tools on changed files.
+
+Result (2026-10-14, working tree at `f191682` plus changes to `packages/models.py`,
+`packages/lp_runtime.py`, `packages/loader.py`, `services/learning_progressions.py`,
+`services/lp_models.py`). With both snapshot sets in `data/graph_packages/`,
+scratch `dev008_compare.py` (normalizing raw and percent-encoded snapshot and
+graph-package IDs) ran 8,887 paired calls; every `1.2` progression call
+succeeds. The only differing fields: `metadata.artifacts[1].sha256` (slim index),
+`metadata.manifestSha256`, and `page.nextCursor`/`page.nextRequest.cursor`
+(they embed the manifest hash or snapshot ID); `search_standards` differs only in
+`page.nextCursor`. `metadata.artifacts[0]` (`learningProgressionProvenance`)
+keeps the `1.1` SHA-256 and URI. Suite with `KGFEGMCP_GRAPH_PACKAGES_ROOT` at a
+copy of only the six `1.1` packages: 115 passed, the 2 known DEV-005 failures.
+At the six accepted `1.2` copies: 113 passed, 4 failed — the 2 known plus
+`test_progression_lookup.py::test_every_exact_edge_preserves_accepted_evidence`
+(expects every derivation name among declared artifacts) and
+`test_progression_resources.py::test_original_per_edge_trace_and_hashes`
+(expects a declared `learningProgressionProvenance`); both encode the old
+contract (Tester rework). On the repository root, which holds both snapshot
+sets until DEV-008 deletes the `1.1` ones, 33 fail; the extra 31 come from two
+snapshots per framework. isort, black, ruff, mypy, interrogate (100%) and pylint
+(10.00/10) clean on the changed files.
+
+**Implementation Notes**
+
+`validate_runtime_evidence` now returns `RuntimeEvidenceResult` (projections,
+archived identities, findings); the loader stores the identities on
+`LoadedGraphPackage.archived_artifact_sha256`. `evidence_metadata` resolves each
+cited name from declared artifacts first, then archived identities, with no
+name-specific branch.
 
 ---
 
@@ -566,6 +656,10 @@ otherwise recorded as a limitation.
   `test_progression_acceptance.py::test_evidence_rejects_missing_required_content`
   fail with `TypeError` since DEV-005, because they pass `captured_contents` and
   `package` to `validate_learning_progression_evidence`, which now takes `view`.
+  On `1.2`-only packages, also
+  `test_progression_lookup.py::test_every_exact_edge_preserves_accepted_evidence`
+  and `test_progression_resources.py::test_original_per_edge_trace_and_hashes`
+  (both expect `learningProgressionProvenance` to be declared).
 - All self-check scripts live in the session scratchpad, not the repository.
 - The size fallback in the design's Risks (hoisting constant per-edge fields)
   is a design revision; if DEV-009 measures over 100 MB, Developer routes an
@@ -602,3 +696,20 @@ DEV-003 now replaces the full-package build path (no `packageLayout` field).
 DEV-005 now refactors `lp_validation.py` onto a `FullEvidenceView`. New DEV-010
 removes `1.1` support after the DEV-008 cutover, and DEV-009 now follows it. The
 plan returned to `PROPOSED` for approval; the locked user style is unchanged.
+
+### Suspended Assignment 2
+
+`Recovery Frame`: `1` `Recovery Reason`:
+`Progression tool results cite learningProgressionProvenance (PROGRESSION_DERIVATION_ARTIFACT_NAMES), which runtime-only packages no longer declare; the design does not set what they cite, and AC-002 allows no such difference.`
+`Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`:
+`architecture spec at 4394d0a; working tree at ec30e40 with DEV-001 to DEV-007 done and the six 1.2 packages built and accepted in data/graph_packages alongside the 1.1 ones`
+`Next Action`: `Reconcile the plan with the corrected design (likely a step for the progression result metadata), then resume DEV-008 by rerunning dev008_compare.py and, if clean, deleting the six 1.1 snapshot directories.`
+
+### Recovery Reconciliation 2 (2026-10-14)
+
+Suspended Assignment 2 restored after the Architect's revision (`f191682`,
+Interfaces 10). DEV-001 to DEV-007 stay `DONE`; their outcomes are unchanged.
+New DEV-011 implements the progression citations, and DEV-008 now depends on it.
+DEV-008 keeps its progress: the six `1.2` packages remain built and accepted
+alongside the `1.1` ones, and resumes with the comparison rerun. The plan
+returned to `PROPOSED` for approval; the locked user style is unchanged.

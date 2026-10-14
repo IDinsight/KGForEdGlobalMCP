@@ -1,0 +1,619 @@
+{
+  "finalization_exclusion_summary": {
+    "excluded_conflict_group_count": 0,
+    "excluded_needs_review_group_count": 0
+  },
+  "relationship_unresolved_edges": [
+    {
+      "child_final_sfi_uuid": "0f5ae1db-96ef-55d3-ac0a-ba97792bd30e",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "Runtime policy: B6.3.1.1 is the prisms family implied by Basic 6 Geometry-and-Measurement Sub-Strand 1, and its source occurrence precedes the later Sub-Strand 3: Geometric Reasoning heading. No finalized Basic 6 Geometry-and-Measurement Sub-Strand 1 organizer is among the candidates; the only matching-scope Sub-Strand (Geometric Reasoning) must not be chosen by proximity or scope match alone. Per the omitted-organizer rule, return unresolved with root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "B6.3.1.1 is the Basic 6 prisms Content Standard implied by the omitted Geometry-and-Measurement Sub-Strand 1 organizer. No finalized Basic 6 Geometry-and-Measurement Sub-Strand 1 organizer is among the candidates; the only matching-grade/strand Sub-Strand is Geometric Reasoning (Sub-Strand 3), which the instructions explicitly forbid selecting by proximity or scope match. Per the known omitted-organizer exception, unresolved=true with the framework-root fallback (no selected parents) is the correct outcome, and the producer applied it correctly.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:0f5ae1db-96ef-55d3-ac0a-ba97792bd30e",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_bbf47c3d87a89cd3",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b6.3.1",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "dd72ad38-9854-5a03-9178-63b8538a4f95",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "0f5ae1db-96ef-55d3-ac0a-ba97792bd30e",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "2535c2b3-2ad5-5ae3-9ec6-802572e2df35",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "This is the exact audited decimal-section Indicator printed as B5.1.2.1.1 ('Multiply multi-digit numbers by 2-digit numbers efficiently'). Per the runtime anomaly rule, its printed code points to B5.1.2.1, its table placement points to B5.1.4.1, and its wording resembles B5.1.2.2.1; none of those signals alone establishes a direct parent. The only positive evidence for B5.1.4.1 is same-segment/same-window/same-table locality, which the policy explicitly forbids using to attach this Indicator. No supplied candidate offers coherent source evidence uniquely resolving the contradiction, so it is unresolved with the framework-root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child is the intentionally preserved anomalous decimal-section Indicator B5.1.2.1.1 ('Multiply multi-digit numbers by 2-digit numbers efficiently'). Both producer and validation instructions explicitly enumerate this exact case: its printed code points to B5.1.2.1, its table placement points to B5.1.4.1, and its wording resembles B5.1.2.2.1, and none of those signals alone establishes a direct parent. The only positive evidence for B5.1.4.1 is same-segment/same-window/same-table locality, which the policy forbids using to attach an Indicator. No supplied candidate offers coherent, uniquely-resolving source evidence, so unresolved=true with no selected parents and the framework-root fallback is the correct and required outcome. The producer's decision matches the mandated handling.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:2535c2b3-2ad5-5ae3-9ec6-802572e2df35",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_265b557c70efd92a",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.2.1",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "64cc37ab-7287-5e37-8494-5efefed04168",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "2535c2b3-2ad5-5ae3-9ec6-802572e2df35",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "4ce5510d-78f4-57c7-94a4-7baf1430fd81",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "B4.1.4.1 is the Basic 4 decimal family implied by the omitted Sub-Strand 4 organizer. No finalized Basic 4 Number Sub-Strand 4 organizer is supplied among candidates. Per the runtime omitted-organizer policy, it must not attach to Sub-Strand 3: Fractions, Counting, Number Operations, a sibling, or a cross-grade organizer. Return unresolved with StandardsFramework-root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child B4.1.4.1 is the Basic 4 decimals Content Standard implied by the omitted Sub-Strand 4 organizer. No finalized Basic 4 Number Sub-Strand 4 organizer appears among candidates (only Sub-Strand 1 Counting, Sub-Strand 2 Number Operations, Sub-Strand 3 Fractions in Basic 4, plus cross-grade Basic 5/6 organizers). Per the known omitted-organizer exception, the producer correctly returned unresolved=true with the framework-root fallback and no selected parents, refusing to attach to Fractions, Counting, Number Operations, a sibling, or a cross-grade organizer.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:4ce5510d-78f4-57c7-94a4-7baf1430fd81",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_284e9bc731aa75b1",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b4.1.4",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "a1e4d312-a8e3-573a-9840-9a6d17c699b8",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "4ce5510d-78f4-57c7-94a4-7baf1430fd81",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "710b45b5-d56e-5e5e-b238-2d65d16d8f7d",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "B5.1.2.2 is part of the Basic 5 B5.1.2.x Number Operations sequence whose visible immediate Sub-Strand organizer is omitted from source. No finalized Basic 5 Number Operations Sub-Strand is supplied among candidates (only Basic 4/Basic 6 Number Operations, plus Counting and Fractions, which the runtime policy explicitly forbids as parents). Per the known omitted-organizer rule, return unresolved with StandardsFramework-root fallback rather than attach to a sibling or cross-grade organizer.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child B5.1.2.2 is a Basic 5 Number multiplication Content Standard, part of the B5.1.2.x Number Operations sequence. Per the explicit 'Known Basic 5 omitted Number Operations organizer' rule, no finalized Basic 5 Number Operations Sub-Strand exists among candidates (only Basic 4 and Basic 6 Number Operations organizers are supplied, plus Counting and Fractions which are forbidden as parents). The producer correctly returned unresolved=true with no selected parents and framework-root fallback, refusing to attach to a cross-grade organizer or a same-grade sibling. This matches both the producer instructions and the checker cardinality policy (required Sub-Strand minimum cannot be resolved safely, so unresolved with no parents is correct).",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:710b45b5-d56e-5e5e-b238-2d65d16d8f7d",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_a7788ffb66b1c746",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "77af064b-2fbb-5e84-8608-5f095cefc58b",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "710b45b5-d56e-5e5e-b238-2d65d16d8f7d",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "7b5f0862-5062-5514-94cd-d06cb61fe807",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "Child is B4.1.5.1, the Basic 4 percent family implied by the omitted Sub-Strand 5 organizer. Per the runtime omitted-organizer policy, no finalized Basic 4 Number Sub-Strand 5 organizer is supplied among candidates. It must not be attached to Sub-Strand 3: Fractions, Counting, Number Operations, another sibling, or a cross-grade organizer. Returning unresolved with the StandardsFramework-root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "Child B4.1.5.1 is the Basic 4 percent Content Standard implied by the omitted Sub-Strand 5 organizer. Reviewing all 17 candidates, no finalized Basic 4 Number Sub-Strand 4 or 5 (percent) organizer is supplied; only Sub-strand 1 (Counting), 2 (Number Operations), 3 (Fractions), cross-grade organizers, cross-strand organizers, and the root are present. Per the known omitted-organizer exception, none of these may serve as direct parent, so unresolved=true with the framework-root fallback (no selected parents) is the correct and mandated outcome. The producer's decision matches policy.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:7b5f0862-5062-5514-94cd-d06cb61fe807",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_b7ea3a51ec9ad073",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b4.1.5",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "c3b2d147-9202-5083-bcfd-9d93e5f77869",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "7b5f0862-5062-5514-94cd-d06cb61fe807",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "8ab5ed84-8bcd-50b3-9936-ed0aaad2bb8c",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "B5.1.2.3 'Recall basic division fact up to 100' is part of the detailed Basic 5 Number B5.1.2.x sequence whose true Sub-Strand 2: Number Operations organizer is not supplied. Per the runtime Basic 5 omitted Number Operations rule, it must not be attached to Basic 5 Counting, Fractions, a cross-grade Number Operations organizer, or any sibling. No valid source-supported Sub-Strand parent is among the candidates, so it is unresolved with root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child B5.1.2.3 'Recall basic division fact up to 100' belongs to the Basic 5 Number Operations sequence (B5.1.2.1-B5.1.2.6). Per the known Basic 5 omitted Number Operations organizer exception, no finalized Basic 5 Number Operations Sub-Strand is supplied among candidates. The only Number Operations candidates are cross-grade (Basic 6 endpoint 755993b7 and Basic 4 endpoint 90ec27a9), which must not be selected. All other Number Sub-Strand candidates (Counting, Fractions) are explicitly prohibited attachment targets. The producer correctly returned unresolved=true with no selected parents and root fallback, satisfying policy.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:8ab5ed84-8bcd-50b3-9936-ed0aaad2bb8c",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_b9a98d6fce0f0b51",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "ed7a8726-bdaa-5347-b5a2-c68c51775dd3",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "8ab5ed84-8bcd-50b3-9936-ed0aaad2bb8c",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "8cedea15-a009-5e7b-8ea3-1842ccf0d0c0",
+      "confidence": 0.75,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "This is the transformation Content Standard 'Perform a single transformation (translation and reflection) of a 2D shape' (Basic 5, Geometry and Measurement), governed by the known B5.3.2.2 same-code/different-content boundary that forbids attaching it to Measurement despite its printed code. No finalized Basic 5 Position/Transformation (or other source-supported transformation) Sub-Strand organizer is supplied; the Basic 5 G&M candidates (Lines and Shapes, Measurement, Measurement-Angles, Geometric Reasoning) all appear later in source order than the child and only match by grade/strand or topical similarity, which the runtime policy forbids as a basis for parentage. Position/Transformation candidates are Basic 4 scope conflicts. No source relation, organizer, or compatible code-parent evidence uniquely resolves a direct parent, so return unresolved with the root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child is the transformation Content Standard B5.3.2.2 'Perform a single transformation (translation and reflection) of a 2D shape' (Basic 5, Geometry and Measurement), which falls under the explicit known B5.3.2.2 same-code/different-content boundary. That boundary forbids attaching it to the Measurement Sub-Strand and requires a source-supported transformation/geometric organizer among candidates, otherwise unresolved. No Basic 5 Position/Transformation organizer is supplied (the Position/Transformation candidates are Basic 4 grade conflicts), and the Basic 5 G&M candidates (Lines and Shapes, Measurement, Measurement-Angles, Geometric Reasoning) all appear later in source order than the child (order 180) with no source_relations, no continuation evidence, and only grade/strand or topical matches that policy forbids as parentage. With no coherent unique direct parent and a required minimum of one Sub-Strand, unresolved with no selected parents and root fallback is the correct, safe outcome.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:8cedea15-a009-5e7b-8ea3-1842ccf0d0c0",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_09f9a87c477f426a",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.3.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "337a3073-f9fe-5b5f-9316-238aa678243b",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "8cedea15-a009-5e7b-8ea3-1842ccf0d0c0",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "8f082ed0-8909-51ef-82c3-1541b4e9f238",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "This is the Basic 5 Number percentage Content Standard B5.1.5.1, an omitted-organizer family implied by Sub-Strand 5. No finalized Basic 5 Number Sub-Strand 5 (percentage) organizer is supplied among the candidates; only Fractions, Counting, and cross-grade/other-strand Sub-Strands appear. Per the runtime policy, do not attach it to Sub-Strand 3: Number: Fractions, Counting, a sibling, or a cross-grade organizer. Return unresolved with the StandardsFramework-root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child B5.1.5.1 is the Basic 5 Number percentage Content Standard, an explicitly documented omitted-organizer family. No finalized Basic 5 Number Sub-Strand 5 (percentage) organizer appears among the parent_candidates; only Fractions, Counting, and cross-grade/other-strand Sub-Strands are supplied. Per both the producer and validation instructions, attaching this to Sub-Strand 3: Fractions, Counting, a sibling, or a cross-grade organizer is prohibited, and unresolved=true with the framework-root fallback is the mandated outcome. The producer correctly returned unresolved with no selected parents.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:8f082ed0-8909-51ef-82c3-1541b4e9f238",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_10d7f0a366bb5400",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.5",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "aa1030bb-cadb-5c9c-bf4e-61308050bc1f",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "8f082ed0-8909-51ef-82c3-1541b4e9f238",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "a7086f3e-d963-53b7-8e9c-e5343c2b34ac",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "This is Basic 5 Number Content Standard B5.1.2.1, part of the B5.1.2.x Number Operations sequence. Per the known Basic 5 omitted Number Operations organizer rule, no finalized Basic 5 Number Operations Sub-Strand is supplied among the candidates (Number Operations candidates are Basic 6 and Basic 4, both Grade-conflicting). It must not be attached to Sub-strand 1: Counting, Representation & Cardinality, Sub-Strand 3: Fractions, a cross-grade Number Operations organizer, or any sibling. The required Sub-Strand parent cannot be satisfied safely, so it is unresolved with the root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "Child is Basic 5 Number Content Standard B5.1.2.1, part of the known omitted Basic 5 Number Operations organizer family. The only Number Operations Sub-Strand candidates are Basic 6 (755993b7) and Basic 4 (90ec27a9), both cross-grade conflicts. No finalized Basic 5 Number Operations Sub-Strand is supplied. Per the explicit exception, the producer correctly returned unresolved=true with no selected parents and the framework-root fallback, refusing to attach to Counting, Fractions, or a cross-grade organizer. This satisfies the parent_requirements (min 1 Sub-Strand cannot be safely met).",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:a7086f3e-d963-53b7-8e9c-e5343c2b34ac",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_011c5ae82da9cfbb",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "a3789c2f-3e5f-55ab-93ca-1661547eafbd",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "a7086f3e-d963-53b7-8e9c-e5343c2b34ac",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "b2791350-7c0d-5506-a47c-8ebd61417a6f",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "Child B5.1.2.4 is part of the Basic 5 B5.1.2.x Number Operations sequence for which the source supplies no visible Basic 5 Sub-Strand 2: Number Operations organizer. No finalized Basic 5 Number Operations Sub-Strand is among the candidates; the only Number Operations candidates are cross-grade (Basic 4/6) and are excluded. Per the omitted-organizer policy, do not attach to Counting, Fractions, or a cross-grade/same-level sibling. Return unresolved with root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "Child B5.1.2.4 is a Basic 5 Number Operations Content Standard covered by the known omitted Basic 5 Number Operations organizer exception. The only 'Number Operations' Sub-Strand candidates are cross-grade (Basic 6 endpoint 755993b7 and Basic 4 endpoint 90ec27a9), and no finalized Basic 5 Number Operations Sub-Strand is supplied. Policy explicitly forbids attaching B5.1.2.1-B5.1.2.6 to Counting, Fractions, a cross-grade Number Operations organizer, or any same-level sibling, and requires unresolved=true with root fallback. The producer correctly selected no parents and marked unresolved.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:b2791350-7c0d-5506-a47c-8ebd61417a6f",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_1ba25f17cd0d0360",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "1cbc106f-da68-59dc-b749-d365d3f94633",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "b2791350-7c0d-5506-a47c-8ebd61417a6f",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "c625945d-24b6-5ca2-a13c-5abee48fedfb",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "This is the Basic 5 Number B5.1.4.1 decimal-fractions family implied by Sub-Strand 4. Per the runtime omitted-organizer policy, no finalized Basic 5 Number Sub-Strand 4 organizer is supplied among the candidates. The supplied 'Sub-Strand 3: Number: Fractions' (and Counting, cross-grade, or sibling Sub-Strands) must not be used as its direct parent. The required Sub-Strand parent cannot be satisfied safely, so the child is unresolved with the StandardsFramework-root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "The child is Basic 5 Number B5.1.4.1, the decimal-fractions family implied by the omitted Sub-Strand 4 organizer. No finalized Basic 5 Number Sub-Strand 4 organizer appears among the candidates; only Sub-Strand 3 Fractions (Basic 5), cross-grade fractions, and other siblings are supplied. Per the known omitted-organizer exception, B5.1.4.1 must be unresolved with the StandardsFramework-root fallback and no selected parent. The producer correctly returned unresolved=true with empty parent selection, satisfying the min_count=1 Sub-Strand requirement by leaving it unresolved rather than forcing a wrong sibling.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:c625945d-24b6-5ca2-a13c-5abee48fedfb",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_fe0f5f987364a501",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.4",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "d130002c-d4cb-5696-b4e4-0f522685c11d",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "c625945d-24b6-5ca2-a13c-5abee48fedfb",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "f6aad05a-af45-5172-bce5-d45265f9cb6b",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "B5.1.2.6 belongs to the Basic 5 Number Operations sequence (B5.1.2.1-B5.1.2.6), whose visible Sub-Strand 2: Number Operations organizer is omitted from the source. No finalized Basic 5 Number Operations Sub-Strand is supplied among candidates; per runtime policy it must not be attached to Counting, Representation & Cardinality, Fractions, a cross-grade Number Operations organizer, or any sibling. Unresolved with root fallback.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "B5.1.2.6 is part of the known Basic 5 omitted Number Operations organizer family. No finalized Basic 5 Number Operations Sub-Strand appears among the candidates (only cross-grade Number Operations organizers at Basic 4 and Basic 6 exist, plus Counting and Fractions organizers). Per both producer and validation instructions, this child must be resolved unresolved=true with the StandardsFramework-root fallback and no selected parents. The producer correctly did so and refused to attach to Counting, Fractions, or a cross-grade Number Operations sibling. parent_requirements min_count=1 cannot be safely met, so unresolved is the mandated outcome.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:f6aad05a-af45-5172-bce5-d45265f9cb6b",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_4580802084b4c9cc",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "e37accbb-4690-5b27-aa34-b941b45865a2",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "f6aad05a-af45-5172-bce5-d45265f9cb6b",
+      "unresolved_root_fallback": true
+    },
+    {
+      "child_final_sfi_uuid": "fe2a9d0a-a4d1-5f09-b88c-1262783501a9",
+      "confidence": 0.9,
+      "evidence_reasons": [
+        "root_fallback"
+      ],
+      "is_root_edge": true,
+      "llm_reason": "B5.1.2.5 is part of the Basic 5 Number Operations sequence (B5.1.2.1-B5.1.2.6), whose visible Sub-Strand 2: Number Operations organizer is omitted from the source. No finalized Basic 5 Number Operations Sub-Strand is among the candidates (only Basic 4 and Basic 6 Number Operations, plus Counting and Fractions, which the runtime policy forbids as parents for this sequence). Per the Basic 5 omitted Number Operations organizer rule, return unresolved with the root fallback rather than attaching to a sibling or cross-grade organizer.",
+      "metadata": {
+        "checker_passed": true,
+        "checker_rationale": "Child B5.1.2.5 is part of the Basic 5 Number Operations sequence (B5.1.2.1-B5.1.2.6). Per the explicit known Basic 5 omitted Number Operations organizer exception, no finalized Basic 5 Number Operations Sub-Strand is supplied among candidates (only Basic 4 and Basic 6 Number Operations, plus Counting and Fractions which are forbidden targets). The producer correctly returned unresolved=true with no selected parents and the framework-root fallback, exactly as the runtime policy requires. No cross-grade or sibling attachment was made.",
+        "doc_key": "8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa",
+        "parent_evidence_summary": [
+          "StandardsFramework root fallback is always available."
+        ],
+        "parent_scope_comparison": {
+          "complete_match": false,
+          "conflicting_ancestor_statement_types": [],
+          "direct_parent_statement_type": null,
+          "direct_parent_value_match": null,
+          "matching_ancestor_statement_types": [],
+          "missing_child_ancestor_statement_types": []
+        },
+        "parent_source_relations": [],
+        "relationship_identity_key": "lc:curriculum:8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa:relationship:hasChild:61ff6c68-36c2-590a-95a2-d3f248117ca7:fe2a9d0a-a4d1-5f09-b88c-1262783501a9",
+        "resolution_origin": "producer_accepted",
+        "resolution_request_id": "has_child_request_62355c3d09db3dee",
+        "source_hierarchy_audit": {
+          "code_implied_parent_code": "b5.1.2",
+          "code_parent_hint_used": false,
+          "selected_parent_code": null,
+          "selected_coded_parent_conflicts_with_child_code": false,
+          "source_code_anomaly_visible_parent_used": false,
+          "source_visible_parent_used": false,
+          "source_visible_parent_without_code_hint": false
+        }
+      },
+      "parent_endpoint_id": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "parent_final_sfi_uuid": null,
+      "relationship_id": "8b47a832-f2a0-5586-945c-c8aa14e8cbac",
+      "relationship_type": "hasChild",
+      "source_entity": "StandardsFramework",
+      "source_entity_uuid": "61ff6c68-36c2-590a-95a2-d3f248117ca7",
+      "target_entity": "StandardsFrameworkItem",
+      "target_sfi_uuid": "fe2a9d0a-a4d1-5f09-b88c-1262783501a9",
+      "unresolved_root_fallback": true
+    }
+  ]
+}

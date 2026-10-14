@@ -1,0 +1,455 @@
+{
+  "candidate_pair_count": 773,
+  "conflict_count": 1,
+  "conflicts": [
+    {
+      "reason": "merging would join texts the judge explicitly ruled distinct (chaining guard)",
+      "text_a": "represent the problem with an equation",
+      "text_b": "write a given problem as an equation in which a symbol is used to represent an unknown number"
+    }
+  ],
+  "exact_duplicate_claim_count": 29,
+  "groups": [
+    {
+      "canonical_text": "apply the annexing then adding zero strategy for mental multiplication",
+      "member_texts": [
+        "apply the annexing then adding zero mental mathematics strategy for multiplication",
+        "apply the annexing then adding zero strategy for mental multiplication"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2204fb97-3237-59a5-8725-065c22d2477b",
+        "33819463-9117-5444-a0a4-b26cfc583263"
+      ]
+    },
+    {
+      "canonical_text": "apply the distributive property for mental multiplication",
+      "member_texts": [
+        "apply the distributive property as a mental mathematics strategy for multiplication",
+        "apply the distributive property for mental multiplication"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2204fb97-3237-59a5-8725-065c22d2477b",
+        "33819463-9117-5444-a0a4-b26cfc583263"
+      ]
+    },
+    {
+      "canonical_text": "apply the halving and doubling strategy for mental multiplication",
+      "member_texts": [
+        "apply the halving and doubling mental mathematics strategy for multiplication",
+        "apply the halving and doubling strategy for mental multiplication"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2204fb97-3237-59a5-8725-065c22d2477b",
+        "33819463-9117-5444-a0a4-b26cfc583263"
+      ]
+    },
+    {
+      "canonical_text": "compare whole numbers up to 100,000",
+      "member_texts": [
+        "compare whole numbers up to 100,000"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "43ac17b0-3249-5340-9409-4337cbfa1b67",
+        "5774f72f-172e-5005-a919-0c867f028886"
+      ]
+    },
+    {
+      "canonical_text": "convert hindu arabic numbers to roman numerals up to 100 (c)",
+      "member_texts": [
+        "convert hindu arabic numbers to roman numerals up to 100 (c)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "097beb07-4c15-582b-be9f-a50e20fafe8b",
+        "f7c9b5ad-9732-5d69-a5f7-cd5aca2654ec"
+      ]
+    },
+    {
+      "canonical_text": "convert roman numerals to hindu arabic numbers up to 100 (c)",
+      "member_texts": [
+        "convert roman numerals to hindu arabic numbers up to 100 (c)",
+        "convert roman numerals up to 100 (c) to hindu arabic numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "097beb07-4c15-582b-be9f-a50e20fafe8b",
+        "f7c9b5ad-9732-5d69-a5f7-cd5aca2654ec"
+      ]
+    },
+    {
+      "canonical_text": "count hindu arabic numbers up to 100 (c)",
+      "member_texts": [
+        "count hindu arabic numbers up to 100 (c)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "097beb07-4c15-582b-be9f-a50e20fafe8b",
+        "f7c9b5ad-9732-5d69-a5f7-cd5aca2654ec"
+      ]
+    },
+    {
+      "canonical_text": "create a problem for a given equation",
+      "member_texts": [
+        "create a problem for a given equation"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "53d830d3-3939-5aa1-bc51-b3c8340aa32c",
+        "76fe8656-dd54-5430-804c-b7962414ac59"
+      ]
+    },
+    {
+      "canonical_text": "demonstrate understanding of algebraic expressions as mathematical phrases that can contain letters which represent ordinary numbers and operators (like add, subtract, multiply, and divide)",
+      "member_texts": [
+        "demonstrate understanding of algebraic expressions as mathematical phrases that can contain letters which represent ordinary numbers and operators (like add, subtract, multiply, and divide)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "dcdae7ba-ffa2-53b2-9bd8-9263a60b1633",
+        "e2c7d94c-56a0-5626-a63e-5d9ec9208490"
+      ]
+    },
+    {
+      "canonical_text": "describe the relationship in a given table or chart, using a mathematical expression",
+      "member_texts": [
+        "describe the relationship in a given table or chart, using a mathematical expression"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "378e97d1-9e64-50d6-8310-469b71330326",
+        "959a3ec8-47f5-540b-8bda-db48c4395341"
+      ]
+    },
+    {
+      "canonical_text": "design a questionnaire for collecting data to answer a given question",
+      "member_texts": [
+        "design a questionnaire for collecting data to answer a given question",
+        "design a questionnaire for collecting data to answer given question(s)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5e0e5211-a58c-5274-97cd-032989e527eb",
+        "f92f556c-2565-5a94-b3bf-c164875351c1"
+      ]
+    },
+    {
+      "canonical_text": "determine basic division fact up to 81",
+      "member_texts": [
+        "determine basic division fact up to 81"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3e58af19-6620-5921-a3cc-59ff0ef9eef0",
+        "a528fa70-279e-5a60-98fa-9fb702982560"
+      ]
+    },
+    {
+      "canonical_text": "determine the highest common factor (hcf) of two or three numbers using prime factors",
+      "member_texts": [
+        "determine the highest common factor (hcf) of any 2 or 3 numbers by prime factorisation",
+        "determine the highest common factor (hcf) of two or three numbers using prime factors"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7bd137ce-b2bf-5f44-b048-5ff52176dccc",
+        "ee1e91da-2067-5990-a781-79d946865d88"
+      ]
+    },
+    {
+      "canonical_text": "draw a line graph for a given table of values",
+      "member_texts": [
+        "draw a line graph for a given table of values",
+        "draw a line graph using a given table of values (or set of data)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a84e9a7b-0d3e-58db-baeb-e3e81bc6f742",
+        "dacda2cf-69f2-58d7-9845-8aed87efc5ac"
+      ]
+    },
+    {
+      "canonical_text": "estimate perimeter using referents for centimetre or metre",
+      "member_texts": [
+        "estimate perimeter using referents for centimetre and metre",
+        "estimate perimeter using referents for centimetre or metre"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "bc72a4ae-3dc5-5e26-ba1a-64b58f1453d8",
+        "fe6f0f80-1425-55fe-a0a3-2b263cd5446d"
+      ]
+    },
+    {
+      "canonical_text": "identify images of a reflection of a 2d shape in a plane",
+      "member_texts": [
+        "identify images of a reflection of a 2d shape in a plane",
+        "identify images of a single transformation (i.e. reflection) of a 2d shape in a plane",
+        "identify images of a single transformation (i.e. reflection) on 2d shapes in a plane"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "785b600c-80da-5018-98bc-b4009b5fa510",
+        "b865341a-fa6d-54a2-b353-ad80fcfa7fa5",
+        "c1a42750-37b2-5f2f-8372-116ac62fe4f8"
+      ]
+    },
+    {
+      "canonical_text": "identify numbers in different positions around a given number in a number chart",
+      "member_texts": [
+        "identify numbers in different positions around a given number in a number chart"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5e3a9987-6c38-5c1b-929a-55c8d6229c1c",
+        "b2a7f977-af49-57ec-93aa-e36879c13767",
+        "dcc5bf94-7d91-5d6d-bec8-5824d92be7b7"
+      ]
+    },
+    {
+      "canonical_text": "identify the unknown in a problem",
+      "member_texts": [
+        "identify the unknown in a problem"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0ef6f5e2-1423-5083-a499-31d6b81ac921",
+        "859b0453-5e5e-5581-a3b8-81b9530cc511",
+        "d3eafd1e-93f9-5368-a3b7-0761912b7c6c"
+      ]
+    },
+    {
+      "canonical_text": "model number quantities up to 1,000,000 using graph sheets and multi-base block",
+      "member_texts": [
+        "model number quantities up to 1,000,000 using graph sheets and multi-base block"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3c5a1e4f-7940-5f51-b17b-6479bf82d5cd",
+        "8ae1e0ad-e820-50e9-9964-a05f55e6c670"
+      ]
+    },
+    {
+      "canonical_text": "order whole numbers up to 100,000",
+      "member_texts": [
+        "order whole numbers up to 100,000"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "43ac17b0-3249-5340-9409-4337cbfa1b67",
+        "5774f72f-172e-5005-a919-0c867f028886"
+      ]
+    },
+    {
+      "canonical_text": "recognise roman numerals system up to c (i.e. 100)",
+      "member_texts": [
+        "recognise roman numerals system up to c (i.e. 100)",
+        "recognize the roman numerals system up to c (i.e. 100)"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0da27b7b-e242-5a8d-9325-b4bd2082bf7e",
+        "8421f6ea-9584-5c43-8a10-211ed8cecca7"
+      ]
+    },
+    {
+      "canonical_text": "record the data collected from a questionnaire",
+      "member_texts": [
+        "record the data collected from a questionnaire",
+        "record the results collected from a questionnaire"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5e0e5211-a58c-5274-97cd-032989e527eb",
+        "f92f556c-2565-5a94-b3bf-c164875351c1"
+      ]
+    },
+    {
+      "canonical_text": "represent a given pattern visually to verify predictions",
+      "member_texts": [
+        "represent a given pattern visually to verify predictions"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2e0e1bed-0c4e-54aa-aca6-c60df169e116",
+        "2e8e7e2d-afdb-56a0-9ea1-356819861b7b"
+      ]
+    },
+    {
+      "canonical_text": "represent the comparison of whole numbers using \">, <, or =\"",
+      "member_texts": [
+        "represent comparisons of whole numbers using the symbols \"<\", \"=\", \">\"",
+        "represent the comparison of whole numbers using \">, <, or =\""
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "43ac17b0-3249-5340-9409-4337cbfa1b67",
+        "5774f72f-172e-5005-a919-0c867f028886",
+        "873a8beb-fcdb-5926-942d-63287561524a"
+      ]
+    },
+    {
+      "canonical_text": "represent the problem with an equation",
+      "member_texts": [
+        "represent the problem with an equation"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0ef6f5e2-1423-5083-a499-31d6b81ac921",
+        "859b0453-5e5e-5581-a3b8-81b9530cc511",
+        "d3eafd1e-93f9-5368-a3b7-0761912b7c6c"
+      ]
+    },
+    {
+      "canonical_text": "round down whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens",
+      "member_texts": [
+        "round down whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3ab36927-6f67-5cfe-9f1f-f7e132bbb0a1",
+        "81080f77-c387-5135-b767-00449fa5374c"
+      ]
+    },
+    {
+      "canonical_text": "round off whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens",
+      "member_texts": [
+        "round off whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3ab36927-6f67-5cfe-9f1f-f7e132bbb0a1",
+        "81080f77-c387-5135-b767-00449fa5374c"
+      ]
+    },
+    {
+      "canonical_text": "round up whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens",
+      "member_texts": [
+        "round up whole numbers up to 100,000 to the nearest ten thousands, thousands, hundreds and tens"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3ab36927-6f67-5cfe-9f1f-f7e132bbb0a1",
+        "81080f77-c387-5135-b767-00449fa5374c"
+      ]
+    },
+    {
+      "canonical_text": "round up whole numbers up to 10000 to the nearest thousands, hundreds and tens",
+      "member_texts": [
+        "round off whole numbers up to 10000 to the nearest thousands, hundreds and tens",
+        "round up whole numbers up to 10000 to the nearest thousands, hundreds and tens"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1e865899-b1bd-534d-a172-b7290bd48ee4"
+      ]
+    },
+    {
+      "canonical_text": "solve multi-step word problems involving the four basic operations",
+      "member_texts": [
+        "solve multi-step word problems involving the four basic operations"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "6c083da5-a6dd-52c2-aa3e-c10c588a48b3",
+        "c665c0eb-3fef-57bf-a34c-fe583b498279"
+      ]
+    },
+    {
+      "canonical_text": "solve the problem concretely, pictorially or symbolically",
+      "member_texts": [
+        "solve the problem concretely, pictorially or symbolically"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0ef6f5e2-1423-5083-a499-31d6b81ac921",
+        "859b0453-5e5e-5581-a3b8-81b9530cc511",
+        "d3eafd1e-93f9-5368-a3b7-0761912b7c6c"
+      ]
+    },
+    {
+      "canonical_text": "tell the motion of objects in space using the cardinal points north, south, east and west",
+      "member_texts": [
+        "tell the motion of objects in space using the cardinal points north, south, east and west"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "11d864eb-6951-56d3-8d31-271b0a9b3ecb",
+        "fb4b5f82-50b6-5999-b690-1f8352525cb2"
+      ]
+    },
+    {
+      "canonical_text": "tell the position of objects in space using the cardinal points north, south, east and west",
+      "member_texts": [
+        "tell the position of objects in space using the cardinal points north, south, east and west"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "11d864eb-6951-56d3-8d31-271b0a9b3ecb",
+        "fb4b5f82-50b6-5999-b690-1f8352525cb2"
+      ]
+    },
+    {
+      "canonical_text": "use models to explain the result of multiplying a fraction by a whole number",
+      "member_texts": [
+        "use models to explain the result of multiplying a fraction by a whole number"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "02f3b422-90e4-5289-9322-d7ed3d78b979",
+        "b6fc10d2-85dd-5388-82d7-da5322813541"
+      ]
+    },
+    {
+      "canonical_text": "use models to explain the result of multiplying a whole number by a fraction",
+      "member_texts": [
+        "use models to explain the result of multiplying a whole number by a fraction"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "02f3b422-90e4-5289-9322-d7ed3d78b979",
+        "5efef354-deb9-5076-8be2-24b23da26422"
+      ]
+    },
+    {
+      "canonical_text": "write a given problem as an equation in which a symbol is used to represent an unknown number",
+      "member_texts": [
+        "express a given problem as an equation where the unknown is represented by a letter or variable",
+        "write a given problem as an equation in which a symbol is used to represent an unknown number"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2168162b-6e4e-5e47-86a1-1ce19754dfc4",
+        "6e8304f3-1498-5ed4-8a18-7d5753a66292"
+      ]
+    },
+    {
+      "canonical_text": "write a rule in algebra to represent a given pattern",
+      "member_texts": [
+        "write a rule in algebra to represent a given pattern"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "389331ee-1792-586b-ab36-eaa3ce3574e1",
+        "8aaf822a-0112-5717-84ee-81504a4609f1"
+      ]
+    },
+    {
+      "canonical_text": "write a rule in words to represent a given pattern",
+      "member_texts": [
+        "write a rule in words to represent a given pattern"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "389331ee-1792-586b-ab36-eaa3ce3574e1",
+        "8aaf822a-0112-5717-84ee-81504a4609f1"
+      ]
+    }
+  ],
+  "judged_same_count": 17,
+  "total_claim_count": 274,
+  "unique_text_count": 245
+}

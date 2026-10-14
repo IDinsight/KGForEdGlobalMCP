@@ -1,0 +1,192 @@
+{
+  "candidate_pair_count": 1094,
+  "conflict_count": 0,
+  "conflicts": [],
+  "exact_duplicate_claim_count": 9,
+  "groups": [
+    {
+      "canonical_text": "classify objects based on flat and round/curved surfaces",
+      "member_texts": [
+        "classify objects based on flat and round/curved surfaces",
+        "classify objects based on observable attributes such as flat and round"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "a73c0bfd-c4a1-57dc-8bc4-c545fc79a8d7",
+        "eab63d98-8370-5261-94ad-3894e2bfc940"
+      ]
+    },
+    {
+      "canonical_text": "compare quantities (more - less)",
+      "member_texts": [
+        "compare quantities (more - less)",
+        "compare quantities as \"more\" and \"less\""
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4fd0d38a-7676-5f1b-b585-5b5cf1c51768",
+        "f2c26aba-63a8-5e38-81e3-d549217a73db"
+      ]
+    },
+    {
+      "canonical_text": "compare the durations of two events as taking more time or less time",
+      "member_texts": [
+        "compare everyday activities to tell which takes a long time and which takes a short time",
+        "compare the durations of two events as taking more time or less time"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "9019b6e4-95b2-5266-add3-1c10563e22ce",
+        "bd1ed511-203e-5dd5-acea-a203e84c59f1"
+      ]
+    },
+    {
+      "canonical_text": "describe patterns of odd and even numbers",
+      "member_texts": [
+        "describe patterns formed by odd and even numbers",
+        "describe patterns of odd and even numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "87e54945-c37a-5b41-9fd3-1beaf0b1d58c",
+        "c2a29ad3-a0c3-5445-b24a-ad048b36fa97"
+      ]
+    },
+    {
+      "canonical_text": "estimate the difference of numbers",
+      "member_texts": [
+        "estimate the difference of numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "361a14ae-0090-5221-b9ec-6b71c1a29861",
+        "5bab5173-bd37-582b-b301-d3e19a63bc9b",
+        "fb8e3446-a0d2-56f7-952b-076d9f5a27a8"
+      ]
+    },
+    {
+      "canonical_text": "estimate the measure of attributes of objects",
+      "member_texts": [
+        "estimate the measure of an attribute of an object before measuring",
+        "estimate the measure of attributes of objects"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "553b295e-e0b6-5bd0-b5f2-fa98f3757aa9",
+        "68516d59-d937-55ed-bb03-14be6762f581"
+      ]
+    },
+    {
+      "canonical_text": "estimate the sum of numbers",
+      "member_texts": [
+        "add numbers using estimation",
+        "estimate the sum of numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "361a14ae-0090-5221-b9ec-6b71c1a29861",
+        "5bab5173-bd37-582b-b301-d3e19a63bc9b",
+        "9e15dffc-7de6-525e-b023-9e3a7ef69a28",
+        "fb8e3446-a0d2-56f7-952b-076d9f5a27a8"
+      ]
+    },
+    {
+      "canonical_text": "extend patterns of odd and even numbers",
+      "member_texts": [
+        "extend patterns of odd and even numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "87e54945-c37a-5b41-9fd3-1beaf0b1d58c",
+        "c2a29ad3-a0c3-5445-b24a-ad048b36fa97"
+      ]
+    },
+    {
+      "canonical_text": "form the greatest number using given digits",
+      "member_texts": [
+        "form the greatest number using a given set of digits",
+        "form the greatest number using given digits"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "91ca3622-e788-53d5-8b4b-3077075d9856",
+        "970cbf68-9be5-5e4c-8294-d08dff8cd026"
+      ]
+    },
+    {
+      "canonical_text": "form the smallest number using given digits",
+      "member_texts": [
+        "form the smallest number using a given set of digits",
+        "form the smallest number using given digits"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "91ca3622-e788-53d5-8b4b-3077075d9856",
+        "970cbf68-9be5-5e4c-8294-d08dff8cd026"
+      ]
+    },
+    {
+      "canonical_text": "identify odd and even numbers",
+      "member_texts": [
+        "identify odd and even numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "87e54945-c37a-5b41-9fd3-1beaf0b1d58c",
+        "c2a29ad3-a0c3-5445-b24a-ad048b36fa97"
+      ]
+    },
+    {
+      "canonical_text": "identify patterns in numbers",
+      "member_texts": [
+        "identify patterns in numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "62dd4657-8f68-557e-92f0-7386fbee2a3c",
+        "d439cf70-7755-5997-89cc-66ba861d7951"
+      ]
+    },
+    {
+      "canonical_text": "model objects using 2d and 3d shapes",
+      "member_texts": [
+        "model objects using 2d and 3d shapes",
+        "model objects using two- and three-dimensional shapes"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "44d38035-415d-5f03-8f2c-760affd0c71d",
+        "4de03d04-e918-542c-adf9-1409d1bfd151"
+      ]
+    },
+    {
+      "canonical_text": "play with numbers",
+      "member_texts": [
+        "play with numbers",
+        "plays with numbers"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "390f15fc-913e-56a7-9184-0b940043d82a",
+        "62dd4657-8f68-557e-92f0-7386fbee2a3c",
+        "d439cf70-7755-5997-89cc-66ba861d7951"
+      ]
+    },
+    {
+      "canonical_text": "solves puzzles",
+      "member_texts": [
+        "solve puzzles",
+        "solves puzzles"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "02a4dc9f-42d2-54f8-aeb3-fe6df4f999a7",
+        "2d813f6e-2f28-56c8-8094-ec737f631e28",
+        "3285e28f-bda5-56c7-b1b9-45ade080a86b"
+      ]
+    }
+  ],
+  "judged_same_count": 11,
+  "total_claim_count": 419,
+  "unique_text_count": 410
+}

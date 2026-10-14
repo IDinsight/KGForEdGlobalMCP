@@ -1,0 +1,219 @@
+{
+  "candidate_pair_count": 500,
+  "conflict_count": 0,
+  "conflicts": [],
+  "exact_duplicate_claim_count": 11,
+  "groups": [
+    {
+      "canonical_text": "add 2-digit numbers with exchanging or renaming",
+      "member_texts": [
+        "add 2-digit numbers with exchanging or renaming"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "d239fab2-57cc-57d5-9a41-0fa7ba46268d",
+        "e139d0b0-84c1-5ba3-9130-6219e9a87b33"
+      ]
+    },
+    {
+      "canonical_text": "add 3 numbers taking two at a time",
+      "member_texts": [
+        "add 3 numbers taking two at a time"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5b266aa8-434f-5de9-b697-18a45a5e2529",
+        "9175b31a-3a33-5a72-aaa2-27f013572c99"
+      ]
+    },
+    {
+      "canonical_text": "apply correct multiplication in everyday activities",
+      "member_texts": [
+        "apply correct multiplication in everyday activities",
+        "carry out correct multiplication in everyday activities"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7ca4cb97-a0f9-5d89-8f28-211dba347e53",
+        "89cc295a-50e6-54dd-bb41-96991be41f7d"
+      ]
+    },
+    {
+      "canonical_text": "change money up to \u20a620 into small units",
+      "member_texts": [
+        "change money not exceeding \u20a620 into smaller units",
+        "change money up to \u20a620 into small units"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "4b1e3b08-3e80-5486-aff7-607f738ee4af",
+        "ed9117ec-6381-5a9c-a73c-cc0bf011fa95"
+      ]
+    },
+    {
+      "canonical_text": "collect data",
+      "member_texts": [
+        "collect data"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "73c4c0c7-168f-59b5-8142-01b5fa0cdde3",
+        "ca648ebf-7da0-5846-a26b-93c9b5f4a56c"
+      ]
+    },
+    {
+      "canonical_text": "find missing numbers in an open sentence",
+      "member_texts": [
+        "find missing numbers in an open sentence",
+        "find the missing number in an open sentence"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "3b304aa1-3a66-5365-9ed4-6413a7eac5b3",
+        "7908c975-65d7-5d4f-9702-9e10679ec8c7",
+        "91bac0a2-4a8d-58cf-8e21-4598f628d49a"
+      ]
+    },
+    {
+      "canonical_text": "identify a circle",
+      "member_texts": [
+        "identify a circle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0a31b8f7-ec0b-5b70-8424-a7611b9aece8",
+        "25f29d93-332b-5c2d-9083-a4476182f04e"
+      ]
+    },
+    {
+      "canonical_text": "identify a rectangle",
+      "member_texts": [
+        "identify a rectangle"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0a31b8f7-ec0b-5b70-8424-a7611b9aece8",
+        "25f29d93-332b-5c2d-9083-a4476182f04e"
+      ]
+    },
+    {
+      "canonical_text": "identify a square",
+      "member_texts": [
+        "identify a square"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "0a31b8f7-ec0b-5b70-8424-a7611b9aece8",
+        "25f29d93-332b-5c2d-9083-a4476182f04e"
+      ]
+    },
+    {
+      "canonical_text": "identify numbers up to 200",
+      "member_texts": [
+        "identify numbers from 1 to 200",
+        "identify numbers up to 200"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "7f80b92c-0cd7-588c-a7e3-1508222a199c",
+        "c5aecc45-3444-5469-b323-2b8f97ff417b"
+      ]
+    },
+    {
+      "canonical_text": "identify the need for measuring lengths using standardized units",
+      "member_texts": [
+        "identify the need for measuring lengths using standardized units"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2b59f282-6886-5f05-bed3-947a29befcc0",
+        "4276e7dd-8bad-5d6e-bf2e-7f6070c5c3f4"
+      ]
+    },
+    {
+      "canonical_text": "identify the number of objects in a group or collection",
+      "member_texts": [
+        "identify the number of objects in a group or collection"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "04980fe0-d03a-58b2-ba6f-5187ca5061a5",
+        "61dea106-3a86-5752-9766-791ac3a1d119"
+      ]
+    },
+    {
+      "canonical_text": "name objects that could be used for measuring capacity such as cups, empty containers and buckets",
+      "member_texts": [
+        "identify objects that could be used for measuring capacity such as cups, empty containers and buckets",
+        "name objects that could be used for measuring capacity such as cups, empty containers and buckets"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "38975fa8-1e6d-5fd6-ab3e-cc1aed508a03"
+      ]
+    },
+    {
+      "canonical_text": "solve quantitative aptitude problems related to open sentences",
+      "member_texts": [
+        "solve quantitative aptitude problems related to open sentences",
+        "solve simple related quantitative aptitude problems on open sentences"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "2f7e8aa2-4696-5a94-8226-92503fcdb2a2",
+        "956407d4-5165-5c5c-958c-f5c0d4ab8d57"
+      ]
+    },
+    {
+      "canonical_text": "sort number of objects in a group or collection",
+      "member_texts": [
+        "classify number of objects in a group or collection",
+        "classify numbers of objects in a group or collection",
+        "sort number of objects in a group or collection",
+        "sort numbers of objects in a group or collection"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "b193d5b5-5a40-585d-9e88-5407b9f7f80b",
+        "eb4805bb-c9ec-5ed3-8812-d6b0a16bff57"
+      ]
+    },
+    {
+      "canonical_text": "subtract 2-digit numbers with exchanging or renaming",
+      "member_texts": [
+        "subtract 2-digit numbers with exchanging and renaming",
+        "subtract 2-digit numbers with exchanging or renaming"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1be992b1-872b-5220-b90b-efd98851bbc4",
+        "9e2a171a-c477-5df7-b93b-eaa4695b899d"
+      ]
+    },
+    {
+      "canonical_text": "use centimetres as a standard measuring unit for length",
+      "member_texts": [
+        "use centimetres as a standard measuring unit for length"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1e15584c-97cd-5415-98a4-b6e135434358",
+        "cfa12ca8-cf0a-5e29-957a-1aff5ef4bf43"
+      ]
+    },
+    {
+      "canonical_text": "use metres as a standard measuring unit for length",
+      "member_texts": [
+        "use metres as a standard measuring unit for length"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1e15584c-97cd-5415-98a4-b6e135434358",
+        "cfa12ca8-cf0a-5e29-957a-1aff5ef4bf43"
+      ]
+    }
+  ],
+  "judged_same_count": 13,
+  "total_claim_count": 207,
+  "unique_text_count": 196
+}

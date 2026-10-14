@@ -1,0 +1,69 @@
+{
+  "candidate_pair_count": 1919,
+  "conflict_count": 0,
+  "conflicts": [],
+  "exact_duplicate_claim_count": 2,
+  "groups": [
+    {
+      "canonical_text": "describes the rutherford model of an atom",
+      "member_texts": [
+        "describes the rutherford model of an atom",
+        "describes the structure of an atom as per rutherford's atomic model"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "5e08a5bc-a62d-51da-a5d8-af15778cab8b",
+        "826bec8d-48b6-5e1e-89c5-788514119b8f"
+      ]
+    },
+    {
+      "canonical_text": "draws a labelled diagram of dispersion of light through a prism",
+      "member_texts": [
+        "draws a labelled diagram of dispersion of light through a prism",
+        "draws and labels the ray diagram of white light passing through a prism"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "338311a9-189f-5b03-bb5f-e0395a893f2f",
+        "f8245f01-6a41-5751-8553-820bd7f75408"
+      ]
+    },
+    {
+      "canonical_text": "explains how uniform circular motion is an example of accelerated motion",
+      "member_texts": [
+        "explains how uniform circular motion is an example of accelerated motion"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "87b21e6e-e921-5f81-9d93-45a251f35264",
+        "deb1a901-42c0-5728-bbc8-134a2e649726"
+      ]
+    },
+    {
+      "canonical_text": "recalls the symbols of elements",
+      "member_texts": [
+        "recalls the symbols of elements"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "1ad8faf6-fb57-5337-ab15-1af167c162dc",
+        "c2410db3-ae36-5c66-9442-b97b01277b4d"
+      ]
+    },
+    {
+      "canonical_text": "relates reactivity of metals to their position in the periodic table",
+      "member_texts": [
+        "explains how the reactivity series of metals is linked to their position in the modern periodic table",
+        "relates reactivity of metals to their position in the periodic table"
+      ],
+      "scope_key": "framework",
+      "sfi_uuids": [
+        "969d4f78-2efd-5a89-a51d-80957b056d5b",
+        "96d161bd-db02-5440-b475-8a74538115f8"
+      ]
+    }
+  ],
+  "judged_same_count": 3,
+  "total_claim_count": 858,
+  "unique_text_count": 856
+}

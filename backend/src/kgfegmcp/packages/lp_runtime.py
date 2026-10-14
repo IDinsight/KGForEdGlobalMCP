@@ -19,6 +19,7 @@ from pydantic import ValidationError
 
 # Package Library
 from kgfegmcp.domain.enums import GraphType
+from kgfegmcp.domain.identifiers import ArtifactName, Sha256Digest
 from kgfegmcp.errors import ManifestBuildError
 from kgfegmcp.graph.models import GraphRelationship
 from kgfegmcp.packages.evidence_models import (
@@ -62,12 +63,40 @@ _REMOVED_RECORD_FIELDS: Final[tuple[tuple[tuple[str, ...], str], ...]] = (
 
 
 @dataclass(frozen=True, slots=True)
+class RuntimeEvidenceResult:
+    """Return runtime-tier projections, archived identities and findings."""
+
+    archived_artifact_sha256: dict[ArtifactName, Sha256Digest]
+    evidence: LearningProgressionEvidence | None
+    findings: tuple[PackageValidationFinding, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class _RuntimeEvidence:
     """Hold parsed runtime evidence for one validation pass only."""
 
     contents: Mapping[str, bytes]
     package: LoadedGraphPackage
     record: EvidenceArchiveRecord
+
+
+def _failed(finding: PackageValidationFinding) -> RuntimeEvidenceResult:
+    """Return a runtime-tier result for one blocking finding.
+
+    Parameters
+    ----------
+    finding
+        Blocking finding.
+
+    Returns
+    -------
+    RuntimeEvidenceResult
+        Result without projections or archived identities.
+    """
+
+    return RuntimeEvidenceResult(
+        archived_artifact_sha256={}, evidence=None, findings=(finding,)
+    )
 
 
 def _has_removed_field(raw: Mapping[str, object]) -> bool:
@@ -422,7 +451,7 @@ def _validate_learning_progressions(
 
 def validate_runtime_evidence(
     *, captured_contents: Mapping[str, bytes], package: LoadedGraphPackage
-) -> tuple[LearningProgressionEvidence | None, tuple[PackageValidationFinding, ...]]:
+) -> RuntimeEvidenceResult:
     """Validate a runtime-only package and build its LP projections.
 
     Parameters
@@ -435,15 +464,15 @@ def validate_runtime_evidence(
 
     Returns
     -------
-    tuple[LearningProgressionEvidence | None, tuple[PackageValidationFinding, ...]]
-        LP projections (``None`` when the package has no LP) and safe findings.
+    RuntimeEvidenceResult
+        LP projections (``None`` when the package has no LP), the record's
+        archive-only identities (logical name to SHA-256), and safe findings.
 
     Examples
     --------
-    >>> projection, findings = validate_runtime_evidence(
+    >>> validate_runtime_evidence(
     ...     captured_contents=verified_bytes, package=runtime_package
-    ... )
-    >>> findings
+    ... ).findings
     ()
     """
 
@@ -454,25 +483,34 @@ def validate_runtime_evidence(
             record=_load_record(contents=captured_contents, package=package),
         )
         _validate_record_agreement(evidence)
+        archived = {
+            ArtifactName(name): entry.sha256
+            for name, entry in sorted(evidence.record.evidence_artifacts.items())
+            if not entry.runtime
+        }
 
         if GraphType.LEARNING_PROGRESSIONS not in package.manifest.included_graph_types:
-            return None, ()
+            return RuntimeEvidenceResult(
+                archived_artifact_sha256=archived, evidence=None, findings=()
+            )
 
         projection = _validate_learning_progressions(evidence)
     except _EvidenceError as error:
-        return None, (
+        return _failed(
             PackageValidationFinding(
                 code=error.code,
                 message="Runtime evidence fails an independent package check.",
                 record_id=error.record_id,
-            ),
+            )
         )
     except (KeyError, ManifestBuildError, TypeError, ValidationError, ValueError):
-        return None, (
+        return _failed(
             PackageValidationFinding(
                 code="runtime_evidence_shape",
                 message="Required runtime evidence is missing or malformed.",
-            ),
+            )
         )
 
-    return projection, ()
+    return RuntimeEvidenceResult(
+        archived_artifact_sha256=archived, evidence=projection, findings=()
+    )

@@ -72,7 +72,6 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_relationships,
 )
 from kgfegmcp.packages.evidence import EvidenceVerifier, full_layout_view
-from kgfegmcp.packages.lp_models import LearningProgressionEvidence
 from kgfegmcp.packages.lp_runtime import validate_runtime_evidence
 from kgfegmcp.packages.lp_validation import (
     validate_learning_progression_evidence,
@@ -383,7 +382,7 @@ class GraphPackageLoader:
 
     def _validate_evidence(
         self, *, captured_contents: dict[str, bytes], package: LoadedGraphPackage
-    ) -> tuple[LearningProgressionEvidence | None, list[PackageValidationFinding]]:
+    ) -> tuple[LoadedGraphPackage, list[PackageValidationFinding]]:
         """Run the runtime tier and, when configured, the evidence tier.
 
         Parameters
@@ -395,8 +394,9 @@ class GraphPackageLoader:
 
         Returns
         -------
-        tuple[LearningProgressionEvidence | None, list[PackageValidationFinding]]
-            LP projections and evidence findings.
+        tuple[LoadedGraphPackage, list[PackageValidationFinding]]
+            Package carrying its LP projections and archived evidence identities,
+            and the evidence findings.
 
         Raises
         ------
@@ -412,20 +412,29 @@ class GraphPackageLoader:
                     captured_contents=captured_contents, package=package
                 )
             )
-            return evidence, list(findings)
+            return (
+                package.model_copy(update={"learning_progression_evidence": evidence}),
+                list(findings),
+            )
 
-        evidence, findings = validate_runtime_evidence(
+        runtime = validate_runtime_evidence(
             captured_contents=captured_contents, package=package
         )
+        package = package.model_copy(
+            update={
+                "archived_artifact_sha256": runtime.archived_artifact_sha256,
+                "learning_progression_evidence": runtime.evidence,
+            }
+        )
 
-        if findings or self.evidence_verifier is None:
-            return evidence, list(findings)
+        if runtime.findings or self.evidence_verifier is None:
+            return package, list(runtime.findings)
 
-        return evidence, list(
+        return package, list(
             self.evidence_verifier.verify(
                 captured_contents=captured_contents,
                 package=package,
-                runtime_evidence=evidence,
+                runtime_evidence=runtime.evidence,
             )
         )
 
@@ -552,14 +561,11 @@ class GraphPackageLoader:
             validation_report=loaded_report,
         )
 
-        lp_evidence, lp_findings = self._validate_evidence(
+        loaded_package, lp_findings = self._validate_evidence(
             captured_contents=dict(verification.captured_contents),
             package=loaded_package,
         )
         findings.extend(lp_findings)
-        loaded_package = loaded_package.model_copy(
-            update={"learning_progression_evidence": lp_evidence}
-        )
         return GraphPackageLoadResult(
             candidate=candidate,
             findings=tuple(findings),

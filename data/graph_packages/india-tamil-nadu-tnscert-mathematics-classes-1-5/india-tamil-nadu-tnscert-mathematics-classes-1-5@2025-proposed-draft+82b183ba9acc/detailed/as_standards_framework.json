@@ -1,0 +1,37 @@
+{
+  "academic_subject": "Mathematics",
+  "adoption_status": "Proposed Draft",
+  "attribution_statement": "Tamil Nadu Curriculum Framework 2025, Proposed Draft Syllabus, Pedagogical Approaches and Assessment Strategies, Mathematics - Classes 1-5, TNSCERT.",
+  "author": "TNSCERT",
+  "case_identifier_uri": "urn:uuid:3b7ddd08-3682-5dbb-8455-abba82e54370",
+  "case_identifier_uuid": "3b7ddd08-3682-5dbb-8455-abba82e54370",
+  "date_created": null,
+  "date_modified": null,
+  "description": null,
+  "identifier": "3b7ddd08-3682-5dbb-8455-abba82e54370",
+  "in_language": "en",
+  "is_current": true,
+  "jurisdiction": "Tamil Nadu, India",
+  "license": "Not specified in source PDF",
+  "metadata": {
+    "country": "India",
+    "doc_key": "33c5da78839a7611308dd30f342b72f931a661235e094cc641832ec2a5548444",
+    "framework_title": "Tamil Nadu Curriculum Framework 2025: Mathematics - Classes 1-5",
+    "grades_or_stages": [
+      "Class-1",
+      "Class-2",
+      "Class-3",
+      "Class-4",
+      "Class-5"
+    ],
+    "languages": [
+      "en"
+    ],
+    "page_count": 9,
+    "pdf_name": "mathematics.pdf",
+    "primary_language": "en"
+  },
+  "name": "Tamil Nadu Curriculum Framework 2025: Mathematics - Classes 1-5",
+  "notes": null,
+  "provider": "Tamil Nadu State Council of Educational Research and Training (TNSCERT)"
+}

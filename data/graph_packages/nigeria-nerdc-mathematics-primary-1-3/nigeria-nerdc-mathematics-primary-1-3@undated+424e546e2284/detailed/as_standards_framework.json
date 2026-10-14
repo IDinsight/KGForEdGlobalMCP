@@ -1,0 +1,35 @@
+{
+  "academic_subject": "Mathematics",
+  "adoption_status": "Adopted",
+  "attribution_statement": "Source curriculum published by the Nigerian Educational Research and Development Council (NERDC) as part of the revised 9-Year Basic Education Mathematics Curriculum.",
+  "author": "Nigerian Educational Research and Development Council (NERDC)",
+  "case_identifier_uri": "urn:uuid:ea1bf379-42ef-5eb6-bbaa-e2eb65f50092",
+  "case_identifier_uuid": "ea1bf379-42ef-5eb6-bbaa-e2eb65f50092",
+  "date_created": null,
+  "date_modified": null,
+  "description": null,
+  "identifier": "ea1bf379-42ef-5eb6-bbaa-e2eb65f50092",
+  "in_language": "en",
+  "is_current": true,
+  "jurisdiction": "Nigeria",
+  "license": "Unknown",
+  "metadata": {
+    "country": "Nigeria",
+    "doc_key": "09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a",
+    "framework_title": "9-Year Basic Education Mathematics Curriculum for Primary 1-3",
+    "grades_or_stages": [
+      "Primary One",
+      "Primary Two",
+      "Primary Three"
+    ],
+    "languages": [
+      "en"
+    ],
+    "page_count": 37,
+    "pdf_name": "nigeria_maths_1_3.pdf",
+    "primary_language": "en"
+  },
+  "name": "9-Year Basic Education Mathematics Curriculum for Primary 1-3",
+  "notes": null,
+  "provider": "IDinsight"
+}

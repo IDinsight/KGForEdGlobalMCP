@@ -1,0 +1,47 @@
+{
+  "lc_confidence_distribution": {
+    "0.6": 2,
+    "0.7": 20,
+    "0.8": 67,
+    "0.9": 330
+  },
+  "lc_count_by_language": {
+    "en": 399
+  },
+  "lc_count_by_source_statement_type": {
+    "Content": 399
+  },
+  "lc_dedup_candidate_pair_count": 1094,
+  "lc_dedup_conflict_count": 0,
+  "lc_dedup_judged_same_count": 11,
+  "lc_generation_failed_sfis_count": 0,
+  "lc_max_splits_observed": 14,
+  "lc_multi_claim_lc_count": 15,
+  "lc_multi_parent_lc_count": 15,
+  "lc_selection_mode": "leaf_default",
+  "lc_source_exclusion_reason_counts": {
+    "not_a_leaf": 35
+  },
+  "lc_splits_distribution": {
+    "1": 97,
+    "2": 74,
+    "3": 38,
+    "4": 6,
+    "5": 2,
+    "6": 2,
+    "14": 1
+  },
+  "llm_request_count": 220,
+  "llm_response_count": 220,
+  "manual_review_overrides": null,
+  "total_lc_claims": 419,
+  "total_lc_source_sfis_considered": 255,
+  "total_lc_source_sfis_eligible": 220,
+  "total_lc_source_sfis_empty_text": 0,
+  "total_lc_source_sfis_excluded": 35,
+  "total_lcs": 399,
+  "total_supports_edges": 419,
+  "warnings": [
+    "no lc_source_statement_types configured; used leaf default (leaf SFIs with normalized_statement_type == 'Standard')"
+  ]
+}
