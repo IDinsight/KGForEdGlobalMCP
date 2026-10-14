@@ -92,7 +92,26 @@ SUPPORTED_INCLUDED_GRAPH_TYPES: Final[tuple[GraphType, ...]] = (
     GraphType.LEARNING_COMPONENTS,
     GraphType.LEARNING_PROGRESSIONS,
 )
-MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.1")
+# Archive-only kinds: bound by the evidence archive record, never runtime-declared.
+ARCHIVE_ONLY_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
+    {
+        "academicStandardsBundle",
+        "learningComponentsBundle",
+        "learningProgressionBuildsTowards",
+        "learningProgressionFinalClaims",
+        "learningProgressionProvenance",
+        "learningProgressionRelatesTo",
+        "relationshipsHasChild",
+        "standardsFrameworkItems",
+    }
+)
+EVIDENCE_ARCHIVE_RECORD_NAME: Final[str] = "evidenceArchiveRecord"
+# Temporary bridge for the six current full-layout packages; removed after cutover.
+FULL_LAYOUT_MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.1")
+LP_PROVENANCE_SHARD_NAMES: Final[tuple[str, ...]] = tuple(
+    f"learningProgressionProvenanceShard{number:02d}" for number in range(64)
+)
+MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.2")
 REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
     {
         "learningProgressionBuildsTowards",
@@ -105,6 +124,12 @@ REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
         "learningProgressionUnresolved",
         "learningProgressionValidation",
     }
+)
+REQUIRED_RUNTIME_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = (
+    REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES - ARCHIVE_ONLY_ARTIFACT_NAMES
+)
+SUPPORTED_MANIFEST_VERSIONS: Final[frozenset[str]] = frozenset(
+    {FULL_LAYOUT_MANIFEST_VERSION, MANIFEST_VERSION}
 )
 REQUIRED_ADDITIONAL_COUNT_NAMES: Final[frozenset[str]] = frozenset(
     {
@@ -841,7 +866,7 @@ class GraphPackageManifest(FrozenSchema):
             If the manifest declares an unsupported manifest version.
         """
 
-        if value != MANIFEST_VERSION:
+        if value not in SUPPORTED_MANIFEST_VERSIONS:
             raise ValueError(f"manifest_version must equal {MANIFEST_VERSION}.")
 
         return value
@@ -901,10 +926,26 @@ class GraphPackageManifest(FrozenSchema):
             self.counts.builds_towards_relationships
             + self.counts.relates_to_relationships
         )
+        required = (
+            REQUIRED_RUNTIME_LEARNING_PROGRESSION_ARTIFACT_NAMES
+            if self.manifest_version == MANIFEST_VERSION
+            else REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES
+        )
 
-        if declared and set(artifacts) != REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES:
+        if declared and set(artifacts) != required:
             raise ValueError(
                 "Learning progressions require all dedicated LP evidence artifacts."
+            )
+
+        if (
+            declared
+            and self.manifest_version == MANIFEST_VERSION
+            and not set(LP_PROVENANCE_SHARD_NAMES).issubset(
+                str(name) for name in self.artifacts.additional_artifacts
+            )
+        ):
+            raise ValueError(
+                "Learning progressions require all 64 slim LP provenance shards."
             )
 
         if not declared and (artifacts or lp_count):
@@ -925,6 +966,53 @@ class GraphPackageManifest(FrozenSchema):
         if self.counts.supports_relationships + lp_count > self.counts.relationships:
             raise ValueError(
                 "Supports and LP counts may not exceed total relationships."
+            )
+
+        return self
+
+    @model_validator(mode="after")
+    def validate_layout(self) -> Self:
+        """Require the runtime-only layout for manifest version ``1.2``.
+
+        Returns
+        -------
+        Self
+            Manifest whose evidence archive record declaration matches its version.
+
+        Raises
+        ------
+        ValueError
+            If a ``1.2`` manifest omits the record or declares an archive-only kind,
+            or a full-layout manifest declares the record.
+
+        Examples
+        --------
+        >>> GraphPackageManifest.model_validate(runtime_only_manifest).manifest_version
+        '1.2'
+        """
+
+        declared = set(self.artifacts.declared_artifacts())
+        has_record = EVIDENCE_ARCHIVE_RECORD_NAME in declared
+
+        if self.manifest_version != MANIFEST_VERSION:
+            if has_record:
+                raise ValueError(
+                    "Only a runtime-only manifest may declare the evidence archive record."
+                )
+
+            return self
+
+        if not has_record:
+            raise ValueError(
+                "A runtime-only manifest must declare the evidence archive record."
+            )
+
+        archive_only = sorted(declared & ARCHIVE_ONLY_ARTIFACT_NAMES)
+
+        if archive_only:
+            raise ValueError(
+                f"A runtime-only manifest may not declare archive-only artifacts: "
+                f"{', '.join(archive_only)}."
             )
 
         return self

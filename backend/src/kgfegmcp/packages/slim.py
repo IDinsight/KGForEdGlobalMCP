@@ -26,20 +26,18 @@ from kgfegmcp.packages.evidence_models import (
     SlimLearningComponentProvenance,
     SlimLearningProgressionProvenanceIndex,
 )
+from kgfegmcp.packages.models import LP_PROVENANCE_SHARD_NAMES
 from kgfegmcp.packages.normalization import _canonical_bytes, provenance_partition
 from kgfegmcp.packages.normalization_models import ProvenancePartition
 from kgfegmcp.packages.normalization_sources import read_json_object
 
-EVIDENCE_ARCHIVE_RECORD_NAME = "evidenceArchiveRecord"
 EVIDENCE_ARCHIVE_RECORD_PATH = "evidence/evidence_archive_record.json"
 SLIM_ENTITY_PROVENANCE_PATH = "slim/as_entity_provenance.json"
 SLIM_LEARNING_COMPONENT_PROVENANCE_PATH = "slim/lc_entity_provenance.json"
 SLIM_LP_INDEX_PATH = "slim/lp_relationship_provenance_index.json"
 SLIM_LP_SHARD_PATHS: dict[str, str] = {
-    f"learningProgressionProvenanceShard{number:02d}": (
-        f"slim/lp_relationship_provenance_shard_{number:02d}.json"
-    )
-    for number in range(64)
+    name: f"slim/lp_relationship_provenance_shard_{number:02d}.json"
+    for number, name in enumerate(LP_PROVENANCE_SHARD_NAMES)
 }
 SLIM_ARTIFACT_PATHS: dict[str, str] = {
     "entityProvenance": SLIM_ENTITY_PROVENANCE_PATH,
@@ -262,8 +260,7 @@ def derive_lp_provenance(
     artifacts: dict[str, bytes] = {}
     partitions: dict[str, ProvenancePartition] = {}
 
-    for number, bucket in enumerate(buckets):
-        name = f"learningProgressionProvenanceShard{number:02d}"
+    for name, bucket in zip(LP_PROVENANCE_SHARD_NAMES, buckets, strict=True):
         content = _canonical_bytes(bucket)
         artifacts[name] = content
         partitions[name] = ProvenancePartition.model_validate(

@@ -74,6 +74,7 @@ from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
     ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
     DELIVERY_SCHEMA_VERSION,
+    FULL_LAYOUT_MANIFEST_VERSION,
     REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
     SOURCE_SCHEMA_VERSION,
     SUPPORTED_INCLUDED_GRAPH_TYPES,
@@ -641,6 +642,7 @@ def _create_manifest(
                 if graph_type is not GraphType.LEARNING_PROGRESSIONS
                 or plan.capabilities.has_learning_progressions
             ),
+            manifest_version=FULL_LAYOUT_MANIFEST_VERSION,
             package_revision=1,
             profile=plan.profile_reference,
             rights=plan.rights,
