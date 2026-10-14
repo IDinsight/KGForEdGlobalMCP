@@ -106,8 +106,9 @@ time, and let the server start from the runtime set alone.
 
 ### 3. Slim per-edge LP relationship provenance
 
-**Intent:** Cut per-edge provenance to the judgment and its trace, which is what
-callers use, and leave the bulky candidate evidence in the archive.
+**Intent:** Cut per-edge provenance to the final judgment and its trace, which is
+what callers use, and leave the bulky candidate evidence and the producer's
+pre-correction judgment in the archive.
 
 **Done when:**
 
@@ -116,7 +117,11 @@ callers use, and leave the bulky candidate evidence in the archive.
   decision, direction, confidence, full rationale, full warnings, checker outcome,
   model identity, attribution, and the content hashes that link the edge to its
   archived evidence. Candidate evidence text, admissible decisions and the
-  duplicate producer judgment are not returned.
+  producer judgment are not returned. The producer judgment matches the final
+  judgment for accepted edges and records the pre-correction judgment for
+  checker-corrected edges. For those edges the served record shows the
+  `corrected` checker outcome and the producer trace hashes; the producer
+  judgment itself stays in the archived provenance map.
 - `AC-010`: Every LP edge in each delivery package resolves through the provenance
   index to exactly one slim record. No slim shard exceeds the existing source-read
   limit.
