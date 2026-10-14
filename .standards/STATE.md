@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `TESTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `REVIEWING_IMPLEMENTATION` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -25,8 +25,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
-`Rework done (a malformed slim AS or LC entity provenance file now yields blocking findings instead of an error); resume full verification.`
+`Kind`: `RESUME` `From`: `TESTING` `FailureType`: `NONE` `Reason`:
+`Test type error corrected (make lint passes, 149 tests pass); full verification still complete; resume implementation review.`
 
 ## Recovery
 

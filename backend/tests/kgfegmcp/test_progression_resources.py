@@ -1,4 +1,4 @@
-"""Complete original provenance, safe summaries and explicit rights/byte refusals."""
+"""Slim per-edge provenance, safe summaries and explicit rights/byte refusals."""
 
 # Standard Library
 import hashlib
@@ -22,42 +22,92 @@ from tests.fixtures.progression_fixtures import artifact_name
 from tests.fixtures.progression_fixtures import package_route as route
 
 
-def test_original_per_edge_trace_and_hashes(accepted_state: AppState) -> None:
-    """Six-package samples preserve complete original entries and independent hashes."""
+def test_slim_per_edge_trace_and_hashes(accepted_state: AppState) -> None:
+    """Six-package samples serve slim entries that keep the judgment and its trace.
+
+    Parameters
+    ----------
+    accepted_state
+        Application state bootstrapped from the six accepted packages.
+    """
+
     for runtime in accepted_state.catalog_load_result.package_runtimes:
-        edge = next(
-            e
-            for e in runtime.loaded_package.relationships
-            if e.label == "buildsTowards"
-        )
-        document = accepted_state.resource_service.relationship_provenance(
-            **route(runtime), relationship_id=edge.relationship_id
-        )
-        original = runtime.loaded_package.artifact("learningProgressionProvenance")
-        assert original
-        entry = json.loads(original.resolved_path.read_bytes())[edge.relationship_id]
-        payload = json.loads(document.content)
-        assert (
-            payload["provenance"] == entry
-            and payload["epistemicStatus"] == "llm_inferred"
-        )
-        content = (
-            document.content.encode()
-            if isinstance(document.content, str)
-            else document.content
-        )
-        assert (
-            document.metadata.content_sha256
-            == "sha256:" + hashlib.sha256(content).hexdigest()
-        )
-        references = {r.logical_name: r for r in document.metadata.source_artifacts}
-        assert references["learningProgressionProvenance"].sha256 == original.sha256
-        assert partition_name(edge.relationship_id) in references
-        assert (
-            "learningProgressionProvenanceIndex" in references
-            and "relationships" in references
-        )
-        assert "not a mandatory prerequisite" in payload["semanticNotice"]
+        package = runtime.loaded_package
+        evidence = package.learning_progression_evidence
+        record_reference = package.artifact("evidenceArchiveRecord")
+        assert evidence and record_reference
+        archived = json.loads(record_reference.resolved_path.read_bytes())[
+            "evidenceArtifacts"
+        ]["learningProgressionProvenance"]
+
+        for label in ("buildsTowards", "relatesTo"):
+            edge = next(e for e in package.relationships if e.label == label)
+            document = accepted_state.resource_service.relationship_provenance(
+                **route(runtime), relationship_id=edge.relationship_id
+            )
+            shard = package.artifact(partition_name(edge.relationship_id))
+            assert shard
+            entry = json.loads(shard.resolved_path.read_bytes())[edge.relationship_id]
+            payload = json.loads(document.content)
+            record = payload["provenance"]
+            claim = record["claim"]
+            judgment = next(
+                row
+                for row in evidence.judgments
+                if row.relationship_id == edge.relationship_id
+            )
+            assert record == entry and payload["epistemicStatus"] == "llm_inferred"
+
+            # Archived bulky fields are gone; identity, judgment and trace remain.
+            assert not {"admissible_decisions", "evidence"} & set(claim["candidate"])
+            assert "producer_judgment" not in claim["provenance"]
+            assert claim["judgment"]["decision"] == edge.label
+            assert (claim["source_sfi_uuid"], claim["target_sfi_uuid"]) == (
+                edge.source_entity_value,
+                edge.target_entity_value,
+            )
+            assert record["relationship_identity_key"].endswith(
+                f"{edge.label}:{edge.source_entity_value}:{edge.target_entity_value}"
+            )
+            assert claim["provenance"]["checker_outcome"] in {"accepted", "corrected"}
+            assert record["model_configuration"] and record["model_settings"]
+            assert record["approved_by"] == "IDinsight"
+            assert record["attribution_statement_template"]
+            assert record["original_entry_sha256"].startswith("sha256:")
+
+            # Full rationale and warnings, never shorter than the bounded projection.
+            assert claim["judgment"]["confidence"] == judgment.confidence
+            assert claim["judgment"]["rationale"].startswith(judgment.rationale_excerpt)
+            assert (
+                len(claim["judgment"]["rationale"]) > 512
+            ) == judgment.rationale_excerpted
+            assert len(claim["judgment"]["warnings"]) == judgment.warning_count
+
+            content = (
+                document.content.encode()
+                if isinstance(document.content, str)
+                else document.content
+            )
+            assert (
+                document.metadata.content_sha256
+                == "sha256:" + hashlib.sha256(content).hexdigest()
+            )
+            assert payload["archivedProvenanceSha256"] == archived["sha256"]
+            references = {r.logical_name: r for r in document.metadata.source_artifacts}
+            assert set(references) == {
+                "evidenceArchiveRecord",
+                "learningProgressionProvenanceIndex",
+                "packageManifest",
+                "relationships",
+                partition_name(edge.relationship_id),
+            }
+            assert references[partition_name(edge.relationship_id)].sha256 == (
+                shard.sha256
+            )
+            assert references["evidenceArchiveRecord"].sha256 == (
+                record_reference.sha256
+            )
+            assert "not a mandatory prerequisite" in payload["semanticNotice"]
 
 
 def test_summary_is_safe_public_projection(accepted_state: AppState) -> None:
@@ -85,15 +135,51 @@ def test_summary_is_safe_public_projection(accepted_state: AppState) -> None:
 
 
 def test_bulk_is_denied_independently(accepted_state: AppState) -> None:
-    """Actual reviewed full-text packages still refuse their bulk LP maps."""
-    runtime = accepted_state.catalog_load_result.package_runtimes[0]
-    assert runtime.catalog_package.rights.allow_full_text
-    assert not runtime.catalog_package.rights.allow_bulk_resource
-    with pytest.raises(ResourceAccessDeniedError):
-        accepted_state.resource_service.artifact(
-            **route(runtime),
-            artifact_name=artifact_name("learningProgressionProvenance"),
-        )
+    """Reviewed full-text packages refuse declared bulk LP and entity artifacts.
+
+    Parameters
+    ----------
+    accepted_state
+        Application state bootstrapped from the six accepted packages.
+    """
+
+    for runtime in accepted_state.catalog_load_result.package_runtimes:
+        assert runtime.catalog_package.rights.allow_full_text
+        assert not runtime.catalog_package.rights.allow_bulk_resource
+
+        for name in (
+            "entityProvenance",
+            "learningComponentProvenance",
+            "learningProgressionProvenanceShard00",
+            "nodes",
+        ):
+            with pytest.raises(ResourceAccessDeniedError):
+                accepted_state.resource_service.artifact(
+                    **route(runtime), artifact_name=artifact_name(name)
+                )
+
+
+def test_archived_and_record_artifacts_are_unavailable(
+    accepted_state: AppState,
+) -> None:
+    """Archived evidence names and the evidence record are never served.
+
+    Parameters
+    ----------
+    accepted_state
+        Application state bootstrapped from the six accepted packages.
+    """
+
+    for runtime in accepted_state.catalog_load_result.package_runtimes:
+        for name in (
+            "evidenceArchiveRecord",
+            "learningProgressionFinalClaims",
+            "learningProgressionProvenance",
+        ):
+            with pytest.raises(ResourceNotFoundError):
+                accepted_state.resource_service.artifact(
+                    **route(runtime), artifact_name=artifact_name(name)
+                )
 
 
 def test_full_text_denial_precedes_reads(
