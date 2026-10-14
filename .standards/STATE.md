@@ -13,7 +13,7 @@
 `Architecture`:
 `.standards/docs/specs/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `Development`:
 `.standards/docs/development/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `PromotionReason`: `NONE`
-`AuditTarget`: `NONE` `BlockedOn`: `Continue with DEV-003 (builder produces the runtime-only layout)?` `PendingVerificationCadence`: `NONE`
+`AuditTarget`: `NONE` `BlockedOn`: `Continue with DEV-004 (runtime validation tier)?` `PendingVerificationCadence`: `NONE`
 
 `BaselineReconciliation`: `NONE`
 

@@ -35,11 +35,12 @@ import shutil
 import sys
 import tempfile
 
+from collections.abc import Mapping
 from ctypes import CDLL, c_char_p, c_int, c_uint, get_errno
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
-from typing import Final, NoReturn, cast
+from typing import Final, NoReturn
 
 # Third Party Library
 from pydantic import TypeAdapter, ValidationError
@@ -48,7 +49,6 @@ from pydantic import TypeAdapter, ValidationError
 from kgfegmcp.config import BackendSettings
 from kgfegmcp.domain.enums import CodeAvailability, GraphType, ValidationStatus
 from kgfegmcp.domain.identifiers import (
-    ArtifactName,
     ArtifactPath,
     FrameworkId,
     GraphPackageId,
@@ -65,16 +65,19 @@ from kgfegmcp.graph.models import (
     StandardNode,
 )
 from kgfegmcp.packages.checksums import (
+    calculate_bytes_sha256,
     calculate_file_sha256,
     calculate_snapshot_artifact_set_sha256,
 )
 from kgfegmcp.packages.decoder import iter_decoded_nodes, iter_decoded_relationships
+from kgfegmcp.packages.evidence_models import EvidenceArchiveEntry
 from kgfegmcp.packages.models import (
     ADDITIONAL_COUNT_CODED_ITEMS,
     ADDITIONAL_COUNT_MULTI_PARENT_TARGETS,
     ADDITIONAL_COUNT_UNRESOLVED_RELATIONSHIPS,
+    ARCHIVE_ONLY_ARTIFACT_NAMES,
     DELIVERY_SCHEMA_VERSION,
-    FULL_LAYOUT_MANIFEST_VERSION,
+    EVIDENCE_ARCHIVE_RECORD_NAME,
     REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
     SOURCE_SCHEMA_VERSION,
     SUPPORTED_INCLUDED_GRAPH_TYPES,
@@ -88,6 +91,14 @@ from kgfegmcp.packages.models import (
     PackageValidation,
     ProfileReference,
     SnapshotRelation,
+)
+from kgfegmcp.packages.slim import (
+    EVIDENCE_ARCHIVE_RECORD_PATH,
+    SLIM_ARTIFACT_PATHS,
+    derive_entity_provenance,
+    derive_learning_component_provenance,
+    derive_lp_provenance,
+    evidence_archive_record_bytes,
 )
 from kgfegmcp.packages.wire import (
     DELIVERY_SCHEMA_1_0_RELATIONSHIP_STATUS_VOCABULARY,
@@ -178,11 +189,22 @@ _RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
 _RECOGNIZED_DETAILED_BASENAMES_CASEFOLDED: Final[frozenset[str]] = frozenset(
     basename.casefold() for basename in _RECOGNIZED_DETAILED_ARTIFACTS
 )
+
+# Runtime manifest names that have a dedicated PackageArtifacts field.
+_DEDICATED_FIELD_NAMES: Final[dict[str, str]] = {
+    "nodes": "nodes",
+    "relationships": "relationships",
+    **{
+        manifest_name: field_name
+        for field_name, manifest_name in _RECOGNIZED_DETAILED_ARTIFACTS.values()
+    },
+}
 _RESERVED_ADDITIONAL_LOGICAL_NAMES: Final[frozenset[str]] = frozenset(
     {
         *(name.casefold() for name in REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES),
         "academicstandardsbundle",
         "entityprovenance",
+        EVIDENCE_ARCHIVE_RECORD_NAME.casefold(),
         "learningcomponentdedupgroups",
         "learningcomponentprovenance",
         "learningcomponentsummary",
@@ -249,6 +271,16 @@ class _FileFingerprint:
 
 
 @dataclass(frozen=True, slots=True)
+class _GeneratedArtifact:
+    """Hold one derived runtime artifact's exact bytes and its package location."""
+
+    content: bytes
+    manifest_name: str
+    package_path: ArtifactPath
+    sha256: Sha256Digest
+
+
+@dataclass(frozen=True, slots=True)
 class _NodeFacts:
     """Hold node-derived counts and the single decoded framework root."""
 
@@ -269,8 +301,10 @@ class _PackagePlan:
     checksums: dict[ArtifactPath, Sha256Digest]
     counts: PackageCounts
     destination: Path
+    evidence_sources: tuple[_ArtifactSource, ...]
     framework: FrameworkMetadata
     framework_id: FrameworkId
+    generated_artifacts: tuple[_GeneratedArtifact, ...]
     graph_package_id: GraphPackageId
     profile_fingerprint: _FileFingerprint
     profile_reference: ProfileReference
@@ -553,12 +587,12 @@ def _collect_tree_entries(package_path: Path) -> tuple[set[str], set[str]]:
 def _copy_artifacts(
     *, artifact_sources: tuple[_ArtifactSource, ...], staging_path: Path
 ) -> None:
-    """Copy every declared artifact into staging and verify its exact bytes.
+    """Copy every carried artifact into staging and verify its exact bytes.
 
     Parameters
     ----------
     artifact_sources
-        Deterministically ordered source artifact declarations.
+        Deterministically ordered carried source artifact declarations.
     staging_path
         Private staging package root.
 
@@ -642,7 +676,6 @@ def _create_manifest(
                 if graph_type is not GraphType.LEARNING_PROGRESSIONS
                 or plan.capabilities.has_learning_progressions
             ),
-            manifest_version=FULL_LAYOUT_MANIFEST_VERSION,
             package_revision=1,
             profile=plan.profile_reference,
             rights=plan.rights,
@@ -758,8 +791,7 @@ def _derive_capabilities(
         code_search=code_search,
         has_detailed_provenance=artifacts.entity_provenance is not None,
         has_learning_progression_provenance=(
-            artifacts.learning_progression_provenance is not None
-            and artifacts.learning_progression_provenance_index is not None
+            artifacts.learning_progression_provenance_index is not None
         ),
         has_learning_progressions=bool(artifacts.learning_progression_artifacts()),
         has_official_activities=(
@@ -980,6 +1012,68 @@ def _derive_framework_metadata(
     return framework, profile.rights
 
 
+def _derive_slim_artifacts(
+    sources_by_name: Mapping[str, _ArtifactSource],
+) -> dict[str, bytes]:
+    """Derive every slim runtime artifact that the full evidence set supports.
+
+    Parameters
+    ----------
+    sources_by_name
+        Full-evidence inputs by logical name.
+
+    Returns
+    -------
+    dict[str, bytes]
+        Canonical slim bytes by runtime logical name: the slim LP index and shards
+        when LP provenance is present, and slim AS and LC entity provenance when
+        their full documents are present.
+
+    Raises
+    ------
+    ManifestBuildError
+        If LP provenance is supplied without its index, or the reverse, or any
+        input cannot be read or derived.
+    """
+
+    derived: dict[str, bytes] = {}
+    provenance = sources_by_name.get("learningProgressionProvenance")
+    index = sources_by_name.get("learningProgressionProvenanceIndex")
+
+    if (provenance is None) != (index is None):
+        _build_error(
+            details={
+                "has_provenance": provenance is not None,
+                "has_provenance_index": index is not None,
+            },
+            message="LP provenance and its index must be supplied together.",
+        )
+
+    if provenance is not None and index is not None:
+        derived.update(
+            derive_lp_provenance(
+                original_index=_read_source_bytes(index),
+                original_provenance=_read_source_bytes(provenance),
+            )
+        )
+
+    entity = sources_by_name.get("entityProvenance")
+
+    if entity is not None:
+        derived["entityProvenance"] = derive_entity_provenance(
+            _read_source_bytes(entity)
+        )
+
+    component = sources_by_name.get("learningComponentProvenance")
+
+    if component is not None:
+        derived["learningComponentProvenance"] = derive_learning_component_provenance(
+            _read_source_bytes(component)
+        )
+
+    return derived
+
+
 def _derive_warnings(profile: CurriculumProfile) -> tuple[str, ...]:
     """Derive operator-visible build warnings from profile disclosures.
 
@@ -1116,6 +1210,63 @@ def _ensure_destination_absent(plan: _PackagePlan) -> None:
         raise _ExistingPackage
 
 
+def _evidence_archive_record(
+    *,
+    carried_names: frozenset[str],
+    evidence_sources: tuple[_ArtifactSource, ...],
+    framework_id: FrameworkId,
+    project_dir: Path,
+) -> bytes:
+    """Bind the complete full-evidence set by path, size, hash and local path.
+
+    Parameters
+    ----------
+    carried_names
+        Logical names carried byte-identical into the runtime package.
+    evidence_sources
+        Every full-evidence input.
+    framework_id
+        Owning framework.
+    project_dir
+        Repository root that every local path is relative to.
+
+    Returns
+    -------
+    bytes
+        Canonical evidence archive record bytes.
+
+    Raises
+    ------
+    ManifestBuildError
+        If an input lies outside the repository or cannot be inspected.
+    """
+
+    entries: dict[str, EvidenceArchiveEntry] = {}
+
+    for artifact in evidence_sources:
+        try:
+            size_bytes = artifact.source_path.stat().st_size
+        except OSError as error:
+            raise ManifestBuildError(
+                details={"source_path": str(artifact.source_path)},
+                message=f"Artifact '{artifact.source_path.name}' could not be inspected.",
+            ) from error
+
+        entries[artifact.manifest_name] = EvidenceArchiveEntry(
+            local_path=_local_path(
+                project_dir=project_dir, source_path=artifact.source_path
+            ),
+            package_path=artifact.package_path,
+            runtime=artifact.manifest_name in carried_names,
+            sha256=artifact.sha256,
+            size_bytes=size_bytes,
+        )
+
+    return evidence_archive_record_bytes(
+        evidence_artifacts=entries, framework_id=framework_id
+    )
+
+
 def _expected_directories(expected_files: set[str]) -> set[str]:
     """Return every package-relative ancestor directory required by files.
 
@@ -1233,6 +1384,41 @@ def _handle_existing_package(plan: _PackagePlan) -> PackageBuildResult:
     )
 
 
+def _local_path(*, project_dir: Path, source_path: Path) -> ArtifactPath:
+    """Express one resolved input as a repository-relative POSIX path.
+
+    Parameters
+    ----------
+    project_dir
+        Repository root.
+    source_path
+        Resolved full-evidence input file.
+
+    Returns
+    -------
+    ArtifactPath
+        Repository-relative path recorded as the archived file's local location.
+
+    Raises
+    ------
+    ManifestBuildError
+        If the input lies outside the repository.
+    """
+
+    try:
+        relative = source_path.relative_to(project_dir.resolve())
+    except ValueError as error:
+        raise ManifestBuildError(
+            details={"source_path": str(source_path)},
+            message=(
+                "Full-evidence inputs must live inside the repository so the "
+                "archive record can name their local path."
+            ),
+        ) from error
+
+    return _artifact_path(relative.as_posix())
+
+
 def _materialize_package(plan: _PackagePlan) -> PackageBuildResult:
     """Copy, verify, and atomically materialize a new pending package.
 
@@ -1328,10 +1514,10 @@ def _package_file_path(*, package_path: Path, relative_path: ArtifactPath) -> Pa
     return package_path.joinpath(*PurePosixPath(str(relative_path)).parts)
 
 
-def _prepare_artifacts(
+def _prepare_evidence_sources(
     *, project_dir: Path, spec: PackageBuildSpec
-) -> tuple[PackageArtifacts, tuple[_ArtifactSource, ...]]:
-    """Resolve, validate, checksum, and declare all package artifacts.
+) -> tuple[_ArtifactSource, ...]:
+    """Resolve, validate, and checksum the complete full-evidence input set.
 
     Parameters
     ----------
@@ -1342,14 +1528,15 @@ def _prepare_artifacts(
 
     Returns
     -------
-    tuple[PackageArtifacts, tuple[_ArtifactSource, ...]]
-        Established artifact contract and deterministically ordered source records.
+    tuple[_ArtifactSource, ...]
+        Every input under its full-evidence logical name and package path, ordered
+        by package path. These names and paths form the evidence namespace bound by
+        the archive record; they are not runtime declarations.
 
     Raises
     ------
     ManifestBuildError
-        If artifact names, sources, destinations, or declarations are unsafe or
-        conflicting.
+        If artifact names, sources, or destinations are unsafe or conflicting.
     """
 
     nodes_path = _resolve_input_file(
@@ -1372,27 +1559,21 @@ def _prepare_artifacts(
     )
 
     detailed_paths = _discover_detailed_artifacts(project_dir=project_dir, spec=spec)
-    artifact_values: dict[str, object] = {
-        "additional_artifacts": {},
-        "nodes": _artifact_path(f"delivery/{nodes_path.name}"),
-        "relationships": _artifact_path(f"delivery/{relationships_path.name}"),
-    }
     source_specs: list[tuple[str, ArtifactPath, Path]] = [
-        ("nodes", cast(ArtifactPath, artifact_values["nodes"]), nodes_path),
+        ("nodes", _artifact_path(f"delivery/{nodes_path.name}"), nodes_path),
         (
             "relationships",
-            cast(ArtifactPath, artifact_values["relationships"]),
+            _artifact_path(f"delivery/{relationships_path.name}"),
             relationships_path,
         ),
     ]
 
     for basename, resolved_path in sorted(detailed_paths.items()):
-        field_name, manifest_name = _RECOGNIZED_DETAILED_ARTIFACTS[basename]
-        package_path = _artifact_path(f"detailed/{basename}")
-        artifact_values[field_name] = package_path
-        source_specs.append((manifest_name, package_path, resolved_path))
+        _, manifest_name = _RECOGNIZED_DETAILED_ARTIFACTS[basename]
+        source_specs.append(
+            (manifest_name, _artifact_path(f"detailed/{basename}"), resolved_path)
+        )
 
-    additional_artifacts: dict[ArtifactName, ArtifactPath] = {}
     selected_reserved_basenames = {
         nodes_path.name.casefold(),
         relationships_path.name.casefold(),
@@ -1449,27 +1630,13 @@ def _prepare_artifacts(
                 ),
             )
 
-        package_path = _artifact_path(f"additional/{basename}")
-        additional_artifacts[logical_name] = package_path
-        source_specs.append((str(logical_name), package_path, resolved_path))
+        source_specs.append(
+            (str(logical_name), _artifact_path(f"additional/{basename}"), resolved_path)
+        )
         selected_reserved_basenames.add(basename.casefold())
 
-    artifact_values["additional_artifacts"] = additional_artifacts
-
-    try:
-        artifacts = PackageArtifacts.model_validate(artifact_values)
-    except ValidationError as error:
-        raise ManifestBuildError(
-            details={
-                "validation_errors": error.errors(
-                    include_input=False, include_url=False
-                )
-            },
-            message="Artifact declarations do not satisfy the package contract.",
-        ) from error
-
     _require_unique_artifact_sources(source_specs)
-    sources = tuple(
+    return tuple(
         sorted(
             (
                 _ArtifactSource(
@@ -1483,7 +1650,6 @@ def _prepare_artifacts(
             key=lambda artifact: str(artifact.package_path),
         )
     )
-    return artifacts, sources
 
 
 def _prepare_framework_directory(destination: Path) -> Path:
@@ -1587,11 +1753,16 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
         )
 
     framework_id = profile.framework_ids[0]
-    artifacts, artifact_sources = _prepare_artifacts(
+    evidence_sources = _prepare_evidence_sources(
         project_dir=settings.project_dir, spec=spec
     )
+    artifacts, artifact_sources, generated_artifacts = _prepare_runtime_artifacts(
+        evidence_sources=evidence_sources,
+        framework_id=framework_id,
+        project_dir=settings.project_dir,
+    )
     sources_by_name = {
-        artifact.manifest_name: artifact for artifact in artifact_sources
+        artifact.manifest_name: artifact for artifact in evidence_sources
     }
     facts = _decode_facts(
         hierarchy_relationship_type=profile.hierarchy.relationship_type,
@@ -1617,6 +1788,9 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
     checksums = {
         artifact.package_path: artifact.sha256 for artifact in artifact_sources
     }
+    checksums.update(
+        {artifact.package_path: artifact.sha256 for artifact in generated_artifacts}
+    )
     artifact_set_sha256 = calculate_snapshot_artifact_set_sha256(
         tuple(checksums.values())
     )
@@ -1660,8 +1834,10 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
         checksums=checksums,
         counts=counts,
         destination=destination,
+        evidence_sources=evidence_sources,
         framework=framework,
         framework_id=framework_id,
+        generated_artifacts=generated_artifacts,
         graph_package_id=graph_package_id,
         profile_fingerprint=_FileFingerprint(
             path=loaded_profile.path, sha256=loaded_profile.sha256
@@ -1673,6 +1849,106 @@ def _prepare_plan(*, settings: BackendSettings, spec: PackageBuildSpec) -> _Pack
         source_document_fingerprint=source_document_fingerprint,
         warnings=_derive_warnings(profile),
     )
+
+
+def _prepare_runtime_artifacts(
+    *,
+    evidence_sources: tuple[_ArtifactSource, ...],
+    framework_id: FrameworkId,
+    project_dir: Path,
+) -> tuple[
+    PackageArtifacts, tuple[_ArtifactSource, ...], tuple[_GeneratedArtifact, ...]
+]:
+    """Split full evidence into carried files and derived runtime artifacts.
+
+    Archive-only kinds and the full forms of slimmed artifacts stay out of the
+    package; every other input is carried byte-identical. The slim artifacts and the
+    evidence archive record are generated in memory.
+
+    Parameters
+    ----------
+    evidence_sources
+        Every full-evidence input.
+    framework_id
+        Owning framework.
+    project_dir
+        Repository root for archive local paths.
+
+    Returns
+    -------
+    tuple[PackageArtifacts, tuple[_ArtifactSource, ...], tuple[_GeneratedArtifact, ...]]
+        Runtime declaration, carried inputs and generated artifacts, each ordered by
+        package path.
+
+    Raises
+    ------
+    ManifestBuildError
+        If derivation fails or the runtime declaration violates the contract.
+    """
+
+    carried = tuple(
+        artifact
+        for artifact in evidence_sources
+        if artifact.manifest_name not in ARCHIVE_ONLY_ARTIFACT_NAMES
+        and artifact.manifest_name not in SLIM_ARTIFACT_PATHS
+    )
+    derived = _derive_slim_artifacts(
+        {artifact.manifest_name: artifact for artifact in evidence_sources}
+    )
+    derived[EVIDENCE_ARCHIVE_RECORD_NAME] = _evidence_archive_record(
+        carried_names=frozenset(artifact.manifest_name for artifact in carried),
+        evidence_sources=evidence_sources,
+        framework_id=framework_id,
+        project_dir=project_dir,
+    )
+    paths = {
+        **SLIM_ARTIFACT_PATHS,
+        EVIDENCE_ARCHIVE_RECORD_NAME: EVIDENCE_ARCHIVE_RECORD_PATH,
+    }
+    generated = tuple(
+        sorted(
+            (
+                _GeneratedArtifact(
+                    content=content,
+                    manifest_name=name,
+                    package_path=_artifact_path(paths[name]),
+                    sha256=calculate_bytes_sha256(content),
+                )
+                for name, content in derived.items()
+            ),
+            key=lambda artifact: str(artifact.package_path),
+        )
+    )
+    artifact_values: dict[str, object] = {}
+    additional_artifacts: dict[str, ArtifactPath] = {}
+
+    declarations = [
+        (artifact.manifest_name, artifact.package_path) for artifact in carried
+    ] + [(artifact.manifest_name, artifact.package_path) for artifact in generated]
+
+    for name, package_path in declarations:
+        field_name = _DEDICATED_FIELD_NAMES.get(name)
+
+        if field_name is None:
+            additional_artifacts[name] = package_path
+        else:
+            artifact_values[field_name] = package_path
+
+    artifact_values["additional_artifacts"] = additional_artifacts
+
+    try:
+        artifacts = PackageArtifacts.model_validate(artifact_values)
+    except ValidationError as error:
+        raise ManifestBuildError(
+            details={
+                "validation_errors": error.errors(
+                    include_input=False, include_url=False
+                )
+            },
+            message="Artifact declarations do not satisfy the package contract.",
+        ) from error
+
+    return artifacts, carried, generated
 
 
 def _prepare_source_document(
@@ -1702,6 +1978,51 @@ def _prepare_source_document(
     return _FileFingerprint(
         path=resolved_path, sha256=_calculate_file_sha256(resolved_path)
     )
+
+
+def _read_source_bytes(artifact: _ArtifactSource) -> bytes:
+    """Read one planned input and require it to match its planned checksum.
+
+    Parameters
+    ----------
+    artifact
+        Planned full-evidence input.
+
+    Returns
+    -------
+    bytes
+        Exact input bytes.
+
+    Raises
+    ------
+    ManifestBuildError
+        If the input cannot be read or changed since planning.
+    """
+
+    try:
+        content = artifact.source_path.read_bytes()
+    except OSError as error:
+        raise ManifestBuildError(
+            details={"source_path": str(artifact.source_path)},
+            message=f"Artifact '{artifact.source_path.name}' could not be read.",
+        ) from error
+
+    actual_sha256 = calculate_bytes_sha256(content)
+
+    if actual_sha256 != artifact.sha256:
+        _build_error(
+            details={
+                "actual_sha256": str(actual_sha256),
+                "expected_sha256": str(artifact.sha256),
+                "source_path": str(artifact.source_path),
+            },
+            message=(
+                f"Artifact '{artifact.source_path.name}' changed during manifest "
+                f"construction."
+            ),
+        )
+
+    return content
 
 
 def _require_additional_basename(*, basename: str, logical_name: str) -> None:
@@ -2308,6 +2629,9 @@ def _stage_and_rename(
     """
 
     _copy_artifacts(artifact_sources=plan.artifact_sources, staging_path=staging_path)
+    _write_generated_artifacts(
+        generated_artifacts=plan.generated_artifacts, staging_path=staging_path
+    )
     _verify_packaged_artifact_checksums(
         checksums=plan.checksums, package_path=staging_path
     )
@@ -2466,7 +2790,7 @@ def _verify_input_fingerprints(plan: _PackagePlan) -> None:
         If an artifact, profile, or optional source document changes after planning.
     """
 
-    for artifact in plan.artifact_sources:
+    for artifact in plan.evidence_sources:
         actual_sha256 = _calculate_file_sha256(artifact.source_path)
 
         if actual_sha256 != artifact.sha256:
@@ -2585,6 +2909,40 @@ def _verify_staged_manifest(
             details={"manifest_path": str(manifest_path)},
             message="The staged package manifest differs from the candidate manifest.",
         )
+
+
+def _write_generated_artifacts(
+    *, generated_artifacts: tuple[_GeneratedArtifact, ...], staging_path: Path
+) -> None:
+    """Write every derived runtime artifact into staging without overwriting.
+
+    Parameters
+    ----------
+    generated_artifacts
+        Derived artifacts with their exact bytes.
+    staging_path
+        Private staging package root.
+
+    Raises
+    ------
+    ManifestBuildError
+        If a derived artifact cannot be written.
+    """
+
+    for artifact in generated_artifacts:
+        destination = _package_file_path(
+            package_path=staging_path, relative_path=artifact.package_path
+        )
+        destination.parent.mkdir(exist_ok=True, parents=True)
+
+        try:
+            with destination.open("xb") as stream:
+                stream.write(artifact.content)
+        except OSError as error:
+            raise ManifestBuildError(
+                details={"destination_path": str(destination)},
+                message=f"Derived artifact '{artifact.manifest_name}' could not be written.",
+            ) from error
 
 
 def build_graph_package(

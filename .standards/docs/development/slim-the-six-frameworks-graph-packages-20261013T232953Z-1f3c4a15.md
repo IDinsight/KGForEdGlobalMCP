@@ -120,7 +120,7 @@ explicitly until DEV-003 switches it to the runtime-only layout. The new
 
 ### DEV-003 — Builder produces the runtime-only layout
 
-`Status`: `PENDING` `Depends On`: `DEV-002`
+`Status`: `DONE` `Depends On`: `DEV-002`
 `Acceptance`: `AC-001, AC-004, AC-015, AC-018`
 
 **Goal**
@@ -147,6 +147,34 @@ Build Rwanda into a scratch output root twice; confirm the declared file set
 matches Interfaces 1, carried files are byte-identical to the inputs, and both
 builds share a snapshot ID. Record which existing builder tests now fail
 because they expect the full layout (Tester rework).
+
+Result (2026-10-14, working tree at `10b6416` plus `builder.py` changes): from
+`backend/`, `.venv/bin/kgfegmcp-build-manifest --spec <scratch spec>` run twice
+with the Rwanda `package_build.json` copied unchanged except `outputRoot` set to
+two scratch directories. Both exit 0 and produce snapshot
+`rwanda-reb-mathematics-lower-primary-1-3@2025+7c2d6f401157`, pending, manifest
+`1.2`, 79 declared files (the Interfaces 1 set), byte-identical across the two
+builds, 19.4 MB. Scratch `dev003_check.py` confirmed: the file tree equals the
+declared set plus the manifest; no archive-only kind is declared; the record
+holds all 86 full-evidence entries with the same names, package paths and
+SHA-256 as the current `1.1` manifest, each `localPath` under
+`data/input_artifacts/rwanda_math/` matching size and hash; 11 entries are
+`runtime: true` and carried byte-identical; slim files equal a fresh `slim.py`
+derivation from the inputs; capabilities `hasDetailedProvenance`,
+`hasLearningProgressionProvenance`, `hasLearningProgressions` are true. No
+existing test exercises the builder; the suite still gives 117 passed. isort,
+black, ruff, mypy, interrogate (100%) and pylint (10.00/10) clean on
+`builder.py`.
+
+**Implementation Notes**
+
+Inputs are still discovered as before, but under their full-evidence names
+(`_prepare_evidence_sources`). `_prepare_runtime_artifacts` carries every input
+except archive-only kinds and the full forms of slimmed artifacts, derives the
+slim files and the record in memory (`_GeneratedArtifact`), and declares the
+runtime set. Input fingerprints now cover the whole evidence set. Full-evidence
+inputs must sit inside the repository so `localPath` is repository-relative.
+`hasLearningProgressionProvenance` now means the slim index is declared.
 
 ---
 
