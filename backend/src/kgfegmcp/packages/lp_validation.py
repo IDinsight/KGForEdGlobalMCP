@@ -23,6 +23,7 @@ from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.errors import ManifestBuildError
 from kgfegmcp.graph.models import GraphRelationship
 from kgfegmcp.packages.checksums import calculate_bytes_sha256
+from kgfegmcp.packages.evidence_models import FullEvidenceView
 from kgfegmcp.packages.lp_graph import LP_TYPES
 from kgfegmcp.packages.lp_models import (
     Claim,
@@ -39,7 +40,7 @@ from kgfegmcp.packages.lp_models import (
     Unresolved,
     ValidationReport,
 )
-from kgfegmcp.packages.models import LoadedGraphPackage, PackageValidationFinding
+from kgfegmcp.packages.models import PackageValidationFinding
 from kgfegmcp.packages.normalization_models import (
     DetailedLearningProgression,
     LearningProgressionProvenanceIndex,
@@ -113,13 +114,13 @@ class _Evidence:
     contents: Mapping[str, bytes]
     final: FinalClaims
     final_raw: dict[str, object]
-    package: LoadedGraphPackage
     provenance: dict[str, object]
     receipt: NormalizationReceipt
     report: ValidationReport
     split: dict[str, DetailedLearningProgression]
     summary: Summary
     unresolved: Unresolved
+    view: FullEvidenceView
 
 
 def _canonical_line(value: object) -> bytes:
@@ -312,17 +313,13 @@ def _expected_wire(
     }
 
 
-def _load_evidence(
-    *, contents: Mapping[str, bytes], package: LoadedGraphPackage
-) -> _Evidence:
-    """Parse complete retained documents from checksum-verified loader bytes.
+def _load_evidence(view: FullEvidenceView) -> _Evidence:
+    """Parse complete retained documents from checksum-verified evidence bytes.
 
     Parameters
     ----------
-    contents
-        Captured original bytes, including all LP partitions.
-    package
-        Decoded package being accepted.
+    view
+        Full-evidence view whose contents include all LP partitions.
 
     Returns
     -------
@@ -331,10 +328,11 @@ def _load_evidence(
 
     Examples
     --------
-    >>> _load_evidence(contents=verified_bytes, package=package).report.passed
+    >>> _load_evidence(view).report.passed
     True
     """
 
+    contents = view.contents
     final = read_json_object(
         data=contents["learningProgressionFinalClaims"], label="LP final claims"
     )
@@ -370,7 +368,6 @@ def _load_evidence(
         contents=contents,
         final=FinalClaims.model_validate(final),
         final_raw=final,
-        package=package,
         provenance=read_json_object(
             data=contents["learningProgressionProvenance"], label="LP provenance"
         ),
@@ -391,6 +388,7 @@ def _load_evidence(
                 data=contents["learningProgressionUnresolved"], label="LP unresolved"
             )
         ),
+        view=view,
     )
 
 
@@ -611,15 +609,16 @@ def _validate_index(evidence: _Evidence) -> None:
     )
     index = LearningProgressionProvenanceIndex.model_validate(raw)
     slots = {f"learningProgressionProvenanceShard{number:02d}" for number in range(64)}
-    declared = evidence.package.manifest.artifacts.additional_artifacts
     _require(
         code="lp_partition_declarations",
         condition=(
             set(index.partitions) == slots
             and {
-                str(name)
-                for name in declared
-                if str(name).startswith("learningProgressionProvenanceShard")
+                str(reference.logical_name)
+                for reference in evidence.view.artifacts
+                if str(reference.logical_name).startswith(
+                    "learningProgressionProvenanceShard"
+                )
             }
             == slots
             and index.original_provenance_sha256
@@ -633,7 +632,7 @@ def _validate_index(evidence: _Evidence) -> None:
     for number in range(64):
         slot = f"learningProgressionProvenanceShard{number:02d}"
         partition = index.partitions[slot]
-        reference = evidence.package.artifact(slot)
+        reference = evidence.view.artifact(slot)
         _require(
             code="lp_partition_identity",
             condition=(
@@ -679,24 +678,22 @@ def _validate_normalization(evidence: _Evidence) -> None:
     """
 
     receipt = evidence.receipt
-    package = evidence.package
+    view = evidence.view
     TypeAdapter(RawHash).validate_python(receipt.document_key)
     _require(
         code="lp_normalization_identity",
         condition=(
-            receipt.framework_id == package.manifest.framework_id
-            and receipt.framework_case_uuid
-            == package.framework_root.case_identifier_uuid
+            receipt.framework_id == view.framework_id
+            and receipt.framework_case_uuid == view.framework_root.case_identifier_uuid
             and receipt.builds_towards_relationships
-            == package.manifest.counts.builds_towards_relationships
-            and receipt.relates_to_relationships
-            == package.manifest.counts.relates_to_relationships
+            == view.builds_towards_relationships
+            and receipt.relates_to_relationships == view.relates_to_relationships
             and set(receipt.input_sha256) == COPIED_BASENAMES
         ),
     )
     outputs = {
         reference.package_path: reference.sha256
-        for reference in package.artifacts
+        for reference in view.artifacts
         if str(reference.logical_name) != "learningProgressionNormalization"
     }
     _require(
@@ -704,7 +701,7 @@ def _validate_normalization(evidence: _Evidence) -> None:
         condition=receipt.output_sha256 == outputs,
     )
 
-    for reference in package.artifacts:
+    for reference in view.artifacts:
         basename = PurePosixPath(str(reference.package_path)).name
 
         if basename in receipt.input_sha256:
@@ -757,7 +754,7 @@ def _validate_normalized_delivery(evidence: _Evidence) -> None:
     )
     standards = {
         str(node.case_identifier_uuid): str(node.node_id)
-        for node in evidence.package.item_nodes
+        for node in evidence.view.item_nodes
         if node.case_identifier_uuid is not None
     }
     suffix = b"\n" if receipt.newline_separator_added else b""
@@ -801,7 +798,7 @@ def _validate_provenance(
 
     edges = {
         str(edge.relationship_id): edge
-        for edge in evidence.package.relationships
+        for edge in evidence.view.relationships
         if edge.label in LP_TYPES
     }
     _require(
@@ -951,7 +948,7 @@ def _validate_report_hashes(evidence: _Evidence) -> None:
 
     references = {
         PurePosixPath(str(reference.package_path)).name: reference
-        for reference in evidence.package.artifacts
+        for reference in evidence.view.artifacts
     }
     required = {
         "lp_relationship_provenance.json",
@@ -1026,9 +1023,8 @@ def _validate_report_topology(evidence: _Evidence) -> None:
             code="lp_eligibility_mismatch",
             condition=(
                 eligibility.framework_uuid
-                == evidence.package.framework_root.case_identifier_uuid
-                and eligibility.total_sfis_considered
-                == len(evidence.package.item_nodes)
+                == evidence.view.framework_root.case_identifier_uuid
+                and eligibility.total_sfis_considered == len(evidence.view.item_nodes)
                 and eligibility.total_sfis_eligible + eligibility.total_sfis_excluded
                 == eligibility.total_sfis_considered
                 and eligibility.unresolved_sfis_eligible
@@ -1154,7 +1150,7 @@ def _validate_source_credit(
     >>> _validate_source_credit(edge=edge, evidence=evidence, provenance=provenance)
     """
 
-    root = evidence.package.framework_root
+    root = evidence.view.framework_root
     source = provenance.source_framework
     expected_source = {
         "attribution_statement": root.attribution_statement,
@@ -1187,16 +1183,14 @@ def _validate_source_credit(
 
 
 def validate_learning_progression_evidence(
-    *, captured_contents: Mapping[str, bytes], package: LoadedGraphPackage
+    *, view: FullEvidenceView
 ) -> tuple[LearningProgressionEvidence | None, tuple[PackageValidationFinding, ...]]:
     """Independently accept complete LP evidence and release all rich source maps.
 
     Parameters
     ----------
-    captured_contents
-        Exact bytes checksum-verified by the established loader.
-    package
-        Decoded immutable package before semantic acceptance.
+    view
+        Full-evidence view with checksum-verified bytes and decoded delivery.
 
     Returns
     -------
@@ -1205,18 +1199,16 @@ def validate_learning_progression_evidence(
 
     Examples
     --------
-    >>> projection, findings = validate_learning_progression_evidence(
-    ...     captured_contents=verified_bytes, package=valid_package
-    ... )
+    >>> projection, findings = validate_learning_progression_evidence(view=view)
     >>> findings
     ()
     """
 
-    if GraphType.LEARNING_PROGRESSIONS not in package.manifest.included_graph_types:
+    if GraphType.LEARNING_PROGRESSIONS not in view.included_graph_types:
         return None, ()
 
     try:
-        evidence = _load_evidence(contents=captured_contents, package=package)
+        evidence = _load_evidence(view)
         _validate_index(evidence)
         _validate_normalization(evidence)
         accepted = _validate_final_claims(evidence)

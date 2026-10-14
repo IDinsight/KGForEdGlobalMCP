@@ -140,6 +140,21 @@ class DeliveryPropertyDecodingError(KGFEGMCPError):
     error_code = "delivery_property_decoding_error"
 
 
+class EvidenceArchiveUnavailableError(KGFEGMCPError):
+    """Raised when archived evidence needed for acceptance is not present locally.
+
+    Acceptance cannot conclude without the archive, so this error stops validation
+    without persisting a status transition.
+
+    Examples
+    --------
+    >>> EvidenceArchiveUnavailableError(message="Unavailable.").error_code
+    'evidence_archive_unavailable'
+    """
+
+    error_code = "evidence_archive_unavailable"
+
+
 class EvidenceResultTooLargeError(KGFEGMCPError):
     """Raised when not even one Unicode scalar of evidence fits a tool result.
 

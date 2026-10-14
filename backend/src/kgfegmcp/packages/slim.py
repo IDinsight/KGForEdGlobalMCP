@@ -39,6 +39,14 @@ SLIM_LP_SHARD_PATHS: dict[str, str] = {
     name: f"slim/lp_relationship_provenance_shard_{number:02d}.json"
     for number, name in enumerate(LP_PROVENANCE_SHARD_NAMES)
 }
+
+# Full-evidence inputs that the slim derivations read.
+SLIM_SOURCE_NAMES: tuple[str, ...] = (
+    "entityProvenance",
+    "learningComponentProvenance",
+    "learningProgressionProvenance",
+    "learningProgressionProvenanceIndex",
+)
 SLIM_ARTIFACT_PATHS: dict[str, str] = {
     "entityProvenance": SLIM_ENTITY_PROVENANCE_PATH,
     "learningComponentProvenance": SLIM_LEARNING_COMPONENT_PROVENANCE_PATH,
@@ -279,6 +287,60 @@ def derive_lp_provenance(
         )
     )
     return artifacts
+
+
+def derive_slim_artifacts(contents: Mapping[str, bytes]) -> dict[str, bytes]:
+    """Derive every slim runtime artifact that a full-evidence set supports.
+
+    Parameters
+    ----------
+    contents
+        Exact full-evidence bytes by logical name; only ``SLIM_SOURCE_NAMES`` are
+        read.
+
+    Returns
+    -------
+    dict[str, bytes]
+        Canonical slim bytes by runtime logical name: the slim LP index and shards
+        when LP provenance is present, and slim AS and LC entity provenance when
+        their full documents are present.
+
+    Raises
+    ------
+    ManifestBuildError
+        If LP provenance is present without its index, or the reverse, or any
+        derivation fails.
+    """
+
+    derived: dict[str, bytes] = {}
+    provenance = contents.get("learningProgressionProvenance")
+    index = contents.get("learningProgressionProvenanceIndex")
+
+    if (provenance is None) != (index is None):
+        raise ManifestBuildError(
+            details={
+                "has_provenance": provenance is not None,
+                "has_provenance_index": index is not None,
+            },
+            message="LP provenance and its index must be supplied together.",
+        )
+
+    if provenance is not None and index is not None:
+        derived.update(
+            derive_lp_provenance(original_index=index, original_provenance=provenance)
+        )
+
+    if "entityProvenance" in contents:
+        derived["entityProvenance"] = derive_entity_provenance(
+            contents["entityProvenance"]
+        )
+
+    if "learningComponentProvenance" in contents:
+        derived["learningComponentProvenance"] = derive_learning_component_provenance(
+            contents["learningComponentProvenance"]
+        )
+
+    return derived
 
 
 def evidence_archive_record_bytes(

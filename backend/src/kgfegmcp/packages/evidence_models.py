@@ -7,25 +7,29 @@ repository-relative input-set path where each archived file is kept locally.
 """
 
 # Standard Library
+from collections.abc import Mapping
+from dataclasses import dataclass
 from typing import Literal
 
 # Third Party Library
 from pydantic import ConfigDict, Field, StrictBool, StrictStr
 
 # Package Library
+from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import (
     ArtifactPath,
     CaseIdentifierUuid,
     FrameworkId,
     Sha256Digest,
 )
+from kgfegmcp.graph.models import FrameworkNode, GraphRelationship, StandardNode
 from kgfegmcp.packages.lp_models import (
     Judgment,
     RawHash,
     SourceEvidence,
     SourceFramework,
 )
-from kgfegmcp.packages.models import NonNegativeStrictInt
+from kgfegmcp.packages.models import DeclaredArtifactReference, NonNegativeStrictInt
 from kgfegmcp.packages.normalization_models import ProvenancePartition
 from kgfegmcp.schemas import FrozenSchema
 
@@ -169,3 +173,47 @@ class SlimLearningComponentProvenance(FrozenSchema):
     source_document: dict[str, object]
 
     model_config = ConfigDict(populate_by_name=True)
+
+
+# In-memory acceptance view; never persisted.
+@dataclass(frozen=True, slots=True)
+class FullEvidenceView:
+    """Present the complete full-evidence set plus decoded delivery for acceptance.
+
+    Artifacts carry their full-evidence logical names and package paths, with
+    checksums verified against the evidence archive record. ``contents`` holds the
+    exact bytes of the artifacts the full LP checks read.
+    """
+
+    artifacts: tuple[DeclaredArtifactReference, ...]
+    builds_towards_relationships: int
+    contents: Mapping[str, bytes]
+    framework_id: FrameworkId
+    framework_root: FrameworkNode
+    included_graph_types: tuple[GraphType, ...]
+    item_nodes: tuple[StandardNode, ...]
+    relates_to_relationships: int
+    relationships: tuple[GraphRelationship, ...]
+
+    def artifact(self, logical_name: str) -> DeclaredArtifactReference | None:
+        """Return one full-evidence artifact reference by logical name.
+
+        Parameters
+        ----------
+        logical_name
+            Full-evidence logical name.
+
+        Returns
+        -------
+        DeclaredArtifactReference | None
+            The matching reference, or ``None`` when absent.
+        """
+
+        return next(
+            (
+                reference
+                for reference in self.artifacts
+                if str(reference.logical_name) == logical_name
+            ),
+            None,
+        )

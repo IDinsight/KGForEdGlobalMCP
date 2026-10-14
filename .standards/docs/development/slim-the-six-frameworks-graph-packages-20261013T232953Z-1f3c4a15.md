@@ -246,7 +246,7 @@ and reuse `lp_normalization_output_hashes`, `lp_partition_declarations`,
 
 ### DEV-005 — `FullEvidenceView` evidence tier and `validate-packages`
 
-`Status`: `PENDING` `Depends On`: `DEV-004`
+`Status`: `DONE` `Depends On`: `DEV-004`
 `Acceptance`: `AC-004, AC-005, AC-012`
 
 **Goal**
@@ -281,6 +281,57 @@ On scratch copies of the Rwanda `1.2` package: `--read-only` passes with
 evidence present; removing, altering or mismatching an evidence or slim file
 gives the expected outcome; `--runtime-only` passes without evidence. The six
 `1.1` packages still load with identical projections.
+
+Result (2026-10-14, working tree at `71c4ac7` plus changes to `evidence.py` (new),
+`evidence_models.py`, `lp_validation.py`, `loader.py`, `slim.py`, `builder.py`,
+`errors.py`, `cli/validate_packages.py`). CLI runs from `backend/` with
+`PATHS_PROJECT_DIR` set to a scratch project holding `config/`, a copy of
+`data/input_artifacts/rwanda_math/` and the scratch Rwanda `1.2` pending package
+(`…@2025+7c2d6f401157`), `kgfegmcp-validate-packages one …`:
+1) evidence present, `--read-only` → exit 0, valid, still pending;
+2) `--runtime-only` → exit 0, valid, still pending;
+3) `lp_final_claims.json` moved away, persisting run → exit 2,
+`evidence_archive_unavailable`, manifest still pending;
+4) same, `--runtime-only` → exit 0, valid;
+5) one byte of `as_kg_bundle.json` changed, `--read-only` → exit 1,
+`evidence_archive_checksum_mismatch`, pending;
+6) same, persisting run → exit 1, `failed`, persisted;
+7) package and evidence restored, persisting run → exit 0, `passed`;
+8) passed package, `--runtime-only` → exit 0, valid, not persisted;
+9) altered evidence with `--invalid-package-policy quarantine` → exit 1,
+`quarantined`.
+All six scratch `1.2` packages (DEV-004 builds) with
+`KGFEGMCP_GRAPH_PACKAGES_ROOT` pointed at them and the real input sets:
+`pending --read-only` → exit 0, all six valid, no findings. Scratch
+`dev005_direct.py` against the verifier internals: changed archived AS item →
+`slim_derivation_mismatch` (`entityProvenance`); changed archived LP rationale →
+`slim_derivation_mismatch` for the slim index and one shard; non-canonical
+record bytes → `slim_derivation_mismatch`; altered runtime projections →
+`slim_projection_mismatch`; final claims `total_claims` changed in the view →
+`lp_final_counts_mismatch`; one LC node removed → `slim_entity_coverage_mismatch`.
+Scratch `dev005_bridge.py`: on the real `1.1` package the view-based checks
+return the same projections as startup, and `{}` for
+`learningProgressionSummary`/`learningProgressionProvenance` gives
+`lp_evidence_shape`/`lp_partition_declarations`. Suite: 115 passed, 2 failed —
+both `test_progression_acceptance.py::test_evidence_rejects_missing_required_content`
+cases call `validate_learning_progression_evidence(captured_contents=…,
+package=…)`, the signature the design replaces with `view=` (Tester rework;
+the bridge script shows the scenario still fails with `lp_` codes). isort,
+black, ruff, mypy, interrogate (100%) and pylint (10.00/10) clean on all nine
+touched files.
+
+**Implementation Notes**
+
+`FullEvidenceView` is a frozen dataclass in `evidence_models.py` so
+`lp_validation.py` can take it without importing `evidence.py`. The full LP
+checks read the view's artifacts, counts, framework root, item nodes and
+relationships where they read the loaded package before; check logic and codes
+are unchanged. `EvidenceVerifier` reads only the files the checks parse
+(LP files, original shards, delivery, entity provenance) and stream-hashes the
+rest. A missing archive file raises `EvidenceArchiveUnavailableError`, so the
+validator persists nothing. `slim.derive_slim_artifacts` is now the shared
+bytes-level derivation for the builder and acceptance. `full_layout_view` is the
+temporary `1.1` bridge; DEV-010 removes it.
 
 ---
 
@@ -447,7 +498,11 @@ otherwise recorded as a limitation.
   that read archive-only files or compare against the full provenance map
   (`conftest.py` `accepted_state` is fine; `test_progression_resources.py`,
   `test_progression_acceptance.py` and others noted in `CONTEXT.md`) are expected
-  to need Tester rework; Developer will record exactly which ones fail.
+  to need Tester rework; Developer will record exactly which ones fail. Known so
+  far: both cases of
+  `test_progression_acceptance.py::test_evidence_rejects_missing_required_content`
+  fail with `TypeError` since DEV-005, because they pass `captured_contents` and
+  `package` to `validate_learning_progression_evidence`, which now takes `view`.
 - All self-check scripts live in the session scratchpad, not the repository.
 - The size fallback in the design's Risks (hoisting constant per-edge fields)
   is a design revision; if DEV-009 measures over 100 MB, Developer routes an

@@ -228,7 +228,7 @@ def _validate_record_agreement(evidence: _RuntimeEvidence) -> None:
 
 
 def _validate_slim_index(
-    evidence: _RuntimeEvidence
+    evidence: _RuntimeEvidence,
 ) -> SlimLearningProgressionProvenanceIndex:
     """Bind the slim LP index to declared shards and to the archived originals.
 

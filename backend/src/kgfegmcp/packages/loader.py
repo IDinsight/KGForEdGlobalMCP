@@ -71,6 +71,8 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_nodes,
     iter_decoded_relationships,
 )
+from kgfegmcp.packages.evidence import EvidenceVerifier, full_layout_view
+from kgfegmcp.packages.lp_models import LearningProgressionEvidence
 from kgfegmcp.packages.lp_runtime import validate_runtime_evidence
 from kgfegmcp.packages.lp_validation import (
     validate_learning_progression_evidence,
@@ -200,10 +202,16 @@ class _PackageTreeVerification:
 
 @dataclass(frozen=True, slots=True)
 class GraphPackageLoader:
-    """Verify and decode package candidates without persisting validation state."""
+    """Verify and decode package candidates without persisting validation state.
+
+    Without an evidence verifier the loader runs the runtime tier only, as startup
+    does. Package acceptance passes a verifier so runtime-only packages are also
+    checked against their archived full evidence.
+    """
 
     profile_repository: ProfileRepository
     repository: GraphPackageRepository
+    evidence_verifier: EvidenceVerifier | None = None
 
     def _load_manifest(
         self, candidate: GraphPackageCandidate
@@ -373,6 +381,54 @@ class GraphPackageLoader:
 
         return discovered_candidate, None
 
+    def _validate_evidence(
+        self, *, captured_contents: dict[str, bytes], package: LoadedGraphPackage
+    ) -> tuple[LearningProgressionEvidence | None, list[PackageValidationFinding]]:
+        """Run the runtime tier and, when configured, the evidence tier.
+
+        Parameters
+        ----------
+        captured_contents
+            Loader-verified artifact bytes.
+        package
+            Decoded package before evidence acceptance.
+
+        Returns
+        -------
+        tuple[LearningProgressionEvidence | None, list[PackageValidationFinding]]
+            LP projections and evidence findings.
+
+        Raises
+        ------
+        EvidenceArchiveUnavailableError
+            If the evidence tier runs and archived evidence is absent.
+        """
+
+        # The full-layout path is a temporary bridge for the current packages
+        # until cutover.
+        if package.manifest.manifest_version != MANIFEST_VERSION:
+            evidence, findings = validate_learning_progression_evidence(
+                view=full_layout_view(
+                    captured_contents=captured_contents, package=package
+                )
+            )
+            return evidence, list(findings)
+
+        evidence, findings = validate_runtime_evidence(
+            captured_contents=captured_contents, package=package
+        )
+
+        if findings or self.evidence_verifier is None:
+            return evidence, list(findings)
+
+        return evidence, list(
+            self.evidence_verifier.verify(
+                captured_contents=captured_contents,
+                package=package,
+                runtime_evidence=evidence,
+            )
+        )
+
     def load(self, candidate: GraphPackageCandidate) -> GraphPackageLoadResult:
         """Load one candidate through all package-integrity boundaries.
 
@@ -496,14 +552,7 @@ class GraphPackageLoader:
             validation_report=loaded_report,
         )
 
-        # Runtime-only packages validate from runtime files alone; the full-layout path
-        # is a temporary bridge for the current packages until cutover.
-        validate_evidence = (
-            validate_runtime_evidence
-            if manifest.manifest_version == MANIFEST_VERSION
-            else validate_learning_progression_evidence
-        )
-        lp_evidence, lp_findings = validate_evidence(
+        lp_evidence, lp_findings = self._validate_evidence(
             captured_contents=dict(verification.captured_contents),
             package=loaded_package,
         )

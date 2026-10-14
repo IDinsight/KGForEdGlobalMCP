@@ -95,9 +95,8 @@ from kgfegmcp.packages.models import (
 from kgfegmcp.packages.slim import (
     EVIDENCE_ARCHIVE_RECORD_PATH,
     SLIM_ARTIFACT_PATHS,
-    derive_entity_provenance,
-    derive_learning_component_provenance,
-    derive_lp_provenance,
+    SLIM_SOURCE_NAMES,
+    derive_slim_artifacts,
     evidence_archive_record_bytes,
 )
 from kgfegmcp.packages.wire import (
@@ -1015,7 +1014,7 @@ def _derive_framework_metadata(
 def _derive_slim_artifacts(
     sources_by_name: Mapping[str, _ArtifactSource],
 ) -> dict[str, bytes]:
-    """Derive every slim runtime artifact that the full evidence set supports.
+    """Read the slim derivations' inputs and derive the slim runtime artifacts.
 
     Parameters
     ----------
@@ -1025,53 +1024,21 @@ def _derive_slim_artifacts(
     Returns
     -------
     dict[str, bytes]
-        Canonical slim bytes by runtime logical name: the slim LP index and shards
-        when LP provenance is present, and slim AS and LC entity provenance when
-        their full documents are present.
+        Canonical slim bytes by runtime logical name.
 
     Raises
     ------
     ManifestBuildError
-        If LP provenance is supplied without its index, or the reverse, or any
-        input cannot be read or derived.
+        If an input cannot be read, changed since planning, or cannot be derived.
     """
 
-    derived: dict[str, bytes] = {}
-    provenance = sources_by_name.get("learningProgressionProvenance")
-    index = sources_by_name.get("learningProgressionProvenanceIndex")
-
-    if (provenance is None) != (index is None):
-        _build_error(
-            details={
-                "has_provenance": provenance is not None,
-                "has_provenance_index": index is not None,
-            },
-            message="LP provenance and its index must be supplied together.",
-        )
-
-    if provenance is not None and index is not None:
-        derived.update(
-            derive_lp_provenance(
-                original_index=_read_source_bytes(index),
-                original_provenance=_read_source_bytes(provenance),
-            )
-        )
-
-    entity = sources_by_name.get("entityProvenance")
-
-    if entity is not None:
-        derived["entityProvenance"] = derive_entity_provenance(
-            _read_source_bytes(entity)
-        )
-
-    component = sources_by_name.get("learningComponentProvenance")
-
-    if component is not None:
-        derived["learningComponentProvenance"] = derive_learning_component_provenance(
-            _read_source_bytes(component)
-        )
-
-    return derived
+    return derive_slim_artifacts(
+        {
+            name: _read_source_bytes(sources_by_name[name])
+            for name in SLIM_SOURCE_NAMES
+            if name in sources_by_name
+        }
+    )
 
 
 def _derive_warnings(profile: CurriculumProfile) -> tuple[str, ...]:
