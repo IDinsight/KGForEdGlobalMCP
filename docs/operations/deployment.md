@@ -47,7 +47,10 @@ inputs:
 
 The `.dockerignore` file is an allowlist: everything is excluded from the build context
 unless it is explicitly admitted. `data/input_artifacts/`, documentation, packaging
-output, and local working files never enter the image.
+output, and local working files never enter the image. The image therefore holds only
+the declared runtime package files (about 84 MB for the six packages), even when the
+archived evidence is restored in the working tree. Railway builds from the Git
+repository, which holds everything the server loads, so no archive is needed to deploy.
 
 Because graph packages are baked in, code and data are versioned together. Changing a
 graph package means committing it and deploying a new image, and rolling back an image
@@ -145,8 +148,11 @@ together. Run `kgfegmcp-http-smoke` against the endpoint afterwards.
 The health check only passes after application bootstrap succeeds. Read the container
 logs for the bootstrap error, then reproduce it locally with the `docker run` command
 above. A graph package that fails read-only revalidation stops startup under the default
-`fail` policy; validate packages with
-`kgfegmcp-validate-packages pending --read-only` before building.
+`fail` policy. Before building, run
+`kgfegmcp-validate-packages pending --read-only` for pending packages and
+`kgfegmcp-validate-packages one --framework-id <framework-id> --snapshot-id <snapshot-id> --runtime-only`
+for an accepted package; the second runs the same checks as startup and needs no
+archived evidence.
 
 ### The smoke command cannot connect
 

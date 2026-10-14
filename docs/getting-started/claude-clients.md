@@ -13,21 +13,25 @@ Be clear about which claims rest on which evidence:
 |---|---|---|
 | Server version 0.4.0, over local STDIO and local Streamable HTTP | Automated offline tests and smoke checks: tool text for all five progression tools, `read_evidence`, `get_workflow_instructions`, native prompts and resources, paging, size limits, progression details in framework listings, citation links in component text, and one request per link type in workflows | Passed locally, 2026-10-07. This tests the server, not a client. |
 | MCPB bundle, version 0.4.0 | STDIO smoke test run from the unpacked bundle | Passed locally, 2026-10-07; not an installation in Desktop |
+| Server version 0.4.0 with the runtime-only graph packages | Automated offline tests, STDIO, local HTTP and MCPB stage smoke checks, and an in-process replay of every tool call and prompt rendering in walkthrough steps 1–13 below | Passed locally, 2026-10-14. This tests the server, not a client. |
 | MCPB installation in Claude Desktop, version 0.4.0 | Install and use on macOS; removal and same-version replacement | Install and use observed by a user on macOS, 2026-10-08. Removal and same-version replacement not checked on any OS; see the [installation guide](../operations/mcpb.md#claude-desktop-installation) |
-| Claude Desktop, earlier development build | Observed by a user on 2026-10-03: the connector started and listed six frameworks; all nine prompts appeared under **Add from curriculum-knowledge-graph**, and the support-planning prompt rendered as an attachment; the **Catalog** resource attached; the resource menu offered only Catalog and could not find a progression link. | User observations, not a test of this version |
 | Claude Desktop, version 0.4.0, on macOS | Observed by a user on 2026-10-08 through both the checkout configuration (`claude_desktop_config.json`) and the `.mcpb` bundle: the connector started, frameworks were listed, and prompts and resources appeared. Steps 1–13 of the [walkthrough below](#claude-desktop-walkthrough), including 9a, were run, and the user checked the composed, cited answers in steps 11–13. The resource menu listed more than Catalog. | User observation, 2026-10-08; no failures observed. Desktop app version not recorded. |
 | claude.ai custom connector, version 0.4.0 | Observed by a user on 2026-10-08 against the public deployment at `https://kg-for-ed-global-mcp.up.railway.app/mcp`, which was confirmed to run 0.4.0 on that date. Same results as the Desktop row above, including walkthrough steps 1–13 and their composed answers. The server's prompts showed in claude.ai, and server resources could be attached. | User observation, 2026-10-08; no failures observed. Plan type and connector name not recorded. |
 
 The local setup guide is written for macOS, and the 2026-10-08 Desktop observations
-were made on macOS. The 2026-10-03 observations and 2026-10-07 smoke evidence above do
-not record an OS, so they establish no OS-specific Desktop pass. Windows and Linux
+were made on macOS. The 2026-10-14 checks ran on macOS but not in Desktop, and the
+2026-10-07 smoke evidence does not record an OS, so neither establishes an OS-specific
+Desktop pass. Windows and Linux
 Desktop setup is undocumented and untested here; the manifest's three declared
 platforms do not change that.
 
 On 2026-10-08 a user ran the walkthrough workflows, including the cited, composed
 answers in steps 11–13, in Claude Desktop and in claude.ai, and checked the answers.
-These are a user's observations, not automated tests. Rendering a prompt, reading a
-resource or passing a smoke test is still not the same as a completed workflow.
+These are a user's observations, not automated tests. They were made with the graph
+packages that came before the runtime-only packages, which had different snapshot IDs
+and larger provenance records; they have not been repeated in a client since.
+Rendering a prompt, reading a resource or passing a smoke test is still not the same
+as a completed workflow.
 
 ## Supported routes
 
@@ -35,9 +39,9 @@ resource or passing a smoke test is still not the same as a completed workflow.
 |---|---|---|
 | Progression query results | Ordinary tool text. Each of the five progression tools returns its complete bounded result as JSON text, including edges, statements, confidence, warnings, links and cursors. | Same tools and text. |
 | Next page of a search or direct-connections result | Ask Claude to call the same tool with `page.nextRequest` unchanged. | Same. |
-| Full provenance and supporting evidence | Attach a resource from the connector's menu where it is offered (only Catalog on an earlier build; more resources on 0.4.0). For any other link, ask Claude to call `read_evidence` with the exact URI. | Attach a server resource in claude.ai (observed working, 2026-10-08), or ask Claude to call `read_evidence`. |
+| Full provenance and supporting evidence | Attach a resource from the connector's menu where it is offered (0.4.0 lists more than Catalog). For any other link, ask Claude to call `read_evidence` with the exact URI. | Attach a server resource in claude.ai (observed working, 2026-10-08), or ask Claude to call `read_evidence`. |
 | Standard and learning-component evidence | Workflow instructions list exact links and per-record link patterns (**EVIDENCE LINKS**); Claude fills in IDs from tool text and reads them with `read_evidence`. | Same. |
-| Workflow instructions | Native prompt from **Add from curriculum-knowledge-graph** (observed working on an earlier build; prompts also appeared on 0.4.0, 2026-10-08). Alternative: ask Claude to call `get_workflow_instructions`. | The server's prompts showed in claude.ai (observed, 2026-10-08). Alternative: `get_workflow_instructions` covers the seven teaching, study and progression workflows. |
+| Workflow instructions | Native prompt from **Add from curriculum-knowledge-graph** (prompts appeared on 0.4.0, 2026-10-08). Alternative: ask Claude to call `get_workflow_instructions`. | The server's prompts showed in claude.ai (observed, 2026-10-08). Alternative: `get_workflow_instructions` covers the seven teaching, study and progression workflows. |
 
 `get_workflow_instructions` does not cover `administrator_alignment_review` or
 `cross_framework_comparison`; use those as native prompts. See
@@ -45,10 +49,9 @@ resource or passing a smoke test is still not the same as a completed workflow.
 
 Known client limits that matter here:
 
-- On an earlier build (2026-10-03), the Desktop resource menu listed only Catalog and
-  could not find a progression link by URI. On 0.4.0 (2026-10-08) it listed more than
-  Catalog; whether it can find a progression link was not recorded. Use `read_evidence`
-  for links returned by tools.
+- On 0.4.0 (2026-10-08) the Desktop resource menu listed more than Catalog; whether it
+  can find a progression link by URI was not recorded. Use `read_evidence` for links
+  returned by tools.
 - Anthropic documents a tool-result limit of roughly 150,000 characters for connectors.
   This server keeps each tool result, text and structured copy combined, under 100,000
   characters and 1 MiB. Pages and paths stop early rather than exceed that, and say so.
@@ -68,14 +71,14 @@ The walkthrough uses one fixed diagnostic case from the Nigeria curriculum:
 | Item | Value |
 |---|---|
 | Framework ID | `nigeria-nerdc-mathematics-primary-1-3` |
-| Snapshot ID | `nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f` |
+| Snapshot ID | `nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284` |
 | Relationship ID | `0129f5d5-42fd-52cb-bcf2-ec07c47103e7` ("write correctly number 1-5" builds towards "write correctly number 6-9") |
 | Target standard node ID | `e399b510-48bb-58ee-abda-61460a5a853b` ("write correctly number 6-9", PRIMARY ONE) |
 
-**Run status.** Every tool call below was replayed against the same server code and data
-through an in-process MCP client on 2026-10-07, and the expected results were checked.
-On 2026-10-08 a user ran steps 1–13, including 9a, in Claude Desktop on macOS against
-0.4.0 and observed no failures. The results are in the
+**Run status.** Every tool call and prompt rendering below was replayed through an
+in-process MCP client with the runtime-only packages on 2026-10-14, and the expected
+results were checked; the values below come from that run. On 2026-10-08 a user ran steps 1–13, including 9a, in Claude Desktop on macOS
+against 0.4.0 with the earlier packages and observed no failures. The results are in the
 [table at the end](#record-your-results); add your own there.
 
 **Before you start, check that Desktop runs the current server.** In step 1, each
@@ -111,7 +114,7 @@ types, and each package has a `Learning progressions:` block with
 
 ### 2. Exact relationship
 
-> Call get_learning_progression with `{"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f","relationshipId":"0129f5d5-42fd-52cb-bcf2-ec07c47103e7"}}` and show me the relationship type, both endpoint statements, the confidence, the warnings and the provenance link.
+> Call get_learning_progression with `{"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284","relationshipId":"0129f5d5-42fd-52cb-bcf2-ec07c47103e7"}}` and show me the relationship type, both endpoint statements, the confidence, the warnings and the provenance link.
 
 Expected in the JSON text:
 
@@ -138,7 +141,7 @@ kind separately.
 
 ### 4. Search and pagination
 
-> Call search_learning_progressions with `{"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f","relationshipTypes":["buildsTowards"],"endpointScope":"either","limit":25}}`. Report page.returnedCount, page.stoppingReason and whether page.nextCursor is present.
+> Call search_learning_progressions with `{"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284","relationshipTypes":["buildsTowards"],"endpointScope":"either","limit":25}}`. Report page.returnedCount, page.stoppingReason and whether page.nextCursor is present.
 
 Expected: 7 relationships, `stoppingReason` `byte_limit`, `isComplete` false, and both
 `page.nextCursor` and `page.nextRequest` present. `limit` is a maximum; the page stopped
@@ -167,14 +170,15 @@ through `12b603df…` (`7fc3c0e1…`, `0129f5d5…`); `scopeComplete` true, `gra
 false, `truncationReasons` `["depth_limit"]`, `nextUnreturnedPath` null. A path is
 derived from stored edges; it is not a compulsory teaching order.
 
-### 7. Full provenance
+### 7. Edge provenance
 
 > Call read_evidence with the provenanceUri from step 2. If page.isComplete is false, keep calling with page.nextRequest until it is true. Then summarise the full rationale, all warnings and the producer/checker trace.
 
-Expected: one window, `contentStatus` `full`, 12,275 bytes, holding the full
-rationale, confidence, all nine warnings and the producer/checker trace with hashes.
-To see continuation in action, ask for `"maxContentBytes":4096`: the same record then
-arrives in three windows.
+Expected: one window, `contentStatus` `full`, 7,107 bytes, holding the full
+rationale, confidence, all nine warnings, the checker outcome and the producer/checker
+trace hashes, plus `archivedProvenanceSha256`. Candidate evidence text is not included;
+it stays in the archive. To see continuation in action, ask for
+`"maxContentBytes":4096`: the same record then arrives in two windows.
 
 ### 8. Standard and learning-component evidence
 
@@ -188,25 +192,27 @@ model-generated decomposition. The text also gives what you need to cite it: the
 `Direction: component -> standard`, the `Component URI` and the
 `Component provenance URI`.
 
-> Read the Support relationship URI and the Component provenance URI from that result with read_evidence, and also `kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/standard/e399b510-48bb-58ee-abda-61460a5a853b/provenance`.
+> Read the Support relationship URI and the Component provenance URI from that result with read_evidence, and also `kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2B424e546e2284/standard/e399b510-48bb-58ee-abda-61460a5a853b/provenance`.
 
-Expected: all three complete in one window (1,049, 541 and 3,077 bytes). The support
+Expected: all three complete in one window (1,049, 1,067 and 2,059 bytes). Both
+provenance records include `sourceDocument`, `attributionStatement` and
+`archivedProvenanceSha256`. The support
 relationship record is a `supports` relationship from the component to the standard. The
 standard provenance link follows the patterns in the workflow's **EVIDENCE LINKS** block
 (step 11).
 
 ### 9. Progression coverage, validation and unresolved claims
 
-> Call read_evidence for the summaryUri, validationUri and unresolvedUri from step 2. Then read the learning-progressions summary for snapshot india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1.
+> Call read_evidence for the summaryUri, validationUri and unresolvedUri from step 2. Then read the learning-progressions summary for snapshot india-cbse-science-learning-framework-classes-9-10@undated+21ece81a7ac5.
 
 The CBSE link is:
 
 ```text
-kgfegmcp://framework/india-cbse-science-learning-framework-classes-9-10/snapshot/india-cbse-science-learning-framework-classes-9-10%40undated%2B576740bed2d1/learning-progressions
+kgfegmcp://framework/india-cbse-science-learning-framework-classes-9-10/snapshot/india-cbse-science-learning-framework-classes-9-10%40undated%2B21ece81a7ac5/learning-progressions
 ```
 
 Expected: all four are progression records, each complete in one window. The Nigeria
-summary (4,577 bytes) reports stored counts, eligibility limits and that validation is
+summary (3,335 bytes) reports stored counts, eligibility limits and that validation is
 structural only. The progression validation report is 1,806 bytes. The progression
 unresolved record (214 bytes) lists no unresolved claims for Nigeria (`claims` empty,
 `total_needs_review` 0). The CBSE summary reports one `needs_review` claim kept out of
@@ -218,7 +224,7 @@ This step only shows paging on a long record. The record is **not** progression 
 the `/unresolved` resource is the standards-hierarchy report, listing parent–child links
 in the Ghana Mathematics source that could not be resolved.
 
-> Call read_evidence for `kgfegmcp://framework/ghana-nacca-primary-mathematics-basic-4-6/snapshot/ghana-nacca-primary-mathematics-basic-4-6%402019%2B0b768f7cfaf9/unresolved`, keep calling with page.nextRequest until page.isComplete is true, and tell me how many calls it took.
+> Call read_evidence for `kgfegmcp://framework/ghana-nacca-primary-mathematics-basic-4-6/snapshot/ghana-nacca-primary-mathematics-basic-4-6%402019%2Bed3b9450718a/unresolved`, keep calling with page.nextRequest until page.isComplete is true, and tell me how many calls it took.
 
 Expected: 42,831 bytes in three windows at the default window size of 16,384 bytes
 (`contentStatus` `partial` until all are joined). The number of windows depends on the
@@ -226,18 +232,20 @@ window size: with `"maxContentBytes":4096` the same record takes 11.
 
 ### 10. A policy outcome
 
-> Call read_evidence for the learningProgressionProvenance artifact URI listed in metadata.artifacts from step 2.
+> Call read_evidence for the learningProgressionProvenance artifact URI and then the nodes artifact URI listed in metadata.artifacts from step 2.
 
-Expected: `resource_access_denied` — this package does not allow bulk artifact reads.
-Claude should report the denial, not invent the content. Per-edge provenance (step 7)
-remains readable.
+Expected: `resource_not_found` for `learningProgressionProvenance`. That artifact is the
+original provenance map: it is cited by hash but kept in the archive, not served. The
+`nodes` read returns `resource_access_denied`, because this package does not allow bulk
+artifact reads. Claude should report both outcomes, not invent the content. Per-edge
+provenance (step 7) remains readable.
 
 ### 11. Support plan through the native prompt
 
 1. Open **Add from curriculum-knowledge-graph** and choose
    `learning_progression_support_plan`.
 2. Enter `framework_id` `nigeria-nerdc-mathematics-primary-1-3`, `snapshot_id`
-   `nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f`, `identifier`
+   `nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284`, `identifier`
    `{"identifierType":"node_id","nodeId":"e399b510-48bb-58ee-abda-61460a5a853b"}`,
    `local_context` `Learners can count to 9 but often write 6 and 9 the wrong way round.` and
    `output_language` `en`.
@@ -255,7 +263,7 @@ edge-provenance records and at most 32 evidence windows, and says so if it had t
 
 ### 12. Same workflow through tools only
 
-> Call get_workflow_instructions with `{"request":{"workflowName":"learning_progression_support_plan","frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f","identifier":{"identifierType":"node_id","nodeId":"e399b510-48bb-58ee-abda-61460a5a853b"},"localContext":"Learners can count to 9 but often write 6 and 9 the wrong way round.","outputLanguage":"en"}}`, then follow rendered.message exactly.
+> Call get_workflow_instructions with `{"request":{"workflowName":"learning_progression_support_plan","frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284","identifier":{"identifierType":"node_id","nodeId":"e399b510-48bb-58ee-abda-61460a5a853b"},"localContext":"Learners can count to 9 but often write 6 and 9 the wrong way round.","outputLanguage":"en"}}`, then follow rendered.message exactly.
 
 Expected: `rendered.message` is the same text as the native prompt in step 11, and
 `instructionsNotice` says the server has not run it. Claude then performs the same
@@ -263,7 +271,7 @@ retrieval and composition.
 
 ### 13. Curriculum review covers both link types
 
-> Call get_workflow_instructions with `{"request":{"workflowName":"learning_progression_curriculum_review","frameworkId":"ghana-nacca-primary-mathematics-basic-4-6","snapshotId":"ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9","localGradeLabels":["BASIC 5"],"endpointScope":"either","outputLanguage":"en"}}`, then follow rendered.message exactly.
+> Call get_workflow_instructions with `{"request":{"workflowName":"learning_progression_curriculum_review","frameworkId":"ghana-nacca-primary-mathematics-basic-4-6","snapshotId":"ghana-nacca-primary-mathematics-basic-4-6@2019+ed3b9450718a","localGradeLabels":["BASIC 5"],"endpointScope":"either","outputLanguage":"en"}}`, then follow rendered.message exactly.
 
 Expected: step 3 of `rendered.message` lists two separate scans, a `buildsTowards scan`
 and a `relatesTo scan`, each allowed up to three pages. Each page returns
@@ -281,10 +289,10 @@ single `relatesTo` scan.
 
 | Step | Recorded results | Your result (date, client version, pass/limited/fail, notes) |
 |---|---|---|
-| 1–10 (and 9a) | Tool calls replayed locally and passed, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08: no failures observed. | |
-| 11 | Prompt appeared and rendered in Desktop on an earlier build, 2026-10-03; rendering of 0.4.0 checked locally, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
-| 12 | Rendering checked locally (identical to native), 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
-| 13 | Rendering and the six scan pages checked locally, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed review checked: no failures observed. | |
+| 1–10 (and 9a) | Tool calls replayed locally and passed, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS with the earlier packages, 2026-10-08: no failures observed. Replayed locally with the runtime-only packages, 2026-10-14: passed. | |
+| 11 | Rendering of 0.4.0 checked locally, 2026-10-07, and with the runtime-only packages, 2026-10-14. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
+| 12 | Rendering checked locally (identical to native), 2026-10-07, and with the runtime-only packages, 2026-10-14. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
+| 13 | Rendering and the six scan pages checked locally, 2026-10-07, and with the runtime-only packages, 2026-10-14. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed review checked: no failures observed. | |
 
 The 2026-10-08 results are a user's observations; the Desktop app version was not
 recorded. The same steps gave the same results in a claude.ai custom connector on that
@@ -329,7 +337,7 @@ the HTTP smoke in item 1 is recorded for that deployment.
    If it does, try step 11; if not, note it as an unsupported client feature.
 7. Run step 12 (`get_workflow_instructions`) and let Claude complete the support plan.
    Check the answer against the expectations in step 11.
-8. Check the denial in step 10.
+8. Check the two outcomes in step 10.
 9. Run step 13 and check that the review includes `relatesTo` links and reports each
    type separately.
 10. Write down the date, endpoint, connector name, plan type and each result, keeping

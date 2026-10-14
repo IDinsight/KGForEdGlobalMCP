@@ -52,7 +52,7 @@ Read `relationshipUri`, `provenanceUri` and both `standardUri` links, natively i
 {"request":{"uri":"<returned-provenance-uri>"}}
 ```
 
-If `page.isComplete` is false, call again with `page.nextRequest` until it is true and join the windows. Provenance retains full rationale, warnings, candidate references, source/config/content hashes and producer/checker trace. Tool excerpts are not the full record. If access is denied or too large, report the limit instead of fabricating evidence. For a step-by-step check with fixed Nigeria identifiers, see the [Claude Desktop walkthrough](../getting-started/claude-clients.md#claude-desktop-walkthrough).
+If `page.isComplete` is false, call again with `page.nextRequest` until it is true and join the windows. Provenance has the full rationale, all warnings, the checker outcome, model settings, attribution, source/config/content hashes and producer/checker trace hashes. Candidate evidence text stays in the archive and is not served. Tool excerpts are not the full record. If access is denied or too large, report the limit instead of fabricating evidence. For a step-by-step check with fixed Nigeria identifiers, see the [Claude Desktop walkthrough](../getting-started/claude-clients.md#claude-desktop-walkthrough).
 
 ## Filter and bound the inspection
 

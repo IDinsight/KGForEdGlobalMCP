@@ -29,7 +29,7 @@ limits. Use it when your client cannot open a resource link directly. See
 
 ## Stored progression evidence
 
-From LP query results, follow `relationshipUri` for the edge and `provenanceUri` for its full original judgment and trace. Keep framework/snapshot/package/profile and returned/source-artifact hashes with the citation. Rationale/confidence/warnings in tools are bounded projections; the per-edge resource retains the complete available evidence. Confidence is a model judgment, not a learner-success probability.
+From LP query results, follow `relationshipUri` for the edge and `provenanceUri` for its full judgment and trace. Keep framework/snapshot/package/profile and returned/source-artifact hashes with the citation. Rationale/confidence/warnings in tools are bounded projections; the per-edge resource has the full rationale, all warnings, the checker outcome and the trace hashes. Candidate evidence text is kept in the archive, not served; the record's `original_entry_sha256` and the result's `archivedProvenanceSha256` link it there. Confidence is a model judgment, not a learner-success probability.
 
 `metadata.summaryUri`, `validationUri` and `unresolvedUri` expose stored counts, candidate/eligibility limits and structural-only validation scope. Denied or oversized resources remain explicit failures. A stored edge is generated evidence without publisher endorsement; an absent edge is not proof of no pedagogical relationship. See [LP workflow guide](progression.md) and [resource policies](../reference/resources.md#learning-progression-resources).
 
@@ -80,7 +80,7 @@ For an exact snapshot, the manifest resource returns the retained accepted packa
 manifest bytes:
 
 ```text
-kgfegmcp://framework/ghana-nacca-primary-english-language-basic-1-3/snapshot/ghana-nacca-primary-english-language-basic-1-3%402019%2B5ea90021b08d/manifest
+kgfegmcp://framework/ghana-nacca-primary-english-language-basic-1-3/snapshot/ghana-nacca-primary-english-language-basic-1-3%402019%2Bf2a9ab5922a1/manifest
 ```
 
 The validation resource returns the accepted detailed validation report when declared:
@@ -119,7 +119,7 @@ The profile is part of the interpretation contract, not curriculum source prose.
 A standard URI addresses one exact package-local node:
 
 ```text
-kgfegmcp://framework/ghana-nacca-primary-english-language-basic-1-3/snapshot/ghana-nacca-primary-english-language-basic-1-3%402019%2B5ea90021b08d/standard/aa4cdccd-e5d9-589c-8094-e10d7ac0c754
+kgfegmcp://framework/ghana-nacca-primary-english-language-basic-1-3/snapshot/ghana-nacca-primary-english-language-basic-1-3%402019%2Bf2a9ab5922a1/standard/aa4cdccd-e5d9-589c-8094-e10d7ac0c754
 ```
 
 This resource uses the outer `nodeId` namespace. It is not a generic CASE-identifier URI
@@ -131,15 +131,17 @@ Standard-resource exposure requires approved package rights and
 
 ## Standard provenance
 
-The provenance resource returns the selected detailed provenance entry for one exact
-standard:
+The provenance resource returns the provenance entry for one exact standard:
 
 ```text
 kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/provenance
 ```
 
-Use provenance to trace an accepted node back to retained source-extraction evidence
-without conflating that evidence with later model interpretation.
+The entry includes the source pages, segments and windows it was extracted from, plus
+the source document, the attribution statement and the hash of the archived full
+provenance file. Candidate source references are left out. Use provenance to trace an
+accepted node back to source-extraction evidence without conflating that evidence with
+later model interpretation.
 
 The resource is rights-gated as full-text/single-standard content. Availability is
 therefore package-specific even when detailed provenance exists in the accepted graph
@@ -191,16 +193,18 @@ class.
 |---------------------------|------------------------|-----------------|
 | `validationReport`        | `application/json`     | Public metadata |
 | `unresolvedItems`         | `application/json`     | Full text       |
-| `academicStandardsBundle` | `application/json`     | Bulk content    |
 | `entityProvenance`        | `application/json`     | Bulk content    |
 | `nodes`                   | `application/x-ndjson` | Bulk content    |
 | `relationships`           | `application/x-ndjson` | Bulk content    |
-| `relationshipsHasChild`   | `application/x-ndjson` | Bulk content    |
 | `standardsFramework`      | `application/json`     | Bulk content    |
-| `standardsFrameworkItems` | `application/x-ndjson` | Bulk content    |
+
+Learning-component and LP artifacts are listed in the
+[Resources reference](../reference/resources.md#manifest-artifacts).
 
 An additional artifact can exist in a manifest and still fail closed if no explicit
-resource exposure contract exists for its logical name.
+resource exposure contract exists for its logical name. Archived evidence, such as the
+KG bundles or the original LP provenance map, is not in the package at all and returns
+`resource_not_found`.
 
 !!! warning "Package presence does not imply public resource access"
     A file can be part of an accepted graph package while remaining inaccessible through
@@ -263,11 +267,8 @@ the correctness of the tool's domain result.
 ## Client support varies
 
 Whether a resource can be browsed or opened directly also depends on the connected MCP
-host's resource support. On an earlier build (2026-10-03), Claude Desktop was observed
-attaching the Catalog resource from its menu, but its menu did not list templated
-resources such as a relationship's provenance. On 0.4.0 (2026-10-08) the Desktop menu
-listed more than Catalog, and server resources could be attached in a claude.ai custom
-connector. When a host cannot open a link, call `read_evidence` with the
+host's resource support. On 0.4.0 (2026-10-08) the Desktop menu listed more than
+Catalog, and server resources could be attached in a claude.ai custom connector. When a host cannot open a link, call `read_evidence` with the
 exact URI and replay `page.nextRequest` until `page.isComplete` is true. Rights and size
 limits are the same on both routes. See
 [Use with Claude Desktop and claude.ai](../getting-started/claude-clients.md).

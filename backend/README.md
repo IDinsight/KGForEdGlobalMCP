@@ -212,6 +212,7 @@ Installed project scripts include:
 ```text
 kgfegmcp-build-manifest
 kgfegmcp-validate-packages
+kgfegmcp-verify-evidence-archive
 kgfegmcp-build-mcpb
 kgfegmcp-stdio-smoke
 kgfegmcp-http-smoke
@@ -223,6 +224,8 @@ Show their command surfaces:
 uv --directory backend run --locked --no-dev   kgfegmcp-build-manifest --help
 
 uv --directory backend run --locked --no-dev   kgfegmcp-validate-packages --help
+
+uv --directory backend run --locked --no-dev   kgfegmcp-verify-evidence-archive --help
 
 uv --directory backend run --locked --no-dev   kgfegmcp-build-mcpb --help
 
@@ -248,8 +251,10 @@ The package validator:
 - verifies manifests, profiles, checksums, artifact closure, and snapshot identity;
 - decodes accepted delivery records;
 - validates identifiers, endpoints, counts, capabilities, rights, and topology;
-- preserves valid multi-parent DAG structure; and
-- supports read-only revalidation.
+- preserves valid multi-parent DAG structure;
+- supports read-only revalidation; and
+- checks each package against its archived full evidence, unless `--runtime-only` is
+  given. Startup and `--runtime-only` read only the package files.
 
 The six repository graph packages are the terminal positive baseline. Destructive or
 negative lifecycle scenarios should use temporary copies or synthetic packages.
@@ -394,8 +399,8 @@ cross_framework_comparison
 ```
 
 The public `compare_framework_evidence` tool uses flat `matchMode` and
-`matchOperator` fields for text retrieval. It no longer accepts a public nested `match`
-object; the MCP adapter constructs the ordinary typed text-match model internally.
+`matchOperator` fields for text retrieval; the MCP adapter constructs the ordinary
+typed text-match model internally.
 
 ### Lexical query expansion
 

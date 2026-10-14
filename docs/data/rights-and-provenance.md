@@ -57,20 +57,23 @@ Dedicated resource families use these gates:
 
 Generic manifest artifacts use a closed access-class policy:
 
-| Logical artifact          | Access class      | Additional permissions                                           |
-|---------------------------|-------------------|------------------------------------------------------------------|
-| `validationReport`        | `public_metadata` | None                                                             |
-| `unresolvedItems`         | `full_text`       | Reviewed rights + `allowFullText`                                |
-| `academicStandardsBundle` | `bulk_content`    | Reviewed rights + full text + standard resources + bulk resource |
-| `entityProvenance`        | `bulk_content`    | Same bulk gate                                                   |
-| `nodes`                   | `bulk_content`    | Same bulk gate                                                   |
-| `relationships`           | `bulk_content`    | Same bulk gate                                                   |
-| `relationshipsHasChild`   | `bulk_content`    | Same bulk gate                                                   |
-| `standardsFramework`      | `bulk_content`    | Same bulk gate                                                   |
-| `standardsFrameworkItems` | `bulk_content`    | Same bulk gate                                                   |
+| Logical artifact              | Access class      | Additional permissions                                           |
+|-------------------------------|-------------------|------------------------------------------------------------------|
+| `validationReport`            | `public_metadata` | None                                                             |
+| `unresolvedItems`             | `full_text`       | Reviewed rights + `allowFullText`                                |
+| `entityProvenance`            | `bulk_content`    | Reviewed rights + full text + standard resources + bulk resource |
+| `learningComponentProvenance` | `bulk_content`    | Same bulk gate                                                   |
+| `nodes`                       | `bulk_content`    | Same bulk gate                                                   |
+| `relationships`               | `bulk_content`    | Same bulk gate                                                   |
+| `standardsFramework`          | `bulk_content`    | Same bulk gate                                                   |
+
+The full list, including learning-component and LP artifacts, is in the
+[Resources reference](../reference/resources.md#manifest-artifacts).
 
 An `additionalArtifacts` entry that lacks an explicit exposure contract fails closed
-with resource-not-found behavior rather than inheriting a permissive default.
+with resource-not-found behavior rather than inheriting a permissive default. Archived
+evidence is not in the package, so a URI for an archive-only name, such as
+`learningProgressionProvenance`, also returns `resource_not_found`.
 
 ## Current repository rights posture
 
@@ -111,13 +114,20 @@ surface.
 Every supplied manifest currently declares `hasDetailedProvenance: true` and an
 `entityProvenance` artifact.
 
-Detailed provenance is useful for tracing a package-local standard back to retained
-source-extraction evidence. The standard-provenance resource addresses one exact outer
+Detailed provenance is useful for tracing a package-local standard back to source-
+extraction evidence. The standard-provenance resource addresses one exact outer
 `nodeId`:
 
 ```text
 kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/provenance
 ```
+
+The entry comes from slim provenance: the extraction record without its candidate
+source references. The response also carries the source document, the package's
+attribution statement and `archivedProvenanceSha256`, the hash of the full provenance
+file kept in the archive. Learning-component provenance works the same way, keyed by
+the component's outer node ID. See
+[Slim provenance](graph-packages.md#slim-provenance).
 
 This is evidence about where the accepted graph statement came from. It does not turn a
 later model interpretation into a source-authored claim.
@@ -164,7 +174,7 @@ and host-model inference should not be collapsed into one undifferentiated claim
 
 ## Learning progression evidence
 
-Per-edge LP provenance uses reviewed/full-text/standard rights, not bulk permission. The sanitized LP summary, validation/index/normalization artifacts are metadata; unresolved evidence is full-text; original maps, partitions, split edges, generation summary and final claims are bulk. Manifest presence does not grant access. Defaults remain 32 MiB resource source-read and 8 MiB return; partitions allow exact reads without raising them. See [LP resource policies](../reference/resources.md#learning-progression-resources).
+Per-edge LP provenance uses reviewed/full-text/standard rights, not bulk permission. The sanitized LP summary, validation/index/normalization artifacts are metadata; unresolved evidence is full-text; slim shards and the generation summary are bulk. Archive-only LP files (final claims, the original provenance map, split edge files) are not in the package and cannot be read over MCP. Manifest presence does not grant access. Defaults remain 32 MiB resource source-read and 8 MiB return; shards allow exact reads without raising them. See [LP resource policies](../reference/resources.md#learning-progression-resources).
 
 ## Attribution and generated material
 
@@ -175,7 +185,7 @@ attribution requirements and clearly separate:
 - deterministic retrieval/context supplied by the server; and
 - generated explanation, synthesis, pedagogy, examples, alignment judgments, or
   teaching/support suggestions produced by the host model; and
-- stored model-generated LP edges with their original judgment/provenance.
+- stored model-generated LP edges with their judgment and provenance.
 
 The framework-local prompt configs reinforce this separation, but they do not override
 the resource rights policy.

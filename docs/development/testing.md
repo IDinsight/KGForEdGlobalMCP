@@ -138,7 +138,7 @@ invent alignment/progression relationships.
 
 ### Stored learning progressions
 
-Cover original edge identity and per-edge provenance equality, directed builds and symmetric relates lookup, endpoint-scope facet conjunction, deterministic request-bound paging, branches/merges/alternative simple paths, cycles, depth/node/edge/work/queue/byte limits, complete empty versus unavailable/missing/incomplete cases, rights/hash failures and obsolete-surface refusal. Test an individually oversized entry both first and later; noncontinuable traversal must not silently drop it. A later path that does not fit must stop with `byte_limit` and `nextUnreturnedPath`, never fail earlier paths or clip a path. Controlled negative fixtures must not mutate terminal packages or call models.
+Cover original edge identity and per-edge slim provenance (the served record equals its shard entry and leaves out the archived fields), directed builds and symmetric relates lookup, endpoint-scope facet conjunction, deterministic request-bound paging, branches/merges/alternative simple paths, cycles, depth/node/edge/work/queue/byte limits, complete empty versus unavailable/missing/incomplete cases, rights/hash failures and obsolete-surface refusal. Test an individually oversized entry both first and later; noncontinuable traversal must not silently drop it. A later path that does not fit must stop with `byte_limit` and `nextUnreturnedPath`, never fail earlier paths or clip a path. Controlled negative fixtures must not mutate terminal packages or call models.
 
 ### Text-only and evidence access
 
@@ -201,6 +201,16 @@ uv --directory backend run --locked --no-dev \
 The `pending` subcommand does not enumerate terminal passed packages. To revalidate one
 exact terminal package explicitly, use `one --read-only` with its framework and snapshot
 IDs. Terminal packages are read-only revalidations even if the flag is omitted.
+
+Without `--runtime-only`, validation also checks each package against its archived full
+evidence, which must be restored under `data/input_artifacts/` first. In a fresh clone,
+`one --runtime-only` runs the same checks as startup. See
+[Two validation tiers](../data/validation.md#two-validation-tiers).
+
+The test suite needs no archive, so CI runs on a plain checkout. Tests that cover
+full-evidence acceptance build a small synthetic input set at test time
+(`backend/tests/fixtures/evidence_fixtures.py`) and run the real builder, validator and
+CLIs on it, including missing, altered and mismatched evidence.
 
 Normal catalog construction also revalidates every discovered terminal passed package
 before accepting it. Therefore `kgfegmcp-stdio-smoke` is the simplest repository-wide

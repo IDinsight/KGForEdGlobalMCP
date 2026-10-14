@@ -170,8 +170,8 @@ includes five stored-LP query tools, the `read_evidence` and `get_workflow_instr
 access tools, and three teaching/support/curriculum-review prompts. The smoke also reads
 tool results as text only, follows real continuation requests, reads full evidence
 through `read_evidence` and compares `get_workflow_instructions` with the native prompts.
-All six active packages include original LP provenance and 64 verified partitions;
-raw source/preparation inputs and retired packages stay outside the distribution.
+The six packages carry slim per-edge LP provenance in 64 verified shards. Archived
+evidence and raw source/preparation inputs stay outside the distribution.
 See [LP preparation and acceptance](../../docs/development/framework-package.md#learning-progression-inputs-and-updates).
 Local staging/smoke verification does not publish or deploy; deployment is user-owned.
 
@@ -341,4 +341,4 @@ server runtime. Use the manual connector configuration documented in the root RE
 
 - [`../../README.md`](../../README.md): repository setup and Claude Desktop startup
 - [`../../backend/README.md`](../../backend/README.md): backend development commands
-- [`../../instructions.md`](../../instructions.md): architecture and implementation source of truth
+- [`../../docs/architecture.md`](../../docs/architecture.md): architecture overview

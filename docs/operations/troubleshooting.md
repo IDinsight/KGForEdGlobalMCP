@@ -137,15 +137,18 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-validate-packages pending --read-only
 ```
 
-Inspect one exact package:
+Inspect one exact package with the same checks startup runs:
 
 ```bash
 uv --directory backend run --locked --no-dev \
   kgfegmcp-validate-packages one \
   --framework-id <framework-id> \
   --snapshot-id <snapshot-id> \
-  --read-only
+  --runtime-only
 ```
+
+Use `--read-only` instead of `--runtime-only` to also check the package against its
+archived evidence; that needs the archive restored locally.
 
 See [Validation and lifecycle](../data/validation.md) for checksum, artifact-closure,
 profile, topology, count, rights, and state checks.
@@ -180,6 +183,19 @@ for example because of an invalid identifier, settings failure, repository error
 other typed domain failure.
 
 This distinction is intentional and should be preserved in CI automation.
+
+## Validation exits `2` with `evidence_archive_unavailable`
+
+Full validation checks a package against its archived evidence, which is git-ignored
+and not in a fresh clone. This error means at least one archived file is absent or
+unreadable. Nothing was persisted, and a pending package stays `pending`.
+
+- To check a package the way the server does at startup, add `--runtime-only`.
+- To accept or rebuild a package, restore the input sets from the IDinsight Google Drive
+  archive and run `kgfegmcp-verify-evidence-archive all`; see
+  [Restore and verify archived evidence](../development/framework-package.md#restore-and-verify-archived-evidence).
+
+The server itself never needs the archive.
 
 ## Path overrides point to the wrong repository
 

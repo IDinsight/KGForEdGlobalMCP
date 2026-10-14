@@ -109,20 +109,26 @@ as_lc_lp_nodes_*.jsonl
 as_lc_lp_relationships_*.jsonl
 ```
 
-Recognized detailed artifacts may also be supplied, including the retained standards
+Recognized detailed artifacts may also be supplied, including the standards
 framework/items, provenance, KG bundle, hierarchy relationships, unresolved items, and
 validation report described in [Graph package format](../data/graph-packages.md).
+
+Put every input in a new input set, `data/input_artifacts/<set>/`, with the same
+`delivery/`, `detailed/` and `additional/` layout as the existing sets. The builder
+records each input's repository-relative path in the package's evidence archive record,
+so inputs outside the repository are rejected. The existing ignore rules then keep the
+archive-only files out of Git. See [Input sets](#input-sets).
 
 Treat source wording, identifiers, hierarchy, unresolved relationships, rights, and
 provenance as evidence to preserve rather than values to normalize away.
 
 ## Learning progression inputs and updates
 
-The six mixed AS/LC/LP packages reuse one graph/runtime per curriculum. Nodes and the AS/LC relationship prefix remain byte-identical; normalized LP wire records are appended in `(relationship type, identifier)` order. Source/target CASE UUIDs resolve to the existing outer standard IDs. Combined upstream exports are reconciliation inputs, not interchangeable delivery files: five use a flat format; CBSE uses envelopes. Preparation normalizes the split LP records and preserves exact IDs, endpoint orientation, origin, attribution and rich original provenance. It does not rerun the producer/checker pipeline or accept final claims as edges.
+The six mixed AS/LC/LP packages reuse one graph/runtime per curriculum. Nodes and the AS/LC relationship prefix remain byte-identical; normalized LP wire records are appended in `(relationship type, identifier)` order. Source/target CASE UUIDs resolve to the existing outer standard IDs. Combined upstream exports are reconciliation inputs, not interchangeable delivery files: five use a flat format; CBSE uses envelopes. Preparation normalizes the split LP records and preserves exact IDs, endpoint orientation, origin, attribution and the original provenance. It does not rerun the producer/checker pipeline or accept final claims as edges.
 
-### Retained input boundaries
+### Input sets
 
-| Maintained input set                   | Framework                                            | Original source document key                                       |
+| Input set                              | Framework                                            | Original source document key                                       |
 |----------------------------------------|------------------------------------------------------|--------------------------------------------------------------------|
 | `data/input_artifacts/ghana_english`   | `ghana-nacca-primary-english-language-basic-1-3`     | `e49a792637011b32ed2ed906d58f9992e5208d2b7c15425ccc971f4f51de43c8` |
 | `data/input_artifacts/ghana_math`      | `ghana-nacca-primary-mathematics-basic-4-6`          | `8d59d76cb439110ad9409e9c12561023df60d12f234ced7285796f7e320fd9fa` |
@@ -131,7 +137,102 @@ The six mixed AS/LC/LP packages reuse one graph/runtime per curriculum. Nodes an
 | `data/input_artifacts/nigeria_math`    | `nigeria-nerdc-mathematics-primary-1-3`              | `09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a` |
 | `data/input_artifacts/rwanda_math`     | `rwanda-reb-mathematics-lower-primary-1-3`           | `7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874` |
 
-The original 23-file copy set for each document is:
+Each input set holds the full evidence for one package, and its `package_build.json` is the build spec. Only small files are committed:
+
+```text
+data/input_artifacts/<set>/
+├── package_build.json                     committed
+├── delivery/                              git-ignored (same bytes as the package's delivery files)
+├── additional/                            git-ignored (64 original LP provenance shards)
+└── detailed/
+    ├── as_lc_validation_report.json       committed
+    ├── as_standards_framework.json        committed
+    ├── as_unresolved_items.json           committed
+    ├── lc_dedup_groups.json               committed
+    ├── lc_generation_summary.json         committed
+    ├── lp_generation_summary.json         committed
+    ├── lp_normalization_receipt.json      committed
+    ├── lp_unresolved_items.json           committed
+    ├── lp_validation_report.json          committed
+    └── 11 archive-only files              git-ignored
+```
+
+The 11 git-ignored `detailed/` files are `as_entity_provenance.json`, `as_kg_bundle.json`, `as_lc_kg_bundle.json`, `as_relationships_has_child.jsonl`, `as_standards_framework_items.jsonl`, `lc_entity_provenance.json`, `lp_final_claims.json`, `lp_relationship_provenance.json`, `lp_relationship_provenance_index.json`, `lp_relationships_builds_towards.jsonl` and `lp_relationships_relates_to.jsonl`. The ignore rules in `.gitignore` match any folder under `data/input_artifacts/`, so a new input set with the same layout is covered too.
+
+The git-ignored files are the evidence archive. A copy of the input-set folders is kept in IDinsight Google Drive. Uploading to Drive and managing access are done by hand, outside this repository; no command here contacts Drive. The server, the image and the bundle never read `data/input_artifacts/`.
+
+A fresh clone has only the committed files. That is enough to run the server, the test suite and `kgfegmcp-validate-packages --runtime-only`. Rebuilding or accepting a package needs the archive restored first.
+
+### Restore and verify archived evidence
+
+1. Download the input-set folders you need from the IDinsight Google Drive archive.
+2. Place them under `data/input_artifacts/<set>/`, so each file sits at the `localPath` listed in the package's `evidence/evidence_archive_record.json`. The committed files in the Drive copy are the same bytes, so overwriting them changes nothing.
+3. Check the restored files against every package's record:
+
+    ```bash
+    uv --directory backend run --locked --no-dev kgfegmcp-verify-evidence-archive all
+    ```
+
+    Use `one --framework-id <framework-id> --snapshot-id <snapshot-id>` to check a single package.
+
+The command reads only the records and the local files; it never downloads, uploads or changes anything. It prints JSON with the archive location and, per package, a `status` of `ok`, `incomplete` or `record_unavailable`, `ok`/`missing`/`mismatch` counts, and one entry per file:
+
+```json
+{"localPath": "data/input_artifacts/ghana_english/detailed/as_kg_bundle.json", "logicalName": "academicStandardsBundle", "status": "ok", "expectedSha256": "sha256:6447…", "actualSha256": "sha256:6447…", "expectedSizeBytes": 9330374, "actualSizeBytes": 9330374}
+```
+
+A `missing` entry has a `reason` of `absent` or `unreadable`; `mismatch` means the size or SHA-256 differs. With the full archive in place, each of the six packages reports 86 `ok` entries. In a fresh clone each reports 9 `ok` (the committed small files) and 77 `missing`.
+
+| Exit | Meaning                                                                       |
+|------|-------------------------------------------------------------------------------|
+| `0`  | Every entry is `ok`                                                           |
+| `1`  | An entry is missing or mismatched, or a package has no readable record        |
+| `2`  | Invocation or configuration error                                             |
+
+### Rebuild and accept separately
+
+Restore and verify the archive first. The builder stops if a file the spec names directly (a delivery file or an original shard) is missing, but it skips any expected file that is absent from the `detailed/` directory, so a partly restored input set can build a package that leaves out evidence. The verify command catches this before you build. For the current maintained Nigeria inputs, make a local specification with a fresh output root. The maintained spec writes to `data/source_artifacts/learning_progressions/rebuilt_packages`, which is git-ignored and may already hold terminal packages from an earlier rebuild; the builder refuses those even in dry-run mode. This example preserves existing files and requires unused paths:
+
+```bash
+python3 - <<'PYTHON'
+import json
+from pathlib import Path
+
+root = Path.cwd()
+local = root / "data/source_artifacts/learning_progressions/operator-rebuild"
+output = local / "packages"
+spec_path = local / "nigeria-build.json"
+if spec_path.exists() or output.exists():
+    raise FileExistsError("Choose new local specification/output paths.")
+spec = json.loads((root / "data/input_artifacts/nigeria_math/package_build.json").read_text())
+spec["outputRoot"] = str(output)
+local.mkdir(parents=True, exist_ok=True)
+spec_path.write_text(json.dumps(spec, indent=2) + "\n")
+PYTHON
+project_root="$PWD"
+uv --directory backend run --locked kgfegmcp-build-manifest \
+  --spec "$project_root/data/source_artifacts/learning_progressions/operator-rebuild/nigeria-build.json" \
+  --dry-run
+```
+
+Each maintained spec selects profile version `2.0`, the delivery files, the `detailed/` directory and the 64 original shards. Input paths in the spec resolve from the project root and must stay inside the repository, because the evidence archive record stores each one as a repository-relative `localPath`. `--spec` itself is an absolute path because uv changes cwd to backend. Omit `--dry-run` only to create the proposed pending package in this fresh root. For other curricula, copy the corresponding maintained specification and review its output root before each build. Never patch a sealed accepted package; changed artifacts/profile bytes require new immutable identities.
+
+The builder writes only the runtime package: it copies the delivery and small `detailed/` files, derives the `slim/` files and writes the evidence archive record and a pending `1.2` manifest. Rebuilding the same spec from the same inputs gives the same snapshot ID and the same files; only the manifest's `createdAt` (and its validation state, until accepted) differs.
+
+Validate the separate package root before switching active data:
+
+```bash
+project_root="$PWD"
+KGFEGMCP_GRAPH_PACKAGES_ROOT="$project_root/data/source_artifacts/learning_progressions/operator-rebuild/packages" \
+  uv --directory backend run --locked kgfegmcp-validate-packages one \
+  --framework-id <framework-id> --snapshot-id <built-snapshot-id> --read-only
+```
+
+This runs both validation tiers, so it reads the restored archive. Inspect findings, then omit `--read-only` for an intentional pending-to-terminal acceptance; terminal revalidation never persists changes. If the build reproduces a snapshot ID that is already in `data/graph_packages/`, it has confirmed that package: keep the committed package unchanged and discard the rebuild, because a sealed package is never replaced. Otherwise, move the accepted package into `data/graph_packages/<framework-id>/` and keep one unambiguous current snapshot per framework. Commit the package directory and any changed small input files. The ignore rules keep archive-only files out of Git; add new or changed ones to the Drive archive yourself. Local preparation/activation and distribution verification do not publish or deploy; deployment remains user-owned.
+
+### Prepare new source exports locally
+
+Each source document's export has this 23-file copy set:
 
 ```text
 as_entity_provenance.json
@@ -159,13 +260,7 @@ lp_unresolved_items.json
 lp_validation_report.json
 ```
 
-Raw verified copies live at `data/source_artifacts/learning_progressions/<doc-key>/kgs/`. Their `copy_receipt.json` records source paths, framework/CASE mapping, size, SHA-256 before and after copying, destination hash and old package/profile identities. The initial copy retained 138 files (933,392,640 bytes), reconciled all 8,080 LP edges, and verified the external originals were unchanged. Raw copies, receipts, scratch normalization, old retired trees and verification stages are deliberately ignored local preparation evidence. They are not in a fresh clone, runtime discovery or MCPB.
-
-The six maintained `data/input_artifacts/<set>/` trees and `package_build.json` files are version-controlled and sufficient to rebuild packages without raw copies or the external project. Each includes normalized delivery, required AS/LC and LP detailed evidence, the original provenance map, 64 partitions, index and sanitized normalization receipt. Active runtime consumes only `data/graph_packages` plus profiles/prompts.
-
-### Prepare new source exports locally
-
-For a future export, copy only the listed files from the mapped `<doc-key>/kgs/` directory into a repository-local source copy; do not edit the external source. Record exact source-before/source-after/destination SHA-256 and sizes, verify CASE/framework mapping and AS/LC equality, and reconcile per-type counts against split/combined/provenance evidence before relying on it. A source change needs a new verified receipt, not reuse of an old hash. The strict `CopyReceipt`, `CopiedFile` and `CopiedFramework` models in `packages/normalization_models.py` define the preparation input contract: `receiptVersion: 1.0`, `status: verified`, framework mappings, selected-file count and verified per-file fields. The local historical receipt can retain private source paths; package receipts expose only relative paths/logical names and hashes.
+For a future export, copy only the listed files from the mapped `<doc-key>/kgs/` directory of the external project into a repository-local source copy at `data/source_artifacts/learning_progressions/<doc-key>/kgs/`; do not edit the external source. That folder is git-ignored local preparation evidence and is not in a fresh clone. Its `copy_receipt.json` records source paths, framework/CASE mapping, size, SHA-256 before and after copying, destination hash and package/profile identities. Verify CASE/framework mapping and AS/LC equality, and reconcile per-type counts against split/combined/provenance evidence before relying on it. A source change needs a new verified receipt, not reuse of an old hash. The strict `CopyReceipt`, `CopiedFile` and `CopiedFramework` models in `packages/normalization_models.py` define the preparation input contract: `receiptVersion: 1.0`, `status: verified`, framework mappings, selected-file count and verified per-file fields. The local receipt can retain private source paths; package receipts expose only relative paths/logical names and hashes.
 
 From repository root, normalize existing verified local copies into the separate default preparation root:
 
@@ -175,54 +270,15 @@ uv --directory backend run --locked kgfegmcp-prepare-learning-progressions
 
 Optional `--framework-id` selects one mapped framework; `--receipt` selects a verified local receipt and `--output-root` a separate safe preparation directory. Run `--help` for those options. The default output is `data/source_artifacts/learning_progressions/prepared/<framework-id>/`. Identical output is reusable; conflicting output is preserved and rejected. Unsafe/symlinked paths and overlap with source/config/runtime roots are rejected. Preparation verifies local bytes and never reads external receipt source paths. It returns hashes/counts and `created` or `existing_identical`; it does not build or accept a package.
 
-### Rebuild and accept separately
-
-For the current maintained Nigeria inputs, first make a local specification with a fresh output root. The maintained spec's original destination may already contain terminal packages, which the builder refuses even in dry-run mode. This example preserves existing files and requires unused paths:
-
-```bash
-python3 - <<'PYTHON'
-import json
-from pathlib import Path
-
-root = Path.cwd()
-local = root / "data/source_artifacts/learning_progressions/operator-rebuild"
-output = local / "packages"
-spec_path = local / "nigeria-build.json"
-if spec_path.exists() or output.exists():
-    raise FileExistsError("Choose new local specification/output paths.")
-spec = json.loads((root / "data/input_artifacts/nigeria_math/package_build.json").read_text())
-spec["outputRoot"] = str(output)
-local.mkdir(parents=True, exist_ok=True)
-spec_path.write_text(json.dumps(spec, indent=2) + "\n")
-PYTHON
-project_root="$PWD"
-uv --directory backend run --locked kgfegmcp-build-manifest \
-  --spec "$project_root/data/source_artifacts/learning_progressions/operator-rebuild/nigeria-build.json" \
-  --dry-run
-```
-
-Each maintained spec selects profile version `2.0`, schema-compatible delivery and every required detailed/partition artifact. Input paths in the spec resolve from the project root; `--spec` itself is an absolute path because uv changes cwd to backend. Omit `--dry-run` only to create the proposed pending package in this fresh root. For other curricula, copy the corresponding maintained specification and review its output root before each build. Never patch a sealed accepted package; changed artifacts/profile bytes require new immutable identities.
-
-Validate the separate package root before switching active data:
-
-```bash
-project_root="$PWD"
-KGFEGMCP_GRAPH_PACKAGES_ROOT="$project_root/data/source_artifacts/learning_progressions/operator-rebuild/packages" \
-  uv --directory backend run --locked kgfegmcp-validate-packages one \
-  --framework-id <framework-id> --snapshot-id <built-snapshot-id> --read-only
-```
-
-Inspect findings, then omit `--read-only` for an intentional pending-to-terminal acceptance; terminal revalidation never persists changes. Ensure all six replacement packages pass before retiring old active directories/config versions. Keep one unambiguous current snapshot per framework. Required runtime evidence stays in the accepted package, not only in ignored preparation folders. Local preparation/activation and distribution verification do not publish or deploy; deployment remains user-owned.
-
 ### Provenance and independent validation
 
-Current contracts are manifest `1.1`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.4.0` (server/MCPB `0.4.0`). Adding evidence changed artifact-set snapshot hashes; source version tokens and standard/component IDs stayed intact.
+Current contracts are manifest `1.2`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.4.0` (server/MCPB `0.4.0`).
 
-CBSE's original provenance map is about 40.9 MB, above the default 32 MiB resource source-read limit. All packages retain the original and 64 deterministic maps: `SHA256(UTF8(relationship_id))[0] modulo 64`, logical names `learningProgressionProvenanceShard00` through `63`. The validated index binds their exact hashes and placement; their exhaustive unique union must equal the original entries. This lets a client open one evidence page without opening the entire binder, while maintaining rights and byte ceilings.
+CBSE's original provenance map is about 40.9 MB, above the default 32 MiB resource source-read limit, and all six maps together are about 101 MB. Packages therefore carry 64 slim shards instead: each holds the slim records for the edges whose `SHA256(UTF8(relationship_id))[0] modulo 64` matches its number, under logical names `learningProgressionProvenanceShard00` through `63`. The slim index binds their exact hashes and placement, and their union must equal the package's LP delivery edges. A client reads one edge's evidence by opening one small shard, within rights and byte limits. The original map, its index and its 64 original shards are archived and bound by hash.
 
-Dedicated logical artifacts are `learningProgressionBuildsTowards`, `learningProgressionRelatesTo`, `learningProgressionProvenance`, `learningProgressionValidation`, `learningProgressionUnresolved`, `learningProgressionSummary`, `learningProgressionFinalClaims`, `learningProgressionProvenanceIndex` and `learningProgressionNormalization`. Manifest closure covers all of them and the 64 declared partitions. Normalization receipts bind unchanged nodes, AS/LC prefix/separator, sorted normalized suffix, input/output hashes and copy-receipt identity.
+Packages declare `learningProgressionNormalization`, `learningProgressionProvenanceIndex`, `learningProgressionSummary`, `learningProgressionUnresolved`, `learningProgressionValidation` and the 64 shards. `learningProgressionBuildsTowards`, `learningProgressionRelatesTo`, `learningProgressionProvenance` and `learningProgressionFinalClaims` are archive-only and listed in the evidence archive record. The normalization receipt binds the hash of every other full-evidence file; it also binds unchanged nodes, AS/LC prefix/separator, sorted normalized suffix, input/output hashes and copy-receipt identity.
 
-Server acceptance checks IDs/types, standard endpoints, exact CASE correspondence, canonical relates ordering, duplicates/pair exclusivity, counts, evidence/hash agreement and builds cycles separately from hasChild. It reconciles final claims/provenance/report/unresolved evidence while excluding rejected, `no_relation` and `needs_review` claims from exported edges. AS/LC reports are compared with their subgraph, LP reports with LP counts. Acceptance is structural/process integrity, not semantic/pedagogical certification. Preserve source truncation, warning pairs and eligibility notices, including CBSE's one needs-review claim.
+Both validation tiers check IDs/types, standard endpoints, exact CASE correspondence, canonical relates ordering, duplicates/pair exclusivity, counts and builds cycles separately from hasChild. Acceptance's evidence tier also reconciles final claims/provenance/report/unresolved evidence while excluding rejected, `no_relation` and `needs_review` claims from exported edges, and checks that every slim file matches what the full evidence yields. AS/LC reports are compared with their subgraph, LP reports with LP counts. Acceptance is structural/process integrity, not semantic/pedagogical certification. Preserve source truncation, warning pairs and eligibility notices, including CBSE's one needs-review claim. See [Validation and lifecycle](../data/validation.md#two-validation-tiers).
 
 Use [local tests and acceptance commands](testing.md) for package/service/static/STDIO/loopback HTTP/MCPB stage checks, and build docs strictly. Tests must mock live-model/paid boundaries, including failures; a `costs-money` marker cannot authorize calls. Build a fresh retained stage for changed runtime inputs, verify that stage using its own roots, and leave hosted deployment/publication to the user.
 
@@ -254,8 +310,9 @@ A minimal specification has this shape:
 Optional fields cover detailed artifacts, explicitly named additional artifacts,
 snapshot relations, a source document, and authoritative source publication date.
 
-The builder creates/proposes a **pending** package. It does not replace complete package
-validation.
+The builder creates/proposes a **pending** runtime-only package: delivery files, small
+`detailed/` files, derived `slim/` provenance and the evidence archive record. It does
+not replace complete package validation.
 
 ## 5. Create the pending package
 
@@ -290,7 +347,9 @@ uv --directory backend run --locked --no-dev \
 
 Review every finding. Validation covers package closure and checksums, profile binding,
 delivery decoding, graph semantics, topology, counts, capabilities, rights metadata, and
-other acceptance invariants.
+other acceptance invariants. It also runs the evidence tier against the full inputs, so
+they must still be present locally; see
+[Validation and lifecycle](../data/validation.md#two-validation-tiers).
 
 Do not weaken validation merely to admit one framework. If the source genuinely needs a
 new generic capability, model that capability explicitly and test it across appropriate
@@ -312,6 +371,10 @@ eligible to be served.
 
 A `failed` or `quarantined` package is terminal and excluded. A valid but still
 `pending` package is also excluded.
+
+Commit the package directory, the input set's `package_build.json` and its small
+committed files. Add the archive-only files to the IDinsight Google Drive archive so
+others can restore them; Git does not hold them.
 
 ## 8. Verify discovery and retrieval
 

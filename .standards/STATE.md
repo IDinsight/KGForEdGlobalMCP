@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DOCUMENTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `SCOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -25,12 +25,24 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_IMPLEMENTATION` `FailureType`: `NONE` `Reason`:
-`Implementation review passed with no material findings; AC-019 documentation remains for Documenter.`
+`Kind`: `FAILURE` `From`: `DOCUMENTING` `FailureType`: `SCOPING` `Reason`:
+`AC-009 calls the removed producer judgment a duplicate, but it differs from the final judgment for all 434 checker-corrected edges.`
 
 ## Recovery
 
-`Active`: `false`
+`Active`: `true`
+
+### Frame 1
+
+`From`: `REVIEWING_FINAL` `Owner`: `DOCUMENTING` `FailureType`: `DOCUMENTATION`
+`Reason`: `User-requested second recheck found a stale manifest version, a stale citation description and an incorrect producer-judgment statement.`
+`ResumeAt`: `REVIEWING_FINAL` `RerunThrough`: `NONE`
+
+### Frame 2
+
+`From`: `DOCUMENTING` `Owner`: `SCOPING` `FailureType`: `SCOPING`
+`Reason`: `AC-009 calls the removed producer judgment a duplicate, but it differs from the final judgment for all 434 checker-corrected edges.`
+`ResumeAt`: `DOCUMENTING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 

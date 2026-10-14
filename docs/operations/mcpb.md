@@ -36,7 +36,11 @@ The build deliberately does **not** package:
 - `.pyc` or `.pyo` bytecode;
 - local logs or build output;
 - Git metadata;
+- `data/input_artifacts/` or any archived package evidence; and
 - arbitrary files outside the approved staging contract.
+
+`data/graph_packages/` holds only the declared runtime package files and manifests (480
+files for the six packages), even when archived evidence is restored locally.
 
 ## Prerequisites
 

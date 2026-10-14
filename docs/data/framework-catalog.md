@@ -43,7 +43,7 @@ ghana-nacca-primary-english-language-basic-1-3
 **Current snapshot**
 
 ```text
-ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507
+ghana-nacca-primary-english-language-basic-1-3@2019+f2a9ab5922a1
 ```
 
 | Property                 | Value                                                                         |
@@ -79,7 +79,7 @@ ghana-nacca-primary-mathematics-basic-4-6
 **Current snapshot**
 
 ```text
-ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9
+ghana-nacca-primary-mathematics-basic-4-6@2019+ed3b9450718a
 ```
 
 | Property                 | Value                                                    |
@@ -114,7 +114,7 @@ india-cbse-science-learning-framework-classes-9-10
 **Current snapshot**
 
 ```text
-india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1
+india-cbse-science-learning-framework-classes-9-10@undated+21ece81a7ac5
 ```
 
 | Property             | Value                                                                  |
@@ -148,7 +148,7 @@ india-tamil-nadu-tnscert-mathematics-classes-1-5
 **Current snapshot**
 
 ```text
-india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+aa0dd9310a0f
+india-tamil-nadu-tnscert-mathematics-classes-1-5@2025-proposed-draft+82b183ba9acc
 ```
 
 | Property            | Value                                                           |
@@ -182,7 +182,7 @@ nigeria-nerdc-mathematics-primary-1-3
 **Current snapshot**
 
 ```text
-nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f
+nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284
 ```
 
 | Property            | Value                                                         |
@@ -216,7 +216,7 @@ rwanda-reb-mathematics-lower-primary-1-3
 **Current snapshot**
 
 ```text
-rwanda-reb-mathematics-lower-primary-1-3@2025+2ee0fa308d13
+rwanda-reb-mathematics-lower-primary-1-3@2025+7c2d6f401157
 ```
 
 | Property            | Value                                                   |
@@ -249,7 +249,7 @@ All six supplied packages currently share these properties:
 
 - graph type: `academic_standards`;
 - package revision: `1`;
-- manifest schema `1.1`, delivery schema `1.2`, source schema `1.0`;
+- manifest schema `1.2`, delivery schema `1.2`, source schema `1.0`;
 - included domains: `academic_standards`, `learning_components`, `learning_progressions`;
 - profile version `2.0` and prompt-config version `2.0.0`;
 - terminal validation state: `passed`;
