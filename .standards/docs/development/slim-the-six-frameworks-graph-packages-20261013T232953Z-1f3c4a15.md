@@ -459,7 +459,7 @@ so one run confirms a whole restored input set. It finds the record at the fixed
 
 ### DEV-008 — Build and accept the six `1.2` snapshots
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-003, DEV-005, DEV-006, DEV-011`
+`Status`: `DONE` `Depends On`: `DEV-003, DEV-005, DEV-006, DEV-011`
 `Acceptance`: `AC-001, AC-002, AC-004, AC-006, AC-015`
 
 **Goal**
@@ -509,6 +509,21 @@ on `1.2` (`get_learning_progression` ×8080, `get_standard_progressions` ×196,
 (`learningProgressionProvenance`, `learningProgressionProvenanceIndex`, `nodes`,
 `relationships`) to be declared, and `1.2` packages no longer declare the full
 map. Routed as an `ARCHITECTURE` failure (see Plan Notes, Suspended Assignment 2).
+
+Result after DEV-011 (2026-10-14, `7f02e77`, where the six `1.2` packages are
+committed): the comparison rerun is clean except the expected fields (see
+DEV-011). The six `1.1` snapshot directories (`…+e00c5329a507`,
+`…+0b768f7cfaf9`, `…+576740bed2d1`, `…+aa0dd9310a0f`, `…+bc5e769ed26f`,
+`…+2ee0fa308d13`; 522 tracked files) were confirmed `1.1`/`passed` and deleted
+from the working tree (unstaged deletions; still in Git history). Then:
+`bootstrap_application()` with `KGFEGMCP_INVALID_PACKAGE_POLICY=fail` loads
+exactly the six `1.2` packages, all `passed`; `kgfegmcp-validate-packages one
+… --read-only` for each (evidence tier against the real input sets) → exit 0,
+valid, `passed`, not persisted, no findings; `kgfegmcp-build-manifest --dry-run`
+from the unchanged Nigeria spec (only `outputRoot` redirected to scratch) →
+`nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284`, the committed
+snapshot ID; `package_build.json` files unchanged. Suite: 113 passed, 4 failed —
+the 2 known DEV-005 cases plus the 2 DEV-011 cases recorded in Plan Notes.
 
 ---
 
