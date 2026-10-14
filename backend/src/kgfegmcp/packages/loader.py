@@ -71,10 +71,10 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_nodes,
     iter_decoded_relationships,
 )
-from kgfegmcp.packages.lp_validation import (
-    validate_learning_progression_evidence,
-)
+from kgfegmcp.packages.evidence import EvidenceVerifier
+from kgfegmcp.packages.lp_runtime import validate_runtime_evidence
 from kgfegmcp.packages.models import (
+    EVIDENCE_ARCHIVE_RECORD_NAME,
     SUPPORTED_INCLUDED_GRAPH_TYPES,
     SUPPORTED_PACKAGE_REVISION,
     ArtifactIntegrityObservation,
@@ -128,7 +128,7 @@ _BLOCKING_FINDING_CODES: Final[frozenset[str]] = frozenset(
     }
 )
 _CAPTURED_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
-    {"nodes", "relationships", "validationReport"}
+    {EVIDENCE_ARCHIVE_RECORD_NAME, "nodes", "relationships", "validationReport"}
 )
 _MANIFEST_LOGICAL_NAME: Final[str] = "packageManifest"
 _MANIFEST_VERSION_FINDINGS: Final[tuple[tuple[frozenset[str], str, str], ...]] = (
@@ -197,10 +197,16 @@ class _PackageTreeVerification:
 
 @dataclass(frozen=True, slots=True)
 class GraphPackageLoader:
-    """Verify and decode package candidates without persisting validation state."""
+    """Verify and decode package candidates without persisting validation state.
+
+    Without an evidence verifier the loader runs the runtime tier only, as startup
+    does. Package acceptance passes a verifier so runtime-only packages are also
+    checked against their archived full evidence.
+    """
 
     profile_repository: ProfileRepository
     repository: GraphPackageRepository
+    evidence_verifier: EvidenceVerifier | None = None
 
     def _load_manifest(
         self, candidate: GraphPackageCandidate
@@ -370,6 +376,51 @@ class GraphPackageLoader:
 
         return discovered_candidate, None
 
+    def _validate_evidence(
+        self, *, captured_contents: dict[str, bytes], package: LoadedGraphPackage
+    ) -> tuple[LoadedGraphPackage, list[PackageValidationFinding]]:
+        """Run the runtime tier and, when configured, the evidence tier.
+
+        Parameters
+        ----------
+        captured_contents
+            Loader-verified artifact bytes.
+        package
+            Decoded package before evidence acceptance.
+
+        Returns
+        -------
+        tuple[LoadedGraphPackage, list[PackageValidationFinding]]
+            Package carrying its LP projections and archived evidence identities,
+            and the evidence findings.
+
+        Raises
+        ------
+        EvidenceArchiveUnavailableError
+            If the evidence tier runs and archived evidence is absent.
+        """
+
+        runtime = validate_runtime_evidence(
+            captured_contents=captured_contents, package=package
+        )
+        package = package.model_copy(
+            update={
+                "archived_artifact_sha256": runtime.archived_artifact_sha256,
+                "learning_progression_evidence": runtime.evidence,
+            }
+        )
+
+        if runtime.findings or self.evidence_verifier is None:
+            return package, list(runtime.findings)
+
+        return package, list(
+            self.evidence_verifier.verify(
+                captured_contents=captured_contents,
+                package=package,
+                runtime_evidence=runtime.evidence,
+            )
+        )
+
     def load(self, candidate: GraphPackageCandidate) -> GraphPackageLoadResult:
         """Load one candidate through all package-integrity boundaries.
 
@@ -492,14 +543,12 @@ class GraphPackageLoader:
             relationships=delivery.relationships,
             validation_report=loaded_report,
         )
-        lp_evidence, lp_findings = validate_learning_progression_evidence(
+
+        loaded_package, lp_findings = self._validate_evidence(
             captured_contents=dict(verification.captured_contents),
             package=loaded_package,
         )
         findings.extend(lp_findings)
-        loaded_package = loaded_package.model_copy(
-            update={"learning_progression_evidence": lp_evidence}
-        )
         return GraphPackageLoadResult(
             candidate=candidate,
             findings=tuple(findings),
@@ -508,6 +557,34 @@ class GraphPackageLoader:
             manifest=manifest,
             manifest_bytes=manifest_bytes,
         )
+
+    def read_manifest(
+        self, candidate: GraphPackageCandidate
+    ) -> GraphPackageManifest | None:
+        """Read one candidate's manifest without loading or validating its artifacts.
+
+        Batch acceptance uses this to skip terminal packages before the evidence
+        tier would need their archived evidence.
+
+        Parameters
+        ----------
+        candidate
+            Safely discovered package candidate.
+
+        Returns
+        -------
+        GraphPackageManifest | None
+            The validated manifest, or ``None`` when the candidate or its manifest
+            cannot be read or validated.
+        """
+
+        candidate, early_result = self._resolve_candidate(candidate)
+
+        if early_result is not None:
+            return None
+
+        manifest, _, _ = self._load_manifest(candidate)
+        return manifest
 
     def verify_unchanged(
         self,

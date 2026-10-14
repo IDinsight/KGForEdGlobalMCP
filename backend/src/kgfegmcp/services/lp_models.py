@@ -33,7 +33,8 @@ MAX_PROGRESSION_RESULT_BYTES: Final[int] = MAX_TOOL_RESULT_BYTES
 MAX_STATEMENT_EXCERPT_CHARACTERS: Final[int] = 2048
 
 # LP query results are derived from exactly these accepted artifacts; the manifest hash
-# binds the complete inventory, which is not repeated in every result.
+# binds the complete inventory, which is not repeated in every result. An entry may be
+# archived evidence (bound by the evidence archive record) rather than a declared file.
 PROGRESSION_DERIVATION_ARTIFACT_NAMES: Final[tuple[str, ...]] = (
     "learningProgressionProvenance",
     "learningProgressionProvenanceIndex",

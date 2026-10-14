@@ -93,10 +93,17 @@ class ResourceMetadata(FrozenSchema):
 
 
 class LearningComponentProvenanceResult(FrozenSchema):
-    """Return one learning component's exact detailed provenance entry."""
+    """Return one learning component's provenance entry and its source attribution.
 
+    The entry is served from slim runtime provenance; ``archived_provenance_sha256``
+    identifies the archived full provenance document it was derived from.
+    """
+
+    archived_provenance_sha256: Sha256Digest
+    attribution_statement: str
     node_id: NodeId
     provenance: dict[str, object]
+    source_document: dict[str, object]
 
 
 class LearningProgressionNotices(FrozenSchema):
@@ -155,19 +162,36 @@ class LearningProgressionSummaryResult(LearningProgressionNotices):
 
 
 class RelationshipProvenanceResult(LearningProgressionNotices):
-    """Return the complete original retained entry with explicit generated origin."""
+    """Return one LP edge's slim provenance with explicit generated origin.
 
+    The record keeps the identity, endpoints, final judgment (decision, direction,
+    confidence, full rationale and warnings), checker outcome, model identity,
+    attribution and content hashes. Candidate evidence text, admissible decisions
+    and the producer judgment stay in the archive; for corrected edges the producer
+    judgment is the pre-correction judgment. The record's ``original_entry_sha256``
+    and ``archived_provenance_sha256`` link it there.
+    """
+
+    archived_provenance_sha256: Sha256Digest
     epistemic_status: Literal["llm_inferred"] = "llm_inferred"
     provenance: dict[str, object]
     relationship_id: RelationshipId
 
 
 class StandardProvenanceResult(FrozenSchema):
-    """Return one exact standard's accepted detailed provenance entry."""
+    """Return one exact standard's provenance entry and its source attribution.
 
+    The entry is served from slim runtime provenance without candidate source
+    references; ``archived_provenance_sha256`` identifies the archived full
+    provenance document it was derived from.
+    """
+
+    archived_provenance_sha256: Sha256Digest
+    attribution_statement: str
     case_identifier_uuid: CaseIdentifierUuid
     node_id: NodeId
     provenance: dict[str, object]
+    source_document: dict[str, object]
 
 
 @dataclass(frozen=True, slots=True)

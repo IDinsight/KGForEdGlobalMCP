@@ -6,10 +6,15 @@ import hashlib
 # Package Library
 from kgfegmcp.domain.identifiers import RelationshipId
 from kgfegmcp.errors import ManifestBuildError, ResourceNotFoundError
+from kgfegmcp.packages.evidence_models import SlimLearningProgressionProvenanceIndex
 from kgfegmcp.packages.lp_models import Summary
-from kgfegmcp.packages.models import DeclaredArtifactReference, LoadedGraphPackage
-from kgfegmcp.packages.normalization_models import LearningProgressionProvenanceIndex
+from kgfegmcp.packages.models import (
+    LP_PROVENANCE_SHARD_NAMES,
+    DeclaredArtifactReference,
+    LoadedGraphPackage,
+)
 from kgfegmcp.packages.normalization_sources import read_json_object
+from kgfegmcp.packages.slim import SLIM_LP_SHARD_PATHS
 from kgfegmcp.resources.models import (
     LearningProgressionArtifactLink,
     LearningProgressionSummaryResult,
@@ -37,16 +42,10 @@ _COUNT_NAMES = (
     "unresolved_failed_pairs",
     "unresolved_warning_pairs",
 )
-LP_PARTITION_NAMES = tuple(
-    f"learningProgressionProvenanceShard{number:02d}" for number in range(64)
-)
+LP_PARTITION_NAMES = LP_PROVENANCE_SHARD_NAMES
 LP_ARTIFACT_NAMES = (
-    "learningProgressionBuildsTowards",
-    "learningProgressionFinalClaims",
     "learningProgressionNormalization",
-    "learningProgressionProvenance",
     "learningProgressionProvenanceIndex",
-    "learningProgressionRelatesTo",
     "learningProgressionSummary",
     "learningProgressionUnresolved",
     "learningProgressionValidation",
@@ -177,25 +176,28 @@ def summary_result(
 
 def validated_partition_index(
     *, loaded_package: LoadedGraphPackage, repository: ResourceRepository
-) -> tuple[LearningProgressionProvenanceIndex, DeclaredArtifactReference]:
+) -> tuple[SlimLearningProgressionProvenanceIndex, DeclaredArtifactReference]:
     """Verify exact index membership and hash/path agreement with accepted declarations.
+
+    The index was bound to the archived originals when the package loaded; this
+    per-request check re-binds every slim partition to its declaration.
 
     Parameters
     ----------
     loaded_package
-        Accepted LP package whose original-map hash is already known.
+        Accepted LP package.
     repository
         Existing checksum and source-read limit boundary.
 
     Returns
     -------
-    tuple[LearningProgressionProvenanceIndex, DeclaredArtifactReference]
-        Verified fixed mapping and exact index byte evidence, without reading the map.
+    tuple[SlimLearningProgressionProvenanceIndex, DeclaredArtifactReference]
+        Verified fixed mapping and exact index byte evidence.
 
     Raises
     ------
     ResourceNotFoundError
-        If index membership or original/partition identity is missing or inconsistent.
+        If index membership or partition identity is missing or inconsistent.
     """
 
     content, reference = repository.read_artifact(
@@ -203,7 +205,7 @@ def validated_partition_index(
     )
 
     try:
-        index = LearningProgressionProvenanceIndex.model_validate(
+        index = SlimLearningProgressionProvenanceIndex.model_validate(
             read_json_object(data=content, label="LP provenance index")
         )
     except (ManifestBuildError, ValueError) as error:
@@ -211,19 +213,12 @@ def validated_partition_index(
             message="The accepted LP provenance index is unavailable."
         ) from error
 
-    original = repository.artifact_reference(
-        loaded_package=loaded_package, logical_name="learningProgressionProvenance"
-    )
-
-    if (
-        set(index.partitions) != set(LP_PARTITION_NAMES)
-        or index.original_provenance_sha256 != original.sha256
-    ):
+    if set(index.partitions) != set(LP_PARTITION_NAMES):
         raise ResourceNotFoundError(
             message="The LP index does not match accepted evidence."
         )
 
-    for number, name in enumerate(LP_PARTITION_NAMES):
+    for name in LP_PARTITION_NAMES:
         partition = index.partitions[name]
         declared = repository.artifact_reference(
             loaded_package=loaded_package, logical_name=name
@@ -232,8 +227,7 @@ def validated_partition_index(
         if (
             partition.sha256 != declared.sha256
             or partition.artifact_path != declared.package_path
-            or str(partition.artifact_path)
-            != f"additional/lp_relationship_provenance_shard_{number:02d}.json"
+            or str(partition.artifact_path) != SLIM_LP_SHARD_PATHS[name]
         ):
             raise ResourceNotFoundError(
                 message="The LP partition declaration is inconsistent."

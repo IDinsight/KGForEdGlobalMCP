@@ -92,8 +92,23 @@ SUPPORTED_INCLUDED_GRAPH_TYPES: Final[tuple[GraphType, ...]] = (
     GraphType.LEARNING_COMPONENTS,
     GraphType.LEARNING_PROGRESSIONS,
 )
-MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.1")
-REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
+# Archive-only kinds: bound by the evidence archive record, never runtime-declared.
+ARCHIVE_ONLY_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
+    {
+        "academicStandardsBundle",
+        "learningComponentsBundle",
+        "learningProgressionBuildsTowards",
+        "learningProgressionFinalClaims",
+        "learningProgressionProvenance",
+        "learningProgressionRelatesTo",
+        "relationshipsHasChild",
+        "standardsFrameworkItems",
+    }
+)
+EVIDENCE_ARCHIVE_RECORD_NAME: Final[str] = "evidenceArchiveRecord"
+
+# LP logical names in the full-evidence namespace bound by the evidence archive record.
+FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
     {
         "learningProgressionBuildsTowards",
         "learningProgressionFinalClaims",
@@ -105,6 +120,13 @@ REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
         "learningProgressionUnresolved",
         "learningProgressionValidation",
     }
+)
+LP_PROVENANCE_SHARD_NAMES: Final[tuple[str, ...]] = tuple(
+    f"learningProgressionProvenanceShard{number:02d}" for number in range(64)
+)
+MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.2")
+REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = (
+    FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES - ARCHIVE_ONLY_ARTIFACT_NAMES
 )
 REQUIRED_ADDITIONAL_COUNT_NAMES: Final[frozenset[str]] = frozenset(
     {
@@ -432,27 +454,19 @@ class FrameworkMetadata(FrozenSchema):
 class PackageArtifacts(FrozenSchema):
     """Declare immutable package-relative artifact paths."""
 
-    academic_standards_bundle: ArtifactPath | None = None
     additional_artifacts: dict[ArtifactName, ArtifactPath] = Field(default_factory=dict)
     entity_provenance: ArtifactPath | None = None
     learning_component_dedup_groups: ArtifactPath | None = None
     learning_component_provenance: ArtifactPath | None = None
     learning_component_summary: ArtifactPath | None = None
-    learning_components_bundle: ArtifactPath | None = None
-    learning_progression_builds_towards: ArtifactPath | None = None
-    learning_progression_final_claims: ArtifactPath | None = None
     learning_progression_normalization: ArtifactPath | None = None
-    learning_progression_provenance: ArtifactPath | None = None
     learning_progression_provenance_index: ArtifactPath | None = None
-    learning_progression_relates_to: ArtifactPath | None = None
     learning_progression_summary: ArtifactPath | None = None
     learning_progression_unresolved: ArtifactPath | None = None
     learning_progression_validation: ArtifactPath | None = None
     nodes: ArtifactPath
     relationships: ArtifactPath
-    relationships_has_child: ArtifactPath | None = None
     standards_framework: ArtifactPath | None = None
-    standards_framework_items: ArtifactPath | None = None
     unresolved_items: ArtifactPath | None = None
     validation_report: ArtifactPath | None = None
 
@@ -471,19 +485,17 @@ class PackageArtifacts(FrozenSchema):
             If an additional name is reserved or two names resolve to one path.
         """
 
+        # Archive-only names stay reserved so they cannot enter as additional files.
         reserved_names = {
-            *REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
-            "academicStandardsBundle",
+            *ARCHIVE_ONLY_ARTIFACT_NAMES,
+            *FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES,
             "entityProvenance",
             "learningComponentDedupGroups",
             "learningComponentProvenance",
             "learningComponentSummary",
-            "learningComponentsBundle",
             "nodes",
             "relationships",
-            "relationshipsHasChild",
             "standardsFramework",
-            "standardsFrameworkItems",
             "unresolvedItems",
             "validationReport",
         }
@@ -515,15 +527,11 @@ class PackageArtifacts(FrozenSchema):
             "relationships": self.relationships,
         }
         optional_artifacts = {
-            "academicStandardsBundle": self.academic_standards_bundle,
             "entityProvenance": self.entity_provenance,
             "learningComponentDedupGroups": self.learning_component_dedup_groups,
             "learningComponentProvenance": self.learning_component_provenance,
             "learningComponentSummary": self.learning_component_summary,
-            "learningComponentsBundle": self.learning_components_bundle,
-            "relationshipsHasChild": self.relationships_has_child,
             "standardsFramework": self.standards_framework,
-            "standardsFrameworkItems": self.standards_framework_items,
             "unresolvedItems": self.unresolved_items,
             "validationReport": self.validation_report,
         }
@@ -564,12 +572,8 @@ class PackageArtifacts(FrozenSchema):
         """
 
         optional_artifacts = {
-            "learningProgressionBuildsTowards": self.learning_progression_builds_towards,
-            "learningProgressionFinalClaims": self.learning_progression_final_claims,
             "learningProgressionNormalization": self.learning_progression_normalization,
-            "learningProgressionProvenance": self.learning_progression_provenance,
             "learningProgressionProvenanceIndex": self.learning_progression_provenance_index,
-            "learningProgressionRelatesTo": self.learning_progression_relates_to,
             "learningProgressionSummary": self.learning_progression_summary,
             "learningProgressionUnresolved": self.learning_progression_unresolved,
             "learningProgressionValidation": self.learning_progression_validation,
@@ -907,6 +911,13 @@ class GraphPackageManifest(FrozenSchema):
                 "Learning progressions require all dedicated LP evidence artifacts."
             )
 
+        if declared and not set(LP_PROVENANCE_SHARD_NAMES).issubset(
+            str(name) for name in self.artifacts.additional_artifacts
+        ):
+            raise ValueError(
+                "Learning progressions require all 64 slim LP provenance shards."
+            )
+
         if not declared and (artifacts or lp_count):
             raise ValueError(
                 "LP evidence and counts require learning_progressions declaration."
@@ -925,6 +936,36 @@ class GraphPackageManifest(FrozenSchema):
         if self.counts.supports_relationships + lp_count > self.counts.relationships:
             raise ValueError(
                 "Supports and LP counts may not exceed total relationships."
+            )
+
+        return self
+
+    @model_validator(mode="after")
+    def validate_layout(self) -> Self:
+        """Require the runtime-only layout to declare its evidence archive record.
+
+        Archive-only kinds have no manifest fields and their names are reserved, so
+        they cannot be declared at all.
+
+        Returns
+        -------
+        Self
+            Manifest that declares the evidence archive record.
+
+        Raises
+        ------
+        ValueError
+            If the manifest omits the evidence archive record.
+
+        Examples
+        --------
+        >>> GraphPackageManifest.model_validate(runtime_only_manifest).manifest_version
+        '1.2'
+        """
+
+        if EVIDENCE_ARCHIVE_RECORD_NAME not in self.artifacts.additional_artifacts:
+            raise ValueError(
+                "A runtime-only manifest must declare the evidence archive record."
             )
 
         return self
@@ -1017,6 +1058,11 @@ class GraphPackageManifest(FrozenSchema):
 class LoadedGraphPackage(FrozenSchema):
     """Hold one safely loaded immutable graph-package aggregate for validation."""
 
+    # Archive-only evidence identities from a runtime-only package's evidence
+    # archive record; empty for packages without one.
+    archived_artifact_sha256: dict[ArtifactName, Sha256Digest] = Field(
+        default_factory=dict
+    )
     artifacts: tuple[DeclaredArtifactReference, ...]
     framework_root: FrameworkNode
     item_nodes: tuple[StandardNode, ...]

@@ -3,8 +3,9 @@
 `package_manifest.json` is the package-level contract that binds identity, artifacts,
 checksums, profile semantics, capabilities, rights, counts, and validation state.
 
-The current manifest version is `1.1`, delivery schema is `1.2`, and source schema is
-`1.0`. The supported package revision is `1`.
+The manifest version is `1.2`, delivery schema is `1.2`, and source schema is `1.0`. The
+supported package revision is `1`. The loader rejects any other manifest version with
+`manifest_version_unsupported`.
 
 ## Top-level fields
 
@@ -100,21 +101,49 @@ The `artifacts` object always requires:
 
 It can also declare these built-in artifacts:
 
-| Logical name                   | Typical retained artifact                  |
-|--------------------------------|--------------------------------------------|
-| `academicStandardsBundle`      | Detailed Academic Standards bundle JSON    |
-| `entityProvenance`             | Detailed provenance JSON                   |
-| `relationshipsHasChild`        | Detailed hierarchy relationship JSONL      |
-| `standardsFramework`           | Detailed framework JSON                    |
-| `standardsFrameworkItems`      | Detailed item JSONL                        |
-| `unresolvedItems`              | Unresolved-evidence report JSON            |
-| `validationReport`             | Detailed validation report JSON            |
-| `learningComponentsBundle`     | Detailed learning-component bundle JSON    |
-| `learningComponentSummary`     | Learning-component generation summary JSON |
-| `learningComponentProvenance`  | Learning-component provenance JSON         |
-| `learningComponentDedupGroups` | Learning-component dedup groups JSON       |
+| Logical name                   | Package path in the current packages       | Content                                    |
+|--------------------------------|--------------------------------------------|--------------------------------------------|
+| `entityProvenance`             | `slim/as_entity_provenance.json`           | Slim standards provenance                  |
+| `standardsFramework`           | `detailed/as_standards_framework.json`     | Framework JSON                             |
+| `unresolvedItems`              | `detailed/as_unresolved_items.json`        | Unresolved-evidence report JSON            |
+| `validationReport`             | `detailed/as_lc_validation_report.json`    | Validation report JSON                     |
+| `learningComponentSummary`     | `detailed/lc_generation_summary.json`      | Learning-component generation summary JSON |
+| `learningComponentProvenance`  | `slim/lc_entity_provenance.json`           | Slim learning-component provenance         |
+| `learningComponentDedupGroups` | `detailed/lc_dedup_groups.json`            | Learning-component dedup groups JSON       |
 
-LP adds nine dedicated artifacts: `learningProgressionBuildsTowards`, `learningProgressionRelatesTo`, `learningProgressionProvenance`, `learningProgressionValidation`, `learningProgressionUnresolved`, `learningProgressionSummary`, `learningProgressionFinalClaims`, `learningProgressionProvenanceIndex`, `learningProgressionNormalization`. All 64 provenance partitions are explicitly declared additional artifacts. See the [preparation/update contract](../development/framework-package.md#learning-progression-inputs-and-updates).
+A package that includes learning progressions must declare these five LP artifacts:
+
+| Logical name                         | Package path                                 |
+|--------------------------------------|----------------------------------------------|
+| `learningProgressionNormalization`   | `detailed/lp_normalization_receipt.json`     |
+| `learningProgressionProvenanceIndex` | `slim/lp_relationship_provenance_index.json` |
+| `learningProgressionSummary`         | `detailed/lp_generation_summary.json`        |
+| `learningProgressionUnresolved`      | `detailed/lp_unresolved_items.json`          |
+| `learningProgressionValidation`      | `detailed/lp_validation_report.json`         |
+
+It must also declare the 64 slim shards as additional artifacts,
+`learningProgressionProvenanceShard00` to `learningProgressionProvenanceShard63`, at
+`slim/lp_relationship_provenance_shard_NN.json`.
+
+Every manifest must declare `evidenceArchiveRecord` as an additional artifact at
+`evidence/evidence_archive_record.json`. See
+[Runtime files and archived evidence](graph-packages.md#runtime-files-and-archived-evidence).
+
+A manifest cannot declare archive-only evidence. These names are reserved and rejected,
+both as built-in fields and as additional artifacts, even with a `null` value:
+
+```text
+academicStandardsBundle
+learningComponentsBundle
+relationshipsHasChild
+standardsFrameworkItems
+learningProgressionFinalClaims
+learningProgressionProvenance
+learningProgressionBuildsTowards
+learningProgressionRelatesTo
+```
+
+Their files are bound by hash in the evidence archive record instead.
 
 `additionalArtifacts` can represent other logical artifacts, but names reserved by the
 built-in fields are forbidden. Every declared artifact path must be unique.
@@ -185,14 +214,15 @@ The `capabilities` object declares package-level behavior:
 | `textSearch`                    | Lexical text search is supported                        |
 | `codeSearch`                    | Code availability: `complete`, `partial`, or `none`     |
 | `multiParent`                   | Accepted hierarchy can contain multi-parent targets     |
-| `hasDetailedProvenance`         | Detailed provenance is retained                         |
+| `hasDetailedProvenance`         | `entityProvenance` (slim standards provenance) is declared |
 | `hasUnresolvedRelationships`    | Package retains unresolved relationship evidence        |
 | `hasOfficialActivities`         | Official activity-role nodes are represented            |
 | `hasOfficialAssessmentGuidance` | Official assessment-guidance role nodes are represented |
 
-`hasLearningProgressions` and `hasLearningProgressionProvenance` report accepted
-declarations/evidence, including a valid zero-edge LP package. They do not follow
-from a global enum or a nonzero count alone.
+`hasLearningProgressions` and `hasLearningProgressionProvenance` must both equal
+whether `learning_progressions` is in `includedGraphTypes`. When it is, the five LP
+artifacts and 64 slim shards above must all be declared. A valid zero-edge LP package
+also sets both flags. They do not follow from a global enum or a nonzero count alone.
 
 Capabilities must agree with independently observed graph/profile facts. They are not
 free-form feature flags.

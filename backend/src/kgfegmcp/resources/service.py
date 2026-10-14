@@ -19,7 +19,9 @@ from __future__ import annotations
 # Standard Library
 import json
 
+from collections.abc import Mapping
 from dataclasses import dataclass
+from typing import cast
 
 # Third Party Library
 from pydantic import BaseModel
@@ -47,7 +49,11 @@ from kgfegmcp.errors import (
     ResourceNotFoundError,
 )
 from kgfegmcp.packages.checksums import calculate_bytes_sha256
-from kgfegmcp.packages.models import DeclaredArtifactReference, LoadedGraphPackage
+from kgfegmcp.packages.models import (
+    EVIDENCE_ARCHIVE_RECORD_NAME,
+    DeclaredArtifactReference,
+    LoadedGraphPackage,
+)
 from kgfegmcp.resources.lp import (
     LP_PARTITION_NAMES,
     partition_name,
@@ -114,6 +120,61 @@ def _canonical_json(value: BaseModel | object) -> str:
     )
     return json.dumps(
         ensure_ascii=False, obj=payload, separators=(",", ":"), sort_keys=True
+    )
+
+
+def _entity_source(
+    document: Mapping[str, object],
+) -> tuple[dict[str, object], Sha256Digest]:
+    """Return a slim entity provenance document's source identity and archived hash.
+
+    Parameters
+    ----------
+    document
+        Parsed slim entity provenance document.
+
+    Returns
+    -------
+    tuple[dict[str, object], Sha256Digest]
+        Source document identity and the SHA-256 of the archived full document.
+
+    Raises
+    ------
+    ResourceNotFoundError
+        If the accepted document lacks its source identity or archived hash.
+    """
+
+    source_document = document.get("sourceDocument")
+    archived_sha256 = document.get("originalSha256")
+
+    if not isinstance(source_document, dict) or not isinstance(archived_sha256, str):
+        raise ResourceNotFoundError(
+            message="The accepted provenance artifact lacks its source identity."
+        )
+
+    return source_document, cast(Sha256Digest, archived_sha256)
+
+
+def _record_reference(
+    *, loaded_package: LoadedGraphPackage, repository: ResourceRepository
+) -> DeclaredArtifactReference:
+    """Return the declared evidence archive record that binds archived sources.
+
+    Parameters
+    ----------
+    loaded_package
+        Accepted runtime-only package.
+    repository
+        Existing artifact-reference boundary.
+
+    Returns
+    -------
+    DeclaredArtifactReference
+        The evidence archive record reference.
+    """
+
+    return repository.artifact_reference(
+        loaded_package=loaded_package, logical_name=EVIDENCE_ARCHIVE_RECORD_NAME
     )
 
 
@@ -1096,7 +1157,7 @@ class ResourceService:
         relationship_id: RelationshipId,
         snapshot_id: SnapshotId,
     ) -> ResourceDocument:
-        """Return one original full LP entry from its checksum-verified partition.
+        """Return one LP edge's slim provenance from its checksum-verified partition.
 
         Parameters
         ----------
@@ -1110,7 +1171,8 @@ class ResourceService:
         Returns
         -------
         ResourceDocument
-            Original entry with notices and manifest/map/partition/index/edge hashes.
+            Slim entry with notices, its archived-map hash, and manifest, partition,
+            index, edge and evidence-record hashes.
 
         Raises
         ------
@@ -1160,14 +1222,13 @@ class ResourceService:
             )
 
         references = (
-            self.repository.artifact_reference(
-                loaded_package=runtime.loaded_package,
-                logical_name="learningProgressionProvenance",
-            ),
             partition_reference,
             index_reference,
             self.repository.artifact_reference(
                 loaded_package=runtime.loaded_package, logical_name="relationships"
+            ),
+            _record_reference(
+                loaded_package=runtime.loaded_package, repository=self.repository
             ),
         )
         graph_package_id = runtime.catalog_package.package_identity.graph_package_id
@@ -1192,7 +1253,9 @@ class ResourceService:
                 ),
             ),
             value=RelationshipProvenanceResult(
-                provenance=provenance, relationship_id=relationship_id
+                archived_provenance_sha256=index.original_provenance_sha256,
+                provenance=provenance,
+                relationship_id=relationship_id,
             ),
         )
 
@@ -1254,7 +1317,7 @@ class ResourceService:
     def learning_component_provenance(
         self, *, framework_id: FrameworkId, node_id: NodeId, snapshot_id: SnapshotId
     ) -> ResourceDocument:
-        """Return one learning component's exact detailed provenance entry.
+        """Return one learning component's provenance entry and source attribution.
 
         Keyed by outer node identifier because a component carries no CASE identity.
 
@@ -1320,8 +1383,13 @@ class ResourceService:
                 ),
             )
 
+        source_document, archived_sha256 = _entity_source(document)
         result = LearningComponentProvenanceResult(
-            node_id=node_id, provenance=provenance
+            archived_provenance_sha256=archived_sha256,
+            attribution_statement=runtime.loaded_package.manifest.rights.attribution_statement,
+            node_id=node_id,
+            provenance=provenance,
+            source_document=source_document,
         )
         graph_package_id = runtime.catalog_package.package_identity.graph_package_id
         return self._build_derived_document(
@@ -1330,10 +1398,15 @@ class ResourceService:
             ),
             package=runtime.catalog_package,
             resource_kind=ResourceKind.LEARNING_COMPONENT_PROVENANCE,
-            source_artifacts=(
-                _source_evidence(
-                    graph_package_id=graph_package_id, reference=reference
-                ),
+            source_artifacts=tuple(
+                _source_evidence(graph_package_id=graph_package_id, reference=source)
+                for source in (
+                    reference,
+                    _record_reference(
+                        loaded_package=runtime.loaded_package,
+                        repository=self.repository,
+                    ),
+                )
             ),
             value=result,
         )
@@ -1458,7 +1531,7 @@ class ResourceService:
         node_id: NodeId,
         snapshot_id: SnapshotId,
     ) -> ResourceDocument:
-        """Return one exact standard's selected detailed provenance entry.
+        """Return one exact standard's provenance entry and source attribution.
 
         Parameters
         ----------
@@ -1472,7 +1545,7 @@ class ResourceService:
         Returns
         -------
         ResourceDocument
-            Complete standard provenance document with content and metadata.
+            Standard provenance document with content and metadata.
         """
 
         runtime = self._package_runtime(
@@ -1524,10 +1597,14 @@ class ResourceService:
                 message="The requested standard provenance entry is unavailable.",
             )
 
+        source_document, archived_sha256 = _entity_source(document)
         result = StandardProvenanceResult(
+            archived_provenance_sha256=archived_sha256,
+            attribution_statement=runtime.loaded_package.manifest.rights.attribution_statement,
             case_identifier_uuid=case_identifier_uuid,
             node_id=node_id,
             provenance=provenance,
+            source_document=source_document,
         )
         graph_package_id = runtime.catalog_package.package_identity.graph_package_id
         return self._build_derived_document(
@@ -1536,10 +1613,15 @@ class ResourceService:
             ),
             package=runtime.catalog_package,
             resource_kind=ResourceKind.STANDARD_PROVENANCE,
-            source_artifacts=(
-                _source_evidence(
-                    graph_package_id=graph_package_id, reference=reference
-                ),
+            source_artifacts=tuple(
+                _source_evidence(graph_package_id=graph_package_id, reference=source)
+                for source in (
+                    reference,
+                    _record_reference(
+                        loaded_package=runtime.loaded_package,
+                        repository=self.repository,
+                    ),
+                )
             ),
             value=result,
         )

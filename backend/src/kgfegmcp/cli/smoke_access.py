@@ -32,7 +32,7 @@ _DIAGNOSTIC_FRAMEWORK_ID: Final[FrameworkId] = cast(
     FrameworkId, "nigeria-nerdc-mathematics-primary-1-3"
 )
 _DIAGNOSTIC_SNAPSHOT_ID: Final[SnapshotId] = cast(
-    SnapshotId, "nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f"
+    SnapshotId, "nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284"
 )
 _DIAGNOSTIC_TARGET_ID: Final[NodeId] = cast(
     NodeId, "e399b510-48bb-58ee-abda-61460a5a853b"
@@ -42,19 +42,19 @@ _DIAGNOSTIC_TARGET_ID: Final[NodeId] = cast(
 _REPORT_EXPECTATIONS: Final[tuple[tuple[str, str, str, int], ...]] = (
     (
         "india-cbse-science-learning-framework-classes-9-10",
-        "india-cbse-science-learning-framework-classes-9-10@undated+576740bed2d1",
+        "india-cbse-science-learning-framework-classes-9-10@undated+21ece81a7ac5",
         "needsReviewClaims",
         1,
     ),
     (
         "ghana-nacca-primary-mathematics-basic-4-6",
-        "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9",
+        "ghana-nacca-primary-mathematics-basic-4-6@2019+ed3b9450718a",
         "unresolvedWarningPairs",
         141,
     ),
     (
         "ghana-nacca-primary-english-language-basic-1-3",
-        "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
+        "ghana-nacca-primary-english-language-basic-1-3@2019+f2a9ab5922a1",
         "unresolvedWarningPairs",
         10,
     ),

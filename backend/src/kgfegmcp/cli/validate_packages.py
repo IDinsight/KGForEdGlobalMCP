@@ -34,6 +34,11 @@ instead of marking them failed.
 
 Terminal packages selected through ``one`` are always revalidated read-only and are
 never rewritten.
+
+By default, runtime-only packages are also checked against their archived full
+evidence, which must be restored locally. If any archived file is missing, the command
+exits with a domain error and persists nothing. ``--runtime-only`` runs only the
+runtime checks that startup runs and never changes validation status.
 """
 
 # Future Library
@@ -54,6 +59,7 @@ from kgfegmcp.config import BackendSettings
 from kgfegmcp.domain.enums import InvalidPackagePolicy
 from kgfegmcp.domain.identifiers import FrameworkId, SnapshotId
 from kgfegmcp.errors import KGFEGMCPError, PackageValidationError
+from kgfegmcp.packages.evidence import EvidenceVerifier
 from kgfegmcp.packages.loader import GraphPackageLoader
 from kgfegmcp.packages.models import PackageValidationResult
 from kgfegmcp.packages.repository import GraphPackageRepository
@@ -126,13 +132,17 @@ def _serialize_results(results: tuple[PackageValidationResult, ...]) -> str:
     return json.dumps(ensure_ascii=False, indent=2, obj=payload, sort_keys=True)
 
 
-def _validator(settings: BackendSettings) -> GraphPackageValidator:
+def _validator(
+    settings: BackendSettings, *, runtime_only: bool
+) -> GraphPackageValidator:
     """Construct the repository, loader, and validator service graph.
 
     Parameters
     ----------
     settings
         Validated application settings.
+    runtime_only
+        Whether to skip the archived-evidence checks.
 
     Returns
     -------
@@ -145,7 +155,11 @@ def _validator(settings: BackendSettings) -> GraphPackageValidator:
     )
     profile_repository = ProfileRepository(profile_root=settings.profile_root)
     loader = GraphPackageLoader(
-        profile_repository=profile_repository, repository=repository
+        evidence_verifier=(
+            None if runtime_only else EvidenceVerifier(project_dir=settings.project_dir)
+        ),
+        profile_repository=profile_repository,
+        repository=repository,
     )
     return GraphPackageValidator(loader=loader, repository=repository)
 
@@ -186,6 +200,15 @@ def validate_one(
     read_only: Annotated[
         bool, typer.Option(help="Validate without changing package validation status.")
     ] = False,
+    runtime_only: Annotated[
+        bool,
+        typer.Option(
+            help=(
+                "Run only the runtime checks, without archived evidence; never "
+                "changes package validation status."
+            )
+        ),
+    ] = False,
     snapshot_id: Annotated[
         str,
         typer.Option(
@@ -205,6 +228,8 @@ def validate_one(
         Optional invalid-package terminal policy override.
     read_only
         Whether status persistence is prohibited.
+    runtime_only
+        Whether to run only the runtime checks; implies read-only.
     snapshot_id
         Immutable snapshot identifier.
 
@@ -218,7 +243,7 @@ def validate_one(
         validated_framework_id = _FRAMEWORK_ID_ADAPTER.validate_python(framework_id)
         validated_snapshot_id = _SNAPSHOT_ID_ADAPTER.validate_python(snapshot_id)
         settings = BackendSettings()
-        validator = _validator(settings)
+        validator = _validator(settings, runtime_only=runtime_only)
         candidate = validator.repository.candidate(
             framework_id=validated_framework_id, snapshot_id=validated_snapshot_id
         )
@@ -227,7 +252,7 @@ def validate_one(
             invalid_package_policy=_resolved_policy(
                 policy=invalid_package_policy, settings=settings
             ),
-            read_only=read_only,
+            read_only=read_only or runtime_only,
         )
     except ValidationError as error:
         invocation_error = PackageValidationError(
@@ -262,6 +287,15 @@ def validate_pending(
     read_only: Annotated[
         bool, typer.Option(help="Validate without changing package validation status.")
     ] = False,
+    runtime_only: Annotated[
+        bool,
+        typer.Option(
+            help=(
+                "Run only the runtime checks, without archived evidence; never "
+                "changes package validation status."
+            )
+        ),
+    ] = False,
 ) -> None:
     """Validate every discovered pending package and report malformed candidates.
 
@@ -271,6 +305,8 @@ def validate_pending(
         Optional invalid-package terminal policy override.
     read_only
         Whether status persistence is prohibited.
+    runtime_only
+        Whether to run only the runtime checks; implies read-only.
 
     Raises
     ------
@@ -280,11 +316,11 @@ def validate_pending(
 
     try:
         settings = BackendSettings()
-        outcomes = _validator(settings).validate_pending(
+        outcomes = _validator(settings, runtime_only=runtime_only).validate_pending(
             invalid_package_policy=_resolved_policy(
                 policy=invalid_package_policy, settings=settings
             ),
-            read_only=read_only,
+            read_only=read_only or runtime_only,
         )
     except (KGFEGMCPError, ValidationError) as error:
         if isinstance(error, KGFEGMCPError):

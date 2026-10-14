@@ -334,9 +334,14 @@ selectors, rights rules, resources and MCP tools as standards and components. Ea
 of link has its own label, so parent–child links, component support links and
 progression links stay separate. Each curriculum's package is an immutable snapshot
 (profile version 2.0) that keeps the original standard and component IDs and source
-text. The provenance file is also stored in 64 checked parts, so a client can open the
-evidence for one relationship without reading the whole file. No second database is
-needed. See [local copy and update process](development/framework-package.md#learning-progression-inputs-and-updates).
+text. Per-relationship provenance is stored in 64 checked parts, so a client can open
+the evidence for one relationship without reading a large file. No second database is
+needed.
+
+Packages hold only what the server reads. Bulky evidence used to build and check them
+(final claims, the full provenance map, KG bundles and similar files) is kept out of
+Git and archived; acceptance checks it, and the package binds it by SHA-256. See
+[Runtime files and archived evidence](data/graph-packages.md#runtime-files-and-archived-evidence). See [local copy and update process](development/framework-package.md#learning-progression-inputs-and-updates).
 
 ## How clients get results and evidence
 
@@ -348,8 +353,9 @@ existing services; there is no separate service or database.
   as JSON text, as well as the structured result. Both copies count toward the size
   limits (1 MiB and 100,000 characters), so a page can hold fewer items than the
   requested `limit`.
-- **Short package identity.** Each result names the four package files it was built
-  from and links to the package manifest for the full file list.
+- **Short package identity.** Each result names the four artifacts it was built from
+  and links to the package manifest for the full file list. Three are package files;
+  the fourth, the original provenance map, is archived and cited only by its SHA-256.
 - **Paths stop cleanly.** If the next path would make the result too large, the tool
   returns the paths it has and names the next one.
 - **Two helper tools.** `read_evidence` reads any resource link in pieces, with the same

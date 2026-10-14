@@ -12,7 +12,6 @@ from pydantic import ValidationError
 from kgfegmcp.bootstrap import AppState
 from kgfegmcp.errors import ManifestBuildError
 from kgfegmcp.packages.lp_graph import validate_learning_progression_graph
-from kgfegmcp.packages.lp_validation import validate_learning_progression_evidence
 from kgfegmcp.packages.normalization_sources import read_json_object
 from kgfegmcp.services.lp_models import (
     GetLearningProgressionPathsRequest,
@@ -97,28 +96,7 @@ def test_graph_rejects_invalid_lp_independently(
     findings = validate_learning_progression_graph(altered)
     assert code in {finding.code for finding in findings}
     assert not any("has_child" in finding.code for finding in findings)
-    assert validate_learning_progression_graph(package) == ()
-
-
-@pytest.mark.parametrize(
-    "logical,data",
-    [("learningProgressionSummary", b"{}"), ("learningProgressionProvenance", b"{}")],
-)
-def test_evidence_rejects_missing_required_content(
-    accepted_state: AppState, logical: str, data: bytes
-) -> None:
-    """Reject malformed required summary and absent original provenance membership."""
-    package = accepted_state.catalog_load_result.package_runtimes[0].loaded_package
-    captured = {
-        str(ref.logical_name): ref.resolved_path.read_bytes()
-        for ref in package.artifacts
-    }
-    captured[logical] = data
-    projection, findings = validate_learning_progression_evidence(
-        captured_contents=captured, package=package
-    )
-    assert projection is None and findings
-    assert all(finding.code.startswith("lp_") for finding in findings)
+    assert not validate_learning_progression_graph(package)
 
 
 @pytest.mark.parametrize("data", [b'{"a":1,"a":2}', b'{"a":1e9999}'])

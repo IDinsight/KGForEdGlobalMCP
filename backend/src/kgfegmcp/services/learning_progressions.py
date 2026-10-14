@@ -252,14 +252,22 @@ class LearningProgressionsService:
 
         identity = runtime.catalog_package.package_identity
         evidence = runtime.loaded_package.learning_progression_evidence
-        derivation = {
-            str(artifact.logical_name): artifact
-            for artifact in runtime.loaded_package.artifacts
-            if str(artifact.logical_name) in PROGRESSION_DERIVATION_ARTIFACT_NAMES
-        }
 
-        if evidence is None or len(derivation) != len(
-            PROGRESSION_DERIVATION_ARTIFACT_NAMES
+        # A declared runtime artifact wins; otherwise the archived identity from the
+        # evidence archive record stands in, so no file is read here.
+        sha256_by_name: dict[str, Sha256Digest] = {
+            str(name): sha256
+            for name, sha256 in runtime.loaded_package.archived_artifact_sha256.items()
+        }
+        sha256_by_name.update(
+            {
+                str(artifact.logical_name): artifact.sha256
+                for artifact in runtime.loaded_package.artifacts
+            }
+        )
+
+        if evidence is None or not set(PROGRESSION_DERIVATION_ARTIFACT_NAMES) <= set(
+            sha256_by_name
         ):
             raise CapabilityUnavailableError(
                 message="Stored LP evidence is unavailable."
@@ -269,10 +277,10 @@ class LearningProgressionsService:
             # The manifest hash binds the full inventory; list only what results use.
             artifacts=tuple(
                 ProgressionArtifactIdentity(
-                    logical_name=derivation[name].logical_name,
-                    sha256=derivation[name].sha256,
+                    logical_name=cast(ArtifactName, name),
+                    sha256=sha256_by_name[name],
                     uri=artifact_uri(
-                        artifact_name=derivation[name].logical_name,
+                        artifact_name=cast(ArtifactName, name),
                         framework_id=identity.framework_id,
                         snapshot_id=identity.snapshot_id,
                     ),

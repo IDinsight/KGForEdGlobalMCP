@@ -54,6 +54,59 @@ flowchart TB
 The stages are deliberately separate so the runtime never relies on one upstream
 validation flag as a substitute for current integrity checks.
 
+## Two validation tiers
+
+A package carries only runtime files, so validation runs in two tiers.
+
+| Tier     | Runs in                                                                                     | Reads                                                                             |
+|----------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| Runtime  | Server startup, `kgfegmcp-validate-packages --runtime-only`, and first in every validation | Only the declared package files                                                   |
+| Evidence | `kgfegmcp-validate-packages` without `--runtime-only`, after the runtime tier passes        | The package plus the archived full evidence restored under `data/input_artifacts/` |
+
+The **runtime tier** runs the pipeline above. It also checks that:
+
+- the evidence archive record parses and agrees with the declared files it marks
+  `runtime: true`;
+- the LP normalization receipt binds every other file in the record by hash;
+- the slim LP index binds each slim shard's path, entry count and SHA-256, and names
+  the same original map and original index hashes as the record;
+- every slim shard parses, each edge sits in its correct shard, no edge repeats, the
+  shard edges equal the package's LP delivery edges, and each record's identity,
+  endpoints and decision match its delivery edge; and
+- the per-edge judgment projections and coverage counts that progression tools use can
+  be built.
+
+Slim AS and LC entity provenance files are checked by checksum only. The runtime tier
+never opens a file under `data/input_artifacts/`, so a fresh clone starts and serves all
+packages without the archive.
+
+The **evidence tier** proves that the runtime files are a faithful cut of the full
+evidence. It:
+
+1. checks each archived file's size and SHA-256 against the record;
+2. runs the full LP checks below on the full evidence;
+3. derives the slim index, slim shards, slim AS and LC files and the record again, and
+   requires them to match the package files byte for byte;
+4. checks that every delivered standard with a CASE UUID and every learning component
+   has exactly one slim provenance entry; and
+5. requires the judgment projections and coverage built from full evidence to equal
+   those built from the runtime files.
+
+Only then can a pending package become `passed`.
+
+| Outcome                                                          | Finding or error                                                                               | Effect                                                                                   |
+|------------------------------------------------------------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| An archived file is absent or unreadable                         | `evidence_archive_unavailable` (exit `2`)                                                       | Nothing is persisted; the package stays `pending`                                        |
+| An archived file's size or hash differs                          | `evidence_archive_checksum_mismatch`                                                            | Blocking finding; when persisted, a pending package becomes `failed` or `quarantined` under the policy |
+| A full LP check fails                                            | The LP check's own finding                                                                     | Same                                                                                     |
+| A slim file differs from its derivation                          | `slim_derivation_mismatch`                                                                     | Same                                                                                     |
+| Slim entity provenance misses or adds an entry                   | `slim_entity_coverage_mismatch`                                                                | Same                                                                                     |
+| Runtime and full-evidence projections differ                     | `slim_projection_mismatch`                                                                     | Same                                                                                     |
+
+Use `--runtime-only` to run the same checks as startup when the archive is not
+restored. It never changes validation status. See
+[CLI commands](../operations/cli.md#kgfegmcp-validate-packages).
+
 ## Filesystem discovery and tree integrity
 
 Before graph content is trusted, repository/package discovery checks:
@@ -144,7 +197,9 @@ rules rather than against one hard-coded hierarchy assumption.
 
 ## Learning progression validation
 
-LP acceptance checks stored ID/type/endpoint agreement, standard-only CASE endpoints, no self edges, duplicate IDs/typed edges or conflicting pair judgments, canonical relates ordering, per-type counts and separate buildsTowards cycle detection. It does not use relatesTo as ancestry. Original split evidence, final claims, provenance/report/unresolved data, sanitized normalization receipt and validated 64-partition index/union must agree with exported edges and hashes. Mandatory missing evidence is an error, not a fallback. Retained AS/LC report counts are compared to the AS/LC subgraph; LP report counts are compared to LP edges.
+Both tiers check stored ID/type/endpoint agreement, standard-only CASE endpoints, no self edges, duplicate IDs/typed edges or conflicting pair judgments, canonical relates ordering, per-type counts and separate buildsTowards cycle detection. They do not use relatesTo as ancestry. AS/LC report counts are compared to the AS/LC subgraph.
+
+The evidence tier adds the full LP checks: the archived split JSONL, final claims, original provenance map, original 64-shard index and their union, report, unresolved data and normalization receipt must agree with the delivered edges and with each other's hashes, and LP report counts are compared to LP edges. Mandatory missing evidence is an error, not a fallback.
 
 Warnings, eligibility limits and unresolved/needs-review claims remain inspectable but are not accepted edges. A valid zero-edge declared LP package is available with empty results; an undeclared LP capability is unavailable. Passed structural/process validation does not certify pedagogy or publisher endorsement.
 

@@ -17,7 +17,7 @@ data/graph_packages/<framework-id>/<snapshot-id>/
 The snapshot directory must be under the matching framework directory, and both names
 must satisfy the repository identifier contracts.
 
-A supplied package has this shape:
+A package holds only the files the server needs at runtime:
 
 ```text
 <snapshot-id>/
@@ -26,37 +26,90 @@ A supplied package has this shape:
 │   ├── as_lc_lp_nodes_*.jsonl
 │   └── as_lc_lp_relationships_*.jsonl
 ├── detailed/
-│   ├── as_entity_provenance.json
-│   ├── as_kg_bundle.json
-│   ├── as_lc_kg_bundle.json
 │   ├── as_lc_validation_report.json
-│   ├── as_relationships_has_child.jsonl
 │   ├── as_standards_framework.json
-│   ├── as_standards_framework_items.jsonl
 │   ├── as_unresolved_items.json
 │   ├── lc_dedup_groups.json
-│   ├── lc_entity_provenance.json
 │   ├── lc_generation_summary.json
-│   ├── lp_relationship_provenance.json
-│   ├── lp_relationship_provenance_index.json
+│   ├── lp_generation_summary.json
 │   ├── lp_normalization_receipt.json
-│   └── remaining lp_*.json / lp_*.jsonl evidence
-└── additional/
-    └── lp_relationship_provenance_shard_00.json … shard_63.json
+│   ├── lp_unresolved_items.json
+│   └── lp_validation_report.json
+├── slim/
+│   ├── as_entity_provenance.json
+│   ├── lc_entity_provenance.json
+│   ├── lp_relationship_provenance_index.json
+│   └── lp_relationship_provenance_shard_00.json … shard_63.json
+└── evidence/
+    └── evidence_archive_record.json
 ```
 
 Artifact basenames differ by framework, but logical roles are declared by the manifest.
+The six current packages range from 5.2 MB (Nigeria) to 32.3 MB (CBSE), about 84 MB in
+total.
 
-## Delivery versus detailed artifacts
+## What each area holds
 
-| Area                    | Runtime role                                                                                                                    |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| `delivery/`             | Slim graph records decoded into the package-local graph store and search index                                                  |
-| `detailed/`             | Provenance, audit, validation, unresolved evidence, and richer source-shaped artifacts available under manifest/resource policy |
-| `package_manifest.json` | Identity, checksums, counts, capabilities, profile binding, rights, and validation state                                        |
+| Area                    | Runtime role                                                                                                   |
+|-------------------------|----------------------------------------------------------------------------------------------------------------|
+| `delivery/`             | Graph records decoded into the package-local graph store and search index                                      |
+| `detailed/`             | Small validation, unresolved-evidence, summary and receipt files, copied byte for byte from the build inputs   |
+| `slim/`                 | Provenance served per request, derived from the full evidence by removing bulky fields (see below)             |
+| `evidence/`             | The evidence archive record, which binds the full evidence by path, size and SHA-256                           |
+| `package_manifest.json` | Identity, checksums, counts, capabilities, profile binding, rights, and validation state                       |
 
 The server's primary graph runtime is built from the manifest-declared `nodes` and
 `relationships` delivery artifacts.
+
+## Runtime files and archived evidence
+
+Each package is built from a larger set of full evidence. The package keeps what the
+server reads; everything else stays outside the package and outside Git:
+
+| Set                     | Files                                                                                                                                                                                                                                                                         | Where it lives                                                                  |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Runtime (in the package) | Delivery nodes and relationships, the small `detailed/` files above, slim provenance, the evidence archive record                                                                                                                                                             | `data/graph_packages/`, committed                                               |
+| Archive-only            | LP final claims, the original LP provenance map, its original index and 64 original shards, the `buildsTowards` and `relatesTo` JSONL files, the AS and AS-LC KG bundles, full AS and LC entity provenance, hierarchy relationships (`hasChild` JSONL) and standards framework items | `data/input_artifacts/<set>/`, git-ignored, with a copy in IDinsight Google Drive |
+
+The server never reads archive-only files. Acceptance reads them to check the package
+(see [Validation and lifecycle](validation.md#two-validation-tiers)). Each package's
+`evidence/evidence_archive_record.json` lists every full-evidence file with:
+
+- `packagePath`: its path in the full-evidence layout;
+- `localPath`: its repository-relative location under `data/input_artifacts/<set>/`;
+- `sizeBytes` and `sha256`; and
+- `runtime`: `true` when the package carries the same file byte for byte, `false` when it
+  is archive-only.
+
+The record also names the archive location (`IDinsight Google Drive`). It holds no links,
+absolute paths or credentials, and no tool contacts Drive. Because the record is a
+declared package file, the snapshot ID commits to the archived evidence as well.
+
+See [Add or update a framework](../development/framework-package.md#restore-and-verify-archived-evidence)
+for restoring and checking the archive.
+
+## Slim provenance
+
+Slim files are the original records minus a few bulky fields, plus a SHA-256 that links
+each record back to its archived original. Every other field is kept as is.
+
+| Slim file                                                          | Removed from each record                                                                                  | Link to the original                                                                             |
+|--------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| `lp_relationship_provenance_shard_NN.json` (one record per LP edge) | `claim.candidate.evidence`, `claim.candidate.admissible_decisions`, `claim.provenance.producer_judgment` | `original_entry_sha256` per record; the index holds the original map's and original index's SHA-256 |
+| `as_entity_provenance.json` (one item per standard)                | `candidate_source_refs`                                                                                   | `original_item_sha256` per item; `originalSha256` for the archived file                         |
+| `lc_entity_provenance.json` (one record per learning component)    | Nothing                                                                                                   | `original_component_sha256` per record; `originalSha256` for the archived file                  |
+
+The slim AS file also keeps the original `framework` object as `sourceDocument` and
+drops the `kg_run_manifest` and `relationships_has_child` sections. The slim LC file
+keeps the source `doc_key` and `pdf_name` as `sourceDocument`.
+
+The slim LP index (`formatVersion` `2.0`) lists the removed fields and binds each of the
+64 shards by path, entry count and SHA-256. A shard is chosen by
+`SHA256(UTF8(relationship_id))[0] modulo 64`, so one edge is read from one small shard.
+The largest current shard is about 0.5 MB.
+
+All slim and record files use canonical JSON: sorted keys, compact separators, UTF-8
+and one trailing newline. Building the same inputs twice gives the same bytes.
 
 ## Delivery JSONL envelope
 
@@ -187,7 +240,7 @@ silently repaired.
 
 ## Stored learning progression relationships
 
-Delivery schema `1.2` also accepts `buildsTowards` and `relatesTo` between standard items. Both endpoints preserve CASE identity. Builds is directional support for success; relates is nonsequential conceptual/skill relatedness, stored once in canonical CASE order. Their generated author/provider/attribution is validated against LP evidence independently of hierarchy authorship. Rich judgments remain in retained provenance with validated query projections, rather than being flattened into wire string properties.
+Delivery schema `1.2` also accepts `buildsTowards` and `relatesTo` between standard items. Both endpoints preserve CASE identity. Builds is directional support for success; relates is nonsequential conceptual/skill relatedness, stored once in canonical CASE order. Their generated author/provider/attribution is validated against LP evidence independently of hierarchy authorship. Full judgments (rationale, confidence and warnings) stay in the per-edge slim provenance, and query tools use validated projections of them, rather than being flattened into wire string properties.
 
 Each mixed package declares `academic_standards`, `learning_components` and `learning_progressions` in `includedGraphTypes`, with primary `graphType: academic_standards`. It has one GraphStore/runtime; label-specific operations keep hasChild ancestry, LC supports and LP separate. LP creates no new node kind. See [LP input/update process](../development/framework-package.md#learning-progression-inputs-and-updates).
 

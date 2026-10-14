@@ -95,26 +95,27 @@ The server uses a closed logical-name policy.
 | `learningComponentSummary`     | `application/json`     | `public_metadata` |
 | `unresolvedItems`              | `application/json`     | `full_text`       |
 | `learningComponentDedupGroups` | `application/json`     | `full_text`       |
-| `academicStandardsBundle`      | `application/json`     | `bulk_content`    |
 | `entityProvenance`             | `application/json`     | `bulk_content`    |
 | `nodes`                        | `application/x-ndjson` | `bulk_content`    |
 | `relationships`                | `application/x-ndjson` | `bulk_content`    |
-| `relationshipsHasChild`        | `application/x-ndjson` | `bulk_content`    |
 | `standardsFramework`           | `application/json`     | `bulk_content`    |
-| `standardsFrameworkItems`      | `application/x-ndjson` | `bulk_content`    |
-| `learningComponentsBundle`     | `application/json`     | `bulk_content`    |
 | `learningComponentProvenance`  | `application/json`     | `bulk_content`    |
 
 LP artifact policies extend this closed list:
 
-| Logical names                                                                                                                                                       | Access class                                                               |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
-| `learningProgressionValidation`, `learningProgressionProvenanceIndex`, `learningProgressionNormalization`                                                           | `public_metadata`                                                          |
-| `learningProgressionUnresolved`                                                                                                                                     | `full_text`                                                                |
-| `learningProgressionBuildsTowards`, `learningProgressionRelatesTo`, `learningProgressionProvenance`, `learningProgressionSummary`, `learningProgressionFinalClaims` | `bulk_content`                                                             |
-| `learningProgressionProvenanceShard00` … `63`                                                                                                                       | `bulk_content`, only when present in both the validated index and manifest |
+| Logical names                                                                                             | Access class                                                               |
+|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| `learningProgressionValidation`, `learningProgressionProvenanceIndex`, `learningProgressionNormalization` | `public_metadata`                                                          |
+| `learningProgressionUnresolved`                                                                           | `full_text`                                                                |
+| `learningProgressionSummary`                                                                              | `bulk_content`                                                             |
+| `learningProgressionProvenanceShard00` … `63`                                                             | `bulk_content`, only when present in both the validated index and manifest |
 
-The public LP summary is a sanitized projection with its own content hash, distinct from the unchanged original generation-summary artifact/hash. It excludes candidate text, rationale, private paths and model prompts. Unknown extra artifacts fail closed; a similar name prefix grants no access.
+The public LP summary is a sanitized projection with its own content hash, distinct from the unchanged original generation-summary artifact/hash. It excludes candidate text, rationale, private paths and model prompts. Unknown extra artifacts fail closed; a similar name prefix grants no access. The `evidenceArchiveRecord` artifact has no exposure contract and is never served.
+
+Archive-only evidence is not part of the package. A URI for one of those names, such as
+`learningProgressionProvenance` or `academicStandardsBundle`, returns
+`resource_not_found`, not `resource_access_denied`. See
+[Runtime files and archived evidence](../data/graph-packages.md#runtime-files-and-archived-evidence).
 
 `full_text` requires reviewed rights plus `allowFullText`.
 
@@ -153,18 +154,44 @@ kgfegmcp://framework/{framework_id}/snapshot/{snapshot_id}/standard/{node_id}/pr
 Use `get_standard` instead of a standard resource when you need to resolve by CASE UUID
 or CASE URI.
 
-The provenance resource returns one accepted detailed provenance entry containing the
-outer `nodeId`, `caseIdentifierUuid`, and retained provenance object.
+The standard-provenance resource returns:
+
+| Field                      | Content                                                                                       |
+|----------------------------|-----------------------------------------------------------------------------------------------|
+| `nodeId`                   | Outer node ID                                                                                 |
+| `caseIdentifierUuid`       | CASE UUID used to find the entry                                                              |
+| `provenance`               | The slim provenance item: the extraction record without `candidate_source_refs`, plus `original_item_sha256` |
+| `sourceDocument`           | The source document object from the framework's provenance                                   |
+| `attributionStatement`     | The package's `rights.attributionStatement`                                                   |
+| `archivedProvenanceSha256` | SHA-256 of the full `as_entity_provenance.json` kept in the archive                          |
+
+The learning-component-provenance resource returns `nodeId`, the slim component record
+(kept whole, plus `original_component_sha256`), `sourceDocument` (`doc_key` and
+`pdf_name`), `attributionStatement` and `archivedProvenanceSha256`.
+
+`metadata.sourceArtifacts` for both cites the slim artifact and `evidenceArchiveRecord`.
 
 ## Learning progression resources
 
-The existing relationship URI returns exact stored LP content. Its `/provenance` resource returns the complete original per-edge claim/judgment/trace, including rationale, confidence, warnings, candidate evidence/references and source/config/content/model/producer/checker hashes. It requires reviewed rights, full-text and standard-resource permission; it does not grant bulk access.
+The existing relationship URI returns exact stored LP content. Its `/provenance` resource returns one edge's slim provenance record. It requires reviewed rights, full-text and standard-resource permission; it does not grant bulk access.
 
-The server resolves an accepted ID to its validated partition without a caller-selected path. Metadata identifies canonical returned content hash and original map, selected partition, index, delivery/manifest and exact package/profile identity. The original map is retained; one-edge reads do not require reading it wholesale.
+| Field                      | Content                                                                                       |
+|----------------------------|-----------------------------------------------------------------------------------------------|
+| `relationshipId`           | The edge ID                                                                                   |
+| `provenance`               | The slim record (below)                                                                       |
+| `archivedProvenanceSha256` | SHA-256 of the full original provenance map kept in the archive                               |
+| `epistemicStatus`          | Always `llm_inferred`                                                                          |
+| Notices                    | Generated-origin, confidence, coverage and semantic notices                                   |
 
-The `/learning-progressions` summary reports availability, stored per-type counts, structural/process-only scope, retained candidate/claim/needs-review/unresolved counts and eligibility/coverage notices, plus artifact links. Missing denominators remain unknown. Accepted edge tables exclude unresolved/rejected/no-relation/needs-review claims. A zero warning-pair count does not erase individual edge warnings.
+The slim record keeps the edge's identity and endpoints, the full judgment (decision, direction, confidence, full rationale and all warnings), candidate warnings, the checker outcome, producer and checker trace hashes, model configuration and settings, attribution fields and every content hash. It leaves out three fields, which stay in the archive: the candidate evidence text (`claim.candidate.evidence`), the admissible decisions (`claim.candidate.admissible_decisions`) and the producer judgment (`claim.provenance.producer_judgment`). The producer judgment equals the final judgment when `checker_outcome` is `accepted`. When it is `corrected` (434 of the 8,080 edges in the current packages), the producer judgment is the model's judgment before the checker corrected it, and its decision, direction, confidence and rationale can differ from the final ones; that earlier judgment is now available only in the archive. Its `original_entry_sha256` is the SHA-256 of the full original record, so the edge can be matched to the archive.
 
-Defaults are 32 MiB source-read and 8 MiB returned content. Lower operator limits still apply to partition reads; denied/oversized evidence produces an explicit error, never fabricated or silently clipped full provenance. Query results have separate tool-result ceilings (1 MiB and 100,000 characters for text plus structured output). See [LP tool reference](progression-tool.md).
+The server resolves an accepted ID to its validated slim shard without a caller-selected path. `metadata.sourceArtifacts` lists the manifest, the selected slim shard, the slim index, `relationships` and `evidenceArchiveRecord`, with the returned content hash and exact package/profile identity. One-edge reads open a single shard.
+
+The `/learning-progressions` summary reports availability, stored per-type counts, structural/process-only scope, retained candidate/claim/needs-review/unresolved counts and eligibility/coverage notices, plus links to the declared LP artifacts (normalization receipt, slim index, summary, unresolved and validation). Missing denominators remain unknown. Accepted edge tables exclude unresolved/rejected/no-relation/needs-review claims. A zero warning-pair count does not erase individual edge warnings.
+
+Progression tool results cite four artifacts in `metadata.artifacts`: `learningProgressionProvenance`, `learningProgressionProvenanceIndex`, `nodes` and `relationships`. The first is the archived original provenance map, cited by its SHA-256 from the evidence archive record. Its URI is an identifier only: reading it returns `resource_not_found`. Use each edge's `provenanceUri` instead.
+
+Defaults are 32 MiB source-read and 8 MiB returned content. Lower operator limits still apply to shard reads; denied/oversized evidence produces an explicit error, never fabricated or silently clipped provenance. Query results have separate tool-result ceilings (1 MiB and 100,000 characters for text plus structured output). See [LP tool reference](progression-tool.md).
 
 ## Relationship resource
 

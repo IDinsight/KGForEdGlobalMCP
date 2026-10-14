@@ -43,9 +43,6 @@ class ArtifactPolicyDecision:
 
 
 _ARTIFACT_POLICIES: Final[dict[str, ArtifactPolicyDecision]] = {
-    "academicStandardsBundle": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
-    ),
     "entityProvenance": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
     ),
@@ -58,26 +55,11 @@ _ARTIFACT_POLICIES: Final[dict[str, ArtifactPolicyDecision]] = {
     "learningComponentSummary": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
     ),
-    "learningComponentsBundle": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
-    ),
-    "learningProgressionBuildsTowards": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
-    ),
-    "learningProgressionFinalClaims": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
-    ),
     "learningProgressionNormalization": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
     ),
-    "learningProgressionProvenance": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
-    ),
     "learningProgressionProvenanceIndex": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.PUBLIC_METADATA, mime_type="application/json"
-    ),
-    "learningProgressionRelatesTo": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
     ),
     "learningProgressionSummary": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
@@ -94,14 +76,8 @@ _ARTIFACT_POLICIES: Final[dict[str, ArtifactPolicyDecision]] = {
     "relationships": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
     ),
-    "relationshipsHasChild": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
-    ),
     "standardsFramework": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/json"
-    ),
-    "standardsFrameworkItems": ArtifactPolicyDecision(
-        access_class=ArtifactAccessClass.BULK_CONTENT, mime_type="application/x-ndjson"
     ),
     "unresolvedItems": ArtifactPolicyDecision(
         access_class=ArtifactAccessClass.FULL_TEXT, mime_type="application/json"

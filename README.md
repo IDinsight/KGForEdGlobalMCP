@@ -353,7 +353,12 @@ uv --directory backend run --locked --no-dev kgfegmcp-http-smoke --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
 uv --directory backend run --locked --no-dev kgfegmcp-validate-packages --help
+uv --directory backend run --locked --no-dev kgfegmcp-verify-evidence-archive --help
 ```
+
+A clone holds only the runtime graph packages. Rebuilding or accepting a package also
+needs the archived evidence, which is git-ignored; see
+[Add or update a framework](docs/development/framework-package.md#restore-and-verify-archived-evidence).
 
 ## Troubleshooting
 

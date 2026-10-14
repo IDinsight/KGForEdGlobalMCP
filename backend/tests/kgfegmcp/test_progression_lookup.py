@@ -2,6 +2,7 @@
 
 # Standard Library
 import hashlib
+import json
 
 from dataclasses import replace
 from pathlib import Path
@@ -28,6 +29,8 @@ from kgfegmcp.services.models import (
 )
 from tests.fixtures.progression_fixtures import selector
 
+# Archived evidence cited by progression results through the evidence record.
+ARCHIVED_ARTIFACT = "learningProgressionProvenance"
 # Independent oracle for the Frame 2 compact metadata contract, sorted by name.
 DERIVATION_ARTIFACTS = [
     "learningProgressionProvenance",
@@ -40,9 +43,29 @@ DERIVATION_ARTIFACTS = [
 def test_every_exact_edge_preserves_accepted_evidence(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Exhaustively repeat original edge/hash/judgment/excerpt identity assertions."""
+    """Exhaustively repeat original edge/hash/judgment/excerpt identity assertions.
+
+    The original provenance map is archived evidence in runtime-only packages, so its
+    citation carries the evidence record's hash rather than a declared artifact's.
+
+    Parameters
+    ----------
+    accepted_state
+        Application state bootstrapped from the six accepted packages.
+    monkeypatch
+        Pytest monkeypatch fixture.
+    """
     service = accepted_state.learning_progressions_service
     count = 0
+    # Read each evidence record before file reads are rejected below.
+    archived: dict[str, dict[str, dict[str, object]]] = {}
+
+    for runtime in accepted_state.catalog_load_result.package_runtimes:
+        record = runtime.loaded_package.artifact("evidenceArchiveRecord")
+        assert record
+        archived[str(runtime.catalog_package.package_identity.graph_package_id)] = (
+            json.loads(record.resolved_path.read_bytes())["evidenceArtifacts"]
+        )
 
     def reject(*_args: object, **_kwargs: object) -> None:
         """Fail any exact-query attempt to reopen accepted source bytes."""
@@ -53,12 +76,20 @@ def test_every_exact_edge_preserves_accepted_evidence(
     for runtime in accepted_state.catalog_load_result.package_runtimes:
         identity = runtime.catalog_package.package_identity
         # Results list only their derivation artifacts; the manifest binds the rest.
-        expected_hashes = sorted(
-            (ref.logical_name, ref.sha256)
+        declared = {
+            str(ref.logical_name): ref.sha256
             for ref in runtime.loaded_package.artifacts
             if ref.logical_name in DERIVATION_ARTIFACTS
-        )
-        assert [name for name, _ in expected_hashes] == DERIVATION_ARTIFACTS
+        }
+        entries = archived[str(identity.graph_package_id)]
+        assert sorted(declared) == [
+            name for name in DERIVATION_ARTIFACTS if name != ARCHIVED_ARTIFACT
+        ]
+        assert entries[ARCHIVED_ARTIFACT]["runtime"] is False
+        expected_hashes = [
+            (name, declared.get(name) or entries[name]["sha256"])
+            for name in DERIVATION_ARTIFACTS
+        ]
         assert len(runtime.loaded_package.artifacts) > len(DERIVATION_ARTIFACTS)
         for edge in runtime.loaded_package.relationships:
             if edge.label not in {"buildsTowards", "relatesTo"}:

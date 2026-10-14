@@ -21,7 +21,7 @@ Reads the full permitted content of one `kgfegmcp://` resource in bounded UTF-8 
 | `cursor`          | string, 1–4,096      | null    | Only a `page.nextCursor` value returned by this tool for the same request  |
 
 ```json
-{"request":{"uri":"kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2Bbc5e769ed26f/relationship/0129f5d5-42fd-52cb-bcf2-ec07c47103e7/provenance"}}
+{"request":{"uri":"kgfegmcp://framework/nigeria-nerdc-mathematics-primary-1-3/snapshot/nigeria-nerdc-mathematics-primary-1-3%40undated%2B424e546e2284/relationship/0129f5d5-42fd-52cb-bcf2-ec07c47103e7/provenance"}}
 ```
 
 ### Where URIs come from
@@ -64,9 +64,9 @@ call reapplies rights, exposure class, source-read and return-size checks, and a
 that is denied natively is denied here too.
 
 Window counts depend on the window size. Measured with the default window of 16,384
-bytes: the Nigeria diagnostic relationship provenance (12,275 bytes) and the target
-standard's provenance arrive in one window; the Nigeria manifest (22,348 bytes) needs
-two; and Ghana Mathematics' standards-hierarchy unresolved-items report (`/unresolved`,
+bytes: the Nigeria diagnostic relationship provenance (7,107 bytes) and the target
+standard's provenance (2,059 bytes) arrive in one window; the Nigeria manifest (20,186
+bytes) needs two; and Ghana Mathematics' standards-hierarchy unresolved-items report (`/unresolved`,
 42,831 bytes) needs three. With `maxContentBytes` 4,096 the same report needs 11
 windows. That report covers unresolved parent–child links in the standards hierarchy; it
 is not progression evidence, which is in the `learningProgressionUnresolved` record that
@@ -92,7 +92,7 @@ The other request fields are that prompt's arguments in camelCase (`framework_id
 and selector objects are sent as JSON values, not JSON strings:
 
 ```json
-{"request":{"workflowName":"learning_progression_support_plan","frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+bc5e769ed26f","identifier":{"identifierType":"node_id","nodeId":"e399b510-48bb-58ee-abda-61460a5a853b"},"localContext":"Learners can count to 9 but often write 6 and 9 the wrong way round.","outputLanguage":"en"}}
+{"request":{"workflowName":"learning_progression_support_plan","frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284","identifier":{"identifierType":"node_id","nodeId":"e399b510-48bb-58ee-abda-61460a5a853b"},"localContext":"Learners can count to 9 but often write 6 and 9 the wrong way round.","outputLanguage":"en"}}
 ```
 
 Unknown workflow names, extra fields and invalid values fail validation.

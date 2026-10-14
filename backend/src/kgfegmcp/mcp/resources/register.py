@@ -262,7 +262,7 @@ async def read_relationship_provenance(
     relationship_id: RelationshipId,
     snapshot_id: SnapshotId,
 ) -> ResourceResult:
-    """Return complete original LP provenance under single-standard rights and limits.
+    """Return slim LP edge provenance under single-standard rights and limits.
 
     Parameters
     ----------
@@ -278,7 +278,8 @@ async def read_relationship_provenance(
     Returns
     -------
     ResourceResult
-        Original entry and exact package/profile/artifact/content identity.
+        Slim entry, archived-evidence hashes and exact package/profile/artifact/content
+        identity.
     """
 
     with resource_error_boundary("read_relationship_provenance_resource"):
@@ -620,7 +621,10 @@ def register_resource_components(server: FastMCP[dict[str, AppState]]) -> None:
         uri=RELATIONSHIP_URI_TEMPLATE,
     )(read_relationship)
     server.resource(
-        description="Return full original LP provenance with generated-origin notices.",
+        description=(
+            "Return one LP edge's provenance (judgment, rationale, warnings, trace and "
+            "archive hashes) with generated-origin notices."
+        ),
         mime_type="application/json",
         name="relationship_provenance",
         title="Learning Progression Provenance",

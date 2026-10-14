@@ -108,7 +108,7 @@ _SMOKE_RELATIONSHIP_ID: Final[RelationshipId] = cast(
 )
 _SMOKE_SNAPSHOT_ID: Final[SnapshotId] = cast(
     SnapshotId,
-    "ghana-nacca-primary-english-language-basic-1-3@2019+e00c5329a507",
+    "ghana-nacca-primary-english-language-basic-1-3@2019+f2a9ab5922a1",
 )
 _SMOKE_UNRESOLVED_NODE_ID: Final[NodeId] = cast(
     NodeId, "4f5d76cf-3242-52e4-8c16-7b569f84588a"

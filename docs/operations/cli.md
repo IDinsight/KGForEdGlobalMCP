@@ -1,6 +1,6 @@
 # CLI commands
 
-The backend installs five operator-facing command-line applications. Run them through
+The backend installs these operator-facing command-line applications. Run them through
 the repository's locked `uv` environment so the executable code and dependency graph
 match the checked-in project metadata.
 
@@ -17,6 +17,7 @@ uv --directory backend run --locked --no-dev <command> [options]
 | `kgfegmcp-validate-packages` | Validate one package or every pending package                                                | Only when validating a pending package without `--read-only`        |
 | `kgfegmcp-build-manifest`    | Construct or dry-run one deterministic **pending** graph package                             | Yes unless `--dry-run`; existing identical output is left unchanged |
 | `kgfegmcp-build-mcpb`        | Assemble, validate, pack, and independently verify the MCP Bundle                            | Writes staging/output files only; does not mutate graph packages    |
+| `kgfegmcp-verify-evidence-archive` | Check restored archived evidence against each package's evidence archive record        | No                                                                  |
 
 Inspect the installed interfaces directly:
 
@@ -26,6 +27,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-http-smoke --help
 uv --directory backend run --locked --no-dev kgfegmcp-validate-packages --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-manifest --help
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb --help
+uv --directory backend run --locked --no-dev kgfegmcp-verify-evidence-archive --help
 ```
 
 ## Prepare Learning Progression inputs
@@ -176,10 +178,19 @@ Options:
 | `--framework-id FRAMEWORK_ID`     | Yes      | Stable framework identifier                             |
 | `--snapshot-id SNAPSHOT_ID`       | Yes      | Immutable snapshot identifier                           |
 | `--read-only`                     | No       | Prohibit validation-status persistence                  |
+| `--runtime-only`                  | No       | Run only the runtime checks that startup runs, without archived evidence; implies `--read-only` |
 | `--invalid-package-policy POLICY` | No       | Override invalid pending target: `fail` or `quarantine` |
 
 A terminal package selected through `one` is revalidated read-only even if `--read-only`
 is omitted; terminal state is never rewritten.
+
+Without `--runtime-only`, validation also runs the evidence tier, which reads the
+package's archived full evidence under `data/input_artifacts/`. Restore it first (see
+[Restore and verify archived evidence](../development/framework-package.md#restore-and-verify-archived-evidence)).
+If any archived file is absent or unreadable, the command exits `2` with
+`evidence_archive_unavailable` and persists nothing. In a fresh clone, use
+`--runtime-only` to check a package the way startup does. See
+[Two validation tiers](../data/validation.md#two-validation-tiers).
 
 ### Validate all pending packages
 
@@ -203,6 +214,11 @@ uv --directory backend run --locked --no-dev \
   --invalid-package-policy quarantine
 ```
 
+`pending` accepts the same `--runtime-only` option. It
+skips terminal packages before loading them, so it needs no archive when nothing is
+pending. It loads every pending package before persisting any status, so a missing
+archive stops the batch without a partial set of transitions.
+
 The JSON result records public findings plus fields such as `isValid`, `observedStatus`,
 `targetStatus`, `effectiveStatus`, `persisted`, `readOnly`, and
 `terminalRevalidation`.
@@ -213,7 +229,7 @@ The JSON result records public findings plus fields such as `isValid`, `observed
 |------|---------------------------------------------------------------------------------------------------------|
 | `0`  | Selected package(s) are valid                                                                           |
 | `1`  | Validation completed but at least one package is invalid                                                |
-| `2`  | Invocation, settings, identifier, repository, or other typed domain failure prevented normal validation |
+| `2`  | Invocation, settings, identifier, repository, missing archived evidence, or other typed domain failure prevented normal validation |
 
 This distinction is useful in CI: exit `1` means the validator produced a negative data
 result, while exit `2` means the validation operation itself could not be performed as
@@ -309,6 +325,33 @@ with the proposed/created manifest and package paths and any warnings.
 **Exit status:** `0` on a successful create/dry-run/identical outcome; `1` for build or
 input-validation failure. Typer may reject malformed invocation syntax before the build
 logic runs.
+
+## `kgfegmcp-verify-evidence-archive`
+
+Check restored archived evidence against every package's evidence archive record:
+
+```bash
+uv --directory backend run --locked --no-dev kgfegmcp-verify-evidence-archive all
+```
+
+Or one package:
+
+```bash
+uv --directory backend run --locked --no-dev \
+  kgfegmcp-verify-evidence-archive one \
+  --framework-id <framework-id> \
+  --snapshot-id <snapshot-id>
+```
+
+It reads only the records and the local files they name; it never downloads, uploads
+or changes anything. Each entry is `ok`, `missing` (reason `absent` or `unreadable`) or
+`mismatch` (size or SHA-256). Each package is `ok`, `incomplete` or
+`record_unavailable`.
+
+**Exit status:** `0` when every entry is `ok`; `1` when an entry is missing or
+mismatched or a package has no readable record; `2` for invocation or configuration
+errors. See
+[Restore and verify archived evidence](../development/framework-package.md#restore-and-verify-archived-evidence).
 
 ## `kgfegmcp-build-mcpb`
 

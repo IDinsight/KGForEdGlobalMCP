@@ -52,7 +52,9 @@ data/
         └── <snapshot-id>/
             ├── package_manifest.json
             ├── delivery/
-            └── detailed/
+            ├── detailed/
+            ├── slim/
+            └── evidence/
 ```
 
 The runtime roots can be overridden through environment variables. See

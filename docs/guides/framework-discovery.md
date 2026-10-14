@@ -164,7 +164,7 @@ For an exact version:
 {
   "request": {
     "frameworkId": "ghana-nacca-primary-mathematics-basic-4-6",
-    "snapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+0b768f7cfaf9"
+    "snapshotId": "ghana-nacca-primary-mathematics-basic-4-6@2019+ed3b9450718a"
   }
 }
 ```
