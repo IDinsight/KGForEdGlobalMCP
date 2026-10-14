@@ -7,7 +7,9 @@ Cycle: slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15
 
 Design mode: Evolution. The change replaces the accepted package contract (every
 evidence file declared, loaded and committed) with a two-tier contract, and
-migrates all six frameworks to new snapshots.
+migrates all six frameworks to new snapshots. By user decision (2026-10-14), no
+backward compatibility is kept: manifest `1.1` and the full-package layout are
+removed, not supported alongside the new contract.
 
 ## Context
 
@@ -24,14 +26,14 @@ migrates all six frameworks to new snapshots.
 - The loader requires the package tree to match the manifest exactly, and the
   snapshot-ID suffix is computed from all declared checksums.
 - `lp_normalization_receipt.json` binds the SHA-256 of every other file in the
-  legacy layout (`outputSha256`, keyed by package path), including the original
+  current full layout (`outputSha256`, keyed by package path), including the original
   index and all 64 original shards. The original index binds the original map.
   Original shards are canonical (`normalization._canonical_bytes`) partitions of
   the original map.
 - Docker (`.dockerignore` allowlist) and MCPB (`cli/build_mcpb.py`) ship only
   `config/` and `data/graph_packages/`. Nothing under `data/input_artifacts/` is
   shipped.
-- `data/input_artifacts/<set>/` mirrors each legacy package layout byte for byte,
+- `data/input_artifacts/<set>/` mirrors each current full package layout byte for byte,
   and `package_build.json` maps logical names to those input paths.
 - Measured on 2026-10-13: removing `claim.candidate.evidence`,
   `claim.candidate.admissible_decisions` and `claim.provenance.producer_judgment`
@@ -43,15 +45,17 @@ migrates all six frameworks to new snapshots.
 
 1. **Two-tier package contract, gated by manifest version `1.2`.** A `1.2`
    package declares only runtime files plus a declared **evidence archive
-   record**. The record binds the full legacy evidence set by logical name,
-   legacy package path, size and SHA-256. Because the record is a declared file,
+   record**. The record binds the full evidence set by logical name,
+   full-evidence package path, size and SHA-256. Because the record is a declared file,
    the snapshot-ID suffix commits to the archived evidence without changing the
-   identity rule. Manifest `1.1` packages keep today's behavior unchanged.
+   identity rule. `1.2` is the only supported manifest version; `1.1` support,
+   the full-package layout and every code path that exists only for them are
+   removed.
 2. **Two validation tiers in one loader.** The runtime tier runs at startup and
    in every validation. It reads only declared runtime files. The evidence tier
    runs only inside `kgfegmcp-validate-packages`. It verifies the archived files,
-   rebuilds the legacy full-package view, runs today's LP acceptance on that view
-   unchanged, and requires every slim artifact to equal its deterministic
+   builds an in-memory full-evidence view, runs today's LP acceptance checks on it
+   with their semantics unchanged, and requires every slim artifact to equal its deterministic
    derivation from the evidence byte for byte.
 3. **The input set is the local archive.** Archive-only files stay at their
    current paths under `data/input_artifacts/<set>/` and become git-ignored. The
@@ -67,18 +71,18 @@ migrates all six frameworks to new snapshots.
    `learningProgressionProvenanceIndex`, `learningProgressionProvenanceShardNN`,
    `entityProvenance` and `learningComponentProvenance` keep their roles, rights
    classes and artifact URIs. Their content becomes slim and their paths move to
-   `slim/`. As a result, shard resolution (`partition_name`) and the policy table
-   do not change.
+   `slim/`. Shard resolution (`partition_name`) and the rights classes therefore
+   stay as they are. This avoids churn; it is not a compatibility promise.
 6. **Archive the original shards and original index too.** Archiving them costs
-   about 101 MB in Drive and in the local working tree. In return, today's LP
-   acceptance (`_validate_index`, receipt binding) runs unmodified on real files,
-   and no code is needed to reproduce the original shards.
+   about 101 MB in Drive and in the local working tree. In return, today's index
+   and receipt-binding checks run on real files, and no code is needed to
+   reproduce the original shards.
 
 ## Acceptance Coverage
 
 - `AC-001`: Runtime-only layout (Interfaces 1–2). The six new `1.2` snapshots
-  declare exactly the runtime set. Archive-only kinds are forbidden in `1.2`
-  manifests.
+  declare exactly the runtime set. The manifest model cannot express
+  archive-only kinds, and `1.1` manifests are rejected.
 - `AC-002`: Delivery files are carried byte-identical. Judgment projections are
   built from slim records whose `confidence`, `rationale` and `warnings` are
   verbatim, and coverage still comes from the carried summary and report. The
@@ -107,11 +111,14 @@ migrates all six frameworks to new snapshots.
 
 ## Components
 
-- `packages/models.py`: accepts manifest version `1.2` and its layout rules
-  (Interfaces 2); legacy `1.1` rules are unchanged.
+- `packages/models.py`: accepts only manifest version `1.2` and its layout rules
+  (Interfaces 2). Remove the `1.1` rules and the dedicated fields for
+  archive-only kinds.
+- `resources/policy.py`: drop the entries for logical names that can no longer
+  be declared. Entries for declared names keep their classes.
 - `packages/evidence_models.py` (new): evidence archive record, slim LP index,
   slim record and slim entity-document models.
-- `packages/slim.py` (new): pure derivation functions from legacy evidence bytes
+- `packages/slim.py` (new): pure derivation functions from full-evidence bytes
   to slim artifact bytes and record entries. It is the single source of truth for
   derivation.
 - `packages/lp_runtime.py` (new): runtime-tier LP validation from the slim index,
@@ -119,13 +126,19 @@ migrates all six frameworks to new snapshots.
   `LearningProgressionEvidence` with the same `_projection` and `_coverage`
   semantics. Share those helpers; do not duplicate them.
 - `packages/evidence.py` (new): the evidence-tier verifier. It checks archive
-  files, builds the legacy full-package view, calls the existing
-  `validate_learning_progression_evidence`, and checks derivation equality and
-  projection equality.
-- `packages/loader.py`: chooses the tier by manifest version. It accepts an
+  files, builds a dedicated in-memory `FullEvidenceView`, runs the full LP checks
+  on it, and checks derivation, projection and entity coverage equality.
+- `packages/lp_validation.py`: becomes evidence-tier only. Its full LP checks
+  (index and shard union, receipt binding, final claims, provenance records,
+  report, summary and unresolved reconciliation) take a `FullEvidenceView`
+  instead of a manifest-shaped `LoadedGraphPackage`. Check semantics and finding
+  codes are preserved; only the input type changes.
+- `packages/loader.py`: one path for `1.2`. Any other manifest version yields the
+  existing `manifest_version_unsupported` blocking finding. It accepts an
   optional evidence verifier: `bootstrap.py` passes none (runtime tier only) and
   `cli/validate_packages.py` passes one rooted at the project directory.
-- `packages/builder.py`: runtime-only build layout (Interfaces 8).
+- `packages/builder.py`: builds only the runtime-only layout (Interfaces 8). The
+  full-package output path is removed.
 - `resources/service.py`, `resources/lp.py`, `resources/models.py`: serve slim
   content and cite the record (Interfaces 4–5).
 - `cli/verify_evidence_archive.py` (new) with console script
@@ -155,22 +168,23 @@ migrates all six frameworks to new snapshots.
 | `learningComponentProvenance`        | `slim/lc_entity_provenance.json`                 | derived             |
 | `evidenceArchiveRecord` (additional) | `evidence/evidence_archive_record.json`          | generated           |
 
-"Carried" means the file is byte-identical to the legacy file and keeps the same
-logical name and path. All derived and generated JSON uses canonical bytes:
+"Carried" means the file is byte-identical to its full-evidence input and keeps
+the same logical name and package path. All derived and generated JSON uses canonical bytes:
 sorted keys, compact separators, `ensure_ascii=False`, no NaN, UTF-8 and one
 trailing newline, exactly as `normalization._canonical_bytes` writes them. Shard
 placement stays `SHA256(UTF8(relationship_id))[0] modulo 64`.
 
-### 2. Manifest `1.2` layout rules (generic, no framework branches)
+### 2. Manifest `1.2` rules (generic, no framework branches)
 
-- `manifestVersion` `1.2` must declare `evidenceArchiveRecord`. Version `1.1`
-  must not declare it. Builders write `1.2` only for the runtime-only layout.
-- A `1.2` manifest must not declare `academicStandardsBundle`,
+- `manifestVersion` must be `1.2`, and the manifest must declare
+  `evidenceArchiveRecord`.
+- A manifest cannot declare `academicStandardsBundle`,
   `learningComponentsBundle`, `relationshipsHasChild`,
   `standardsFrameworkItems`, `learningProgressionFinalClaims`,
   `learningProgressionProvenance`, `learningProgressionBuildsTowards` or
-  `learningProgressionRelatesTo`.
-- When LP is included in `1.2`, the required LP set is `Normalization`,
+  `learningProgressionRelatesTo`. The model has no fields for them, and these
+  names are reserved, so they cannot be declared as additional artifacts either.
+- When LP is included, the required LP set is `Normalization`,
   `ProvenanceIndex`, `Summary`, `Unresolved`, `Validation` and the 64 shard
   names. `hasLearningProgressionProvenance` means that this slim set is present.
   The capability rules are otherwise unchanged (`hasDetailedProvenance` still
@@ -185,9 +199,9 @@ placement stays `SHA256(UTF8(relationship_id))[0] modulo 64`.
 formatVersion: "1.0"
 frameworkId: <framework id>
 archive: { location: "IDinsight Google Drive" }   # fixed constant
-evidenceArtifacts: {                       # the complete legacy declaration
-  <legacy logical name>: {
-    packagePath: <legacy package-relative path>,
+evidenceArtifacts: {                       # the complete full-evidence declaration
+  <full-evidence logical name>: {
+    packagePath: <full-evidence package-relative path>,   # receipt outputSha256 key
     sha256: "sha256:<hex>", sizeBytes: <int>,
     localPath: <repository-relative input-set path>,
     runtime: <bool>                        # true = carried byte-identical
@@ -195,9 +209,11 @@ evidenceArtifacts: {                       # the complete legacy declaration
 }
 ```
 
-- `evidenceArtifacts` is exactly the legacy full declaration for the package:
-  every legacy artifact except the manifest, including the original index and
-  the 64 original shards under their legacy names. Every entry has a
+- `evidenceArtifacts` is exactly the full-evidence declaration for the
+  package: every artifact of the full layout except a manifest, including the
+  original index and the 64 original shards under their original names. These
+  names and paths form the evidence namespace; they are not runtime
+  declarations. Every entry has a
   `localPath`, so one record also verifies a restored input set.
 - `runtime: true` requires that the runtime manifest declares the same logical
   name and path with the same SHA-256. `runtime: false` marks an archive-only
@@ -264,8 +280,9 @@ evidenceArtifacts: {                       # the complete legacy declaration
     IDs; the union of IDs equals the LP delivery edge IDs; each record's
     identity, endpoints and decision agree with its delivery edge;
   - projections and coverage are built as described above;
-  - slim entity documents are checksummed only, as their legacy forms are today.
+  - slim entity documents are checksummed only, as entity provenance is today.
   - The runtime tier never opens `localPath`.
+  - A manifest other than `1.2` fails with `manifest_version_unsupported`.
 - **Evidence tier** (default in `kgfegmcp-validate-packages` for `1.2`): runs
   after the runtime tier passes (Data and Control Flow).
 - **Status outcomes**:
@@ -273,7 +290,7 @@ evidenceArtifacts: {                       # the complete legacy declaration
     `evidence_archive_unavailable`. The CLI exits non-zero without persisting a
     transition, and the package stays `pending`.
   - If a file is present but its size or hash differs (finding
-    `evidence_archive_checksum_mismatch`), legacy acceptance fails, a derivation
+    `evidence_archive_checksum_mismatch`), a full-evidence LP check fails, a derivation
     differs (`slim_derivation_mismatch`), or the projections differ
     (`slim_projection_mismatch`), the finding is blocking. A pending package
     transitions to `failed`, or to `quarantined` under that policy, exactly as
@@ -302,10 +319,10 @@ evidenceArtifacts: {                       # the complete legacy declaration
 
 ### 8. Build spec and builder (runtime-only layout)
 
-- `package_build.json` adds `packageLayout: "runtime_only"`. Without it, the
-  builder keeps today's legacy behavior.
-- With `runtime_only`, the builder reads the inputs as the legacy evidence set,
-  with discovery rules unchanged. It writes the carried files, the `slim/`
+- The runtime-only layout is the builder's only output; `package_build.json`
+  gains no layout field.
+- The builder reads the spec's inputs as the full evidence set, with input
+  discovery rules unchanged. It writes the carried files, the `slim/`
   artifacts (via `packages/slim.py`) and the record, and writes a pending `1.2`
   manifest. Inputs that the spec lists must exist and match.
 - Reproduction means identical declared artifact bytes, and therefore the same
@@ -326,15 +343,16 @@ or mismatched entry. It never downloads or uploads.
 2. **Accept:** `kgfegmcp-validate-packages` → loader runtime tier → evidence
    verifier:
    - check every `localPath` file's size and SHA-256 against the record;
-   - assemble the legacy view: the runtime loaded package with its manifest
-     artifacts and checksums replaced by the record's legacy declaration, and
-     artifact references resolved to the runtime file when `runtime: true` and
-     to `localPath` otherwise. This view is in memory only and never persisted.
-   - run `validate_learning_progression_evidence` on that view, unchanged;
+   - assemble the `FullEvidenceView`: the record's full-evidence declaration
+     (logical name → package path, SHA-256 and verified bytes), with bytes read
+     from the runtime file when `runtime: true` and from `localPath` otherwise.
+     Add the decoded delivery, framework root, item nodes and manifest counts
+     from the runtime package. This view is in memory only and never persisted.
+   - run the full LP checks on that view;
    - re-derive the slim index, slim shards, slim AS and LC documents and the
      record's evidence entries, and require byte equality with the runtime
      files;
-   - require the legacy-view projections and coverage to equal the runtime-tier
+   - require the full-evidence projections and coverage to equal the runtime-tier
      projections and coverage;
    - only then may the existing persistence step write `passed`.
 3. **Start:** catalog → loader runtime tier only → in-memory projections →
@@ -347,16 +365,18 @@ or mismatched entry. It never downloads or uploads.
 ## Technical Acceptance Criteria
 
 - `AC-001`: Each new manifest is `1.2` and declares exactly the Interfaces 1 set.
-  Validation rejects any archive-only kind in a `1.2` manifest.
+  Validation rejects any archive-only kind and any `1.1` manifest. No `1.1`
+  package, build path or test fixture remains on the delivered branch.
 - `AC-002`: Delivery file hashes equal the current snapshots'. For every edge,
   the runtime-tier `JudgmentProjection` equals the projection that today's code
   builds from the full record.
 - `AC-003`: `git ls-files -z data | xargs -0 du -cb` totals ≤ 100 MB (estimate
   about 84 MB).
-- `AC-004`: The evidence tier invokes the existing
-  `validate_learning_progression_evidence` on the legacy view and checks byte
-  equality for every derived file. The record holds `packagePath`, `localPath`,
-  `sizeBytes` and `sha256` for every legacy artifact.
+- `AC-004`: On the `FullEvidenceView`, the evidence tier runs every check that
+  `validate_learning_progression_evidence` runs today, with the same semantics,
+  and checks byte equality for every derived file. The record holds
+  `packagePath`, `localPath`, `sizeBytes` and `sha256` for every full-evidence
+  artifact.
 - `AC-005`: Missing archive files never yield `passed`. An altered, inconsistent
   or mismatched archive yields a blocking finding.
 - `AC-006`, `AC-008`: With only tracked files present, the runtime tier passes
@@ -378,7 +398,7 @@ or mismatched entry. It never downloads or uploads.
 - `AC-016`: Image and MCPB stage file lists under `data/graph_packages/` equal
   the union of declared runtime files plus manifests.
 - `AC-017`: CI needs no archive. The evidence tier is exercised against real
-  validator code, not a mock, using a small synthetic legacy evidence set
+  validator code, not a mock, using a small synthetic full-evidence input set
   (committed under `backend/tests/` or generated at test time) with at least one
   passing case and failing cases for a missing file, an altered file and a
   derivation mismatch.
@@ -388,21 +408,27 @@ or mismatched entry. It never downloads or uploads.
 
 1. Add the evidence and slim models and `packages/slim.py`; unit-cover the
    derivations on the current packages, which are still fully present locally.
-2. Add the manifest `1.2` rules, the runtime tier (`lp_runtime.py`) and loader
-   tier selection; leave `1.1` behavior unchanged.
-3. Add the evidence tier and wire the validate-packages CLI (default evidence
-   required, `--runtime-only`, non-persisting `evidence_archive_unavailable`).
+2. Add the manifest `1.2` rules, the runtime tier (`lp_runtime.py`), the
+   `FullEvidenceView` evidence tier, and the validate-packages CLI changes
+   (evidence required by default, `--runtime-only`, non-persisting
+   `evidence_archive_unavailable`).
+3. Make the builder produce only the runtime-only layout, and add the verify
+   CLI.
 4. Make the resource-service and result-model changes for slim LP and entity
    provenance.
-5. Add the builder `runtime_only` layout and the verify CLI.
-6. Before deleting the old snapshots, make sure the AC-002 comparison inputs can
+5. Before deleting the old snapshots, make sure the AC-002 comparison inputs can
    be reproduced from the current snapshots; Git history is sufficient.
-7. Update the six specs to the runtime-only layout. Build and accept
-   the six `1.2` snapshots with local evidence, then remove the old snapshot
-   directories.
+6. Build and accept the six `1.2` snapshots with local evidence, then delete the
+   old `1.1` snapshot directories.
+7. Remove the `1.1` model rules, the full-package build path, policy entries for
+   names that can no longer be declared, and every test or fixture that exists
+   only for `1.1`. Migrate the remaining tests to `1.2`.
 8. Apply the ignore rules and untrack the matched files; measure tracked size.
 9. Rework the tests that read full evidence. Add the synthetic evidence fixture
    and run the STDIO, HTTP loopback, MCPB stage and Docker smokes.
+
+Steps 2–6 may temporarily leave `1.1` code in place so the suite keeps running
+against the current packages. The delivered branch must not contain it.
 
 ## Risks and Follow-up
 
@@ -415,12 +441,13 @@ or mismatched entry. It never downloads or uploads.
   added result fields, and the `learning_progressions` resource artifact list
   shrinking to the declared runtime LP artifacts. All of these follow from the
   scope and must be documented under AC-019.
-- **Dual layouts:** `1.1` support stays, so loader and validator tests must keep
-  covering legacy behavior wherever existing fixtures depend on it.
+- **Cutover:** once `1.1` loading is removed, the six current snapshots no
+  longer start. Removal therefore has to land after the six `1.2` snapshots are
+  accepted (Build Plan 6–7), so the server never lacks a loadable package. Older clients or tools that read `1.1` packages are not supported.
 - **Evidence-tier cost:** acceptance memory and time stay at today's levels for
   CBSE. Startup gets cheaper, because the final claims, the original map and
   the split JSONL are no longer parsed.
-- **Shared evidence location:** the legacy input sets double as the archive. An
+- **Shared evidence location:** the input sets double as the archive. An
   operator who edits an input set invalidates acceptance for its package, which
   is the intended behavior.
 
