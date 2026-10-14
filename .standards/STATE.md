@@ -13,7 +13,7 @@
 `Architecture`:
 `.standards/docs/specs/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `Development`:
 `.standards/docs/development/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `PromotionReason`: `NONE`
-`AuditTarget`: `NONE` `BlockedOn`: `Continue with DEV-008 (build and accept the six 1.2 snapshots, delete the 1.1 ones)?` `PendingVerificationCadence`: `NONE`
+`AuditTarget`: `NONE` `BlockedOn`: `NONE` `PendingVerificationCadence`: `NONE`
 
 `BaselineReconciliation`: `NONE`
 
@@ -26,7 +26,7 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 ## Handoff
 
 `Kind`: `RESUME` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
-`Design revised: manifest 1.2 only, 1.1 and full-package build paths removed; no rerun before Developer.`
+`Design sets progression citations: keep four entries; learningProgressionProvenance cites the archived map hash from the record; no rerun needed.`
 
 ## Recovery
 

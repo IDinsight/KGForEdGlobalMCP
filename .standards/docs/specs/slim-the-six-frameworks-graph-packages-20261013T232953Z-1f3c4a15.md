@@ -89,7 +89,9 @@ removed, not supported alongside the new contract.
   evidence tier cross-checks runtime projections against projections from full
   evidence. Expected differences are limited to snapshot identity, package and
   artifact hashes, and the `learning_progressions` resource artifact-link list,
-  which now names only the declared runtime LP artifacts. See Risks.
+  which now names only the declared runtime LP artifacts. Progression tool
+  results keep their four derivation citations unchanged except for the slim
+  index hash (Interfaces 10). See Risks.
 - `AC-003`: The runtime set is estimated at about 84 MB including committed
   input-set small files, with large input-set files ignored (Interfaces 7).
 - `AC-004`, `AC-005`: Evidence tier (Data and Control Flow; Interfaces 3, 6).
@@ -336,6 +338,33 @@ read-only. For each entry it reports `ok`, `missing` or `mismatch` (size or
 SHA-256), together with the archive location, and exits non-zero on any missing
 or mismatched entry. It never downloads or uploads.
 
+### 10. Progression result citations
+
+- `ProgressionMetadata.artifacts` keeps the same four entries, in the same order
+  and shape: `learningProgressionProvenance`,
+  `learningProgressionProvenanceIndex`, `nodes`, `relationships`.
+- Each entry resolves generically, with no name-specific branch: use the
+  declared runtime artifact when the name is declared. Otherwise use the
+  archived identity from the evidence archive record (an entry with
+  `runtime: false`). If neither exists, raise `CapabilityUnavailableError` as
+  today.
+- For `learningProgressionProvenance`, `sha256` is therefore the archived
+  original map's hash. That value is unchanged from today, and the runtime tier
+  already checks that it equals the slim index's `originalProvenanceSha256`.
+  `uri` stays the same artifact URI string. It is an identifier, not a readable
+  link: the generic artifact resource reports the name as unavailable, because
+  it is not declared. On today's six packages that URI was already denied by
+  `allowBulkResource: false`.
+- The runtime tier keeps the record's archived identities (logical name to
+  SHA-256) on the loaded package, so building these results never reads files.
+- Rationale: progression projections still derive from the original map's
+  judgment fields, carried verbatim in the slim records. The map remains
+  accepted evidence, bound by hash, and the slim index binds every slim shard.
+  Keeping the citation makes tool results identical except for package-hash and
+  snapshot-identity fields, as `AC-002` requires.
+- Update the comment on `PROGRESSION_DERIVATION_ARTIFACT_NAMES` to say that
+  entries may be archived evidence identities.
+
 ## Data and Control Flow
 
 1. **Build:** spec and input set → builder → pending `1.2` package under the
@@ -369,7 +398,8 @@ or mismatched entry. It never downloads or uploads.
   package, build path or test fixture remains on the delivered branch.
 - `AC-002`: Delivery file hashes equal the current snapshots'. For every edge,
   the runtime-tier `JudgmentProjection` equals the projection that today's code
-  builds from the full record.
+  builds from the full record. Progression `artifacts` metadata differs from
+  today only in the `learningProgressionProvenanceIndex` hash (Interfaces 10).
 - `AC-003`: `git ls-files -z data | xargs -0 du -cb` totals ≤ 100 MB (estimate
   about 84 MB).
 - `AC-004`: On the `FullEvidenceView`, the evidence tier runs every check that
@@ -438,8 +468,10 @@ against the current packages. The delivered branch must not contain it.
   `model_settings`, `source_framework`; about 8.5 MB) into the slim index and
   re-inflate them at response time. Adopting it would revise this design.
 - **Client-visible changes:** new snapshot IDs, a slimmer per-edge payload, the
-  added result fields, and the `learning_progressions` resource artifact list
-  shrinking to the declared runtime LP artifacts. All of these follow from the
+  added result fields, the `learning_progressions` resource artifact list
+  shrinking to the declared runtime LP artifacts, and archived-artifact URIs
+  (such as the progression citation for `learningProgressionProvenance`)
+  answering "unavailable" instead of "access denied". All of these follow from the
   scope and must be documented under AC-019.
 - **Cutover:** once `1.1` loading is removed, the six current snapshots no
   longer start. Removal therefore has to land after the six `1.2` snapshots are
