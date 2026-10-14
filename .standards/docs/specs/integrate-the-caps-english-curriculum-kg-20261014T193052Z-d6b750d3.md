@@ -93,6 +93,18 @@ Rationale for the material choices:
   receipt are a one-off local operator step validated by the strict
   `CopyReceipt` models. Adding a writer CLI would be new generic code that
   no AC requires.
+- **MCPB manifest version correction (revised after `DEV-006`).** The MCPB
+  build refuses to run unless `packaging/mcpb/manifest.json` `version` equals
+  `backend/pyproject.toml` `version` (`cli/build_mcpb.py`, about line 657).
+  Release `1.0.0` (`868eeb1`) bumped the project to `1.0.0`, but
+  release-please's `extra-files` do not include the MCPB manifest, so it was
+  left at `0.4.0`. No repository MCPB build can pass until the two match, so
+  `AC-014` cannot be met without fixing this. The only value the existing
+  check accepts is the shipped project version, `1.0.0`. This cycle therefore
+  changes that one field and nothing else. It does not cut a release: no
+  version is bumped, no tag or changelog entry is made, and nothing is
+  published. Making release-please keep the two versions in step is a
+  separate release-tooling follow-up.
 
 ## Acceptance Coverage
 
@@ -120,10 +132,16 @@ Rationale for the material choices:
 - `AC-011`, `AC-012`, `AC-013`: Generic catalog, search, graph, resource,
   prompt, and LP services pick CAPS up by directory discovery. With rights
   as fixed, the CAPS profile and overlay make every existing tool, resource
-  template, and prompt applicable. LP disclosures are generic.
+  template, and prompt applicable. LP disclosures are generic. Path search
+  keeps its existing generic bounds: `max_depth` is at most 12, plus queue
+  and work limits. That is enough for traversal and path lookup in CAPS's
+  short and typical connections. Long CAPS connections may come back
+  truncated, with the reasons stated, as described under **Bounded path
+  search**.
 - `AC-014`, `AC-015`: The existing MCPB stage builder and the Docker
   allowlist copy `config/` and `data/graph_packages/` wholesale. No
-  per-framework list is added or needed.
+  per-framework list is added or needed. For `AC-014`, the MCPB manifest
+  version correction is also required.
 - `AC-016`, `AC-017`, `AC-018`: Additive-only change set under **Change
   boundary**. No edits to existing packages, profiles, overlays, or
   `backend/src/`.
@@ -131,8 +149,9 @@ Rationale for the material choices:
   contract**.
 - `AC-020`, `AC-021`: No architectural impact. They depend on Documenter's
   phase. The values those documents must state are fixed here (identity,
-  grades, codes, rights) or come from the accepted CAPS manifest (counts,
-  sizes, snapshot ID).
+  grades, codes, rights, and the bounded path-search behavior for long CAPS
+  connections) or come from the accepted CAPS manifest (counts, sizes,
+  snapshot ID).
 
 ## Components
 
@@ -304,7 +323,12 @@ fields upstream does not carry.
   - `backend/src/`
   - any existing `data/graph_packages/*`, `config/profiles/*`,
     `config/prompts/*`, or `data/input_artifacts/*` path
-  - `Dockerfile`, `.dockerignore`, `.gitignore`, or `packaging/`
+  - `Dockerfile`, `.dockerignore`, or `.gitignore`
+  - `packaging/`, except the single `version` field of
+    `packaging/mcpb/manifest.json`, which changes from `0.4.0` to `1.0.0`
+  - `release-please-config.json`, `.release-please-manifest.json`,
+    `CHANGELOG.md`, and the project version in `backend/pyproject.toml` and
+    `backend/uv.lock`
   - the smoke CLIs' pinned diagnostics (`cli/smoke_checks.py`,
     `cli/smoke_access.py`)
 - If implementation finds that a backend code change is unavoidable, stop
@@ -331,14 +355,47 @@ fields upstream does not carry.
   pairwise search over its 2,879 buildsTowards edges is too slow (user
   decision, 2026-10-14).
 - CAPS gets a small, deterministic sample of connected buildsTowards pairs
-  instead. The sample is pinned from the accepted package and includes at
-  least one direct pair and one multi-hop pair. For each pair, the check
-  asserts the same path, endpoint, relationship-membership, and envelope-bound
-  invariants that the exhaustive check applies. The goal is evidence that CAPS
-  traversal works, not full enumeration.
+  instead, pinned from the accepted package. The goal is evidence that CAPS
+  traversal works, not full enumeration. The sample has two parts:
+  - **Short pairs.** At least one direct pair and one multi-hop pair, each
+    with a shortest path of 8 hops or fewer. For each, the check asserts the
+    invariants the exhaustive check applies:
+    - exactly one path, of the oracle's hop count, from the source to the
+      target;
+    - the returned relationships equal the path's relationships;
+    - the response stays within its envelope bounds.
+  - **Long pair.** At least one pair with a shortest path of 9 or more hops,
+    for example the 11-hop pair `DEV-006` measured. Its check asserts the
+    honest-bound contract described under **Bounded path search**, and
+    neither requires nor forbids a found path.
 - The rights-flag assertions over all packages then cover CAPS without
   further change.
 - No test calls a live or paid LLM service.
+
+### Bounded path search
+
+`get_learning_progression_paths` and traversal keep their existing generic
+limits: request `max_depth` of at most 12, plus internal queue and work
+limits. Neither the limits nor `config.py` change for CAPS.
+
+- `DEV-006` measured CAPS on 2026-10-14: 43,145 connected buildsTowards
+  pairs. Their shortest paths are up to 13 hops, compared with 8 for the
+  existing six.
+- Every sampled pair of 8 hops or fewer returned its complete shortest path.
+  Some pairs of 9 or more hops returned no path, reporting `queue_limit`,
+  `depth_limit`, or `work_limit` in `truncation_reasons`. A 13-hop
+  connection is beyond the request's `max_depth` ceiling.
+
+This is the established contract: a bounded search that reports incomplete
+results instead of failing or inventing a path. The contract every result must
+satisfy is:
+
+- either the complete shortest path of the requested length, with matching
+  endpoints and relationships;
+- or no path, with non-empty `truncation_reasons`.
+
+A path that is wrong, partial, or the wrong length is a defect. A truncated
+result for a long CAPS connection is not.
 
 ## Data and Control Flow
 
@@ -412,15 +469,21 @@ external kgs/ (read-only)
   repository server and calling no LLM, retrieves, searches, and gets
   context for CAPS standards and Learning Components. It also looks up,
   searches, and traverses CAPS LPs. LP responses carry the same generic
-  disclosure text as the other frameworks.
-- `AC-014`: A fresh MCPB stage contains the CAPS package and the CAPS
-  profile and overlay, and `kgfegmcp-stdio-smoke --bundle-root <stage>`
-  passes.
+  disclosure text as the other frameworks. CAPS path results satisfy
+  **Bounded path search**.
+- `AC-014`:
+  - `packaging/mcpb/manifest.json` `version` equals `backend/pyproject.toml`
+    `version` (`1.0.0`).
+  - `kgfegmcp-build-mcpb` produces a fresh stage that contains the CAPS
+    package, profile, and overlay.
+  - `kgfegmcp-stdio-smoke --bundle-root <stage>` passes.
 - `AC-015`: `Dockerfile` and `.dockerignore` are unchanged, and the build
   context includes the CAPS package, profile, and overlay paths.
 - `AC-016`: `git diff <cycle-baseline> --` over the six packages, profiles,
   overlays, and input sets is empty. The cycle baseline is the commit the
-  cycle's implementation starts from, currently `f9fdaa2`.
+  cycle's implementation starts from, currently `f9fdaa2`. Outside the CAPS
+  additions, the only tracked change outside `.standards/` is the
+  one-field `packaging/mcpb/manifest.json` version correction.
 - `AC-017`: The listed public surface counts are unchanged: 19, 1, 14, 9.
 - `AC-018`: The cycle's diff contains no changes under `backend/src/`, and
   the CAPS framework ID appears in no generic runtime, build, or validation
@@ -442,8 +505,9 @@ external kgs/ (read-only)
 5. Update corpus-dependent test expectations and add the CAPS baseline entry.
    Run the full offline suite. (`AC-016`..`AC-019`)
 6. Run the repository STDIO smoke test and a STDIO session that exercises
-   CAPS. Build the MCPB stage and run the stage smoke test. Confirm the
-   Docker build context. (`AC-011`..`AC-015`)
+   CAPS. Correct the MCPB manifest version, then build the MCPB stage and
+   run the stage smoke test. Confirm the Docker build context.
+   (`AC-011`..`AC-015`)
 7. Prove determinism with a second build from the committed spec into
    another fresh root. (`AC-004`)
 
@@ -463,6 +527,18 @@ external kgs/ (read-only)
   treated as leftover, per scope. It is not in the copy set.
 - **Archive upload.** Uploading the new input set to the Google Drive archive
   is a user-owned follow-up.
+- **MCPB version drift will recur.** release-please does not update
+  `packaging/mcpb/manifest.json`. The next release that bumps the project
+  version will break the MCPB build again. Adding that file to release-please
+  `extra-files` belongs in a separate release-tooling change. Docs that name
+  the default bundle file `dist/kgfegmcp-0.4.0.mcpb` will no longer match the
+  build output, which is now named for `1.0.0`. Dated statements about 0.4.0
+  installs remain historically true.
+- **Long CAPS connections are truncated.** Some CAPS connections of 9 or more
+  hops come back from path search as truncated, with the reasons stated,
+  instead of as a path. Raising the generic limits would change behavior for
+  every framework, so it is out of scope. The user documentation should
+  state this for CAPS (Documenter).
 
 ## Alternatives
 
@@ -479,3 +555,10 @@ external kgs/ (read-only)
   consistency with the existing IDs.
 - **`versionToken` `undated`.** Viable, but rejected because the source
   itself identifies its edition year.
+- **Leaving `packaging/` untouched and building the MCPB stage from a
+  temporary corrected manifest.** Rejected. The stage would not be built from
+  the repository as `AC-014` requires, and the repository's MCPB build would
+  stay broken.
+- **Raising path-search limits or making them depend on package size.**
+  Rejected. It changes generic behavior and limits for all frameworks, which
+  conflicts with `AC-016` and `AC-018`.
