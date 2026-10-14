@@ -19,6 +19,24 @@ venv.bak/
 caches/
 !/data/input_artifacts/
 /data/source_artifacts/
+
+# Archive-only full evidence in each input set. Local copies are restored from the
+# IDinsight Google Drive archive and checked with kgfegmcp-verify-evidence-archive;
+# each package's evidence archive record binds them by path, size and SHA-256.
+/data/input_artifacts/*/delivery/
+/data/input_artifacts/*/additional/
+/data/input_artifacts/*/detailed/as_entity_provenance.json
+/data/input_artifacts/*/detailed/as_kg_bundle.json
+/data/input_artifacts/*/detailed/as_lc_kg_bundle.json
+/data/input_artifacts/*/detailed/as_relationships_has_child.jsonl
+/data/input_artifacts/*/detailed/as_standards_framework_items.jsonl
+/data/input_artifacts/*/detailed/lc_entity_provenance.json
+/data/input_artifacts/*/detailed/lp_final_claims.json
+/data/input_artifacts/*/detailed/lp_relationship_provenance.json
+/data/input_artifacts/*/detailed/lp_relationship_provenance_index.json
+/data/input_artifacts/*/detailed/lp_relationships_builds_towards.jsonl
+/data/input_artifacts/*/detailed/lp_relationships_relates_to.jsonl
+
 graveyard/
 logs/
 results/

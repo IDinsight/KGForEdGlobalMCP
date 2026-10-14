@@ -7,7 +7,7 @@ Cycle: slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15
 
 `Cycle`: `slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`:
+`Status`: `COMPLETE` `Verification Cadence`:
 `AFTER_IMPLEMENTATION` `Current Increment`: `NONE`
 
 ## Implementation Contract
@@ -719,7 +719,7 @@ of access denied" change the design lists under Risks (Tester rework).
 
 ### DEV-009 — Ignore and untrack archive-only files
 
-`Status`: `PENDING` `Depends On`: `DEV-012`
+`Status`: `DONE` `Depends On`: `DEV-012`
 `Acceptance`: `AC-003, AC-006, AC-014, AC-016`
 
 **Goal**
@@ -745,6 +745,54 @@ path; `kgfegmcp-verify-evidence-archive all` passes; a fresh-clone-equivalent
 check (archive files moved aside) starts the server under `fail`; STDIO smoke,
 HTTP loopback smoke and MCPB stage smoke; Docker build if the sandbox allows it,
 otherwise recorded as a limitation.
+
+Result (2026-10-14, `2669a3f` plus `.gitignore`, the `git rm --cached` index
+changes and the smoke pin update):
+- `.gitignore` gains the Interfaces 7 rules after `!/data/input_artifacts/`.
+  `git ls-files -ci --exclude-standard` matched 462 tracked input-set files
+  (per set: `delivery/` 2, `additional/` 64, 11 `detailed/` files), none under
+  `data/graph_packages/` and none elsewhere; `git rm --cached` untracked them
+  (local copies kept). Each input set now tracks only `package_build.json` and
+  the 9 small carried `detailed/` files. `git check-ignore --no-index` matches
+  all 462 paths.
+- Tracked `data/`: 540 files, 84.9 MB (80.9 MiB) — `graph_packages` 83.9 MB,
+  `input_artifacts` 1.0 MB (Python sum over `git ls-files -z data`; BSD `du`
+  has no `-b`).
+- `kgfegmcp-verify-evidence-archive all` in the working tree → exit 0, 86 `ok`
+  each.
+- Fresh-clone equivalent (`git checkout-index -a` export of the index, 82 MB
+  `data/`, with `PATHS_PROJECT_DIR` and the `KGFEGMCP_*` roots pointed at it,
+  policy `fail`): `bootstrap_application()` loads the six `1.2` packages;
+  `validate-packages one … --runtime-only` → exit 0 for all six; the default
+  evidence tier → exit 2 `evidence_archive_unavailable`; the verify command →
+  exit 1, `incomplete`, 77 missing / 9 ok per package.
+- Smokes (run with the sandbox disabled because `kgfegmcp-stdio-smoke` launches
+  `uv` with the default `~/.cache/uv`, and the HTTP server binds a local port):
+  `kgfegmcp-stdio-smoke` first failed with `framework_not_found` because
+  `cli/smoke_access.py` (4) and `cli/smoke_checks.py` (1) pinned the old `1.1`
+  snapshot IDs; after updating those five pins to the new IDs it passed
+  (19 tools, 1 fixed resource, 14 templates, 9 prompts, 15 resource reads).
+  `kgfegmcp-build-mcpb --output <scratch> --stage-output <scratch>` → 14.2 MB
+  bundle, 82.3 MB unpacked; the stage's `data/graph_packages/` equals the
+  declared runtime files plus manifests (480 = 480), no `input_artifacts`;
+  `kgfegmcp-stdio-smoke --bundle-root <stage>` passed. HTTP loopback: local
+  `python -m kgfegmcp.http_server` (`PORT=8765`, policy `fail`) healthy,
+  `kgfegmcp-http-smoke --url http://127.0.0.1:8765/mcp` passed. Docker:
+  `docker build` from a clean index export → image `/app/data` holds only
+  `graph_packages`, 480 files equal to declared plus manifests; the container
+  started healthy with six accepted packages and `kgfegmcp-http-smoke` against
+  it passed; the scratch image was removed.
+- Smoke pin files: black, ruff, mypy clean. Suite: 112 passed, 5 failed (the
+  Tester-rework cases in Plan Notes).
+
+**Implementation Notes**
+
+A `docker build` straight from this working tree produced an image whose
+non-root user cannot read the six snapshot directories: the builder stages
+packages with `tempfile.mkdtemp`, so locally built package directories are
+`0700`, and `COPY` keeps that mode. This is existing builder behavior, not
+introduced by this cycle; a Git checkout (as Railway builds) has `0755`
+directories and works. Recorded for the user as an observation.
 
 ---
 
@@ -840,3 +888,20 @@ were committed in `f8096e4`. DEV-010 keeps its code outcome; its startup and
 revalidation checks move to new DEV-012, which re-seals the snapshots. DEV-009
 now depends on DEV-012. The plan returned to `PROPOSED` for approval; the locked
 user style is unchanged.
+
+### Handoff to Tester (2026-10-14)
+
+All approved steps DEV-001 to DEV-012 are `DONE`; each step's Result holds the
+commands, inputs and outcomes. Assessed content: `2669a3f` plus the uncommitted
+`.gitignore`, index removals and smoke pin changes listed under DEV-009.
+For Tester:
+- Tester-owned work outstanding: the AC-017 synthetic evidence fixture; rework
+  of the five failing tests (Plan Notes, test bullet), which encode the replaced
+  `captured_contents`/`package` signature, a declared
+  `learningProgressionProvenance`, and access-denied for an archived artifact.
+- Evidence-tier and smoke commands need the local archive restored and, in a
+  sandbox, access to `~/.cache/uv` and local port binding.
+- Documentation (AC-019) is Documenter work; `docs/` still names the old `1.1`
+  snapshot IDs in `getting-started/claude-clients.md`,
+  `guides/framework-discovery.md`, `data/framework-catalog.md` and
+  `reference/access-tools.md`.
