@@ -122,7 +122,11 @@ class SlimCandidate(SourceEvidence):
 
 
 class SlimTrace(SourceEvidence):
-    """Keep checker outcome and trace hashes without the duplicate producer judgment."""
+    """Keep checker outcome and trace hashes without the producer judgment.
+
+    The producer judgment matches the final judgment for accepted edges and is the
+    pre-correction judgment for corrected edges; it stays in the archived map.
+    """
 
     checker_checkpoint_content_hash: RawHash
     checker_outcome: Literal["accepted", "corrected"]

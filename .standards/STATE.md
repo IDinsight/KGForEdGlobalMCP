@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DOCUMENTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `REVIEWING_FINAL` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -25,18 +25,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `SCOPING` `FailureType`: `NONE` `Reason`:
-`AC-009 wording corrected; user kept the producer judgment archive-only, so behavior is unchanged and no rerun is needed.`
+`Kind`: `RESUME` `From`: `DOCUMENTING` `FailureType`: `NONE` `Reason`:
+`Documentation reconciled with the corrected AC-009; no final-review work existed to rerun.`
 
 ## Recovery
 
-`Active`: `true`
-
-### Frame 1
-
-`From`: `REVIEWING_FINAL` `Owner`: `DOCUMENTING` `FailureType`: `DOCUMENTATION`
-`Reason`: `User-requested second recheck found a stale manifest version, a stale citation description and an incorrect producer-judgment statement.`
-`ResumeAt`: `REVIEWING_FINAL` `RerunThrough`: `NONE`
+`Active`: `false`
 
 ## Outstanding Obligations
 

@@ -167,8 +167,9 @@ class RelationshipProvenanceResult(LearningProgressionNotices):
     The record keeps the identity, endpoints, final judgment (decision, direction,
     confidence, full rationale and warnings), checker outcome, model identity,
     attribution and content hashes. Candidate evidence text, admissible decisions
-    and the duplicate producer judgment stay in the archive; the record's
-    ``original_entry_sha256`` and ``archived_provenance_sha256`` link it there.
+    and the producer judgment stay in the archive; for corrected edges the producer
+    judgment is the pre-correction judgment. The record's ``original_entry_sha256``
+    and ``archived_provenance_sha256`` link it there.
     """
 
     archived_provenance_sha256: Sha256Digest

@@ -382,7 +382,8 @@ def slim_lp_record(entry: Mapping[str, object]) -> dict[str, object]:
     -------
     dict[str, object]
         The record without candidate evidence, admissible decisions and the
-        duplicate producer judgment, plus ``original_entry_sha256``.
+        producer judgment (the pre-correction judgment for corrected edges), plus
+        ``original_entry_sha256``.
 
     Raises
     ------

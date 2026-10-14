@@ -5,7 +5,7 @@ Cycle: slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15
 
 # Documentation Record
 
-`Cycle`: `slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15` `Status`: `IN_PROGRESS`
+`Cycle`: `slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15` `Status`: `COMPLETE`
 `Collaboration`: `AUTONOMOUS` `Target`: `ACTIVE_CHANGE` `Target Detail`:
 `slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15` `User Style`:
 `tony`
@@ -17,7 +17,9 @@ Cycle: slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15
   obligations inactive; no blockers.
 - Contract and owner evidence (sha256 prefix of the content assessed on 2026-10-14):
   - Scope `.standards/docs/scope/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md`
-    (`c60c8d3d94ef`): current ACs `AC-001`–`AC-019`, no retired IDs.
+    (`c60c8d3d94ef`): current ACs `AC-001`–`AC-019`, no retired IDs. Re-read after
+    Scoper's correction `44cd750` (`db83fa0715fe`): AC-009 wording and item 3's intent
+    changed; meaning of the served contract and the AC set unchanged.
   - Architecture `.standards/docs/specs/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md`
     (`2c6131ea35ec`): Decisions 1–6, Interfaces 1–10, Technical Acceptance Criteria,
     Risks ("Client-visible changes" assigned to `AC-019`).
@@ -241,7 +243,7 @@ check over the 25 changed pages → `problems 0`; `git diff --check` exit 0.
 
 ### DOC-001 — AC-009 calls the removed producer judgment a duplicate
 
-`Status`: `OPEN` `Owner`: `SCOPER`
+`Status`: `RESOLVED` `Owner`: `SCOPER`
 
 - Failure type: `SCOPING`. Affected: `AC-009` (and its documentation under `AC-019`),
   scope `.standards/docs/scope/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md`
@@ -263,6 +265,16 @@ check over the 25 changed pages → `problems 0`; `git diff --check` exit 0.
   the docstrings that call it a duplicate (`resources/models.py`
   `RelationshipProvenanceResult`, `packages/evidence_models.py` `SlimTrace`), by the
   Documenter if behavior is unchanged or with the Developer's change otherwise.
+- Resolution (2026-10-14): Scoper (`44cd750`) kept the producer judgment
+  archive-only with the user and corrected AC-009 to say it matches the final judgment
+  for accepted edges and is the pre-correction judgment for corrected edges. Behavior
+  is unchanged, so no code, package or test rerun. `docs/reference/resources.md`
+  (`5a8aca2f0424`, from Rework 2) already matches the new wording. Docstrings
+  corrected by the Documenter (prose only): `packages/evidence_models.py` `SlimTrace`
+  (`5ce8c3ef0840`), `resources/models.py` `RelationshipProvenanceResult`
+  (`95fa404f1e3b`) and a third found on recheck, `packages/slim.py` `slim_lp_record`
+  Returns (`6a708abd10af`). No "duplicate producer" wording remains in `docs/`,
+  `backend/`, `README.md` or `packaging/`.
 
 Non-blocking observations for Reviewer and Synchronizer (not documentation defects;
 no AC depends on them):
@@ -288,15 +300,25 @@ no AC depends on them):
   snapshot for a pinned framework also needs those pins updated before step 8 of
   `framework-package.md` passes. Not introduced by this change.
 
+### Return after Scoper (2026-10-14)
+
+Frame 2 closed with `RESUME` from `SCOPING`; Frame 1 remains. Checks on the current
+tree (docs committed in `837b8d3`, scope in `44cd750`, the three docstring edits
+uncommitted): strict MkDocs build exit 0, no warnings; link and anchor check over the
+25 documentation pages changed in this cycle → `problems 0`; `git diff --check` exit 0.
+For the three edited source files: `black --check`, `isort --check-only`,
+`ruff check` and `pylint` exit 0, and both modules import. Running
+`pytest --doctest-modules` on `slim.py` fails two examples with `NameError`
+(`index_bytes`, `original_entry`): those examples use illustrative names, predate this
+edit, and the project does not run doctests (no doctest setting in `pyproject.toml`,
+Makefile or CI). The edits are docstring prose only, so verification and implementation
+review evidence still applies; the final Reviewer sees them in the diff.
+
 ## Resume and Conclusion
 
-- Rework 2 corrections are verified in saved content (checks under Rework 2). The full
-  Documenter gate is not met: `DOC-001` is open and owned by Scoper. Blocking
-  question for this role: `NONE` (the decision belongs to Scoper).
-- Routing: `FAILURE` (`SCOPING`) from `DOCUMENTING` to `SCOPING`, Recovery Frame 2,
-  `ResumeAt` `DOCUMENTING`; Frame 1 (`ResumeAt` `REVIEWING_FINAL`) stays open.
-- Next for this role, on return: reconcile the scope (and any design, code and
-  package changes) against this record; if snapshot IDs change, redo the ID, size and
-  walkthrough updates; update `resources.md` and the two docstrings for the decided
-  producer-judgment contract; rerun the docs build, link check and replay; then pass
-  the full gate and close Frame 1 toward `REVIEWING_FINAL`.
+- Full Documenter gate passes for the current inputs: every current AC has a
+  documentation disposition, `DOC-001` is resolved, checks pass, and no Documenter
+  obligation or blocking question remains.
+- Frame 1 (owned here): no downstream work to rerun, because no final-review report
+  (`final-deliverable.md`) or synchronization record exists. Pop it and `RESUME` at
+  `REVIEWING_FINAL` (kind `FINAL_DELIVERABLE`) in a fresh session.
