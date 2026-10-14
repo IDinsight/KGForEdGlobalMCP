@@ -292,9 +292,12 @@ class GraphPackageValidator:
     ) -> tuple[PackageValidationOutcome, ...]:
         """Validate all discovered pending packages and malformed candidates.
 
-        Terminal manifests are intentionally skipped by this batch command. A malformed
-        candidate whose status cannot be established is included so unsafe content is
-        never silently ignored.
+        Terminal manifests are intentionally skipped by this batch command, and they
+        are skipped before loading so their archived evidence is never required. A
+        malformed candidate whose status cannot be established is included so unsafe
+        content is never silently ignored. Every remaining candidate is loaded before
+        any status is persisted, so an unavailable evidence archive stops the batch
+        without a partial set of transitions.
 
         Parameters
         ----------
@@ -307,28 +310,44 @@ class GraphPackageValidator:
         -------
         tuple[PackageValidationOutcome, ...]
             Deterministically ordered outcomes for pending or malformed candidates.
+
+        Raises
+        ------
+        EvidenceArchiveUnavailableError
+            If the evidence tier cannot read a pending package's archived evidence;
+            no status is persisted.
         """
 
-        outcomes: list[PackageValidationOutcome] = []
+        load_results: list[GraphPackageLoadResult] = []
 
         for candidate in self.repository.discover():
+            manifest = self.loader.read_manifest(candidate)
+
+            if (
+                manifest is not None
+                and manifest.validation.status in _TERMINAL_STATUSES
+            ):
+                continue
+
             load_result = self.loader.load(candidate)
 
+            # The manifest may have changed between the two reads.
             if (
                 load_result.manifest is not None
                 and load_result.manifest.validation.status in _TERMINAL_STATUSES
             ):
                 continue
 
-            outcomes.append(
-                self._validate_load_result(
-                    invalid_package_policy=invalid_package_policy,
-                    load_result=load_result,
-                    read_only=read_only,
-                )
-            )
+            load_results.append(load_result)
 
-        return tuple(outcomes)
+        return tuple(
+            self._validate_load_result(
+                invalid_package_policy=invalid_package_policy,
+                load_result=load_result,
+                read_only=read_only,
+            )
+            for load_result in load_results
+        )
 
 
 @dataclass(frozen=True, slots=True)

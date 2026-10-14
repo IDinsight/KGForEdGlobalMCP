@@ -3,8 +3,10 @@
 Each runtime-only package declares an evidence archive record that binds its complete
 full-evidence set by repository-relative local path, size and SHA-256. This command
 reads only that record and the local files it names, and reports each entry as
-``ok``, ``missing`` or ``mismatch``. It never contacts the archive, downloads or
-uploads anything, or changes any file.
+``ok``, ``missing`` or ``mismatch``. A ``missing`` entry carries a ``reason``:
+``absent`` when no file is there, ``unreadable`` when the file exists but cannot be
+read. It never contacts the archive, downloads or uploads anything, or changes any
+file.
 
 The ``one`` command verifies one exact framework snapshot. The ``all`` command
 verifies every package beneath the configured graph-packages root. Run it after
@@ -72,7 +74,8 @@ def _entry_report(
     Returns
     -------
     dict[str, object]
-        Entry report with status ``ok``, ``missing`` or ``mismatch``.
+        Entry report with status ``ok``, ``missing`` (with a ``reason`` of
+        ``absent`` or ``unreadable``) or ``mismatch``.
     """
 
     path = project_dir / str(entry.local_path)
@@ -84,10 +87,15 @@ def _entry_report(
     }
 
     if not path.is_file():
-        return {**report, "status": "missing"}
+        return {**report, "reason": "absent", "status": "missing"}
 
-    actual_sha256 = calculate_file_sha256(path)
-    actual_size = path.stat().st_size
+    try:
+        actual_sha256 = calculate_file_sha256(path)
+        actual_size = path.stat().st_size
+    except OSError:
+        # A file that exists but cannot be read is not a usable restored copy.
+        return {**report, "reason": "unreadable", "status": "missing"}
+
     matches = actual_sha256 == entry.sha256 and actual_size == entry.size_bytes
     return {
         **report,

@@ -558,6 +558,34 @@ class GraphPackageLoader:
             manifest_bytes=manifest_bytes,
         )
 
+    def read_manifest(
+        self, candidate: GraphPackageCandidate
+    ) -> GraphPackageManifest | None:
+        """Read one candidate's manifest without loading or validating its artifacts.
+
+        Batch acceptance uses this to skip terminal packages before the evidence
+        tier would need their archived evidence.
+
+        Parameters
+        ----------
+        candidate
+            Safely discovered package candidate.
+
+        Returns
+        -------
+        GraphPackageManifest | None
+            The validated manifest, or ``None`` when the candidate or its manifest
+            cannot be read or validated.
+        """
+
+        candidate, early_result = self._resolve_candidate(candidate)
+
+        if early_result is not None:
+            return None
+
+        manifest, _, _ = self._load_manifest(candidate)
+        return manifest
+
     def verify_unchanged(
         self,
         *,

@@ -25,8 +25,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
-`Development complete (DEV-001 to DEV-012); full verification requested.`
+`Kind`: `RESUME` `From`: `DEVELOPING` `FailureType`: `NONE` `Reason`:
+`Rework done (a malformed slim AS or LC entity provenance file now yields blocking findings instead of an error); resume full verification.`
 
 ## Recovery
 

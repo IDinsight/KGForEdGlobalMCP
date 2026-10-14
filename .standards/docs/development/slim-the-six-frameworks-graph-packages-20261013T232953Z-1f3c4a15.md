@@ -333,6 +333,58 @@ validator persists nothing. `slim.derive_slim_artifacts` is now the shared
 bytes-level derivation for the builder and acceptance. `full_layout_view` is the
 temporary `1.1` bridge; DEV-010 removes it.
 
+Correction under Recovery Frame 1 (2026-10-14, `bd0110c` plus changes to
+`packages/validator.py`, `packages/loader.py`, `packages/evidence.py`,
+`packages/evidence_models.py`):
+- `GraphPackageValidator.validate_pending` reads each candidate's manifest first
+  (new `GraphPackageLoader.read_manifest`, no artifact checks) and skips terminal
+  packages before loading, keeping the post-load terminal check for races; it
+  loads every remaining candidate before persisting any status.
+- The evidence tier raises `EvidenceArchiveUnavailableError` when an archived or
+  carried full-evidence file exists but cannot be read (`OSError`), as it does
+  for absent files; message "Archived evidence needed for acceptance is missing
+  or unreadable.", details list unreadable logical names.
+- `EvidenceArchiveRecord` validates every key against the `ArtifactName`
+  pattern, so a malformed key is a structured finding, not a crash.
+
+Self-check: scratch project (`config/`, copies of `nigeria_math` and
+`rwanda_math`, both built pending with `kgfegmcp-build-manifest` and moved into
+its `data/graph_packages`), `kgfegmcp-validate-packages pending` (persisting):
+Rwanda's `lp_final_claims.json` moved aside → exit 2
+`evidence_archive_unavailable`, no traceback, Nigeria (validated first) and
+Rwanda both still `pending`; the file restored with mode 000 → same; archives
+complete → exit 0, both `passed` and persisted; then with only terminal packages
+and an archive file hidden → exit 0, `[]`. `one --read-only` with an original
+shard at mode 000 → exit 2 `evidence_archive_unavailable`, no traceback. The
+archive-less index export from DEV-009 → `pending --read-only` exit 0, `[]`
+(was exit 2). Real repository: `pending --read-only` → exit 0 `[]`; Ghana Math
+`one --read-only` → valid, `passed`, no findings. Scratch `rework_keys.py`: all
+six committed records still parse; record keys `bad key`, empty and `a/b` →
+model `ValidationError`, runtime tier `runtime_evidence_shape`, evidence tier
+`evidence_record_shape`. mypy (123 files), ruff, isort, black, interrogate
+(100%) and pylint (10.00/10) clean on the changed files. Suite: 112 passed, the
+5 recorded Tester-rework failures.
+
+Second correction under Recovery Frame 1 (2026-10-14, Recovery Reconciliation 5;
+`bd0110c` plus the uncommitted changes above and a further change to
+`packages/evidence.py`): the coverage check parses each slim entity document
+through new `_slim_entity_document`, which returns `None` for a document that is
+not a JSON object matching `SlimEntityProvenance` or
+`SlimLearningComponentProvenance`. Such a document gets
+`slim_entity_coverage_mismatch`, and the derivation check still reports
+`slim_derivation_mismatch` for it, so the package fails as the design requires.
+
+Self-check: scratch `repro_coverage.py` on Ghana Math (loaded runtime-only, the
+slim document swapped for a tampered copy, then `EvidenceVerifier.verify` with
+the real record and restored archive): an extra top-level key or non-JSON bytes
+in either `entityProvenance` or `learningComponentProvenance` → findings
+`slim_derivation_mismatch` and `slim_entity_coverage_mismatch`, no exception
+(before the change all four raised). Real repository: `one --read-only` for all
+six packages → exit 0, valid, `passed`, no findings; `pending --read-only` →
+exit 0, `[]`. isort, black, ruff, interrogate (100%) and pylint (10.00/10) clean
+on `evidence.py`; mypy clean on 123 files. Suite: 112 passed, the same 5
+recorded Tester-rework failures.
+
 ---
 
 ### DEV-006 — Serve slim LP and entity provenance
@@ -454,6 +506,22 @@ known DEV-005 failures. isort, black, ruff, mypy, interrogate (100%) and pylint
 The command checks every record entry's `localPath`, including carried files,
 so one run confirms a whole restored input set. It finds the record at the fixed
 `evidence/evidence_archive_record.json` path and never reads the manifest.
+
+Correction under Recovery Frame 1 (2026-10-14, `bd0110c` plus the change to
+`cli/verify_evidence_archive.py`): a `missing` entry now carries `reason`
+`absent` (no file) or `unreadable` (the file exists but hashing or `stat` raises
+`OSError`); the status vocabulary stays `ok`/`missing`/`mismatch` and any
+`missing` entry still exits 1.
+
+Self-check on the DEV-005 rework scratch project (`PATHS_PROJECT_DIR` set to it),
+`kgfegmcp-verify-evidence-archive all`: complete → exit 0, 86 `ok` each; Rwanda
+original shard 10 at mode 000 and Nigeria `lp_final_claims.json` moved aside →
+exit 1, no traceback, `learningProgressionProvenanceShard10` reported as
+`missing`/`unreadable` and `learningProgressionFinalClaims` as `missing`/`absent`,
+with the other 85 entries of each package `ok`; Rwanda record file at mode 000 → exit 1, Rwanda
+`record_unavailable`, Nigeria still verified `ok`. Real repository → exit 0, 86
+`ok` for all six. mypy, ruff, isort, black, interrogate (100%) and pylint
+(10.00/10) clean. Suite: 112 passed, the 5 recorded Tester-rework failures.
 
 ---
 
@@ -905,3 +973,54 @@ For Tester:
   snapshot IDs in `getting-started/claude-clients.md`,
   `guides/framework-discovery.md`, `data/framework-catalog.md` and
   `reference/access-tools.md`.
+
+### Recovery Reconciliation 4 (2026-10-14)
+
+Recovery Frame 1 (`USER_REWORK`, `TESTING` → `DEVELOPING`, reason as in
+`STATE.md`): before the Tester started, a self-review found that
+`kgfegmcp-validate-packages pending` runs the evidence tier on terminal packages
+it then skips (exit 2 without the archive even when nothing is pending), that an
+unavailable archive mid-batch aborts after earlier pending packages were already
+persisted, and that an unreadable archived file or a malformed record key ends
+acceptance or `kgfegmcp-verify-evidence-archive` with a traceback. The approved
+intent is unchanged, so DEV-005 (acceptance and `validate-packages`) and DEV-007
+(verify command) are reopened without re-approval; the other steps stay `DONE`.
+No Tester work had started, so there is no Tester assignment to suspend.
+
+### Return to Tester after Recovery Frame 1 (2026-10-14)
+
+DEV-005 and DEV-007 are `DONE` again; every approved step is `DONE`. The Tester
+had not started, so no assessment needs a rerun: the frame closes and the
+workflow resumes at `TESTING` for full verification. Assessed content is now
+`bd0110c` plus the uncommitted changes to `packages/validator.py`,
+`packages/loader.py`, `packages/evidence.py`, `packages/evidence_models.py` and
+`cli/verify_evidence_archive.py`. The earlier Tester notes still apply.
+
+### Recovery Reconciliation 5 (2026-10-14)
+
+A second Recovery Frame 1 (`USER_REWORK`, `TESTING` → `DEVELOPING`, reason
+"User rework before the Tester started: a malformed slim AS or LC entity
+provenance file stops acceptance with an error instead of a blocking finding."):
+a second self-review, requested by the user before the Tester started, found
+that the evidence tier parses the slim `entityProvenance` and
+`learningComponentProvenance` documents for the coverage check without handling
+a document that is not valid JSON or does not match its slim model. The runtime
+tier only checksums these documents, so such a package reaches the evidence
+tier, which raises instead of returning findings: `kgfegmcp-validate-packages`
+exits 2 ("A package identifier or CLI setting is invalid." or
+`manifest_build_error`), persists no `failed`/`quarantined` transition, and in
+`pending` stops the whole batch. The design requires a differing derivation to
+be a blocking finding with the usual transition. Reproduced with scratch
+`repro_coverage.py` on Ghana Math: one extra top-level key in either slim
+document raises `ValidationError` from `EvidenceVerifier.verify`. The approved
+intent is unchanged, so only DEV-005 is reopened without re-approval. No Tester
+work had started, so there is no Tester assignment to suspend.
+
+### Return to Tester after the second Recovery Frame 1 (2026-10-14)
+
+DEV-005 is `DONE` again; every approved step is `DONE`. The Tester had not
+started, so no assessment needs a rerun: the frame closes and the workflow
+resumes at `TESTING` for full verification. Assessed content is `bd0110c` plus
+the uncommitted changes to `packages/validator.py`, `packages/loader.py`,
+`packages/evidence.py`, `packages/evidence_models.py` and
+`cli/verify_evidence_archive.py`. The earlier Tester notes still apply.

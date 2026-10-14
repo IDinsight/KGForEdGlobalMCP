@@ -12,11 +12,19 @@ from dataclasses import dataclass
 from typing import Literal
 
 # Third Party Library
-from pydantic import ConfigDict, Field, StrictBool, StrictStr
+from pydantic import (
+    ConfigDict,
+    Field,
+    StrictBool,
+    StrictStr,
+    TypeAdapter,
+    field_validator,
+)
 
 # Package Library
 from kgfegmcp.domain.enums import GraphType
 from kgfegmcp.domain.identifiers import (
+    ArtifactName,
     ArtifactPath,
     CaseIdentifierUuid,
     FrameworkId,
@@ -33,6 +41,7 @@ from kgfegmcp.packages.models import DeclaredArtifactReference, NonNegativeStric
 from kgfegmcp.packages.normalization_models import ProvenancePartition
 from kgfegmcp.schemas import FrozenSchema
 
+_ARTIFACT_NAME_ADAPTER: TypeAdapter[ArtifactName] = TypeAdapter(ArtifactName)
 EVIDENCE_ARCHIVE_LOCATION: Literal["IDinsight Google Drive"] = "IDinsight Google Drive"
 REMOVED_ENTITY_ITEM_FIELDS: tuple[Literal["candidate_source_refs"]] = (
     "candidate_source_refs",
@@ -72,6 +81,34 @@ class EvidenceArchiveRecord(FrozenSchema):
     evidence_artifacts: dict[StrictStr, EvidenceArchiveEntry] = Field(min_length=1)
     format_version: Literal["1.0"] = "1.0"
     framework_id: FrameworkId
+
+    @field_validator("evidence_artifacts")
+    @classmethod
+    def validate_logical_names(
+        cls, value: dict[str, EvidenceArchiveEntry]
+    ) -> dict[str, EvidenceArchiveEntry]:
+        """Require every record key to be a valid logical artifact name.
+
+        Parameters
+        ----------
+        value
+            Full-evidence declaration by logical name.
+
+        Returns
+        -------
+        dict[str, EvidenceArchiveEntry]
+            The unchanged declaration.
+
+        Raises
+        ------
+        ValueError
+            If any key is not a valid logical artifact name.
+        """
+
+        for name in value:
+            _ARTIFACT_NAME_ADAPTER.validate_python(name)
+
+        return value
 
 
 # Slim per-edge LP provenance; types follow their dependencies.
