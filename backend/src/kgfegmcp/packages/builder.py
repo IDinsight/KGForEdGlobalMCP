@@ -44,6 +44,7 @@ from typing import Final, NoReturn
 
 # Third Party Library
 from pydantic import TypeAdapter, ValidationError
+from pydantic.alias_generators import to_camel
 
 # Package Library
 from kgfegmcp.config import BackendSettings
@@ -78,7 +79,7 @@ from kgfegmcp.packages.models import (
     ARCHIVE_ONLY_ARTIFACT_NAMES,
     DELIVERY_SCHEMA_VERSION,
     EVIDENCE_ARCHIVE_RECORD_NAME,
-    REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
+    FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES,
     SOURCE_SCHEMA_VERSION,
     SUPPORTED_INCLUDED_GRAPH_TYPES,
     FrameworkCapabilities,
@@ -118,72 +119,28 @@ from kgfegmcp.regexes import (
 )
 
 _MANIFEST_FILENAME: Final[str] = "package_manifest.json"
-_RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, tuple[str, str]]] = {
-    "as_entity_provenance.json": ("entity_provenance", "entityProvenance"),
-    "as_kg_bundle.json": ("academic_standards_bundle", "academicStandardsBundle"),
-    "as_lc_kg_bundle.json": (
-        "learning_components_bundle",
-        "learningComponentsBundle",
-    ),
-    "lc_dedup_groups.json": (
-        "learning_component_dedup_groups",
-        "learningComponentDedupGroups",
-    ),
-    "lc_entity_provenance.json": (
-        "learning_component_provenance",
-        "learningComponentProvenance",
-    ),
-    "lc_generation_summary.json": (
-        "learning_component_summary",
-        "learningComponentSummary",
-    ),
-    "as_relationships_has_child.jsonl": (
-        "relationships_has_child",
-        "relationshipsHasChild",
-    ),
-    "as_standards_framework.json": ("standards_framework", "standardsFramework"),
-    "as_standards_framework_items.jsonl": (
-        "standards_framework_items",
-        "standardsFrameworkItems",
-    ),
-    "as_unresolved_items.json": ("unresolved_items", "unresolvedItems"),
-    "as_lc_validation_report.json": ("validation_report", "validationReport"),
-    "lp_final_claims.json": (
-        "learning_progression_final_claims",
-        "learningProgressionFinalClaims",
-    ),
-    "lp_generation_summary.json": (
-        "learning_progression_summary",
-        "learningProgressionSummary",
-    ),
-    "lp_normalization_receipt.json": (
-        "learning_progression_normalization",
-        "learningProgressionNormalization",
-    ),
-    "lp_relationship_provenance.json": (
-        "learning_progression_provenance",
-        "learningProgressionProvenance",
-    ),
-    "lp_relationship_provenance_index.json": (
-        "learning_progression_provenance_index",
-        "learningProgressionProvenanceIndex",
-    ),
-    "lp_relationships_builds_towards.jsonl": (
-        "learning_progression_builds_towards",
-        "learningProgressionBuildsTowards",
-    ),
-    "lp_relationships_relates_to.jsonl": (
-        "learning_progression_relates_to",
-        "learningProgressionRelatesTo",
-    ),
-    "lp_unresolved_items.json": (
-        "learning_progression_unresolved",
-        "learningProgressionUnresolved",
-    ),
-    "lp_validation_report.json": (
-        "learning_progression_validation",
-        "learningProgressionValidation",
-    ),
+# Recognized detailed input basenames by full-evidence logical name.
+_RECOGNIZED_DETAILED_ARTIFACTS: Final[dict[str, str]] = {
+    "as_entity_provenance.json": "entityProvenance",
+    "as_kg_bundle.json": "academicStandardsBundle",
+    "as_lc_kg_bundle.json": "learningComponentsBundle",
+    "as_lc_validation_report.json": "validationReport",
+    "as_relationships_has_child.jsonl": "relationshipsHasChild",
+    "as_standards_framework.json": "standardsFramework",
+    "as_standards_framework_items.jsonl": "standardsFrameworkItems",
+    "as_unresolved_items.json": "unresolvedItems",
+    "lc_dedup_groups.json": "learningComponentDedupGroups",
+    "lc_entity_provenance.json": "learningComponentProvenance",
+    "lc_generation_summary.json": "learningComponentSummary",
+    "lp_final_claims.json": "learningProgressionFinalClaims",
+    "lp_generation_summary.json": "learningProgressionSummary",
+    "lp_normalization_receipt.json": "learningProgressionNormalization",
+    "lp_relationship_provenance.json": "learningProgressionProvenance",
+    "lp_relationship_provenance_index.json": "learningProgressionProvenanceIndex",
+    "lp_relationships_builds_towards.jsonl": "learningProgressionBuildsTowards",
+    "lp_relationships_relates_to.jsonl": "learningProgressionRelatesTo",
+    "lp_unresolved_items.json": "learningProgressionUnresolved",
+    "lp_validation_report.json": "learningProgressionValidation",
 }
 _RECOGNIZED_DETAILED_BASENAMES_CASEFOLDED: Final[frozenset[str]] = frozenset(
     basename.casefold() for basename in _RECOGNIZED_DETAILED_ARTIFACTS
@@ -191,28 +148,39 @@ _RECOGNIZED_DETAILED_BASENAMES_CASEFOLDED: Final[frozenset[str]] = frozenset(
 
 # Runtime manifest names that have a dedicated PackageArtifacts field.
 _DEDICATED_FIELD_NAMES: Final[dict[str, str]] = {
-    "nodes": "nodes",
-    "relationships": "relationships",
-    **{
-        manifest_name: field_name
-        for field_name, manifest_name in _RECOGNIZED_DETAILED_ARTIFACTS.values()
-    },
+    to_camel(field_name): field_name
+    for field_name in (
+        "entity_provenance",
+        "learning_component_dedup_groups",
+        "learning_component_provenance",
+        "learning_component_summary",
+        "learning_progression_normalization",
+        "learning_progression_provenance_index",
+        "learning_progression_summary",
+        "learning_progression_unresolved",
+        "learning_progression_validation",
+        "nodes",
+        "relationships",
+        "standards_framework",
+        "unresolved_items",
+        "validation_report",
+    )
 }
 _RESERVED_ADDITIONAL_LOGICAL_NAMES: Final[frozenset[str]] = frozenset(
     {
-        *(name.casefold() for name in REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES),
-        "academicstandardsbundle",
+        *(name.casefold() for name in ARCHIVE_ONLY_ARTIFACT_NAMES),
+        *(
+            name.casefold()
+            for name in FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES
+        ),
         "entityprovenance",
         EVIDENCE_ARCHIVE_RECORD_NAME.casefold(),
         "learningcomponentdedupgroups",
         "learningcomponentprovenance",
         "learningcomponentsummary",
-        "learningcomponentsbundle",
         "nodes",
         "relationships",
-        "relationshipshaschild",
         "standardsframework",
-        "standardsframeworkitems",
         "unresolveditems",
         "validationreport",
     }
@@ -1536,7 +1504,7 @@ def _prepare_evidence_sources(
     ]
 
     for basename, resolved_path in sorted(detailed_paths.items()):
-        _, manifest_name = _RECOGNIZED_DETAILED_ARTIFACTS[basename]
+        manifest_name = _RECOGNIZED_DETAILED_ARTIFACTS[basename]
         source_specs.append(
             (manifest_name, _artifact_path(f"detailed/{basename}"), resolved_path)
         )

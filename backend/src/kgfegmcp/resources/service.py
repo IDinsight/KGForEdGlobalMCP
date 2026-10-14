@@ -51,7 +51,6 @@ from kgfegmcp.errors import (
 from kgfegmcp.packages.checksums import calculate_bytes_sha256
 from kgfegmcp.packages.models import (
     EVIDENCE_ARCHIVE_RECORD_NAME,
-    MANIFEST_VERSION,
     DeclaredArtifactReference,
     LoadedGraphPackage,
 )
@@ -100,37 +99,6 @@ from kgfegmcp.services.models import (
 from kgfegmcp.services.standards import StandardsService
 
 
-def _archive_reference(
-    *,
-    loaded_package: LoadedGraphPackage,
-    original_name: str,
-    repository: ResourceRepository,
-) -> DeclaredArtifactReference:
-    """Return the declared artifact that identifies a slim artifact's archived source.
-
-    Parameters
-    ----------
-    loaded_package
-        Accepted package.
-    original_name
-        Full-evidence logical name of the archived original.
-    repository
-        Existing artifact-reference boundary.
-
-    Returns
-    -------
-    DeclaredArtifactReference
-        The evidence archive record for runtime-only packages; the declared
-        original for the temporary full-layout bridge until cutover.
-    """
-
-    runtime_only = loaded_package.manifest.manifest_version == MANIFEST_VERSION
-    return repository.artifact_reference(
-        loaded_package=loaded_package,
-        logical_name=EVIDENCE_ARCHIVE_RECORD_NAME if runtime_only else original_name,
-    )
-
-
 def _canonical_json(value: BaseModel | object) -> str:
     """Serialize one accepted model or JSON value deterministically.
 
@@ -156,21 +124,14 @@ def _canonical_json(value: BaseModel | object) -> str:
 
 
 def _entity_source(
-    *,
     document: Mapping[str, object],
-    reference: DeclaredArtifactReference,
-    runtime: CatalogPackageRuntime,
 ) -> tuple[dict[str, object], Sha256Digest]:
-    """Return an entity provenance document's source identity and archived hash.
+    """Return a slim entity provenance document's source identity and archived hash.
 
     Parameters
     ----------
     document
-        Parsed entity provenance document.
-    reference
-        Declared entity provenance artifact.
-    runtime
-        Owning accepted package runtime.
+        Parsed slim entity provenance document.
 
     Returns
     -------
@@ -183,19 +144,8 @@ def _entity_source(
         If the accepted document lacks its source identity or archived hash.
     """
 
-    if runtime.loaded_package.manifest.manifest_version == MANIFEST_VERSION:
-        source_document = document.get("sourceDocument")
-        archived_sha256 = document.get("originalSha256")
-    else:
-        # Temporary full-layout bridge until cutover: the declared file is the
-        # full document.
-        framework = document.get("framework")
-        source_document = (
-            framework
-            if isinstance(framework, dict)
-            else {name: document.get(name) for name in ("doc_key", "pdf_name")}
-        )
-        archived_sha256 = reference.sha256
+    source_document = document.get("sourceDocument")
+    archived_sha256 = document.get("originalSha256")
 
     if not isinstance(source_document, dict) or not isinstance(archived_sha256, str):
         raise ResourceNotFoundError(
@@ -205,39 +155,26 @@ def _entity_source(
     return source_document, cast(Sha256Digest, archived_sha256)
 
 
-def _entity_sources(
-    *,
-    reference: DeclaredArtifactReference,
-    repository: ResourceRepository,
-    runtime: CatalogPackageRuntime,
-) -> tuple[DeclaredArtifactReference, ...]:
-    """Return the artifacts an entity provenance response cites.
+def _record_reference(
+    *, loaded_package: LoadedGraphPackage, repository: ResourceRepository
+) -> DeclaredArtifactReference:
+    """Return the declared evidence archive record that binds archived sources.
 
     Parameters
     ----------
-    reference
-        Declared entity provenance artifact that served the entry.
+    loaded_package
+        Accepted runtime-only package.
     repository
         Existing artifact-reference boundary.
-    runtime
-        Owning accepted package runtime.
 
     Returns
     -------
-    tuple[DeclaredArtifactReference, ...]
-        The served artifact plus the evidence archive record for runtime-only
-        packages.
+    DeclaredArtifactReference
+        The evidence archive record reference.
     """
 
-    if runtime.loaded_package.manifest.manifest_version != MANIFEST_VERSION:
-        return (reference,)
-
-    return (
-        reference,
-        repository.artifact_reference(
-            loaded_package=runtime.loaded_package,
-            logical_name=EVIDENCE_ARCHIVE_RECORD_NAME,
-        ),
+    return repository.artifact_reference(
+        loaded_package=loaded_package, logical_name=EVIDENCE_ARCHIVE_RECORD_NAME
     )
 
 
@@ -1290,10 +1227,8 @@ class ResourceService:
             self.repository.artifact_reference(
                 loaded_package=runtime.loaded_package, logical_name="relationships"
             ),
-            _archive_reference(
-                loaded_package=runtime.loaded_package,
-                original_name="learningProgressionProvenance",
-                repository=self.repository,
+            _record_reference(
+                loaded_package=runtime.loaded_package, repository=self.repository
             ),
         )
         graph_package_id = runtime.catalog_package.package_identity.graph_package_id
@@ -1448,9 +1383,7 @@ class ResourceService:
                 ),
             )
 
-        source_document, archived_sha256 = _entity_source(
-            document=document, reference=reference, runtime=runtime
-        )
+        source_document, archived_sha256 = _entity_source(document)
         result = LearningComponentProvenanceResult(
             archived_provenance_sha256=archived_sha256,
             attribution_statement=runtime.loaded_package.manifest.rights.attribution_statement,
@@ -1467,10 +1400,12 @@ class ResourceService:
             resource_kind=ResourceKind.LEARNING_COMPONENT_PROVENANCE,
             source_artifacts=tuple(
                 _source_evidence(graph_package_id=graph_package_id, reference=source)
-                for source in _entity_sources(
-                    reference=reference,
-                    repository=self.repository,
-                    runtime=runtime,
+                for source in (
+                    reference,
+                    _record_reference(
+                        loaded_package=runtime.loaded_package,
+                        repository=self.repository,
+                    ),
                 )
             ),
             value=result,
@@ -1662,9 +1597,7 @@ class ResourceService:
                 message="The requested standard provenance entry is unavailable.",
             )
 
-        source_document, archived_sha256 = _entity_source(
-            document=document, reference=reference, runtime=runtime
-        )
+        source_document, archived_sha256 = _entity_source(document)
         result = StandardProvenanceResult(
             archived_provenance_sha256=archived_sha256,
             attribution_statement=runtime.loaded_package.manifest.rights.attribution_statement,
@@ -1682,10 +1615,12 @@ class ResourceService:
             resource_kind=ResourceKind.STANDARD_PROVENANCE,
             source_artifacts=tuple(
                 _source_evidence(graph_package_id=graph_package_id, reference=source)
-                for source in _entity_sources(
-                    reference=reference,
-                    repository=self.repository,
-                    runtime=runtime,
+                for source in (
+                    reference,
+                    _record_reference(
+                        loaded_package=runtime.loaded_package,
+                        repository=self.repository,
+                    ),
                 )
             ),
             value=result,

@@ -1,8 +1,8 @@
 """Contracts for runtime-only package evidence: the archive record and slim artifacts.
 
 A runtime-only (manifest ``1.2``) package declares slim derivations of its bulky
-provenance plus one evidence archive record. The record binds the complete legacy
-evidence set by logical name, legacy package path, size and SHA-256, and names the
+provenance plus one evidence archive record. The record binds the complete full
+evidence set by logical name, full-evidence package path, size and SHA-256, and names the
 repository-relative input-set path where each archived file is kept locally.
 """
 
@@ -50,7 +50,7 @@ REMOVED_LP_RECORD_FIELDS: tuple[
 
 # Evidence archive record; the record follows its entry and location dependencies.
 class EvidenceArchiveEntry(FrozenSchema):
-    """Bind one legacy evidence artifact to its exact bytes and local input path."""
+    """Bind one full-evidence artifact to its exact bytes and local input path."""
 
     local_path: ArtifactPath
     package_path: ArtifactPath
@@ -66,7 +66,7 @@ class EvidenceArchiveLocation(FrozenSchema):
 
 
 class EvidenceArchiveRecord(FrozenSchema):
-    """Declare the complete legacy evidence set bound to one runtime-only package."""
+    """Declare the complete full evidence set bound to one runtime-only package."""
 
     archive: EvidenceArchiveLocation = Field(default_factory=EvidenceArchiveLocation)
     evidence_artifacts: dict[StrictStr, EvidenceArchiveEntry] = Field(min_length=1)

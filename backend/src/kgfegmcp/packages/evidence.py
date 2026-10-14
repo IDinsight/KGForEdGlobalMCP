@@ -31,8 +31,8 @@ from kgfegmcp.packages.lp_models import LearningProgressionEvidence
 from kgfegmcp.packages.lp_validation import validate_learning_progression_evidence
 from kgfegmcp.packages.models import (
     EVIDENCE_ARCHIVE_RECORD_NAME,
+    FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES,
     LP_PROVENANCE_SHARD_NAMES,
-    REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
     DeclaredArtifactReference,
     LoadedGraphPackage,
     PackageValidationFinding,
@@ -48,7 +48,7 @@ from kgfegmcp.packages.slim import (
 # Full-evidence files whose bytes the checks read; others are only checksummed.
 _READ_NAMES: Final[frozenset[str]] = frozenset(
     {
-        *REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
+        *FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES,
         *LP_PROVENANCE_SHARD_NAMES,
         *SLIM_SOURCE_NAMES,
         "nodes",
@@ -460,29 +460,3 @@ class EvidenceVerifier:
             findings.append(_finding(code="slim_projection_mismatch", name=None))
 
         return tuple(findings)
-
-
-def full_layout_view(
-    *, captured_contents: Mapping[str, bytes], package: LoadedGraphPackage
-) -> FullEvidenceView:
-    """Present a full-layout (``1.1``) package as a full-evidence view.
-
-    Temporary bridge for the current full-layout packages until cutover; their
-    declared files already are the full evidence set.
-
-    Parameters
-    ----------
-    captured_contents
-        Loader-verified bytes of the full-layout package.
-    package
-        Decoded full-layout package.
-
-    Returns
-    -------
-    FullEvidenceView
-        View over the package's own declared artifacts.
-    """
-
-    return _view(
-        contents=captured_contents, package=package, references=package.artifacts
-    )

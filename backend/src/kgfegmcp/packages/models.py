@@ -106,13 +106,9 @@ ARCHIVE_ONLY_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
     }
 )
 EVIDENCE_ARCHIVE_RECORD_NAME: Final[str] = "evidenceArchiveRecord"
-# Temporary bridge for the six current full-layout packages; removed after cutover.
-FULL_LAYOUT_MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.1")
-LP_PROVENANCE_SHARD_NAMES: Final[tuple[str, ...]] = tuple(
-    f"learningProgressionProvenanceShard{number:02d}" for number in range(64)
-)
-MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.2")
-REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
+
+# LP logical names in the full-evidence namespace bound by the evidence archive record.
+FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
     {
         "learningProgressionBuildsTowards",
         "learningProgressionFinalClaims",
@@ -125,11 +121,12 @@ REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = frozenset(
         "learningProgressionValidation",
     }
 )
-REQUIRED_RUNTIME_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = (
-    REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES - ARCHIVE_ONLY_ARTIFACT_NAMES
+LP_PROVENANCE_SHARD_NAMES: Final[tuple[str, ...]] = tuple(
+    f"learningProgressionProvenanceShard{number:02d}" for number in range(64)
 )
-SUPPORTED_MANIFEST_VERSIONS: Final[frozenset[str]] = frozenset(
-    {FULL_LAYOUT_MANIFEST_VERSION, MANIFEST_VERSION}
+MANIFEST_VERSION: Final[ManifestVersion] = cast(ManifestVersion, "1.2")
+REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES: Final[frozenset[str]] = (
+    FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES - ARCHIVE_ONLY_ARTIFACT_NAMES
 )
 REQUIRED_ADDITIONAL_COUNT_NAMES: Final[frozenset[str]] = frozenset(
     {
@@ -457,27 +454,19 @@ class FrameworkMetadata(FrozenSchema):
 class PackageArtifacts(FrozenSchema):
     """Declare immutable package-relative artifact paths."""
 
-    academic_standards_bundle: ArtifactPath | None = None
     additional_artifacts: dict[ArtifactName, ArtifactPath] = Field(default_factory=dict)
     entity_provenance: ArtifactPath | None = None
     learning_component_dedup_groups: ArtifactPath | None = None
     learning_component_provenance: ArtifactPath | None = None
     learning_component_summary: ArtifactPath | None = None
-    learning_components_bundle: ArtifactPath | None = None
-    learning_progression_builds_towards: ArtifactPath | None = None
-    learning_progression_final_claims: ArtifactPath | None = None
     learning_progression_normalization: ArtifactPath | None = None
-    learning_progression_provenance: ArtifactPath | None = None
     learning_progression_provenance_index: ArtifactPath | None = None
-    learning_progression_relates_to: ArtifactPath | None = None
     learning_progression_summary: ArtifactPath | None = None
     learning_progression_unresolved: ArtifactPath | None = None
     learning_progression_validation: ArtifactPath | None = None
     nodes: ArtifactPath
     relationships: ArtifactPath
-    relationships_has_child: ArtifactPath | None = None
     standards_framework: ArtifactPath | None = None
-    standards_framework_items: ArtifactPath | None = None
     unresolved_items: ArtifactPath | None = None
     validation_report: ArtifactPath | None = None
 
@@ -496,19 +485,17 @@ class PackageArtifacts(FrozenSchema):
             If an additional name is reserved or two names resolve to one path.
         """
 
+        # Archive-only names stay reserved so they cannot enter as additional files.
         reserved_names = {
-            *REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES,
-            "academicStandardsBundle",
+            *ARCHIVE_ONLY_ARTIFACT_NAMES,
+            *FULL_EVIDENCE_LEARNING_PROGRESSION_ARTIFACT_NAMES,
             "entityProvenance",
             "learningComponentDedupGroups",
             "learningComponentProvenance",
             "learningComponentSummary",
-            "learningComponentsBundle",
             "nodes",
             "relationships",
-            "relationshipsHasChild",
             "standardsFramework",
-            "standardsFrameworkItems",
             "unresolvedItems",
             "validationReport",
         }
@@ -540,15 +527,11 @@ class PackageArtifacts(FrozenSchema):
             "relationships": self.relationships,
         }
         optional_artifacts = {
-            "academicStandardsBundle": self.academic_standards_bundle,
             "entityProvenance": self.entity_provenance,
             "learningComponentDedupGroups": self.learning_component_dedup_groups,
             "learningComponentProvenance": self.learning_component_provenance,
             "learningComponentSummary": self.learning_component_summary,
-            "learningComponentsBundle": self.learning_components_bundle,
-            "relationshipsHasChild": self.relationships_has_child,
             "standardsFramework": self.standards_framework,
-            "standardsFrameworkItems": self.standards_framework_items,
             "unresolvedItems": self.unresolved_items,
             "validationReport": self.validation_report,
         }
@@ -589,12 +572,8 @@ class PackageArtifacts(FrozenSchema):
         """
 
         optional_artifacts = {
-            "learningProgressionBuildsTowards": self.learning_progression_builds_towards,
-            "learningProgressionFinalClaims": self.learning_progression_final_claims,
             "learningProgressionNormalization": self.learning_progression_normalization,
-            "learningProgressionProvenance": self.learning_progression_provenance,
             "learningProgressionProvenanceIndex": self.learning_progression_provenance_index,
-            "learningProgressionRelatesTo": self.learning_progression_relates_to,
             "learningProgressionSummary": self.learning_progression_summary,
             "learningProgressionUnresolved": self.learning_progression_unresolved,
             "learningProgressionValidation": self.learning_progression_validation,
@@ -866,7 +845,7 @@ class GraphPackageManifest(FrozenSchema):
             If the manifest declares an unsupported manifest version.
         """
 
-        if value not in SUPPORTED_MANIFEST_VERSIONS:
+        if value != MANIFEST_VERSION:
             raise ValueError(f"manifest_version must equal {MANIFEST_VERSION}.")
 
         return value
@@ -926,23 +905,14 @@ class GraphPackageManifest(FrozenSchema):
             self.counts.builds_towards_relationships
             + self.counts.relates_to_relationships
         )
-        required = (
-            REQUIRED_RUNTIME_LEARNING_PROGRESSION_ARTIFACT_NAMES
-            if self.manifest_version == MANIFEST_VERSION
-            else REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES
-        )
 
-        if declared and set(artifacts) != required:
+        if declared and set(artifacts) != REQUIRED_LEARNING_PROGRESSION_ARTIFACT_NAMES:
             raise ValueError(
                 "Learning progressions require all dedicated LP evidence artifacts."
             )
 
-        if (
-            declared
-            and self.manifest_version == MANIFEST_VERSION
-            and not set(LP_PROVENANCE_SHARD_NAMES).issubset(
-                str(name) for name in self.artifacts.additional_artifacts
-            )
+        if declared and not set(LP_PROVENANCE_SHARD_NAMES).issubset(
+            str(name) for name in self.artifacts.additional_artifacts
         ):
             raise ValueError(
                 "Learning progressions require all 64 slim LP provenance shards."
@@ -972,18 +942,20 @@ class GraphPackageManifest(FrozenSchema):
 
     @model_validator(mode="after")
     def validate_layout(self) -> Self:
-        """Require the runtime-only layout for manifest version ``1.2``.
+        """Require the runtime-only layout to declare its evidence archive record.
+
+        Archive-only kinds have no manifest fields and their names are reserved, so
+        they cannot be declared at all.
 
         Returns
         -------
         Self
-            Manifest whose evidence archive record declaration matches its version.
+            Manifest that declares the evidence archive record.
 
         Raises
         ------
         ValueError
-            If a ``1.2`` manifest omits the record or declares an archive-only kind,
-            or a full-layout manifest declares the record.
+            If the manifest omits the evidence archive record.
 
         Examples
         --------
@@ -991,28 +963,9 @@ class GraphPackageManifest(FrozenSchema):
         '1.2'
         """
 
-        declared = set(self.artifacts.declared_artifacts())
-        has_record = EVIDENCE_ARCHIVE_RECORD_NAME in declared
-
-        if self.manifest_version != MANIFEST_VERSION:
-            if has_record:
-                raise ValueError(
-                    "Only a runtime-only manifest may declare the evidence archive record."
-                )
-
-            return self
-
-        if not has_record:
+        if EVIDENCE_ARCHIVE_RECORD_NAME not in self.artifacts.additional_artifacts:
             raise ValueError(
                 "A runtime-only manifest must declare the evidence archive record."
-            )
-
-        archive_only = sorted(declared & ARCHIVE_ONLY_ARTIFACT_NAMES)
-
-        if archive_only:
-            raise ValueError(
-                f"A runtime-only manifest may not declare archive-only artifacts: "
-                f"{', '.join(archive_only)}."
             )
 
         return self

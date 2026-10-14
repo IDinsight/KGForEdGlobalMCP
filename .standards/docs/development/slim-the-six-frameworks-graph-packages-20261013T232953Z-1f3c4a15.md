@@ -596,7 +596,7 @@ name-specific branch.
 
 ### DEV-010 — Remove `1.1` support
 
-`Status`: `PENDING` `Depends On`: `DEV-008`
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-008`
 `Acceptance`: `AC-001, AC-008`
 
 **Goal**
@@ -624,6 +624,28 @@ or additional artifacts. No `1.1` code path remains in `src/`.
 `fail` loads all six `1.2` packages; a scratch `1.1` manifest is rejected with
 `manifest_version_unsupported`; full lint and type tools on `src/`. Record which
 tests or fixtures still reference `1.1` (Tester removes or migrates them).
+
+Progress (2026-10-14, working tree at `7c67871` plus uncommitted DEV-010 edits to
+`packages/models.py`, `builder.py`, `loader.py`, `evidence.py`, `slim.py`,
+`evidence_models.py`, `resources/lp.py`, `resources/service.py`,
+`resources/policy.py`): `1.1` rules, the eight archive-only `PackageArtifacts`
+fields, the `full_layout_view` bridge, the loader and resource `1.1` branches,
+the undeclarable policy and `LP_ARTIFACT_NAMES` entries, and the "legacy"
+wording are removed; ruff, mypy, isort, black, interrogate clean on `src/`,
+pylint 10.00/10. Self-check then failed: `bootstrap_application()` loads no
+package, and the committed Nigeria `1.2` manifest fails
+`GraphPackageManifest.model_validate_json` with eight `extra_forbidden` errors
+(`artifacts.academicStandardsBundle`, `learningComponentsBundle`,
+`learningProgressionBuildsTowards`, `learningProgressionFinalClaims`,
+`learningProgressionProvenance`, `learningProgressionRelatesTo`,
+`relationshipsHasChild`, `standardsFrameworkItems`, all `null`). The builder's
+`_canonical_manifest_bytes` uses `model_dump(by_alias=True, mode="json")`, which
+writes unset fields as `null`; all six accepted `1.2` manifests carry those keys
+(the old `1.1` manifests had no null artifact keys). A scratch `1.1` manifest
+gave `manifest_version_unsupported` as intended. Routed as an `ARCHITECTURE`
+failure (Plan Notes, Suspended Assignment 3). Until the design is corrected the
+uncommitted working tree does not start the server; `git stash` or
+`git checkout` of the listed files restores the last committed state.
 
 ---
 
@@ -728,3 +750,11 @@ New DEV-011 implements the progression citations, and DEV-008 now depends on it.
 DEV-008 keeps its progress: the six `1.2` packages remain built and accepted
 alongside the `1.1` ones, and resumes with the comparison rerun. The plan
 returned to `PROPOSED` for approval; the locked user style is unchanged.
+
+### Suspended Assignment 3
+
+`Recovery Frame`: `1` `Recovery Reason`:
+`The six accepted 1.2 manifests serialize every PackageArtifacts field, so they hold the eight archive-only keys as null; removing those fields (Interfaces 2) makes them invalid, and fixing it needs re-sealing or a model change.`
+`Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`:
+`architecture spec at f191682; committed six accepted 1.2 packages at 7f02e77 (manifests with null archive-only artifact keys); uncommitted DEV-010 edits listed under DEV-010`
+`Next Action`: `Reconcile DEV-010 with the corrected design (model tolerance or re-sealed packages), finish the removal, then rerun startup, the 1.1 rejection, rebuild ID, full revalidation, archive verification and the suite.`

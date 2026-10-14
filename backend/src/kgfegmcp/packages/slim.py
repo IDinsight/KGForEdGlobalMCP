@@ -1,4 +1,4 @@
-"""Derive slim runtime artifacts and the evidence archive record from legacy evidence.
+"""Derive slim runtime artifacts and the evidence archive record from full evidence.
 
 Every function here is a pure, deterministic bytes-in/bytes-out derivation. The package
 builder writes its outputs, and acceptance re-derives them from the archived evidence
@@ -85,7 +85,7 @@ def _object_field(
     if not isinstance(nested, dict):
         raise ManifestBuildError(
             details={"artifact": label, "field": field_name},
-            message="Legacy evidence is missing a required JSON object.",
+            message="Full evidence is missing a required JSON object.",
         )
 
     return dict(nested)
@@ -119,7 +119,7 @@ def derive_entity_provenance(original: bytes) -> bytes:
     Parameters
     ----------
     original
-        Exact bytes of the legacy ``as_entity_provenance.json``.
+        Exact bytes of the archived ``as_entity_provenance.json``.
 
     Returns
     -------
@@ -142,7 +142,7 @@ def derive_entity_provenance(original: bytes) -> bytes:
         if not isinstance(item, dict):
             raise ManifestBuildError(
                 details={"artifact": label, "item": key},
-                message="Legacy entity provenance item is not a JSON object.",
+                message="Full entity provenance item is not a JSON object.",
             )
 
         slim_item = {
@@ -170,7 +170,7 @@ def derive_learning_component_provenance(original: bytes) -> bytes:
     Parameters
     ----------
     original
-        Exact bytes of the legacy ``lc_entity_provenance.json``.
+        Exact bytes of the archived ``lc_entity_provenance.json``.
 
     Returns
     -------
@@ -195,7 +195,7 @@ def derive_learning_component_provenance(original: bytes) -> bytes:
         if not isinstance(component, dict):
             raise ManifestBuildError(
                 details={"artifact": label, "item": key},
-                message="Legacy learning component provenance is not a JSON object.",
+                message="Full learning component provenance is not a JSON object.",
             )
 
         slim_components[key] = {
@@ -206,7 +206,7 @@ def derive_learning_component_provenance(original: bytes) -> bytes:
     if "doc_key" not in document or "pdf_name" not in document:
         raise ManifestBuildError(
             details={"artifact": label},
-            message="Legacy LC provenance is missing its source document fields.",
+            message="Full LC provenance is missing its source document fields.",
         )
 
     return _canonical_bytes(
@@ -229,9 +229,9 @@ def derive_lp_provenance(
     Parameters
     ----------
     original_index
-        Exact bytes of the legacy ``lp_relationship_provenance_index.json``.
+        Exact bytes of the archived ``lp_relationship_provenance_index.json``.
     original_provenance
-        Exact bytes of the legacy ``lp_relationship_provenance.json``.
+        Exact bytes of the archived ``lp_relationship_provenance.json``.
 
     Returns
     -------
@@ -260,7 +260,7 @@ def derive_lp_provenance(
         if not isinstance(entry, dict):
             raise ManifestBuildError(
                 details={"relationship_id": identifier},
-                message="Legacy LP provenance entry is not a JSON object.",
+                message="Full LP provenance entry is not a JSON object.",
             )
 
         buckets[provenance_partition(identifier)][identifier] = slim_lp_record(entry)
@@ -353,7 +353,7 @@ def evidence_archive_record_bytes(
     Parameters
     ----------
     evidence_artifacts
-        Complete legacy declaration by logical name, excluding the manifest.
+        Complete full-evidence declaration by logical name, excluding the manifest.
     framework_id
         Owning framework.
 

@@ -71,14 +71,10 @@ from kgfegmcp.packages.decoder import (
     iter_decoded_nodes,
     iter_decoded_relationships,
 )
-from kgfegmcp.packages.evidence import EvidenceVerifier, full_layout_view
+from kgfegmcp.packages.evidence import EvidenceVerifier
 from kgfegmcp.packages.lp_runtime import validate_runtime_evidence
-from kgfegmcp.packages.lp_validation import (
-    validate_learning_progression_evidence,
-)
 from kgfegmcp.packages.models import (
     EVIDENCE_ARCHIVE_RECORD_NAME,
-    MANIFEST_VERSION,
     SUPPORTED_INCLUDED_GRAPH_TYPES,
     SUPPORTED_PACKAGE_REVISION,
     ArtifactIntegrityObservation,
@@ -403,19 +399,6 @@ class GraphPackageLoader:
         EvidenceArchiveUnavailableError
             If the evidence tier runs and archived evidence is absent.
         """
-
-        # The full-layout path is a temporary bridge for the current packages
-        # until cutover.
-        if package.manifest.manifest_version != MANIFEST_VERSION:
-            evidence, findings = validate_learning_progression_evidence(
-                view=full_layout_view(
-                    captured_contents=captured_contents, package=package
-                )
-            )
-            return (
-                package.model_copy(update={"learning_progression_evidence": evidence}),
-                list(findings),
-            )
 
         runtime = validate_runtime_evidence(
             captured_contents=captured_contents, package=package

@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `ARCHITECTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -13,7 +13,7 @@
 `Architecture`:
 `.standards/docs/specs/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `Development`:
 `.standards/docs/development/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `PromotionReason`: `NONE`
-`AuditTarget`: `NONE` `BlockedOn`: `Continue with DEV-010 (remove 1.1 support)?` `PendingVerificationCadence`: `NONE`
+`AuditTarget`: `NONE` `BlockedOn`: `NONE` `PendingVerificationCadence`: `NONE`
 
 `BaselineReconciliation`: `NONE`
 
@@ -25,12 +25,18 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
-`Design sets progression citations: keep four entries; learningProgressionProvenance cites the archived map hash from the record; no rerun needed.`
+`Kind`: `FAILURE` `From`: `DEVELOPING` `FailureType`: `ARCHITECTURE` `Reason`:
+`The six accepted 1.2 manifests serialize every PackageArtifacts field, so they hold the eight archive-only keys as null; removing those fields (Interfaces 2) makes them invalid, and fixing it needs re-sealing or a model change.`
 
 ## Recovery
 
-`Active`: `false`
+`Active`: `true`
+
+### Frame 1
+
+`From`: `DEVELOPING` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
+`Reason`: `The six accepted 1.2 manifests serialize every PackageArtifacts field, so they hold the eight archive-only keys as null; removing those fields (Interfaces 2) makes them invalid, and fixing it needs re-sealing or a model change.`
+`ResumeAt`: `DEVELOPING` `RerunThrough`: `NONE`
 
 ## Outstanding Obligations
 
