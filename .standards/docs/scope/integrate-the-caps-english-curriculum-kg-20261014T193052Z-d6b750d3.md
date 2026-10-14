@@ -15,8 +15,13 @@ is the external KGForEdGlobal export at
 MCP clients should be able to discover CAPS and use its Academic Standards,
 Learning Components, and stored Learning Progressions with the same tools,
 resources, prompts, rights gating, and disclosures as the six existing
-frameworks. The six existing packages and the server's public surface stay as
-they are.
+frameworks. The six existing packages and the server's set of tools,
+resources, and prompts stay as they are.
+
+CAPS connections are longer than any in the existing corpus, up to 13 hops
+compared with 8. So that clients can find them, Learning Progression path search
+becomes target-aware and its maximum path depth rises. Results that path search
+already returns completely stay the same.
 
 ## Constraints
 
@@ -39,6 +44,12 @@ they are.
   resource limits in `config.py`.
 - Grade R (user decision, 2026-10-14): MCP clients see the grade the source
   encodes as `"K"` labelled as "Grade R".
+- Path search (user decisions, 2026-10-14): `get_learning_progression_paths`
+  becomes target-aware. It stops extending partial paths that cannot reach the
+  target within the requested depth. Its maximum `max_depth` rises from 12 to
+  16. Every connected CAPS `buildsTowards` pair must be found while the
+  existing queue and work budgets stay fixed. The change is generic, applying
+  to every framework.
 - Archive-only build inputs stay out of Git. Uploading them to the IDinsight
   Google Drive evidence archive is a manual, user-owned step.
 - Tests must not call live or paid LLM services.
@@ -51,6 +62,8 @@ they are.
 - Rebuilding, revising, or re-validating the six existing packages.
 - Adding, removing, or renaming MCP tools, resources, resource templates, or
   prompts.
+- Changing traversal limits, the default path depth, the path queue and work
+  budgets, or any other tool's bounds.
 - Adopting Git LFS, external package hosting, or any other way of storing
   packages.
 - Changing catalog loading so it tolerates stray non-framework directories
@@ -151,8 +164,10 @@ the source and with the user's rights and grade decisions.
 
 **Done when:**
 
-- `AC-016`: The six existing packages and their profiles are byte-identical to
-  the cycle baseline, keep their snapshot IDs, and serve the same results.
+- `AC-022`: The six existing packages and their profiles are byte-identical to
+  the cycle baseline and keep their snapshot IDs. They serve the same results,
+  with one exception: a path-search request that previously came back
+  truncated may now return complete paths.
 - `AC-017`: The public MCP surface is unchanged: 19 tools, 1 fixed resource, 14
   resource templates, and 9 prompts.
 - `AC-018`: Generic runtime, build, and validation code contains no
@@ -160,7 +175,7 @@ the source and with the user's rights and grade decisions.
 - `AC-019`: The full offline test suite passes with the seven-package corpus,
   including progression baselines and rights assertions that cover CAPS.
 
-**Depends on:** 2, 3, 4.
+**Depends on:** 2, 3, 4, 7.
 
 ### 6. Project documentation
 
@@ -176,8 +191,39 @@ corpus accurately.
   grades including the Grade R labelling, missing statement codes, rights
   posture with the "Unknown" source license, and Learning Progression
   disclosures.
+- `AC-027`: The path-search reference documentation states the new maximum
+  path depth of 16 and describes target-aware path search.
 
-**Depends on:** 2, 3, 4.
+**Depends on:** 2, 3, 4, 7.
+
+### 7. Target-aware path search for long connections
+
+**Intent:** Clients can find CAPS's long Learning Progression connections
+(up to 13 hops) through the existing path tool, within the existing fixed work
+budgets, without changing results the tool already returns completely.
+
+**Done when:**
+
+- `AC-023`: `get_learning_progression_paths` accepts a `max_depth` of up to 16
+  and rejects larger values the same way it rejects out-of-range values today.
+  The default path depth stays 6.
+- `AC-024`: For every request that the cycle-baseline path search answers
+  without truncation, on any of the seven packages, the target-aware search
+  returns the same paths in the same order.
+- `AC-025`: Every connected CAPS `buildsTowards` source–target pair (43,145
+  pairs, with shortest paths of up to 13 hops) returns its complete shortest
+  path, without truncation, when requested with a `max_depth` from that
+  pair's shortest-path length up to 16. The existing queue and work budgets
+  stay fixed.
+- `AC-026`: Path search never returns a wrong, partial, or wrong-length path.
+  Any result that is incomplete reports non-empty truncation reasons.
+
+**Depends on:** 2, 3.
+
+## Retired Acceptance Identifiers
+
+- `AC-016`: Retired on 2026-10-14 because the target-aware path-search change
+  makes "serve the same results" too strict. Replaced by `AC-022`.
 
 ## Assumptions
 
