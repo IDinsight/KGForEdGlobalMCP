@@ -13,7 +13,7 @@
 `Architecture`:
 `.standards/docs/specs/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `Development`:
 `.standards/docs/development/slim-the-six-frameworks-graph-packages-20261013T232953Z-1f3c4a15.md` `PromotionReason`: `NONE`
-`AuditTarget`: `NONE` `BlockedOn`: `Continue with DEV-007 (kgfegmcp-verify-evidence-archive CLI)?` `PendingVerificationCadence`: `NONE`
+`AuditTarget`: `NONE` `BlockedOn`: `Continue with DEV-008 (build and accept the six 1.2 snapshots, delete the 1.1 ones)?` `PendingVerificationCadence`: `NONE`
 
 `BaselineReconciliation`: `NONE`
 

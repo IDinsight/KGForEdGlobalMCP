@@ -407,7 +407,7 @@ template description for edge provenance no longer says "full original".
 
 ### DEV-007 — `kgfegmcp-verify-evidence-archive` CLI
 
-`Status`: `PENDING` `Depends On`: `DEV-001`
+`Status`: `DONE` `Depends On`: `DEV-001`
 `Acceptance`: `AC-018`
 
 **Goal**
@@ -428,6 +428,32 @@ exits non-zero on any missing or mismatched entry. No network access.
 
 Run it against the scratch Rwanda package with evidence present, with one file
 moved aside, and with one file altered (on a scratch copy).
+
+Result (2026-10-14, working tree at `3045cf8` plus new
+`cli/verify_evidence_archive.py` and the `pyproject.toml` console script;
+registered with `uv sync --locked --extra dev --extra docs`, `uv.lock`
+unchanged). From `backend/`, `.venv/bin/kgfegmcp-verify-evidence-archive`:
+1) `one` on the scratch Rwanda package with `PATHS_PROJECT_DIR` set to the
+DEV-005 scratch project → exit 0, 86 `ok`, archive location
+`IDinsight Google Drive`;
+2) `lp_final_claims.json` moved aside, `all` → exit 1, `incomplete`,
+`learningProgressionFinalClaims` `missing`;
+3) one byte appended to the scratch copy of original shard 10 → exit 1,
+`learningProgressionProvenanceShard10` `mismatch`;
+4) `all` with `KGFEGMCP_GRAPH_PACKAGES_ROOT` at the six accepted scratch `1.2`
+packages and the real input sets → exit 0, 86 `ok` each;
+5) `all` on the repository's current `1.1` packages → exit 1,
+`record_unavailable` (expected until cutover);
+6) invalid IDs → exit 2.
+The module imports no network client. Suite unchanged: 115 passed plus the 2
+known DEV-005 failures. isort, black, ruff, mypy, interrogate (100%) and pylint
+(10.00/10) clean.
+
+**Implementation Notes**
+
+The command checks every record entry's `localPath`, including carried files,
+so one run confirms a whole restored input set. It finds the record at the fixed
+`evidence/evidence_archive_record.json` path and never reads the manifest.
 
 ---
 
