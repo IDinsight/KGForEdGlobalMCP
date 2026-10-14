@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `SYNCHRONIZING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `AWAITING_USER_SIGNOFF` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -25,8 +25,8 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FORWARD` `From`: `REVIEWING_FINAL` `FailureType`: `NONE` `Reason`:
-`Final-deliverable review passed with no material findings; every AC has current evidence.`
+`Kind`: `FORWARD` `From`: `SYNCHRONIZING` `FailureType`: `NONE` `Reason`:
+`Synchronization passed; all assessments apply to the current deliverable and every AC has current evidence.`
 
 ## Recovery
 
