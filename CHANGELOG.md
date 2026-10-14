@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v0.4.0...v1.0.0) (2026-10-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **packages:** slim graph packages to runtime-only files and archive full evidence ([#33](https://github.com/IDinsight/KGForEdGlobalMCP/issues/33))
+
+### Features
+
+* **packages:** slim graph packages to runtime-only files and archive full evidence ([#33](https://github.com/IDinsight/KGForEdGlobalMCP/issues/33)) ([b9daa2b](https://github.com/IDinsight/KGForEdGlobalMCP/commit/b9daa2b193a0a38d2f8f33b1b83aecbc4b5782d9))
+
 ## [0.4.0](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v0.3.1...v0.4.0) (2026-10-07)
 
 
