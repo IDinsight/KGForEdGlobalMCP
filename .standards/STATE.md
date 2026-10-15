@@ -22,7 +22,7 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 ## Handoff
 
 `Kind`: `RESUME` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
-`Design rerun for replanned scope: exact-length target-aware path search, max_depth ceiling 16, AC-022..AC-027 covered; rerun boundary reached.`
+`Change boundary widened: shared path-depth constant drives request bound and ProgressionPath caps (16/17); path tool description maxima 16/20. No code written, so no rerun.`
 
 ## Recovery
 

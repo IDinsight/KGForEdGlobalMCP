@@ -14,7 +14,7 @@ Cycle: integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3
 
 - `Scope`: `.standards/docs/scope/integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3.md`
 - `Architecture`: `.standards/docs/specs/integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3.md`
-- `Request`: Integrate the CAPS English Home Language (Grades R-3) KG export as a seventh framework, using data and configuration only.
+- `Request`: Integrate the CAPS English Home Language (Grades R-3) KG export as a seventh framework, using data and configuration. Also make generic Learning Progression path search target-aware and raise its `max_depth` ceiling to 16, and correct the MCPB manifest version (scope replan and design revision, 2026-10-14).
 
 ## Build Steps
 
@@ -251,33 +251,33 @@ Evidence (2026-10-14, repository root, `d48627f` plus uncommitted cycle files; a
 
 ### DEV-006 — CAPS served through the repository server and distributions
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-005`
-`Acceptance`: `AC-011, AC-012, AC-013, AC-014, AC-015, AC-016, AC-017, AC-018, AC-019`
+`Status`: `PENDING` `Depends On`: `DEV-005, DEV-008, DEV-009`
+`Acceptance`: `AC-011, AC-012, AC-013, AC-014, AC-015, AC-017, AC-018, AC-019, AC-022`
 
 **Goal**
 
-Confirm, with no code change, that the generic runtime, MCPB stage, and Docker context pick up CAPS, and that the change set stays inside the design's change boundary. If any backend change turns out to be needed, stop and route an `ARCHITECTURE` failure.
+Confirm that the generic runtime, MCPB stage, and Docker context pick up CAPS with the corrected path search and MCPB manifest in place, and that the change set stays inside the revised design's **Change boundary**. If any further backend change turns out to be needed, stop and route an `ARCHITECTURE` failure.
 
 **Affected Area**
 
-No new repository files expected. Checks run against the repository server, a fresh `dist/` MCPB stage (git-ignored), and the Docker build context.
+No new repository files expected. Checks run against the repository server, a fresh MCPB stage and bundle written to the git-ignored `data/source_artifacts/learning_progressions/dev006/` (so the user's `dist/` is untouched), and the Docker build context.
 
 **Expected Outcome**
 
 - Catalog lists 7 frameworks with CAPS statistics equal to its manifest counts.
 - A real STDIO session (scratch client, no LLM) can retrieve, search, and get context for CAPS standards and Learning Components, and look up, search, and traverse CAPS LPs with the generic disclosures.
-- MCPB stage contains the CAPS package, profile, and overlay; stage smoke passes.
+- `kgfegmcp-build-mcpb` succeeds; the fresh stage contains the CAPS package, profile, and overlay; `kgfegmcp-stdio-smoke --bundle-root <stage>` passes.
 - Docker context includes the CAPS paths with `Dockerfile` and `.dockerignore` unchanged.
-- `git diff` from the cycle baseline shows no change under `backend/src/`, `Dockerfile`, `.dockerignore`, `.gitignore`, `packaging/`, or any existing package, profile, overlay, or input set.
+- `git diff f9fdaa2` shows, outside the CAPS additions and `.standards/`, only `services/lp_paths.py`, the `max_depth` bound in `services/lp_models.py`, and the `version` field of `packaging/mcpb/manifest.json` (plus any Tester test updates). Nothing changes under `Dockerfile`, `.dockerignore`, `.gitignore`, release-please files, `CHANGELOG.md`, the project version, or any existing package, profile, overlay, or input set.
 
 **Self-Check**
 
-- `kgfegmcp-stdio-smoke`, the scratch STDIO session, `kgfegmcp-build-mcpb --stage-output ./dist/kgfegmcp-stage`, and `kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage`.
+- `kgfegmcp-stdio-smoke`, the scratch STDIO session (including the previously truncated 11-hop CAPS pair), `kgfegmcp-build-mcpb --mcpb-command $(which mcpb) --output <dev006>/… --stage-output <dev006>/mcpb-stage`, and `kgfegmcp-stdio-smoke --bundle-root <dev006>/mcpb-stage`.
 - Docker context inspection against the `.dockerignore` allowlist (no image build required).
-- Full offline suite. The corpus-dependent assertions listed in CONTEXT.md are expected to fail until Tester applies the design's **Test-corpus contract**; any other failure is a defect.
+- Full offline suite. The corpus-dependent assertions listed in CONTEXT.md, and any test pinning baseline path counters or frontier counts, are expected to fail until Tester applies the design's **Test-corpus contract**; any other failure is a defect.
 - Boundary `git diff --stat` and a grep for the CAPS framework ID under `backend/src/`.
 
-Evidence so far (2026-10-14, repository root, `d48627f` plus uncommitted cycle files; raw outputs are in the git-ignored `data/source_artifacts/learning_progressions/dev006/`). The step is **not done**: it is suspended by the ARCHITECTURE failure recorded in Plan Notes (Suspended Assignment 1).
+Evidence from the first, suspended run (pre-replan; kept as history, superseded by the rerun after DEV-008 and DEV-009) (2026-10-14, repository root, `d48627f` plus uncommitted cycle files; raw outputs are in the git-ignored `data/source_artifacts/learning_progressions/dev006/`). The step is **not done**: it is suspended by the ARCHITECTURE failure recorded in Plan Notes (Suspended Assignment 1).
 
 - **Repository STDIO smoke: passed.** Command: `UV_OFFLINE=1 uv --directory backend run --locked --offline --no-sync --no-dev kgfegmcp-stdio-smoke`, exit 0 (`stdio-smoke.out`). Results:
   - `status: passed`, `accepted_package_count=7`, 19 tools, 1 fixed resource, 14 resource templates, 9 prompts, 15 resource reads, 7 LP snapshots discovered.
@@ -345,15 +345,99 @@ Recursive hash comparison of both package trees, plus a JSON diff of the two man
 
 ---
 
+### DEV-008 — Target-aware exact-length path search with `max_depth` ceiling 16
+
+`Status`: `IN_PROGRESS` `Depends On`: `DEV-005`
+`Acceptance`: `AC-018, AC-022, AC-023, AC-024, AC-025, AC-026`
+
+**Goal**
+
+Replace the breadth-first enumeration in `paths_result` with the design's exact-length, target-aware search (**Target-aware path search**), and raise `GetLearningProgressionPathsRequest.max_depth`'s upper bound from 12 to 16. The change is generic, with no framework-specific branch.
+
+**Affected Area**
+
+- `backend/src/kgfegmcp/services/lp_paths.py`: `paths_result` and its private helpers. Kept as they are: the signature, `path_id_bound`, `PathIdBound`, `_admit_path`, `_require_size`, `_stop_on_size`, `_first_path_error`, `_reserved_path`, the result model, and the callers in `services/learning_progressions.py`.
+- `backend/src/kgfegmcp/services/lp_models.py`: the single `max_depth` bound of `GetLearningProgressionPathsRequest` (`le=12` becomes `le=16`; default 6). The traversal request's own bound (`le=12`, default 8) is unchanged.
+
+**Expected Outcome**
+
+- **Backward pass.** From the target, using the upstream builds adjacency, compute for each node that can reach the target its exact reachable hop counts ≤ `max_depth` (as a bitmask) and its uncapped longest hop count. Acyclicity is validated, so this is computed without recursion. Every inspected adjacency entry counts toward the fixed 5,000 inspection budget.
+- **Forward enumeration.** For each `k` from 1 to `max_depth` that the source can reach in exactly `k` hops, search depth-first in `relationship_id` order. An edge is extended only when its head can still finish in exactly the remaining hops.
+  - Output order is unchanged: hop count, then relationship-ID tuple.
+  - Every created partial path, including the source state, counts toward the 5,000-state budget.
+  - Admission, byte stops, `nextUnreturnedPath`, and the size reservation keep their behavior.
+- **Truncation reasons.** `work_limit` and `queue_limit` on the budgets. `path_limit` only when another path within `max_depth` exists. `depth_limit` exactly when the source's uncapped longest connection exceeds `max_depth`. `byte_limit` unchanged. `graph_exhausted` and `scope_complete` keep their formulas. Counters and frontier fields keep their names and report the new search's effort.
+- **Request bound.** `max_depth` accepts 1–16, still defaults to 6, and rejects 0 and 17 through the existing validation path. The published tool input schema shows maximum 16.
+
+**Self-Check**
+
+- `black --check`, `isort --check-only`, `ruff check`, `mypy`, `pylint` (McCabe ≤ 10), and `interrogate` on the changed files, using the repository's configuration.
+- The existing progression tests that do not encode the six-package corpus or pin counter values still pass.
+- A scratch **differential run** (not a committed test) against a reference copy of the baseline enumerator from `git show f9fdaa2:backend/src/kgfegmcp/services/lp_paths.py`, over deterministic request samples on all seven packages (`max_depth` 1–12, `max_paths` 1–20, connected and unconnected pairs). Wherever the baseline returns empty `truncation_reasons`, the new search must return identical `paths`, `relationships`, and `nodes`, with empty reasons.
+- A scratch **all-pairs run** over the 43,145 connected CAPS pairs at `max_depth` equal to the shortest length and at 16, with default `max_paths`. The first path must have the oracle's shortest length, no result may report `work_limit`, `queue_limit`, or `byte_limit`, and every result must satisfy the **Result invariants**. Peak inspection and state counts are recorded.
+- The published `get_learning_progression_paths` input schema, read over STDIO, shows `max_depth` maximum 16 and default 6.
+
+**Implementation Notes**
+
+Formal tests for AC-023..AC-026 (the differential oracle, CAPS samples, bound checks) are Tester-owned under the **Test-corpus contract**. These scratch runs are Developer feedback only.
+
+Pre-implementation finding (2026-10-15). No code was changed; DEV-008 is suspended (Plan Notes, Suspended Assignment 2). Reading the affected models before coding showed that the design's **Change boundary** omits two required changes:
+
+- `services/lp_models.py` `ProgressionPath` caps `node_ids` at `max_length=13` and `relationship_ids` at `max_length=12`.
+  - With `max_depth` 13–16, `_reserved_path` builds a worst-case path of `max_depth` hops for the size reservation. That raises a validation error on every such request before any search runs.
+  - Any real 13-hop CAPS path (5 pairs) cannot be represented at all. Results for AC-023 and AC-025 are therefore unreachable.
+  - Raising the caps to 17 and 16 changes the published output schema of `get_learning_progression_paths`, because `ProgressionPath` is used for both `paths` and `nextUnreturnedPath`.
+- `mcp/tools/learning_progressions.py` (~L228–230): the `get_learning_progression_paths` tool description publishes "Defaults: depth 6, paths 3; maxima 12/20 …". This becomes false at 16.
+- Checked and not affected:
+  - The traversal bounds (`TraverseLearningProgressionsRequest.max_depth` ≤ 12 and `ProgressionTraversalDistance.depth` ≤ 12) are traversal-only and stay as the design says.
+  - `cli/smoke_progressions.py` compares each tool's nested request schema with the live model rather than with pinned values, and only reports `toolSchemaIdentities` hashes. So the smoke follows a bound change without edits.
+
+---
+
+### DEV-009 — MCPB manifest version matches the project version
+
+`Status`: `PENDING` `Depends On`: `NONE`
+`Acceptance`: `AC-014`
+
+**Goal**
+
+Change only the `version` field of `packaging/mcpb/manifest.json` from `0.4.0` to `1.0.0`, so it equals `backend/pyproject.toml`'s `version`, as the revised design requires. This cuts no release.
+
+**Affected Area**
+
+`packaging/mcpb/manifest.json` (one field). Unchanged: `backend/pyproject.toml`, `backend/uv.lock`, release-please files, `CHANGELOG.md`, and the MCPB README.
+
+**Expected Outcome**
+
+`git diff -- packaging` shows exactly one changed line, and the version check in `cli/build_mcpb.py` no longer fails.
+
+**Self-Check**
+
+`git diff --stat` and `git diff -U0 -- packaging`; a JSON load of the manifest comparing `version` with the pyproject `version`. The full MCPB build and stage smoke run in DEV-006.
+
+---
+
 ## Plan Notes
 
 - Test files and fixtures under `backend/tests/` are Tester-owned. The design's **Test-corpus contract** (6→7 corpus counts, 8,080→~17,667 LP edges, the CAPS `progression_baseline.json` entry, and the sampled CAPS buildsTowards pairs) is left to Tester. Developer does not edit tests.
 - `AC-020` and `AC-021` are Documenter-owned; this plan makes no documentation edits.
-- Cycle baseline for boundary diffs: the design names `f9fdaa2`; current `HEAD` `d48627f` differs from it only under `.standards/`, so either works for the guarded paths.
+- Cycle baseline for boundary diffs: the design names `f9fdaa2`. `HEAD` has since gained the CAPS data commit `4c88217` and the replan's documentation commits, so boundary diffs use `f9fdaa2` explicitly.
 - `data/graph_packages/.claude/` is absent as of plan creation, so local catalog loading and tests can run in place.
 - Uploading the new input set to the Google Drive archive remains a user-owned follow-up.
-- The `tony` style's Python rules apply to any Python Developer writes; this plan expects only JSON in the repository and throwaway operator scripts in the scratchpad.
+- The `tony` style's Python rules, together with `styles/python.md`, apply to the DEV-008 backend change and to scratch scripts.
+- AC-016 was retired by the scope replan and replaced by AC-022; this plan references AC-022 only.
 
 ### Suspended Assignment 1
 
 `Recovery Frame`: `1` `Recovery Reason`: `DEV-006 disproved the design: AC-014 MCPB build is blocked by a pre-existing packaging/mcpb manifest 0.4.0 vs backend 1.0.0 version mismatch inside the forbidden packaging/ boundary, and CAPS path search truncates 9+ hop connections that the CAPS path-sample contract assumes complete.` `Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`: `HEAD d48627f plus uncommitted CAPS profile, overlay, south_africa_english input set, and package south-africa-dbe-caps-english-home-language-grades-r-3@2011+95ab377d1619; DEV-001..DEV-005 DONE; DEV-006 checks recorded under DEV-006 Evidence so far` `Next Action`: `After the corrected design returns, reconcile DEV-006 with it (and revise the plan if the correction changes approved intent), rerun the MCPB stage build and kgfegmcp-stdio-smoke --bundle-root against the stage, recheck the boundary, then continue to DEV-007.`
+
+### Suspended Assignment 2
+
+`Recovery Frame`: `1` `Recovery Reason`: `DEV-008 found the design's change boundary too narrow: raising max_depth to 16 also requires raising ProgressionPath node_ids/relationship_ids caps (13/12) in lp_models.py, which changes the published output schema, and the path tool description's published 'maxima 12/20' text.` `Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`: `HEAD a18dd76 (CAPS data committed in 4c88217) plus uncommitted .standards plan/state edits; backend/src unchanged; DEV-001..DEV-005 DONE; DEV-008 IN_PROGRESS with no code written; DEV-009, DEV-006, DEV-007 PENDING` `Next Action`: `After the corrected design returns, reconcile DEV-008's Affected Area and Expected Outcome with the widened boundary (revising the plan to PROPOSED if intent changes), then implement DEV-008 and run its self-checks.`
+
+### Reconciliation of Suspended Assignment 1 (2026-10-15)
+
+Architect closed recovery frame 1 with no rerun (`Handoff.Kind: RESUME`). The corrected scope and design materially change the approved implementation: they add a generic backend change and the MCPB manifest correction. So this plan is revised and returned to `PROPOSED`.
+- The saved DEVELOPMENT assignment resumes as DEV-008 and DEV-009, then DEV-006 (reopened to `PENDING` and rerun in full), then DEV-007.
+- DEV-001..DEV-005 stay `DONE`. The design's CAPS identity, profile, overlay, input-set, and package values are unchanged, so the accepted package `…@2011+95ab377d1619` remains valid.
+- `User Style` `tony` stays locked, and `Mode` stays `STEPWISE`.

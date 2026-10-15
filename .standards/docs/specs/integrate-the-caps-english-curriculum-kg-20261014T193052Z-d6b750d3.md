@@ -190,9 +190,15 @@ Rationale for the material choices:
   **Compatibility contract** under **Target-aware path search**. Requests
   the baseline truncated may now come back complete or with different
   truncation reasons.
-- `AC-017`: No tool, resource, template, or prompt is added or removed. Only
-  the existing `max_depth` bound of `get_learning_progression_paths` changes
-  (`AC-023`).
+- `AC-017`: No tool, resource, template, or prompt is added or removed. For
+  `get_learning_progression_paths`, three published items widen:
+  - the `max_depth` input bound, to 16 (`AC-023`);
+  - the output `ProgressionPath` array caps, to 16 relationships and 17
+    nodes, which `AC-023` and `AC-025` need in order to return paths longer
+    than 12 hops;
+  - the description's maxima figures.
+
+  Nothing narrows, so every response that was valid before stays valid.
 - `AC-018`: The change to `backend/src/` is the generic path-search
   replacement and request bound. It contains no framework ID and relaxes no
   validation rule.
@@ -234,9 +240,20 @@ them unchanged. The one generic component that changes is path search.
   helpers are replaced by the target-aware algorithm. Its signature, its
   callers in `services/learning_progressions.py`, `path_id_bound`, the
   size-reservation and byte-stop logic, and the result model are kept.
-- **Path request model** (`services/lp_models.py`
-  `GetLearningProgressionPathsRequest`): the `max_depth` upper bound becomes
-  16.
+- **Path depth ceiling** (`services/lp_models.py`): one module-level
+  constant set to 16, for example `MAX_PATH_DEPTH`. It drives the
+  following, so the request bound and the representable path length cannot
+  drift apart:
+  - the `GetLearningProgressionPathsRequest.max_depth` upper bound, with the
+    default staying 6;
+  - the `ProgressionPath` caps: `relationship_ids` at most the ceiling, and
+    `node_ids` at most the ceiling plus 1. They are currently 12 and 13.
+    `ProgressionPath` is used only for `paths` and `nextUnreturnedPath`.
+- **Path tool description** (`mcp/tools/learning_progressions.py`,
+  `get_learning_progression_paths`): the published "maxima 12/20" text
+  states the new ceiling, "maxima 16/20". Deriving it from the constant is
+  preferred. Every other part of that description, and the traversal tool's
+  "maxima 12/250/100", stays as it is.
 
 ## Interfaces and Contracts
 
@@ -384,13 +401,19 @@ fields upstream does not carry.
 ### Change boundary
 
 - No change to:
-  - `backend/src/`, except `services/lp_paths.py` (the algorithm
-    replacement) and the single `max_depth` bound of
-    `GetLearningProgressionPathsRequest` in `services/lp_models.py`. The
-    traversal request (`max_depth` ≤ 12, default 8), its distance model, the
-    path default (6), `max_paths` (≤ 20), and the 5,000 budgets stay as they
-    are. So do `path_notice` and every other notice text, because their
-    statements remain true.
+  - `backend/src/`, with three exceptions:
+    - `services/lp_paths.py`: the algorithm replacement.
+    - `services/lp_models.py`: the path-depth constant, the
+      `GetLearningProgressionPathsRequest.max_depth` bound, and the
+      `ProgressionPath` `node_ids`/`relationship_ids` caps (revised
+      2026-10-15 after `DEV-008`).
+    - `mcp/tools/learning_progressions.py`: the "maxima" figures in the
+      `get_learning_progression_paths` description.
+
+    The traversal request (`max_depth` ≤ 12, default 8), its distance model
+    and tool description, the path default (6), `max_paths` (≤ 20), and the
+    5,000 budgets stay as they are. So do `path_notice` and every other
+    notice text, because their statements remain true.
   - any existing `data/graph_packages/*`, `config/profiles/*`,
     `config/prompts/*`, or `data/input_artifacts/*` path
   - `Dockerfile`, `.dockerignore`, or `.gitignore`
@@ -444,9 +467,12 @@ fields upstream does not carry.
   - Wherever the oracle returns empty `truncation_reasons`, the new search
     must return the same `paths`, `relationships`, and `nodes`, in the same
     order, and empty `truncation_reasons`.
-- `AC-023` needs bound checks: `max_depth` 16 is accepted, 17 and 0 are
-  rejected the same way as other out-of-range values, and the default is 6.
-  The tool's published input schema shows maximum 16.
+- `AC-023` needs bound checks:
+  - `max_depth` 16 is accepted, 17 and 0 are rejected the same way as other
+    out-of-range values, and the default is 6.
+  - A 13-hop CAPS path is returned within those bounds.
+  - The published input and output schema caps and the description figures
+    match the ceiling.
 - `AC-026`: every path result produced by any of these checks satisfies the
   **Result invariants**.
 - The rights-flag assertions over all packages then cover CAPS without
@@ -638,15 +664,24 @@ external kgs/ (read-only)
     satisfy the **Compatibility contract**.
 - `AC-017`: The public surface counts are unchanged: 19 tools, 1 fixed
   resource, 14 resource templates, and 9 prompts.
-- `AC-018`: Under `backend/src/`, the cycle's diff touches only
-  `services/lp_paths.py` and the `max_depth` bound in
-  `services/lp_models.py`. No CAPS framework ID, snapshot ID, or input-set
-  name appears in any generic source file. No validation rule changes.
+- `AC-018`: Under `backend/src/`, the cycle's diff touches only the
+  **Change boundary** exceptions: `services/lp_paths.py`; the path-depth
+  constant, request bound, and `ProgressionPath` caps in
+  `services/lp_models.py`; and the path tool description in
+  `mcp/tools/learning_progressions.py`. No CAPS framework ID, snapshot ID, or
+  input-set name appears in any generic source file. No validation rule
+  changes.
 - `AC-019`: The full offline suite passes under the **Test-corpus contract**
   above.
-- `AC-023`: `max_depth` is accepted from 1 to 16, out-of-range values are
-  rejected through the existing validation error path, the default is 6, and
-  the published tool input schema reflects this.
+- `AC-023`:
+  - `max_depth` is accepted from 1 to 16, out-of-range values are rejected
+    through the existing validation error path, and the default is 6.
+  - A request with `max_depth` 13–16 raises no model error from the size
+    reservation's worst-case path.
+  - The published tool schema shows input `max_depth` maximum 16, and output
+    `nodeIds` maxItems 17 and `relationshipIds` maxItems 16.
+  - The description states "maxima 16/20".
+  - Traversal schemas and description are unchanged.
 - `AC-024`: The differential check in **Test-corpus contract** finds no
   difference on any baseline request with empty `truncation_reasons`.
 - `AC-025`: For each of the 43,145 connected CAPS pairs, requested with the
@@ -662,7 +697,8 @@ external kgs/ (read-only)
 - `AC-026`: Every path result in the checks above satisfies the **Result
   invariants**.
 - `AC-027`: No architectural impact (Documenter). The facts to document are
-  the 1–16 range, the default of 6, and target-aware behavior: long
+  the 1–16 range, the default of 6, returned paths of up to 16 hops, and
+  target-aware behavior: long
   connections are found within the fixed budgets, and `depth_limit` and
   `path_limit` keep their exact meanings.
 
@@ -723,6 +759,10 @@ external kgs/ (read-only)
 - **Reliance on acyclicity.** The exact-length search is correct only
   because validation rejects buildsTowards cycles. If that rule is ever
   relaxed, path search must be redesigned.
+- **Schema widening.** Clients that cached the path tool's schema will see
+  higher caps. Every limit widens and none narrows, so earlier responses stay
+  valid under the new schema. Any test that pins the schema or the
+  description changes under the **Test-corpus contract**.
 - **Larger graphs.** The backward pass costs up to one inspection per
   ancestor edge. A future package whose ancestor sets approach 5,000 edges
   would hit `work_limit` and report it honestly. CAPS peaks at 1,126.
