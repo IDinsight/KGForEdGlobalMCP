@@ -451,7 +451,7 @@ Completion evidence (2026-10-15, repository root, `HEAD 2ea9553`, where the DEV-
 
 ### DEV-010 — Compact relationship-evidence models and shared lifting helper
 
-`Status`: `PENDING` `Depends On`: `NONE`
+`Status`: `IN_PROGRESS` `Depends On`: `NONE`
 `Acceptance`: `AC-032, AC-034`
 
 **Goal**
@@ -478,6 +478,21 @@ Add the design's compact form (**Compact Learning Progression results**) as one 
 
 - Static checks (black, isort, ruff, mypy, pylint, interrogate) on the changed files.
 - A scratch round-trip over real evidence from all seven packages: lift, then rehydrate, must equal the full `relationship_evidence` exactly. Cases include a mixed `buildsTowards`/`relatesTo` set (`description`, `label`, and `relationshipType` stay per entry), an empty set (`{}`), and a synthetic set where one liftable value differs or is `null`.
+
+**Implementation Notes**
+
+Pre-implementation finding (2026-10-15). No code was changed; DEV-010 is suspended (Plan Notes, Suspended Assignment 4). Reading the consumers of the progression result models before coding showed two conflicts with the design's **Change boundary**. Neither file is a permitted exception.
+
+- **STDIO smoke would fail (AC-012, AC-014).** `cli/smoke_progressions.py` `_require_edge` (about lines 153–176, called at about line 301 for `get_standard_progressions`, `search_learning_progressions`, `traverse_learning_progressions`, and `get_learning_progression_paths`) requires `expected.relationships[0] not in result.relationships` to be false. Here `expected` is the full `GetLearningProgressionResult` from `get_learning_progression`.
+  - Once those four tools emit compact entries, a full `ProgressionRelationshipEvidence` can never equal a compact entry. `kgfegmcp-stdio-smoke` (repository and `--bundle-root`) would then raise "Progression query lost the exact edge or evidence identity."
+  - Fixing it means rehydrating, or comparing on identity fields, inside that CLI.
+- **Typing of the shared result base.** Both modules are typed against `ProgressionEvidenceResult`, whose `relationships` is `tuple[ProgressionRelationshipEvidence, ...]`, and mypy runs with the `pydantic.mypy` plugin (`pyproject.toml`).
+  - `mcp/tools/learning_progressions.py` `_build_progression_result(result: ProgressionEvidenceResult)` handles all five tools.
+  - `cli/smoke_progressions.py` has `_RESULT_MODELS: Mapping[str, type[ProgressionEvidenceResult]]` and `_require_edge(result: ProgressionEvidenceResult)`.
+  - If the three compacted results stop subclassing `ProgressionEvidenceResult`, both modules fail type checking.
+  - If they keep subclassing it with a compact `relationships` type, that is an incompatible override, and the base type misstates their entries. Widening the base field to a union would change `get_learning_progression`'s published output schema, which AC-036 forbids.
+  - A clean base needs those annotations updated, for example to a shared base without `relationships`, or to a union of result types, outside the boundary.
+- `services/learning_progressions.py` `progression_result_text(result: ProgressionEvidenceResult)` has the same annotation. It is not a permitted exception either.
 
 ---
 
@@ -594,6 +609,10 @@ Change only the `version` field of `packaging/mcpb/manifest.json` from `0.4.0` t
 ### Suspended Assignment 3
 
 `Recovery Frame`: `1` `Recovery Reason`: `DEV-008 disproved AC-025 as designed: target-aware search finds every CAPS pair within budgets, but the fixed 100,000-character result envelope rejects all 492 CAPS pairs of 10-13 hops (progression_result_too_large) and reports byte_limit on 26,062 of 86,290 all-pairs requests.` `Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`: `HEAD d635c6a plus uncommitted DEV-008 code in services/lp_paths.py, services/lp_models.py, mcp/tools/learning_progressions.py; DEV-001..DEV-005 DONE; DEV-008 IN_PROGRESS (implemented; AC-025 self-check unmet); DEV-009, DEV-006, DEV-007 PENDING` `Next Action`: `After the corrected design or scope returns, reconcile DEV-008 with it (revising the plan to PROPOSED if intent changes), apply any newly permitted change, rerun the all-pairs, differential, schema, and static checks, then continue with DEV-009.`
+
+### Suspended Assignment 4
+
+`Recovery Frame`: `1` `Recovery Reason`: `DEV-010 found the compact-form change boundary too narrow: cli/smoke_progressions.py asserts the full get_learning_progression edge is in each compacted tool's relationships (stdio smoke for AC-012/AC-014 would fail), and mcp/tools/learning_progressions.py plus that smoke CLI are typed against ProgressionEvidenceResult, so a compact result base needs changes outside the boundary.` `Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`: `HEAD e200189 (DEV-008 complete with cycle guard); backend/src unchanged since; DEV-001..DEV-005 and DEV-008 DONE; DEV-010 IN_PROGRESS with no code written; DEV-011, DEV-012, DEV-009, DEV-006, DEV-007 PENDING` `Next Action`: `After the corrected design returns, reconcile DEV-010..DEV-012 with the widened boundary (revising the plan to PROPOSED if intent changes), then implement DEV-010.`
 
 ### Reconciliation of Suspended Assignment 1 (2026-10-15)
 
