@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v1.0.0...v2.0.0) (2026-10-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **progressions:** clients of these three tools must read lifted fields (attribution, author, license, entity fields, the confidence notice and similar) from sharedRelationshipEvidence when an entry omits them.
+
+### Features
+
+* **progressions:** add CAPS English Home Language R-3 with target-aware paths and compact results ([#35](https://github.com/IDinsight/KGForEdGlobalMCP/issues/35)) ([da6a522](https://github.com/IDinsight/KGForEdGlobalMCP/commit/da6a5229491cc7a83361c7f6ae616f0f09f6a674))
+
 ## [1.0.0](https://github.com/IDinsight/KGForEdGlobalMCP/compare/v0.4.0...v1.0.0) (2026-10-14)
 
 
