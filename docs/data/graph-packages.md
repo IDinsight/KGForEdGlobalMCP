@@ -45,7 +45,7 @@ A package holds only the files the server needs at runtime:
 ```
 
 Artifact basenames differ by framework, but logical roles are declared by the manifest.
-The six current packages range from 5.2 MB (Nigeria) to 32.3 MB (CBSE), about 84 MB in
+The seven current packages range from 5.2 MB (Nigeria) to 86.9 MB (CAPS), about 171 MB in
 total.
 
 ## What each area holds

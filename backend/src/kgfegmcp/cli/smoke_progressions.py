@@ -16,7 +16,9 @@ from fastmcp.utilities.json_schema import compress_schema
 # Package Library
 from kgfegmcp.domain.identifiers import FrameworkId, RelationshipId, SnapshotId
 from kgfegmcp.schemas import FrozenSchema
+from kgfegmcp.services.lp_compact import rehydrate_relationships
 from kgfegmcp.services.lp_models import (
+    CompactProgressionEvidenceResult,
     GetLearningProgressionPathsRequest,
     GetLearningProgressionPathsResult,
     GetLearningProgressionRequest,
@@ -24,6 +26,7 @@ from kgfegmcp.services.lp_models import (
     GetStandardProgressionsRequest,
     ProgressionCollectionResult,
     ProgressionEvidenceResult,
+    ProgressionResult,
     SearchLearningProgressionsRequest,
     TraverseLearningProgressionsRequest,
     TraverseLearningProgressionsResult,
@@ -36,7 +39,9 @@ _REQUEST_MODELS: Mapping[str, type[FrozenSchema]] = {
     "search_learning_progressions": SearchLearningProgressionsRequest,
     "traverse_learning_progressions": TraverseLearningProgressionsRequest,
 }
-_RESULT_MODELS: Mapping[str, type[ProgressionEvidenceResult]] = {
+_RESULT_MODELS: Mapping[
+    str, type[ProgressionEvidenceResult] | type[CompactProgressionEvidenceResult]
+] = {
     "get_learning_progression": GetLearningProgressionResult,
     "get_learning_progression_paths": GetLearningProgressionPathsResult,
     "get_standard_progressions": ProgressionCollectionResult,
@@ -112,7 +117,7 @@ def _query_requests(
 
 async def _read_query(
     *, client: Client, name: str, request: dict[str, object]
-) -> ProgressionEvidenceResult:
+) -> ProgressionResult:
     """Execute a real nested request and validate the full operation result.
 
     Parameters
@@ -126,7 +131,7 @@ async def _read_query(
 
     Returns
     -------
-    ProgressionEvidenceResult
+    ProgressionResult
         Validated operation-specific evidence and completeness model.
 
     Raises
@@ -151,7 +156,7 @@ async def _read_query(
 
 
 def _require_edge(
-    *, expected: GetLearningProgressionResult, result: ProgressionEvidenceResult
+    *, expected: GetLearningProgressionResult, result: ProgressionResult
 ) -> None:
     """Require each query to preserve the exact generated edge and package identity.
 
@@ -160,7 +165,7 @@ def _require_edge(
     expected
         Exact original relationship returned by lookup.
     result
-        One bounded query's typed result.
+        One bounded query's typed result, full or compact.
 
     Raises
     ------
@@ -168,8 +173,18 @@ def _require_edge(
         If the edge is missing, changed or routed into a different package.
     """
 
+    # Compact entries are compared whole, after restoring their shared evidence.
+    relationships = (
+        rehydrate_relationships(
+            relationships=result.relationships,
+            shared=result.shared_relationship_evidence,
+        )
+        if isinstance(result, CompactProgressionEvidenceResult)
+        else result.relationships
+    )
+
     if (
-        expected.relationships[0] not in result.relationships
+        expected.relationships[0] not in relationships
         or result.metadata != expected.metadata
     ):
         raise RuntimeError(

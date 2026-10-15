@@ -85,7 +85,7 @@ in a separate STDIO process. It then:
    only links taken from tool text and rendered **EVIDENCE LINKS**, compares
    `get_workflow_instructions` with the native prompts, and checks typed failures. It
    also requires discovery text to show included `learning_progressions` with counts
-   equal to statistics (and the `graphTypes` filter to keep all six snapshots), reads
+   equal to statistics (and the `graphTypes` filter to keep every snapshot, seven in this repository), reads
    the support relationship and component links taken from component text, and requires
    the curriculum review to scan each relationship type separately and the teaching
    workflows to call each connection kind separately; and
@@ -396,7 +396,7 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
 # 5. Confirm ZIP-level integrity.
-unzip -t ./dist/kgfegmcp-0.4.0.mcpb
+unzip -t ./dist/kgfegmcp-1.0.0.mcpb
 ```
 
 The exact archive name follows the version in `packaging/mcpb/manifest.json`.

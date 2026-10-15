@@ -23,7 +23,7 @@ from kgfegmcp.services.lp_models import (
     GetStandardProgressionsRequest,
     SearchLearningProgressionsRequest,
 )
-from tests.fixtures.progression_fixtures import selector
+from tests.fixtures.progression_fixtures import rehydrated, selector
 
 
 def ordered(runtime: CatalogPackageRuntime) -> tuple[GraphRelationship, ...]:
@@ -88,7 +88,7 @@ def pages(
 
 
 def test_complete_pagination_matches_original_edges(accepted_state: AppState) -> None:
-    """Bounded six-package generation verifies one exhaustive ordered-ID property."""
+    """Bounded seven-package generation verifies one exhaustive ordered-ID property."""
     total = 0
     for runtime in accepted_state.catalog_load_result.package_runtimes:
         identity = runtime.catalog_package.package_identity
@@ -113,7 +113,7 @@ def test_complete_pagination_matches_original_edges(accepted_state: AppState) ->
             == runtime.loaded_package.manifest.counts.relates_to_relationships
         )
         total += len(found)
-    assert total == 8080
+    assert total == 17667
 
 
 @pytest.mark.parametrize("kind", ["incoming_builds", "outgoing_builds", "related"])
@@ -164,7 +164,7 @@ def test_direct_adjacency_matches_original_records(
         assert all(
             e.relationship
             == runtime.graph_store.relationships_by_id[e.relationship.relationship_id]
-            for e in result.relationships
+            for e in rehydrated(result)
         )
 
 
@@ -319,7 +319,11 @@ def test_zero_match_work_page_makes_progress(accepted_state: AppState) -> None:
 
 
 def project_large(monkeypatch: pytest.MonkeyPatch, size: int) -> None:
-    """Inject projected content while preserving original accepted graph records."""
+    """Inject projected content while preserving original accepted graph records.
+
+    The large attribution differs per relationship, so compaction keeps it in every
+    entry instead of stating it once.
+    """
     original = LearningProgressionsService.relationship_evidence
 
     def project(
@@ -330,7 +334,11 @@ def project_large(monkeypatch: pytest.MonkeyPatch, size: int) -> None:
         return item.model_copy(
             update={
                 "relationship": relationship.model_copy(
-                    update={"attribution_statement": "x" * size}
+                    update={
+                        "attribution_statement": (
+                            f"{'x' * size} {relationship.relationship_id}"
+                        )
+                    }
                 )
             }
         )

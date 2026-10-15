@@ -20,7 +20,7 @@ from tests.fixtures.evidence_fixtures import (
 
 @pytest.fixture(scope="session")
 def accepted_state() -> AppState:
-    """Bootstrap the actual six local packages once for acceptance checks."""
+    """Bootstrap the actual seven local packages once for acceptance checks."""
     return bootstrap_application()
 
 

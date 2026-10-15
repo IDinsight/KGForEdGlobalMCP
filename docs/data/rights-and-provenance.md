@@ -77,7 +77,7 @@ evidence is not in the package, so a URI for an archive-only name, such as
 
 ## Current repository rights posture
 
-All six supplied packages currently declare:
+All seven supplied packages currently declare:
 
 ```text
 reviewStatus = provisional_operator_approved
@@ -91,8 +91,8 @@ Therefore single-standard, relationship, provenance, and eligible full-text reso
 families can pass their rights gates, while the built-in bulk-content artifact class is
 not authorized by the current package rights.
 
-Source license text still differs by framework. For example, several packages retain
-`Unknown` or `Not specified in source PDF`, while Rwanda retains an explicit
+Source license text still differs by framework. For example, several packages, including
+CAPS, retain `Unknown` or `Not specified in source PDF`, while Rwanda retains an explicit
 `© 2025 Rwanda Basic Education Board ... All rights reserved.` source-license statement.
 The operator review state does not rewrite the source license.
 

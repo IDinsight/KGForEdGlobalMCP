@@ -52,5 +52,14 @@
     "originalSnapshotId": "rwanda-reb-mathematics-lower-primary-1-3@2025+98426787aa9f",
     "supportsCount": 797,
     "supportsDigest": "85b1343f6390728065eea9745ef9403ceb1d172a9dd36010267b0e5f2ccb0f5c"
+  },
+  "south-africa-dbe-caps-english-home-language-grades-r-3": {
+    "hasChildCount": 1144,
+    "hasChildDigest": "7b986a9237c1726b86648935afdbc950198be04cb20b17e891c19a14e5348172",
+    "nodeCount": 2057,
+    "nodesDigest": "97b6944b50625c06c5308c5b66559ca88d3c4415c68207b5ab4e6b673354358f",
+    "originalSnapshotId": "south-africa-dbe-caps-english-home-language-grades-r-3@2011+95ab377d1619",
+    "supportsCount": 1204,
+    "supportsDigest": "e148467470b62e9b024f7d59911d21353bd941c2395c2dd4bc93b9a516ebfd4c"
   }
 }

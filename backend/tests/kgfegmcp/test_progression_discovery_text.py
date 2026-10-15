@@ -52,7 +52,7 @@ async def stored_lp_counts(client: Client, framework_id: str) -> tuple[int, int]
 async def test_graph_type_filter_matches_included_types(
     accepted_state: AppState, monkeypatch: pytest.MonkeyPatch, graph_types: list[str]
 ) -> None:
-    """LP finds all six snapshots; routing and empty filters keep their six results."""
+    """LP finds all seven snapshots; routing and empty filters keep their results."""
     monkeypatch.setattr("kgfegmcp.app.bootstrap_application", lambda: accepted_state)
     request: dict[str, Any] = {"limit": 2}
     if graph_types:
@@ -76,7 +76,7 @@ async def test_graph_type_filter_matches_included_types(
             request = {**request, "cursor": page.next_cursor}
         else:
             pytest.fail("Framework discovery did not finish.")
-    assert sorted(found) == snapshot_ids(accepted_state) and len(found) == 6
+    assert sorted(found) == snapshot_ids(accepted_state) and len(found) == 7
 
 
 async def test_list_frameworks_text_shows_lp_availability(
@@ -89,8 +89,8 @@ async def test_list_frameworks_text_shows_lp_availability(
         body = text(result)
         page = ListFrameworksResult.model_validate(result.structured_content)
         assert not any(line.startswith("Graph types:") for line in body.splitlines())
-        assert body.count("Routing graph types: academic_standards\n") == 6
-        assert body.count(f"Included graph types: {INCLUDED}\n") == 6
+        assert body.count("Routing graph types: academic_standards\n") == 7
+        assert body.count(f"Included graph types: {INCLUDED}\n") == 7
         for item in page.items:
             assert [value.value for value in item.included_graph_types] == (
                 INCLUDED.split(", ")
@@ -140,7 +140,7 @@ async def test_capabilities_text_shows_included_types_and_lp_blocks(
         assert f"\nIncluded graph types: {INCLUDED}\n" in body
         assert structured["includedGraphTypes"] == INCLUDED.split(", ")
         blocks = body.split("- Graph package ID: ")[1:]
-        assert len(blocks) == 6
+        assert len(blocks) == 7
         for block in blocks:
             framework_id = block.split("Framework ID: ", 1)[1].split("\n", 1)[0]
             builds, relates = await stored_lp_counts(client, framework_id)

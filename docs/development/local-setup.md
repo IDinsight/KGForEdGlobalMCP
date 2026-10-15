@@ -162,7 +162,7 @@ STDIO acceptance checks and record the gap explicitly.
 
 ## Work with temporary package fixtures
 
-The six repository graph packages are terminal positive baselines. Do not modify them in
+The seven repository graph packages are terminal positive baselines. Do not modify them in
 place to test invalid or destructive package behavior.
 
 Instead:

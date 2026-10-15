@@ -263,7 +263,7 @@ revises
 supersedes
 ```
 
-Each relation identifies a target snapshot and can include evidence. The supplied six
+Each relation identifies a target snapshot and can include evidence. The supplied seven
 packages currently declare no snapshot relations.
 
 ---

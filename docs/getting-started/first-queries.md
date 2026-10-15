@@ -174,8 +174,9 @@ When presenting source evidence, keep local labels such as:
 
 - `BASIC 1` for Ghana;
 - `PRIMARY THREE` for Nigeria;
-- `P3` for Rwanda; and
-- `Class-5` for Tamil Nadu.
+- `P3` for Rwanda;
+- `Class-5` for Tamil Nadu; and
+- `Grade R` for South Africa's CAPS (its normalized grade `K` is only the source's encoding).
 
 Normalized grade values are useful retrieval facets, but they do not establish official
 grade equivalence across frameworks.

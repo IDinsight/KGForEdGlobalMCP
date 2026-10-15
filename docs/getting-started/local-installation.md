@@ -39,20 +39,20 @@ data are supplied through the repository-level `config/` and `data/` directories
 
 Allow about 1 GB for the checkout, Git history and Python environment in this
 sample, plus additional space for Python downloads and the uv cache. Measurements
-from this checkout on 2026-10-14 are:
+from this checkout on 2026-10-15 are:
 
 | Component | Measured size | What it is for |
 |---|---|---|
-| Tracked files | 103 MB total | A normal clone downloads all tracked data |
-| `data/graph_packages/` (part of that total) | 84 MB | Required runtime graph packages |
+| Tracked files | 190 MB total | A normal clone downloads all tracked data |
+| `data/graph_packages/` (part of that total) | 171 MB | Required runtime graph packages |
 | `data/input_artifacts/` (part of that total) | 1 MB | Build specs and small build inputs; not loaded by the server or included in the bundle/image |
-| Local Git packs | 293 MiB | Repository history, which still holds earlier, larger package files; a fresh clone's pack size may differ |
+| Local Git objects | 312 MiB | Repository history, which still holds earlier, larger package files; a fresh clone's size may differ |
 | Existing `backend/.venv` | 319 MiB | Includes development/docs tooling here; a runtime-only environment was not measured |
 
 GB and MB are decimal; GiB and MiB are binary. These figures exclude git-ignored local
 files, which are not part of a fresh clone: the `data/source_artifacts/` tree and the
 archived package evidence. You need the archived evidence only to rebuild or accept a
-package; restoring all of it adds about 670 MB under `data/input_artifacts/` (see
+package; restoring all of it adds about 1.29 GB under `data/input_artifacts/` (see
 [Restore and verify archived evidence](../development/framework-package.md#restore-and-verify-archived-evidence)). uv's cache and managed Python live outside the checkout and were not
 measured. The estimate does not cover a built bundle, a retained stage or an
 installed Desktop extension; those need additional space.

@@ -63,7 +63,7 @@ blindly at MCP boundaries.
 | `invalid_comparison_selection`     | Cross-framework selection is inconsistent                 |
 | `learning_progression_not_found`   | Exact LP ID missing or non-LP                             |
 | `invalid_progression_request`      | LP semantic filters/selection invalid                     |
-| `progression_result_too_large`     | Exact LP result, single edge or first path exceeds result ceiling |
+| `progression_result_too_large`     | Exact LP result or single edge exceeds result ceiling; for paths, only when even the IDs-only result does |
 | `invalid_evidence_uri`             | `read_evidence` URI is not one exact supported address    |
 | `unsupported_evidence_format`      | Authorized resource bytes are not UTF-8 text              |
 | `evidence_result_too_large`        | No evidence content fits beside its metadata              |
@@ -219,9 +219,9 @@ cross-framework ranking limit.
 
 ## Progression limits
 
-See [the five-tool bounds table](progression-tool.md#bounds-and-continuation). Direct/discovery pages default to 25 and cap at 100, with 5,000 examined candidates. Traversal defaults to depth 8/nodes 100/edges 100 and caps at 12/250/100. Paths default to depth 6/three paths, capped at 12/20. Work and path queue admissions cap at 5,000; the whole tool result (text plus structured content) caps at 1 MiB and 100,000 characters.
+See [the five-tool bounds table](progression-tool.md#bounds-and-continuation). Direct/discovery pages default to 25 and cap at 100, with 5,000 examined candidates. Traversal defaults to depth 8/nodes 100/edges 100 and caps at 12/250/100. Paths default to depth 6/three paths, capped at 16/20. Examined edges (work) and the partial paths a path search creates each cap at 5,000; the whole tool result (text plus structured content) caps at 1 MiB and 100,000 characters.
 
-Traversal/paths have no cursor. `scopeComplete`, `graphExhausted`, frontier/counters and `truncationReasons` distinguish requested-depth completion from full exhaustion. Complete empty evidence is successful; bounded empty results do not prove global disconnection. An oversized exact result, single edge or first path raises `progression_result_too_large`; a later path that does not fit stops the result with `byte_limit` and `nextUnreturnedPath`.
+Traversal/paths have no cursor. `scopeComplete`, `graphExhausted`, frontier/counters and `truncationReasons` distinguish requested-depth completion from full exhaustion. Complete empty evidence is successful; bounded empty results do not prove global disconnection. An oversized exact result or single edge raises `progression_result_too_large`. A path that does not fit stops the result with `byte_limit` and is named in `nextUnreturnedPath`; when it is the first path, the result holds no paths and names only that one ([details](progression-tool.md#paths)). Four LP tools state evidence fields shared by every returned edge once, in `sharedRelationshipEvidence` ([details](progression-tool.md#shared-evidence-in-multi-edge-results)).
 
 ## Evidence and workflow access limits
 

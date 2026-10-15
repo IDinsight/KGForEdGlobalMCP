@@ -23,12 +23,12 @@ from tests.fixtures.progression_fixtures import package_route as route
 
 
 def test_slim_per_edge_trace_and_hashes(accepted_state: AppState) -> None:
-    """Six-package samples serve slim entries that keep the judgment and its trace.
+    """Seven-package samples serve slim entries that keep the judgment and its trace.
 
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     """
 
     for runtime in accepted_state.catalog_load_result.package_runtimes:
@@ -140,7 +140,7 @@ def test_bulk_is_denied_independently(accepted_state: AppState) -> None:
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     """
 
     for runtime in accepted_state.catalog_load_result.package_runtimes:
@@ -167,7 +167,7 @@ def test_archived_and_record_artifacts_are_unavailable(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     """
 
     for runtime in accepted_state.catalog_load_result.package_runtimes:

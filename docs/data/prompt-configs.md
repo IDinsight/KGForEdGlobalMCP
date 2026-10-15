@@ -96,7 +96,7 @@ and `prompts`.
 
 ## Current repository configurations
 
-The repository snapshot contains one prompt config for each of the six accepted profile
+The repository snapshot contains one prompt config for each of the seven accepted profile
 identities. All currently declare `promptConfigVersion` `2.0.0`.
 
 | Framework/profile                  | Prompt-config ID                                              | Current prompt-specific overlays               |
@@ -107,10 +107,11 @@ identities. All currently declare `promptConfigVersion` `2.0.0`.
 | Tamil Nadu Mathematics Classes 1–5 | `india-tamil-nadu-tnscert-mathematics-classes-1-5-guidance`   | Study support, teacher guide, student handbook |
 | Nigeria Mathematics Primary 1–3    | `nigeria-nerdc-mathematics-primary-1-3-guidance`              | Study support, teacher guide, student handbook |
 | Rwanda Mathematics P1–P3           | `rwanda-reb-mathematics-lower-primary-1-3-guidance`           | Study support, teacher guide, student handbook |
+| CAPS English Home Language Grades R–3 | `south-africa-dbe-caps-english-home-language-grades-r-3-guidance` | Study support, teacher guide, student handbook |
 
-All six also provide the five shared-guidance sections. The current files do **not**
+All seven also provide the five shared-guidance sections. The current files do **not**
 declare framework-local `administratorAlignmentReview` or `crossFrameworkComparison`
-overlays, although the schema supports them. All three LP workflow overlays are also absent in the six current configs; the registered generic workflows remain available. Those multi-framework workflows still use
+overlays, although the schema supports them. All three LP workflow overlays are also absent in the seven current configs; the registered generic workflows remain available. Those multi-framework workflows still use
 the generic prompt definition and the selected frameworks' accepted profile/rights
 context.
 

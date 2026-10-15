@@ -1,0 +1,186 @@
+{
+	"frameworkIds": [
+		"south-africa-dbe-caps-english-home-language-grades-r-3"
+	],
+	"profileId": "south-africa-dbe-caps-english-home-language-grades-r-3",
+	"profileVersion": "2.0",
+	"promptConfigId": "south-africa-dbe-caps-english-home-language-grades-r-3-guidance",
+	"promptConfigSchemaVersion": "1.1",
+	"promptConfigVersion": "2.0.0",
+	"prompts": {
+		"studentHandbookSection": {
+			"audienceGuidance": {
+				"instructions": [
+					"Address the reader as a learner in Grade R, Grade 1, Grade 2, or Grade 3 and use short, encouraging sentences suited to a young learner in the Foundation Phase. For Grade R, keep text the learner must read to a minimum and write so that an adult can read it aloud.",
+					"Support confidence in listening, speaking, reading, and writing without assuming the learner's home or first language, home literacy environment, reading level, disability, assessment history, or access to technology. English Home Language is the curriculum's subject name, not information about any individual learner.",
+					"Explain unfamiliar terms such as Term, Skill Area, Sub-strand, Skill, phonics, vocabulary, fluency, or comprehension only when they are needed.",
+					"Respect approximate language, emergent or invented spelling, oral rehearsal, and developmental variation as parts of learning while still modelling clear and accurate English."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Prefer short generated examples drawn from familiar South African school and community life, such as greetings, family and friends, classroom objects, food, shops, games, sport, celebrations, transport, animals, health, safety, the environment, weather, or local places, while avoiding stereotypes and invented factual claims.",
+					"For oral-language examples, use brief original dialogues, questions, instructions, requests, news-sharing, songs, rhymes, or story prompts and label them as generated; do not reproduce copyrighted lyrics or imply that an invented text appears in the curriculum.",
+					"For reading examples, match the retrieved Skill: use sound blending or segmentation for phonics, letter-sound or word-family work where relevant, short level-appropriate passages for comprehension, and picture or print cues for emergent reading.",
+					"For writing examples, move from drawing, mark-making, labels, and words toward sentences and short texts only when the selected Grade, Term, and Skill support that form.",
+					"Use a range of common South African personal names or place-neutral settings selectively, and never use a real learner's personal information."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Begin with the meaning of the retrieved Skill's action, such as listen, respond, retell, recognise, blend, segment, decode, read, predict, write, or describe, so the learner understands what kind of language work is expected.",
+					"Connect listening, speaking, reading, and writing where useful: say or hear the language first, notice how it works, read it in context, and then use it in speech or writing without forcing every skill into every explanation.",
+					"Teach language structures through meaningful sentences, conversation, reading, and writing rather than lengthy definitions or abstract terminology.",
+					"For comprehension, prompt the learner to use pictures, titles, prior knowledge, vocabulary, sequence, characters, facts, clues, and personal connections while distinguishing what the text says from what the learner infers.",
+					"Keep pronunciation, spelling, text length, vocabulary, handwriting, and composition expectations within the retrieved Grade and Term."
+				],
+				"mode": "append"
+			},
+			"sectionStructureGuidance": {
+				"instructions": [
+					"Use a learner-friendly structure such as: What we are learning; Listen and say; Read and notice; Try it; Write, draw, or tell your response; Check and reflect. Adapt the headings when the Skill concerns only some of these activities.",
+					"Quote the exact source-backed Skill wording near the expectation and show its Grade, Term, Skill Area, and Sub-strand. The framework has no statement codes, so do not invent a code or reference number.",
+					"Include a short generated self-check that asks the learner to demonstrate the selected action, such as listening and responding, reading aloud, explaining meaning, answering a question, retelling, drawing and labelling, or composing a sentence.",
+					"When shared, paired, or independent reading is relevant, encourage choice, enjoyment, and talk about an age-appropriate book rather than reducing reading to a worksheet."
+				],
+				"mode": "append"
+			}
+		},
+		"studentStudySupport": {
+			"audienceGuidance": {
+				"instructions": [
+					"Use clear, warm English appropriate to the requested Grade R, Grade 1, Grade 2, or Grade 3 context, with short directions, visible examples, and enough repetition for a young learner.",
+					"Build confidence through supportive correction, oral rehearsal, repeated reading, and opportunities to try again; do not shame approximate pronunciation, invented spelling, or an incomplete first attempt.",
+					"Refer to the reader as a learner and do not claim knowledge of an individual learner's ability, diagnosis, home or first language, assessment record, or home circumstances.",
+					"Avoid assuming access to private tutoring, printed books at home, reliable internet, a phone, or a particular South African language."
+				],
+				"mode": "append"
+			},
+			"exampleGuidance": {
+				"instructions": [
+					"Use brief generated examples from familiar school, home, and community contexts, including greetings, family, classroom objects, food, games, sport, transport, animals, weather, safety, health, the environment, celebrations, and everyday events, while avoiding stereotypes or invented local statistics.",
+					"Use low-cost materials where helpful, such as letter cards, picture cards, classroom labels, bottle tops, paper strips, a chalkboard, locally available objects, simple story pictures, or a learner-made word wall.",
+					"For sound work, clearly separate letter names, letter sounds, syllables, rhyming endings, blends, digraphs, and whole-word meaning; do not introduce a technical distinction unless it supports the retrieved Skill.",
+					"For reading and vocabulary practice, use short original texts and sentences that are decodable or level-appropriate for the selected Skill, while avoiding copyrighted passages or song lyrics.",
+					"For writing practice, provide a model or sentence frame only as temporary support and invite the learner to produce a personal or imaginative response when the selected Skill allows it."
+				],
+				"mode": "append"
+			},
+			"explanationGuidance": {
+				"instructions": [
+					"Use a simple learning cycle suited to the selected Skill: hear or observe a model, join in, practise with support, try independently, receive feedback, and reflect on meaning or accuracy.",
+					"For phonics and decoding, model the exact sound or word operation, let the learner blend or segment aloud, connect the result to meaning, and then use the word in a sentence where appropriate.",
+					"For comprehension, use before-reading, during-reading, and after-reading prompts, including prediction, clarification, factual and inferential questions, sequence, retelling, and links to experience only when supported by the selected Skill.",
+					"For writing, separate idea generation, drafting, revising, editing, and sharing when the Skill concerns writing as a process; do not demand polished spelling and punctuation during initial idea generation.",
+					"Explain grammar and writing conventions through meaningful use in speech, reading, or writing, not through memorising lengthy definitions."
+				],
+				"mode": "append"
+			},
+			"practiceGuidance": {
+				"instructions": [
+					"Balance generated practice across listening, speaking, reading, and writing as appropriate to the selected Skill rather than turning every task into written drill.",
+					"Sequence practice from imitation or supported participation toward independent use, using repetition with variation rather than repeating identical items only.",
+					"Include at least one meaning-focused task, such as choosing a suitable response, predicting, retelling, explaining a word in context, describing a picture, asking a question, or creating a sentence or short text.",
+					"When suitable, include pair or family-friendly oral practice that can also be completed alone, and provide a no-device alternative for any audio, image, or digital suggestion.",
+					"Provide answer guidance that models an acceptable response or explains the language pattern while allowing more than one reasonable answer for open speaking, interpretation, or composition tasks; remind the learner that practice is not official proof of mastery."
+				],
+				"mode": "append"
+			}
+		},
+		"teacherGuideDraft": {
+			"assessmentGuidance": {
+				"instructions": [
+					"When retrieved evidence includes source assessment information, keep it clearly separate from any newly generated checks, observations, questions, rubrics, or records.",
+					"Align generated evidence to the retrieved Skill's action and to the relevant language mode: listening evidence should not be inferred only from writing, speaking should not be inferred only from silent reading, and reading comprehension should not be reduced to oral fluency alone.",
+					"Use varied formative evidence such as observation, learner talk, response to instructions, oral retelling, sound blending or segmentation, reading aloud, vocabulary use, comprehension responses, drawings and writing samples, self-reflection, and peer feedback as appropriate.",
+					"Use criterion-referenced language tied to the selected Skill and avoid claiming that one generated task comprehensively measures a Skill Area, Term, reading level, language proficiency, or learner mastery.",
+					"Provide timely, specific feedback prompts that identify what the learner did successfully and the next manageable step, while keeping all generated assessment material explicitly labelled as generated."
+				],
+				"mode": "append"
+			},
+			"differentiationGuidance": {
+				"instructions": [
+					"Differentiate by text length, vocabulary support, task complexity, grouping, response mode, modelling, prompting, time, and degree of independence without silently changing the source-backed Skill.",
+					"Use scaffolding such as activating prior knowledge, pre-teaching key vocabulary, modelling aloud, using pictures or real objects, echo or choral practice, sentence frames, shared reading or writing, and gradual removal of support.",
+					"Provide multiple ways to participate, including listening, speaking, pointing, acting, drawing, arranging cards, reading, and writing, so emerging readers, shy speakers, and learners needing additional support can contribute safely without being diagnosed or labelled.",
+					"Recognise learners' knowledge of other languages and their cultural experience as possible resources for meaning-making, but do not invent official translations, bilingual standards, or fixed language-transfer rules; provide English source wording separately.",
+					"Offer low-resource alternatives for any proposed audio, video, digital text, projector, printer, or device activity so differently resourced schools can address the same language goal."
+				],
+				"mode": "append"
+			},
+			"lessonStructureGuidance": {
+				"instructions": [
+					"Structure the generated lesson around an exact source-backed Skill, activation of familiar language or experience, teacher modelling, guided participation, collaborative or individual practice, independent use, feedback, and a brief reflection or application.",
+					"Integrate Listening and Speaking, Reading, and Writing when the language purpose supports integration, while keeping the primary assessed skill and evidence clear.",
+					"For reading lessons, use a suitable before-reading, during-reading, and after-reading sequence; for writing-process Skills, distinguish planning, drafting, revising, editing, and sharing.",
+					"For grammar or writing conventions, begin with meaningful oral or written examples, draw attention to the form in context, provide guided use, and return the form to communication rather than centring terminology.",
+					"Identify the exact source-backed Grade, Term, Skill Area, Sub-strand, and Skill separately from generated objectives, texts, questions, activities, timing, resources, differentiation, and success checks. Treat any routine, time allocation, or activity format you suggest as generated unless retrieved evidence states it."
+				],
+				"mode": "append"
+			},
+			"pedagogyGuidance": {
+				"instructions": [
+					"Prioritise learner-centred, participatory language learning in which learners interact, make meaning, test interpretations, and use English for purposeful communication.",
+					"Respect learners' existing linguistic and cultural resources while preserving the framework's English source wording, and avoid unsupported claims about any learner's home or first language.",
+					"Use oral language deliberately through songs, rhymes, storytelling, dramatisation, conversation, news-sharing, listening comprehension, questions, instructions, and requests, with frequent opportunities for every learner to speak and listen meaningfully.",
+					"Teach early reading through developmentally appropriate phonological or phonemic awareness, phonics, blending, segmentation, word families, vocabulary, fluency, comprehension, and meaning-making according to the selected Skill rather than using one method for every reading need.",
+					"Integrate grammar with listening, speaking, reading, and writing; model and practise correct, fluent use in everyday contexts and avoid lengthy abstract grammatical explanations for young learners.",
+					"Encourage reading for enjoyment through learner choice, book talk, shared, paired, or independent reading, and age-appropriate responses, without inventing titles or treating a count of books as evidence of comprehension.",
+					"For Grade R, favour oral, playful, and hands-on generated activities and keep any reading or writing demand within the retrieved Skill.",
+					"Use digital tools only where they add language-learning value and are feasible, and always provide an equitable non-digital alternative."
+				],
+				"mode": "append"
+			}
+		}
+	},
+	"shared": {
+		"languageGuidance": {
+			"instructions": [
+				"Use clear South African educational English when the requested output language is English, and refer to the reader as a learner.",
+				"Preserve exact English source wording, Grade, Term, Skill Area, and Sub-strand labels, Skill text, and language examples when citing evidence.",
+				"The accepted framework is English-only: do not create official bilingual pairs, translations, or cross-language equivalents. If the requested output language is not English, label the translation as generated and retain the original English evidence where needed.",
+				"English Home Language is the source subject name. Do not treat it as information about any learner's home language, and do not invent translations of the curriculum into other South African languages."
+			],
+			"mode": "append"
+		},
+		"localContextGuidance": {
+			"instructions": [
+				"Prefer locally plausible South African or neutral contexts only when they clarify the selected English-language skill, and do not present invented customs, statistics, dialect features, prices, events, or regional practices as source facts.",
+				"Use familiar contexts selectively, including home, school, classroom, shops, community places, food, greetings, celebrations, stories, songs, games, sport, transport, health, safety, animals, and the environment, while respecting the diversity of South Africa's communities and languages.",
+				"Adapt generated examples to the caller's stated setting and materials while offering low-cost alternatives such as pictures, letter or word cards, labels, locally available objects, paper, chalkboard work, peer talk, role-play, and learner-made texts.",
+				"Do not force a local context into phonics, spelling, grammar, or text analysis when a simpler neutral example would be clearer."
+			],
+			"mode": "append"
+		},
+		"outputGuidance": {
+			"instructions": [
+				"Separate the exact source-backed curriculum expectation from generated explanation, texts, examples, questions, pedagogy, practice, assessment, and synthesis.",
+				"When available, display the source path Grade > Term > Skill Area > Sub-strand > Skill and the exact framework, snapshot, and graph-package identities. Do not invent codes for uncoded records.",
+				"Identify the main Skill Area being addressed and show connections to Listening and Speaking, Reading, and Writing only when the source or generated task supports them.",
+				"Use short sections, dialogue formatting, word or sound breakdowns, sentence frames, simple tables, reading steps, or writing-process checklists when they improve clarity, while preserving accessibility in text-only clients."
+			],
+			"mode": "append"
+		},
+		"terminologyGuidance": {
+			"instructions": [
+				"Use the source title Curriculum and Assessment Policy Statement (CAPS): English Home Language, Foundation Phase, Grades R-3, the author Department of Basic Education, and the grade labels Grade R, Grade 1, Grade 2, and Grade 3.",
+				"Use the exact hierarchy Grade > Term > Skill Area > Sub-strand > Skill. Treat Grade, Term, Skill Area, and Sub-strand as grouping nodes and Skill as the academic standard statement. Terms are Term 1 to Term 4 within each Grade.",
+				"Use the source Skill Area labels Listening and Speaking (Oral), Emergent Reading, Emergent Writing, Reading and Phonics, and Writing, and preserve visible Sub-strand wording when quoting exact evidence.",
+				"Present Grade R items as Grade R. Their normalized grade facet K is the source's encoding for retrieval and does not establish equivalence with kindergarten or any other system's grade."
+			],
+			"mode": "append"
+		},
+		"warningGuidance": {
+			"instructions": [
+				"Code search is unavailable because the framework has no statement codes. The same Skill wording can repeat across Sub-strands, Terms, and Grades, so interpret each Skill through its full Grade, Term, Skill Area, and Sub-strand context, not its wording alone.",
+				"Do not infer an official prerequisite or learning progression solely from Grade order, Term order, table order, repeated Skill wording, or the structural hasChild hierarchy.",
+				"The Academic Standards graph does not include the source's assessment rows or teacher guidance as node types. Do not describe a generated passage, rhyme, dialogue, activity, worksheet, assessment, routine, time allocation, resource, or teaching method as prescribed by the Department of Basic Education unless retrieved evidence explicitly supports that role.",
+				"Do not treat a generated South African context, language bridge, pronunciation claim, learner response, reading level, or local fact as source-authored curriculum evidence.",
+				"Normalized grades are retrieval facets, an Academic Standard does not prove mastery, and text similarity or shared wording does not establish official equivalence with another framework."
+			],
+			"mode": "append"
+		}
+	}
+}

@@ -64,9 +64,9 @@ from kgfegmcp.services.lp_models import (
     GetStandardProgressionsRequest,
     ProgressionArtifactIdentity,
     ProgressionCollectionResult,
-    ProgressionEvidenceResult,
     ProgressionMetadata,
     ProgressionRelationshipEvidence,
+    ProgressionResult,
     ProgressionStandardIdentifier,
     ProgressionStandardSummary,
     SearchLearningProgressionsRequest,
@@ -94,7 +94,7 @@ from kgfegmcp.tool_results import (
 )
 
 
-def progression_result_text(result: ProgressionEvidenceResult) -> str:
+def progression_result_text(result: ProgressionResult) -> str:
     """Mirror every bounded public field as canonical ordinary JSON text.
 
     Parameters
@@ -114,7 +114,7 @@ def progression_result_text(result: ProgressionEvidenceResult) -> str:
 def require_progression_result_size(
     *,
     envelope: Mapping[str, object] | None = None,
-    result: ProgressionEvidenceResult,
+    result: ProgressionResult,
     text: str | tuple[str, ...],
 ) -> int:
     """Enforce both ceilings on the complete text and structured tool envelope.

@@ -24,13 +24,14 @@ from kgfegmcp.services.learning_progressions import (
     require_progression_result_size,
 )
 from kgfegmcp.services.lp_models import (
+    MAX_PATH_DEPTH,
     GetLearningProgressionPathsRequest,
     GetLearningProgressionPathsResult,
     GetLearningProgressionRequest,
     GetLearningProgressionResult,
     GetStandardProgressionsRequest,
     ProgressionCollectionResult,
-    ProgressionEvidenceResult,
+    ProgressionResult,
     SearchLearningProgressionsRequest,
     TraverseLearningProgressionsRequest,
     TraverseLearningProgressionsResult,
@@ -44,7 +45,7 @@ if TYPE_CHECKING:
     from kgfegmcp.bootstrap import AppState
 
 
-def _build_progression_result(result: ProgressionEvidenceResult) -> ToolResult:
+def _build_progression_result(result: ProgressionResult) -> ToolResult:
     """Use shared canonical text and both ceilings for the complete MCP payload.
 
     Parameters
@@ -227,7 +228,8 @@ def register_learning_progression_tools(
         description=(
             "Find bounded alternative directed simple buildsTowards paths between "
             "distinct standards in one package. Defaults: depth 6, paths 3; maxima "
-            "12/20, work/queue 5000, result 1 MiB. Incomplete absence is explicit."
+            f"{MAX_PATH_DEPTH}/20, work/queue 5000, result 1 MiB. Incomplete absence "
+            "is explicit."
         ),
         name="get_learning_progression_paths",
         output_schema=result_schema(GetLearningProgressionPathsResult),

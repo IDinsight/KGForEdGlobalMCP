@@ -15,6 +15,7 @@ from kgfegmcp.catalog.models import CatalogPackageRuntime
 from kgfegmcp.domain.identifiers import NodeId, RelationshipId
 from kgfegmcp.errors import ProgressionResultTooLargeError
 from kgfegmcp.graph.models import GraphRelationship, StandardNode
+from kgfegmcp.services.lp_compact import compact_relationships
 from kgfegmcp.services.lp_models import (
     ProgressionMetadata,
     ProgressionRelationshipEvidence,
@@ -370,6 +371,10 @@ def _result(
     if not reserve and not frontier and reasons == ("byte_limit",):
         reasons = ()
 
+    # Size checks measure this emitted compact form, including any un-lifted field.
+    shared, entries = compact_relationships(
+        relationships=tuple(rows.relationships.values())
+    )
     return TraverseLearningProgressionsResult(
         counters=ProgressionTraversalCounters(
             depth_frontier_examined_relationship_count=(
@@ -389,9 +394,10 @@ def _result(
         metadata=context.metadata,
         nodes=tuple(rows.nodes.values()),
         origin_node_id=next(iter(rows.nodes)),
-        relationships=tuple(rows.relationships.values()),
+        relationships=entries,
         request=context.request,
         scope_complete=not any(reason != "depth_limit" for reason in reasons),
+        shared_relationship_evidence=shared,
         truncation_reasons=reasons,
     )
 

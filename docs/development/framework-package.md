@@ -124,7 +124,7 @@ provenance as evidence to preserve rather than values to normalize away.
 
 ## Learning progression inputs and updates
 
-The six mixed AS/LC/LP packages reuse one graph/runtime per curriculum. Nodes and the AS/LC relationship prefix remain byte-identical; normalized LP wire records are appended in `(relationship type, identifier)` order. Source/target CASE UUIDs resolve to the existing outer standard IDs. Combined upstream exports are reconciliation inputs, not interchangeable delivery files: five use a flat format; CBSE uses envelopes. Preparation normalizes the split LP records and preserves exact IDs, endpoint orientation, origin, attribution and the original provenance. It does not rerun the producer/checker pipeline or accept final claims as edges.
+The seven mixed AS/LC/LP packages reuse one graph/runtime per curriculum. Nodes and the AS/LC relationship prefix remain byte-identical; normalized LP wire records are appended in `(relationship type, identifier)` order. Source/target CASE UUIDs resolve to the existing outer standard IDs. Combined upstream exports are reconciliation inputs, not interchangeable delivery files: five use a flat format; CBSE and CAPS use envelopes. Preparation normalizes the split LP records and preserves exact IDs, endpoint orientation, origin, attribution and the original provenance. It does not rerun the producer/checker pipeline or accept final claims as edges.
 
 ### Input sets
 
@@ -136,6 +136,7 @@ The six mixed AS/LC/LP packages reuse one graph/runtime per curriculum. Nodes an
 | `data/input_artifacts/madhi_math`      | `india-tamil-nadu-tnscert-mathematics-classes-1-5`   | `33c5da78839a7611308dd30f342b72f931a661235e094cc641832ec2a5548444` |
 | `data/input_artifacts/nigeria_math`    | `nigeria-nerdc-mathematics-primary-1-3`              | `09d6b52b54b2f6b00d5279a58650d0ef10ab5a6a5d3da02d10b24c42edb1058a` |
 | `data/input_artifacts/rwanda_math`     | `rwanda-reb-mathematics-lower-primary-1-3`           | `7b9629e6bd5ad5566e6420892908a307687543ede8cc0c676ddf5b0321ba5874` |
+| `data/input_artifacts/south_africa_english` | `south-africa-dbe-caps-english-home-language-grades-r-3` | `c939a3a9dcce92ed61d970f4599ced6f2ddc425d1220eeeab9828472b878d24d` |
 
 Each input set holds the full evidence for one package, and its `package_build.json` is the build spec. Only small files are committed:
 
@@ -181,7 +182,7 @@ The command reads only the records and the local files; it never downloads, uplo
 {"localPath": "data/input_artifacts/ghana_english/detailed/as_kg_bundle.json", "logicalName": "academicStandardsBundle", "status": "ok", "expectedSha256": "sha256:6447…", "actualSha256": "sha256:6447…", "expectedSizeBytes": 9330374, "actualSizeBytes": 9330374}
 ```
 
-A `missing` entry has a `reason` of `absent` or `unreadable`; `mismatch` means the size or SHA-256 differs. With the full archive in place, each of the six packages reports 86 `ok` entries. In a fresh clone each reports 9 `ok` (the committed small files) and 77 `missing`.
+A `missing` entry has a `reason` of `absent` or `unreadable`; `mismatch` means the size or SHA-256 differs. With the full archive in place, each of the seven packages reports 86 `ok` entries. In a fresh clone each reports 9 `ok` (the committed small files) and 77 `missing`.
 
 | Exit | Meaning                                                                       |
 |------|-------------------------------------------------------------------------------|
@@ -272,9 +273,9 @@ Optional `--framework-id` selects one mapped framework; `--receipt` selects a ve
 
 ### Provenance and independent validation
 
-Current contracts are manifest `1.2`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.4.0` (server/MCPB `0.4.0`).
+Current contracts are manifest `1.2`, delivery `1.2`, source `1.0`, package revision `1`, profile schema `1.1`/version `2.0`, prompt-config schema `1.1`/version `2.0.0`, public prompt library `1.4.0` (server/MCPB `1.0.0`).
 
-CBSE's original provenance map is about 40.9 MB, above the default 32 MiB resource source-read limit, and all six maps together are about 101 MB. Packages therefore carry 64 slim shards instead: each holds the slim records for the edges whose `SHA256(UTF8(relationship_id))[0] modulo 64` matches its number, under logical names `learningProgressionProvenanceShard00` through `63`. The slim index binds their exact hashes and placement, and their union must equal the package's LP delivery edges. A client reads one edge's evidence by opening one small shard, within rights and byte limits. The original map, its index and its 64 original shards are archived and bound by hash.
+CBSE's original provenance map is about 40.9 MB and CAPS's about 119.2 MB, both above the default 32 MiB resource source-read limit, and all seven maps together are about 221 MB. Packages therefore carry 64 slim shards instead: each holds the slim records for the edges whose `SHA256(UTF8(relationship_id))[0] modulo 64` matches its number, under logical names `learningProgressionProvenanceShard00` through `63`. The slim index binds their exact hashes and placement, and their union must equal the package's LP delivery edges. A client reads one edge's evidence by opening one small shard, within rights and byte limits. The original map, its index and its 64 original shards are archived and bound by hash.
 
 Packages declare `learningProgressionNormalization`, `learningProgressionProvenanceIndex`, `learningProgressionSummary`, `learningProgressionUnresolved`, `learningProgressionValidation` and the 64 shards. `learningProgressionBuildsTowards`, `learningProgressionRelatesTo`, `learningProgressionProvenance` and `learningProgressionFinalClaims` are archive-only and listed in the evidence archive record. The normalization receipt binds the hash of every other full-evidence file; it also binds unchanged nodes, AS/LC prefix/separator, sorted normalized suffix, input/output hashes and copy-receipt identity.
 

@@ -15,9 +15,9 @@ The staged MCPB runtime includes:
 - the generic `kgfegmcp` Python source package;
 - `pyproject.toml` and the locked `uv.lock`;
 - `backend/fastmcp.json`;
-- all six versioned curriculum profiles;
-- all six framework-local prompt configurations;
-- all six accepted immutable graph packages; and
+- all seven versioned curriculum profiles;
+- all seven framework-local prompt configurations;
+- all seven accepted immutable graph packages; and
 - the MCPB `manifest.json`.
 
 The bundle does not contain:
@@ -97,7 +97,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.4.0.mcpb
+dist/kgfegmcp-1.0.0.mcpb
 ```
 
 The command:
@@ -170,7 +170,7 @@ includes five stored-LP query tools, the `read_evidence` and `get_workflow_instr
 access tools, and three teaching/support/curriculum-review prompts. The smoke also reads
 tool results as text only, follows real continuation requests, reads full evidence
 through `read_evidence` and compares `get_workflow_instructions` with the native prompts.
-The six packages carry slim per-edge LP provenance in 64 verified shards. Archived
+The seven packages carry slim per-edge LP provenance in 64 verified shards each. Archived
 evidence and raw source/preparation inputs stay outside the distribution.
 See [LP preparation and acceptance](../../docs/development/framework-package.md#learning-progression-inputs-and-updates).
 Local staging/smoke verification does not publish or deploy; deployment is user-owned.
@@ -203,7 +203,7 @@ uv --directory backend run --locked --no-dev   kgfegmcp-build-mcpb --stage-outpu
 
 uv --directory backend run --locked --no-dev   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
-unzip -t ./dist/kgfegmcp-0.4.0.mcpb
+unzip -t ./dist/kgfegmcp-1.0.0.mcpb
 ```
 
 The completed local acceptance baseline is:
@@ -230,25 +230,25 @@ This option can be combined with `--output` and `--stage-output`.
 List archive members:
 
 ```bash
-unzip -l ./dist/kgfegmcp-0.4.0.mcpb
+unzip -l ./dist/kgfegmcp-1.0.0.mcpb
 ```
 
 Read the packaged manifest:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.4.0.mcpb manifest.json | jq .
+unzip -p ./dist/kgfegmcp-1.0.0.mcpb manifest.json | jq .
 ```
 
 Confirm the module launcher:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.4.0.mcpb manifest.json   | jq '.server'
+unzip -p ./dist/kgfegmcp-1.0.0.mcpb manifest.json   | jq '.server'
 ```
 
 Confirm ZIP integrity:
 
 ```bash
-unzip -t ./dist/kgfegmcp-0.4.0.mcpb
+unzip -t ./dist/kgfegmcp-1.0.0.mcpb
 ```
 
 ## Claude Desktop
