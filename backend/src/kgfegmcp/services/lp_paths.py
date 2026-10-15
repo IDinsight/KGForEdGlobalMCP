@@ -22,6 +22,7 @@ from kgfegmcp.catalog.models import CatalogPackageRuntime
 from kgfegmcp.domain.identifiers import NodeId, RelationshipId
 from kgfegmcp.errors import (
     InvalidProgressionRequestError,
+    PackageValidationError,
     ProgressionResultTooLargeError,
 )
 from kgfegmcp.graph.models import GraphRelationship
@@ -646,6 +647,12 @@ def _target_reach(*, context: _PathContext, rows: _PathRows) -> _TargetReach | N
         Hop counts for every standard that reaches the target, or None on a work
         stop.
 
+    Raises
+    ------
+    PackageValidationError
+        If the builds edges reaching the target contain a directed cycle, which
+        accepted packages never do; exact-length masks are undefined on a cycle.
+
     Examples
     --------
     >>> reach = _target_reach(context=context, rows=rows)
@@ -685,9 +692,11 @@ def _target_reach(*, context: _PathContext, rows: _PathRows) -> _TargetReach | N
     lengths = {target: 1}
     longest = {target: 0}
     ready = deque((target,))
+    settled = 0
 
     while ready:
         node = ready.popleft()
+        settled += 1
 
         for parent in predecessors[node]:
             lengths[parent] = lengths.get(parent, 0) | ((lengths[node] << 1) & mask)
@@ -696,6 +705,19 @@ def _target_reach(*, context: _PathContext, rows: _PathRows) -> _TargetReach | N
 
             if not out_degree[parent]:
                 ready.append(parent)
+
+    # Nodes on a directed cycle never settle; fail rather than miss paths silently.
+    if settled != len(shortest):
+        raise PackageValidationError(
+            details={
+                "target_node_id": str(target),
+                "unsettled_node_count": len(shortest) - settled,
+            },
+            message=(
+                "Stored buildsTowards relationships reaching this target form a "
+                "directed cycle; path search requires an acyclic graph."
+            ),
+        )
 
     rows.pending = 0
     return _TargetReach(lengths=lengths, longest=longest, shortest=shortest)

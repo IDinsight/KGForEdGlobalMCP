@@ -14,7 +14,7 @@ Cycle: integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3
 
 - `Scope`: `.standards/docs/scope/integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3.md`
 - `Architecture`: `.standards/docs/specs/integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3.md`
-- `Request`: Integrate the CAPS English Home Language (Grades R-3) KG export as a seventh framework, using data and configuration. Also make generic Learning Progression path search target-aware and raise its `max_depth` ceiling to 16, and correct the MCPB manifest version (scope replan and design revision, 2026-10-14).
+- `Request`: Integrate the CAPS English Home Language (Grades R-3) KG export as a seventh framework, using data and configuration. Also make generic Learning Progression path search target-aware and raise its `max_depth` ceiling to 16, correct the MCPB manifest version, and return path, standard-progression, LP-search, and traversal results in a compact shared-place form, with an IDs-only fallback for paths that still do not fit (scope replans and design revisions, 2026-10-14 and 2026-10-15).
 
 ## Build Steps
 
@@ -251,8 +251,8 @@ Evidence (2026-10-14, repository root, `d48627f` plus uncommitted cycle files; a
 
 ### DEV-006 — CAPS served through the repository server and distributions
 
-`Status`: `PENDING` `Depends On`: `DEV-005, DEV-008, DEV-009`
-`Acceptance`: `AC-011, AC-012, AC-013, AC-014, AC-015, AC-017, AC-018, AC-019, AC-022`
+`Status`: `PENDING` `Depends On`: `DEV-005, DEV-008, DEV-009, DEV-011, DEV-012`
+`Acceptance`: `AC-011, AC-012, AC-013, AC-014, AC-015, AC-017, AC-018, AC-019, AC-036`
 
 **Goal**
 
@@ -268,7 +268,7 @@ No new repository files expected. Checks run against the repository server, a fr
 - A real STDIO session (scratch client, no LLM) can retrieve, search, and get context for CAPS standards and Learning Components, and look up, search, and traverse CAPS LPs with the generic disclosures.
 - `kgfegmcp-build-mcpb` succeeds; the fresh stage contains the CAPS package, profile, and overlay; `kgfegmcp-stdio-smoke --bundle-root <stage>` passes.
 - Docker context includes the CAPS paths with `Dockerfile` and `.dockerignore` unchanged.
-- `git diff f9fdaa2` shows, outside the CAPS additions and `.standards/`, only `services/lp_paths.py`, the `max_depth` bound in `services/lp_models.py`, and the `version` field of `packaging/mcpb/manifest.json` (plus any Tester test updates). Nothing changes under `Dockerfile`, `.dockerignore`, `.gitignore`, release-please files, `CHANGELOG.md`, the project version, or any existing package, profile, overlay, or input set.
+- `git diff f9fdaa2` shows, outside the CAPS additions and `.standards/`, only the design's **Change boundary** exceptions: `services/lp_paths.py`, `services/lp_discovery.py`, `services/lp_traversal.py`, the new compact helper, the permitted `services/lp_models.py` changes, the path tool description, and the `version` field of `packaging/mcpb/manifest.json` (plus any Tester test updates). Tools other than the four compacted ones serve byte-identical results. Nothing changes under `Dockerfile`, `.dockerignore`, `.gitignore`, release-please files, `CHANGELOG.md`, the project version, or any existing package, profile, overlay, or input set.
 
 **Self-Check**
 
@@ -347,12 +347,12 @@ Recursive hash comparison of both package trees, plus a JSON diff of the two man
 
 ### DEV-008 — Target-aware exact-length path search with `max_depth` ceiling 16
 
-`Status`: `IN_PROGRESS` `Depends On`: `DEV-005`
-`Acceptance`: `AC-018, AC-022, AC-023, AC-024, AC-025, AC-026`
+`Status`: `DONE` `Depends On`: `DEV-005`
+`Acceptance`: `AC-018, AC-023, AC-024, AC-026, AC-028, AC-036`
 
 **Goal**
 
-Replace the breadth-first enumeration in `paths_result` with the design's exact-length, target-aware search (**Target-aware path search**), and raise `GetLearningProgressionPathsRequest.max_depth`'s upper bound from 12 to 16. The change is generic, with no framework-specific branch.
+Replace the breadth-first enumeration in `paths_result` with the design's exact-length, target-aware search (**Target-aware path search**), including its **Cycle guard**, and raise `GetLearningProgressionPathsRequest.max_depth`'s upper bound from 12 to 16. The change is generic, with no framework-specific branch. Result form (compact tables and the IDs-only fallback) belongs to DEV-012.
 
 **Affected Area**
 
@@ -368,6 +368,7 @@ Replace the breadth-first enumeration in `paths_result` with the design's exact-
   - Every created partial path, including the source state, counts toward the 5,000-state budget.
   - Admission, byte stops, `nextUnreturnedPath`, and the size reservation keep their behavior.
 - **Truncation reasons.** `work_limit` and `queue_limit` on the budgets. `path_limit` only when another path within `max_depth` exists. `depth_limit` exactly when the source's uncapped longest connection exceeds `max_depth`. `byte_limit` unchanged. `graph_exhausted` and `scope_complete` keep their formulas. Counters and frontier fields keep their names and report the new search's effort.
+- **Cycle guard.** If Kahn settlement leaves any collected node unsettled, the search fails explicitly through an existing service error path and never returns a result.
 - **Request bound and path caps.** `max_depth` accepts 1–16, still defaults to 6, and rejects 0 and 17 through the existing validation path. Requests with `max_depth` 13–16 raise no model error from the size reservation. The published schema shows input `max_depth` maximum 16, output `nodeIds` maxItems 17 and `relationshipIds` maxItems 16, and the description reads "maxima 16/20".
 
 **Self-Check**
@@ -375,7 +376,8 @@ Replace the breadth-first enumeration in `paths_result` with the design's exact-
 - `black --check`, `isort --check-only`, `ruff check`, `mypy`, `pylint` (McCabe ≤ 10), and `interrogate` on the changed files, using the repository's configuration.
 - The existing progression tests that do not encode the six-package corpus or pin counter values still pass.
 - A scratch **differential run** (not a committed test) against a reference copy of the baseline enumerator from `git show f9fdaa2:backend/src/kgfegmcp/services/lp_paths.py`, over deterministic request samples on all seven packages (`max_depth` 1–12, `max_paths` 1–20, connected and unconnected pairs). Wherever the baseline returns empty `truncation_reasons`, the new search must return identical `paths`, `relationships`, and `nodes`, with empty reasons.
-- A scratch **all-pairs run** over the 43,145 connected CAPS pairs at `max_depth` equal to the shortest length and at 16, with default `max_paths`. The first path must have the oracle's shortest length, no result may report `work_limit`, `queue_limit`, or `byte_limit`, and every result must satisfy the **Result invariants**. Peak inspection and state counts are recorded.
+- A scratch **all-pairs run** over the 43,145 connected CAPS pairs at `max_depth` equal to the shortest length and at 16, with default `max_paths`. This checks the search, not the envelope: no request may report `work_limit` or `queue_limit`, every returned result must put the oracle's shortest path first and satisfy the **Result invariants**, and peak inspection and state counts are recorded. Envelope outcomes are DEV-012's.
+- The **Cycle guard** on a synthetic cyclic adjacency (scratch, not a committed test) raises the chosen service error instead of returning a result.
 - The published `get_learning_progression_paths` schema and description, read over STDIO, show input `max_depth` maximum 16 and default 6, output `nodeIds` maxItems 17 and `relationshipIds` maxItems 16, and "maxima 16/20". The traversal tool's schema and description are unchanged.
 
 **Implementation Notes**
@@ -428,6 +430,121 @@ Implementation and self-check evidence (2026-10-15, repository root, `HEAD d635c
   - `test_paths_cycle_is_per_path`: a **synthetic cyclic** graph (`a→b→c→a`). The new search returns `[("z",)]` without the `("a","b","d")` path and without truncation. The design's exact-length search is valid only for acyclic graphs, which validation guarantees for accepted packages (**Risks: Reliance on acyclicity**). Flagged for Architect and Tester: this test's premise is outside the new contract.
   - `test_paths_every_real_shortest_connection_fits:322`: the six packages pass. The first long CAPS pair raises `progression_result_too_large`, which is the same envelope limit as above.
 
+
+Completion evidence (2026-10-15, repository root, `HEAD 2ea9553`, where the DEV-008 search code is committed in `504a8e5`, plus the uncommitted cycle guard in `services/lp_paths.py`). Raw outputs are in `data/source_artifacts/learning_progressions/dev008/`.
+
+- **Cycle guard.** `_target_reach` counts the nodes the Kahn pass settles. If that is fewer than the nodes it collected, it raises `PackageValidationError` (public code `package_validation_error`, the existing error for graph invariant violations) with details `target_node_id` and `unsettled_node_count`, and the message "Stored buildsTowards relationships reaching this target form a directed cycle; path search requires an acyclic graph." It never returns a result in that case.
+- **Static checks on `lp_paths.py`.** black: file unchanged. isort: clean. ruff: passed. mypy: no issues. pylint: 10.00/10. interrogate: passed. The tracked `interrogate_badge.svg` is unchanged.
+- **Fast path tests** (`pytest … test_progression_algorithms.py -k "paths and not every_real"`, `pytest-paths-cycleguard.out`): 6 passed and 5 failed.
+  - Passed: preserved alternative merges, empty-is-success, identical endpoints rejected, the count boundary, the oversized entry rejected, and the later oversized alternative.
+  - `test_paths_cycle_is_per_path` now fails with the guard's `PackageValidationError` rather than an incomplete result, which the design intends. Its expectation changes under the **Test-corpus contract**.
+  - The other four are the work, queue, depth, and combination-bytes tests already classified above as pinning baseline behaviour.
+- **Differential against the baseline** (`differential-cycleguard.json`): 5,127 requests on seven packages; 3,448 compared where the baseline was untruncated (2,197 with paths); **0 mismatches** in `paths`, `relationships`, `nodes`, or empty reasons.
+- **All-pairs search check** (`caps_all_pairs_search.py`, `caps-all-pairs-search.json`, 516 s). These are DEV-008's search-only criteria: 43,145 pairs × {shortest depth, 16}, default `max_paths`.
+  - No `work_limit` or `queue_limit`. Peak use was 1,239 inspections and 26 states.
+  - Every returned result put the oracle's shortest path first and satisfied the **Result invariants**: 0 failures.
+  - The envelope outcomes are unchanged and belong to DEV-012: `byte_limit` on 26,062 requests, and `progression_result_too_large` on all 984 requests for the 492 pairs of 10–13 hops.
+- **Published schema** (`schema-bounds.txt`, from before the guard; the guard changes no schema): `maxDepth` 1–16 with default 6; `nodeIds` ≤ 17 and `relationshipIds` ≤ 16; "maxima 16/20"; traversal unchanged.
+- **Suspended Assignment 3** is resolved by the reconciliation recorded in Plan Notes.
+
+---
+
+### DEV-010 — Compact relationship-evidence models and shared lifting helper
+
+`Status`: `PENDING` `Depends On`: `NONE`
+`Acceptance`: `AC-032, AC-034`
+
+**Goal**
+
+Add the design's compact form (**Compact Learning Progression results**) as one generic implementation: the compact entry and shared-evidence models, a compact result base, and a single helper that lifts identical liftable fields out of a tuple of full `ProgressionRelationshipEvidence`.
+
+**Affected Area**
+
+- `backend/src/kgfegmcp/services/lp_models.py`: new models.
+  - `SharedRelationshipEvidence`: every liftable field optional, `None` omitted on output.
+  - The compact relationship entry: the full entry's structure with every liftable field optional and omitted when `None`.
+  - A compact result base carrying `relationships` (compact entries) and `shared_relationship_evidence` (always present, `{}` when empty). It is shared by `ProgressionCollectionResult`, `TraverseLearningProgressionsResult`, and `GetLearningProgressionPathsResult`.
+  - Unchanged: `ProgressionEvidenceResult`, `GetLearningProgressionResult`, `ProgressionRelationshipEvidence`, `GraphRelationship`, and `JudgmentProjection`.
+  - Field descriptions state the rehydration rule, so the published schemas carry it. No response notice text is added.
+- `backend/src/kgfegmcp/services/lp_compact.py` (new): the lifting helper. For each liftable field it lifts only when there is at least one relationship and every relationship has the same non-`null` value. Optionally it adds a rehydration function for self-checks; it is not used in any response path.
+
+**Expected Outcome**
+
+- Liftable fields are exactly the design's: `epistemicStatus`; `judgment.confidenceNotice`; and `relationship.attributionStatement`, `author`, `description`, `label`, `license`, `provider`, `relationshipType`, `sourceEntity`, `sourceEntityKey`, `sourceLabels`, `targetEntity`, `targetEntityKey`, `targetLabels`.
+- Every other field stays per entry.
+- `canonical_result_text` and `GetLearningProgressionResult` are unchanged.
+
+**Self-Check**
+
+- Static checks (black, isort, ruff, mypy, pylint, interrogate) on the changed files.
+- A scratch round-trip over real evidence from all seven packages: lift, then rehydrate, must equal the full `relationship_evidence` exactly. Cases include a mixed `buildsTowards`/`relatesTo` set (`description`, `label`, and `relationshipType` stay per entry), an empty set (`{}`), and a synthetic set where one liftable value differs or is `null`.
+
+---
+
+### DEV-011 — Standard progressions, LP search, and traversal results in compact form
+
+`Status`: `PENDING` `Depends On`: `DEV-010`
+`Acceptance`: `AC-034, AC-035, AC-036`
+
+**Goal**
+
+Build `get_standard_progressions`, `search_learning_progressions`, and `traverse_learning_progressions` results in the compact form, with every size check and reservation measuring the emitted compact form, while selection, order, cursors, counts, and every non-relationship field stay computed exactly as before (**Preservation rule**).
+
+**Affected Area**
+
+`backend/src/kgfegmcp/services/lp_discovery.py` and `services/lp_traversal.py`, at the points where results and trial results are assembled. Internal rows keep full evidence; the helper compacts them at result construction.
+
+**Expected Outcome**
+
+- All three tools return compact entries plus `sharedRelationshipEvidence`. Their published output schemas describe both.
+- `get_learning_progression` and every non-progression tool return byte-identical results.
+- After rehydration, results equal the baseline where the baseline did not stop for size. Where it did, the baseline's items are a prefix of the new result, in order.
+
+**Self-Check**
+
+- Static checks on the changed files.
+- A scratch **collection and traversal differential**. Record baseline outputs from a separate `git worktree` at `f9fdaa2`, run with the same virtualenv against that worktree's six packages, over deterministic request samples for the three tools. Rehydrate the new outputs and compare `relationships`, `nodes`, `connections` and distances, order, cursors, and stopping reasons. Size-stopped baseline cases use the prefix rule.
+- A rehydration round-trip on every new result produced by the differential.
+- Published output schemas over STDIO show the compact entry and the shared object. `get_learning_progression`'s output for a fixed request is byte-identical to the baseline's.
+
+---
+
+### DEV-012 — Path results in compact form with the IDs-only fallback
+
+`Status`: `PENDING` `Depends On`: `DEV-008, DEV-010`
+`Acceptance`: `AC-024, AC-026, AC-028, AC-030, AC-032`
+
+**Goal**
+
+Emit every `get_learning_progression_paths` result in the compact form, and, when the first shortest path does not fit even compacted, return the design's IDs-only fallback instead of `progression_result_too_large`.
+
+**Affected Area**
+
+`backend/src/kgfegmcp/services/lp_paths.py`: `_result`, `_admit_path`, `_stop_on_size`, `_first_path_error`, and the reservation, so they measure the compact form after each admission. The design's **Size-accounting edge**: a new entry can un-lift a field.
+
+**Expected Outcome**
+
+- Every path result carries compact entries and `sharedRelationshipEvidence` on all seven packages, whether or not the full form would fit.
+- If the first path does not fit compacted, the tool returns a normal result:
+  - `paths`, `relationships`, and `sharedRelationshipEvidence` are empty;
+  - `nodes` keeps the source and target summaries;
+  - `nextUnreturnedPath` holds the complete shortest path's IDs;
+  - `truncation_reasons` includes `byte_limit` plus any exact `depth_limit` or `path_limit`.
+- The first-path error remains only if even that result cannot fit.
+
+**Self-Check**
+
+- Static checks on `lp_paths.py`.
+- The DEV-008 differential rerun with rehydration: identical `paths`, `nodes`, and rehydrated `relationships` with empty reasons wherever the baseline was untruncated.
+- A scratch **all-pairs run** over the 43,145 CAPS pairs at the shortest depth and at 16:
+  - no errors;
+  - the shortest path is `paths[0]`, or `nextUnreturnedPath` when `paths` is empty, with the oracle's hop count;
+  - no `work_limit` or `queue_limit`;
+  - **Result invariants** hold, including on `nextUnreturnedPath`;
+  - rehydration round-trips.
+  - It records the counts of full, `byte_limit`, and IDs-only outcomes by hop count, and the measured sizes of the 11-, 12-, and 13-hop results against the Architect's projection.
+- A compact-versus-full size comparison on a sample of short path results.
+
 ---
 
 ### DEV-009 — MCPB manifest version matches the project version
@@ -461,7 +578,10 @@ Change only the `version` field of `packaging/mcpb/manifest.json` from `0.4.0` t
 - `data/graph_packages/.claude/` is absent as of plan creation, so local catalog loading and tests can run in place.
 - Uploading the new input set to the Google Drive archive remains a user-owned follow-up.
 - The `tony` style's Python rules, together with `styles/python.md`, apply to the DEV-008 backend change and to scratch scripts.
-- AC-016 was retired by the scope replan and replaced by AC-022; this plan references AC-022 only.
+- Retired acceptance identifiers: AC-016 (replaced by AC-022), AC-022 and AC-033 (replaced by AC-036), AC-025 (replaced by AC-028 and AC-030), and AC-029 (replaced by AC-032). Current steps reference only current identifiers; retired ones appear only in historical evidence text.
+- Step order once approved: DEV-008 (finish the cycle guard and recheck), then DEV-010, DEV-011, DEV-012, DEV-009, DEV-006, and DEV-007. The DEV-008 code is already committed in `504a8e5`.
+- The compact form is a breaking output change for four tools. Per the design's risks, the eventual commit for DEV-011 and DEV-012 should be marked breaking (`!` or a `BREAKING CHANGE:` footer).
+- AC-031 and AC-037 are Documenter-owned.
 
 ### Suspended Assignment 1
 
@@ -485,3 +605,14 @@ Architect closed recovery frame 1 with no rerun (`Handoff.Kind: RESUME`). The co
 ### Reconciliation of Suspended Assignment 2 (2026-10-15)
 
 Architect closed recovery frame 1 with no rerun (`d635c6a`), widening the **Change boundary** to the path-depth constant, the `ProgressionPath` caps, and the path tool description's maxima. DEV-008 resumes `IN_PROGRESS` with its Affected Area, Expected Outcome, and Self-Check updated to match. The approved intent is unchanged: target-aware exact-length search with a `max_depth` ceiling of 16. The added edits are the design-required means of returning paths of up to 16 hops, so this is treated as bookkeeping reconciliation without re-approval. No other step changes.
+
+### Reconciliation of Suspended Assignment 3 (2026-10-15)
+
+Architect closed recovery frame 1 with no rerun (`2ea9553`), after two scope replans (`504a8e5` and `dfb199a`). AC-025 was retired in favour of AC-028 and AC-030 (a non-error result that identifies the shortest path, with `byte_limit` allowed) and AC-032. The compact shared-place form now applies to four tools (AC-034, AC-035, AC-036), and the design adds a **Cycle guard**.
+
+These materially change the implementation plan:
+- DEV-008 is narrowed to the search, the ceiling, and the cycle guard.
+- DEV-010, DEV-011, and DEV-012 are added.
+- DEV-006's dependencies and acceptance are updated.
+
+The plan returns to `PROPOSED` for approval. `Mode` stays `STEPWISE` and `User Style` `tony` stays locked. The DEV-008 code committed in `504a8e5` stays as the basis for the next steps.
