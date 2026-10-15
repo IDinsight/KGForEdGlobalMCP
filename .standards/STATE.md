@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `ARCHITECTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -21,18 +21,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `RESUME` `From`: `SCOPING` `FailureType`: `NONE` `Reason`:
-`Scope extends the compact form to three more LP tools: AC-033 retired; AC-034..AC-037 added.`
+`Kind`: `RESUME` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
+`Design rerun complete: generic compact relationship tables for paths, standard progressions, LP search and traversal; path IDs-only fallback; AC-032..AC-037 covered.`
 
 ## Recovery
 
-`Active`: `true`
-
-### Frame 1
-
-`From`: `DEVELOPING` `Owner`: `SCOPING` `FailureType`: `SCOPING`
-`Reason`: `User wants path results in the compact shared-place form whenever possible, even when the full form fits; scope keeps full-form results unchanged and limits compaction to oversized results.`
-`ResumeAt`: `DEVELOPING` `RerunThrough`: `ARCHITECTING`
+`Active`: `false`
 
 ## Outstanding Obligations
 
