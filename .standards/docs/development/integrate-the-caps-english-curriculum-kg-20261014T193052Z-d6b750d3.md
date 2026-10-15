@@ -7,7 +7,7 @@ Cycle: integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3
 
 `Cycle`: `integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3` `Mode`: `STEPWISE`
 `User Style`: `tony` `User Style Locked`: `true`
-`Status`: `IN_PROGRESS` `Verification Cadence`:
+`Status`: `COMPLETE` `Verification Cadence`:
 `AFTER_IMPLEMENTATION` `Current Increment`: `NONE`
 
 ## Implementation Contract
@@ -348,7 +348,7 @@ Rerun completion evidence (2026-10-15, repository root, `HEAD fed2a82`, with all
 
 ### DEV-007 — Rebuild determinism evidence
 
-`Status`: `PENDING` `Depends On`: `DEV-005`
+`Status`: `DONE` `Depends On`: `DEV-005`
 `Acceptance`: `AC-004`
 
 **Goal**
@@ -366,6 +366,14 @@ Same snapshot ID, byte-identical package files, and `package_manifest.json` diff
 **Self-Check**
 
 Recursive hash comparison of both package trees, plus a JSON diff of the two manifests.
+
+Completion evidence (2026-10-15, repository root, `HEAD 0a99bc2`):
+
+- `git log f9fdaa2..HEAD -- backend/src/kgfegmcp/packages config/profiles` shows only `4c88217`, which added the CAPS profile. The builder and the CAPS profile are unchanged since DEV-005 built the package.
+- A local spec copy `data/source_artifacts/learning_progressions/operator-rebuild-caps/caps-rebuild.json` was made from the committed `data/input_artifacts/south_africa_english/package_build.json`, with only `outputRoot` changed to the fresh, previously absent `operator-rebuild-caps/packages`. It was written with the documented snippet that refuses existing paths.
+- `kgfegmcp-build-manifest --spec <abs>/caps-rebuild.json` exited 0 with `outcome: created`, the same snapshot ID `south-africa-dbe-caps-english-home-language-grades-r-3@2011+95ab377d1619`, and validation `pending` (`rebuild.out`).
+- A recursive SHA-256 comparison of the rebuilt tree against `data/graph_packages/<framework-id>/<snapshot>/` found the same 80-file set. The only differing file is `package_manifest.json`, and a field-level diff of it shows only `createdAt` (`2026-10-14T20:36:20Z` vs `2026-10-15T14:51:00Z`), `validation.status` (`passed` vs `pending`), and `validation.validatedAt` (`2026-10-14T20:37:04Z` vs `null`). That is exactly the exception allowed by the design and the builder's documented determinism contract.
+- The rebuilt package was left in the git-ignored rebuild root and not installed; the sealed package is never replaced.
 
 ---
 
@@ -775,3 +783,27 @@ The approved intent is unchanged: the compact form for four tools, without weake
 - DEV-011 takes the smoke edge check.
 
 DEV-010 resumes `IN_PROGRESS`.
+
+
+### Handoff to Tester (2026-10-15)
+
+All 12 approved steps (DEV-001..DEV-012) are `DONE`, and the plan is `COMPLETE` with `Current Increment: NONE`. Implementation is committed through `0a99bc2`; only `.standards/` records change after that. The detailed evidence is under each step.
+
+- **Claims.**
+  - CAPS is installed as `south-africa-dbe-caps-english-home-language-grades-r-3@2011+95ab377d1619`, with its profile, overlay, input set, and receipt-verified source copy.
+  - Path search is exact-length and target-aware, with `MAX_PATH_DEPTH` 16 and a cycle guard.
+  - `get_learning_progression_paths`, `get_standard_progressions`, `search_learning_progressions`, and `traverse_learning_progressions` return the compact form, with paths falling back to IDs only when even the compact form does not fit.
+  - The MCPB manifest version is 1.0.0.
+- **Developer evidence locations** (git-ignored): `data/source_artifacts/learning_progressions/` `dev006/`, `dev006-rerun/`, `dev008/`, `dev010/`, `dev011/`, `dev012/`, `operator-build-caps/`, and `operator-rebuild-caps/`, plus `copy_receipt.json`, `external_manifests/`, and the prepare output. The scratch harnesses there can be rerun.
+- **Expected suite state.** The full offline suite gives 120 passed and 29 failed. Every failure is a test the **Test-corpus contract** assigns to Tester:
+  - 10 encode the six-package corpus (counts and the 8,080 edge total) or lack a CAPS baseline entry.
+  - 6 pin baseline path behaviour: the work, queue, and depth boundaries; the combination-bytes and path-counter tests; and the synthetic cyclic graph, which now raises the cycle guard's `package_validation_error`.
+  - 1 pins the old `max_depth` maximum of 12.
+  - 9 pin the full relationship form for the three collection and traversal tools (lifted fields read from entries, `GraphRelationship` identity, attribution-only combination fixtures that now fit).
+  - 3 pin the full form or the oversize error for paths.
+  - The exhaustive `test_paths_every_real_shortest_connection_fits` now reaches the first 13-hop CAPS pair, which correctly returns IDs only. The design limits the exhaustive check to the six original packages and gives CAPS a pinned sample.
+- **Known limitations for verification.**
+  - `kgfegmcp-stdio-smoke` (repository and `--bundle-root`) needs `~/.cache/uv` for its child `uv`, so in this sandbox it ran outside the sandbox.
+  - The `f9fdaa2` baseline worktree used for the DEV-011 and DEV-012 differentials was temporary. Recreate it with `git worktree add --detach <dir> f9fdaa2` and run the recorders with that `backend/src` first on `sys.path`, as recorded under DEV-011.
+  - The sandbox prevented removing its admin entry, so the user can run `git worktree prune`.
+- **Out of Developer scope.** Documentation acceptance (AC-020, AC-021, AC-027, AC-031, AC-037) belongs to Documenter. Uploading the `south_africa_english` archive-only inputs to Google Drive is user-owned.
