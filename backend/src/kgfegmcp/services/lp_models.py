@@ -17,8 +17,8 @@ from kgfegmcp.domain.identifiers import (
     Sha256Digest,
     SnapshotId,
 )
-from kgfegmcp.graph.models import GraphRelationship
-from kgfegmcp.packages.lp_models import CoverageProjection, JudgmentProjection
+from kgfegmcp.graph.models import GraphRelationship, SourceExportOrder
+from kgfegmcp.packages.lp_models import Count, CoverageProjection, JudgmentProjection
 from kgfegmcp.schemas import FrozenSchema
 from kgfegmcp.search.models import SearchFacetEvidence
 from kgfegmcp.services.models import (
@@ -140,6 +140,125 @@ class ProgressionRelationshipEvidence(FrozenSchema):
     relationship_uri: str
 
 
+def _is_none(value: object) -> bool:
+    """Report whether a compact or shared field is absent and should be omitted.
+
+    Parameters
+    ----------
+    value
+        Serialized field value.
+
+    Returns
+    -------
+    bool
+        True when the value is ``None``.
+    """
+
+    return value is None
+
+
+# Compact relationship tables. Each model mirrors its full counterpart field by field
+# (``extra="forbid"`` makes any drift fail loudly); only the liftable fields become
+# optional and are omitted when absent. See ``services/lp_compact.py``.
+_REHYDRATION_RULE = (
+    "A field omitted from an entry takes the value of the same field in "
+    "sharedRelationshipEvidence; if it is absent there too, the value is null."
+)
+
+
+class CompactGraphRelationship(FrozenSchema):
+    """Stored edge whose liftable fields may live in sharedRelationshipEvidence."""
+
+    attribution_statement: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    author: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    description: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    label: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    license: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    property_identifier: RelationshipId | None = None
+    provider: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    relationship_id: RelationshipId
+    relationship_type: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    resolution_status: str | None = None
+    source_entity: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    source_entity_key: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    source_entity_value: str | None = None
+    source_labels: Annotated[tuple[str, ...] | None, Field(exclude_if=_is_none)] = None
+    source_node_id: NodeId
+    source_export_order: SourceExportOrder
+    support_confidence: float | None = None
+    target_entity: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    target_entity_key: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    target_entity_value: str | None = None
+    target_labels: Annotated[tuple[str, ...] | None, Field(exclude_if=_is_none)] = None
+    target_node_id: NodeId
+
+
+class CompactJudgmentProjection(FrozenSchema):
+    """Bounded judgment whose confidence notice may live in the shared evidence."""
+
+    confidence: Annotated[float, Field(allow_inf_nan=False, ge=0, le=1)]
+    confidence_notice: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    rationale_excerpt: Annotated[StrictStr, Field(max_length=512)]
+    rationale_excerpted: bool
+    relationship_id: RelationshipId
+    warning_count: Count
+    warning_excerpts: Annotated[
+        tuple[Annotated[StrictStr, Field(max_length=512)], ...], Field(max_length=5)
+    ]
+    warnings_excerpted: bool
+    warnings_omitted: bool
+
+
+class CompactProgressionRelationshipEvidence(FrozenSchema):
+    """One relationship entry; omitted liftable fields come from the shared evidence."""
+
+    epistemic_status: Annotated[
+        Literal["llm_inferred"] | None, Field(exclude_if=_is_none)
+    ] = None
+    judgment: CompactJudgmentProjection
+    provenance_uri: str
+    relationship: CompactGraphRelationship
+    relationship_uri: str
+
+
+class SharedGraphRelationshipEvidence(FrozenSchema):
+    """Relationship fields identical across every entry of one result."""
+
+    attribution_statement: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    author: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    description: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    label: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    license: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    provider: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    relationship_type: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    source_entity: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    source_entity_key: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    source_labels: Annotated[tuple[str, ...] | None, Field(exclude_if=_is_none)] = None
+    target_entity: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    target_entity_key: Annotated[str | None, Field(exclude_if=_is_none)] = None
+    target_labels: Annotated[tuple[str, ...] | None, Field(exclude_if=_is_none)] = None
+
+
+class SharedJudgmentEvidence(FrozenSchema):
+    """Judgment fields identical across every entry of one result."""
+
+    confidence_notice: Annotated[str | None, Field(exclude_if=_is_none)] = None
+
+
+class SharedRelationshipEvidence(FrozenSchema):
+    """Evidence fields stated once because every relationship entry shares them."""
+
+    epistemic_status: Annotated[
+        Literal["llm_inferred"] | None, Field(exclude_if=_is_none)
+    ] = None
+    judgment: Annotated[SharedJudgmentEvidence | None, Field(exclude_if=_is_none)] = (
+        None
+    )
+    relationship: Annotated[
+        SharedGraphRelationshipEvidence | None, Field(exclude_if=_is_none)
+    ] = None
+
+
 class ProgressionStandardSummary(FrozenSchema):
     """Retain endpoint identity and facets with explicitly bounded statement text."""
 
@@ -154,8 +273,8 @@ class ProgressionStandardSummary(FrozenSchema):
     statement_type: str | None
 
 
-class ProgressionEvidenceResult(FrozenSchema):
-    """Share deduplicated endpoint and original edge tables across LP operations."""
+class ProgressionResultBase(FrozenSchema):
+    """Share the deduplicated endpoint table and notices across LP operations."""
 
     continuation_notice: str = (
         "No continuation is offered for this operation. Read full evidence through "
@@ -164,7 +283,32 @@ class ProgressionEvidenceResult(FrozenSchema):
     )
     metadata: ProgressionMetadata
     nodes: tuple[ProgressionStandardSummary, ...]
+
+
+class ProgressionEvidenceResult(ProgressionResultBase):
+    """Share deduplicated endpoint and original edge tables across LP operations."""
+
     relationships: tuple[ProgressionRelationshipEvidence, ...]
+
+
+class CompactProgressionEvidenceResult(ProgressionResultBase):
+    """Share endpoint tables and compact edge entries with their shared evidence."""
+
+    relationships: tuple[CompactProgressionRelationshipEvidence, ...] = Field(
+        description=("Relationship entries in result order. " + _REHYDRATION_RULE)
+    )
+    shared_relationship_evidence: SharedRelationshipEvidence = Field(
+        description=(
+            "Liftable evidence fields whose non-null value is identical across every "
+            "relationship entry, stated once. " + _REHYDRATION_RULE
+        )
+    )
+
+
+# Either result branch; handlers that read relationship entries accept both.
+ProgressionResult: TypeAlias = (
+    ProgressionEvidenceResult | CompactProgressionEvidenceResult
+)
 
 
 # Result inheritance follows its shared evidence base.

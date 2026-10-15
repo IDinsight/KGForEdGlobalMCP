@@ -451,7 +451,7 @@ Completion evidence (2026-10-15, repository root, `HEAD 2ea9553`, where the DEV-
 
 ### DEV-010 — Compact relationship-evidence models and shared lifting helper
 
-`Status`: `IN_PROGRESS` `Depends On`: `NONE`
+`Status`: `DONE` `Depends On`: `NONE`
 `Acceptance`: `AC-032, AC-034`
 
 **Goal**
@@ -463,10 +463,15 @@ Add the design's compact form (**Compact Learning Progression results**) as one 
 - `backend/src/kgfegmcp/services/lp_models.py`: new models.
   - `SharedRelationshipEvidence`: every liftable field optional, `None` omitted on output.
   - The compact relationship entry: the full entry's structure with every liftable field optional and omitted when `None`.
-  - A compact result base carrying `relationships` (compact entries) and `shared_relationship_evidence` (always present, `{}` when empty). It is shared by `ProgressionCollectionResult`, `TraverseLearningProgressionsResult`, and `GetLearningProgressionPathsResult`.
+  - The design's **Result type hierarchy**:
+    - a common base (`continuation_notice`, `metadata`, `nodes`, no `relationships`);
+    - `ProgressionEvidenceResult` extends it with the existing full `relationships` (`GetLearningProgressionResult` stays its only subclass, schema byte-identical);
+    - a compact base extends it with compact `relationships` and `shared_relationship_evidence` (always present, `{}` when empty).
+    - The three compacted result classes switch to the compact base in DEV-011 and DEV-012, when their builders do.
+- Type annotations only: `services/learning_progressions.py` (`progression_result_text`, `require_progression_result_size`, and similar helpers) and `mcp/tools/learning_progressions.py` (`_build_progression_result`) are typed against the common base. Behavior is unchanged.
   - Unchanged: `ProgressionEvidenceResult`, `GetLearningProgressionResult`, `ProgressionRelationshipEvidence`, `GraphRelationship`, and `JudgmentProjection`.
   - Field descriptions state the rehydration rule, so the published schemas carry it. No response notice text is added.
-- `backend/src/kgfegmcp/services/lp_compact.py` (new): the lifting helper. For each liftable field it lifts only when there is at least one relationship and every relationship has the same non-`null` value. Optionally it adds a rehydration function for self-checks; it is not used in any response path.
+- `backend/src/kgfegmcp/services/lp_compact.py` (new): the lifting helper and the rehydration function, both production code. Lifting applies to a field only when there is at least one relationship and every relationship has the same non-`null` value. The smoke CLI uses rehydration from DEV-011 onward.
 
 **Expected Outcome**
 
@@ -476,7 +481,8 @@ Add the design's compact form (**Compact Learning Progression results**) as one 
 
 **Self-Check**
 
-- Static checks (black, isort, ruff, mypy, pylint, interrogate) on the changed files.
+- Static checks (black, isort, ruff, mypy, pylint, interrogate) on the changed files, and `mypy` over the whole package.
+- `get_learning_progression`'s published input and output schemas are byte-identical to `HEAD`'s, and the existing suite shows no new failures.
 - A scratch round-trip over real evidence from all seven packages: lift, then rehydrate, must equal the full `relationship_evidence` exactly. Cases include a mixed `buildsTowards`/`relatesTo` set (`description`, `label`, and `relationshipType` stay per entry), an empty set (`{}`), and a synthetic set where one liftable value differs or is `null`.
 
 **Implementation Notes**
@@ -494,6 +500,29 @@ Pre-implementation finding (2026-10-15). No code was changed; DEV-010 is suspend
   - A clean base needs those annotations updated, for example to a shared base without `relationships`, or to a union of result types, outside the boundary.
 - `services/learning_progressions.py` `progression_result_text(result: ProgressionEvidenceResult)` has the same annotation. It is not a permitted exception either.
 
+
+Completion evidence (2026-10-15, repository root, `HEAD 566226d` plus uncommitted DEV-010 code). Raw outputs and scripts are in the git-ignored `data/source_artifacts/learning_progressions/dev010/`.
+
+- **Code.**
+  - `services/lp_models.py`:
+    - `_is_none`, and the compact models `CompactGraphRelationship`, `CompactJudgmentProjection`, and `CompactProgressionRelationshipEvidence`. They mirror the full models field for field; liftable fields are `X | None` with `Field(exclude_if=_is_none)`.
+    - The shared models `SharedGraphRelationshipEvidence`, `SharedJudgmentEvidence`, and `SharedRelationshipEvidence`. Shared evidence is nested like an entry (`epistemicStatus`, `judgment.confidenceNotice`, `relationship.*`), and every field is omitted when absent.
+    - The **Result type hierarchy**: `ProgressionResultBase` (`continuation_notice`, `metadata`, `nodes`); `ProgressionEvidenceResult(ProgressionResultBase)` with full `relationships`; and `CompactProgressionEvidenceResult(ProgressionResultBase)` with compact `relationships` and `shared_relationship_evidence`, whose `Field(description=…)` states the rehydration rule.
+    - The alias `ProgressionResult = ProgressionEvidenceResult | CompactProgressionEvidenceResult`.
+  - `services/lp_compact.py` (new, about 230 lines after black): `LIFTABLE_*_FIELDS`, `compact_relationships(relationships=…)`, and `rehydrate_relationships(relationships=…, shared=…)`, plus private `_shared_values`, `_strip`, and `_fill`.
+  - Annotations only: `progression_result_text` and `require_progression_result_size` in `services/learning_progressions.py`, and `_build_progression_result` in `mcp/tools/learning_progressions.py`, now take `ProgressionResult`.
+    - Local choice: these helpers read `result.relationships[0].provenance_uri`, so they use the union of the two branches rather than the bare common base (design: "code that reads relationships is typed against the specific branch").
+  - No result class has switched base yet; DEV-011 and DEV-012 do that.
+- **Static checks.** black and isort were applied, reformatting only `lp_compact.py`. ruff: all checks passed. **mypy over the whole package** (`src/kgfegmcp`, 123 files): no issues. pylint: 10.00/10. interrogate: passed. The tracked `interrogate_badge.svg` is unchanged.
+- **Published schemas** (`dump_lp_schemas.py`; `schemas-before.json` and `schemas-after.json`): all nine progression request and result schemas are byte-identical before and after, including `GetLearningProgressionRequest` and `GetLearningProgressionResult` (`cmp` reports no difference).
+- **Round trip on real evidence** (`compact_round_trip.py`, `compact-round-trip.json`): **0 problems** over 733 sets and 17,842 entries across all seven packages. The sets cover every LP edge in 25-entry single-type chunks, plus a 10+10 mixed page, an empty set, and a synthetic set per package.
+  - In mixed pages, `description`, `label`, and `relationshipType` stay per entry; the other relationship liftables lift.
+  - In synthetic sets, the differing `license` and the null `author` stay per entry and round-trip.
+  - Empty sets produce `{}`.
+  - Compact relationship JSON is 67.7% of the full form (42,119,151 of 62,225,551 characters, one copy).
+  - The compact-base schema carries the rehydration rule in both field descriptions, and `CompactGraphRelationship` requires only `relationshipId`, `sourceNodeId`, `sourceExportOrder`, and `targetNodeId`.
+- **Full offline suite** (`pytest.out`): 132 passed, 17 failed. These are the same 17 tests as after DEV-008 (10 six-package corpus, 6 baseline-path-behaviour or cycle tests, and the all-pairs envelope test). No new failures.
+
 ---
 
 ### DEV-011 — Standard progressions, LP search, and traversal results in compact form
@@ -507,7 +536,8 @@ Build `get_standard_progressions`, `search_learning_progressions`, and `traverse
 
 **Affected Area**
 
-`backend/src/kgfegmcp/services/lp_discovery.py` and `services/lp_traversal.py`, at the points where results and trial results are assembled. Internal rows keep full evidence; the helper compacts them at result construction.
+- `backend/src/kgfegmcp/services/lp_discovery.py` and `services/lp_traversal.py`, at the points where results and trial results are assembled. Internal rows keep full evidence; the helper compacts them at result construction. `ProgressionCollectionResult` and `TraverseLearningProgressionsResult` move to the compact base.
+- `backend/src/kgfegmcp/cli/smoke_progressions.py`: its result-model mapping and helper annotations use the common base. `_require_edge` (and the path-edge check after it) compares a compacted tool's entry with the full `get_learning_progression` edge after rehydrating it with the shared helper. It stays an exact equality on the whole evidence entry. Pinned diagnostics are unchanged.
 
 **Expected Outcome**
 
@@ -521,6 +551,7 @@ Build `get_standard_progressions`, `search_learning_progressions`, and `traverse
 - A scratch **collection and traversal differential**. Record baseline outputs from a separate `git worktree` at `f9fdaa2`, run with the same virtualenv against that worktree's six packages, over deterministic request samples for the three tools. Rehydrate the new outputs and compare `relationships`, `nodes`, `connections` and distances, order, cursors, and stopping reasons. Size-stopped baseline cases use the prefix rule.
 - A rehydration round-trip on every new result produced by the differential.
 - Published output schemas over STDIO show the compact entry and the shared object. `get_learning_progression`'s output for a fixed request is byte-identical to the baseline's.
+- `kgfegmcp-stdio-smoke` against the repository passes with the rehydrating edge check.
 
 ---
 
@@ -635,3 +666,16 @@ These materially change the implementation plan:
 - DEV-006's dependencies and acceptance are updated.
 
 The plan returns to `PROPOSED` for approval. `Mode` stays `STEPWISE` and `User Style` `tony` stays locked. The DEV-008 code committed in `504a8e5` stays as the basis for the next steps.
+
+### Reconciliation of Suspended Assignment 4 (2026-10-15)
+
+Architect closed recovery frame 1 with no rerun (`566226d`). The **Change boundary** now includes:
+- the result type hierarchy split;
+- annotation-only updates in `services/learning_progressions.py` and `mcp/tools/learning_progressions.py`;
+- `cli/smoke_progressions.py`'s annotations and its rehydrating, still-exact edge check.
+
+The approved intent is unchanged: the compact form for four tools, without weakening the smoke check. These are the design-required means to deliver it. The plan is therefore reconciled as bookkeeping without re-approval:
+- DEV-010 takes the type split, the annotations, and production rehydration.
+- DEV-011 takes the smoke edge check.
+
+DEV-010 resumes `IN_PROGRESS`.

@@ -31,7 +31,7 @@ from kgfegmcp.services.lp_models import (
     GetLearningProgressionResult,
     GetStandardProgressionsRequest,
     ProgressionCollectionResult,
-    ProgressionEvidenceResult,
+    ProgressionResult,
     SearchLearningProgressionsRequest,
     TraverseLearningProgressionsRequest,
     TraverseLearningProgressionsResult,
@@ -45,7 +45,7 @@ if TYPE_CHECKING:
     from kgfegmcp.bootstrap import AppState
 
 
-def _build_progression_result(result: ProgressionEvidenceResult) -> ToolResult:
+def _build_progression_result(result: ProgressionResult) -> ToolResult:
     """Use shared canonical text and both ceilings for the complete MCP payload.
 
     Parameters
