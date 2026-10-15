@@ -251,7 +251,7 @@ Evidence (2026-10-14, repository root, `d48627f` plus uncommitted cycle files; a
 
 ### DEV-006 — CAPS served through the repository server and distributions
 
-`Status`: `PENDING` `Depends On`: `DEV-005, DEV-008, DEV-009, DEV-011, DEV-012`
+`Status`: `DONE` `Depends On`: `DEV-005, DEV-008, DEV-009, DEV-011, DEV-012`
 `Acceptance`: `AC-011, AC-012, AC-013, AC-014, AC-015, AC-017, AC-018, AC-019, AC-036`
 
 **Goal**
@@ -319,6 +319,30 @@ Evidence from the first, suspended run (pre-replan; kept as history, superseded 
   - For every connected pair from the first 5 sorted CAPS sources (336 pairs), every pair of 8 hops or fewer returned its complete shortest path. Of the pairs at 9–11 hops, 7 returned no path: 3 with `queue_limit` and 4 with `depth_limit` plus `work_limit`.
   - The server reports this truncation honestly; it does not crash. But the design's assumption that a CAPS sample meets the same complete-shortest-path invariants as the exhaustive check does not hold for long CAPS connections. Up to 1,496 pairs have 9 or more hops.
   - Changing that behaviour would mean changing generic code or the `config.py` limits, both outside the design's change boundary.
+
+
+Rerun completion evidence (2026-10-15, repository root, `HEAD fed2a82`, with all implementation committed and only `.standards/` uncommitted). Raw outputs are in the git-ignored `data/source_artifacts/learning_progressions/dev006-rerun/`.
+
+- **Repository STDIO smoke** (`stdio-smoke.out`, run outside the sandbox for its child `uv` cache): `status: passed`, 19 tools, 1 fixed resource, 14 templates, 9 prompts, 15 resource reads, and 7 LP snapshots. The rehydrating exact edge check holds for all four compacted tools.
+- **Scratch CAPS STDIO session** (`caps_stdio_session.py`, extended from the first run; `caps-session.json`):
+  - The catalog has 7 frameworks including CAPS, with identity South Africa / `country` / Department of Basic Education / English Home Language / `["Grade R","Grade 1","Grade 2","Grade 3"]`.
+  - Grade R by label and by `K` each return the same 44 hits, all `Grade R`. `code_exact` is `capability_unavailable`.
+  - `get_standard_progressions`, `search_learning_progressions`, `traverse_learning_progressions`, and `get_learning_progression_paths` return `sharedRelationshipEvidence` with compact entries. `get_learning_progression` keeps the full form.
+  - The 11-hop pair `0016a784… → 2ccbf220…` at `maxDepth` 16 returns its 11-hop path with all 11 relationships, plus an 11-hop `nextUnreturnedPath` with `byte_limit`. This is the pair DEV-006's first run could not find.
+  - The 13-hop pair `10deec8d…5532996f103a → 2ccbf220…` returns the IDs-only result: 0 paths and relationships, a 13-hop `nextUnreturnedPath`, and `byte_limit`.
+  - LP disclosures are identical to Ghana English's. All resource reads succeed except the bulk delivery artifact, which is denied with `resource_access_denied`. Rendered prompts are 32,974, 34,535, and 27,786 bytes, all with the overlay terms.
+- **MCPB build** (`kgfegmcp-build-mcpb --mcpb-command $(which mcpb) --output <dev006-rerun>/kgfegmcp-1.0.0-check.mcpb --stage-output <dev006-rerun>/mcpb-stage`): exit 0. Archive `kgfegmcp-1.0.0.mcpb`, version 1.0.0, package 27.8 MB, unpacked 165.2 MB, 703 files, shasum `a6461d77…`. The build listing includes `data/graph_packages/south-africa-dbe-caps-english-home-language-grades-r-3/` (82.9 MB). The user's `dist/` is untouched.
+  - The stage holds all 7 package directories and all 80 CAPS package files. Its CAPS profile, overlay, and `package_manifest.json` are byte-identical to the repository's (`cmp`), and its `manifest.json` version is `1.0.0`.
+- **Stage STDIO smoke** (`kgfegmcp-stdio-smoke --bundle-root <stage>`, outside the sandbox, `stage-smoke.out`): `status: passed`, 19/1/14/9, 15 resource reads, and 7 LP snapshots, with `bundleRoot` set to the stage.
+- **Docker context.** `Dockerfile`, `.dockerignore`, and `.gitignore` are unchanged since `f9fdaa2`. Simulating the `.dockerignore` allowlist rules includes all 82 CAPS runtime files and the new and changed backend code, and excludes the input set.
+- **Change boundary** (`git diff --stat f9fdaa2 HEAD`, outside `.standards/` and the CAPS additions): exactly the nine design exceptions, +800/−98:
+  - `services/lp_paths.py`, `services/lp_discovery.py`, `services/lp_traversal.py`, `services/lp_compact.py` (new), and `services/lp_models.py`;
+  - annotation-only `services/learning_progressions.py`;
+  - `mcp/tools/learning_progressions.py` (annotations and the `MAX_PATH_DEPTH` maxima text only, confirmed line by line);
+  - `cli/smoke_progressions.py`;
+  - the one-field `packaging/mcpb/manifest.json`.
+  - No existing package, profile, overlay, or input set changed (0 paths). No CAPS framework ID, snapshot hash, or input-set name appears under `backend/src/`.
+- **Full offline suite** (`pytest.out`): 120 passed, 29 failed. The failure set is identical to DEV-012's, and every failure is classified in the DEV-008, DEV-011, and DEV-012 evidence as a six-package corpus expectation or a test pinning baseline behaviour that the design changes (Tester-owned under the **Test-corpus contract**). No new failures.
 
 ---
 
