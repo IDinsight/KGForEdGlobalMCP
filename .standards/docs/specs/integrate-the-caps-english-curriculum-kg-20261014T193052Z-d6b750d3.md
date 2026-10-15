@@ -433,19 +433,34 @@ fields upstream does not carry.
       their results with the compact table, and measuring size on the
       compact form.
     - the new compact helper module.
+    - Type annotations only (revised 2026-10-15 after `DEV-010`). These
+      must refer to the common result base under **Result type hierarchy**
+      instead of `ProgressionEvidenceResult`:
+      - `services/learning_progressions.py`: `progression_result_text`,
+        `require_progression_result_size`, and similar helpers;
+      - `mcp/tools/learning_progressions.py`: `_build_progression_result`.
+
+      Their behavior does not change.
+    - `cli/smoke_progressions.py` (revised 2026-10-15 after `DEV-010`):
+      - its result-model mapping and helper annotations use the common base;
+      - its edge-identity check (`_require_edge`, and the path-edge check
+        that follows it) compares a compacted tool's entry with the full
+        `get_learning_progression` edge after rehydrating it with the
+        shared helper. The check must stay an exact equality on the whole
+        evidence entry; it must not weaken to IDs only.
+
+      The smoke's pinned diagnostic IDs and other checks stay as they are.
     - `services/lp_models.py`:
       - the path-depth constant;
       - the `GetLearningProgressionPathsRequest.max_depth` bound;
       - the `ProgressionPath` `node_ids`/`relationship_ids` caps (revised
         2026-10-15 after `DEV-008`);
-      - the compact entry and shared-evidence models, and a compact result
-        base used by `ProgressionCollectionResult`,
-        `TraverseLearningProgressionsResult`, and
-        `GetLearningProgressionPathsResult` (revised 2026-10-15 after the
-        scope replan).
+      - the compact entry and shared-evidence models, and the result type
+        hierarchy under **Result type hierarchy** (revised 2026-10-15 after
+        the scope replan and `DEV-010`).
 
-      `ProgressionEvidenceResult` and `GetLearningProgressionResult` (full
-      form), `ProgressionRelationshipEvidence`, `GraphRelationship`,
+      `GetLearningProgressionResult` keeps its fields, form, and published
+      schema. `ProgressionRelationshipEvidence`, `GraphRelationship`,
       `JudgmentProjection`, and every non-progression tool's result model
       stay as they are.
     - `mcp/tools/learning_progressions.py`: the "maxima" figures in the
@@ -706,6 +721,29 @@ excerpts and flags, and both URIs.
   state the rehydration rule, so clients can discover it without extra
   per-response text. No notice text is added to responses.
 
+**Result type hierarchy** (added 2026-10-15 after `DEV-010`).
+- A common base, for example `ProgressionResultBase`, holds the fields every
+  progression result shares: `continuation_notice`, `metadata`, and `nodes`.
+  It has no `relationships` field.
+- `ProgressionEvidenceResult` extends it with the existing full
+  `relationships: tuple[ProgressionRelationshipEvidence, ...]`.
+  `GetLearningProgressionResult` stays its only subclass.
+- A compact base, for example `CompactProgressionEvidenceResult`, extends
+  the common base with compact `relationships` and
+  `shared_relationship_evidence`. `ProgressionCollectionResult`,
+  `TraverseLearningProgressionsResult`, and
+  `GetLearningProgressionPathsResult` subclass it.
+- Neither branch overrides the other's field type, so mypy with the
+  pydantic plugin stays clean without union-widening the full model.
+- `get_learning_progression`'s published input and output schemas must stay
+  byte-identical to the baseline. The base split must not change its field
+  order, titles, or definitions.
+- Code that handles any progression result (text mirror, size checks, the
+  MCP result builder, the smoke CLI) is typed against the common base. Code
+  that reads relationships is typed against the specific branch it handles.
+- The shared helper exposes both lifting and rehydration. Rehydration is
+  production code: the smoke CLI uses it, and so can tests.
+
 **Size accounting.** Every size check and reservation in the four builders
 measures the result as it will be emitted, compact form included. Adding an
 entry can un-lift a field (when its value differs), which grows every entry.
@@ -820,6 +858,9 @@ external kgs/ (read-only)
   context for CAPS standards and Learning Components. It also looks up,
   searches, and traverses CAPS LPs. LP responses carry the same generic
   disclosure text as the other frameworks.
+- `AC-012`, `AC-014`: `kgfegmcp-stdio-smoke`, against the repository and
+  against `--bundle-root`, passes. Its edge-identity check holds for all
+  four compacted tools through exact equality after rehydration.
 - `AC-014`:
   - `packaging/mcpb/manifest.json` `version` equals `backend/pyproject.toml`
     `version` (`1.0.0`).
@@ -845,6 +886,9 @@ external kgs/ (read-only)
   **Change boundary** exceptions:
   - `services/lp_paths.py`, `services/lp_discovery.py`,
     `services/lp_traversal.py`, and the compact helper;
+  - type annotations in `services/learning_progressions.py` and
+    `mcp/tools/learning_progressions.py`;
+  - `cli/smoke_progressions.py`'s annotations and rehydrating edge check;
   - the path-depth constant, request bound, `ProgressionPath` caps, and the
     compact models and result base in `services/lp_models.py`;
   - the path tool description in `mcp/tools/learning_progressions.py`. No CAPS framework ID, snapshot ID, or
@@ -918,9 +962,11 @@ external kgs/ (read-only)
 4. Dry-run the build. Build into a fresh root, validate read-only, persist
    acceptance, and install the passed package under `data/graph_packages/`.
    (`AC-002`..`AC-006`)
-5. Add the compact models and the shared helper. Switch the collection and
-   traversal builders to them, then run the `AC-035` differential.
-   (`AC-034`, `AC-035`)
+5. Split the result type hierarchy and add the compact models and the
+   shared helper. Switch the collection and traversal builders to them,
+   update the annotations and the smoke edge check, then run the `AC-035`
+   differential and the repository STDIO smoke test. (`AC-012`, `AC-034`,
+   `AC-035`)
 6. Replace the path-search algorithm and raise the request bound. Build
    path results in the compact form, with the IDs-only fallback. Update
    corpus-dependent test expectations, add the CAPS baseline entry and the

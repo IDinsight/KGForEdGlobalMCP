@@ -1,6 +1,6 @@
 # S.T.A.N.D.A.R.D.S. Workflow State
 
-`WorkflowState`: `ARCHITECTING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
+`WorkflowState`: `DEVELOPING` `CycleMode`: `STANDARD` `PendingCycleMode`: `UNSET`
 `PendingCycleRequest`: `UNSET` `PendingCycleBlockedOn`: `NONE`
 
 ## Active Work
@@ -21,18 +21,12 @@ Preserve existing entries; see PROTOCOL.md, Baseline Reconciliation Format.
 
 ## Handoff
 
-`Kind`: `FAILURE` `From`: `DEVELOPING` `FailureType`: `ARCHITECTURE` `Reason`:
-`DEV-010 found the compact-form change boundary too narrow: cli/smoke_progressions.py asserts the full get_learning_progression edge is in each compacted tool's relationships (stdio smoke for AC-012/AC-014 would fail), and mcp/tools/learning_progressions.py plus that smoke CLI are typed against ProgressionEvidenceResult, so a compact result base needs changes outside the boundary.`
+`Kind`: `RESUME` `From`: `ARCHITECTING` `FailureType`: `NONE` `Reason`:
+`Boundary widened: common result base split (full vs compact branches), annotation-only updates in learning_progressions.py and the MCP adapter, smoke edge check compares after rehydration. No code written, so no rerun.`
 
 ## Recovery
 
-`Active`: `true`
-
-### Frame 1
-
-`From`: `DEVELOPING` `Owner`: `ARCHITECTING` `FailureType`: `ARCHITECTURE`
-`Reason`: `DEV-010 found the compact-form change boundary too narrow: cli/smoke_progressions.py asserts the full get_learning_progression edge is in each compacted tool's relationships (stdio smoke for AC-012/AC-014 would fail), and mcp/tools/learning_progressions.py plus that smoke CLI are typed against ProgressionEvidenceResult, so a compact result base needs changes outside the boundary.`
-`ResumeAt`: `DEVELOPING` `RerunThrough`: `NONE`
+`Active`: `false`
 
 ## Outstanding Obligations
 
