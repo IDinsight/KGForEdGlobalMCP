@@ -659,7 +659,7 @@ Completion evidence (2026-10-15, repository root, `HEAD 8e1361c` plus uncommitte
 
 ### DEV-009 — MCPB manifest version matches the project version
 
-`Status`: `PENDING` `Depends On`: `NONE`
+`Status`: `DONE` `Depends On`: `NONE`
 `Acceptance`: `AC-014`
 
 **Goal**
@@ -677,6 +677,14 @@ Change only the `version` field of `packaging/mcpb/manifest.json` from `0.4.0` t
 **Self-Check**
 
 `git diff --stat` and `git diff -U0 -- packaging`; a JSON load of the manifest comparing `version` with the pyproject `version`. The full MCPB build and stage smoke run in DEV-006.
+
+Completion evidence (2026-10-15, repository root, `HEAD 0b056dd` plus this change):
+
+- `git diff -U0 -- packaging` shows exactly one changed line in `packaging/mcpb/manifest.json`: line 53, `"version": "0.4.0"` → `"version": "1.0.0"`. Tab indentation and the trailing newline are preserved.
+- A JSON and TOML load reports manifest `1.0.0` equal to `backend/pyproject.toml` `1.0.0`. `manifest_version` is `0.4` and the name matches the project.
+- The builder's own `kgfegmcp.cli.build_mcpb._validate_manifest_contract(manifest=…, project_metadata=…)`, run through `UV_OFFLINE=1 uv --directory backend run --locked --offline --no-sync python -`, passes. The version mismatch that stopped DEV-006's first build is gone.
+- `git diff --quiet HEAD -- backend/pyproject.toml backend/uv.lock release-please-config.json .release-please-manifest.json CHANGELOG.md packaging/mcpb/README.md` reports them unchanged, so no release was cut. The README's `dist/kgfegmcp-0.4.0.mcpb` references are Documenter-owned (design **Risks**).
+- The full MCPB build and the `--bundle-root` stage smoke run in DEV-006.
 
 ---
 
