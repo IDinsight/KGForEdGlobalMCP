@@ -5,15 +5,18 @@ Cycle: integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3
 
 # Technical Design: Integrate CAPS English Home Language (Grades R-3)
 
-Design mode: `FEATURE`. Adding CAPS is a bounded capability that runs through
-the established onboarding route. It changes no foundational structure, needs
-no transition or compatibility mechanism, and defines no new shared rule.
+Design mode: `EVOLUTION` (revised 2026-10-14 after the scope replan). Most of
+the cycle is still a bounded data and configuration onboarding. The replan,
+however, replaces the existing path-search algorithm, which every framework
+uses. Keeping the results that search already returns unchanged (`AC-022`,
+`AC-024`) is now the primary design risk.
 
 ## Context
 
 - Scope: `.standards/docs/scope/integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3.md`
-  (`AC-001`..`AC-021`). Its rights, footprint, and Grade R decisions are fixed
-  inputs here.
+  (current: `AC-001`..`AC-015`, `AC-017`..`AC-027`; `AC-016` retired and
+  replaced by `AC-022`). Its rights, footprint, Grade R, and path-search
+  decisions are fixed inputs here.
 - Project context: `.standards/CONTEXT.md`. The decisive facts:
   - Onboarding is data and configuration only.
   - The builder takes the framework ID from the profile's single
@@ -38,6 +41,25 @@ no transition or compatibility mechanism, and defines no new shared rule.
   policy the export was extracted with. Its `extra.metadata` holds the
   framework identity. That file is not in the 23-file copy set, so it is read
   from the external export, read-only, only to author the profile.
+- Existing path search (`services/lp_paths.py`, at the cycle baseline):
+  - It is a breadth-first enumeration of partial paths. Each partial path
+    keeps its own visited set, and nothing is shared between paths.
+  - Edges are visited in `relationship_id` order, from the sorted
+    `TraversalAdjacency`. Results therefore come out by hop count, then by
+    relationship-ID tuple.
+  - It stops at 5,000 inspected relationships (`work_limit`), 5,000 created
+    states (`queue_limit`), `max_paths` (`path_limit`), extensions beyond
+    `max_depth` (`depth_limit`), or the envelope size (`byte_limit`).
+  - `GetLearningProgressionPathsRequest.max_depth` allows 1 to 12 (default
+    6) in `services/lp_models.py`. The MCP tool takes that model directly,
+    so the tool schema follows it.
+  - The search never looks toward the target, so on CAPS it fills its
+    budgets before reaching 9–11 hop targets (`DEV-006`).
+- Accepted packages have acyclic buildsTowards graphs. Both validation tiers
+  reject a directed buildsTowards cycle (`packages/lp_graph.py`
+  `lp_builds_towards_cycle`), and the LP report models require
+  `graph_status: acyclic`. In a DAG every path is simple, so an exact
+  length-based search is valid.
 - `data/graph_packages/.claude/` was absent when this design was written, on
   2026-10-14. The catalog-loading hazard noted in CONTEXT.md does not apply
   unless that directory reappears.
@@ -45,8 +67,11 @@ no transition or compatibility mechanism, and defines no new shared rule.
 ## Decision
 
 Add CAPS as a seventh framework using only new data and configuration files.
-Code under `backend/src/` does not change. Every identity value is fixed here,
-so the build is reproducible and reviewable.
+Separately, replace the generic path-search algorithm with an exact-length,
+target-aware search and raise the path `max_depth` ceiling to 16. That is the
+only change to `backend/src/`, and it contains no framework-specific branch.
+Every CAPS identity value is fixed here, so the build is reproducible and
+reviewable.
 
 | Item | Fixed value |
 | --- | --- |
@@ -105,6 +130,28 @@ Rationale for the material choices:
   version is bumped, no tag or changelog entry is made, and nothing is
   published. Making release-please keep the two versions in step is a
   separate release-tooling follow-up.
+- **Exact-length target-aware path search (scope replan).** Pruning the
+  existing breadth-first search is not enough. Breadth-first search finishes
+  every partial path of length *k−1* before it completes any path of length
+  *k*. With `max_depth` headroom above the shortest length, those detour
+  prefixes still multiply and fill the 5,000 budgets.
+  - The design instead computes, from the target backwards, which exact hop
+    counts can still reach the target from each node.
+  - It then emits paths length by length, depth-first in relationship-ID
+    order, along edges that can still finish at exactly that length.
+  - Every partial path it creates therefore becomes a returned path. The
+    work grows with the paths returned, not with the size of the graph.
+  - The output order is the existing one: hop count, then relationship-ID
+    tuple.
+  - Architect measurement, 2026-10-14, scratch script over the committed
+    delivery files: all 6,522 connected pairs in the six packages and all
+    43,145 CAPS pairs. Each pair was requested with (`max_depth` = shortest
+    length, `max_paths` 1), (16, 3), and (16, 20).
+  - The first path was the oracle's shortest every time. The worst request
+    used 1,810 inspections (backward plus forward) and 218 states, against
+    budgets of 5,000 each. The CAPS backward pass alone peaked at 1,126
+    inspections.
+  - This measurement is design evidence, not Tester verification.
 
 ## Acceptance Coverage
 
@@ -132,31 +179,41 @@ Rationale for the material choices:
 - `AC-011`, `AC-012`, `AC-013`: Generic catalog, search, graph, resource,
   prompt, and LP services pick CAPS up by directory discovery. With rights
   as fixed, the CAPS profile and overlay make every existing tool, resource
-  template, and prompt applicable. LP disclosures are generic. Path search
-  keeps its existing generic bounds: `max_depth` is at most 12, plus queue
-  and work limits. That is enough for traversal and path lookup in CAPS's
-  short and typical connections. Long CAPS connections may come back
-  truncated, with the reasons stated, as described under **Bounded path
-  search**.
+  template, and prompt applicable. LP disclosures are generic. CAPS path
+  lookups use **Target-aware path search**.
 - `AC-014`, `AC-015`: The existing MCPB stage builder and the Docker
   allowlist copy `config/` and `data/graph_packages/` wholesale. No
   per-framework list is added or needed. For `AC-014`, the MCPB manifest
   version correction is also required.
-- `AC-016`, `AC-017`, `AC-018`: Additive-only change set under **Change
-  boundary**. No edits to existing packages, profiles, overlays, or
-  `backend/src/`.
+- `AC-022`: The six existing packages, profiles, and overlays are not
+  edited (**Change boundary**). Path-search results keep the
+  **Compatibility contract** under **Target-aware path search**. Requests
+  the baseline truncated may now come back complete or with different
+  truncation reasons.
+- `AC-017`: No tool, resource, template, or prompt is added or removed. Only
+  the existing `max_depth` bound of `get_learning_progression_paths` changes
+  (`AC-023`).
+- `AC-018`: The change to `backend/src/` is the generic path-search
+  replacement and request bound. It contains no framework ID and relaxes no
+  validation rule.
+- `AC-023`: The request-model bound under **Target-aware path search**.
+- `AC-024`: Same order and the **Compatibility contract**. The argument rests
+  on validated acyclicity.
+- `AC-025`: The exact-length search with its measured budgets, under the
+  fixed 5,000 limits.
+- `AC-026`: **Result invariants** under **Target-aware path search**.
 - `AC-019`: Corpus-dependent test expectations under **Test-corpus
   contract**.
-- `AC-020`, `AC-021`: No architectural impact. They depend on Documenter's
-  phase. The values those documents must state are fixed here (identity,
-  grades, codes, rights, and the bounded path-search behavior for long CAPS
-  connections) or come from the accepted CAPS manifest (counts, sizes,
-  snapshot ID).
+- `AC-020`, `AC-021`, `AC-027`: No architectural impact. They depend on
+  Documenter's phase. The values those documents must state are fixed here
+  (identity, grades, codes, rights, the path `max_depth` ceiling of 16, and
+  how target-aware search behaves) or come from the accepted CAPS manifest
+  (counts, sizes, snapshot ID).
 
 ## Components
 
-All new artifacts are additive. The existing generic components consume them
-unchanged.
+The CAPS artifacts are additive, and the existing generic components consume
+them unchanged. The one generic component that changes is path search.
 
 - **Local source copy** (git-ignored):
   `data/source_artifacts/learning_progressions/<doc-key>/kgs/`, holding the
@@ -173,6 +230,13 @@ unchanged.
   runtime-only layout, matching the existing six.
 - **Test fixture entry**: a CAPS entry in
   `backend/tests/fixtures/progression_baseline.json`.
+- **Path search** (`services/lp_paths.py`): `paths_result` and its private
+  helpers are replaced by the target-aware algorithm. Its signature, its
+  callers in `services/learning_progressions.py`, `path_id_bound`, the
+  size-reservation and byte-stop logic, and the result model are kept.
+- **Path request model** (`services/lp_models.py`
+  `GetLearningProgressionPathsRequest`): the `max_depth` upper bound becomes
+  16.
 
 ## Interfaces and Contracts
 
@@ -320,7 +384,13 @@ fields upstream does not carry.
 ### Change boundary
 
 - No change to:
-  - `backend/src/`
+  - `backend/src/`, except `services/lp_paths.py` (the algorithm
+    replacement) and the single `max_depth` bound of
+    `GetLearningProgressionPathsRequest` in `services/lp_models.py`. The
+    traversal request (`max_depth` ≤ 12, default 8), its distance model, the
+    path default (6), `max_paths` (≤ 20), and the 5,000 budgets stay as they
+    are. So do `path_notice` and every other notice text, because their
+    statements remain true.
   - any existing `data/graph_packages/*`, `config/profiles/*`,
     `config/prompts/*`, or `data/input_artifacts/*` path
   - `Dockerfile`, `.dockerignore`, or `.gitignore`
@@ -331,9 +401,9 @@ fields upstream does not carry.
     `backend/uv.lock`
   - the smoke CLIs' pinned diagnostics (`cli/smoke_checks.py`,
     `cli/smoke_access.py`)
-- If implementation finds that a backend code change is unavoidable, stop
-  and route an `ARCHITECTURE` failure. Do not add a framework-specific branch
-  or relax a rule.
+- If implementation finds that any further backend change is unavoidable,
+  stop and route an `ARCHITECTURE` failure. Do not add a framework-specific
+  branch or relax a rule.
 
 ### Test-corpus contract
 
@@ -354,48 +424,128 @@ fields upstream does not carry.
   shortest path of 8. CAPS is excluded from that check because an exhaustive
   pairwise search over its 2,879 buildsTowards edges is too slow (user
   decision, 2026-10-14).
-- CAPS gets a small, deterministic sample of connected buildsTowards pairs
-  instead, pinned from the accepted package. The goal is evidence that CAPS
-  traversal works, not full enumeration. The sample has two parts:
-  - **Short pairs.** At least one direct pair and one multi-hop pair, each
-    with a shortest path of 8 hops or fewer. For each, the check asserts the
-    invariants the exhaustive check applies:
-    - exactly one path, of the oracle's hop count, from the source to the
-      target;
-    - the returned relationships equal the path's relationships;
-    - the response stays within its envelope bounds.
-  - **Long pair.** At least one pair with a shortest path of 9 or more hops,
-    for example the 11-hop pair `DEV-006` measured. Its check asserts the
-    honest-bound contract described under **Bounded path search**, and
-    neither requires nor forbids a found path.
+- In the default offline suite, CAPS gets a small, deterministic sample of
+  connected buildsTowards pairs, pinned from the accepted package. The goal
+  is evidence that CAPS path search works, not full enumeration (user
+  guidance, 2026-10-14).
+  - The sample includes a direct pair, a pair of 8 hops or fewer, at least
+    one 9–12 hop pair (for example, the 11-hop pair `DEV-006` measured), and
+    at least one 13-hop pair.
+  - Each pair is requested at `max_depth` equal to its shortest length and
+    at 16. Each must satisfy the `AC-025` criterion below.
+- `AC-025` also needs evidence over all 43,145 CAPS pairs. Tester chooses how
+  to get it. Options include a separately marked exhaustive test or a
+  recorded one-off run. The default suite must stay practical either way.
+- `AC-024` needs a differential check:
+  - The oracle is a test-only reference copy of the cycle-baseline
+    breadth-first enumerator (`services/lp_paths.py` at `f9fdaa2`).
+  - Run it against deterministic request samples on all seven packages:
+    `max_depth` 1–12, `max_paths` 1–20, connected and unconnected pairs.
+  - Wherever the oracle returns empty `truncation_reasons`, the new search
+    must return the same `paths`, `relationships`, and `nodes`, in the same
+    order, and empty `truncation_reasons`.
+- `AC-023` needs bound checks: `max_depth` 16 is accepted, 17 and 0 are
+  rejected the same way as other out-of-range values, and the default is 6.
+  The tool's published input schema shows maximum 16.
+- `AC-026`: every path result produced by any of these checks satisfies the
+  **Result invariants**.
 - The rights-flag assertions over all packages then cover CAPS without
   further change.
 - No test calls a live or paid LLM service.
 
-### Bounded path search
+### Target-aware path search
 
-`get_learning_progression_paths` and traversal keep their existing generic
-limits: request `max_depth` of at most 12, plus internal queue and work
-limits. Neither the limits nor `config.py` change for CAPS.
+This section replaces the per-request search in `paths_result`. Inputs,
+endpoint resolution, the same-endpoint error, and the result model stay as
+they are. `max_depth` may now be up to 16.
 
-- `DEV-006` measured CAPS on 2026-10-14: 43,145 connected buildsTowards
-  pairs. Their shortest paths are up to 13 hops, compared with 8 for the
-  existing six.
-- Every sampled pair of 8 hops or fewer returned its complete shortest path.
-  Some pairs of 9 or more hops returned no path, reporting `queue_limit`,
-  `depth_limit`, or `work_limit` in `truncation_reasons`. A 13-hop
-  connection is beyond the request's `max_depth` ceiling.
+**Backward pass**
 
-This is the established contract: a bounded search that reports incomplete
-results instead of failing or inventing a path. The contract every result must
-satisfy is:
+- Starting from the target, walk the package's upstream buildsTowards
+  adjacency to collect every node that can reach the target.
+- For each such node *n*, compute:
+  - `lengths[n]`: the set of exact hop counts *h* ≤ `max_depth` for which a
+    path of exactly *h* hops from *n* to the target exists. A bitmask is
+    sufficient.
+  - `longest[n]`: the longest hop count from *n* to the target, with no
+    `max_depth` cap.
+- Validated acyclicity makes both computations well defined. Compute them
+  without unbounded recursion, for example in topological order.
+- Every adjacency entry inspected in this pass counts toward the existing
+  5,000 inspection budget (`examined_relationship_count`, `work_limit`).
 
-- either the complete shortest path of the requested length, with matching
-  endpoints and relationships;
-- or no path, with non-empty `truncation_reasons`.
+**Forward enumeration**
 
-A path that is wrong, partial, or the wrong length is a defect. A truncated
-result for a long CAPS connection is not.
+- For each *k* from 1 to `max_depth` in ascending order, skipping any *k*
+  not in `lengths[source]`, search depth-first from the source.
+- Visit each node's downstream edges in the existing sorted
+  (`relationship_id`) order.
+- Extend a partial path of length *ℓ* along an edge to node *m* only when
+  *k − ℓ − 1* is in `lengths[m]`.
+- Admit each completed path of length *k* in the order it is found. This is
+  the existing order: hop count, then relationship-ID tuple.
+- Every created partial path, including the initial source state, counts
+  toward the existing 5,000-state budget (`enqueued_state_count`,
+  `queue_limit`). Every inspected edge counts toward the inspection budget.
+- Admission, byte stops, `nextUnreturnedPath`, and the size reservation keep
+  their existing behavior, through `_admit_path`, `_stop_on_size`, and
+  `_require_size`.
+
+**Truncation reasons** (`graph_exhausted` and `scope_complete` keep their
+existing formulas)
+
+- `work_limit` and `queue_limit`: one of the fixed 5,000 budgets above was
+  reached.
+- `path_limit`: `max_paths` paths were admitted and at least one further
+  path within `max_depth` exists. This is now exact; the baseline reported
+  it whenever its queue was non-empty.
+- `depth_limit`: `longest[source]` > `max_depth`, meaning a connection longer
+  than the requested depth exists. A source that cannot reach the target
+  reports no `depth_limit`.
+- `byte_limit`: unchanged.
+
+**Counters and frontier.** These keep their field names and bounds. They
+report the new search's effort, so they may differ from the baseline on any
+request.
+
+- `examined_relationship_count`: inspections in both passes.
+- `enqueued_state_count`: partial paths created, source state included.
+- `peak_queue_state_count`: the most partial paths alive at once, at least 1.
+- `frontier.queued_state_count`: partial paths still alive when the search
+  stopped; 0 when it finished.
+- `frontier.pending_adjacency_count`: edges not yet inspected at the node
+  being expanded when the search stopped; 0 when it finished.
+- `depth_frontier_examined_relationship_count` and
+  `frontier.depth_limited_extension_count`: inspected edges rejected because
+  their head reaches the target only in more hops than remain.
+
+**Compatibility contract** (`AC-022`, `AC-024`)
+
+Suppose the baseline returns empty `truncation_reasons` for a request.
+- Then no simple path from the source exceeds `max_depth`. If it did, the
+  baseline would have reported `depth_limit`.
+- The baseline also returned every path to the target within `max_depth`,
+  in the shared order.
+- So the new search finds exactly the same paths, in the same order, with
+  the same `nodes` and `relationships` tables, and with empty
+  `truncation_reasons`.
+
+Only the counters and frontier counts may differ. Their exact values were
+never part of the "same results" promise: they describe search effort, and
+the user accepted on 2026-10-14 that they shrink. Requests the baseline
+truncated may now return more or complete paths, no paths with
+`graph_exhausted: true`, or different reasons. `AC-022` allows that.
+
+**Result invariants** (`AC-026`)
+
+- Every returned path runs from the source to the target over stored
+  buildsTowards edges.
+- Its hop count is at most `max_depth`. Its `node_ids` length is its
+  `relationship_ids` length plus 1.
+- The `relationships` table equals the union of the returned paths' edges.
+- Paths are distinct and in the stated order.
+- Any result that misses a path within `max_depth`, whether by budget, by
+  `max_paths`, or by size, reports a non-empty `truncation_reasons`.
 
 ## Data and Control Flow
 
@@ -469,8 +619,7 @@ external kgs/ (read-only)
   repository server and calling no LLM, retrieves, searches, and gets
   context for CAPS standards and Learning Components. It also looks up,
   searches, and traverses CAPS LPs. LP responses carry the same generic
-  disclosure text as the other frameworks. CAPS path results satisfy
-  **Bounded path search**.
+  disclosure text as the other frameworks.
 - `AC-014`:
   - `packaging/mcpb/manifest.json` `version` equals `backend/pyproject.toml`
     `version` (`1.0.0`).
@@ -479,17 +628,43 @@ external kgs/ (read-only)
   - `kgfegmcp-stdio-smoke --bundle-root <stage>` passes.
 - `AC-015`: `Dockerfile` and `.dockerignore` are unchanged, and the build
   context includes the CAPS package, profile, and overlay paths.
-- `AC-016`: `git diff <cycle-baseline> --` over the six packages, profiles,
-  overlays, and input sets is empty. The cycle baseline is the commit the
-  cycle's implementation starts from, currently `f9fdaa2`. Outside the CAPS
-  additions, the only tracked change outside `.standards/` is the
-  one-field `packaging/mcpb/manifest.json` version correction.
-- `AC-017`: The listed public surface counts are unchanged: 19, 1, 14, 9.
-- `AC-018`: The cycle's diff contains no changes under `backend/src/`, and
-  the CAPS framework ID appears in no generic runtime, build, or validation
-  source file.
+- `AC-022`:
+  - `git diff f9fdaa2 --` over the six packages, profiles, overlays, and
+    input sets is empty, and their snapshot IDs are unchanged.
+  - Outside the CAPS additions and `.standards/`, the tracked changes are
+    limited to the **Change boundary** exceptions: the path-search files, the
+    one-field `packaging/mcpb/manifest.json` correction, and test updates.
+  - Non-path tools serve the same results as the baseline. Path results
+    satisfy the **Compatibility contract**.
+- `AC-017`: The public surface counts are unchanged: 19 tools, 1 fixed
+  resource, 14 resource templates, and 9 prompts.
+- `AC-018`: Under `backend/src/`, the cycle's diff touches only
+  `services/lp_paths.py` and the `max_depth` bound in
+  `services/lp_models.py`. No CAPS framework ID, snapshot ID, or input-set
+  name appears in any generic source file. No validation rule changes.
 - `AC-019`: The full offline suite passes under the **Test-corpus contract**
   above.
+- `AC-023`: `max_depth` is accepted from 1 to 16, out-of-range values are
+  rejected through the existing validation error path, the default is 6, and
+  the published tool input schema reflects this.
+- `AC-024`: The differential check in **Test-corpus contract** finds no
+  difference on any baseline request with empty `truncation_reasons`.
+- `AC-025`: For each of the 43,145 connected CAPS pairs, requested with the
+  default `max_paths`:
+  - at `max_depth` equal to its shortest length, and at 16, the first
+    returned path has exactly the oracle's shortest hop count and satisfies
+    the **Result invariants**;
+  - `truncation_reasons` contains none of `work_limit`, `queue_limit`, or
+    `byte_limit`.
+
+  `path_limit` and `depth_limit` may appear, because they describe further
+  or longer paths beyond the request, not the returned shortest path.
+- `AC-026`: Every path result in the checks above satisfies the **Result
+  invariants**.
+- `AC-027`: No architectural impact (Documenter). The facts to document are
+  the 1–16 range, the default of 6, and target-aware behavior: long
+  connections are found within the fixed budgets, and `depth_limit` and
+  `path_limit` keep their exact meanings.
 
 ## Build Plan
 
@@ -502,8 +677,10 @@ external kgs/ (read-only)
 4. Dry-run the build. Build into a fresh root, validate read-only, persist
    acceptance, and install the passed package under `data/graph_packages/`.
    (`AC-002`..`AC-006`)
-5. Update corpus-dependent test expectations and add the CAPS baseline entry.
-   Run the full offline suite. (`AC-016`..`AC-019`)
+5. Replace the path-search algorithm and raise the request bound. Then
+   update corpus-dependent test expectations, add the CAPS baseline entry,
+   and add the path-search checks. Run the full offline suite.
+   (`AC-017`..`AC-019`, `AC-022`..`AC-026`)
 6. Run the repository STDIO smoke test and a STDIO session that exercises
    CAPS. Correct the MCPB manifest version, then build the MCPB stage and
    run the stage smoke test. Confirm the Docker build context.
@@ -534,11 +711,21 @@ external kgs/ (read-only)
   the default bundle file `dist/kgfegmcp-0.4.0.mcpb` will no longer match the
   build output, which is now named for `1.0.0`. Dated statements about 0.4.0
   installs remain historically true.
-- **Long CAPS connections are truncated.** Some CAPS connections of 9 or more
-  hops come back from path search as truncated, with the reasons stated,
-  instead of as a path. Raising the generic limits would change behavior for
-  every framework, so it is out of scope. The user documentation should
-  state this for CAPS (Documenter).
+- **`AC-025` "without truncation".** An empty `truncation_reasons` cannot
+  be required for every pair. `path_limit` or `depth_limit` legitimately
+  appears whenever more paths exist than requested, or a longer connection
+  exists. The technical criterion therefore forbids only budget and size
+  stops. If Scoper meant an empty reason list, that is unattainable for any
+  algorithm, and the question goes back to Scoper.
+- **Counter values change.** Clients or tests that pin path counters or
+  frontier counts will see smaller numbers. The tests that pin them are
+  updated under the **Test-corpus contract**.
+- **Reliance on acyclicity.** The exact-length search is correct only
+  because validation rejects buildsTowards cycles. If that rule is ever
+  relaxed, path search must be redesigned.
+- **Larger graphs.** The backward pass costs up to one inspection per
+  ancestor edge. A future package whose ancestor sets approach 5,000 edges
+  would hit `work_limit` and report it honestly. CAPS peaks at 1,126.
 
 ## Alternatives
 
@@ -559,6 +746,13 @@ external kgs/ (read-only)
   temporary corrected manifest.** Rejected. The stage would not be built from
   the repository as `AC-014` requires, and the repository's MCPB build would
   stay broken.
-- **Raising path-search limits or making them depend on package size.**
-  Rejected. It changes generic behavior and limits for all frameworks, which
-  conflicts with `AC-016` and `AC-018`.
+- **Target-distance pruning of the existing breadth-first search.**
+  Rejected. With depth headroom, breadth-first search still holds every
+  detour prefix of length *k−1* before completing any path of length *k*,
+  so the fixed budgets fill on long CAPS pairs.
+- **Raising the 5,000 budgets.** Rejected by scope. It would also only delay
+  the blow-up, and it would raise the worst-case cost per request for every
+  framework.
+- **Not charging the backward pass to the budget.** Rejected. Charging it
+  keeps the budget an honest bound on all per-request work, and measured
+  worst-case use stays well under 5,000.
