@@ -29,6 +29,9 @@ from kgfegmcp.services.models import (
 )
 from kgfegmcp.tool_results import MAX_TOOL_RESULT_BYTES, ToolResultLimits
 
+# The path request bound and the longest representable path share one ceiling so the
+# two cannot drift apart.
+MAX_PATH_DEPTH: Final[int] = 16
 MAX_PROGRESSION_RESULT_BYTES: Final[int] = MAX_TOOL_RESULT_BYTES
 MAX_STATEMENT_EXCERPT_CHARACTERS: Final[int] = 2048
 
@@ -359,7 +362,7 @@ class GetLearningProgressionPathsRequest(FrozenSchema):
     """Select directed simple builds paths between two exact standards."""
 
     framework_id: FrameworkId
-    max_depth: Annotated[StrictInt, Field(ge=1, le=12)] = 6
+    max_depth: Annotated[StrictInt, Field(ge=1, le=MAX_PATH_DEPTH)] = 6
     max_paths: Annotated[StrictInt, Field(ge=1, le=20)] = 3
     snapshot_id: SnapshotId | None = None
     source_identifier: ProgressionStandardIdentifier
@@ -369,9 +372,11 @@ class GetLearningProgressionPathsRequest(FrozenSchema):
 class ProgressionPath(FrozenSchema):
     """Reference ordered original hops and standards in deduplicated evidence tables."""
 
-    node_ids: Annotated[tuple[NodeId, ...], Field(min_length=2, max_length=13)]
+    node_ids: Annotated[
+        tuple[NodeId, ...], Field(min_length=2, max_length=MAX_PATH_DEPTH + 1)
+    ]
     relationship_ids: Annotated[
-        tuple[RelationshipId, ...], Field(min_length=1, max_length=12)
+        tuple[RelationshipId, ...], Field(min_length=1, max_length=MAX_PATH_DEPTH)
     ]
 
 

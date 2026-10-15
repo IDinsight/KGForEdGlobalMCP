@@ -497,6 +497,15 @@ they are. `max_depth` may now be up to 16.
     `max_depth` cap.
 - Validated acyclicity makes both computations well defined. Compute them
   without unbounded recursion, for example in topological order.
+- **Cycle guard** (added 2026-10-15 after `DEV-008`). If the settlement does
+  not settle every collected node, the input contains a directed cycle. The
+  search must then fail explicitly through an existing service error path. It
+  must never return a result, because exact-length masks are undefined on a
+  cyclic graph and a result could silently miss paths, which would violate
+  `AC-026`. Accepted packages cannot trigger this. Synthetic cyclic test
+  graphs (for example, `test_paths_cycle_is_per_path`) are outside the
+  search's contract, and their expectations change under the **Test-corpus
+  contract**.
 - Every adjacency entry inspected in this pass counts toward the existing
   5,000 inspection budget (`examined_relationship_count`, `work_limit`).
 
@@ -757,8 +766,46 @@ external kgs/ (read-only)
   frontier counts will see smaller numbers. The tests that pin them are
   updated under the **Test-corpus contract**.
 - **Reliance on acyclicity.** The exact-length search is correct only
-  because validation rejects buildsTowards cycles. If that rule is ever
+  because validation rejects buildsTowards cycles. The **Cycle guard** turns
+  any violation into an explicit failure. If the validation rule is ever
   relaxed, path search must be redesigned.
+- **Open scope decision: long paths exceed the result envelope** (raised
+  2026-10-15 from `DEV-008` evidence; routed to Scoper).
+  - Every tool result is capped at 100,000 characters
+    (`tool_results.MAX_TOOL_RESULT_CHARACTERS`), plus 1 MiB of bytes, and
+    is shared by all tools.
+  - Each returned path hop carries full per-relationship evidence: both
+    statement excerpts (up to 2,048 characters each), the rationale excerpt,
+    warnings, and the text mirror.
+  - Developer's all-pairs run shows:
+    - target-aware search finds every CAPS pair within the work and queue
+      budgets;
+    - every CAPS pair of 10–13 hops (492 pairs) raises
+      `progression_result_too_large`, because its first path alone does not
+      fit (the 11-hop example is 115,286 characters);
+    - 26,062 of 86,290 requests return the shortest path first but stop on
+      `byte_limit` before the second or third path.
+  - So `AC-025` as written (complete shortest path for every pair, with no
+    `byte_limit`) cannot be met unless the envelope or the evidence per hop
+    changes.
+  - Scope keeps the envelope and every response the same (`AC-022`, and the
+    non-goal on other tools' bounds). Choosing between the options below
+    therefore changes what users are promised, and it is Scoper's decision:
+    1. **Identify long paths by IDs (recommended).** Keep the envelope and
+       the per-hop evidence. When the first path does not fit, return a
+       normal result with no paths in the evidence tables,
+       `nextUnreturnedPath` set to the complete shortest path by IDs, and
+       `byte_limit`. Today this case raises an error instead. This uses the
+       tool's existing contract and `path_notice` wording; the client reads
+       each hop with `get_learning_progression`. `AC-025` becomes "found and
+       identified completely", with `byte_limit` allowed.
+    2. **Leaner per-hop evidence in path results.** Shorter excerpts or IDs
+       only, with full evidence through `get_learning_progression`. Every
+       path response changes for all seven frameworks, which conflicts with
+       `AC-022` as written.
+    3. **A larger envelope for the path tool only.** Responses for long paths
+       would reach about 200,000 characters, which costs clients more context
+       and departs from the shared 100,000-character standard.
 - **Schema widening.** Clients that cached the path tool's schema will see
   higher caps. Every limit widens and none narrows, so earlier responses stay
   valid under the new schema. Any test that pins the schema or the

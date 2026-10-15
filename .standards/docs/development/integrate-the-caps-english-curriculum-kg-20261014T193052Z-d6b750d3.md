@@ -357,7 +357,8 @@ Replace the breadth-first enumeration in `paths_result` with the design's exact-
 **Affected Area**
 
 - `backend/src/kgfegmcp/services/lp_paths.py`: `paths_result` and its private helpers. Kept as they are: the signature, `path_id_bound`, `PathIdBound`, `_admit_path`, `_require_size`, `_stop_on_size`, `_first_path_error`, `_reserved_path`, the result model, and the callers in `services/learning_progressions.py`.
-- `backend/src/kgfegmcp/services/lp_models.py`: the single `max_depth` bound of `GetLearningProgressionPathsRequest` (`le=12` becomes `le=16`; default 6). The traversal request's own bound (`le=12`, default 8) is unchanged.
+- `backend/src/kgfegmcp/services/lp_models.py`: a module-level path-depth constant `MAX_PATH_DEPTH = 16`. It drives the `GetLearningProgressionPathsRequest.max_depth` upper bound (default stays 6) and the `ProgressionPath` caps: `relationship_ids` at most 16 and `node_ids` at most 17, up from 12 and 13. The traversal request's own bound (`le=12`, default 8) and its distance model are unchanged.
+- `backend/src/kgfegmcp/mcp/tools/learning_progressions.py`: the `get_learning_progression_paths` description's maxima text becomes "maxima 16/20", derived from the constant. The traversal tool description is unchanged.
 
 **Expected Outcome**
 
@@ -367,7 +368,7 @@ Replace the breadth-first enumeration in `paths_result` with the design's exact-
   - Every created partial path, including the source state, counts toward the 5,000-state budget.
   - Admission, byte stops, `nextUnreturnedPath`, and the size reservation keep their behavior.
 - **Truncation reasons.** `work_limit` and `queue_limit` on the budgets. `path_limit` only when another path within `max_depth` exists. `depth_limit` exactly when the source's uncapped longest connection exceeds `max_depth`. `byte_limit` unchanged. `graph_exhausted` and `scope_complete` keep their formulas. Counters and frontier fields keep their names and report the new search's effort.
-- **Request bound.** `max_depth` accepts 1–16, still defaults to 6, and rejects 0 and 17 through the existing validation path. The published tool input schema shows maximum 16.
+- **Request bound and path caps.** `max_depth` accepts 1–16, still defaults to 6, and rejects 0 and 17 through the existing validation path. Requests with `max_depth` 13–16 raise no model error from the size reservation. The published schema shows input `max_depth` maximum 16, output `nodeIds` maxItems 17 and `relationshipIds` maxItems 16, and the description reads "maxima 16/20".
 
 **Self-Check**
 
@@ -375,7 +376,7 @@ Replace the breadth-first enumeration in `paths_result` with the design's exact-
 - The existing progression tests that do not encode the six-package corpus or pin counter values still pass.
 - A scratch **differential run** (not a committed test) against a reference copy of the baseline enumerator from `git show f9fdaa2:backend/src/kgfegmcp/services/lp_paths.py`, over deterministic request samples on all seven packages (`max_depth` 1–12, `max_paths` 1–20, connected and unconnected pairs). Wherever the baseline returns empty `truncation_reasons`, the new search must return identical `paths`, `relationships`, and `nodes`, with empty reasons.
 - A scratch **all-pairs run** over the 43,145 connected CAPS pairs at `max_depth` equal to the shortest length and at 16, with default `max_paths`. The first path must have the oracle's shortest length, no result may report `work_limit`, `queue_limit`, or `byte_limit`, and every result must satisfy the **Result invariants**. Peak inspection and state counts are recorded.
-- The published `get_learning_progression_paths` input schema, read over STDIO, shows `max_depth` maximum 16 and default 6.
+- The published `get_learning_progression_paths` schema and description, read over STDIO, show input `max_depth` maximum 16 and default 6, output `nodeIds` maxItems 17 and `relationshipIds` maxItems 16, and "maxima 16/20". The traversal tool's schema and description are unchanged.
 
 **Implementation Notes**
 
@@ -391,6 +392,41 @@ Pre-implementation finding (2026-10-15). No code was changed; DEV-008 is suspend
 - Checked and not affected:
   - The traversal bounds (`TraverseLearningProgressionsRequest.max_depth` ≤ 12 and `ProgressionTraversalDistance.depth` ≤ 12) are traversal-only and stay as the design says.
   - `cli/smoke_progressions.py` compares each tool's nested request schema with the live model rather than with pinned values, and only reports `toolSchemaIdentities` hashes. So the smoke follows a bound change without edits.
+
+
+Implementation and self-check evidence (2026-10-15, repository root, `HEAD d635c6a` plus uncommitted DEV-008 code). Raw outputs and the scratch harnesses are in the git-ignored `data/source_artifacts/learning_progressions/dev008/`. The step is **not done**: AC-025's criterion is unmet for reasons outside the change boundary (Plan Notes, Suspended Assignment 3).
+
+- **Code** (`git diff --stat -- backend`: 3 files, +334/−69). It stays within the widened **Change boundary**:
+  - `services/lp_models.py`: `MAX_PATH_DEPTH: Final[int] = 16` drives `GetLearningProgressionPathsRequest.max_depth` (`le=MAX_PATH_DEPTH`, default 6) and the `ProgressionPath` caps (`node_ids` ≤ 17, `relationship_ids` ≤ 16).
+  - `mcp/tools/learning_progressions.py`: the path tool description reads `f"…maxima {MAX_PATH_DEPTH}/20…"`.
+  - `services/lp_paths.py`: `paths_result` now runs `_target_reach` (an upstream BFS from the target, then Kahn settlement of exact-length bitmasks and uncapped longest and shortest hop counts, with every upstream edge charged to the inspection budget). It then runs `_enumerate`, `_search_length`, and `_extend`: depth-first search per exact length in `relationship_id` order.
+  - The new `_has_more` computes exactly whether a further path exists, both for `path_limit` and for the byte stop's `byte_limit`. `_admit_path` and `_stop_on_size` now take `more` instead of testing "queue non-empty". This was found by the differential run (see below).
+  - `_expand_state` was removed. `_SEARCH_BUDGET = 5000` replaces the literal 5000s. `PathIdBound`, `path_id_bound`, `_first_path_error`, `_require_size`, `_reserved_path`, `_result` (apart from the constant), and the callers are unchanged.
+  - Local choice: the source state counts once toward `enqueued_state_count`, not once per exact length.
+- **Static checks** on the three files: `black --check` and `isort --check-only` leave the files unchanged; `ruff check` passed; `mypy` found no issues; `pylint --rcfile=.pylintrc` rated 10.00/10 (the only warning was the sandbox blocking its stats cache in `~/Library/Caches`); `interrogate` passed at 100%. The tracked `interrogate_badge.svg` was regenerated byte-identical.
+- **Published schema over STDIO** (`schema_bounds.py`, `schema-bounds.txt`):
+  - Path input `maxDepth` has minimum 1, maximum 16, default 6. Output `nodeIds` maxItems is 17 and `relationshipIds` maxItems is 16. The description says "maxima 16/20".
+  - The traversal tool is unchanged: `maxDepth` 1–12, default 8, "maxima 12/250/100".
+  - Requests with `maxDepth` 17 and 0 are rejected by input validation ("17 is greater than the maximum of 16", "0 is less than the minimum of 1"). A CAPS request at 16 raises no model error from the size reservation.
+- **Differential run against the baseline** (`paths_differential.py`, `differential.json`). It loads `git show f9fdaa2:…/lp_paths.py` as a reference module and swaps it into the real service call. It ran 5,127 deterministic requests over all seven packages: up to 600 connected and 200 unconnected pairs each, with `maxDepth` cycling 1–12 and `maxPaths` 1–20.
+  - The baseline was untruncated on 3,448 requests (2,197 of them with paths). On all of them the new search returned identical `paths`, `relationships`, and `nodes` with empty reasons: **0 mismatches** after the fix.
+  - Before the fix there was 1 mismatch (Nigeria, `maxDepth` 7, `maxPaths` 15). The new search reported `byte_limit` because the depth-first stack is never empty. Fixed with `_has_more`.
+- **All-pairs CAPS run** (`caps_all_pairs.py`, `caps-all-pairs.json`, 444 s in-process): each of the 43,145 connected pairs at `max_depth` equal to its shortest length and at 16, with default `max_paths` (3). That is 86,290 requests.
+  - No `work_limit` or `queue_limit` at all. Peak use was 1,239 inspections and 26 states, against 5,000 each.
+  - 59,244 requests returned with no budget or size stop, the oracle's shortest path first, and every **Result invariant** holding.
+  - 26,062 requests returned the shortest path first but report `byte_limit`. The size reservation stopped before the second or third path while one exists.
+  - 984 requests, covering **every pair of 10–13 hops (492 pairs)** at both depths, raise `progression_result_too_large`: the first path itself does not fit.
+  - Measured on the 11-hop pair `0016a784… → 2ccbf220…`: the one-path result is 115,310 bytes and **115,286 characters**, against `MAX_TOOL_RESULT_CHARACTERS` of 100,000 (the byte limit is 1 MiB).
+  - So AC-025's criteria (complete shortest path for every pair; no `byte_limit`) fail on the fixed result envelope and existing size policy, not on the search. Changing either is outside the **Change boundary** and scope's non-goals.
+- **Full offline suite on the final code** (`pytest-final.out`): 132 passed, 17 failed. Classification:
+  - Expected six-package corpus failures (10, unchanged from DEV-006): `test_progression_discovery_text.py` ×5, `test_runtime_only_packages.py` ×2, `test_progression_lookup.py:161`, `test_progression_discovery.py:116`, `test_progression_regressions.py:102` (`KeyError`).
+  - Tests pinning baseline path behaviour that the design changes (5, Tester-owned under the **Test-corpus contract**):
+    - `test_progression_acceptance.py:135`: asserts path `max_depth` 13 is rejected; now valid (AC-023).
+    - `test_paths_work_boundary` and `test_paths_cumulative_queue_boundary`: their synthetic sources cannot reach target `t`. The new search answers immediately with no work and no truncation, so the budget assertions (5000) no longer apply.
+    - `test_paths_depth_boundary` (DIAMOND, `max_depth` 1): `depth_limit` is reported correctly, but `depth_limited_extension_count` is 0 rather than 2, because no length-1 path exists and no edge is inspected. The counter's meaning changed by design.
+    - `test_paths_combination_only_bytes`: paths, `byte_limit`, rollback, and `nextUnreturnedPath` assertions passed up to the counter check. `examined_relationship_count` is 8 rather than 4 because the backward pass is now charged.
+  - `test_paths_cycle_is_per_path`: a **synthetic cyclic** graph (`a→b→c→a`). The new search returns `[("z",)]` without the `("a","b","d")` path and without truncation. The design's exact-length search is valid only for acyclic graphs, which validation guarantees for accepted packages (**Risks: Reliance on acyclicity**). Flagged for Architect and Tester: this test's premise is outside the new contract.
+  - `test_paths_every_real_shortest_connection_fits:322`: the six packages pass. The first long CAPS pair raises `progression_result_too_large`, which is the same envelope limit as above.
 
 ---
 
@@ -435,9 +471,17 @@ Change only the `version` field of `packaging/mcpb/manifest.json` from `0.4.0` t
 
 `Recovery Frame`: `1` `Recovery Reason`: `DEV-008 found the design's change boundary too narrow: raising max_depth to 16 also requires raising ProgressionPath node_ids/relationship_ids caps (13/12) in lp_models.py, which changes the published output schema, and the path tool description's published 'maxima 12/20' text.` `Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`: `HEAD a18dd76 (CAPS data committed in 4c88217) plus uncommitted .standards plan/state edits; backend/src unchanged; DEV-001..DEV-005 DONE; DEV-008 IN_PROGRESS with no code written; DEV-009, DEV-006, DEV-007 PENDING` `Next Action`: `After the corrected design returns, reconcile DEV-008's Affected Area and Expected Outcome with the widened boundary (revising the plan to PROPOSED if intent changes), then implement DEV-008 and run its self-checks.`
 
+### Suspended Assignment 3
+
+`Recovery Frame`: `1` `Recovery Reason`: `DEV-008 disproved AC-025 as designed: target-aware search finds every CAPS pair within budgets, but the fixed 100,000-character result envelope rejects all 492 CAPS pairs of 10-13 hops (progression_result_too_large) and reports byte_limit on 26,062 of 86,290 all-pairs requests.` `Purpose`: `DEVELOPMENT` `Target`: `NONE` `Assessed Inputs`: `HEAD d635c6a plus uncommitted DEV-008 code in services/lp_paths.py, services/lp_models.py, mcp/tools/learning_progressions.py; DEV-001..DEV-005 DONE; DEV-008 IN_PROGRESS (implemented; AC-025 self-check unmet); DEV-009, DEV-006, DEV-007 PENDING` `Next Action`: `After the corrected design or scope returns, reconcile DEV-008 with it (revising the plan to PROPOSED if intent changes), apply any newly permitted change, rerun the all-pairs, differential, schema, and static checks, then continue with DEV-009.`
+
 ### Reconciliation of Suspended Assignment 1 (2026-10-15)
 
 Architect closed recovery frame 1 with no rerun (`Handoff.Kind: RESUME`). The corrected scope and design materially change the approved implementation: they add a generic backend change and the MCPB manifest correction. So this plan is revised and returned to `PROPOSED`.
 - The saved DEVELOPMENT assignment resumes as DEV-008 and DEV-009, then DEV-006 (reopened to `PENDING` and rerun in full), then DEV-007.
 - DEV-001..DEV-005 stay `DONE`. The design's CAPS identity, profile, overlay, input-set, and package values are unchanged, so the accepted package `…@2011+95ab377d1619` remains valid.
 - `User Style` `tony` stays locked, and `Mode` stays `STEPWISE`.
+
+### Reconciliation of Suspended Assignment 2 (2026-10-15)
+
+Architect closed recovery frame 1 with no rerun (`d635c6a`), widening the **Change boundary** to the path-depth constant, the `ProgressionPath` caps, and the path tool description's maxima. DEV-008 resumes `IN_PROGRESS` with its Affected Area, Expected Outcome, and Self-Check updated to match. The approved intent is unchanged: target-aware exact-length search with a `max_depth` ceiling of 16. The added edits are the design-required means of returning paths of up to 16 hops, so this is treated as bookkeeping reconciliation without re-approval. No other step changes.

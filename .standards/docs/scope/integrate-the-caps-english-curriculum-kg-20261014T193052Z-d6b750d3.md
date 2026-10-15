@@ -21,7 +21,9 @@ resources, and prompts stay as they are.
 CAPS connections are longer than any in the existing corpus, up to 13 hops
 compared with 8. So that clients can find them, Learning Progression path search
 becomes target-aware and its maximum path depth rises. Results that path search
-already returns completely stay the same.
+already returns completely stay the same. Some long paths are too large to
+return in full within the shared result size limit. For those, path results
+become more compact or, as a last resort, identify the path by IDs.
 
 ## Constraints
 
@@ -50,6 +52,14 @@ already returns completely stay the same.
   16. Every connected CAPS `buildsTowards` pair must be found while the
   existing queue and work budgets stay fixed. The change is generic, applying
   to every framework.
+- Long-path results (user decisions, 2026-10-15): the shared tool-result
+  envelope of 100,000 characters and 1 MiB stays fixed. A path result that
+  cannot hold even its shortest path with full per-hop evidence moves the
+  per-hop boilerplate repeated in every relationship to one shared place in
+  the result. That boilerplate includes attribution, description, author,
+  provider, license, entity fields, and the confidence notice. If the
+  shortest path still does not fit, the result identifies it by relationship
+  and node IDs and reports `byte_limit` instead of failing.
 - Archive-only build inputs stay out of Git. Uploading them to the IDinsight
   Google Drive evidence archive is a manual, user-owned step.
 - Tests must not call live or paid LLM services.
@@ -64,6 +74,8 @@ already returns completely stay the same.
   prompts.
 - Changing traversal limits, the default path depth, the path queue and work
   budgets, or any other tool's bounds.
+- Changing the shared tool-result envelope, the form of path results that
+  already hold their shortest path, or any other tool's result form.
 - Adopting Git LFS, external package hosting, or any other way of storing
   packages.
 - Changing catalog loading so it tolerates stray non-framework directories
@@ -193,6 +205,10 @@ corpus accurately.
   disclosures.
 - `AC-027`: The path-search reference documentation states the new maximum
   path depth of 16 and describes target-aware path search.
+- `AC-031`: The path-search reference documentation describes when path
+  results use the shared-place compact form and when they identify the
+  shortest path by IDs only. It also says how clients read each hop's full
+  evidence.
 
 **Depends on:** 2, 3, 4, 7.
 
@@ -200,7 +216,8 @@ corpus accurately.
 
 **Intent:** Clients can find CAPS's long Learning Progression connections
 (up to 13 hops) through the existing path tool, within the existing fixed work
-budgets, without changing results the tool already returns completely.
+budgets and result envelope, without changing results the tool already returns
+completely.
 
 **Done when:**
 
@@ -210,11 +227,21 @@ budgets, without changing results the tool already returns completely.
 - `AC-024`: For every request that the cycle-baseline path search answers
   without truncation, on any of the seven packages, the target-aware search
   returns the same paths in the same order.
-- `AC-025`: Every connected CAPS `buildsTowards` source–target pair (43,145
-  pairs, with shortest paths of up to 13 hops) returns its complete shortest
-  path, without truncation, when requested with a `max_depth` from that
-  pair's shortest-path length up to 16. The existing queue and work budgets
-  stay fixed.
+- `AC-028`: Take every connected CAPS `buildsTowards` source–target pair
+  (43,145 pairs, with shortest paths of up to 13 hops), requested with a
+  `max_depth` from that pair's shortest-path length up to 16. Each request
+  returns a non-error result that identifies the pair's complete shortest
+  path first, without a `queue_limit` or `work_limit` stop, within the fixed
+  queue and work budgets. Further paths may be cut by `byte_limit`.
+- `AC-029`: Take any path result that cannot hold its shortest path with full
+  per-hop evidence inside the envelope. It carries the evidence fields that
+  are identical across all its hops once, in one shared place, instead of in
+  every relationship, and no information is lost. When the shortest path
+  then fits, it is returned with its evidence.
+- `AC-030`: Take any path result whose shortest path does not fit even in the
+  compacted form. It is a normal result, not a `progression_result_too_large`
+  error, and identifies the complete shortest path by its relationship and
+  node IDs with `byte_limit` reported.
 - `AC-026`: Path search never returns a wrong, partial, or wrong-length path.
   Any result that is incomplete reports non-empty truncation reasons.
 
@@ -224,6 +251,9 @@ budgets, without changing results the tool already returns completely.
 
 - `AC-016`: Retired on 2026-10-14 because the target-aware path-search change
   makes "serve the same results" too strict. Replaced by `AC-022`.
+- `AC-025`: Retired on 2026-10-15 because a complete shortest path with full
+  per-hop evidence cannot fit the fixed result envelope for 10–13 hop CAPS
+  pairs. Replaced by `AC-028`, `AC-029`, and `AC-030`.
 
 ## Assumptions
 

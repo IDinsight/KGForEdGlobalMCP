@@ -1,4 +1,11 @@
-"""Bounded breadth-first simple paths over immutable builds adjacency."""
+"""Bounded exact-length, target-aware simple paths over immutable builds adjacency.
+
+A backward pass from the target records, for every standard that can reach it, the
+exact hop counts that can still finish there. A forward depth-first search then emits
+paths length by length in relationship-ID order, extending only edges that can finish at
+exactly that length. Accepted packages reject buildsTowards cycles, so every directed
+path is simple and these exact lengths are well defined.
+"""
 
 # Future Library
 from __future__ import annotations
@@ -6,9 +13,9 @@ from __future__ import annotations
 # Standard Library
 import json
 
-from collections import deque
+from collections import defaultdict, deque
 from dataclasses import dataclass, field, replace
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 # Package Library
 from kgfegmcp.catalog.models import CatalogPackageRuntime
@@ -44,6 +51,8 @@ _REASONS: tuple[PathTruncationReason, ...] = (
     "queue_limit",
     "byte_limit",
 )
+# Fixed per-request budgets for inspected relationships and created partial paths.
+_SEARCH_BUDGET: Final[int] = 5000
 
 
 @dataclass(frozen=True, slots=True)
@@ -74,7 +83,7 @@ class _PathContext:
 
 @dataclass(frozen=True, slots=True)
 class _PathState:
-    """Keep a bounded partial path with its own visited IDs, preserving merges."""
+    """Keep one bounded partial path from the source."""
 
     edges: tuple[GraphRelationship, ...]
     node_ids: tuple[NodeId, ...]
@@ -82,7 +91,11 @@ class _PathState:
 
 @dataclass(slots=True)
 class _PathRows:
-    """Own query-local finite queue, actual counters and deduplicated path evidence."""
+    """Own query-local counters, live partial paths and deduplicated path evidence.
+
+    ``queue`` holds the partial paths that are still alive: the depth-first prefixes
+    from the source state to the path being extended.
+    """
 
     depth_examined: int = 0
     depth_limited: int = 0
@@ -100,13 +113,31 @@ class _PathRows:
     )
 
 
-def _admit_path(*, context: _PathContext, rows: _PathRows, state: _PathState) -> bool:
+@dataclass(frozen=True, slots=True)
+class _TargetReach:
+    """Describe how every standard that can reach the target does so.
+
+    ``lengths`` maps each such standard to a bitmask whose bit ``h`` is set when a
+    path of exactly ``h`` hops (at most the requested depth) reaches the target.
+    ``longest`` and ``shortest`` are uncapped hop counts to the target.
+    """
+
+    lengths: dict[NodeId, int]
+    longest: dict[NodeId, int]
+    shortest: dict[NodeId, int]
+
+
+def _admit_path(
+    *, context: _PathContext, more: bool, rows: _PathRows, state: _PathState
+) -> bool:
     """Admit a completed path and reserve final counter/frontier envelope size.
 
     Parameters
     ----------
     context
         Pinned runtime and shared byte/character evidence policy.
+    more
+        Whether another path within the requested depth exists after this one.
     rows
         Bounded local evidence tables and counters.
     state
@@ -153,6 +184,7 @@ def _admit_path(*, context: _PathContext, rows: _PathRows, state: _PathState) ->
     except ProgressionResultTooLargeError:
         _stop_on_size(
             context=context,
+            more=more,
             previous_edges=previous_edges,
             previous_nodes=previous_nodes,
             rows=rows,
@@ -182,62 +214,114 @@ def _encoded_cost(value: str) -> tuple[int, int]:
     return len(encoded.encode("utf-8")), len(encoded)
 
 
-def _expand_state(*, context: _PathContext, rows: _PathRows, state: _PathState) -> bool:
-    """Inspect sorted edges with work and cumulative queue checks before admission.
+def _enumerate(*, context: _PathContext, reach: _TargetReach, rows: _PathRows) -> None:
+    """Emit paths length by length, shortest first, until done or a stop applies.
 
     Parameters
     ----------
     context
-        Builds-only immutable adjacency and requested depth.
+        Requested depth and path count for one exact route.
+    reach
+        Exact target hop counts from the backward pass.
     rows
-        Finite work counters, partial paths and remaining frontier.
+        Counters, live partial paths and admitted evidence.
+
+    Examples
+    --------
+    >>> _enumerate(context=context, reach=reach, rows=rows)
+    >>> [len(path.relationship_ids) for path in rows.paths]
+    [2, 2, 3]
+    """
+
+    source_lengths = reach.lengths.get(context.source, 0)
+
+    for hops in range(1, context.request.max_depth + 1):
+        if not source_lengths >> hops & 1:
+            continue
+
+        # A set bit guarantees another path of this length exists.
+        if len(rows.paths) == context.request.max_paths:
+            rows.reasons.add("path_limit")
+            return
+
+        if not _search_length(context=context, hops=hops, reach=reach, rows=rows):
+            return
+
+    # Finished: nothing remains alive or uninspected.
+    rows.queue.clear()
+    rows.pending = 0
+
+
+def _extend(
+    *,
+    context: _PathContext,
+    edge: GraphRelationship,
+    hops: int,
+    reach: _TargetReach,
+    rows: _PathRows,
+    state: _PathState,
+) -> bool | _PathState | None:
+    """Inspect one edge and extend, complete or skip the partial path along it.
+
+    Parameters
+    ----------
+    context
+        Requested path count and shared evidence helpers.
+    edge
+        Next sorted downstream builds edge of the partial path's last standard.
+    hops
+        Exact path length being enumerated.
+    reach
+        Exact target hop counts from the backward pass.
+    rows
+        Counters, live partial paths and admitted evidence.
     state
-        One nonterminal partial path with its per-path visited IDs.
+        Partial path being extended.
 
     Returns
     -------
-    bool
-        True after full inspection; False on a work/queue stop.
+    bool | _PathState | None
+        True when a longer partial path was pushed, False when the edge was skipped,
+        the completed path when the edge reached the target, and None when a work,
+        queue or path stop applies.
     """
 
-    edges = context.adjacency.get(("downstream", state.node_ids[-1]), ())
-    at_depth = len(state.edges) == context.request.max_depth
-    rows.pending = len(edges)
+    if rows.examined == _SEARCH_BUDGET:
+        rows.reasons.add("work_limit")
+        return None
 
-    for edge in edges:
-        if rows.examined == 5000:
-            rows.reasons.add("work_limit")
-            return False
+    rows.examined += 1
+    head = edge.target_node_id
+    remaining = hops - len(state.edges) - 1
 
-        rows.examined += 1
-        rows.depth_examined += int(at_depth)
-        adjacent = edge.target_node_id
-
-        if adjacent in state.node_ids:
-            rows.pending -= 1
-            continue
-
-        if at_depth:
+    if not reach.lengths.get(head, 0) >> remaining & 1:
+        # The head reaches the target, but only in more hops than remain.
+        if reach.shortest.get(head, remaining) > remaining:
+            rows.depth_examined += 1
             rows.depth_limited += 1
-            rows.reasons.add("depth_limit")
-        else:
-            if rows.enqueued == 5000:
-                rows.reasons.add("queue_limit")
-                return False
 
-            # Bound insertion before allocating another partial path. No global visited
-            # set: two prefixes that merge must both be expanded.
-            rows.queue.append(
-                _PathState(
-                    edges=(*state.edges, edge), node_ids=(*state.node_ids, adjacent)
-                )
-            )
-            rows.enqueued += 1
-            rows.peak_queue = max(rows.peak_queue, len(rows.queue))
+        return False
 
-        rows.pending -= 1
+    # The eligible edge guarantees one more path, so stop exactly at max_paths.
+    if len(rows.paths) == context.request.max_paths:
+        rows.reasons.add("path_limit")
+        return None
 
-    return True
+    if rows.enqueued == _SEARCH_BUDGET:
+        rows.reasons.add("queue_limit")
+        return None
+
+    rows.enqueued += 1
+    child = _PathState(edges=(*state.edges, edge), node_ids=(*state.node_ids, head))
+
+    if remaining:
+        rows.queue.append(child)
+        rows.peak_queue = max(rows.peak_queue, len(rows.queue))
+        return True
+
+    # Only the target has zero hops left, so the child is a complete path.
+    rows.pending -= 1
+    return child
 
 
 def _first_path_error(
@@ -268,6 +352,50 @@ def _first_path_error(
             f"with get_learning_progression. {error.recovery_hint or ''}"
         ),
     )
+
+
+def _has_more(
+    *,
+    context: _PathContext,
+    hops: int,
+    indices: list[int],
+    reach: _TargetReach,
+    rows: _PathRows,
+) -> bool:
+    """Decide exactly whether another path within the requested depth remains.
+
+    Parameters
+    ----------
+    context
+        Builds-only sorted adjacency and requested depth.
+    hops
+        Exact path length being enumerated.
+    indices
+        Next edge index for each live partial path, parallel to ``rows.queue``.
+    reach
+        Exact target hop counts from the backward pass.
+    rows
+        Live partial paths from the source state onward.
+
+    Returns
+    -------
+    bool
+        True when an uninspected eligible edge or a longer exact length remains.
+    """
+
+    # Any eligible edge still to inspect guarantees a path of this length.
+    for state, index in zip(rows.queue, indices):
+        remaining = hops - len(state.edges) - 1
+        edges = context.adjacency.get(("downstream", state.node_ids[-1]), ())
+
+        if any(
+            reach.lengths.get(edge.target_node_id, 0) >> remaining & 1
+            for edge in edges[index:]
+        ):
+            return True
+
+    # Lengths above the requested depth are already masked out of the bitmask.
+    return reach.lengths.get(context.source, 0) >> (hops + 1) != 0
 
 
 def _require_size(*, context: _PathContext, reserve: bool, rows: _PathRows) -> None:
@@ -337,24 +465,25 @@ def _result(
         if reserve
         else tuple(reason for reason in _REASONS if reason in rows.reasons)
     )
+    budget = _SEARCH_BUDGET
     return GetLearningProgressionPathsResult(
         counters=ProgressionPathCounters(
             depth_frontier_examined_relationship_count=(
-                5000 if reserve else rows.depth_examined
+                budget if reserve else rows.depth_examined
             ),
-            enqueued_state_count=5000 if reserve else rows.enqueued,
-            examined_relationship_count=5000 if reserve else rows.examined,
-            peak_queue_state_count=5000 if reserve else rows.peak_queue,
+            enqueued_state_count=budget if reserve else rows.enqueued,
+            examined_relationship_count=budget if reserve else rows.examined,
+            peak_queue_state_count=budget if reserve else rows.peak_queue,
             returned_path_count=len(rows.paths),
         ),
         frontier=ProgressionPathFrontier(
-            depth_limited_extension_count=5000 if reserve else rows.depth_limited,
+            depth_limited_extension_count=budget if reserve else rows.depth_limited,
             pending_adjacency_count=(
-                max(5000, len(context.runtime.graph_store.relationships_by_id))
+                max(budget, len(context.runtime.graph_store.relationships_by_id))
                 if reserve
                 else rows.pending
             ),
-            queued_state_count=5000 if reserve else len(rows.queue),
+            queued_state_count=budget if reserve else len(rows.queue),
         ),
         graph_exhausted=not reasons,
         metadata=context.metadata,
@@ -372,9 +501,70 @@ def _result(
     )
 
 
+def _search_length(
+    *, context: _PathContext, hops: int, reach: _TargetReach, rows: _PathRows
+) -> bool:
+    """Depth-first emit every path of exactly ``hops`` hops in relationship-ID order.
+
+    Parameters
+    ----------
+    context
+        Builds-only sorted adjacency for one exact route.
+    hops
+        Exact path length to enumerate.
+    reach
+        Exact target hop counts from the backward pass.
+    rows
+        Counters, live partial paths (the source state stays first) and evidence.
+
+    Returns
+    -------
+    bool
+        True when every path of this length was admitted; False on any stop.
+    """
+
+    # Next edge index for each live partial path, parallel to rows.queue.
+    indices = [0]
+
+    while True:
+        state = rows.queue[-1]
+        edges = context.adjacency.get(("downstream", state.node_ids[-1]), ())
+
+        if indices[-1] == len(edges):
+            # The source state stays alive for the next length.
+            if len(indices) == 1:
+                return True
+
+            indices.pop()
+            rows.queue.pop()
+            continue
+
+        rows.pending = len(edges) - indices[-1]
+        edge = edges[indices[-1]]
+        indices[-1] += 1
+        outcome = _extend(
+            context=context, edge=edge, hops=hops, reach=reach, rows=rows, state=state
+        )
+
+        if outcome is None:
+            return False
+
+        if isinstance(outcome, _PathState):
+            more = _has_more(
+                context=context, hops=hops, indices=indices, reach=reach, rows=rows
+            )
+
+            # A kept final path needs no stop; any other size stop ends the search.
+            if not _admit_path(context=context, more=more, rows=rows, state=outcome):
+                return not more and "byte_limit" not in rows.reasons
+        elif outcome:
+            indices.append(0)
+
+
 def _stop_on_size(
     *,
     context: _PathContext,
+    more: bool,
     previous_edges: set[RelationshipId],
     previous_nodes: set[NodeId],
     rows: _PathRows,
@@ -386,6 +576,8 @@ def _stop_on_size(
     ----------
     context
         Shared encoder and pinned route.
+    more
+        Whether another path within the requested depth exists after this one.
     previous_edges
         Relationship-table keys before this path's speculative evidence.
     previous_nodes
@@ -403,7 +595,7 @@ def _stop_on_size(
 
     # Reservation is conservative; keep the path if the actual final envelope fits.
     # No room is then guaranteed for another path, so selection stops either way.
-    byte_reason: set[PathTruncationReason] = {"byte_limit"} if rows.queue else set()
+    byte_reason: set[PathTruncationReason] = {"byte_limit"} if more else set()
     stop_reasons = rows.reasons | byte_reason
 
     try:
@@ -436,6 +628,77 @@ def _stop_on_size(
         return
 
     rows.reasons = stop_reasons
+
+
+def _target_reach(*, context: _PathContext, rows: _PathRows) -> _TargetReach | None:
+    """Walk upstream from the target once and derive exact reachable hop counts.
+
+    Parameters
+    ----------
+    context
+        Builds-only sorted adjacency, target and requested depth.
+    rows
+        Counters charged with every inspected upstream edge.
+
+    Returns
+    -------
+    _TargetReach | None
+        Hop counts for every standard that reaches the target, or None on a work
+        stop.
+
+    Examples
+    --------
+    >>> reach = _target_reach(context=context, rows=rows)
+    >>> bin(reach.lengths[context.target])
+    '0b1'
+    """
+
+    target = context.target
+    predecessors: dict[NodeId, list[NodeId]] = {target: []}
+    out_degree: dict[NodeId, int] = defaultdict(int)
+    shortest = {target: 0}
+    pending = deque((target,))
+
+    # Breadth-first discovery of every ancestor; each upstream edge is inspected once.
+    while pending:
+        node = pending.popleft()
+        edges = context.adjacency.get(("upstream", node), ())
+
+        for index, edge in enumerate(edges):
+            if rows.examined == _SEARCH_BUDGET:
+                rows.pending = len(edges) - index
+                rows.reasons.add("work_limit")
+                return None
+
+            rows.examined += 1
+            parent = edge.source_node_id
+            predecessors[node].append(parent)
+            out_degree[parent] += 1
+
+            if parent not in shortest:
+                shortest[parent] = shortest[node] + 1
+                predecessors[parent] = []
+                pending.append(parent)
+
+    # Acyclic, so settle each ancestor after all its successors toward the target.
+    mask = (1 << (context.request.max_depth + 1)) - 1
+    lengths = {target: 1}
+    longest = {target: 0}
+    ready = deque((target,))
+
+    while ready:
+        node = ready.popleft()
+
+        for parent in predecessors[node]:
+            lengths[parent] = lengths.get(parent, 0) | ((lengths[node] << 1) & mask)
+            longest[parent] = max(longest.get(parent, 0), longest[node] + 1)
+            out_degree[parent] -= 1
+
+            if not out_degree[parent]:
+                ready.append(parent)
+
+    rows.pending = 0
+    return _TargetReach(lengths=lengths, longest=longest, shortest=shortest)
 
 
 def path_id_bound(*, adjacency: TraversalAdjacency) -> PathIdBound | None:
@@ -485,7 +748,7 @@ def paths_result(
     runtime: CatalogPackageRuntime,
     service: LearningProgressionsService,
 ) -> GetLearningProgressionPathsResult:
-    """Enumerate breadth-first per-path states, preserving directed alternatives.
+    """Enumerate exact-length target-aware paths, preserving directed alternatives.
 
     Parameters
     ----------
@@ -543,19 +806,14 @@ def paths_result(
         queue=deque((_PathState(edges=(), node_ids=(source.node_id,)),)),
     )
     _require_size(context=context, reserve=False, rows=rows)
+    reach = _target_reach(context=context, rows=rows)
 
-    while rows.queue:
-        state = rows.queue.popleft()
+    if reach is not None:
+        # A connection longer than the requested depth exists exactly when this holds.
+        if reach.longest.get(context.source, 0) > request.max_depth:
+            rows.reasons.add("depth_limit")
 
-        if state.node_ids[-1] == context.target:
-            if not _admit_path(context=context, rows=rows, state=state):
-                break
-
-            if len(rows.paths) == request.max_paths and rows.queue:
-                rows.reasons.add("path_limit")
-                break
-        elif not _expand_state(context=context, rows=rows, state=state):
-            break
+        _enumerate(context=context, reach=reach, rows=rows)
 
     result = _result(context=context, reserve=False, rows=rows)
     service.require_paths_result_size(result=result)
