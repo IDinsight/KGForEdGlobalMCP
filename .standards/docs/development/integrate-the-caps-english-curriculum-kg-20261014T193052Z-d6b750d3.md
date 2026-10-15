@@ -527,7 +527,7 @@ Completion evidence (2026-10-15, repository root, `HEAD 566226d` plus uncommitte
 
 ### DEV-011 — Standard progressions, LP search, and traversal results in compact form
 
-`Status`: `PENDING` `Depends On`: `DEV-010`
+`Status`: `DONE` `Depends On`: `DEV-010`
 `Acceptance`: `AC-034, AC-035, AC-036`
 
 **Goal**
@@ -552,6 +552,33 @@ Build `get_standard_progressions`, `search_learning_progressions`, and `traverse
 - A rehydration round-trip on every new result produced by the differential.
 - Published output schemas over STDIO show the compact entry and the shared object. `get_learning_progression`'s output for a fixed request is byte-identical to the baseline's.
 - `kgfegmcp-stdio-smoke` against the repository passes with the rehydrating edge check.
+
+
+Completion evidence (2026-10-15, repository root, `HEAD 218de79` plus uncommitted DEV-011 code). Raw outputs and scripts are in the git-ignored `data/source_artifacts/learning_progressions/dev011/`. The baseline worktree is a detached `git worktree` at `f9fdaa2` in the session scratchpad.
+
+- **Code** (`git diff --stat -- backend`: 4 files, +35/−10).
+  - `services/lp_models.py`: `ProgressionCollectionResult` and `TraverseLearningProgressionsResult` now subclass `CompactProgressionEvidenceResult`.
+  - `services/lp_discovery.py` `_build_result` and `services/lp_traversal.py` `_result`, the single constructors behind every trial, reservation, and final result, call `compact_relationships` and emit `relationships=entries, shared_relationship_evidence=shared`. Internal rows keep full evidence. Every existing size check (per-entry trials, `_require_entry_size` and `_require_edge_size`, the traversal reservation after each admitted edge, and the final checks) therefore measures the emitted compact form, including any un-lifted field.
+  - `cli/smoke_progressions.py`:
+    - `_RESULT_MODELS` is typed `type[ProgressionEvidenceResult] | type[CompactProgressionEvidenceResult]`, and `_read_query` and `_require_edge` take `ProgressionResult`.
+    - `_require_edge` rehydrates a compact result's entries with `rehydrate_relationships` and then applies the unchanged exact whole-entry check `expected.relationships[0] not in relationships`. Full-form results (paths, until DEV-012) compare directly.
+    - Pinned diagnostics are untouched.
+- **Static checks.** black and isort were applied. ruff: passed. **mypy over the whole package** (123 files): no issues. pylint: 10.00/10. interrogate: passed. `interrogate_badge.svg` is unchanged.
+- **Collection and traversal differential** (`record_lp_outputs.py`, `compare_lp_outputs.py`, `baseline-outputs.json`, `new-outputs.json`, `compare.json`).
+  - The baseline was recorded by running `record_lp_outputs.py` with the `f9fdaa2` worktree first on `sys.path` and its own config and data roots. The module path was confirmed in the output.
+  - Sample: 582 request sequences over the six baseline packages, following up to 3 pages: 240 `get_standard_progressions`, 102 `search_learning_progressions`, and 240 `traverse_learning_progressions`. The sample covers four connection kinds, three limits, both directions, depths 1–8, varied node and edge caps, type filters, and endpoint scopes.
+  - **0 mismatches.**
+    - 464 sequences never stopped for size in the baseline. They match exactly, page by page, after rehydration: `relationships`, `nodes`, `connections`, `distances`, cursors, `page`, counters, and stopping reasons.
+    - 118 sequences had a baseline size stop (most `search` pages stop on `byte_limit`). Pages before the stop match exactly. From the stop on, the baseline's relationships, connections, and distances (and traversal nodes) are an in-order prefix of the new ones.
+  - For example, an unfiltered Ghana English search with limit 10 now returns 8 entries per page where the baseline returned 7 and 6. That is why new pages total 776 against the baseline's 789.
+- **Unchanged tool and schemas** (`record_exact_lookups.py`, `lookups-baseline.json`, `lookups-new.json`).
+  - 150 `get_learning_progression` outputs (25 per baseline package) are byte-identical to the baseline, and `GetLearningProgressionResult`'s published schema is byte-identical.
+  - `ProgressionCollectionResult` and `TraverseLearningProgressionsResult` publish compact entries and `sharedRelationshipEvidence`, with the rehydration description. `GetLearningProgressionPathsResult` is unchanged until DEV-012.
+- **Repository STDIO smoke** (`kgfegmcp-stdio-smoke`, `stdio-smoke.out`). Run outside the sandbox: its child `uv` needs `~/.cache/uv`. Result: `status: passed`, 19 tools, 1 fixed resource, 14 templates, 9 prompts, 15 resource reads, and 7 LP snapshots. All five progression queries ran, and the rehydrating edge check held for both compacted tools.
+- **Full offline suite** (`pytest.out`): 123 passed, 26 failed. 17 are unchanged from DEV-010. 9 are new, all pinning the full form (Tester-owned under the **Test-corpus contract**, AC-034 and AC-035):
+  - `test_progression_text_only.py::test_ordinary_text_carries_the_complete_result[direct|search|traverse]`: `KeyError` reading `relationship.label` or `epistemicStatus` from entries; those are now in `sharedRelationshipEvidence`.
+  - `test_progression_discovery.py::test_direct_adjacency_matches_original_records[outgoing_builds|incoming_builds|related]` (:164) and `test_progression_algorithms.py::test_traversal_keeps_merging_edges` (:69). Membership, order, and distances pass; only the check that each entry's `relationship` equals or is the stored `GraphRelationship` object fails, because entries are now `CompactGraphRelationship`.
+  - `test_traversal_combination_only_bytes` (:125, `byte_limit` no longer reported) and `test_discovery_combination_bytes_preserve_continuation` (:397, a page now holds 3 entries instead of 1). Their fixture (`builds(pairs, text)`) places the oversized text in `attributionStatement`, which is identical across entries and is now lifted once. The "oversized only in combination" setup therefore fits, which is the AC-035 size-stopped exception. Tester needs a fixture whose oversized text sits in a per-entry field.
 
 ---
 

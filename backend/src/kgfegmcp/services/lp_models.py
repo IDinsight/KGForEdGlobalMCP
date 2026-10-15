@@ -407,7 +407,7 @@ class ProgressionPage(FrozenSchema):
     total_matching_count: Annotated[StrictInt, Field(ge=0)] | None
 
 
-class ProgressionCollectionResult(ProgressionEvidenceResult):
+class ProgressionCollectionResult(CompactProgressionEvidenceResult):
     """Share bounded deduplicated tables, normalized filters and page continuation."""
 
     connections: tuple[ProgressionConnection, ...]
@@ -473,7 +473,7 @@ class ProgressionTraversalCounters(FrozenSchema):
     returned_relationship_count: Annotated[StrictInt, Field(ge=0, le=100)]
 
 
-class TraverseLearningProgressionsResult(ProgressionEvidenceResult):
+class TraverseLearningProgressionsResult(CompactProgressionEvidenceResult):
     """Return exact generated edges within a deterministic derived subgraph."""
 
     counters: ProgressionTraversalCounters

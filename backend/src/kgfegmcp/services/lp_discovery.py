@@ -30,6 +30,7 @@ from kgfegmcp.search.normalizers import (
     FACET_NORMALIZER_VERSION,
     normalize_facet_value,
 )
+from kgfegmcp.services.lp_compact import compact_relationships
 from kgfegmcp.services.lp_models import (
     GetStandardProgressionsRequest,
     ProgressionCollectionRequest,
@@ -325,6 +326,8 @@ def _build_result(
     next_cursor = (
         _encode_cursor(context=context, position=position) if remaining else None
     )
+    # Size checks measure this emitted compact form, including any un-lifted field.
+    shared, entries = compact_relationships(relationships=rows.relationships)
     used_nodes = {
         node_id
         for item in rows.relationships
@@ -356,9 +359,10 @@ def _build_result(
                 len(rows.relationships) if start == 0 and not remaining else None
             ),
         ),
-        relationships=tuple(rows.relationships),
+        relationships=entries,
         request=context.request,
         resolved_standard_node_ids=context.selection.node_ids,
+        shared_relationship_evidence=shared,
     )
 
 
