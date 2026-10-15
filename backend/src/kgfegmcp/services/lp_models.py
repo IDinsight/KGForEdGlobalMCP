@@ -546,7 +546,7 @@ class ProgressionPathFrontier(FrozenSchema):
     queued_state_count: Annotated[StrictInt, Field(ge=0, le=5000)]
 
 
-class GetLearningProgressionPathsResult(ProgressionEvidenceResult):
+class GetLearningProgressionPathsResult(CompactProgressionEvidenceResult):
     """Return bounded alternative simple paths with original generated hop evidence."""
 
     counters: ProgressionPathCounters

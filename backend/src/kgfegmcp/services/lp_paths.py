@@ -26,6 +26,7 @@ from kgfegmcp.errors import (
     ProgressionResultTooLargeError,
 )
 from kgfegmcp.graph.models import GraphRelationship
+from kgfegmcp.services.lp_compact import compact_relationships
 from kgfegmcp.services.lp_models import (
     GetLearningProgressionPathsRequest,
     GetLearningProgressionPathsResult,
@@ -467,6 +468,11 @@ def _result(
         else tuple(reason for reason in _REASONS if reason in rows.reasons)
     )
     budget = _SEARCH_BUDGET
+
+    # Size checks measure this emitted compact form, including any un-lifted field.
+    shared, entries = compact_relationships(
+        relationships=tuple(rows.relationships.values())
+    )
     return GetLearningProgressionPathsResult(
         counters=ProgressionPathCounters(
             depth_frontier_examined_relationship_count=(
@@ -493,9 +499,10 @@ def _result(
         ),
         nodes=tuple(rows.nodes.values()),
         paths=tuple(rows.paths),
-        relationships=tuple(rows.relationships.values()),
+        relationships=entries,
         request=context.request,
         scope_complete=not any(reason != "depth_limit" for reason in reasons),
+        shared_relationship_evidence=shared,
         source_node_id=context.source,
         target_node_id=context.target,
         truncation_reasons=reasons,
@@ -571,7 +578,10 @@ def _stop_on_size(
     rows: _PathRows,
     state: _PathState,
 ) -> None:
-    """Keep a fitting path, or roll back a later one and name it, then stop.
+    """Keep a fitting path, or roll it back and name it by IDs, then stop.
+
+    A rolled-back first path yields the IDs-only result: no paths or relationship
+    entries, the endpoint summaries, ``nextUnreturnedPath`` and ``byte_limit``.
 
     Parameters
     ----------
@@ -591,7 +601,8 @@ def _stop_on_size(
     Raises
     ------
     ProgressionResultTooLargeError
-        If the first path cannot fit, with its ordered relationship IDs.
+        If even the IDs-only result for the first path cannot fit, naming its
+        ordered relationship IDs.
     """
 
     # Reservation is conservative; keep the path if the actual final envelope fits.
@@ -604,11 +615,7 @@ def _stop_on_size(
             context=context, reserve=False, rows=replace(rows, reasons=stop_reasons)
         )
     except ProgressionResultTooLargeError as error:
-        if len(rows.paths) == 1:
-            raise _first_path_error(error=error, state=state) from error
-
-        # Earlier paths passed reservation, which covered this outcome's final
-        # counters, reasons and a worst-case nextUnreturnedPath.
+        first = len(rows.paths) == 1
         rows.paths.pop()
         rows.nodes = {
             key: value for key, value in rows.nodes.items() if key in previous_nodes
@@ -626,6 +633,15 @@ def _stop_on_size(
         # The stopped path stays counted in the queued frontier.
         rows.queue.appendleft(state)
         rows.reasons.add("byte_limit")
+
+        # Earlier paths passed reservation, which covered a later path's rollback.
+        # The first path's IDs-only result is checked here instead.
+        if first:
+            try:
+                _require_size(context=context, reserve=False, rows=rows)
+            except ProgressionResultTooLargeError:
+                raise _first_path_error(error=error, state=state) from error
+
         return
 
     rows.reasons = stop_reasons

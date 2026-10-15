@@ -584,7 +584,7 @@ Completion evidence (2026-10-15, repository root, `HEAD 218de79` plus uncommitte
 
 ### DEV-012 — Path results in compact form with the IDs-only fallback
 
-`Status`: `PENDING` `Depends On`: `DEV-008, DEV-010`
+`Status`: `DONE` `Depends On`: `DEV-008, DEV-010`
 `Acceptance`: `AC-024, AC-026, AC-028, AC-030, AC-032`
 
 **Goal**
@@ -617,6 +617,43 @@ Emit every `get_learning_progression_paths` result in the compact form, and, whe
   - rehydration round-trips.
   - It records the counts of full, `byte_limit`, and IDs-only outcomes by hop count, and the measured sizes of the 11-, 12-, and 13-hop results against the Architect's projection.
 - A compact-versus-full size comparison on a sample of short path results.
+
+
+Completion evidence (2026-10-15, repository root, `HEAD 8e1361c` plus uncommitted DEV-012 code). Raw outputs and scripts are in the git-ignored `data/source_artifacts/learning_progressions/dev012/`.
+
+- **Code** (`git diff --stat -- backend`: 2 files, +25/−9).
+  - `services/lp_models.py`: `GetLearningProgressionPathsResult` now subclasses `CompactProgressionEvidenceResult`.
+  - `services/lp_paths.py` `_result`, the single constructor behind the reservation, the actual-size checks, and the final result, compacts `rows.relationships` and emits `relationships=entries, shared_relationship_evidence=shared`. Every admission therefore measures the emitted compact form, including any un-lifted field.
+  - `_stop_on_size` applies the existing rollback (pop the path, restore the node and relationship tables to their state before the path, set `next_unreturned`, re-queue the state, add `byte_limit`) to the **first** path too. That rollback produces the IDs-only result:
+    - empty `paths`, `relationships`, and `sharedRelationshipEvidence` (`{}`);
+    - source and target summaries in `nodes`;
+    - the path in `nextUnreturnedPath`;
+    - `byte_limit` plus any exact `depth_limit`.
+  - Only if that IDs-only result also fails `_require_size` does it raise `_first_path_error` (the degenerate case).
+- **Static checks.** black and isort were applied. ruff: passed. **mypy over the whole package** (123 files): no issues. pylint: 10.00/10. interrogate: passed. `interrogate_badge.svg` is unchanged.
+- **Path differential with rehydration** (`record_path_outputs.py`, `compare_path_outputs.py`, `paths-baseline.json`, `paths-new.json`, `paths-compare.json`).
+  - The baseline came from the `f9fdaa2` worktree code (module path confirmed) run against the current seven packages; the new code ran normally. Both used the same deterministic sample as DEV-008: 5,127 requests, `maxDepth` cycling 1–12, `maxPaths` 1–20, connected and unconnected pairs.
+  - The baseline was untruncated on 3,448 requests (2,197 with paths). On all of them the new code returns identical `paths`, `nodes`, rehydrated `relationships`, reasons, `graphExhausted`, `scopeComplete`, `nextUnreturnedPath`, request, metadata, and notices: **0 mismatches**. Only counters and frontier counts were excluded, as the design permits.
+- **All-pairs CAPS run** (`caps_all_pairs_ac028.py`, `caps-all-pairs-ac028.json`, 469 s): 43,145 pairs × {shortest depth, 16}, default `max_paths`, 86,290 requests. **0 failures and 0 errors.**
+  - Every request returned a result. The shortest path is `paths[0]` (hops 1–12), or `nextUnreturnedPath` with `byte_limit` (hops 13), with the oracle's hop count.
+  - There were no `work_limit` or `queue_limit` stops. Peak use was 1,243 inspections and 32 states.
+  - The **Result invariants** hold, including on `nextUnreturnedPath`.
+  - Every rehydrated entry equals `relationship_evidence` for its edge.
+  - Outcomes by hop count, at the shortest depth: hops 1–4 are all full. Hops 5–12 are full or keep the shortest path with `byte_limit` on later alternatives (for example, 11 hops: 29 full and 68 `byte_limit`; 12 hops: 8 full and 20 `byte_limit`). Hops 13 are IDs-only for all 5 pairs, at both depths.
+  - Totals: `byte_limit` on 9,078 requests (it was 26,062 with the full form) and IDs-only on 10 requests. **No 10–12 hop shortest path falls back to IDs**; with the full form, all 984 of those requests errored.
+  - Measured envelope characters at the shortest depth, compared with the Architect's projection:
+    - 9 hops: 76,872–99,308.
+    - 10 hops: 83,667–99,634.
+    - 11 hops: 90,292–93,915 (projected about 92,000).
+    - 12 hops: 96,855–99,872 (projected as borderline, about 98,000).
+    - 13 hops, IDs-only: 19,931–20,065 (projected IDs-only).
+  - Relationship tables of 1–3 hop results are 77.8% of their full-form size.
+- **Unchanged tool and schemas** (`lookups-new.json` against `dev011/lookups-baseline.json`): 150 `get_learning_progression` outputs are byte-identical, and `GetLearningProgressionResult`'s schema is byte-identical. `GetLearningProgressionPathsResult` now publishes compact entries and `sharedRelationshipEvidence` with the rehydration description; `ProgressionPath` caps are 17 and 16.
+- **Repository STDIO smoke** (run outside the sandbox for its child `uv` cache): `status: passed`, 19/1/14/9, all five progression queries. The rehydrating exact edge check holds for all four compacted tools, paths included.
+- **Full offline suite** (`pytest.out`): 120 passed, 29 failed. 26 are unchanged from DEV-011; 3 are new, all intended by the design (Tester-owned under the **Test-corpus contract**):
+  - `test_progression_text_only.py::test_ordinary_text_carries_the_complete_result[paths]`: `KeyError` on lifted fields (AC-032).
+  - `test_paths_oversized_entry_rejected` (:227) and `test_paths_later_oversized_alternative_is_partial` (:276): both expect `ProgressionResultTooLargeError` for an unreturnable first path, which now gets the IDs-only fallback (AC-030).
+  - `test_paths_every_real_shortest_connection_fits` now fails at :332 on `…5532996f103a → 2ccbf220…`, one of the five 13-hop CAPS pairs, which correctly returns IDs-only with `depth_limit` and `byte_limit`. Every earlier pair in that sweep, including CAPS pairs of 10–12 hops, passed. The design limits the exhaustive check to the six original packages.
 
 ---
 
