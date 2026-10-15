@@ -48,7 +48,7 @@ inputs:
 The `.dockerignore` file is an allowlist: everything is excluded from the build context
 unless it is explicitly admitted. `data/input_artifacts/`, documentation, packaging
 output, and local working files never enter the image. The image therefore holds only
-the declared runtime package files (about 84 MB for the six packages), even when the
+the declared runtime package files (about 171 MB for the seven packages), even when the
 archived evidence is restored in the working tree. Railway builds from the Git
 repository, which holds everything the server loads, so no archive is needed to deploy.
 

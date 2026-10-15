@@ -256,7 +256,7 @@ The package validator:
 - checks each package against its archived full evidence, unless `--runtime-only` is
   given. Startup and `--runtime-only` read only the package files.
 
-The six repository graph packages are the terminal positive baseline. Destructive or
+The seven repository graph packages are the terminal positive baseline. Destructive or
 negative lifecycle scenarios should use temporary copies or synthetic packages.
 
 ## Build an MCP Bundle
@@ -276,7 +276,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.4.0.mcpb
+dist/kgfegmcp-1.0.0.mcpb
 ```
 
 The packaging command stages:
@@ -284,9 +284,9 @@ The packaging command stages:
 - generic runtime source;
 - `pyproject.toml` and `uv.lock`;
 - FastMCP configuration;
-- all six profiles;
-- all six prompt configurations; and
-- all six accepted graph packages.
+- all seven profiles;
+- all seven prompt configurations; and
+- all seven accepted graph packages.
 
 It then runs the official MCPB validation and packing commands and independently verifies
 the archive.

@@ -132,7 +132,7 @@ files that are undeclared by the manifest are validation failures.
 - [Manifest contract](manifest.md) — package identity, checksums, counts, capabilities, and validation state.
 - [Validation and lifecycle](validation.md) — package acceptance and catalog rules.
 - [Rights and provenance](rights-and-provenance.md) — content exposure and evidentiary traceability.
-- [Available frameworks](framework-catalog.md) — the six packages supplied with this repository snapshot.
+- [Available frameworks](framework-catalog.md) — the seven packages supplied with this repository snapshot.
 
 ---
 

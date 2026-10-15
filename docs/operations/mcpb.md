@@ -39,8 +39,8 @@ The build deliberately does **not** package:
 - `data/input_artifacts/` or any archived package evidence; and
 - arbitrary files outside the approved staging contract.
 
-`data/graph_packages/` holds only the declared runtime package files and manifests (480
-files for the six packages), even when archived evidence is restored locally.
+`data/graph_packages/` holds only the declared runtime package files and manifests (560
+files for the seven packages), even when archived evidence is restored locally.
 
 ## Prerequisites
 
@@ -114,10 +114,10 @@ From the repository root:
 uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 ```
 
-For version `0.4.0`, the default output is:
+For version `1.0.0`, the default output is:
 
 ```text
-dist/kgfegmcp-0.4.0.mcpb
+dist/kgfegmcp-1.0.0.mcpb
 ```
 
 The command removes an existing file at the selected output path before packing a new
@@ -230,25 +230,25 @@ paths.
 List members:
 
 ```bash
-unzip -l ./dist/kgfegmcp-0.4.0.mcpb
+unzip -l ./dist/kgfegmcp-1.0.0.mcpb
 ```
 
 Inspect the packaged manifest:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.4.0.mcpb manifest.json | jq .
+unzip -p ./dist/kgfegmcp-1.0.0.mcpb manifest.json | jq .
 ```
 
 Inspect the server declaration:
 
 ```bash
-unzip -p ./dist/kgfegmcp-0.4.0.mcpb manifest.json | jq '.server'
+unzip -p ./dist/kgfegmcp-1.0.0.mcpb manifest.json | jq '.server'
 ```
 
 Test ZIP integrity:
 
 ```bash
-unzip -t ./dist/kgfegmcp-0.4.0.mcpb
+unzip -t ./dist/kgfegmcp-1.0.0.mcpb
 ```
 
 ## Recommended acceptance sequence
@@ -267,14 +267,14 @@ uv --directory backend run --locked --no-dev \
   kgfegmcp-stdio-smoke --bundle-root ./dist/kgfegmcp-stage
 
 # Archive-level sanity check
-unzip -t ./dist/kgfegmcp-0.4.0.mcpb
+unzip -t ./dist/kgfegmcp-1.0.0.mcpb
 ```
 
 A strong release baseline requires all four steps to pass.
 
 ## Claude Desktop installation
 
-These steps are for a built `dist/kgfegmcp-0.4.0.mcpb`, rather than a repository
+These steps are for a built `dist/kgfegmcp-1.0.0.mcpb`, rather than a repository
 checkout. On 2026-10-08 a user installed a 0.4.0 bundle in Claude Desktop on macOS and
 used it with no failures observed; see the
 [evidence table](../getting-started/claude-clients.md#what-has-and-has-not-been-checked).

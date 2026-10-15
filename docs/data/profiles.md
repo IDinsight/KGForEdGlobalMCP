@@ -116,6 +116,7 @@ The supplied profiles intentionally demonstrate different behavior:
 | Tamil Nadu Mathematics Classes 1–5 | Partial           | Yes           |
 | Nigeria Mathematics Primary 1–3    | None              | No            |
 | Rwanda Mathematics P1–P3           | None              | No            |
+| CAPS English Home Language Grades R–3 | None           | No            |
 
 Code equality must not be treated as global identity unless a future profile explicitly
 provides that guarantee. The current coded profiles set `codesAreUniqueIdentifiers` to
@@ -130,8 +131,9 @@ examples include:
 - Ghana Mathematics: reused codes and editorial duplicates;
 - CBSE Science: scoped code interpretation and multi-parent relationships;
 - Tamil Nadu Mathematics: Class is a scope dimension rather than a hierarchy node;
-- Nigeria Mathematics: no stable statement codes and repeated local labels; and
-- Rwanda Mathematics: a configured identity-scope repair for a source-visible P3 Unit 5 anomaly without synthesizing the absent source node.
+- Nigeria Mathematics: no stable statement codes and repeated local labels;
+- Rwanda Mathematics: a configured identity-scope repair for a source-visible P3 Unit 5 anomaly without synthesizing the absent source node; and
+- CAPS English Home Language: no statement codes, Skill wording repeated across sub-strands, terms and grades, and Grade R items that the source encodes with the grade value `K` (labelled "Grade R"; `K` does not establish equivalence with kindergarten or any other system's grade).
 
 Every current profile also requires disclosure that normalized grades do not establish
 international equivalence, `hasChild` is not automatically a progression, a standard
@@ -171,7 +173,7 @@ The profile loader also:
 
 ## Stored progression configuration
 
-The six active profiles use version `2.0`, schema `1.1`. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
+The seven active profiles use version `2.0`, schema `1.1`. LP capability comes from accepted package declarations/evidence, not a profile heuristic. New relationships require retained edges and provenance; profiles do not infer them.
 
 ## Versioning rule
 

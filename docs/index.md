@@ -103,7 +103,7 @@ See the [MCP reference](reference/index.md) for the complete public surface.
 
 ## Current curriculum catalog
 
-The repository snapshot currently contains six accepted Academic Standards graph
+The repository snapshot currently contains seven accepted Academic Standards graph
 packages:
 
 | Framework                                                       | Jurisdiction      | Subject          | Local grades or stages            | Code search |
@@ -114,8 +114,9 @@ packages:
 | Tamil Nadu Curriculum Framework 2025: Mathematics - Classes 1-5 | Tamil Nadu, India | Mathematics      | Class-1 through Class-5           | Partial     |
 | 9-Year Basic Education Mathematics Curriculum for Primary 1-3   | Nigeria           | Mathematics      | PRIMARY ONE through PRIMARY THREE | None        |
 | Mathematics Syllabus for Lower Primary \| Primary 1 - 3         | Rwanda            | Mathematics      | P1, P2, P3                        | None        |
+| Curriculum and Assessment Policy Statement (CAPS): English Home Language, Foundation Phase, Grades R-3 | South Africa | English Home Language | Grade R, Grade 1, Grade 2, Grade 3 | None |
 
-All six packages support lexical text search and include detailed provenance. Search and
+All seven packages support lexical text search and include detailed provenance. Search and
 traversal capabilities remain package-specific; use `get_capabilities` to inspect the
 runtime for supported modes for each framework.
 

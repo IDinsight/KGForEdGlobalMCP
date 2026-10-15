@@ -1,6 +1,6 @@
 # Use stored learning progressions
 
-Use stored relationships to explore a teaching sequence, find support for a target standard, or inspect a curriculum's retained evidence. The six supplied curricula contain 3,039 `buildsTowards` and 5,041 `relatesTo` edges, each with retained provenance. Start with [framework discovery](framework-discovery.md) and keep the returned framework, snapshot and package identity in every citation.
+Use stored relationships to explore a teaching sequence, find support for a target standard, or inspect a curriculum's retained evidence. The seven supplied curricula contain 5,918 `buildsTowards` and 11,749 `relatesTo` edges, each with retained provenance. Start with [framework discovery](framework-discovery.md) and keep the returned framework, snapshot and package identity in every citation.
 
 ## Read the two meanings correctly
 
@@ -44,7 +44,7 @@ Connect that edge's source and target with `get_learning_progression_paths`:
 {"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"<returned-snapshot-id>","sourceIdentifier":{"identifierType":"node_id","nodeId":"<returned-source-node-id>"},"targetIdentifier":{"identifierType":"node_id","nodeId":"<returned-target-node-id>"},"maxDepth":3,"maxPaths":3}}
 ```
 
-Each tool returns its complete result as JSON text, so a client that reads only text sees the same edges, statements, confidence, warnings, links and cursors as one that reads structured content.
+Each tool returns its complete result as JSON text, so a client that reads only text sees the same edges, statements, confidence, warnings, links and cursors as one that reads structured content. Except for `get_learning_progression`, the tools state fields that every returned edge shares (attribution, author, license, the confidence notice and similar) once, in `sharedRelationshipEvidence`, instead of in each edge. To rebuild an edge's full evidence, see [Shared evidence in multi-edge results](../reference/progression-tool.md#shared-evidence-in-multi-edge-results).
 
 Read `relationshipUri`, `provenanceUri` and both `standardUri` links, natively if your client can open them, or with `read_evidence`:
 
@@ -60,7 +60,7 @@ For grade/stage review, `search_learning_progressions` accepts local/normalized 
 
 Collections default to 25 edges, maximum 100, with 5,000 examined candidates per page. Each result must also fit within 100,000 characters, so a page often stops earlier with `stoppingReason: byte_limit`. To continue, call the same tool with `page.nextRequest` unchanged; a partial or zero-match work-limited page may still have more evidence. Stored package totals, inspected subset counts and filtered match counts are different.
 
-`traverse_learning_progressions` follows builds upstream/downstream; `get_learning_progression_paths` follows builds from a selected source to a distinct target. Every hop is a stored edge. Paths/subgraphs are deterministic derived evidence, not a new direct edge or compulsory teaching order. Inspect `scopeComplete`, `graphExhausted`, frontier, counters and `truncationReasons`. They have no continuation; rerun with narrower finite inputs when appropriate. If a path result stops at the size limit, `nextUnreturnedPath` names the next path by its IDs so you can look up its edges with `get_learning_progression`. An incomplete empty search proves neither global disconnection nor absence of a pedagogical relationship.
+`traverse_learning_progressions` follows builds upstream/downstream; `get_learning_progression_paths` follows builds from a selected source to a distinct target. Every hop is a stored edge. Paths/subgraphs are deterministic derived evidence, not a new direct edge or compulsory teaching order. Inspect `scopeComplete`, `graphExhausted`, frontier, counters and `truncationReasons`. They have no continuation; rerun with narrower finite inputs when appropriate. Path search looks for paths of up to 16 hops (`maxDepth`, default 6) and only grows paths that can still reach the target, so it also finds long connections such as CAPS's 13-hop ones. If a path result stops at the size limit, `nextUnreturnedPath` names the next path by its IDs so you can look up its edges with `get_learning_progression`. When even the shortest path is too large to return with its edges, the result names it the same way instead of failing; see [Paths](../reference/progression-tool.md#paths). An incomplete empty search proves neither global disconnection nor absence of a pedagogical relationship.
 
 ## Teaching sequence
 
@@ -102,7 +102,7 @@ endpoint_scope: either
 output_language: en
 ```
 
-Optional `standard_identifiers` accepts a JSON array of at most 20 exact node/CASE/profile-enabled code selectors. Optional `relationship_types` takes `["buildsTowards"]`, `["relatesTo"]` or both; blank means both. Grade/type filters use the same endpoint conjunction as discovery. The client reads statistics and the LP summary, then runs one search per selected type, each allowed up to three pages, so `relatesTo` links are always included when requested. Each page holds up to 25 links, often fewer because of the size limit (seven per page for Ghana Mathematics Basic 5), and the client records each page's actual count. It fully inspects at most ten selected exact relationships/provenance records (up to five per type when both return links), plus validation/unresolved evidence within policy, and reports each type's counts separately. A ministry or ed-tech reviewer can compare stored totals with the bounded inspected subset, identify warning/review questions and retain exact citations. Missing edges are not proof of curriculum omission, and no cross-framework progression is asserted.
+Optional `standard_identifiers` accepts a JSON array of at most 20 exact node/CASE/profile-enabled code selectors. Optional `relationship_types` takes `["buildsTowards"]`, `["relatesTo"]` or both; blank means both. Grade/type filters use the same endpoint conjunction as discovery. The client reads statistics and the LP summary, then runs one search per selected type, each allowed up to three pages, so `relatesTo` links are always included when requested. Each page holds up to 25 links, often fewer because of the size limit (eight or nine per page for Ghana Mathematics Basic 5), and the client records each page's actual count. It fully inspects at most ten selected exact relationships/provenance records (up to five per type when both return links), plus validation/unresolved evidence within policy, and reports each type's counts separately. A ministry or ed-tech reviewer can compare stored totals with the bounded inspected subset, identify warning/review questions and retain exact citations. Missing edges are not proof of curriculum omission, and no cross-framework progression is asserted.
 
 ## Preserve provenance and coverage limits
 

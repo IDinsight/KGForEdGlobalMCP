@@ -61,7 +61,10 @@ Known client limits that matter here:
 ## Claude Desktop walkthrough
 
 Run this in a new Desktop conversation with the **curriculum-knowledge-graph** connector
-enabled, against the 0.4.0 server from this repository or a 0.4.0 bundle. Each step
+enabled, against the server from this repository or a bundle built from it. The expected
+results describe the current repository: seven frameworks, and the compact progression
+results described in the [tool reference](../reference/progression-tool.md#shared-evidence-in-multi-edge-results).
+Steps 1, 4, 6 and 13 note what an earlier server (0.4.0 or 1.0.0) shows instead. Each step
 gives a message to send and what you should see. Claude may summarise in its reply; to
 check details, expand the tool call to see the raw result, or ask Claude to quote the
 fields named.
@@ -77,9 +80,10 @@ The walkthrough uses one fixed diagnostic case from the Nigeria curriculum:
 
 **Run status.** Every tool call and prompt rendering below was replayed through an
 in-process MCP client with the runtime-only packages on 2026-10-14, and the expected
-results were checked; the values below come from that run. On 2026-10-08 a user ran steps 1–13, including 9a, in Claude Desktop on macOS
-against 0.4.0 with the earlier packages and observed no failures. The results are in the
-[table at the end](#record-your-results); add your own there.
+results were checked; the values below come from that run. On 2026-10-15, after CAPS
+and the compact progression results were added, steps 1–6 and the scan pages of step 13
+were replayed the same way and their expected results updated. The other steps use tools
+whose results did not change.
 
 **Before you start, check that Desktop runs the current server.** In step 1, each
 framework should show `Routing graph types:` and `Included graph types:` lines. If it
@@ -93,15 +97,16 @@ file, verify its paths, fully quit Desktop and reopen it.
 
 > Use curriculum-knowledge-graph to list all available frameworks.
 
-Expected: six framework snapshots, including Nigeria Mathematics with the snapshot ID
-above. Each snapshot shows `Routing graph types: academic_standards` and
+Expected: seven framework snapshots, including Nigeria Mathematics with the snapshot ID
+above and South Africa's CAPS English Home Language. An earlier server shows six. Each
+snapshot shows `Routing graph types: academic_standards` and
 `Included graph types: academic_standards, learning_components, learning_progressions`.
 Each package line shows `learning_progressions=available` and its stored link counts; for
 Nigeria these are `builds_towards=189` and `relates_to=297`.
 
 > Call list_frameworks with graphTypes ["learning_progressions"] and list the snapshot IDs.
 
-Expected: the same six snapshots. The filter matches the graph types a package
+Expected: the same seven snapshots. The filter matches the graph types a package
 *includes*. The routing type stays `academic_standards`: it is the type tools use to pick a
 package, not a list of what the package contains.
 
@@ -143,14 +148,17 @@ kind separately.
 
 > Call search_learning_progressions with `{"request":{"frameworkId":"nigeria-nerdc-mathematics-primary-1-3","snapshotId":"nigeria-nerdc-mathematics-primary-1-3@undated+424e546e2284","relationshipTypes":["buildsTowards"],"endpointScope":"either","limit":25}}`. Report page.returnedCount, page.stoppingReason and whether page.nextCursor is present.
 
-Expected: 7 relationships, `stoppingReason` `byte_limit`, `isComplete` false, and both
+Expected: 9 relationships, `stoppingReason` `byte_limit`, `isComplete` false, and both
 `page.nextCursor` and `page.nextRequest` present. `limit` is a maximum; the page stopped
-early to stay within the result-size limit.
+early to stay within the result-size limit. Fields that all nine edges share, such as the
+attribution and license, appear once in `sharedRelationshipEvidence`. An earlier server
+repeats them in every edge and returns 7 relationships here.
 
 > Call search_learning_progressions again with page.nextRequest exactly as returned, and list the new relationship IDs.
 
-Expected: seven different relationship IDs. Following every page gives 27 pages and
-189 distinct `buildsTowards` edges, with no repeats.
+Expected: eight different relationship IDs. Following every page gives 24 pages and
+189 distinct `buildsTowards` edges, with no repeats (27 pages of seven on an earlier
+server).
 
 ### 5. Upstream traversal
 
@@ -166,8 +174,11 @@ true, an empty frontier and no truncation reasons. The deepest supports are
 > Call get_learning_progression_paths from node ec0c6a6d-0a48-5aa8-bdfe-72260dd3b559 to node e399b510-48bb-58ee-abda-61460a5a853b in that snapshot with maxDepth 3 and maxPaths 3.
 
 Expected: two two-hop paths, through `c4885674…` (`41ec8cba…`, `c0155efa…`) and
-through `12b603df…` (`7fc3c0e1…`, `0129f5d5…`); `scopeComplete` true, `graphExhausted`
-false, `truncationReasons` `["depth_limit"]`, `nextUnreturnedPath` null. A path is
+through `12b603df…` (`7fc3c0e1…`, `0129f5d5…`); `scopeComplete` and `graphExhausted`
+true, no `truncationReasons`, `nextUnreturnedPath` null. These are all the paths between
+the two standards. An earlier server reports `graphExhausted` false and `["depth_limit"]`
+here, because it counted any partial path longer than `maxDepth`, even one that could
+never reach the target. A path is
 derived from stored edges; it is not a compulsory teaching order.
 
 ### 7. Edge provenance
@@ -274,9 +285,10 @@ retrieval and composition.
 > Call get_workflow_instructions with `{"request":{"workflowName":"learning_progression_curriculum_review","frameworkId":"ghana-nacca-primary-mathematics-basic-4-6","snapshotId":"ghana-nacca-primary-mathematics-basic-4-6@2019+ed3b9450718a","localGradeLabels":["BASIC 5"],"endpointScope":"either","outputLanguage":"en"}}`, then follow rendered.message exactly.
 
 Expected: step 3 of `rendered.message` lists two separate scans, a `buildsTowards scan`
-and a `relatesTo scan`, each allowed up to three pages. Each page returns
-seven relationships (`stoppingReason` `byte_limit`), so Claude reviews 21 links of each
-type, and both scans still have a cursor after their third page. The answer should
+and a `relatesTo scan`, each allowed up to three pages. Each page returns eight or
+nine relationships (`stoppingReason` `byte_limit`), so Claude reviews 25 `buildsTowards`
+and 26 `relatesTo` links, and both scans still have a cursor after their third page. An
+earlier server returns seven per page, 21 links of each type. The answer should
 report the two types separately (Ghana Mathematics stores 299 `buildsTowards` and 300
 `relatesTo` links), say the review is incomplete for both, not add the counts together,
 and fully inspect at most ten relationships, up to five of each type.
@@ -289,10 +301,10 @@ single `relatesTo` scan.
 
 | Step | Recorded results | Your result (date, client version, pass/limited/fail, notes) |
 |---|---|---|
-| 1–10 (and 9a) | Tool calls replayed locally and passed, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS with the earlier packages, 2026-10-08: no failures observed. Replayed locally with the runtime-only packages, 2026-10-14: passed. | |
+| 1–10 (and 9a) | Tool calls replayed locally and passed, 2026-10-07. Run in Claude Desktop 0.4.0 on macOS with the earlier packages, 2026-10-08: no failures observed. Replayed locally with the runtime-only packages, 2026-10-14: passed. Steps 1–6 replayed locally with the seven packages and compact progression results, 2026-10-15: passed with the updated expectations. | |
 | 11 | Rendering of 0.4.0 checked locally, 2026-10-07, and with the runtime-only packages, 2026-10-14. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
 | 12 | Rendering checked locally (identical to native), 2026-10-07, and with the runtime-only packages, 2026-10-14. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed answer checked: no failures observed. | |
-| 13 | Rendering and the six scan pages checked locally, 2026-10-07, and with the runtime-only packages, 2026-10-14. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed review checked: no failures observed. | |
+| 13 | Rendering and the six scan pages checked locally, 2026-10-07, and with the runtime-only packages, 2026-10-14. Scan page sizes rechecked with the compact progression results, 2026-10-15. Run in Claude Desktop 0.4.0 on macOS, 2026-10-08, with the composed review checked: no failures observed. | |
 
 The 2026-10-08 results are a user's observations; the Desktop app version was not
 recorded. The same steps gave the same results in a claude.ai custom connector on that

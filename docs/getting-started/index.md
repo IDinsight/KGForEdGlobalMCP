@@ -27,8 +27,8 @@ Install the following before you begin:
 Node.js, npm, and the MCPB CLI are needed only when building the optional `.mcpb`
 distribution. They are not required for ordinary local server use.
 
-Measured on 2026-10-14: tracked files occupy about 103 MB, including 84 MB of
-`data/graph_packages/` needed by the server. Local Git packs add 293 MiB, because
+Measured on 2026-10-15: tracked files occupy about 190 MB, including 171 MB of
+`data/graph_packages/` needed by the server. Local Git objects add 312 MiB, because
 history still holds earlier, larger package files, and the existing Python
 environment adds 319 MiB (including development/docs tooling). A fresh clone and
 runtime-only environment may differ. Python downloads and the uv cache were not

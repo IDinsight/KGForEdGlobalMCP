@@ -93,7 +93,7 @@ means **Ghana OR Nigeria**, and **Mathematics**.
 `graphTypes` matches the graph types a snapshot's packages *include*
 (`includedGraphTypes`), not only the type each package is filed under. Every current
 package is an Academic Standards package that also includes Learning Components and
-Learning Progressions, so this request returns all six snapshots:
+Learning Progressions, so this request returns all seven snapshots:
 
 ```json
 {

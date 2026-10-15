@@ -312,7 +312,7 @@ uv --directory backend run --locked --no-dev kgfegmcp-build-mcpb
 The default output is:
 
 ```text
-dist/kgfegmcp-0.4.0.mcpb
+dist/kgfegmcp-1.0.0.mcpb
 ```
 
 Retain the exact staging directory for review:
