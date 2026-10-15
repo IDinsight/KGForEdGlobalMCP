@@ -14,9 +14,10 @@ uses. Keeping the results that search already returns unchanged (`AC-022`,
 ## Context
 
 - Scope: `.standards/docs/scope/integrate-the-caps-english-curriculum-kg-20261014T193052Z-d6b750d3.md`
-  (current: `AC-001`..`AC-015`, `AC-017`..`AC-027`; `AC-016` retired and
-  replaced by `AC-022`). Its rights, footprint, Grade R, and path-search
-  decisions are fixed inputs here.
+  (current: `AC-001`..`AC-015`, `AC-017`..`AC-024`, `AC-026`..`AC-031`.
+  `AC-016` is retired and replaced by `AC-022`. `AC-025` is retired and
+  replaced by `AC-028`..`AC-030`.) Its rights, footprint, Grade R,
+  path-search, and long-path result decisions are fixed inputs here.
 - Project context: `.standards/CONTEXT.md`. The decisive facts:
   - Onboarding is data and configuration only.
   - The builder takes the framework ID from the profile's single
@@ -194,26 +195,35 @@ Rationale for the material choices:
   `get_learning_progression_paths`, three published items widen:
   - the `max_depth` input bound, to 16 (`AC-023`);
   - the output `ProgressionPath` array caps, to 16 relationships and 17
-    nodes, which `AC-023` and `AC-025` need in order to return paths longer
-    than 12 hops;
+    nodes, which `AC-023` and `AC-028` need in order to return or identify
+    paths longer than 12 hops;
+  - the result gains an optional shared-evidence field, and relationship
+    entries may take a compact form. Both appear only in results that could
+    not hold their shortest path in full (`AC-029`).
   - the description's maxima figures.
 
   Nothing narrows, so every response that was valid before stays valid.
 - `AC-018`: The change to `backend/src/` is the generic path-search
-  replacement and request bound. It contains no framework ID and relaxes no
-  validation rule.
+  replacement, its request bound, and the long-path result forms. It
+  contains no framework ID and relaxes no validation rule.
 - `AC-023`: The request-model bound under **Target-aware path search**.
 - `AC-024`: Same order and the **Compatibility contract**. The argument rests
   on validated acyclicity.
-- `AC-025`: The exact-length search with its measured budgets, under the
-  fixed 5,000 limits.
 - `AC-026`: **Result invariants** under **Target-aware path search**.
+- `AC-028`: The exact-length search with its measured budgets, under the
+  fixed 5,000 limits, plus the **Long-path result forms**. Every connected
+  pair's shortest path is either returned with its evidence or identified
+  by IDs. It is never an error.
+- `AC-029`: The compact form under **Long-path result forms**, with its
+  rehydration contract.
+- `AC-030`: The IDs-only form under **Long-path result forms**.
 - `AC-019`: Corpus-dependent test expectations under **Test-corpus
   contract**.
-- `AC-020`, `AC-021`, `AC-027`: No architectural impact. They depend on
-  Documenter's phase. The values those documents must state are fixed here
-  (identity, grades, codes, rights, the path `max_depth` ceiling of 16, and
-  how target-aware search behaves) or come from the accepted CAPS manifest
+- `AC-020`, `AC-021`, `AC-027`, `AC-031`: No architectural impact. They
+  depend on Documenter's phase. The values those documents must state are
+  fixed here (identity, grades, codes, rights, the path `max_depth` ceiling
+  of 16, how target-aware search behaves, and when each long-path result
+  form applies) or come from the accepted CAPS manifest
   (counts, sizes, snapshot ID).
 
 ## Components
@@ -239,7 +249,8 @@ them unchanged. The one generic component that changes is path search.
 - **Path search** (`services/lp_paths.py`): `paths_result` and its private
   helpers are replaced by the target-aware algorithm. Its signature, its
   callers in `services/learning_progressions.py`, `path_id_bound`, the
-  size-reservation and byte-stop logic, and the result model are kept.
+  size-reservation and byte-stop logic are kept. The result model gains the
+  **Long-path result forms**.
 - **Path depth ceiling** (`services/lp_models.py`): one module-level
   constant set to 16, for example `MAX_PATH_DEPTH`. It drives the
   following, so the request bound and the representable path length cannot
@@ -402,11 +413,20 @@ fields upstream does not carry.
 
 - No change to:
   - `backend/src/`, with three exceptions:
-    - `services/lp_paths.py`: the algorithm replacement.
-    - `services/lp_models.py`: the path-depth constant, the
-      `GetLearningProgressionPathsRequest.max_depth` bound, and the
-      `ProgressionPath` `node_ids`/`relationship_ids` caps (revised
-      2026-10-15 after `DEV-008`).
+    - `services/lp_paths.py`: the algorithm replacement and the long-path
+      result forms.
+    - `services/lp_models.py`:
+      - the path-depth constant;
+      - the `GetLearningProgressionPathsRequest.max_depth` bound;
+      - the `ProgressionPath` `node_ids`/`relationship_ids` caps (revised
+        2026-10-15 after `DEV-008`);
+      - the path-only compact and shared-evidence models, and the
+        `GetLearningProgressionPathsResult` fields that use them (revised
+        2026-10-15 after the scope replan).
+
+      `ProgressionEvidenceResult`, `ProgressionRelationshipEvidence`,
+      `GraphRelationship`, `JudgmentProjection`, and every other tool's
+      result model stay as they are.
     - `mcp/tools/learning_progressions.py`: the "maxima" figures in the
       `get_learning_progression_paths` description.
 
@@ -455,10 +475,27 @@ fields upstream does not carry.
     one 9–12 hop pair (for example, the 11-hop pair `DEV-006` measured), and
     at least one 13-hop pair.
   - Each pair is requested at `max_depth` equal to its shortest length and
-    at 16. Each must satisfy the `AC-025` criterion below.
-- `AC-025` also needs evidence over all 43,145 CAPS pairs. Tester chooses how
+    at 16. Each must satisfy the `AC-028` criterion below. The 9–12 hop
+    pairs include at least one compact-form result. The 13-hop pair is an
+    IDs-only result.
+- `AC-028` also needs evidence over all 43,145 CAPS pairs. Tester chooses how
   to get it. Options include a separately marked exhaustive test or a
   recorded one-off run. The default suite must stay practical either way.
+- `AC-029`:
+  - Rehydrating every compact-form result in those checks reproduces the
+    full evidence entries exactly. Compare against
+    `ProgressionRelationshipEvidence` built for the same relationships.
+  - A compact result whose shortest path fits returns that path in `paths`
+    with its evidence.
+  - A synthetic or monkeypatched case where a lifted field differs between
+    hops falls to the IDs-only form.
+- `AC-030`: an IDs-only result is a normal result, not an error, with the
+  contents listed under **Long-path result forms**.
+- Full-form byte identity (`AC-022`, scope non-goal): in the `AC-024`
+  differential sample, every full-form result serializes, structured and
+  text, with no `sharedRelationshipEvidence` key. Where the oracle is
+  untruncated, the bytes are identical apart from the counters and frontier
+  counts the **Compatibility contract** allows to differ.
 - `AC-024` needs a differential check:
   - The oracle is a test-only reference copy of the cycle-baseline
     breadth-first enumerator (`services/lp_paths.py` at `f9fdaa2`).
@@ -482,8 +519,9 @@ fields upstream does not carry.
 ### Target-aware path search
 
 This section replaces the per-request search in `paths_result`. Inputs,
-endpoint resolution, the same-endpoint error, and the result model stay as
-they are. `max_depth` may now be up to 16.
+endpoint resolution, and the same-endpoint error stay as they are.
+`max_depth` may now be up to 16. The result model gains only the
+**Long-path result forms** below.
 
 **Backward pass**
 
@@ -573,14 +611,103 @@ truncated may now return more or complete paths, no paths with
 
 **Result invariants** (`AC-026`)
 
-- Every returned path runs from the source to the target over stored
-  buildsTowards edges.
+- Every returned path, and a present `nextUnreturnedPath`, runs from the
+  source to the target over stored buildsTowards edges.
 - Its hop count is at most `max_depth`. Its `node_ids` length is its
   `relationship_ids` length plus 1.
 - The `relationships` table equals the union of the returned paths' edges.
+  In the compact form, it does so after rehydration. `nextUnreturnedPath`
+  edges are never in the tables.
 - Paths are distinct and in the stated order.
 - Any result that misses a path within `max_depth`, whether by budget, by
   `max_paths`, or by size, reports a non-empty `truncation_reasons`.
+
+### Long-path result forms
+
+These forms apply to `get_learning_progression_paths` only (scope replan,
+2026-10-15). The shared 100,000-character and 1 MiB envelope stays fixed. As
+today, the envelope counts the structured result and its canonical text copy
+together.
+
+The search result decides the form, before any evidence is admitted:
+
+1. **Full form** (the existing form). Used whenever the first, shortest path
+   fits with full per-hop evidence. Every later path keeps the full form and
+   the existing byte-stop behavior. Such a result must serialize, structured
+   and text, byte-identically to how it serialized before this change. The
+   new optional field is absent, not `null`. This covers every result that
+   already holds its shortest path, so their form does not change (scope
+   non-goal, `AC-022`).
+2. **Compact form**. Used only when the first path does not fit in full form,
+   and only when every lifted field below has the same value on every
+   relationship in the result.
+   - The result carries one `sharedRelationshipEvidence` object holding
+     the lifted fields.
+   - Each `relationships` entry takes a path-only compact type that omits
+     exactly those fields and keeps every other field, in its existing
+     meaning and naming.
+   - Later paths are admitted in compact form with the existing reservation
+     and byte-stop rules.
+3. **IDs-only form**. Used when the first path does not fit even in compact
+   form, or when compact form is unavailable because a lifted field differs
+   between relationships. This form is a normal result, not
+   `progression_result_too_large`:
+   - `paths` and `relationships` are empty;
+   - `nodes` keeps the source and target summaries that every result
+     carries;
+   - `nextUnreturnedPath` holds the complete shortest path, its node and
+     relationship IDs;
+   - `truncation_reasons` includes `byte_limit`, plus any exact
+     `depth_limit` or `path_limit`.
+
+   This reuses the existing `nextUnreturnedPath` contract ("names the next
+   complete path by IDs only and its edges are not in the tables"). The
+   first-path error stays only for the degenerate case where even this
+   result cannot fit.
+
+**Lifted fields.** The constant per-hop boilerplate the scope names, taken
+from the existing evidence models:
+- `epistemicStatus`;
+- `judgment.confidenceNotice`;
+- in `relationship`: `attributionStatement`, `author`, `description`,
+  `label`, `license`, `provider`, `relationshipType`, `sourceEntity`,
+  `sourceEntityKey`, `sourceLabels`, `targetEntity`, `targetEntityKey`, and
+  `targetLabels`.
+
+Per-hop data stays on each entry, even when two hops happen to share a value.
+That includes relationship and endpoint IDs, `sourceExportOrder`,
+`resolutionStatus`, `supportConfidence`, confidence, rationale and warning
+excerpts and flags, and both URIs.
+
+**Rehydration contract** (`AC-029`, "no information is lost"). Write each
+lifted field from `sharedRelationshipEvidence` back into its original
+position in a compact entry. The result must equal the full
+`ProgressionRelationshipEvidence` that the full form would have returned for
+that relationship, including `null` values that come from the source.
+
+**Schema and serialization**
+- The path result's published output schema stays precise:
+  - `relationships` items accept the existing full type or the path-only
+    compact type;
+  - `sharedRelationshipEvidence` is an optional object.
+- No other tool's schema changes.
+- Developer chooses the omission mechanism, for example field-level
+  exclusion when the value is `None`. It must not change the shared
+  serializer `canonical_result_text`, and it must keep full-form bytes
+  identical.
+
+**Expected effect (Architect projection, 2026-10-15).** These are not
+measured results:
+- Lifting saves about 1,150 characters per hop in each copy, so about 2,300
+  per hop across both copies.
+- CAPS 11-hop shortest paths should fit in compact form (about 92,000
+  characters).
+- 12-hop paths are borderline (about 98,000).
+- 13-hop paths fall to the IDs-only form (about 105,000).
+
+The earlier claim in this design that statement excerpts drive the size was
+wrong: CAPS statements are short. The size comes from the duplicated text
+copy, the per-hop boilerplate, and the rationale and warning excerpts.
 
 ## Data and Control Flow
 
@@ -693,18 +820,31 @@ external kgs/ (read-only)
   - Traversal schemas and description are unchanged.
 - `AC-024`: The differential check in **Test-corpus contract** finds no
   difference on any baseline request with empty `truncation_reasons`.
-- `AC-025`: For each of the 43,145 connected CAPS pairs, requested with the
-  default `max_paths`:
-  - at `max_depth` equal to its shortest length, and at 16, the first
-    returned path has exactly the oracle's shortest hop count and satisfies
-    the **Result invariants**;
-  - `truncation_reasons` contains none of `work_limit`, `queue_limit`, or
-    `byte_limit`.
-
-  `path_limit` and `depth_limit` may appear, because they describe further
-  or longer paths beyond the request, not the returned shortest path.
 - `AC-026`: Every path result in the checks above satisfies the **Result
   invariants**.
+- `AC-028`: For each of the 43,145 connected CAPS pairs, requested with the
+  default `max_paths` at `max_depth` equal to its shortest length and at 16:
+  - the call returns a result, not an error;
+  - its shortest path is `paths[0]`, or `nextUnreturnedPath` when `paths`
+    is empty, with exactly the oracle's shortest hop count;
+  - `truncation_reasons` contains neither `work_limit` nor `queue_limit`.
+
+  `byte_limit`, `path_limit`, and `depth_limit` may appear.
+- `AC-029`: A result uses compact form only when its first path does not fit
+  in full form. It then carries `sharedRelationshipEvidence` and compact
+  entries that satisfy the rehydration contract. If its first path fits in
+  compact form, that path is returned in `paths` with its evidence.
+- `AC-030`: A result whose first path fits in neither form, or that cannot
+  use compact form, is the IDs-only form. No such request raises
+  `progression_result_too_large` unless even the IDs-only result exceeds
+  the envelope.
+- `AC-031`: No architectural impact (Documenter). The facts to document:
+  - the three forms and when each applies;
+  - the lifted fields and how a client rehydrates them;
+  - that the IDs-only form names the path in `nextUnreturnedPath`;
+  - that a client reads each hop's full evidence with
+    `get_learning_progression`, or through the relationship's
+    `provenanceUri`.
 - `AC-027`: No architectural impact (Documenter). The facts to document are
   the 1–16 range, the default of 6, returned paths of up to 16 hops, and
   target-aware behavior: long
@@ -722,10 +862,11 @@ external kgs/ (read-only)
 4. Dry-run the build. Build into a fresh root, validate read-only, persist
    acceptance, and install the passed package under `data/graph_packages/`.
    (`AC-002`..`AC-006`)
-5. Replace the path-search algorithm and raise the request bound. Then
-   update corpus-dependent test expectations, add the CAPS baseline entry,
-   and add the path-search checks. Run the full offline suite.
-   (`AC-017`..`AC-019`, `AC-022`..`AC-026`)
+5. Replace the path-search algorithm, raise the request bound, and add the
+   long-path result forms. Then update corpus-dependent test expectations,
+   add the CAPS baseline entry, and add the path-search checks. Run the full
+   offline suite. (`AC-017`..`AC-019`, `AC-022`..`AC-024`,
+   `AC-026`, `AC-028`..`AC-030`)
 6. Run the repository STDIO smoke test and a STDIO session that exercises
    CAPS. Correct the MCPB manifest version, then build the MCPB stage and
    run the stage smoke test. Confirm the Docker build context.
@@ -756,12 +897,6 @@ external kgs/ (read-only)
   the default bundle file `dist/kgfegmcp-0.4.0.mcpb` will no longer match the
   build output, which is now named for `1.0.0`. Dated statements about 0.4.0
   installs remain historically true.
-- **`AC-025` "without truncation".** An empty `truncation_reasons` cannot
-  be required for every pair. `path_limit` or `depth_limit` legitimately
-  appears whenever more paths exist than requested, or a longer connection
-  exists. The technical criterion therefore forbids only budget and size
-  stops. If Scoper meant an empty reason list, that is unattainable for any
-  algorithm, and the question goes back to Scoper.
 - **Counter values change.** Clients or tests that pin path counters or
   frontier counts will see smaller numbers. The tests that pin them are
   updated under the **Test-corpus contract**.
@@ -769,43 +904,16 @@ external kgs/ (read-only)
   because validation rejects buildsTowards cycles. The **Cycle guard** turns
   any violation into an explicit failure. If the validation rule is ever
   relaxed, path search must be redesigned.
-- **Open scope decision: long paths exceed the result envelope** (raised
-  2026-10-15 from `DEV-008` evidence; routed to Scoper).
-  - Every tool result is capped at 100,000 characters
-    (`tool_results.MAX_TOOL_RESULT_CHARACTERS`), plus 1 MiB of bytes, and
-    is shared by all tools.
-  - Each returned path hop carries full per-relationship evidence: both
-    statement excerpts (up to 2,048 characters each), the rationale excerpt,
-    warnings, and the text mirror.
-  - Developer's all-pairs run shows:
-    - target-aware search finds every CAPS pair within the work and queue
-      budgets;
-    - every CAPS pair of 10–13 hops (492 pairs) raises
-      `progression_result_too_large`, because its first path alone does not
-      fit (the 11-hop example is 115,286 characters);
-    - 26,062 of 86,290 requests return the shortest path first but stop on
-      `byte_limit` before the second or third path.
-  - So `AC-025` as written (complete shortest path for every pair, with no
-    `byte_limit`) cannot be met unless the envelope or the evidence per hop
-    changes.
-  - Scope keeps the envelope and every response the same (`AC-022`, and the
-    non-goal on other tools' bounds). Choosing between the options below
-    therefore changes what users are promised, and it is Scoper's decision:
-    1. **Identify long paths by IDs (recommended).** Keep the envelope and
-       the per-hop evidence. When the first path does not fit, return a
-       normal result with no paths in the evidence tables,
-       `nextUnreturnedPath` set to the complete shortest path by IDs, and
-       `byte_limit`. Today this case raises an error instead. This uses the
-       tool's existing contract and `path_notice` wording; the client reads
-       each hop with `get_learning_progression`. `AC-025` becomes "found and
-       identified completely", with `byte_limit` allowed.
-    2. **Leaner per-hop evidence in path results.** Shorter excerpts or IDs
-       only, with full evidence through `get_learning_progression`. Every
-       path response changes for all seven frameworks, which conflicts with
-       `AC-022` as written.
-    3. **A larger envelope for the path tool only.** Responses for long paths
-       would reach about 200,000 characters, which costs clients more context
-       and departs from the shared 100,000-character standard.
+- **Long-path forms are a projection.** The compact-form savings and the
+  11/12/13-hop outcomes are Architect estimates from one measured 2-hop
+  result. Developer's all-pairs run settles them. Under `AC-028`, every
+  outcome is acceptable as long as the IDs-only form catches what compact
+  form cannot hold.
+- **Clients must handle three forms.** A client that assumes every
+  `relationships` entry is full evidence will mis-read compact entries.
+  Clients that read the published schema or the documentation (`AC-031`)
+  can tell the forms apart, and full-form results, which are the common
+  case, do not change.
 - **Schema widening.** Clients that cached the path tool's schema will see
   higher caps. Every limit widens and none narrows, so earlier responses stay
   valid under the new schema. Any test that pins the schema or the

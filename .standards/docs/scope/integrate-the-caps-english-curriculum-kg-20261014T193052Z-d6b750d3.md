@@ -20,10 +20,13 @@ resources, and prompts stay as they are.
 
 CAPS connections are longer than any in the existing corpus, up to 13 hops
 compared with 8. So that clients can find them, Learning Progression path search
-becomes target-aware and its maximum path depth rises. Results that path search
-already returns completely stay the same. Some long paths are too large to
-return in full within the shared result size limit. For those, path results
-become more compact or, as a last resort, identify the path by IDs.
+becomes target-aware and its maximum path depth rises. Path search still finds
+the same paths, in the same order, that it already finds completely. To save
+client tokens and fit long paths within the shared result size limit, path
+results always use a compact form. Per-hop boilerplate appears once instead of
+in every relationship. As a last resort, a result identifies the path by IDs.
+The other Learning Progression tools that return several relationships use the
+same compact form: standard progressions, progression search, and traversal.
 
 ## Constraints
 
@@ -52,14 +55,18 @@ become more compact or, as a last resort, identify the path by IDs.
   16. Every connected CAPS `buildsTowards` pair must be found while the
   existing queue and work budgets stay fixed. The change is generic, applying
   to every framework.
-- Long-path results (user decisions, 2026-10-15): the shared tool-result
-  envelope of 100,000 characters and 1 MiB stays fixed. A path result that
-  cannot hold even its shortest path with full per-hop evidence moves the
-  per-hop boilerplate repeated in every relationship to one shared place in
-  the result. That boilerplate includes attribution, description, author,
-  provider, license, entity fields, and the confidence notice. If the
-  shortest path still does not fit, the result identifies it by relationship
-  and node IDs and reports `byte_limit` instead of failing.
+- Path results (user decisions, 2026-10-15): the shared tool-result envelope
+  of 100,000 characters and 1 MiB stays fixed. Every path result, including
+  one whose full form would fit, uses a compact form. It moves the per-hop
+  boilerplate repeated in every relationship to one shared place in the
+  result, to save client tokens. That boilerplate includes attribution,
+  description, author, provider, license, entity fields, and the confidence
+  notice. If the shortest path still does not fit, the result identifies it
+  by relationship and node IDs and reports `byte_limit` instead of failing.
+- Other Learning Progression results (user decision, 2026-10-15):
+  `get_standard_progressions`, `search_learning_progressions`, and
+  `traverse_learning_progressions` use the same compact shared-place form.
+  `get_learning_progression` keeps its current form.
 - Archive-only build inputs stay out of Git. Uploading them to the IDinsight
   Google Drive evidence archive is a manual, user-owned step.
 - Tests must not call live or paid LLM services.
@@ -74,8 +81,9 @@ become more compact or, as a last resort, identify the path by IDs.
   prompts.
 - Changing traversal limits, the default path depth, the path queue and work
   budgets, or any other tool's bounds.
-- Changing the shared tool-result envelope, the form of path results that
-  already hold their shortest path, or any other tool's result form.
+- Changing the shared tool-result envelope or the result form of any tool
+  other than `get_learning_progression_paths`, `get_standard_progressions`,
+  `search_learning_progressions`, and `traverse_learning_progressions`.
 - Adopting Git LFS, external package hosting, or any other way of storing
   packages.
 - Changing catalog loading so it tolerates stray non-framework directories
@@ -176,10 +184,13 @@ the source and with the user's rights and grade decisions.
 
 **Done when:**
 
-- `AC-022`: The six existing packages and their profiles are byte-identical to
+- `AC-036`: The six existing packages and their profiles are byte-identical to
   the cycle baseline and keep their snapshot IDs. They serve the same results,
-  with one exception: a path-search request that previously came back
-  truncated may now return complete paths.
+  with two exceptions. `get_learning_progression_paths`,
+  `get_standard_progressions`, `search_learning_progressions`, and
+  `traverse_learning_progressions` return their results in the compact form.
+  A request to one of these tools that a size limit or truncation previously
+  cut short may now return more items or complete paths.
 - `AC-017`: The public MCP surface is unchanged: 19 tools, 1 fixed resource, 14
   resource templates, and 9 prompts.
 - `AC-018`: Generic runtime, build, and validation code contains no
@@ -187,7 +198,7 @@ the source and with the user's rights and grade decisions.
 - `AC-019`: The full offline test suite passes with the seven-package corpus,
   including progression baselines and rights assertions that cover CAPS.
 
-**Depends on:** 2, 3, 4, 7.
+**Depends on:** 2, 3, 4, 7, 8.
 
 ### 6. Project documentation
 
@@ -209,15 +220,18 @@ corpus accurately.
   results use the shared-place compact form and when they identify the
   shortest path by IDs only. It also says how clients read each hop's full
   evidence.
+- `AC-037`: The Learning Progression reference documentation describes the
+  compact shared-place form for `get_standard_progressions`,
+  `search_learning_progressions`, and `traverse_learning_progressions`.
 
-**Depends on:** 2, 3, 4, 7.
+**Depends on:** 2, 3, 4, 7, 8.
 
 ### 7. Target-aware path search for long connections
 
 **Intent:** Clients can find CAPS's long Learning Progression connections
 (up to 13 hops) through the existing path tool, within the existing fixed work
-budgets and result envelope, without changing results the tool already returns
-completely.
+budgets and result envelope, without changing which paths the tool already finds
+completely. Path results cost clients fewer tokens.
 
 **Done when:**
 
@@ -233,17 +247,37 @@ completely.
   returns a non-error result that identifies the pair's complete shortest
   path first, without a `queue_limit` or `work_limit` stop, within the fixed
   queue and work budgets. Further paths may be cut by `byte_limit`.
-- `AC-029`: Take any path result that cannot hold its shortest path with full
-  per-hop evidence inside the envelope. It carries the evidence fields that
-  are identical across all its hops once, in one shared place, instead of in
-  every relationship, and no information is lost. When the shortest path
-  then fits, it is returned with its evidence.
+- `AC-032`: Every path result, on any of the seven packages, carries the
+  evidence fields that are identical across all its returned relationships
+  once, in one shared place, instead of in every relationship, and no
+  information is lost. This applies even when the full form would fit. A
+  shortest path that fits in this form is returned with its evidence.
 - `AC-030`: Take any path result whose shortest path does not fit even in the
   compacted form. It is a normal result, not a `progression_result_too_large`
   error, and identifies the complete shortest path by its relationship and
   node IDs with `byte_limit` reported.
 - `AC-026`: Path search never returns a wrong, partial, or wrong-length path.
   Any result that is incomplete reports non-empty truncation reasons.
+
+**Depends on:** 2, 3.
+
+### 8. Compact results for other Learning Progression tools
+
+**Intent:** Reduce client token cost for the other Learning Progression tools
+that return several relationships. Their results drop the same repeated
+boilerplate that path results drop.
+
+**Done when:**
+
+- `AC-034`: Every result from `get_standard_progressions`,
+  `search_learning_progressions`, and `traverse_learning_progressions`, on any
+  of the seven packages, carries the evidence fields that are identical across
+  all its returned relationships once, in one shared place, instead of in
+  every relationship. No information is lost.
+- `AC-035`: Each of those three tools returns the same relationships and
+  nodes, in the same order, as the cycle baseline for the same request. The
+  only exception is where a size limit cut the baseline result: there, a page
+  or traversal may now hold more items, and continuation cursors may differ.
 
 **Depends on:** 2, 3.
 
@@ -254,6 +288,13 @@ completely.
 - `AC-025`: Retired on 2026-10-15 because a complete shortest path with full
   per-hop evidence cannot fit the fixed result envelope for 10–13 hop CAPS
   pairs. Replaced by `AC-028`, `AC-029`, and `AC-030`.
+- `AC-029`: Retired on 2026-10-15 because the compact form now applies to
+  every path result, not only to results whose full form does not fit.
+  Replaced by `AC-032`.
+- `AC-022`: Retired on 2026-10-15 because path results now change form for
+  all frameworks. Replaced by `AC-033`.
+- `AC-033`: Retired on 2026-10-15 because three more Learning Progression
+  tools now use the compact form. Replaced by `AC-036`.
 
 ## Assumptions
 
