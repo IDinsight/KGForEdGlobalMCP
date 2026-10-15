@@ -51,7 +51,7 @@ def test_every_exact_edge_preserves_accepted_evidence(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     monkeypatch
         Pytest monkeypatch fixture.
     """
@@ -158,7 +158,7 @@ def test_every_exact_edge_preserves_accepted_evidence(
             ) == judgment.model_dump(exclude={"confidence_notice"})
             assert "calibrated probability" in actual.judgment.confidence_notice
             count += 1
-    assert count == 8080
+    assert count == 17667
 
 
 @pytest.mark.parametrize(

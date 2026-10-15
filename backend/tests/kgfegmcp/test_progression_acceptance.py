@@ -121,7 +121,7 @@ def test_strict_integer_properties() -> None:
                 "source_identifier": selector("a"),
                 "target_identifier": selector("t"),
             },
-            {"max_depth": 12, "max_paths": 20},
+            {"max_depth": 16, "max_paths": 20},
         ),
         (
             SearchLearningProgressionsRequest,

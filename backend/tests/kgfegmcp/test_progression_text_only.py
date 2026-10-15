@@ -1,4 +1,4 @@
-"""AC-033 ordinary-text consumption of the five LP tools through real MCP calls."""
+"""Ordinary-text consumption of the five LP tools through real MCP calls."""
 
 # Standard Library
 import json
@@ -52,11 +52,41 @@ async def call(client: Client, name: str, request: dict[str, Any]) -> dict[str, 
     return payload
 
 
-def assert_evidence(payload: dict[str, Any]) -> None:
+def entries(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Read relationship entries as a text-only client does, applying shared evidence.
+
+    A field omitted from an entry takes the value of the same field in
+    ``sharedRelationshipEvidence``, at the same nesting level.
+
+    Parameters
+    ----------
+    payload
+        Parsed tool result text.
+
+    Returns
+    -------
+    list[dict[str, Any]]
+        Relationship entries with every shared field filled in.
+    """
+
+    shared = payload.get("sharedRelationshipEvidence", {})
+    filled = []
+    for item in payload["relationships"]:
+        entry = {**shared, **item}
+        for level in ("judgment", "relationship"):
+            # A lifted field is stated once, never repeated in an entry.
+            assert not set(shared.get(level, {})) & set(item[level])
+            entry[level] = {**shared.get(level, {}), **item[level]}
+        filled.append(entry)
+    return filled
+
+
+def assert_evidence(payload: dict[str, Any], *, compact: bool = True) -> None:
     """Every returned edge carries identity, judgment, notices and evidence links."""
     assert payload["relationships"]
+    assert ("sharedRelationshipEvidence" in payload) is compact
     nodes = {item["nodeId"]: item for item in payload["nodes"]}
-    for item in payload["relationships"]:
+    for item in entries(payload):
         edge = item["relationship"]
         assert edge["label"] in {"buildsTowards", "relatesTo"}
         assert {edge["sourceNodeId"], edge["targetNodeId"]} <= set(nodes)
@@ -94,7 +124,8 @@ async def test_ordinary_text_carries_the_complete_result(
             payload = await call(
                 client, "get_learning_progression", {**nigeria, "relationshipId": EDGE}
             )
-            assert_evidence(payload)
+            # The exact lookup keeps the full form.
+            assert_evidence(payload, compact=False)
             assert [
                 e["relationship"]["relationshipId"] for e in payload["relationships"]
             ] == [EDGE]

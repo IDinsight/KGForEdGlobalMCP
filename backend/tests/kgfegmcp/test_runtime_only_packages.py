@@ -1,6 +1,6 @@
 """Runtime-only (manifest 1.2) packages served from committed runtime files alone.
 
-These scenarios need no archive: they read the six accepted packages, isolated copies
+These scenarios need no archive: they read the seven accepted packages, isolated copies
 of them, or the runtime tier directly, and cover the declared runtime set, manifest
 rules, runtime-tier rejections, startup without archived evidence, and slim entity
 provenance resources.
@@ -194,11 +194,11 @@ def test_accepted_manifests_declare_only_runtime_files(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     """
 
     runtimes = accepted_state.catalog_load_result.package_runtimes
-    assert len(runtimes) == 6
+    assert len(runtimes) == 7
 
     for runtime in runtimes:
         package = runtime.loaded_package
@@ -240,7 +240,7 @@ def test_manifest_rejects_retired_contracts(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     code
         Blocking finding the loader must report.
     mutation
@@ -289,7 +289,7 @@ def test_manifest_rejects_retired_contracts(
 def test_runtime_tier_never_reads_archived_evidence(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Startup under ``fail`` serves all six packages without touching input sets.
+    """Startup under ``fail`` serves all seven packages without touching input sets.
 
     Parameters
     ----------
@@ -331,7 +331,7 @@ def test_runtime_tier_never_reads_archived_evidence(
     monkeypatch.setenv("KGFEGMCP_INVALID_PACKAGE_POLICY", "fail")
     state = bootstrap_application()
     result = state.catalog_load_result
-    assert len(result.package_runtimes) == 6
+    assert len(result.package_runtimes) == 7
     assert {
         r.loaded_package.manifest.manifest_version for r in result.package_runtimes
     } == {"1.2"}
@@ -357,7 +357,7 @@ def test_runtime_tier_rejects_inconsistent_slim_evidence(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     code
         Blocking finding the runtime tier must report.
     mutation
@@ -417,7 +417,7 @@ def test_runtime_tier_rejects_missing_and_extra_files(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     codes
         Blocking findings the loader must report.
     mutation
@@ -466,7 +466,7 @@ def test_slim_entity_provenance_denies_before_reads(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     denied_right
         Rights flag switched off for the package.
     kind
@@ -512,7 +512,7 @@ def test_slim_entity_provenance_serves_attributed_entries(
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     kind
         Provenance resource family checked.
     """
@@ -587,7 +587,7 @@ def test_slim_shards_cover_every_lp_edge(accepted_state: AppState) -> None:
     Parameters
     ----------
     accepted_state
-        Application state bootstrapped from the six accepted packages.
+        Application state bootstrapped from the seven accepted packages.
     """
 
     limit = accepted_state.settings.max_resource_source_bytes

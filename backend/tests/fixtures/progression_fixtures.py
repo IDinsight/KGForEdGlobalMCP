@@ -4,7 +4,7 @@
 import hashlib
 import json
 
-from collections import defaultdict
+from collections import defaultdict, deque
 from types import SimpleNamespace
 from typing import Any, TypedDict, cast
 
@@ -21,8 +21,10 @@ from kgfegmcp.domain.identifiers import (
     SnapshotId,
 )
 from kgfegmcp.services.learning_progressions import LearningProgressionsService
+from kgfegmcp.services.lp_compact import rehydrate_relationships
 from kgfegmcp.services.lp_models import (
     GetLearningProgressionPathsRequest,
+    ProgressionRelationshipEvidence,
     TraverseLearningProgressionsRequest,
 )
 from kgfegmcp.services.lp_paths import paths_result
@@ -190,6 +192,246 @@ def builds(
         (identifier, source, target, "buildsTowards", text)
         for identifier, source, target in pairs
     ]
+
+
+# Liftable evidence fields by nesting level, as the cycle design names them (JSON keys).
+LIFTABLE_JSON_FIELDS: dict[str | None, tuple[str, ...]] = {
+    None: ("epistemicStatus",),
+    "judgment": ("confidenceNotice",),
+    "relationship": (
+        "attributionStatement",
+        "author",
+        "description",
+        "label",
+        "license",
+        "provider",
+        "relationshipType",
+        "sourceEntity",
+        "sourceEntityKey",
+        "sourceLabels",
+        "targetEntity",
+        "targetEntityKey",
+        "targetLabels",
+    ),
+}
+
+
+def assert_compact_form(
+    *, expected: tuple[ProgressionRelationshipEvidence, ...], result: Any
+) -> None:
+    """Check the emitted compact form against the full evidence it must encode.
+
+    Working on the emitted JSON, a liftable field appears once in
+    ``sharedRelationshipEvidence`` exactly when every entry's full value is the same
+    non-null value, and is then absent from every entry. Otherwise each entry carries
+    its own non-null value and omits a null one. Every other field is emitted per
+    entry unchanged, so no information is lost.
+
+    Parameters
+    ----------
+    expected
+        Full evidence per entry, in result order.
+    result
+        Compact progression result to check.
+    """
+
+    emitted = result.model_dump(by_alias=True, mode="json")
+    shared = emitted["sharedRelationshipEvidence"]
+    entries = emitted["relationships"]
+    full = [item.model_dump(by_alias=True, mode="json") for item in expected]
+    assert len(entries) == len(full)
+
+    for level, names in LIFTABLE_JSON_FIELDS.items():
+        shared_level = shared if level is None else shared.get(level, {})
+        full_levels = [item if level is None else item[level] for item in full]
+        compact_levels = [item if level is None else item[level] for item in entries]
+
+        for name in names:
+            values = [item[name] for item in full_levels]
+            lifted = bool(values) and values[0] is not None
+            lifted = lifted and all(value == values[0] for value in values)
+            assert shared_level.get(name) == (values[0] if lifted else None)
+
+            for compact, value in zip(compact_levels, values):
+                assert compact.get(name) == (None if lifted else value)
+                assert (name in compact) == (not lifted and value is not None)
+
+        for compact, original in zip(compact_levels, full_levels):
+            kept = set(original) - set(names) - {"judgment", "relationship"}
+            assert {key: compact[key] for key in kept} == {
+                key: original[key] for key in kept
+            }
+            assert set(compact) <= set(original)
+
+    # Nothing else is shared; the object is {} when nothing lifts.
+    assert set(shared) <= {"epistemicStatus", "judgment", "relationship"}
+
+
+def assert_path_invariants(
+    *,
+    request: GetLearningProgressionPathsRequest,
+    result: Any,
+    runtime: CatalogPackageRuntime,
+    service: LearningProgressionsService,
+) -> None:
+    """Check the design's path result invariants against the stored package edges.
+
+    Every returned path and a present ``nextUnreturnedPath`` must run from the source
+    to the target over stored buildsTowards edges within ``max_depth``; paths must be
+    distinct and ordered by hop count, then relationship-ID tuple; the rehydrated
+    relationship table must equal, in first-appearance order, the evidence
+    ``relationship_evidence`` builds for the union of the returned paths' edges; and
+    an incomplete result must say so.
+
+    Parameters
+    ----------
+    request
+        The path request that produced ``result``.
+    result
+        Compact ``GetLearningProgressionPathsResult`` to check.
+    runtime
+        Accepted package runtime the request was pinned to.
+    service
+        Production service whose ``relationship_evidence`` is the expected evidence.
+    """
+
+    stored = runtime.graph_store.relationships_by_id
+    unreturned = result.next_unreturned_path
+    keys = []
+
+    for path in (*result.paths, *((unreturned,) if unreturned else ())):
+        assert (path.node_ids[0], path.node_ids[-1]) == (
+            result.source_node_id,
+            result.target_node_id,
+        )
+        assert 1 <= len(path.relationship_ids) <= request.max_depth
+        assert len(path.node_ids) == len(path.relationship_ids) + 1
+
+        for index, edge_id in enumerate(path.relationship_ids):
+            edge = stored[edge_id]
+            assert edge.label == "buildsTowards"
+            assert (edge.source_node_id, edge.target_node_id) == (
+                path.node_ids[index],
+                path.node_ids[index + 1],
+            )
+
+        keys.append((len(path.relationship_ids), path.relationship_ids))
+
+    # Returned paths, then any unreturned one, follow the shared total order.
+    assert keys == sorted(keys) and len(keys) == len(set(keys))
+    table = list(
+        dict.fromkeys(
+            edge_id for path in result.paths for edge_id in path.relationship_ids
+        )
+    )
+    expected = tuple(
+        service.relationship_evidence(relationship=stored[key], runtime=runtime)
+        for key in table
+    )
+    assert rehydrated(result) == expected
+    assert_compact_form(expected=expected, result=result)
+
+    if not result.truncation_reasons:
+        assert result.graph_exhausted and unreturned is None
+
+
+def baseline_paths(
+    *,
+    downstream: dict[str, list[tuple[str, str]]],
+    max_depth: int,
+    max_paths: int,
+    source: str,
+    target: str,
+) -> tuple[list[tuple[tuple[str, ...], tuple[str, ...]]], set[str]]:
+    """Reference copy of the cycle-baseline breadth-first path enumerator.
+
+    It mirrors ``services/lp_paths.py`` at ``f9fdaa2``: per-path visited sets, edges in
+    relationship-ID order, a 5,000 inspection and 5,000 state budget, ``depth_limit``
+    on any extension beyond ``max_depth``, and ``path_limit`` when ``max_paths`` paths
+    are admitted with states still queued. Output-size stops are not modelled.
+
+    Parameters
+    ----------
+    downstream
+        Source node ID to its ``(relationship_id, target_node_id)`` buildsTowards
+        edges, sorted by relationship ID.
+    max_depth
+        Requested maximum hop count.
+    max_paths
+        Requested maximum number of paths.
+    source
+        Path source node ID.
+    target
+        Path target node ID.
+
+    Returns
+    -------
+    tuple[list[tuple[tuple[str, ...], tuple[str, ...]]], set[str]]
+        Admitted ``(relationship_ids, node_ids)`` paths in order, and the truncation
+        reasons the baseline would report apart from ``byte_limit``.
+    """
+
+    budget = 5000
+    enqueued = 1
+    examined = 0
+    paths: list[tuple[tuple[str, ...], tuple[str, ...]]] = []
+    queue: deque[tuple[tuple[str, ...], tuple[str, ...]]] = deque([((), (source,))])
+    reasons: set[str] = set()
+
+    while queue:
+        edges, nodes = queue.popleft()
+
+        if nodes[-1] == target:
+            paths.append((edges, nodes))
+
+            if len(paths) == max_paths and queue:
+                reasons.add("path_limit")
+                break
+
+            continue
+
+        for edge_id, head in downstream.get(nodes[-1], []):
+            if examined == budget:
+                reasons.add("work_limit")
+                return paths, reasons
+
+            examined += 1
+
+            if head in nodes:
+                continue
+
+            if len(edges) == max_depth:
+                reasons.add("depth_limit")
+                continue
+
+            if enqueued == budget:
+                reasons.add("queue_limit")
+                return paths, reasons
+
+            queue.append(((*edges, edge_id), (*nodes, head)))
+            enqueued += 1
+
+    return paths, reasons
+
+
+def rehydrated(result: Any) -> tuple[ProgressionRelationshipEvidence, ...]:
+    """Rebuild full relationship evidence from a compact LP result.
+
+    Parameters
+    ----------
+    result
+        Any compact progression result.
+
+    Returns
+    -------
+    tuple[ProgressionRelationshipEvidence, ...]
+        Full evidence per entry, in result order.
+    """
+
+    return rehydrate_relationships(
+        relationships=result.relationships,
+        shared=result.shared_relationship_evidence,
+    )
 
 
 # Meaning-bearing node properties; serialization, key order and added fields are ignored.

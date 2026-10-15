@@ -74,7 +74,7 @@ def assert_per_kind_direct_calls(message: str, placeholder: str) -> None:
 
 
 def test_teaching_sequence_workflow(accepted_state: AppState) -> None:
-    """Six-package samples preserve bounded teaching retrieval, identity and notices."""
+    """Seven-package samples preserve bounded teaching retrieval, identity and notices."""
     for runtime in accepted_state.catalog_load_result.package_runtimes:
         identity = runtime.catalog_package.package_identity
         result = accepted_state.prompt_service.learning_progression_teaching_sequence(
